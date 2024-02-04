@@ -48,6 +48,4 @@ app.*.map.json
 /android/app/release
 /jic/
 /.fvm/
-/images/
-/assets/
 /example/
