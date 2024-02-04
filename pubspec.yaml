@@ -1,0 +1,110 @@
+name: flutter_content
+description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
+version: 0.0.2
+maintainer: Ian White
+homepage: https://github.com/biancashouse/flutter_content
+# github mirrored from bitbucket
+#homepage: https://bitbucket:org/biancashouse/flutter_content/src/master/
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+#publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+environment:
+  sdk: '>=3.1.2 <4.0.0'
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  yaml: ^3.1.2
+  #url_strategy: ^0.2.0
+  path_provider: ^2.0.11
+  json_annotation: ^4.8.1
+  cupertino_icons: ^1.0.2
+  flutter_bloc: ^8.1.1
+  freezed: ^2.3.2
+  freezed_annotation: ^2.2.0
+  transparent_pointer: ^1.0.0
+  dotted_border: ^2.0.0+2
+  image_network: ^2.5.1
+  hydrated_bloc: ^9.0.0
+  package_info_plus: ^5.0.1
+  device_info_plus: ^9.1.1
+  universal_platform: ^1.0.0+1
+  numeric_keyboard: ^1.1.0
+  file_picker: ^6.1.1
+  dart_mappable: ^4.0.1
+  smooth_page_indicator: ^1.1.0
+  firebase_core: ^2.15.0
+  firebase_analytics: ^10.4.4
+  firebase_auth: ^4.7.2
+  cloud_firestore: ^4.8.4
+  firebase_storage: ^11.2.5
+  get_it: ^7.6.0
+  google_fonts: ^6.1.0
+  watcher: ^1.1.0
+  pointer_interceptor: ^0.9.3+6
+  multi_split_view: ^2.4.0
+  # compals
+  url_launcher: ^6.1.6
+  intl: ^0.18.1
+  timeago: any
+  #flutter_polls: ^0.1.5
+  flutter_hooks: ^0.20.3
+  calendar_date_picker2: ^0.5.3
+  flutter_localizations:
+    sdk: flutter
+  gap: ^3.0.1
+  auto_size_text_field: ^2.2.2
+  carousel_slider: ^4.2.1
+  flutter_fancy_tree_view: ^1.4.1
+  webview_flutter: ^4.4.2
+  webview_flutter_android: ^3.13.1
+  webview_flutter_wkwebview: ^3.10.0
+  webview_flutter_web: ^0.2.2+3
+  webview_flutter_platform_interface: ^2.7.0
+  percent_indicator: ^4.2.3
+  flutter_html_iframe: ^3.0.0-beta.2
+  on_screen_ruler: ^0.0.1
+  collection: ^1.18.0
+  rotated_corner_decoration: ^2.1.0+1
+  gradient_borders: ^1.0.0
+  pretty_json: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.4
+  build_runner: ^2.0.0
+  json_serializable: ^6.5.3
+  vector_math: ^2.1.2
+  text_editor: ^0.7.0
+  bloc_test: ^9.1.1
+  flutter_lints: ^3.0.1
+  dart_mappable_builder: ^4.0.1
+  analyzer: ^6.2.0
+
+screenshots:
+  - description: Screenshot of a chlli
+    path: images/habanero.png
+  - description: Screenshot of a mushroom
+    path: images/mushroom.png
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - images/
+    - images/google-icons/
+    - images/carousel-demo/
+    - assets/
+    - startup-scripts/
