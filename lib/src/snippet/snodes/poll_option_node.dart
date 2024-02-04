@@ -1,0 +1,70 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/flutter_polls/flutter_poll_option.dart';
+
+part 'poll_option_node.mapper.dart';
+
+@MappableClass()
+class PollOptionNode extends ChildlessNode with PollOptionNodeMappable {
+  String optionId;
+  String text;
+
+  PollOptionNode({
+    required this.optionId,
+    required this.text,
+  });
+
+  String get id => text;
+
+  @override
+  List<PTreeNode> createPropertiesList(BuildContext context) => [
+        StringPropertyValueNode(
+          snode: this,
+          name: 'text',
+          stringValue: text,
+          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
+          calloutButtonSize: const Size(280, 70),
+          calloutSize: const Size(280, 140),
+        ),
+      ];
+
+  @override
+  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    parent = parentNode; // propagating parents down from root
+    possiblyHighlightSelectedNode(context);
+    return parent is PollNode
+        ? FlutterPollOption(
+            key: nodeWidgetGK,
+            optionId: optionId,
+            optionWidget: Text(text),
+          )
+        : const Icon(Icons.error_outlined);
+  }
+
+  // FlutterPollOption toPollOption(BuildContext context, STreeNode? parentNode) {
+  //   parent = parentNode;  // propagating parents down from root
+  //   possiblyHighlightSelectedNode(context);
+  //   var targetGK = nodeWidgetGK;
+  //
+  //   return Icon(Icons.warning_amber)
+  //   return PollOption(
+  //     key: targetGK,
+  //     id: text,
+  //     title: Text(
+  //       text,
+  //     ),
+  //     votes: votes ?? 0,
+  //   );
+  // }
+
+  @override
+  String toSource(BuildContext context) => '';
+
+  @override
+  String toString() => FLUTTER_TYPE;
+
+  static const String FLUTTER_TYPE = "PollOption";
+}

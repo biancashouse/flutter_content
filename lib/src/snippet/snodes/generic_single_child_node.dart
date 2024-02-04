@@ -1,0 +1,51 @@
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
+
+part 'generic_single_child_node.mapper.dart';
+
+@MappableClass()
+class GenericSingleChildNode extends SingleChildNode with GenericSingleChildNodeMappable {
+  String propertyName; // Widget property name, such as title, body, leading,bottom etc
+  GenericSingleChildNode({
+    required this.propertyName,
+    super.child,
+  });
+
+  @override
+  List<PTreeNode> createPropertiesList(BuildContext context) => const [];
+
+  @override
+  Widget toWidget(BuildContext context, STreeNode parentNode) => Useful.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+
+  @override
+  Widget toWidgetProperty(BuildContext context, STreeNode? parentNode) {
+    parent = parentNode; // propagating parents down from root
+    possiblyHighlightSelectedNode(context);
+    try {
+      Widget? childWidget = child?.toWidget(context, this);
+      if (childWidget == null) throw(Exception('Failed to create widget for property: $propertyName'));
+      return childWidget;
+    } catch (e) {
+      print('snippetRoot.toWidget() failed!');
+      return Material(
+        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              const Icon(Icons.error, color: Colors.redAccent),
+              hspacer(10),
+              Useful.coloredText(e.toString()),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  String toString() => propertyName;
+
+  static const String FLUTTER_TYPE = "SingleChildProperty"; //should be visible in the tree, but not rendered as a widget in the generated ui
+}
