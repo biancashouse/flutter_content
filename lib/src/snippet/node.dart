@@ -113,7 +113,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
     return nodeCount;
   }
 
-  // find 1st node with the supplied toString value
+  // find 1st node with the supplied type
   STreeNode? findNodeTypeInTree(STreeNode startingNode, Type type) {
     STreeNode? foundNode;
     foundNode = breadthFirstSearch(

@@ -39,7 +39,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<ForceSnippetRefresh>((event, emit) => _forceSnippetRefresh(event, emit));
     on<WrapWith>((event, emit) => _wrapWith(event, emit));
-    on<ReplaceWith>((event, emit) => _replaceWith(event, emit));
+    on<ReplaceSelectionWith>((event, emit) => _replaceWith(event, emit));
     on<AppendChild>((event, emit) => _addChild(event, emit));
     on<AddSiblingBefore>((event, emit) => _addSiblingBefore(event, emit));
     on<AddSiblingAfter>((event, emit) => _addSiblingAfter(event, emit));
@@ -347,40 +347,46 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       };
 
   void _wrapWith(WrapWith event, emit) {
-    _createSnippetUndo();
-    STreeNode newNode = _typeAsATreeNode(event.type, event.selectedNode, "_wrapWith() missing ${event.type.toString()}");
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      STreeNode newNode = _typeAsATreeNode(event.type, selectedNode, "_wrapWith() missing ${event.type.toString()}");
 
-    newNode.parent = event.selectedNode.parent;
+      newNode.parent = selectedNode.parent;
 
-    // // attach new parent at select node's pos in the tree...
-    // if selected node is actually a root node, make newNode the new root
-    if (event.selectedNode.parent == null) {
-      state.treeC.roots = [newNode];
-    } else {
-      //
-      if (event.selectedNode.parent is SingleChildNode) {
-        (event.selectedNode.parent as SingleChildNode).child = newNode;
-      } else if (event.selectedNode.parent is MultiChildNode) {
-        int i = (event.selectedNode.parent as MultiChildNode).children.indexOf(event.selectedNode);
-        (event.selectedNode.parent as MultiChildNode).children[i] = newNode;
-      } else if (event.selectedNode.parent is WidgetSpanNode) {
-        (event.selectedNode.parent as WidgetSpanNode).child = newNode;
+      // // attach new parent at select node's pos in the tree...
+      // if selected node is actually a root node, make newNode the new root
+      if (selectedNode.parent == null) {
+        state.treeC.roots = [newNode];
+      } else {
+        //
+        if (selectedNode.parent is SingleChildNode) {
+          (selectedNode.parent as SingleChildNode).child = newNode;
+        } else if (selectedNode.parent is MultiChildNode) {
+          int i = (selectedNode.parent as MultiChildNode).children.indexOf(selectedNode);
+          (selectedNode.parent as MultiChildNode).children[i] = newNode;
+        } else if (selectedNode.parent is WidgetSpanNode) {
+          (selectedNode.parent as WidgetSpanNode).child = newNode;
+        }
       }
-    }
-    event.selectedNode.parent = newNode;
+      selectedNode.parent = newNode;
 
-    state.treeC.expand(newNode);
-    state.treeC.rebuild();
-    emit(state.copyWith(
-      selectedNode: newNode,
-      force: state.force + 1,
-    ));
+      state.treeC.expand(newNode);
+      state.treeC.rebuild();
+      emit(state.copyWith(
+        selectedNode: newNode,
+        force: state.force + 1,
+      ));
+    }
   }
 
-  void _replaceWith(ReplaceWith event, emit) {
-    _createSnippetUndo();
-    STreeNode newNode = _typeAsATreeNode(event.type, null, "_replaceWith() missing ${event.type.toString()}");
-    _replaceWithNewNodeOrClipboard(event.selectedNode, emit, newNode);
+  void _replaceWith(ReplaceSelectionWith event, emit) {
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      STreeNode newNode = _typeAsATreeNode(event.type, null, "_replaceWith() missing ${event.type.toString()}");
+      _replaceWithNewNodeOrClipboard(selectedNode, emit, newNode);
+    }
   }
 
   void _replaceWithNewNodeOrClipboard(STreeNode selectedNode, emit, STreeNode replacementNode) {
@@ -425,8 +431,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _addChild(AppendChild event, emit) {
-    STreeNode newNode = _typeAsATreeNode(event.type, event.selectedNode, "_addChild() missing ${event.type.toString()}");
-    _addOrPasteChild(event.selectedNode, emit, newNode);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      STreeNode newNode = _typeAsATreeNode(event.type, selectedNode, "_addChild() missing ${event.type.toString()}");
+      _addOrPasteChild(selectedNode, emit, newNode);
+    }
   }
 
   void _addOrPasteChild(STreeNode selectedNode, emit, STreeNode newNode) {
@@ -481,8 +490,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
-    _createSnippetUndo();
-    _replaceWithNewNodeOrClipboard(event.selectedNode, emit, event.clipboardNode);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      _replaceWithNewNodeOrClipboard(selectedNode, emit, event.clipboardNode);
+    }
 
     // // Container's Container parent should have an alignment property
     // if (event.selectedNode is ContainerNode) {
@@ -508,55 +520,70 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteChild(PasteChild event, emit) {
-    STreeNode clipboardNode = event.clipboardNode;
-    _addOrPasteChild(event.selectedNode, emit, clipboardNode);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      STreeNode clipboardNode = event.clipboardNode;
+      _addOrPasteChild(selectedNode, emit, clipboardNode);
+    }
   }
 
   void _addSiblingBefore(AddSiblingBefore event, emit) {
-    _createSnippetUndo();
-    if (state.selectedNode?.parent is MultiChildNode) {
-      int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(event.selectedNode);
-      _addSiblingAt(event.type, emit, i);
-    }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(event.selectedNode as InlineSpanNode);
-      _addSiblingAt(event.type, emit, i);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      if (state.selectedNode?.parent is MultiChildNode) {
+        int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(selectedNode);
+        _addSiblingAt(event.type, emit, i);
+      }
+      if (state.selectedNode?.parent is TextSpanNode) {
+        int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
+        _addSiblingAt(event.type, emit, i);
+      }
     }
   }
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
-    _createSnippetUndo();
-    if (state.selectedNode?.parent is MultiChildNode) {
-      int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(event.selectedNode);
-      _pasteSiblingAt(event.clipboardNode, emit, i);
-    }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(event.selectedNode as InlineSpanNode);
-      _pasteSiblingAt(event.clipboardNode, emit, i);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      if (state.selectedNode?.parent is MultiChildNode) {
+        int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(selectedNode);
+        _pasteSiblingAt(event.clipboardNode, emit, i);
+      }
+      if (state.selectedNode?.parent is TextSpanNode) {
+        int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
+        _pasteSiblingAt(event.clipboardNode, emit, i);
+      }
     }
   }
 
   void _addSiblingAfter(AddSiblingAfter event, emit) {
-    _createSnippetUndo();
-    if (state.selectedNode?.parent is MultiChildNode) {
-      int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(event.selectedNode);
-      _addSiblingAt(event.type, emit, i + 1);
-    }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(event.selectedNode as InlineSpanNode);
-      _addSiblingAt(event.type, emit, i + 1);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      if (state.selectedNode?.parent is MultiChildNode) {
+        int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(selectedNode);
+        _addSiblingAt(event.type, emit, i + 1);
+      }
+      if (state.selectedNode?.parent is TextSpanNode) {
+        int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
+        _addSiblingAt(event.type, emit, i + 1);
+      }
     }
   }
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
-    _createSnippetUndo();
-    if (state.selectedNode?.parent is MultiChildNode) {
-      int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(event.selectedNode);
-      _pasteSiblingAt(event.clipboardNode, emit, i + 1);
-    }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(event.selectedNode as InlineSpanNode);
-      _pasteSiblingAt(event.clipboardNode, emit, i + 1);
+    if (state.aNodeIsSelected) {
+      STreeNode selectedNode = state.selectedNode!;
+      _createSnippetUndo();
+      if (state.selectedNode?.parent is MultiChildNode) {
+        int i = (state.selectedNode?.parent as MultiChildNode).children.indexOf(selectedNode);
+        _pasteSiblingAt(event.clipboardNode, emit, i + 1);
+      }
+      if (state.selectedNode?.parent is TextSpanNode) {
+        int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
+        _pasteSiblingAt(event.clipboardNode, emit, i + 1);
+      }
     }
   }
 

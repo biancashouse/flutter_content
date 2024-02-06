@@ -3,10 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:flutter_content/flutter_content.dart' as _i4;
+import 'package:flutter_content/flutter_content.dart' as _i5;
+import 'package:flutter_content/src/bloc/capi_event.dart' as _i6;
+import 'package:flutter_content/src/bloc/capi_state.dart' as _i3;
 import 'package:flutter_content/src/model/model_repo.dart' as _i2;
+import 'package:hydrated_bloc/hydrated_bloc.dart' as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -22,12 +25,33 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeIModelRepository_0 extends _i1.SmartFake
+    implements _i2.IModelRepository {
+  _FakeIModelRepository_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeCAPIState_1 extends _i1.SmartFake implements _i3.CAPIState {
+  _FakeCAPIState_1(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [IModelRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
   @override
-  _i3.Future<(_i4.CAPIModel?, String?)> getCAPIModel(
+  _i4.Future<(_i5.CAPIModel?, String?)> getCAPIModel(
           {required String? appName}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -35,25 +59,25 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
           [],
           {#appName: appName},
         ),
-        returnValue: _i3.Future<(_i4.CAPIModel?, String?)>.value((null, null)),
+        returnValue: _i4.Future<(_i5.CAPIModel?, String?)>.value((null, null)),
         returnValueForMissingStub:
-            _i3.Future<(_i4.CAPIModel?, String?)>.value((null, null)),
-      ) as _i3.Future<(_i4.CAPIModel?, String?)>);
+            _i4.Future<(_i5.CAPIModel?, String?)>.value((null, null)),
+      ) as _i4.Future<(_i5.CAPIModel?, String?)>);
 
   @override
-  _i3.Future<void> createOrUpdateModel({required _i4.CAPIModel? model}) =>
+  _i4.Future<void> createOrUpdateModel({required _i5.CAPIModel? model}) =>
       (super.noSuchMethod(
         Invocation.method(
           #createOrUpdateModel,
           [],
           {#model: model},
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<void> saveVote({
+  _i4.Future<void> saveVote({
     required String? pollName,
     required String? voterId,
     required String? optionId,
@@ -70,12 +94,12 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #newOptionVoteCountMap: newOptionVoteCountMap,
           },
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<
+  _i4.Future<
       ({
         Map<String, int>? optionVoteCountMap,
         String? userVotedForOptionId,
@@ -95,21 +119,21 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #pollName: pollName,
           },
         ),
-        returnValue: _i3.Future<
+        returnValue: _i4.Future<
                 ({
                   Map<String, int>? optionVoteCountMap,
                   String? userVotedForOptionId,
                   int? when
                 })>.value(
             (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-        returnValueForMissingStub: _i3.Future<
+        returnValueForMissingStub: _i4.Future<
                 ({
                   Map<String, int>? optionVoteCountMap,
                   String? userVotedForOptionId,
                   int? when
                 })>.value(
             (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-      ) as _i3.Future<
+      ) as _i4.Future<
           ({
             Map<String, int>? optionVoteCountMap,
             String? userVotedForOptionId,
@@ -117,7 +141,7 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
           })>);
 
   @override
-  _i3.Future<Map<String, List<String>>> getVotersByOption({
+  _i4.Future<Map<String, List<String>>> getVotersByOption({
     required String? appName,
     required String? pollName,
     required List<String>? pollOptionIds,
@@ -132,9 +156,156 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #pollOptionIds: pollOptionIds,
           },
         ),
-        returnValue: _i3.Future<Map<String, List<String>>>.value(
+        returnValue: _i4.Future<Map<String, List<String>>>.value(
             <String, List<String>>{}),
-        returnValueForMissingStub: _i3.Future<Map<String, List<String>>>.value(
+        returnValueForMissingStub: _i4.Future<Map<String, List<String>>>.value(
             <String, List<String>>{}),
-      ) as _i3.Future<Map<String, List<String>>>);
+      ) as _i4.Future<Map<String, List<String>>>);
+}
+
+/// A class which mocks [CAPIBloC].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCAPIBloC extends _i1.Mock implements _i5.CAPIBloC {
+  @override
+  _i2.IModelRepository get modelRepo => (super.noSuchMethod(
+        Invocation.getter(#modelRepo),
+        returnValue: _FakeIModelRepository_0(
+          this,
+          Invocation.getter(#modelRepo),
+        ),
+        returnValueForMissingStub: _FakeIModelRepository_0(
+          this,
+          Invocation.getter(#modelRepo),
+        ),
+      ) as _i2.IModelRepository);
+
+  @override
+  _i3.CAPIState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _FakeCAPIState_1(
+          this,
+          Invocation.getter(#state),
+        ),
+        returnValueForMissingStub: _FakeCAPIState_1(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i3.CAPIState);
+
+  @override
+  _i4.Stream<_i3.CAPIState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i4.Stream<_i3.CAPIState>.empty(),
+        returnValueForMissingStub: _i4.Stream<_i3.CAPIState>.empty(),
+      ) as _i4.Stream<_i3.CAPIState>);
+
+  @override
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  void add(_i6.CAPIEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #add,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onEvent(_i6.CAPIEvent? event) => super.noSuchMethod(
+        Invocation.method(
+          #onEvent,
+          [event],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void emit(_i3.CAPIState? state) => super.noSuchMethod(
+        Invocation.method(
+          #emit,
+          [state],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void on<E extends _i6.CAPIEvent>(
+    _i7.EventHandler<E, _i3.CAPIState>? handler, {
+    _i7.EventTransformer<E>? transformer,
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #on,
+          [handler],
+          {#transformer: transformer},
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onTransition(_i7.Transition<_i6.CAPIEvent, _i3.CAPIState>? transition) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onTransition,
+          [transition],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i4.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(
+          #close,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  void onChange(_i7.Change<_i3.CAPIState>? change) => super.noSuchMethod(
+        Invocation.method(
+          #onChange,
+          [change],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addError(
+    Object? error, [
+    StackTrace? stackTrace,
+  ]) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #addError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void onError(
+    Object? error,
+    StackTrace? stackTrace,
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #onError,
+          [
+            error,
+            stackTrace,
+          ],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

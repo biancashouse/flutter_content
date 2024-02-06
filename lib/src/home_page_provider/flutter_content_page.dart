@@ -6,7 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 class FlutterContentPage extends StatefulWidget {
   final PanelName panelName;
   final SnippetName snippetName;
-  final String? fromTemplate;
+  final SnippetTemplate? fromTemplate;
 
   const FlutterContentPage({required this.panelName, required this.snippetName, this.fromTemplate, super.key});
 

@@ -16,24 +16,10 @@ Future<void> main() async {
     },
   );
 
-  // runApp(MaterialAppWrapper(
-  //   appName: 'compals',
-  //   initialValueJsonAssetPath: "startup-scripts/compals-config.json",
-  //   materialAppHomeF: HomePageProvider().getWebOrMobileHomePage,
-  //   materialAppThemeF: () => ThemeData(
-  //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-  //     primaryColor: FUCHSIA_X,
-  //     primarySwatch: Colors.purple,
-  //     //scaffoldBackgroundColor: Colors.pink[30],
-  //     // useMaterial3: true,
-  //   ),
-  //   fbOptions: DefaultFirebaseOptions.currentPlatform,
-  // ));
-
   runApp(MaterialSPA(
     appName: 'flutter-content-app',
     initialValueJsonAssetPath: "startup-scripts/compals-config.json",
-    webHome: const FlutterContentPage(panelName: 'home', snippetName: 'example-web-home', fromTemplate: 'scaffold-with-tabs',),
+    webHome: const FlutterContentPage(panelName: 'home', snippetName: 'example-web-home', fromTemplate: SnippetTemplate.scaffold_with_tabs,),
     mobileHome: const HomePageMobile(),
     materialAppThemeF: () => ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

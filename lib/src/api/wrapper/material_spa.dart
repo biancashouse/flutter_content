@@ -34,11 +34,13 @@ class MaterialSPA extends StatefulWidget {
 
   // final SnippetName pageSnippetName;
   final String? initialValueJsonAssetPath;
-  final Widget webHome;
-  final Widget mobileHome;
+  final Widget? webHome;
+  final Widget? mobileHome;
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
   final bool hideStatusBar;
+  final CAPIBloC? testBloc;
+  final Widget? testWidget;
 
   // final bool localTestingFilePaths;
 
@@ -47,11 +49,13 @@ class MaterialSPA extends StatefulWidget {
     // required this.pageSnippetName,
     this.initialValueJsonAssetPath,
     // this.localTestingFilePaths = false,
-    required this.webHome,
-    required this.mobileHome,
+    this.webHome,
+    this.mobileHome,
     required this.materialAppThemeF,
     this.fbOptions,
     this.hideStatusBar = true,
+    @visibleForTesting this.testBloc,
+    @visibleForTesting this.testWidget,
     super.key,
   });
 
@@ -205,7 +209,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     // see conditional imports for web or mobile
     registerWebViewImplementation();
 
-    fInitApp = _initApp();
+    if (widget.testBloc == null) {
+      fInitApp = _initApp();
+    }
   }
 
   // cannot initWithContext() here - see transformable_widget_wrapper.dart and widget_wrapper.dart
@@ -321,37 +327,62 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   @override
   Widget build(BuildContext context) => Builder(builder: (context) {
-        return FutureBuilder<CAPIBloC>(
-          future: fInitApp,
-          builder: (context, snapshot) {
-            bool done = snapshot.connectionState == ConnectionState.done;
-            CAPIBloC? newBloc = done ? snapshot.data : null;
-            if (!done || newBloc == null) return const Offstage();
-            // create the clipboard overlay and hide
-            Useful.afterNextBuildDo(() {
-              _showFloatingClipboard();
-              Callout.hide("floating-clipboard");
-            });
-            // start the app with the main bloC
-            return BlocProvider<CAPIBloC>(
-              create: (BuildContext context) => newBloc,
-              child: MaterialApp(
-                theme: widget.materialAppThemeF(),
-                debugShowCheckedModeBanner: false,
-                scrollBehavior: const ConstantScrollBehavior(),
-                home: RawKeyboardListener(
-                  autofocus: true,
-                  focusNode: FocusNode(), // <-- more magic
-                  onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
-                  child: Builder(builder: (context) {
-                    Useful.instance.initWithContext(context);
-                    return HomePageProvider().getWebOrMobileHomePage(widget.webHome, widget.mobileHome);
-                  }),
+        return widget.testBloc == null
+            ? FutureBuilder<CAPIBloC>(
+                future: fInitApp,
+                builder: (context, snapshot) {
+                  bool done = snapshot.connectionState == ConnectionState.done;
+                  CAPIBloC? newBloc = done ? snapshot.data : null;
+                  if (!done || newBloc == null) return const Offstage();
+                  // create the clipboard overlay and hide
+                  Useful.afterNextBuildDo(() {
+                    _showFloatingClipboard();
+                    Callout.hide("floating-clipboard");
+                  });
+                  // start the app with the main bloC
+                  return BlocProvider<CAPIBloC>(
+                    create: (BuildContext context) => newBloc,
+                    child: MaterialApp(
+                      theme: widget.materialAppThemeF(),
+                      debugShowCheckedModeBanner: false,
+                      scrollBehavior: const ConstantScrollBehavior(),
+                      home: RawKeyboardListener(
+                        autofocus: true,
+                        focusNode: FocusNode(), // <-- more magic
+                        onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
+                        child: Builder(builder: (context) {
+                          Useful.instance.initWithContext(context);
+                          return widget.testWidget != null
+                              ? widget.testWidget!
+                              : widget.webHome != null && widget.mobileHome != null
+                                  ? HomePageProvider().getWebOrMobileHomePage(widget.webHome!, widget.mobileHome!)
+                                  : const Icon(
+                                      Icons.error_outlined,
+                                      color: Colors.red,
+                                      size: 40,
+                                    );
+                        }),
+                      ),
+                    ),
+                  );
+                },
+              )
+            // TESTING ONLY
+            : BlocProvider<CAPIBloC>(
+                create: (BuildContext context) => widget.testBloc!,
+                child: MaterialApp(
+                  theme: widget.materialAppThemeF(),
+                  home: RawKeyboardListener(
+                    autofocus: true,
+                    focusNode: FocusNode(), // <-- more magic
+                    onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
+                    child: Builder(builder: (context) {
+                      Useful.instance.initWithContext(context);
+                      return widget.testWidget!;
+                    }),
+                  ),
                 ),
-              ),
-            );
-          },
-        );
+              );
       });
 
   // @override

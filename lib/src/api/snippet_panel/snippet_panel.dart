@@ -11,11 +11,18 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
+enum SnippetTemplate {
+  test_snippet,
+  scaffold_with_tabs,
+  scaffold_with_menubar,
+  scaffold_with_actions,
+}
+
 // TODO rename SnippetPanel to SnippetWidget
 class SnippetPanel extends StatefulWidget {
   final String panelName;
   final String snippetName;
-  final String? fromTemplate;
+  final SnippetTemplate? fromTemplate;
   final Map<String, void Function(BuildContext)>? handlers;
   final bool allowButtonCallouts;
   final bool justPlaying;
@@ -61,10 +68,15 @@ class SnippetPanel extends StatefulWidget {
 
   static void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
+  static SnippetRootNode getTemplate(SnippetTemplate template) => templates.firstWhere((root) => root.name == template.name);
   static List<SnippetRootNode> templates = [
+    // empty snippet for test only
+    SnippetRootNode(
+      name: SnippetTemplate.test_snippet.name,
+    ),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
-      name: 'scaffold-with-tabs',
+      name: SnippetTemplate.scaffold_with_tabs.name,
       child: TransformableScaffoldNode(
         scaffold: ScaffoldNode(
           appBar: AppBarNode(
@@ -94,7 +106,7 @@ class SnippetPanel extends StatefulWidget {
     ),
     // Scaffold with a MenuBar in its AppBar bottom
     SnippetRootNode(
-        name: 'scaffold-with-menubar',
+        name: SnippetTemplate.scaffold_with_menubar.name,
         child: TransformableScaffoldNode(
             scaffold: ScaffoldNode(
           appBar: AppBarNode(
@@ -115,7 +127,7 @@ class SnippetPanel extends StatefulWidget {
           ),
         ))),
     SnippetRootNode(
-        name: 'scaffold-with-actions',
+        name: SnippetTemplate.scaffold_with_actions.name,
         child: TransformableScaffoldNode(
             scaffold: ScaffoldNode(
           appBar: AppBarNode(
@@ -167,13 +179,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   SnippetRootNode getOrCreateSnippetFromTemplate() {
     SnippetRootNode? snippetRootNode = CAPIState.rootNodeOfNamedSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
-    if (snippetRootNode == null && (widget.fromTemplate?.isNotEmpty ?? false)) {
-      snippetRootNode = SnippetPanel.templates.firstWhere((rootNode) => rootNode.name == widget.fromTemplate).cloneSnippet();
-      snippetRootNode.name = widget.snippetName;
+    if (snippetRootNode == null && widget.fromTemplate != null) {
+      snippetRootNode = SnippetPanel.getTemplate(widget.fromTemplate!);
     } else {
       snippetRootNode ??= SnippetRootNode(name: widget.snippetName, child: PlaceholderNode()).cloneSnippet();
-      snippetRootNode.name = widget.snippetName;
     }
+    snippetRootNode.name = widget.snippetName;
     CAPIState.snippetsMap[widget.snippetName] = snippetRootNode;
     // CAPIBloC.I.add(CAPIEvent.createdSnippet(newSnippetNode: rootNode));
 

@@ -1,9 +1,11 @@
 @GenerateNiceMocks([
   MockSpec<IModelRepository>(as: #MockModelRepository),
+  MockSpec<CAPIBloC>(as: #MockCAPIBloC),
 ])
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
@@ -11,8 +13,9 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/undo_re
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:pretty_json/pretty_json.dart';
+
 import 'snippet_bloc_test.mocks.dart';
+
 
 void main() {
   late MockModelRepository mockRepository;
@@ -23,6 +26,7 @@ void main() {
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
   // sample data -----------
+  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.test_snippet);
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -30,7 +34,7 @@ void main() {
   STreeNode? secondTextNode = TextNode();
   STreeNode? firstSizedBoxNode = SizedBoxNode();
   STreeNode? secondSizedBoxNode = SizedBoxNode();
-  final testSnippet = SnippetRootNode(
+  final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
     child: TransformableScaffoldNode(
       scaffold: ScaffoldNode(
@@ -62,26 +66,25 @@ void main() {
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
   // sample data -----------
-
+  SnippetTreeController newTreeC(SnippetRootNode rootNode) =>
+      SnippetTreeController(
+        roots: [rootNode],
+        childrenProvider: Node.snippetTreeChildrenProvider,
+      );
   setUp(() {
     mockRepository = MockModelRepository();
     when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
-      final testSnippetJson = testSnippet.toJson();
-      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: testSnippetJson});
+      final modelSnippetJson = modelSnippetRoot.toJson();
+      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
       String encodedModelJsonS = model.toJson().toString();
       return (model, encodedModelJsonS);
     });
-    SnippetTreeController newTreeC() => SnippetTreeController(
-          roots: [testSnippet],
-          childrenProvider: Node.snippetTreeChildrenProvider,
-        );
-    snippetBloc = SnippetBloC(rootNode: testSnippet, treeC: newTreeC(), treeUR: SnippetTreeUR());
-    snippetState = snippetBloc.state;
+    // snippetState = snippetBloc.state;
   });
 
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
     // --- repo test
-    test('read the model from the repo', () async {
+    test('read the model from the repo, and find 1st TextNode' , () async {
       final result = await mockRepository.getCAPIModel(appName: appName);
       final model = result.$1;
       final encodedModelJson = result.$2;
@@ -93,60 +96,74 @@ void main() {
       SnippetRootNode rootNode = snippetMap.values.first;
       expect(rootNode.name, snippetName);
 
+      SnippetTreeController treeC = newTreeC(rootNode);
+      STreeNode? searchResult = treeC.findNodeTypeInTree(rootNode, TextNode);
+      expect(searchResult, isNotNull);
+      expect(searchResult is TextNode, isTrue);
+      expect((searchResult as TextNode?)?.text, 'my title');
+
       //printPrettyJson(rootNode.toMap(), indent: 2);
     });
     // --- selection node test
     blocTest<SnippetBloC, SnippetState>(
       'select a node',
-      build: () => snippetBloc,
-      act: (bloc) => bloc.add(SnippetEvent.selectNode(
-        node: firstTabViewNode,
-        showProperties: false,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
-      )),
+      build: () => snippetBloc = SnippetBloC(rootNode: modelSnippetRoot, treeC: newTreeC(modelSnippetRoot), treeUR: SnippetTreeUR()),
+      act: (bloc) =>
+          bloc.add(SnippetEvent.selectNode(
+            node: firstTabViewNode,
+            showProperties: false,
+            selectedWidgetGK: selectedWidgetGK,
+            selectedTreeNodeGK: selectedTreeNodeGK,
+          )),
       //skip: 1,
-      expect: () => <SnippetState>[
-        snippetState.copyWith(
+      expect: () =>
+      <SnippetState>[
+        snippetBloc.state.copyWith(
           selectedNode: firstTabViewNode,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK,
         ),
       ],
     );
-    // --- append ColumnNode test to TabViewNode
+    // --- append TextNode to snippet root
     blocTest<SnippetBloC, SnippetState>(
       'append a child ColumnNode to a TabViewNode',
-      build: () => snippetBloc,
-      act: (bloc) => bloc.add(SnippetEvent.appendChild(
-        selectedNode: firstTabViewNode,
-        type: ColumnNode,
-      )),
-      expect: () => [
+      build: () => SnippetBloC(rootNode: emptySnippetRoot, treeC: newTreeC(emptySnippetRoot), treeUR: SnippetTreeUR()),
+      act: (bloc) {
+        bloc.add(SnippetEvent.selectNode(
+          node: emptySnippetRoot,
+          showProperties: false,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK,
+        ),);
+        bloc.add(const SnippetEvent.appendChild(type: TextNode));
+      },
+      skip: 1,
+      expect: () =>
+      [
         const TypeMatcher<SnippetState>()
-          ..having((state) => state.selectedNode, 'selectedNode type', isA<ColumnNode>())
-          // ..having((state) => state.selectedNode?.parent, 'parent', isNotNull)
-          ..having((state) => state.selectedNode?.parent, 'parent', equals(firstTabViewNode))
-      ],
+          ..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())..having((state) => state.selectedNode?.parent, 'parent',
+            isNotNull)..having((state) => state.selectedNode?.parent, 'parent', equals(firstTabViewNode))
+      ]
+      ,
     );
     // --- append node test to a ColumnNode
     blocTest<SnippetBloC, SnippetState>(
       'append a TextNode to columnNode',
-      build: () => snippetBloc,
-      seed: () => snippetState.copyWith(
-        selectedNode: firstTabViewNode,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
-      ),
+      build: () => snippetBloc = snippetBloc,
+      seed: () =>
+          snippetBloc.state.copyWith(
+            selectedNode: firstTabViewNode,
+            selectedWidgetGK: selectedWidgetGK,
+            selectedTreeNodeGK: selectedTreeNodeGK,
+          ),
       act: (bloc) {
-        bloc.add(SnippetEvent.appendChild(
-          selectedNode: firstTabViewNode,
+        bloc.add(const SnippetEvent.appendChild(
           type: ColumnNode,
         ));
         if (bloc.aNodeIsSelected) {
           bloc.add(
-            SnippetEvent.appendChild(
-              selectedNode: snippetBloc.state.selectedNode!,
+            const SnippetEvent.appendChild(
               type: TextNode,
             ),
           );
@@ -154,10 +171,60 @@ void main() {
           print("selection nul!");
       },
       skip: 1,
-      expect: () => [
-        const TypeMatcher<SnippetState>()..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())
-        // ..having((state) => state.selectedNode?.parent, 'parent', equals(columnNode))
+      expect: () =>
+      [
+        const TypeMatcher<SnippetState>()
+          ..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())..having((state) => state.selectedNode?.parent, 'parent',
+            isA<ColumnNode>())
       ],
     );
+    group("replaceWith tests", () {
+      blocTest<SnippetBloC, SnippetState>(
+        'SingleChild replaceWith',
+        build: () => snippetBloc,
+        seed: () =>
+            snippetBloc.state.copyWith(
+              selectedNode: firstTabViewNode,
+              selectedWidgetGK: selectedWidgetGK,
+              selectedTreeNodeGK: selectedTreeNodeGK,
+            ),
+        act: (bloc) {
+          bloc.add(const SnippetEvent.replaceSelectionWith(
+            type: SizedBoxNode,
+          ));
+        },
+        expect: () =>
+        [
+          const TypeMatcher<SnippetState>()
+            ..having((state) => state.selectedNode, 'selectedNode type', isA<SizedBoxNode>())..having((state) => state.selectedNode?.parent, 'parent',
+              isA<TabBarViewNode>())
+        ],
+      );
+      blocTest<SnippetBloC, SnippetState>(
+        'MultiChild replaceWith',
+        build: () => snippetBloc,
+        seed: () =>
+            snippetBloc.state.copyWith(
+              selectedNode: firstTabViewNode,
+              selectedWidgetGK: selectedWidgetGK,
+              selectedTreeNodeGK: selectedTreeNodeGK,
+            ),
+        act: (bloc) {
+          bloc.add(const SnippetEvent.replaceSelectionWith(
+            type: ColumnNode,
+          ));
+          bloc.add(const SnippetEvent.replaceSelectionWith(
+            type: SizedBoxNode,
+          ));
+        },
+        skip: 1,
+        expect: () =>
+        [
+          const TypeMatcher<SnippetState>()
+            ..having((state) => state.selectedNode, 'selectedNode type', isA<SizedBoxNode>())..having((state) => state.selectedNode?.parent, 'parent',
+              isA<TabBarViewNode>())
+        ],
+      );
+    });
   });
 }

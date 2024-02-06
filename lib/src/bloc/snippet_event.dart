@@ -37,56 +37,47 @@ class SnippetEvent with _$SnippetEvent {
   //   TargetConfig? tc,
   // }) = ShowNodeProperties;
 
-  const factory SnippetEvent.replaceWith({
-    required STreeNode selectedNode,
+  const factory SnippetEvent.replaceSelectionWith({
     required Type type,
     String? snippetName,
-  }) = ReplaceWith;
+  }) = ReplaceSelectionWith;
 
   const factory SnippetEvent.wrapWith({
-    required STreeNode selectedNode,
     required Type type,
     String? snippetName,
   }) = WrapWith;
 
   const factory SnippetEvent.appendChild({
-    required STreeNode selectedNode,
     required Type type,
     String? snippetRefName,
     Type? widgetSpanChildType,
   }) = AppendChild;
 
   const factory SnippetEvent.addSiblingBefore({
-    required STreeNode selectedNode,
     required Type type,
     String? snippetRefName,
   }) = AddSiblingBefore;
 
   const factory SnippetEvent.addSiblingAfter({
-    required STreeNode selectedNode,
     required Type type,
     String? snippetRefName,
   }) = AddSiblingAfter;
 
   const factory SnippetEvent.pasteReplacement({
-    required STreeNode selectedNode,
     required STreeNode clipboardNode,
     Type? widgetSpanChildType,
   }) = PasteReplacement;
 
   const factory SnippetEvent.pasteChild({
-    required STreeNode selectedNode,
     required STreeNode clipboardNode,
     Type? widgetSpanChildType,
   }) = PasteChild;
 
   const factory SnippetEvent.pasteSiblingBefore({
-    required STreeNode selectedNode,
     required STreeNode clipboardNode,
   }) = PasteSiblingBefore;
 
   const factory SnippetEvent.pasteSiblingAfter({
-    required STreeNode selectedNode,
     required STreeNode clipboardNode,
   }) = PasteSiblingAfter;
 

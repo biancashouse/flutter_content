@@ -375,11 +375,11 @@ MenuItemButton _menuItemButton(
 ) =>
     MenuItemButton(
       onPressed: () {
-        if (action == NodeAction.replace) snippetBloc.add(SnippetEvent.replaceWith(selectedNode: selectedNode, type: childType));
-        if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(selectedNode: selectedNode, type: childType));
-        if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(selectedNode: selectedNode, type: childType));
-        if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(selectedNode: selectedNode, type: childType));
-        if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapWith(selectedNode: selectedNode, type: childType));
+        if (action == NodeAction.replace) snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
+        if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
+        if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
+        if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
+        if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapWith(type: childType));
         Callout.dismiss(TREENODE_MENU_CALLOUT);
         CAPIBloC.I.add(CAPIEvent.forceRefresh());
       },
@@ -398,15 +398,15 @@ SubmenuButton _addSnippetsSubmenu(
       MenuItemButton(
         onPressed: () {
           if (action == NodeAction.replace) {
-            snippetBloc.add(SnippetEvent.replaceWith(selectedNode: selectedNode, type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.replaceSelectionWith(type: SnippetRootNode));
           } else if (action == NodeAction.addSiblingBefore) {
-            snippetBloc.add(SnippetEvent.addSiblingBefore(selectedNode: selectedNode, type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.addSiblingBefore(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addSiblingAfter) {
-            snippetBloc.add(SnippetEvent.addSiblingAfter(selectedNode: selectedNode, type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.addSiblingAfter(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addChild) {
-            snippetBloc.add(SnippetEvent.appendChild(selectedNode: selectedNode, type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.appendChild(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           }
         },
@@ -492,16 +492,16 @@ MenuItemButton? _pasteMI(
         SnippetBloC? snippetBloc = bloc.state.snippetBeingEdited;
         switch (action) {
           case NodeAction.replace:
-            snippetBloc?.add(SnippetEvent.pasteReplacement(selectedNode: selectedNode, clipboardNode: clipboardNode));
+            snippetBloc?.add(SnippetEvent.pasteReplacement(clipboardNode: clipboardNode));
             break;
           case NodeAction.addSiblingBefore:
-            snippetBloc?.add(SnippetEvent.pasteSiblingBefore(selectedNode: selectedNode, clipboardNode: clipboardNode));
+            snippetBloc?.add(SnippetEvent.pasteSiblingBefore(clipboardNode: clipboardNode));
             break;
           case NodeAction.addSiblingAfter:
-            snippetBloc?.add(SnippetEvent.pasteSiblingAfter(selectedNode: selectedNode, clipboardNode: clipboardNode));
+            snippetBloc?.add(SnippetEvent.pasteSiblingAfter(clipboardNode: clipboardNode));
             break;
           case NodeAction.addChild:
-            snippetBloc?.add(SnippetEvent.pasteChild(selectedNode: selectedNode, clipboardNode: clipboardNode));
+            snippetBloc?.add(SnippetEvent.pasteChild(clipboardNode: clipboardNode));
             break;
           case NodeAction.wrapWith:
             break;
