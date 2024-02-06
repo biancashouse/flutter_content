@@ -31,7 +31,7 @@ class StepperNode extends MultiChildNode with StepperNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     List<STreeNode> children = super.children;
     List<Step> steps = [];

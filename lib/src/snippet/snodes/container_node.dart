@@ -220,7 +220,7 @@ class ContainerNode extends SingleChildNode with ContainerNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     try {
       OutlinedBorder? oBorder;

@@ -30,7 +30,7 @@ class PaddingNode extends SingleChildNode with PaddingNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Padding(
       key: nodeWidgetGK,

@@ -61,12 +61,12 @@ void main() {
     final model = result.$1;
     final encodedModelJson = result.$2;
 
-    expect(model?.appName, appName);
+    expect(model!.appName, appName);
 
-    Map<String, SnippetRootNode> snippetMap = MaterialSPAState.parseSnippetJsons(model!);
+    Map<String, SnippetRootNode> snippetMap = MaterialSPAState.parseSnippetJsons(model);
 
     expect(snippetMap.values.first.name, snippetName);
 
-    printPrettyJson(model?.toJson(), indent: 2);
+    printPrettyJson(model.toJson(), indent: 2);
   });
 }

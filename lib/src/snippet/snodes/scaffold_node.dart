@@ -42,7 +42,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     Widget scaffold = Scaffold(
       key: nodeWidgetGK,

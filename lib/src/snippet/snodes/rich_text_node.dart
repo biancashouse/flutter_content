@@ -67,10 +67,11 @@ class RichTextNode extends ChildlessNode with RichTextNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context, isRoot: true)) as TextSpan;
-      parent = parentNode;  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+      setParent(parentNode);
+      possiblyHighlightSelectedNode(context);
       RichText rt = RichText(
-              key: nodeWidgetGK,        text: rootTextSpan,
+        key: nodeWidgetGK,
+        text: rootTextSpan,
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,
         softWrap: softWrap ?? true,

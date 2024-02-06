@@ -33,7 +33,7 @@ class SingleChildScrollViewNode extends SingleChildNode with SingleChildScrollVi
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     var targetGK = nodeWidgetGK;
     return SingleChildScrollView(

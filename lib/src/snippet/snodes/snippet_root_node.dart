@@ -46,9 +46,11 @@ class SnippetRootNode extends SingleChildNode with SnippetRootNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) =>
-      // root snippet - always has a gk so callout can point to it
-      child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red, size: 24);
+  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    // root snippet - always has a gk so callout can point to it
+    setParent(parentNode);
+    return child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red, size: 24);
+  }
 
   @override
   String toSource(BuildContext context) {

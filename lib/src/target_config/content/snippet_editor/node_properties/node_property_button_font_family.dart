@@ -30,7 +30,6 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
     Widget fontFamilyLabel = widget.originalFontFamily != null
         ? Text('style.fontFamily: ${widget.originalFontFamily}', style: const TextStyle(color: Colors.white))
         : const Text('style.fontFamily...', style: TextStyle(color: Colors.white));
-    FlutterContent fc = GetIt.I.get<FlutterContent>();
     return NodePropertyCalloutButton(
       labelWidget: fontFamilyLabel,
       calloutButtonSize: const Size(200, 40),
@@ -40,7 +39,7 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
-              children: fc.googleFontNames.map((family) {
+              children: FlutterContent.I.googleFontNames.map((family) {
                 return RadioListTile<String>(
                   dense: true,
                   value: family,
@@ -63,7 +62,7 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
               }).toList()),
         );
       },
-      calloutSize: Size(240, 50.0 * fc.googleFontNames.length),
+      calloutSize: Size(240, 50.0 * FlutterContent.I.googleFontNames.length),
     );
   }
 }

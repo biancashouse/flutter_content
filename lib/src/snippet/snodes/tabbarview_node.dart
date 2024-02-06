@@ -17,7 +17,7 @@ class TabBarViewNode extends MultiChildNode with TabBarViewNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     SnippetPanelState? spState = SnippetPanel.of(context);
     int numTabNodes = spState?.tabC?.length ?? 0;

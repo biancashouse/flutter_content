@@ -65,7 +65,7 @@ class DirectoryNode extends MultiChildNode with DirectoryNodeMappable {
     int nodeCount = treeC.countNodesInTree(this);
     // treeC.expand(this);
     treeC.expandCascading([this]);
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Container(
       key: nodeWidgetGK,

@@ -54,7 +54,7 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return possiblyCheckHeightConstraint(
       parentNode,

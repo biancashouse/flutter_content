@@ -166,12 +166,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         STreeNode parentNode = selectedNode.parent as STreeNode;
         if (parentNode is SingleChildNode && selectedNode is SingleChildNode) {
           parentNode.child = selectedNode.child;
-          selectedNode.child?.parent = parentNode;
+          selectedNode.child?.setParent(parentNode);
         } else if (parentNode is MultiChildNode && selectedNode is SingleChildNode) {
           int index = parentNode.children.indexOf(selectedNode);
           if (selectedNode.child != null) {
             parentNode.children[index] = selectedNode.child!;
-            selectedNode.child?.parent = parentNode;
+            selectedNode.child?.setParent(parentNode);
           }
         }
         if (selectedNode is MultiChildNode && selectedNode.children.length == 1) {
@@ -352,7 +352,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       _createSnippetUndo();
       STreeNode newNode = _typeAsATreeNode(event.type, selectedNode, "_wrapWith() missing ${event.type.toString()}");
 
-      newNode.parent = selectedNode.parent;
+      newNode.setParent(selectedNode.parent);
 
       // // attach new parent at select node's pos in the tree...
       // if selected node is actually a root node, make newNode the new root
@@ -369,7 +369,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           (selectedNode.parent as WidgetSpanNode).child = newNode;
         }
       }
-      selectedNode.parent = newNode;
+      selectedNode.setParent(newNode);
 
       state.treeC.expand(newNode);
       state.treeC.rebuild();
@@ -410,16 +410,16 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // move any child or children to replacementNode, and set parent
     if (selectedNode is SingleChildNode && replacementNode is SingleChildNode) {
       replacementNode.child = selectedNode.child;
-      replacementNode.child!.parent = replacementNode;
+      replacementNode.child!.setParent(replacementNode);
     } else if (selectedNode is MultiChildNode && replacementNode is MultiChildNode) {
       replacementNode.children = (selectedNode).children;
       for (STreeNode child in replacementNode.children) {
-        child.parent = replacementNode;
+        child.setParent(replacementNode);
       }
     } else if (selectedNode is SingleChildNode && (selectedNode).child != null && replacementNode is MultiChildNode) {
       STreeNode child = selectedNode.child!;
       replacementNode.children.add(child);
-      child.parent = replacementNode;
+      child.setParent(replacementNode);
     }
 
     state.treeC.expand(replacementNode);
@@ -457,7 +457,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       TabBarViewNode? tabBarViewNode = state.treeC.findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
       STreeNode newTabView = PlaceholderNode();
       tabBarViewNode?.children.add(newTabView);
-      newTabView.parent = tabBarViewNode;
+      newTabView.setParent(tabBarViewNode);
       selectedNode.children.add(newNode);
       // scaffoldNode?.numTabs++;
     } else if (selectedNode is TabBarViewNode) {
@@ -465,7 +465,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       TabBarNode? tabBarNode = state.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
       STreeNode newTab = TextNode(text: 'new tab');
       tabBarNode?.children.add(newTab);
-      newTab.parent = tabBarNode;
+      newTab.setParent(tabBarNode);
       selectedNode.children.add(newNode);
       // scaffoldNode?.numTabs++;
     } else if (selectedNode is SingleChildNode) {
@@ -480,7 +480,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     } else if (selectedNode is WidgetSpanNode) {
       selectedNode.child = newNode;
     }
-    newNode.parent = selectedNode;
+    newNode.setParent(selectedNode);
     state.treeC.expand(newNode);
     state.treeC.rebuild();
     emit(state.copyWith(

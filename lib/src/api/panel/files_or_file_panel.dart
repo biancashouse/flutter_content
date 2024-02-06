@@ -46,7 +46,7 @@ class FilesPanelState extends State<C_FilesPanel> {
         border: Border.all(width: 1, color: Colors.purpleAccent, style: BorderStyle.solid),
       ),
       child: BlocBuilder<CAPIBloC, CAPIState>(builder: (context, state) {
-        STreeNode? selectedFileOrDirectory = CAPIBloC.selectedNode;
+        STreeNode? selectedFileOrDirectory = FlutterContent.I.selectedNode;
         if (selectedFileOrDirectory == null) {
           return Placeholder();
         }

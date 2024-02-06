@@ -77,8 +77,7 @@ class TextStyleGroup with TextStyleGroupMappable {
   // }
 
   TextStyle? toTextStyle(BuildContext context, {String? namedTextStyle}) {
-    FlutterContent fc = GetIt.I.get<FlutterContent>();
-    NamedTextStyle? namedStyle = fc.namedStyles[namedTextStyle];
+    NamedTextStyle? namedStyle = FlutterContent.I.namedStyles[namedTextStyle];
     String? fFamily = (namedStyle?.fontFamily ?? fontFamily);
     Material3TextSizeEnum? fSizeName = (namedStyle?.fontSizeName ?? fontSizeName);
     double? fSize = (namedStyle?.fontSize ?? fontSize);

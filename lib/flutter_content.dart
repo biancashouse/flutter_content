@@ -2,9 +2,12 @@
 
 library flutter_content;
 
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
+
 // import 'package:flutter_content/src/measuring/offstage_overlay.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -119,6 +122,7 @@ export 'src/api/panel/files_or_file_panel.dart';
 
 // const String getIt_offstageGK = "offstage:gk";
 // const String getIt_offstageOverlay = "offstage-widget-builder";
+const String getIt_capiBloc = "capiBloC";
 const String getIt_scaffoldGK = "scaffold:gk";
 const String getIt_calloutGKs = "calloutGKs:feature";
 const String getIt_singleTargetBtnFeatures = "singleTargetBtns:feature";
@@ -135,7 +139,7 @@ typedef Feature = String;
 
 typedef EmailAddress = String;
 typedef VoterId = String;
-typedef PollOptionId = String;  // 'a', 'b', 'c' etc.
+typedef PollOptionId = String; // 'a', 'b', 'c' etc.
 typedef OptionCountsAndVoterRecord = ({Map<PollOptionId, int>? optionVoteCountMap, PollOptionId? userVotedForOptionId, int? when});
 
 typedef SnippetName = String;
@@ -189,12 +193,31 @@ typedef SetStateF = void Function(VoidCallback f);
 
 // typedef Adder<Node> = void Function({Node? parentNode, required Node selectedNode, required Node newNode});
 
+/// this is a global container for the app, accessible via GetIt
 class FlutterContent {
-  final bool skipAssetPkgName;  // when using assets from within the flutter_content pkg itself
+  final CAPIBloC capiBloc;
+  final bool skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   final List<String> googleFontNames;
   final Map<String, NamedTextStyle> namedStyles;
+  late Queue<SnippetBloC> snippetsBeingEdited;
 
+  static FlutterContent get I => GetIt.I.get<FlutterContent>();
+
+  SnippetBloC? get snippetBeingEdited => snippetsBeingEdited.isNotEmpty ? snippetsBeingEdited.first : null;
+
+  bool get aSnippetIsBeingEdited => snippetBeingEdited != null;
+
+  STreeNode? get selectedNode => snippetBeingEdited?.state.selectedNode;
+
+  STreeNode? get highlightedNode => snippetBeingEdited?.state.highlightedNode;
+
+  SnippetTreeController? get currentTreeC => snippetBeingEdited?.state.treeC;
+
+  bool get aNodeIsSelected => selectedNode != null;
+
+  /// gets called by MaterialApp
   FlutterContent.init({
+    required this.capiBloc,
     this.googleFontNames = const [
       'Roboto',
       'Roboto Mono',
@@ -202,11 +225,12 @@ class FlutterContent {
       'Merriweather Sans',
     ],
     this.namedStyles = const {},
-    this.skipAssetPkgName = false,  // would only use true when pkg dir is actually inside current project
+    this.skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) {
+    snippetsBeingEdited = Queue<SnippetBloC>();
     GetIt.I.reset(dispose: true).then((_) {
-      if (!GetIt.I.isRegistered<FlutterContent>()) {
-        GetIt.I.registerSingleton<FlutterContent>(this);
+      if (!GetIt.I.isRegistered<CAPIBloC>(instanceName: getIt_capiBloc)) {
+        GetIt.I.registerSingleton<CAPIBloC>(capiBloc, instanceName: getIt_capiBloc);
       }
       // if (!GetIt.I.isRegistered<GlobalKey>(instanceName: getIt_offstageGK)) {
       //   GetIt.I.registerSingleton<GlobalKey>(GlobalKey(debugLabel: 'offstage'), instanceName: getIt_offstageGK);

@@ -47,7 +47,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
           // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
           // snippetsMap: snippetsMap,
-          snippetsBeingEdited: Queue<SnippetBloC>(),
           modelUR: ModelUR(),
         )) {
     // init the static map
@@ -857,7 +856,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetBloc(PushSnippetBloc event, emit) {
-    Queue<SnippetBloC> newQueue = Queue<SnippetBloC>.of(state.snippetsBeingEdited);
     SnippetRootNode? rootNode = CAPIState.rootNodeOfNamedSnippet(event.snippetName);
     if (rootNode == null) return;
     SnippetTreeController newTreeC() => SnippetTreeController(
@@ -877,9 +875,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // )
     //     : SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR(), selectedNodeIndex: -1, selectedNodeParentIndex: -1);
     SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR());
-    newQueue.addFirst(newSnippetBloc);
+    FlutterContent.I.snippetsBeingEdited.addFirst(newSnippetBloc);
     emit(state.copyWith(
-      snippetsBeingEdited: newQueue,
       hideAllTargetGroupPlayBtns: true,
       hideTargetsExcept: null,
       hideSnippetPencilIcons: true,
@@ -888,12 +885,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _popSnippetBloc(PopSnippetBloc event, emit) async {
-    if (state.snippetsBeingEdited.isEmpty) return;
-    Queue<SnippetBloC> newQueue = Queue<SnippetBloC>.of(state.snippetsBeingEdited);
-    SnippetBloC snippetBeingPopped = newQueue.removeFirst();
+    if (FlutterContent.I.snippetsBeingEdited.isEmpty) return;
+    SnippetBloC snippetBeingPopped = FlutterContent.I.snippetsBeingEdited.removeFirst();
     // CAPIState.snippetStateMap[snippetBeingPopped.snippetName] = snippetBeingPopped.state.copyWith();
     emit(state.copyWith(
-      snippetsBeingEdited: newQueue,
       hideAllTargetGroups: false,
       hideAllTargetGroupPlayBtns: false,
       hideTargetsExcept: null,
@@ -904,16 +899,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
-    Queue<SnippetBloC> newQueue = Queue<SnippetBloC>.of(state.snippetsBeingEdited);
-    SnippetBloC beforeUndoOrRedo = newQueue.removeFirst();
-    newQueue.addFirst(event.restoredBloc);
+    SnippetBloC beforeUndoOrRedo = FlutterContent.I.snippetsBeingEdited.removeFirst();
+    FlutterContent.I.snippetsBeingEdited.addFirst(event.restoredBloc);
     // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
     // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(CAPIState.snippetsMap);
     SnippetRootNode? rootNode = event.restoredBloc!.rootNode;
     if (rootNode != null) CAPIState.snippetsMap[rootNode.name] = rootNode;
 
     emit(state.copyWith(
-      snippetsBeingEdited: newQueue,
       // snippetsMap: newSnippetsMap,
       force: state.force + 1,
     ));
@@ -1027,15 +1020,5 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
   // the tree nodes do not have a reference to their parent BloC object
-  static SnippetBloC? get snippetBeingEdited => I.state.snippetsBeingEdited.isNotEmpty ? I.state.snippetsBeingEdited.first : null;
 
-  static bool get aSnippetIsBeingEdited => snippetBeingEdited != null;
-
-  static STreeNode? get selectedNode => snippetBeingEdited?.state.selectedNode;
-
-  static STreeNode? get highlightedNode => snippetBeingEdited?.state.highlightedNode;
-
-  static SnippetTreeController? get currentTreeC => snippetBeingEdited?.state.treeC;
-
-  static bool get aNodeIsSelected => selectedNode != null;
 }

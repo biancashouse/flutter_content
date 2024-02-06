@@ -40,6 +40,7 @@ class SnippetRefNode extends ChildlessNode with SnippetRefNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
     try {
       var rootNode = CAPIState.rootNodeOfNamedSnippet(snippetName);
       if (rootNode == null) return const Icon(Icons.error, color: Colors.red);

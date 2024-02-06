@@ -77,6 +77,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     void Function(BuildContext)? f = onTapHandlerName != null ? SnippetPanel.namedHandler(onTapHandlerName!) : null;
     // possible callout
     Feature? feature = calloutConfigGroup?.contentSnippetName;
+    setParent(parentNode);
 
     IconButton button = IconButton(
       // if feature specified, must be a callout
@@ -121,7 +122,6 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
-    parent = parentNode; // propagating parents down from root
     possiblyHighlightSelectedNode(context);
 
     return Container(

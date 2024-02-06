@@ -33,7 +33,7 @@ class ExpandedNode extends SingleChildNode with ExpandedNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Expanded(
             key: nodeWidgetGK,      flex: flex,

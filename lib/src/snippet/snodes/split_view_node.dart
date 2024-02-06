@@ -65,7 +65,7 @@ class SplitViewNode extends MultiChildNode with SplitViewNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     Axis svAxis = axis.flutterValue;
     try {

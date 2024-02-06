@@ -48,7 +48,7 @@ class TextNode extends ChildlessNode with TextNodeMappable {
           snode: this,
           name: 'namedTextStyle',
           stringValue: namedTextStyle,
-          options: GetIt.I.get<FlutterContent>().namedStyles.keys.toList(),
+          options: FlutterContent.I.namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           expands: false,
           calloutButtonSize: const Size(280, 20),
@@ -252,7 +252,7 @@ class TextNode extends ChildlessNode with TextNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     try {
       return Text(

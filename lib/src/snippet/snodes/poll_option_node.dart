@@ -33,7 +33,7 @@ class PollOptionNode extends ChildlessNode with PollOptionNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return parent is PollNode
         ? FlutterPollOption(

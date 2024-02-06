@@ -70,7 +70,8 @@ void main() {
       return (model, encodedModelJsonS);
     });
     // snippetState = snippetBloc.state;
-    GetIt.I.registerSingleton<CAPIBloC>(mockCapiBloc);
+    FlutterContent.init(capiBloc: mockCapiBloc);
+    // GetIt.I.registerSingleton<CAPIBloC>(mockCapiBloc);
   });
 
   testWidgets('Flutter Content widget test', (WidgetTester tester) async {

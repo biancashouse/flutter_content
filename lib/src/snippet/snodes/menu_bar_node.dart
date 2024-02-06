@@ -22,7 +22,7 @@ class MenuBarNode extends MultiChildNode with MenuBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     List<Widget> menuBarChildren = super.children.map((child) => child.toWidget(context, this)).toList();
     if (menuBarChildren.isEmpty) {

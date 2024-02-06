@@ -28,7 +28,7 @@ class CenterNode extends SingleChildNode with CenterNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Center(
       key: nodeWidgetGK,

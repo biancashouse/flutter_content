@@ -81,7 +81,6 @@ class CAPIState with _$CAPIState {
     // SnippetName? showingSnippetTree,
     // required Map<SnippetName, SnippetRootNode> snippetsMap,
     // required Map<SnippetName, bool> ignoreContraintsCheckMap,
-    required Queue<SnippetBloC> snippetsBeingEdited,
     required ModelUR modelUR,
     @Default(false) bool hideIframes,
     @Default(false) bool hideSnippetPencilIcons,
@@ -203,8 +202,6 @@ class CAPIState with _$CAPIState {
   static SnippetRootNode? rootNodeOfSnippet(STreeNode node) => node.findNearestAncestorOfType(SnippetRootNode) as SnippetRootNode?;
 
   static SnippetRootNode? rootNodeOfNamedSnippet(SnippetName name) => snippetsMap[name];
-
-  SnippetBloC? get snippetBeingEdited => snippetsBeingEdited.isNotEmpty ? snippetsBeingEdited.first : null;
 
   final double CAPI_TARGET_BTN_RADIUS = 15.0;
 

@@ -115,7 +115,7 @@ class IFrameNode extends ChildlessNode with IFrameNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     String FOLDER_ID = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
     String RESOURCE_KEY = '';
@@ -131,7 +131,7 @@ class IFrameNode extends ChildlessNode with IFrameNodeMappable {
               forceRefresh: true,
             ),
           )
-        : CAPIBloC.I.state.snippetsBeingEdited.isNotEmpty
+        : FlutterContent.I.snippetsBeingEdited.isNotEmpty
             ? Placeholder()
             : Column(
                 children: [

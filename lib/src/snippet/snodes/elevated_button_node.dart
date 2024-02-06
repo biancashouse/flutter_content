@@ -28,7 +28,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
     // possible callout
     Feature? feature = calloutConfigGroup?.contentSnippetName;
 
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
 
     return Container(

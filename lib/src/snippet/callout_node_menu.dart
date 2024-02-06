@@ -489,7 +489,7 @@ MenuItemButton? _pasteMI(
         CAPIBloC bloc = CAPIBloC.I;
         String clipboardJson = bloc.state.jsonClipboard!;
         STreeNode clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
-        SnippetBloC? snippetBloc = bloc.state.snippetBeingEdited;
+        SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
         switch (action) {
           case NodeAction.replace:
             snippetBloc?.add(SnippetEvent.pasteReplacement(clipboardNode: clipboardNode));

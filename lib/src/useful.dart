@@ -65,8 +65,7 @@ class Useful {
 
   static String asset(String name) {
     // only need to specify the asset pkg when used by a client project; i.e. not within the flutter_content project itself
-    FlutterContent fc = GetIt.I.get<FlutterContent>();
-    return fc.skipAssetPkgName ? name : 'packages/flutter_content/$name';
+    return FlutterContent.I.skipAssetPkgName ? name : 'packages/flutter_content/$name';
   }
 
   // must be called from a widget build

@@ -53,7 +53,7 @@ class SubmenuButtonNode extends MultiChildNode with SubmenuButtonNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     //Icon(Icons.info, size: 28, color: Colors.red);
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return SubmenuButton(
             key: nodeWidgetGK,      style: Useful.buttonStyle(36),

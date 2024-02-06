@@ -39,6 +39,7 @@ class TargetGroupWrapperNode extends SingleChildNode with TargetGroupWrapperNode
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
     return TargetGroupWrapper(
       name: name,
       child: super.child?.toWidget(context, this) ??

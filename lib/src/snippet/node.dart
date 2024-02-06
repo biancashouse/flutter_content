@@ -7,7 +7,10 @@ import 'package:gap/gap.dart';
 
 abstract class Node extends Object {
   @JsonKey(includeFromJson: false, includeToJson: false)
-  Node? parent;
+  Node? _parent;
+
+  Node? get parent => _parent;
+  void setParent(Node? parentNode) => _parent = parentNode;
 
   static Iterable<STreeNode> snippetTreeChildrenProvider(STreeNode node) {
     Iterable<STreeNode> children = [];

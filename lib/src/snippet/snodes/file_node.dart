@@ -70,7 +70,7 @@ class FileNode extends ChildlessNode with FileNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return SizedBox(
             key: nodeWidgetGK,      width: 200,

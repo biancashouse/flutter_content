@@ -39,6 +39,7 @@ class TargetWrapperNode extends SingleChildNode with TargetWrapperNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
     return SingleTargetWrapper(
       name: snippetName,
       child: super.child?.toWidget(context, this) ??

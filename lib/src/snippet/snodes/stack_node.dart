@@ -47,7 +47,7 @@ class StackNode extends MultiChildNode with StackNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     try {
       return LayoutBuilder(

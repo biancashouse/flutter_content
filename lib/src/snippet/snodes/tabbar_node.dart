@@ -75,7 +75,7 @@ class TabBarNode extends MultiChildNode with TabBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     // find transformable scaffold node then its corr state object
     // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;

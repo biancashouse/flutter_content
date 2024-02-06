@@ -39,7 +39,7 @@ class FlexibleNode extends SingleChildNode with FlexibleNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Flexible(
             key: nodeWidgetGK,      flex: flex,

@@ -80,6 +80,7 @@ class CarouselNode extends MultiChildNode with CarouselNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
     List<Widget> images = super.children.isEmpty
         ? kDemoImages
             .map((name) => Padding(
@@ -106,7 +107,6 @@ class CarouselNode extends MultiChildNode with CarouselNodeMappable {
                   ))
             .toList();
 
-    parent = parentNode;  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return CarouselSlider.builder(
       itemCount: images.length,

@@ -51,7 +51,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           snode: this,
           name: 'namedTextStyle',
           stringValue: namedTextStyle,
-          options: GetIt.I.get<FlutterContent>().namedStyles.keys.toList(),
+          options: FlutterContent.I.namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           calloutButtonSize: const Size(280, 20),
           calloutSize: const Size(280, 70),

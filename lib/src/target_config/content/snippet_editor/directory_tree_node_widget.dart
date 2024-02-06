@@ -70,7 +70,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     if (snippet?.mounted ?? false) {
-                      CAPIBloC.snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                      FlutterContent.I.snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -79,7 +79,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                CAPIBloC.snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                FlutterContent.I.snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
               child: (entry.node as FileNode).toWidget(context, entry.node),
             ),

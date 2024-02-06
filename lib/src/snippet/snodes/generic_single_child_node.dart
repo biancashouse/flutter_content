@@ -20,7 +20,7 @@ class GenericSingleChildNode extends SingleChildNode with GenericSingleChildNode
 
   @override
   Widget toWidgetProperty(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode; // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     try {
       Widget? childWidget = child?.toWidget(context, this);

@@ -39,7 +39,7 @@ class DefaultTextStyleNode extends SingleChildNode with DefaultTextStyleNodeMapp
           snode: this,
           name: 'namedTextStyle',
           stringValue: namedTextStyle,
-          options: GetIt.I.get<FlutterContent>().namedStyles.keys.toList(),
+          options: FlutterContent.I.namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           calloutButtonSize: const Size(280, 20),
           calloutSize: const Size(280, 48),
@@ -65,7 +65,7 @@ class DefaultTextStyleNode extends SingleChildNode with DefaultTextStyleNodeMapp
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return child != null
         ? DefaultTextStyle.merge(

@@ -129,12 +129,12 @@ class GoogleDriveIFrameNode extends ChildlessNode with GoogleDriveIFrameNodeMapp
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     String src =
         'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
-    return folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && CAPIBloC.I.state.snippetsBeingEdited.isEmpty
+    return folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent.I.snippetsBeingEdited.isEmpty
         ? SizedBox(
             key: nodeWidgetGK,
             width: iframeWidth,
@@ -147,7 +147,7 @@ class GoogleDriveIFrameNode extends ChildlessNode with GoogleDriveIFrameNodeMapp
               forceRefresh: true,
             ),
           )
-        : CAPIBloC.I.state.snippetsBeingEdited.isNotEmpty
+        : FlutterContent.I.snippetsBeingEdited.isNotEmpty
             ? Placeholder()
             : Row(
                 key: nodeWidgetGK,

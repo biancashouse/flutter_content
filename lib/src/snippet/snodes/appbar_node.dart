@@ -45,7 +45,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     // find scaffold node
      // add a back button if scaffold has tabs

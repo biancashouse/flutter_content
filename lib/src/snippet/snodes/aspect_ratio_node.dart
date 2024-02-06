@@ -29,14 +29,14 @@ class AspectRatioNode extends SingleChildNode with AspectRatioNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
-      parent = parentNode;  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+      setParent(parentNode);
+      possiblyHighlightSelectedNode(context);
       return AspectRatio(
         key: nodeWidgetGK,
         aspectRatio: aspectRatio,
         child: child?.toWidget(context, this),
       );
-    } catch(e) {
+    } catch (e) {
       print('cannot render $FLUTTER_TYPE!');
     }
     return const Icon(Icons.error, color: Colors.redAccent);

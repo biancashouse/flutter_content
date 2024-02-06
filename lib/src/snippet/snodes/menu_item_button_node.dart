@@ -59,7 +59,7 @@ class MenuItemButtonNode extends ChildlessNode with MenuItemButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return MenuItemButton(
       key: nodeWidgetGK,

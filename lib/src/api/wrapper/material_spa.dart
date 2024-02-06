@@ -38,6 +38,7 @@ class MaterialSPA extends StatefulWidget {
   final Widget? mobileHome;
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
+  final Map<String, NamedTextStyle> namedStyles;
   final bool hideStatusBar;
   final CAPIBloC? testBloc;
   final Widget? testWidget;
@@ -53,6 +54,7 @@ class MaterialSPA extends StatefulWidget {
     this.mobileHome,
     required this.materialAppThemeF,
     this.fbOptions,
+    this.namedStyles = const {},
     this.hideStatusBar = true,
     @visibleForTesting this.testBloc,
     @visibleForTesting this.testWidget,
@@ -210,6 +212,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     registerWebViewImplementation();
 
     if (widget.testBloc == null) {
+      print("fInitApp = _initApp();");
       fInitApp = _initApp();
     }
   }
@@ -316,11 +319,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     );
     CAPIState.snippetsMap = parseSnippetJsons(model);
 
-    GetIt.I.registerSingleton<CAPIBloC>(capiBloc);
-
-    Useful.afterNextBuildDo(() {
-      showDevToolsButton(context);
-    });
+    if (!GetIt.I.isRegistered<FlutterContent>(instanceName: "fc")) {
+      GetIt.I.registerSingleton<FlutterContent>(FlutterContent.init(capiBloc:capiBloc), instanceName: "fc");
+    }
 
     return capiBloc;
   }
@@ -331,16 +332,19 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             ? FutureBuilder<CAPIBloC>(
                 future: fInitApp,
                 builder: (context, snapshot) {
-                  bool done = snapshot.connectionState == ConnectionState.done;
+                  bool done = snapshot.connectionState == ConnectionState.done && snapshot.hasData;
+                  print("done (has data)");
                   CAPIBloC? newBloc = done ? snapshot.data : null;
                   if (!done || newBloc == null) return const Offstage();
                   // create the clipboard overlay and hide
+                  // start the app with the main bloC
                   Useful.afterNextBuildDo(() {
                     _showFloatingClipboard();
                     Callout.hide("floating-clipboard");
+                    print("showDevToolsButton");
+                    showDevToolsButton(context);
                   });
-                  // start the app with the main bloC
-                  return BlocProvider<CAPIBloC>(
+                     return BlocProvider<CAPIBloC>(
                     create: (BuildContext context) => newBloc,
                     child: MaterialApp(
                       theme: widget.materialAppThemeF(),
@@ -557,7 +561,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   static exitEditMode() {
     MaterialSPA.inEditMode.value = false;
     removeAllNodeWidgetOverlays();
-    String feature = CAPIBloC.snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
+    String feature = FlutterContent.I.snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
     if (Callout.anyPresent([feature])) {
       Callout.dismiss(feature);
     }
@@ -588,7 +592,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
           print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
-          node.parent = parent;
+          node.setParent(parent);
           parent = node;
           _showNodeWidgetOverlay(node, r!);
         }
@@ -647,11 +651,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
     // var currCtx = startingAtNode.nodeWidgetGK?.currentContext;
     Useful.afterNextBuildDo(() {
-      SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
-      if (snippetBeingEdited != null) {
+      SnippetBloC? snippetBeingEdited = FlutterContent.I.snippetBeingEdited;
+      if (FlutterContent.I.snippetBeingEdited != null) {
         // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
         showSnippetTreeAndPropertiesCallout(
-          snippetBloc: snippetBeingEdited,
+          snippetBloc: snippetBeingEdited!,
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;

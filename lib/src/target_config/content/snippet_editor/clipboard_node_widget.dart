@@ -27,7 +27,7 @@ class ClipboardNodeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool selected = CAPIBloC.selectedNode == entry.node;
+        bool selected = FlutterContent.I.selectedNode == entry.node;
         ThemeData themeData = Theme.of(context);
         TreeEntry<Node>? parentEntry = entry.parent;
         bool badParent = (entry.node as STreeNode)

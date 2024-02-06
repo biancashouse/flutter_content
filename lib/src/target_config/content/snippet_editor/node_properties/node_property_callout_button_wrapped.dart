@@ -144,7 +144,7 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
         barrier: CalloutBarrier(
             opacity: .1,
             onTappedF: () async {
-              CAPIBloC.selectedNode?.hidePropertiesWhileDragging = false;
+              FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = false;
               Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
             }),
         arrowType: ArrowType.VERY_THIN,
@@ -155,10 +155,10 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
         initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.centerLeft,
         draggable: widget.draggable ?? true,
         onDragStartedF: () {
-          CAPIBloC.selectedNode?.hidePropertiesWhileDragging = true;
+          FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = true;
         },
         onDragEndedF: (_) {
-          CAPIBloC.selectedNode?.hidePropertiesWhileDragging = false;
+          FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = false;
         },
       );
 }

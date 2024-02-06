@@ -185,7 +185,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
   void refreshWithUpdate(VoidCallback assignF) {
-    SnippetBloC? snippetBloc = capiBloc.state.snippetBeingEdited;
+    SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
     SnippetState? snippetBlocState = snippetBloc?.state;
     snippetBlocState?.ur.createUndo(snippetBlocState);
     assignF.call();
@@ -266,6 +266,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<String> sensibleParents() => const [];
 
+  void setParents(STreeNode? parent) {
+    setParent(parent);
+    Node.snippetTreeChildrenProvider(this).map((child) => child.setParents(parent));
+  }
+
   Widget toWidget(BuildContext context, STreeNode parentNode) => const Placeholder();
 
   Widget possiblyCheckHeightConstraint(STreeNode? parentNode, Widget actualWidget) {
@@ -299,13 +304,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   Future<void> possiblyHighlightSelectedNode(BuildContext context) async {
     
-    if (CAPIBloC.selectedNode == this) {
-      if (true || CAPIBloC.highlightedNode != CAPIBloC.selectedNode) {
+    if (FlutterContent.I.selectedNode == this) {
+      if (true || FlutterContent.I.highlightedNode != FlutterContent.I.selectedNode) {
         Useful.afterNextBuildDo(() {
           if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
             unhighlightSelectedNode();
           }
-          SnippetBloC? snippetBloc = CAPIBloC.I.state.snippetBeingEdited;
+          SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
           Rect? r = snippetBloc?.state.selectedWidgetGK?.globalPaintBounds();
           if (r != null) {
             double thickness = 4;
@@ -351,7 +356,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               ),
               targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
             );
-            CAPIBloC.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+            FlutterContent.I.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
             // Useful.afterMsDelayDo(1000, () {
             //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
             // });

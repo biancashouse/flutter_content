@@ -640,7 +640,7 @@ class SnippetTreeView extends HookWidget {
         // print("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         return TreeIndentation(
           guide: IndentGuide.connectingLines(
-            color: CAPIBloC.aNodeIsSelected && entry.node == CAPIBloC.selectedNode ? Colors.green : Colors.white,
+            color: FlutterContent.I.aNodeIsSelected && entry.node == FlutterContent.I.selectedNode ? Colors.green : Colors.white,
             indent: 40.0,
           ),
           entry: entry,

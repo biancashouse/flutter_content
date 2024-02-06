@@ -7,15 +7,6 @@ import 'home_page_mobile.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  FlutterContent.init(
-    namedStyles: {
-      "purple24": NamedTextStyle(color: Colors.purpleAccent, fontSize: 24),
-      "white30": NamedTextStyle(color: Colors.white, fontSize: 30),
-      "white36": NamedTextStyle(color: Colors.white, fontSize: 36),
-      "yellow72": NamedTextStyle(color: Colors.yellow, fontSize: 72),
-    },
-  );
-
   runApp(MaterialSPA(
     appName: 'flutter-content-app',
     initialValueJsonAssetPath: "startup-scripts/compals-config.json",
@@ -27,5 +18,11 @@ Future<void> main() async {
       primarySwatch: Colors.purple,
     ),
     fbOptions: DefaultFirebaseOptions.currentPlatform,
+    namedStyles: {
+      "purple24": NamedTextStyle(color: Colors.purpleAccent, fontSize: 24),
+      "white30": NamedTextStyle(color: Colors.white, fontSize: 30),
+      "white36": NamedTextStyle(color: Colors.white, fontSize: 36),
+      "yellow72": NamedTextStyle(color: Colors.yellow, fontSize: 72),
+    },
   ));
 }

@@ -54,7 +54,7 @@ class PositionedNode extends SingleChildNode with PositionedNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    parent = parentNode;  // propagating parents down from root
+    setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Positioned(
             key: nodeWidgetGK,      top: top,
