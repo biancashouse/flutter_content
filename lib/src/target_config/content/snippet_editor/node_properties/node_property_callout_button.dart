@@ -47,7 +47,7 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
       //   // TODO revert to original
       // },
       onTap: () {
-        // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+        // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
         Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
         CalloutConfig config = CalloutConfig(
           feature: NODE_PROPERTY_CALLOUT_BUTTON,
@@ -61,15 +61,15 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
           initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.center,
           draggable: widget.draggable ?? true,
           onDragStartedF: () {
-            // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+            // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
           },
           onDragEndedF: (_) {
-            // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+            // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
           },
           barrier: CalloutBarrier(
             opacity: .1,
             onTappedF: () async {
-              // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+              // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
               Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
             },
           ),
@@ -95,13 +95,13 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         //   initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.center,
         //   draggable: widget.draggable ?? true,
         //   onDragStartedF: () {
-        //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+        //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
         //   },
         //   onDragEndedF: (_) {
-        //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+        //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
         //   },
         //   onBarrierTappedF: () async {
-        //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+        //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
         //     Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
         //   },
         // ).show();

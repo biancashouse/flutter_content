@@ -21,7 +21,7 @@
 //   required VoidCallback onChangedF,
 //   bool allowButtonCallouts = false,
 // }) async {
-//   CAPIBloc bloc = CAPIBloc.I;
+//   CAPIBloc bloc = FlutterContent().capiBloc;
 //
 //   Callout(
 //     // context: context,

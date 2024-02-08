@@ -20,7 +20,7 @@ class PTreeNodeWidget extends StatelessWidget {
     this.ancestorVScrollController,
   });
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   PTreeNode get propertyNode => entry.node;
 

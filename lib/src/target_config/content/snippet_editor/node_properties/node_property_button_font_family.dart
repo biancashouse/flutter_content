@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
-import 'package:get_it/get_it.dart';
+
 
 class NodePropertyButtonFontFamily extends StatefulWidget {
   final String label;
@@ -39,7 +39,7 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
-              children: FlutterContent.I.googleFontNames.map((family) {
+              children: FC().googleFontNames.map((family) {
                 return RadioListTile<String>(
                   dense: true,
                   value: family,
@@ -62,7 +62,7 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
               }).toList()),
         );
       },
-      calloutSize: Size(240, 50.0 * FlutterContent.I.googleFontNames.length),
+      calloutSize: Size(240, 50.0 * FC().googleFontNames.length),
     );
   }
 }

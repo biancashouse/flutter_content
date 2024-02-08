@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
-import 'package:get_it/get_it.dart';
+
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetCoverBtn extends StatelessWidget {
@@ -18,7 +18,7 @@ class PositionedTargetCoverBtn extends StatelessWidget {
     super.key,
   });
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class PositionedTargetCoverBtn extends StatelessWidget {
 
   Widget _draggableSelectTargetBtn(context, bloc, TargetConfig tc, parentTW) {
     TargetGroupWrapperState? parentIW = TargetGroupWrapper.of(context);
-    CAPIBloC bloc = CAPIBloC.I;
+    CAPIBloC bloc = FC().capiBloc;
     return Draggable(
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
@@ -56,7 +56,7 @@ class PositionedTargetCoverBtn extends StatelessWidget {
         onDoubleTap: () async {
           if (parentTW != null) {
             Rect? wrapperRect = (parentIW?.widget.key as GlobalKey).globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
-            Rect? targetRect = (GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!).globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
+            Rect? targetRect = FC().getMultiTargetGk(tc.uid.toString())!.globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
             if (wrapperRect != null && targetRect != null) {
               hideAllSingleTargetBtns();
               bloc.add(CAPIEvent.showOnlyOneTargetGroup(tc: tc));
@@ -141,9 +141,9 @@ class PositionedTargetCoverBtn extends StatelessWidget {
   void playTargetGroup(context, TargetConfig tc, parentIW) {
     // var cw = tc.gk().currentWidget;
     // tapped helper icon - transform scaffold corr to target widget, then show content callout
-    CAPIBloC bloc = CAPIBloC.I;
+    CAPIBloC bloc = FC().capiBloc;
     Rect? wrapperRect = (parentIW?.widget.key as GlobalKey).globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
-    Rect? targetRect = (GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!).globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
+    Rect? targetRect = FC().getMultiTargetGk(tc.uid.toString())!.globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
     if (wrapperRect != null && targetRect != null) {
       TransformableScaffoldState? parentTW = TransformableScaffold.of(context);
       if (parentTW != null) {

@@ -114,7 +114,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       selectedTreeNodeGK: event.selectedTreeNodeGK,
       showProperties: event.showProperties,
     ));
-    // CAPIBloC.I.add(const ForceRefresh());
+    // FlutterContent().capiBloc.add(const ForceRefresh());
     // }
   }
 
@@ -134,7 +134,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
       force: state.force + 1,
     ));
-    CAPIBloC.I.add(const ForceRefresh());
+    FC().capiBloc.add(const ForceRefresh());
   }
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {
@@ -230,7 +230,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     String cutJson = event.node.toJson();
     _cutIncludingAnyChildren(event.node);
     state.treeC.rebuild();
-    CAPIBloC.I.add(CAPIEvent.updateClipboard(newContent: cutJson));
+    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: cutJson));
   }
 
   _cutIncludingAnyChildren(STreeNode node) {
@@ -279,11 +279,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   //     }
   //   }
   //   state.treeC.rebuild();
-  //   CAPIBloC.I.add(CAPIEvent.updateClipboard(newContent: cutJson));
+  //   FlutterContent().capiBloc.add(CAPIEvent.updateClipboard(newContent: cutJson));
   // }
 
   Future<void> _copyNode(CopyNode event, emit) async {
-    CAPIBloC.I.add(CAPIEvent.updateClipboard(newContent: event.node.toJson()));
+    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: event.node.toJson()));
   }
 
   STreeNode _typeAsATreeNode(Type t, STreeNode? selectedNode, String notFoundMsg) => switch (t) {
@@ -672,8 +672,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
     // create new snippet
     SnippetRootNode newRootNode = SnippetRootNode(name: event.newSnippetName, child: event.node);
-    CAPIState.snippetsMap[event.newSnippetName] = newRootNode;
-    // CAPIBloC.I.add(CAPIEvent.createdSnippet(newSnippetNode: newRootNode));
+    FC().snippetsMap[event.newSnippetName] = newRootNode;
+    // FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(newSnippetNode: newRootNode));
     // create a snippet ref node
     SnippetRefNode refNode = SnippetRefNode(snippetName: event.newSnippetName);
     // attach to parent
@@ -725,7 +725,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       selectedWidgetGK: prevSnippetState.selectedWidgetGK,
       selectedTreeNodeGK: prevSnippetState.selectedTreeNodeGK,
     );
-    CAPIBloC.I.add(CAPIEvent.restoredSnippetBloc(restoredBloc: restoredSnippetBloc));
+    FC().capiBloc.add(CAPIEvent.restoredSnippetBloc(restoredBloc: restoredSnippetBloc));
 
     if (undoOrRedoResult != null) {
       emit(prevSnippetState);

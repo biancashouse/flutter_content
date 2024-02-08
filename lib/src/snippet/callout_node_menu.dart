@@ -36,7 +36,7 @@ import 'package:flutter_content/src/bloc/snippet_event.dart';
 //                       onPressed: () {
 //                         snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
 //                         Useful.afterNextBuildDo(() {
-//                           if (CAPIBloC.I.state.jsonClipboard != null) {
+//                           if (FlutterContent().capiBloc.state.jsonClipboard != null) {
 //                             Callout.unhide("floating-clipboard");
 //                           }
 //                         });
@@ -55,7 +55,7 @@ import 'package:flutter_content/src/bloc/snippet_event.dart';
 //                         Useful.afterNextBuildDo(() {
 //                           snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
 //                           Useful.afterNextBuildDo(() {
-//                             if (CAPIBloC.I.state.jsonClipboard != null) {
+//                             if (FlutterContent().capiBloc.state.jsonClipboard != null) {
 //                               Callout.unhide("floating-clipboard");
 //                             }
 //                           });
@@ -111,8 +111,8 @@ import 'package:flutter_content/src/bloc/snippet_event.dart';
 //                 // if (selectedNode() is! SnippetRefNode)
 //                 //   TextButton.icon(
 //                 //     onPressed: () {
-//                 //       if (CAPIBloC.I.state.jsonClipboard != null) {
-//                 //         // CAPIBloC.I.add(const CAPIEvent.clearClipboard());
+//                 //       if (FlutterContent().capiBloc.state.jsonClipboard != null) {
+//                 //         // FlutterContent().capiBloc.add(const CAPIEvent.clearClipboard());
 //                 //         Useful.afterNextBuildDo(() {
 //                 //           snippetBloc.add(SnippetEvent.cutNode(node: selectedNode()));
 //                 //         });
@@ -130,8 +130,8 @@ import 'package:flutter_content/src/bloc/snippet_event.dart';
 //                 // if (selectedNode() is! SnippetRefNode)
 //                 //   TextButton.icon(
 //                 //     onPressed: () {
-//                 //       if (CAPIBloC.I.state.jsonClipboard != null) {
-//                 //         // CAPIBloC.I.add(const CAPIEvent.clearClipboard());
+//                 //       if (FlutterContent().capiBloc.state.jsonClipboard != null) {
+//                 //         // FlutterContent().capiBloc.add(const CAPIEvent.clearClipboard());
 //                 //         Useful.afterNextBuildDo(() {
 //                 //           snippetBloc.add(SnippetEvent.copyNode(node: selectedNode()));
 //                 //         });
@@ -381,7 +381,7 @@ MenuItemButton _menuItemButton(
         if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
         if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapWith(type: childType));
         Callout.dismiss(TREENODE_MENU_CALLOUT);
-        CAPIBloC.I.add(CAPIEvent.forceRefresh());
+        FC().capiBloc.add(CAPIEvent.forceRefresh());
       },
       child: Useful.coloredText(label, fontWeight: FontWeight.bold),
     );
@@ -392,7 +392,7 @@ SubmenuButton _addSnippetsSubmenu(
   NodeAction action,
 ) {
   List<MenuItemButton> snippetMIs = [];
-  List<String> snippetNames = CAPIState.snippetsMap.keys.toList()..sort();
+  List<String> snippetNames = FC().snippetsMap.keys.toList()..sort();
   for (String key in snippetNames) {
     snippetMIs.add(
       MenuItemButton(
@@ -483,13 +483,13 @@ MenuItemButton? _pasteMI(
   STreeNode selectedNode,
   NodeAction action,
 ) {
-  if (CAPIBloC.I.state.jsonClipboard != null && action != NodeAction.wrapWith) {
+  if (FC().capiBloc.state.jsonClipboard != null && action != NodeAction.wrapWith) {
     return MenuItemButton(
       onPressed: () {
-        CAPIBloC bloc = CAPIBloC.I;
+        CAPIBloC bloc = FC().capiBloc;
         String clipboardJson = bloc.state.jsonClipboard!;
         STreeNode clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
-        SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
+        SnippetBloC? snippetBloc = FC().snippetBeingEdited;
         switch (action) {
           case NodeAction.replace:
             snippetBloc?.add(SnippetEvent.pasteReplacement(clipboardNode: clipboardNode));

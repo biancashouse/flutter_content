@@ -4,7 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_material3_text_size.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 part 'text_style_group.mapper.dart';
@@ -35,9 +35,8 @@ class TextStyleGroup with TextStyleGroupMappable {
 
   // @override
   // String toSource(BuildContext context, {String? namedTextStyle}) {
-  //   // CAPIBloc bloc = CAPIBloc.instance;
-  //   FlutterContent fc = GetIt.I.get<FlutterContent>();
-  //   NamedTextStyle? namedStyle = fc.namedStyles[namedTextStyle];
+  //   // CAPIBloc bloc = FlutterContent().capiBlocnstance;
+  //   NamedTextStyle? namedStyle = FlutterContent().namedStyles[namedTextStyle];
   //   String? fFamily = (namedStyle?.fontFamily ?? fontFamily);
   //   Material3TextSizeEnum? fSizeName = (namedStyle?.fontSizeName ?? fontSizeName);
   //   double? fSize = (namedStyle?.fontSize ?? fontSize);
@@ -77,7 +76,7 @@ class TextStyleGroup with TextStyleGroupMappable {
   // }
 
   TextStyle? toTextStyle(BuildContext context, {String? namedTextStyle}) {
-    NamedTextStyle? namedStyle = FlutterContent.I.namedStyles[namedTextStyle];
+    NamedTextStyle? namedStyle = FC().namedStyles[namedTextStyle];
     String? fFamily = (namedStyle?.fontFamily ?? fontFamily);
     Material3TextSizeEnum? fSizeName = (namedStyle?.fontSizeName ?? fontSizeName);
     double? fSize = (namedStyle?.fontSize ?? fontSize);

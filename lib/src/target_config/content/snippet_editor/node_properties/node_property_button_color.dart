@@ -48,7 +48,7 @@ class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
             selected: widget.originalColor ?? Colors.white,
             onChanged: (color) {
               widget.onChangeF.call(color);
-              // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+              // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
               Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
             },
           ),

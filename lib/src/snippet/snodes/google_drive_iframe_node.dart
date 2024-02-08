@@ -134,7 +134,7 @@ class GoogleDriveIFrameNode extends ChildlessNode with GoogleDriveIFrameNodeMapp
     String src =
         'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
-    return folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent.I.snippetsBeingEdited.isEmpty
+    return folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && !FC().areAnySnippetsBeingEdited
         ? SizedBox(
             key: nodeWidgetGK,
             width: iframeWidth,
@@ -147,7 +147,7 @@ class GoogleDriveIFrameNode extends ChildlessNode with GoogleDriveIFrameNodeMapp
               forceRefresh: true,
             ),
           )
-        : FlutterContent.I.snippetsBeingEdited.isNotEmpty
+        : FC().areAnySnippetsBeingEdited
             ? Placeholder()
             : Row(
                 key: nodeWidgetGK,

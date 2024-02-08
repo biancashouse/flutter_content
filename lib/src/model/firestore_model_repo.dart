@@ -36,7 +36,7 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<(CAPIModel?, String?)> getCAPIModel({required String appName}) async {
+  Future<CAPIModel?> getCAPIModel({required String appName}) async {
     // CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-models');
     // DocumentReference modelDocRef = modelsRef.doc(widget.appName);
     DocumentReference modelDocRef = FirebaseFirestore.instance.doc('/flutter-content-models/$appName');
@@ -60,10 +60,10 @@ class FireStoreModelRepository implements IModelRepository {
         } catch (e) {
           print(e.toString());
         }
-        return (model, encodedModelJson);
+        return model;
       }
     }
-    return (null, null);
+    return null;
   }
 
   @override

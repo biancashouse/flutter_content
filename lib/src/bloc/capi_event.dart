@@ -7,7 +7,7 @@ part 'capi_event.freezed.dart';
 
 @freezed
 class CAPIEvent with _$CAPIEvent {
-  const factory CAPIEvent.appStarted() = AppStarted;
+  // const factory CAPIEvent.appStarted() = AppStarted;
 
   const factory CAPIEvent.newTarget({
     required String wName,

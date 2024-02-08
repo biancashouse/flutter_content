@@ -1,11 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
-import 'package:get_it/get_it.dart';
 
 class ColourTool extends StatefulWidget {
   final TargetConfig tc;
@@ -37,8 +34,8 @@ class ColourTool extends StatefulWidget {
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK = tc.single
-        ? GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]
-        : GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()];
+        ? FC().getSingleTargetGk(tc.wName)
+        : FC().getMultiTargetGk(tc.uid.toString());
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -74,7 +71,7 @@ class _ColourToolState extends State<ColourTool> {
 
   TargetConfig get tc => widget.tc;
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   @override
   void initState() {

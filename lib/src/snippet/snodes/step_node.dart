@@ -25,9 +25,9 @@ class StepNode extends ChildlessNode with StepNodeMappable {
   Step toStep(BuildContext context) {
     // highlightSelectedNode(context);
 
-    STreeNode? titleSnippet = CAPIState.rootNodeOfNamedSnippet(titleSnippetName);
-    STreeNode? subtitleSnippet = CAPIState.rootNodeOfNamedSnippet(subtitleSnippetName);
-    STreeNode? contentSnippet = CAPIState.rootNodeOfNamedSnippet(contentSnippetName);
+    STreeNode? titleSnippet = FC().rootNodeOfNamedSnippet(titleSnippetName);
+    STreeNode? subtitleSnippet = FC().rootNodeOfNamedSnippet(subtitleSnippetName);
+    STreeNode? contentSnippet = FC().rootNodeOfNamedSnippet(contentSnippetName);
 
     return Step(
       // key: nodeGK,

@@ -11,10 +11,10 @@
 //   const TreeDrawer({super.key});
 //
 //   static hideDrawer() {
-//     CAPIBloc.I.add(CAPIEvent.hideSnippetTree());
+//     FlutterContent().capiBloc.add(CAPIEvent.hideSnippetTree());
 //     unhideAllSingleTargetBtns();
-//     // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-//     // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+//     // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+//     // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
 //   }
 //
 //   @override

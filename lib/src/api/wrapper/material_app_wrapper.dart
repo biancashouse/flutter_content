@@ -16,7 +16,7 @@
 // import 'package:flutter_content/src/bloc/capi_state.dart';
 // import 'package:flutter_content/src/bloc/snippet_event.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
-// import 'package:get_it/get_it.dart';
+// 
 // import 'package:hydrated_bloc/hydrated_bloc.dart';
 // import 'package:path_provider/path_provider.dart';
 // import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -75,10 +75,10 @@
 //   //           if (snippetName != null) {
 //   //             // edit the snippet
 //   //             hideAllSingleTargetBtns();
-//   //             // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-//   //             // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+//   //             // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+//   //             // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
 //   //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
-//   //             CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
+//   //             FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
 //   //             Useful.afterNextBuildDo(() {
 //   //               SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
 //   //               if (snippetBeingEdited != null) {
@@ -130,12 +130,12 @@
 //   //           onTap: () {
 //   //             // edit the snippet
 //   //             hideAllSingleTargetBtns();
-//   //             // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-//   //             // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+//   //             // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+//   //             // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
 //   //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
 //   //             String? snippetName = CAPIState.snippetPlacementMap[panelName];
 //   //             if (snippetName != null) {
-//   //               CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
+//   //               FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
 //   //               Useful.afterNextBuildDo(() {
 //   //                 SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
 //   //                 if (snippetBeingEdited != null) {
@@ -300,7 +300,7 @@
 //       jsonClipboard: model.jsonClipboard,
 //       // snippetsMap: snippetsMap,
 //     );
-//     CAPIState.snippetsMap = _parseSnippetJsons(model);
+//     FlutterContent().snippetsMap = _parseSnippetJsons(model);
 //
 //     GetIt.I.registerSingleton<CAPIBloC>(capiBloc);
 //
@@ -541,7 +541,7 @@
 //     MaterialAppWrapper.inEditMode.value = true;
 //     showAllNodeWidgetOverlays(context);
 //     hideAllSingleTargetBtns();
-//     CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+//     FlutterContent().capiBloc.add(const CAPIEvent.forceRefresh());
 //   }
 //
 //   static exitEditMode() {
@@ -554,9 +554,9 @@
 //     if (Useful.cachedContext != null) {
 //       showDevToolsButton(Useful.cachedContext!);
 //     }
-//     CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+//     FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
 //     unhideAllSingleTargetBtns();
-//     CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+//     FlutterContent().capiBloc.add(const CAPIEvent.forceRefresh());
 //   }
 //
 //   _enterOrExitEditMode(RawKeyEvent event, DateTime? lastTapTime, int tapCount) {
@@ -637,7 +637,7 @@
 //     } else {
 //       highestNode = (node.parent ?? node) as STreeNode;
 //     }
-//     CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
+//     FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
 //     var currCtx = node.nodeWidgetGK?.currentContext;
 //     Useful.afterNextBuildDo(() {
 //       SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
@@ -650,13 +650,13 @@
 // // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
 //             STreeNode.unhighlightSelectedNode();
 //             Callout.dismiss('selected-panel-border-overlay');
-//             CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
-//             CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+//             FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+//             FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
 // // removeNodePropertiesCallout();
 //             Callout.dismiss(TREENODE_MENU_CALLOUT);
 //             MaterialAppWrapperState.exitEditMode();
 //             if (snippetBeingEdited.state.canUndo()) {
-//               CAPIBloC.I.add(const CAPIEvent.saveModel());
+//               FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
 //             }
 //           },
 //         );
@@ -692,8 +692,8 @@
 //                   if (snippetName == null) return;
 // // edit the root snippet
 //                   hideAllSingleTargetBtns();
-// // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-// // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+// // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+// // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
 //                   removeAllNodeWidgetOverlays();
 // // actually push node parent, then select node - more user-friendly
 //                   pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node);

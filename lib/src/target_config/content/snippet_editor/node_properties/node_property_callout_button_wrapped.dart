@@ -66,7 +66,7 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
           });
           Useful.afterNextBuildDo(() {
             Callout.unhideParentCallout(opContext);
-            // // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+            // // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
             // Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
             // CalloutConfig config = CalloutConfig(
             //   feature: NODE_PROPERTY_CALLOUT_BUTTON,
@@ -81,13 +81,13 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
             //   initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.centerLeft,
             //   draggable: widget.draggable ?? true,
             //   onDragStartedF: () {
-            //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+            //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
             //   },
             //   onDragEndedF: (_) {
-            //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+            //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
             //   },
             //   onBarrierTappedF: () async {
-            //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+            //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
             //     Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
             //   },
             // );
@@ -115,13 +115,13 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
           //   initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.center,
           //   draggable: widget.draggable ?? true,
           //   onDragStartedF: () {
-          //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = true;
+          //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
           //   },
           //   onDragEndedF: (_) {
-          //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+          //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
           //   },
           //   onBarrierTappedF: () async {
-          //     CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+          //     FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
           //     Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
           //   },
           // ).show();
@@ -144,7 +144,7 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
         barrier: CalloutBarrier(
             opacity: .1,
             onTappedF: () async {
-              FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = false;
+              FC().selectedNode?.hidePropertiesWhileDragging = false;
               Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
             }),
         arrowType: ArrowType.VERY_THIN,
@@ -155,10 +155,10 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
         initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.centerLeft,
         draggable: widget.draggable ?? true,
         onDragStartedF: () {
-          FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = true;
+          FC().selectedNode?.hidePropertiesWhileDragging = true;
         },
         onDragEndedF: (_) {
-          FlutterContent.I.selectedNode?.hidePropertiesWhileDragging = false;
+          FC().selectedNode?.hidePropertiesWhileDragging = false;
         },
       );
 }

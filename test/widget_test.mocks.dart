@@ -27,18 +27,16 @@ import 'package:mockito/mockito.dart' as _i1;
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
   @override
-  _i3.Future<(_i4.CAPIModel?, String?)> getCAPIModel(
-          {required String? appName}) =>
+  _i3.Future<_i4.CAPIModel?> getCAPIModel({required String? appName}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCAPIModel,
           [],
           {#appName: appName},
         ),
-        returnValue: _i3.Future<(_i4.CAPIModel?, String?)>.value((null, null)),
-        returnValueForMissingStub:
-            _i3.Future<(_i4.CAPIModel?, String?)>.value((null, null)),
-      ) as _i3.Future<(_i4.CAPIModel?, String?)>);
+        returnValue: _i3.Future<_i4.CAPIModel?>.value(),
+        returnValueForMissingStub: _i3.Future<_i4.CAPIModel?>.value(),
+      ) as _i3.Future<_i4.CAPIModel?>);
 
   @override
   _i3.Future<void> createOrUpdateModel({required _i4.CAPIModel? model}) =>

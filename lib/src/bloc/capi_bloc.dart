@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_model.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'capi_event.dart';
@@ -34,27 +32,27 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double? snippetPropertiesCalloutW,
     // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
-          appName: appName,
-          lastSavedModelJson: lastSavedModelJson,
-          // useFirebase: useFirebase,
-          // localTestingFilePaths: localTestingFilePaths,
-          targetGroupMap: targetGroupMap,
-          // jsonRootDirectoryNode: jsonRootDirectoryNode,
-          jsonClipboard: jsonClipboard,
-          // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
-          snippetTreeCalloutW: snippetTreeCalloutW,
-          snippetTreeCalloutH: snippetTreeCalloutH,
-          // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
-          // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
-          // snippetsMap: snippetsMap,
-          modelUR: ModelUR(),
-        )) {
+    appName: appName,
+    lastSavedModelJson: lastSavedModelJson,
+    // useFirebase: useFirebase,
+    // localTestingFilePaths: localTestingFilePaths,
+    targetGroupMap: targetGroupMap,
+    // jsonRootDirectoryNode: jsonRootDirectoryNode,
+    jsonClipboard: jsonClipboard,
+    // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
+    snippetTreeCalloutW: snippetTreeCalloutW,
+    snippetTreeCalloutH: snippetTreeCalloutH,
+    // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
+    // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
+    // snippetsMap: snippetsMap,
+    modelUR: ModelUR(),
+  )) {
     // init the static map
     for (String id in singleTargetMap.keys) {
-      CAPIState.singleTargetMap[id] = singleTargetMap[id]!.clone();
+      SingleTargetWrapper.singleTargetMap[id] = singleTargetMap[id]!.clone();
     }
 
-    on<AppStarted>((event, emit) => _appStarted(event, emit));
+    // on<AppStarted>((event, emit) => _appStarted(event, emit));
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
@@ -108,16 +106,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<CreateUndo>((event, emit) => _createUndo(event, emit));
   }
 
-  static CAPIBloC get I {
-    late CAPIBloC result;
-    try {
-      result = GetIt.I.get<CAPIBloC>();
-    } catch (e) {
-      print(e.toString());
-    }
-    return result;
-  }
-
 // static Soundpool? _soundpool;
 // static int? _shutterSoundId;
 // static int? _plopSoundId;
@@ -151,13 +139,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   ));
 // }
 
-  void _appStarted(event, emit) {
-    CAPIModel model = _stateToModel();
-    String jsonS = jsonEncode(model.toJson());
-    emit(state.copyWith(
-      lastSavedModelJson: jsonS,
-    ));
-  }
+  // void _appStarted(event, emit) {
+  //   CAPIModel model = _stateToModel();
+  //   String jsonS = jsonEncode(model.toJson());
+  //   emit(state.copyWith(
+  //     lastSavedModelJson: jsonS,
+  //   ));
+  // }
 
   // void _createdSnippet(CreatedSnippet event, emit) {
   //   // skip if named snippet already exists
@@ -178,7 +166,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // only save if changes detected
     if (jsonS == state.lastSavedModelJson) return;
 
-    final stopwatch = Stopwatch()..start();
+    final stopwatch = Stopwatch()
+      ..start();
     // print('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
     Callout.showTextToast(
       feature: "saving-model",
@@ -222,16 +211,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
-  CAPIModel _stateToModel() => CAPIModel(
+  CAPIModel _stateToModel() =>
+      CAPIModel(
         appName: state.appName,
         targetGroupConfigs: state.targetGroupMap,
-        targetConfigs: CAPIState.singleTargetMap,
+        targetConfigs: SingleTargetWrapper.singleTargetMap,
         snippetEncodedJsons: _encodeAllSnippets(),
         jsonClipboard: state.jsonClipboard,
       );
 
   Map<String, String> _encodeAllSnippets() {
-    List<SnippetRootNode>? rootNodes = CAPIState.snippetsMap.values.toList();
+    List<SnippetRootNode>? rootNodes = FC().snippetsMap.values.toList();
     Map<String, String> snippetJsons = {};
     for (SnippetRootNode rootNode in rootNodes) {
       snippetJsons[rootNode.name] = rootNode.toJson();
@@ -370,7 +360,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
   void _newTargetGroup(NewTarget event, emit) {
-    int newTargetUid = DateTime.now().millisecondsSinceEpoch;
+    int newTargetUid = DateTime
+        .now()
+        .millisecondsSinceEpoch;
     TargetConfig newItem = TargetConfig(
       uid: newTargetUid, //event.wName.hashCode,
       wName: event.wName,
@@ -541,7 +533,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _targetConfigChanged(TargetConfigChanged event, emit) {
     state.modelUR.createUndo(_stateToModel());
     if (event.newTC.single) {
-      Map<String, TargetConfig> newMap = Map.of(CAPIState.singleTargetMap);
+      Map<String, TargetConfig> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
       newMap[event.newTC.wName] = event.newTC;
       emit(state.copyWith(
         force: state.force + 1,
@@ -826,7 +818,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //     child: event.node,
   //   );
   //   // add to snippets map
-  //   CAPIBloc.I.add(capiEvent.CreatedSnippet(newNode: newSnippetNode));
+  //   FlutterContent().capiBloc.add(capiEvent.CreatedSnippet(newNode: newSnippetNode));
   //   // create a snippet ref node
   //   SnippetRefNode refNode = SnippetRefNode(snippetName: event.newSnippetName);
   //   // attach to parent
@@ -856,12 +848,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetBloc(PushSnippetBloc event, emit) {
-    SnippetRootNode? rootNode = CAPIState.rootNodeOfNamedSnippet(event.snippetName);
+    SnippetRootNode? rootNode = FC().rootNodeOfNamedSnippet(event.snippetName);
     if (rootNode == null) return;
-    SnippetTreeController newTreeC() => SnippetTreeController(
+    SnippetTreeController newTreeC() =>
+        SnippetTreeController(
           roots: event.visibleDecendantNode != null ? [event.visibleDecendantNode!] : [rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
-        )..expandAll();
+        )
+          ..expandAll();
     // SnippetState? prevSnippetState = CAPIState.snippetStateMap[event.snippetName];
     // SnippetBloC newSnippetBloc = prevSnippetState != null
     //     ? SnippetBloC(
@@ -875,7 +869,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // )
     //     : SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR(), selectedNodeIndex: -1, selectedNodeParentIndex: -1);
     SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR());
-    FlutterContent.I.snippetsBeingEdited.addFirst(newSnippetBloc);
+    FC().pushSnippet(newSnippetBloc);
     emit(state.copyWith(
       hideAllTargetGroupPlayBtns: true,
       hideTargetsExcept: null,
@@ -885,39 +879,40 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _popSnippetBloc(PopSnippetBloc event, emit) async {
-    if (FlutterContent.I.snippetsBeingEdited.isEmpty) return;
-    SnippetBloC snippetBeingPopped = FlutterContent.I.snippetsBeingEdited.removeFirst();
-    // CAPIState.snippetStateMap[snippetBeingPopped.snippetName] = snippetBeingPopped.state.copyWith();
-    emit(state.copyWith(
-      hideAllTargetGroups: false,
-      hideAllTargetGroupPlayBtns: false,
-      hideTargetsExcept: null,
-      hideIframes: false,
-      hideSnippetPencilIcons: false,
-      force: state.force + 1,
-    ));
+    SnippetBloC? snippetPopped = FC().popSnippet();
+    if (snippetPopped != null) {
+      // CAPIState.snippetStateMap[snippetBeingPopped.snippetName] = snippetBeingPopped.state.copyWith();
+      emit(state.copyWith(
+        hideAllTargetGroups: false,
+        hideAllTargetGroupPlayBtns: false,
+        hideTargetsExcept: null,
+        hideIframes: false,
+        hideSnippetPencilIcons: false,
+        force: state.force + 1,
+      ));
   }
+}
 
-  Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
-    SnippetBloC beforeUndoOrRedo = FlutterContent.I.snippetsBeingEdited.removeFirst();
-    FlutterContent.I.snippetsBeingEdited.addFirst(event.restoredBloc);
-    // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
-    // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(CAPIState.snippetsMap);
-    SnippetRootNode? rootNode = event.restoredBloc!.rootNode;
-    if (rootNode != null) CAPIState.snippetsMap[rootNode.name] = rootNode;
+Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
+  SnippetBloC? beforeUndoOrRedo = FC().popSnippet();
+  FC().pushSnippet(event.restoredBloc);
+  // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
+  // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FlutterContent().snippetsMap);
+  SnippetRootNode rootNode = event.restoredBloc.rootNode;
+  FC().snippetsMap[rootNode.name] = rootNode;
 
-    emit(state.copyWith(
-      // snippetsMap: newSnippetsMap,
-      force: state.force + 1,
-    ));
-  }
+  emit(state.copyWith(
+    // snippetsMap: newSnippetsMap,
+    force: state.force + 1,
+  ));
+}
 
-  void _setPanelSnippet(SetPanelSnippet event, emit) {
-    CAPIState.snippetPlacementMap[event.panelName] = event.snippetName;
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
-  }
+void _setPanelSnippet(SetPanelSnippet event, emit) {
+  FC().snippetPlacementMap[event.panelName] = event.snippetName;
+  emit(state.copyWith(
+    force: state.force + 1,
+  ));
+}
 
 // void _dockChangeSnippetEditor(DockChangeSnippetEditor event, emit) {
 //   DockEnum newDock;
@@ -935,22 +930,22 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   ));
 // }
 
-  // Future<void> _changedSnippetTreeCalloutSize(ChangedSnippetTreeCalloutSize event, emit) async {
-  //   CAPIState newState = state.copyWith(
-  //     force: state.force + 1,
-  //     snippetTreeCalloutW: event.newW,
-  //     snippetTreeCalloutH: event.newH,
-  //   );
-  //   emit(newState);
-  // }
-  //
-  // Future<void> _changedSnippetTreeCalloutPos(ChangedSnippetTreeCalloutPos event, emit) async {
-  //   CAPIState newState = state.copyWith(
-  //     force: state.force + 1,
-  //     snippetTreeCalloutInitialPos: event.newOffset,
-  //   );
-  //   emit(newState);
-  // }
+// Future<void> _changedSnippetTreeCalloutSize(ChangedSnippetTreeCalloutSize event, emit) async {
+//   CAPIState newState = state.copyWith(
+//     force: state.force + 1,
+//     snippetTreeCalloutW: event.newW,
+//     snippetTreeCalloutH: event.newH,
+//   );
+//   emit(newState);
+// }
+//
+// Future<void> _changedSnippetTreeCalloutPos(ChangedSnippetTreeCalloutPos event, emit) async {
+//   CAPIState newState = state.copyWith(
+//     force: state.force + 1,
+//     snippetTreeCalloutInitialPos: event.newOffset,
+//   );
+//   emit(newState);
+// }
 
 // void _changedSnippetPropertiesCalloutSize(ChangedSnippetPropertiesCalloutSize event, emit) {
 //   // print('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
@@ -1019,6 +1014,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   );
 // }
 
-  // the tree nodes do not have a reference to their parent BloC object
+// the tree nodes do not have a reference to their parent BloC object
 
 }

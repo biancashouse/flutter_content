@@ -10,7 +10,7 @@
 //   Widget build(BuildContext context) =>
 //       BlocBuilder<CAPIBloc, CAPIState>(
 //         builder: (context, state) {
-//           return CAPIBloC.I.selectedNode != null
+//           return FlutterContent().capiBloc.selectedNode != null
 //               // properties
 //               ? ListView(
 //             padding: const EdgeInsets.all(20),

@@ -209,13 +209,13 @@ class FlutterPollState extends State<FlutterPoll> {
     voterId = HydratedBloc.storage.read("voter-id");
     if (voterId != null) {
       // firestore
-      OptionCountsAndVoterRecord result = await CAPIBloC.I.modelRepo.getPollResultsForUser(
+      OptionCountsAndVoterRecord result = await FC().capiBloc.modelRepo.getPollResultsForUser(
         voterId: voterId!,
-        appName: CAPIBloC.I.state.appName,
+        appName: FC().capiBloc.state.appName,
         pollName: widget.pollName,
       );
       pollBloc = PollBloC(
-        modelRepo: CAPIBloC.I.modelRepo,
+        modelRepo: FC().capiBloc.modelRepo,
         voterId: voterId!,
         pollName: widget.pollName,
         starts: widget.startDate,
@@ -223,8 +223,9 @@ class FlutterPollState extends State<FlutterPoll> {
         result: result,
       );
     } else {
+      var modelRepo = FC().capiBloc.modelRepo;
       pollBloc = PollBloC(
-        modelRepo: CAPIBloC.I.modelRepo,
+        modelRepo: modelRepo,
         voterId: null,
         pollName: widget.pollName,
         result: (optionVoteCountMap: {}, userVotedForOptionId: null, when: 0),

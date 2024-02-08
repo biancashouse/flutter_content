@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/target_config/content/callout_config_editor/duration/numberic_keypad.dart';
-import 'package:get_it/get_it.dart';
+
 
 bool isShowingTargetDurationCallout() => Callout.anyPresent([CAPI.DURATION_CALLOUT.name]);
 
@@ -20,8 +20,8 @@ Future<void> showTargetDurationCallout(
   final ScrollController? ancestorVScrollController,
 }) async {
   GlobalKey? targetGK = tc.single
-      ? GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]
-      : GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()];
+      ? FC().getSingleTargetGk(tc.wName)
+      : FC().getMultiTargetGk(tc.uid.toString());
 
   Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -29,7 +29,7 @@ Future<void> showTargetDurationCallout(
             label: 'onscreen duration (ms)',
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
-              CAPIBloC bloc = CAPIBloC.I;
+              CAPIBloC bloc = FC().capiBloc;
               bloc.add(CAPIEvent.targetConfigChanged(newTC: tc..calloutDurationMs = int.tryParse(s)!));
               Callout.dismiss(CAPI.DURATION_CALLOUT.name);
             },

@@ -26,7 +26,7 @@ void main() {
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.test_snippet);
+  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.empty_snippet);
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -77,7 +77,7 @@ void main() {
       final modelSnippetJson = modelSnippetRoot.toJson();
       CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
       String encodedModelJsonS = model.toJson().toString();
-      return (model, encodedModelJsonS);
+      return model;
     });
     // snippetState = snippetBloc.state;
   });
@@ -85,9 +85,7 @@ void main() {
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
     // --- repo test
     test('read the model from the repo, and find 1st TextNode' , () async {
-      final result = await mockRepository.getCAPIModel(appName: appName);
-      final model = result.$1;
-      final encodedModelJson = result.$2;
+      final model = await mockRepository.getCAPIModel(appName: appName);
 
       expect(model?.appName, appName);
 

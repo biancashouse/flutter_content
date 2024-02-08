@@ -11,7 +11,7 @@ import 'package:flutter_content/src/target_config/content/callout_config_editor/
 import 'package:flutter_content/src/target_config/content/callout_config_editor/pointy/pointy_callout.dart';
 import 'package:flutter_content/src/target_config/content/callout_config_editor/resize_slider.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
-import 'package:get_it/get_it.dart';
+
 
 Timer? _debounce;
 
@@ -78,12 +78,12 @@ class CalloutConfigToolbar extends StatelessWidget {
                       color: Colors.purpleAccent,
                       onChange: (value) {
                         tc.transformScale = value;
-                        CAPIBloC.I.add(CAPIEvent.targetConfigChanged(newTC: tc));
+                        FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
                         // find the selected target's TransformableWidgetWrapper
                         // var map = CAPIState.wGKMap;
                         GlobalKey? targetGK = tc.single
-                            ? GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]
-                            : GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()];
+                            ? FC().getSingleTargetGk(tc.wName)
+                            : FC().getMultiTargetGk(tc.uid.toString());
                         // var widg = gk?.currentWidget;
                         var ctx = targetGK?.currentContext;
                         // var state = gk?.currentState;
@@ -112,7 +112,7 @@ class CalloutConfigToolbar extends StatelessWidget {
                           if (_debounce?.isActive ?? false) _debounce?.cancel();
                           // Set up a new debounce timer
                           _debounce = Timer(const Duration(milliseconds: 100), () {
-                            CAPIBloC.I.add(CAPIEvent.targetConfigChanged(newTC: tc..radius = value));
+                            FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc..radius = value));
                           });
                         },
                         min: 10.0,
@@ -219,10 +219,10 @@ class CalloutConfigToolbar extends StatelessWidget {
                     color: Colors.purpleAccent,
                   ),
                   onPressed: () {
-                    CAPIBloC.I.add(CAPIEvent.deleteTarget(tc: tc));
+                    FC().capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
                     // parentTW.resetTransform();
                     removeSnippetContentCallout(tc.snippetName);
-                    CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
+                    FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
                     unhideAllSingleTargetBtns();
                   },
                 ),

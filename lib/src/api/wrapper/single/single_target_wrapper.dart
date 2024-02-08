@@ -8,12 +8,11 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/measuring/measuring_wrapper.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
-import 'package:get_it/get_it.dart';
 
 Feature singleTargetBtnFeature(String snippetName) => "singleTargetBtnfeature:$snippetName";
 
 void hideAllSingleTargetBtns() {
-  FeatureList features = GetIt.I.get<FeatureList>(instanceName: getIt_singleTargetBtnFeatures);
+  FeatureList features = FC().singleTargetBtnFeatures;
   // print("hideAllSingleTargetBtns - ${features.toString()} ");
   for (Feature feature in features) {
     Callout.hide(feature);
@@ -21,7 +20,7 @@ void hideAllSingleTargetBtns() {
 }
 
 void unhideAllSingleTargetBtns() {
-  FeatureList features = GetIt.I.get<FeatureList>(instanceName: getIt_singleTargetBtnFeatures);
+  FeatureList features = FC().singleTargetBtnFeatures;
   // print("unhideAllSingleTargetBtns - ${features.toString()} ");
   for (Feature feature in features) {
     Callout.unhide(feature);
@@ -53,7 +52,29 @@ class SingleTargetWrapper extends StatefulWidget {
   @override
   State<SingleTargetWrapper> createState() => SingleTargetWrapperState();
 
-  static List<Feature> singleWidgetFeatures() => CAPIState.singleTargetMap.keys.map((s) => singleTargetBtnFeature(s)).toList();
+  static List<Feature> singleWidgetFeatures() => singleTargetMap.keys.map((s) => singleTargetBtnFeature(s)).toList();
+
+  static Map<String, TargetConfig> singleTargetMap = {};
+
+  static TargetConfig? singleTarget({required String name}) {
+    // print("singleTargetc: $name");
+    TargetConfig? tc;
+    // var singleTargets = singleTargetMap;
+    // print(singleTargets.toString());
+    try {
+      // var names = singleTargetMap.values.map((tc) => tc.wName).toList();
+      // print("singleTarget keys: ${names.toString()}");
+      // for (TargetConfig atc in singleTargetMap.values) {
+      //   print("singleTarget: ${atc.toJson()}");
+      // }
+      tc = singleTargetMap.values.where((tc) => tc.wName == name).first;
+      // print("singleTarget: ${tc.toJson()}");
+    } catch (e) {
+      // ignore and return null
+    }
+    return tc;
+  }
+
 }
 
 class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
@@ -67,16 +88,16 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
 
     print("C_SingleWidgetWrapperState.initState");
 
-    GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[widget.name] = GlobalKey(debugLabel: widget.name);
+    FC().setSingleTargetGk(widget.name, GlobalKey(debugLabel: widget.name));
 
     // register this target wrapper - may get overwritten from initApp (i.e. if alrady stored in LS, or FB)
-    CAPIState.singleTargetMap[widget.name] ??= TargetConfig(
+    SingleTargetWrapper.singleTargetMap[widget.name] ??= TargetConfig(
       uid: widget.name.hashCode,
       wName: widget.name,
       single: true,
       snippetName: widget.name,
     );
-    singleTC = CAPIState.singleTargetMap[widget.name]!;
+    singleTC = SingleTargetWrapper.singleTargetMap[widget.name]!;
     // print("singleTargetMap contains: ${CAPIState.singleTargetMap.keys.toList().toString()}");
   }
 
@@ -105,7 +126,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
               }
             },
             child: Material(
-              key: GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[widget.name],
+              key: FC().getSingleTargetGk(widget.name),
               child: widget.child,
             ),
           );
@@ -115,7 +136,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
   }
 
   void showSingleWidgetPlayButton() {
-    FeatureList features = GetIt.I.get<FeatureList>(instanceName: getIt_singleTargetBtnFeatures);
+    FeatureList features = FC().singleTargetBtnFeatures;
     Feature feature = singleTargetBtnFeature(widget.name);
     Callout.dismiss(feature);
     features
@@ -130,11 +151,11 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
             if (context.mounted) {
               playSingleTarget(context, justPlaying: false, tc: singleTC);
               Useful.afterMsDelayDo(1000, () {
-                CAPIBloC.I.add(CAPIEvent.popSnippetBloc());
+                FC().capiBloc.add(CAPIEvent.popSnippetBloc());
               });
             }
 
-            // CAPIBloc bloc = CAPIBloc.instance;
+            // CAPIBloc bloc = FlutterContent().capiBlocnstance;
             // TargetConfig? tc = bloc.state.singleTarget(name: widget.name);
             // if (tc != null) {
             //   Rect? wrapperRect = findGlobalRect(CAPIState.gk(parentTW.widget.name.hashCode)!);
@@ -188,7 +209,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
           child: widget.playButton,
         ),
       ),
-      targetGkF: () => GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[widget.name],
+      targetGkF: () => FC().getSingleTargetGk(widget.name),
       calloutConfig: CalloutConfig(
         feature: feature,
         initialCalloutPos: _playButtonCenterPos().translate(-widget.playButtonSize!.width/2, -widget.playButtonSize!.height/2),
@@ -205,11 +226,11 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
 
   static Future<void> playSingleTarget(context, {required bool justPlaying, required TargetConfig tc}) async {
     print("Playing");
-    CAPIBloC bloc = CAPIBloC.I;
+    CAPIBloC bloc = FC().capiBloc;
     // may not be wrapped inside a TransformableWrapper
     TransformableScaffoldState? parentTW = TransformableScaffold.of(context);
     if (parentTW == null) {
-      Rect? targetRect = (GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!)
+      Rect? targetRect = FC().getSingleTargetGk(tc.wName)!
           .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!);
       if (targetRect != null) {
         bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
@@ -238,7 +259,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
     } else {
       // is wrapped by a transformer
       Rect? wrapperRect = (parentTW.widget.key as GlobalKey).globalPaintBounds(); //Measuring.findGlobalRect(parentTW.widget.key as GlobalKey);
-      Rect? targetRect = (GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!)
+      Rect? targetRect = FC().getSingleTargetGk(tc.wName)!
           .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!);
       if (wrapperRect != null && targetRect != null) {
         bloc.add(CAPIEvent.showOnlyOneTargetGroup(tc: tc));

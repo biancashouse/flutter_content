@@ -7,7 +7,7 @@
 // import 'package:flutter_content/src/bloc/capi_event.dart';
 // import 'package:flutter_content/src/bloc/capi_state.dart';
 // import 'package:flutter_hooks/flutter_hooks.dart';
-// import 'package:get_it/get_it.dart';
+// 
 //
 // import 'panel_chips.dart';
 //
@@ -182,7 +182,7 @@
 //
 //     bool capiBlocRegistereredWithGetIt = true;
 //     try {
-//       CAPIBloC.I;
+//       FlutterContent().capiBloc;
 //     } catch (e) {
 //       capiBlocRegistereredWithGetIt = false;
 //     }
@@ -251,13 +251,13 @@
 //   //                     },
 //   //                   )
 //   //                   onPressed: () {
-//   //                     if (CAPIBloC.I.state.selectedPanel == panelName) {
+//   //                     if (FlutterContent().capiBloc.state.selectedPanel == panelName) {
 //   //                       Callout.dismiss('selected-panel-border-overlay');
-//   //                       CAPIBloC.I.add(const CAPIEvent.selectPanel(panelName: null));
-//   //                     } else if (CAPIBloC.I.state.selectedPanel != null) {
+//   //                       FlutterContent().capiBloc.add(const CAPIEvent.selectPanel(panelName: null));
+//   //                     } else if (FlutterContent().capiBloc.state.selectedPanel != null) {
 //   //                       Callout.dismiss('selected-panel-border-overlay');
 //   //                     }
-//   //                     CAPIBloC.I.add(CAPIEvent.selectPanel(panelName: panelName));
+//   //                     FlutterContent().capiBloc.add(CAPIEvent.selectPanel(panelName: panelName));
 //   //                     // show an overlay for the panel (just a border)
 //   //                     _showPanelBorderOverlay(panelName);
 //   //                    },
@@ -286,7 +286,7 @@
 //   _enterEditMode() {
 //     MaterialAppWrapper.inEditMode.value = true;
 //     hideAllSingleTargetBtns();
-//     CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+//     FlutterContent().capiBloc.add(const CAPIEvent.forceRefresh());
 //   }
 //
 //   _exitEditMode() {
@@ -295,7 +295,7 @@
 //     Callout.dismiss(TREENODE_MENU_CALLOUT);
 //     Callout.dismiss(CAPIBloC.snippetBeingEdited?.rootNode?.name ?? "snippet name ?!");
 //     unhideAllSingleTargetBtns();
-//     CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+//     FlutterContent().capiBloc.add(const CAPIEvent.forceRefresh());
 //   }
 //
 //   _enterOrExitEditMode(RawKeyEvent event, ValueNotifier<DateTime?> lastTapTime, ValueNotifier<int> tapCount) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:get_it/get_it.dart';
+
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTarget extends StatelessWidget {
@@ -15,7 +15,7 @@ class PositionedTarget extends StatelessWidget {
     super.key,
   });
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class PositionedTarget extends StatelessWidget {
       top: tc.targetStackPos().dy - tc.radius,
       left: tc.targetStackPos().dx - tc.radius,
       child: Draggable(
-        key: GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[initialTC.uid.toString()] = GlobalKey(),
+        key: FC().setMultiTargetGk(initialTC.uid.toString(), GlobalKey()),
         feedback: _draggableTargetBeingDragged(tc),
         child: _draggableTargetNotBeingDragged(tc, Colors.white.withOpacity(.1)),
         childWhenDragging: const Offstage(),

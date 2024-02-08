@@ -50,16 +50,12 @@ void main() {
         ),
       );
       final snippetJson = scaffoldWithTabs.toJson();
-      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
-      String encodedModelJsonS = model.toJson().toString();
-      return (model, encodedModelJsonS);
+      return CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
     });
   });
 
   test('read the model from the repo', () async {
-    final result = await mockRepository.getCAPIModel(appName: appName);
-    final model = result.$1;
-    final encodedModelJson = result.$2;
+    final model = await mockRepository.getCAPIModel(appName: appName);
 
     expect(model!.appName, appName);
 

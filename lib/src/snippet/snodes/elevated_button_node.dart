@@ -6,7 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'elevated_button_node.mapper.dart';
@@ -36,14 +36,14 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
       key: nodeWidgetGK,
       child: ElevatedButton(
         // if feature specified, must be a callout
-        key: feature != null ? GetIt.I.get<GKMap>(instanceName: getIt_calloutGKs)[feature] = GlobalKey() : null,
+        key: feature != null ? FC().setCalloutGk(feature, GlobalKey()) : null,
         onPressed: () async {
           if (feature != null) {
             // Widget contents =  SnippetPanel(sName: calloutConfig!.contentSnippetName!);
             Future.delayed(
                 const Duration(seconds: 1),
                 () => Callout.showOverlay(
-                      targetGkF: () => GetIt.I.get<GKMap>(instanceName: getIt_calloutGKs)[feature],
+                      targetGkF: () => FC().getCalloutGk(feature),
                       boxContentF: (_) => SnippetPanel(panelName: calloutConfigGroup!.contentSnippetName!, snippetName: BODY_PLACEHOLDER, allowButtonCallouts: false),
                       calloutConfig: CalloutConfig(
                         feature: feature,

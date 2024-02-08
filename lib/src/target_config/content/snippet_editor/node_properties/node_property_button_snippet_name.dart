@@ -108,7 +108,7 @@ class _NodePropertyButton_SnippetNameState extends State<NodePropertyButton_Snip
             bgColor: Colors.white,
             inputType: widget.inputType,
             maxLines: widget.maxLines,
-            options: CAPIState.snippetsMap.keys.toList()..sort(),
+            options: FC().snippetsMap.keys.toList()..sort(),
           ),
         );
     Widget target(ctx) => GestureDetector(

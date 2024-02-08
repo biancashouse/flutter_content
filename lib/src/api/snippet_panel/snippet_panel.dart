@@ -12,7 +12,7 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 const BODY_PLACEHOLDER = 'body-placeholder';
 
 enum SnippetTemplate {
-  test_snippet,
+  empty_snippet,
   scaffold_with_tabs,
   scaffold_with_menubar,
   scaffold_with_actions,
@@ -72,7 +72,7 @@ class SnippetPanel extends StatefulWidget {
   static List<SnippetRootNode> templates = [
     // empty snippet for test only
     SnippetRootNode(
-      name: SnippetTemplate.test_snippet.name,
+      name: SnippetTemplate.empty_snippet.name,
     ),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
@@ -147,12 +147,12 @@ class SnippetPanel extends StatefulWidget {
   ];
 
   // static SnippetNode getRootNode(SnippetName snippetName) {
-  //   SnippetNode? sNode = CAPIBloC.I.state.rootNode(snippetName);
+  //   SnippetNode? sNode = FlutterContent().capiBloc.state.rootNode(snippetName);
   //   if (sNode == null) {
   //     // print("sNode is null");
   //     sNode = SnippetNode(name: snippetName, child: PlaceholderNode());
   //     // Snippet.reg(widget.onPressed, widget.onLongPress);
-  //     CAPIBloC.I.add(CAPIEvent.createdSnippet(
+  //     FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(
   //       newNode: sNode,
   //     ));
   //   }
@@ -177,7 +177,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
   SnippetRootNode getOrCreateSnippetFromTemplate() {
-    SnippetRootNode? snippetRootNode = CAPIState.rootNodeOfNamedSnippet(widget.snippetName);
+    SnippetRootNode? snippetRootNode = FC().rootNodeOfNamedSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
     if (snippetRootNode == null && widget.fromTemplate != null) {
       snippetRootNode = SnippetPanel.getTemplate(widget.fromTemplate!);
@@ -185,16 +185,16 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
       snippetRootNode ??= SnippetRootNode(name: widget.snippetName, child: PlaceholderNode()).cloneSnippet();
     }
     snippetRootNode.name = widget.snippetName;
-    CAPIState.snippetsMap[widget.snippetName] = snippetRootNode;
-    // CAPIBloC.I.add(CAPIEvent.createdSnippet(newSnippetNode: rootNode));
+    FC().snippetsMap[widget.snippetName] = snippetRootNode;
+    // FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(newSnippetNode: rootNode));
 
     return snippetRootNode;
   }
 
   // int countTabs() {
-  //   SnippetRootNode? rootNode = CAPIBloC.I.state.rootNode("root");
+  //   SnippetRootNode? rootNode = FlutterContent().capiBloc.state.rootNode("root");
   //   if (rootNode == null) return 0;
-  //   TabBarNode? tabBarNode = CAPIBloC.I.state.snippetBeingEdited?.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
+  //   TabBarNode? tabBarNode = FlutterContent().capiBloc.state.snippetBeingEdited?.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
   //   return tabBarNode?.children.length ?? 0;
   // }
 
@@ -216,7 +216,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     snippetNameToUse = widget.snippetName;
 
     // register snippet? with panel
-    CAPIState.snippetPlacementMap[widget.panelName] = snippetNameToUse;
+    FC().snippetPlacementMap[widget.panelName] = snippetNameToUse;
 
     _tabQ = Queue<int>();
   }
@@ -237,17 +237,17 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //         child: Center(
   //           child: IconButton(
   //             onPressed: () {
-  //               if (CAPIBloC.I.state.snippetsBeingEdited.isEmpty) {
+  //               if (FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty) {
   //                 //   Node.unhighlightSelectedNode();
-  //                 //   //CAPIBloc.I.add(CAPIEvent.hideSnippetTree(save: true));
+  //                 //   //FlutterContent().capiBloc.add(CAPIEvent.hideSnippetTree(save: true));
   //                 //   if (Callout.anyPresent([widget.sName.hashCode])) {
   //                 //     removeSnippetTreeCallout(widget.sName);
   //                 //   }
   //                 // } else {
   //                 hideAllSingleTargetBtns();
-  //                 // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //                 // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
-  //                 CAPIBloC.I.add(CAPIEvent.pushSnippetTree(snippetBloc: snippetBloc));
+  //                 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+  //                 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
+  //                 FlutterContent().capiBloc.add(CAPIEvent.pushSnippetTree(snippetBloc: snippetBloc));
   //                 //possibly show snippet tree in a callout
   //                 // showSnippetTreeCallout(
   //                 //   // context: context,
@@ -261,7 +261,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //               }
   //             },
   //             padding: EdgeInsets.zero,
-  //             icon: CAPIBloC.I.state.hideSnippetPencilIcons
+  //             icon: FlutterContent().capiBloc.state.hideSnippetPencilIcons
   //                 ? const Offstage()
   //                 : Tooltip(
   //                     message: widget.sName,
@@ -279,7 +279,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   // static CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc) {
   //   double width() {
   //     // if (root?.child == null) return 190;
-  //     double w = min(CAPIBloC.I.state.snippetTreeCalloutW ?? 400, 600);
+  //     double w = min(FlutterContent().capiBloc.state.snippetTreeCalloutW ?? 400, 600);
   //     return w > 0 ? w : 400;
   //   }
   //
@@ -287,7 +287,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //     // if (root?.child == null) return 60;
   //     // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
   //     // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-  //     double h = min(CAPIBloC.I.state.snippetTreeCalloutH ?? 400, Useful.scrH - 50);
+  //     double h = min(FlutterContent().capiBloc.state.snippetTreeCalloutH ?? 400, Useful.scrH - 50);
   //     return h > 0 ? h : 400;
   //   }
   //
@@ -303,22 +303,22 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //     //   CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
   //     //   STreeNode.unhighlightSelectedNode();
   //     //   Callout.dismiss('selected-panel-border-overlay');
-  //     //   CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
-  //     //   CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+  //     //   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+  //     //   FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
   //     //   // removeNodePropertiesCallout();
   //     //   Callout.dismiss(TREENODE_MENU_CALLOUT);
   //     //   MaterialAppWrapper.showAllPinkSnippetOverlays();
   //     //   if (snippetBloc.state.canUndo()) {
-  //     //     CAPIBloC.I.add(const CAPIEvent.saveModel());
+  //     //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
   //     //   }
   //     // },
   //     // onHiddenF: () {
   //     //   STreeNode.unhighlightSelectedNode();
-  //     //   CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
+  //     //   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
   //     //   Callout.dismiss(TREENODE_MENU_CALLOUT);
   //     //   MaterialAppWrapper.showAllPinkSnippetOverlays();
   //     //   if (snippetBloc.state.canUndo()) {
-  //     //     CAPIBloC.I.add(const CAPIEvent.saveModel());
+  //     //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
   //     //   }
   //     // },
   //     suppliedCalloutW: width(),
@@ -360,15 +360,15 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // panel name is always supplied, but snippet name can be omitted,
     // in which case a default snippet name is used: Snippet[pName].
     // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-    if (CAPIState.snippetPlacementMap.containsKey(widget.panelName)) {
-      snippetNameToUse = CAPIState.snippetPlacementMap[widget.panelName]!;
+    if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
+      snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     }
     // in case no entry found in panel map nor a snippet name supplied, use/create a default snipper for this panel.
     SnippetRootNode snippetRoot = getOrCreateSnippetFromTemplate();
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
-      key: CAPIState.panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+      key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
       // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
       builder: (innerContext, state) {
         try {

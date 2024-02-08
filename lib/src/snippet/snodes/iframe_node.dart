@@ -119,7 +119,7 @@ class IFrameNode extends ChildlessNode with IFrameNodeMappable {
     possiblyHighlightSelectedNode(context);
     String FOLDER_ID = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
     String RESOURCE_KEY = '';
-    return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && CAPIBloc.I.state.snippetsBeingEdited.isEmpty
+    return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty
         ? Center(
             key: nodeWidgetGK,
              child: IFrame(
@@ -131,7 +131,7 @@ class IFrameNode extends ChildlessNode with IFrameNodeMappable {
               forceRefresh: true,
             ),
           )
-        : FlutterContent.I.snippetsBeingEdited.isNotEmpty
+        : FC().areAnySnippetsBeingEdited
             ? Placeholder()
             : Column(
                 children: [

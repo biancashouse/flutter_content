@@ -152,7 +152,7 @@ class TargetConfig {
   double getScale(CAPIState state, {bool testing = false}) => playingOrSelected(state) || testing ? transformScale : 1.0;
 
   Offset getTranslate(CAPIState state, {bool testing = false}) {
-    Size ivSize = CAPIState.iwSize(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
     Offset translate =
         playingOrSelected(state) || testing ? Offset(transformTranslateX * ivSize.width, transformTranslateY * ivSize.height) : Offset.zero;
     return translate;
@@ -176,8 +176,8 @@ class TargetConfig {
 
   Offset targetGlobalPos(CAPIState state) {
     // iv rect should always be measured
-    Offset ivTopLeft = CAPIState.iwPos(wName);
-    Size ivSize = CAPIState.iwSize(wName);
+    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
 
     // calc from matrix
     double scale = getScale(state);
@@ -196,7 +196,7 @@ class TargetConfig {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = CAPIState.iwSize(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -206,7 +206,7 @@ class TargetConfig {
 
   Offset targetStackPos() {
     // iv rect should always be measured
-    Size ivSize = CAPIState.iwSize(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
 
     double stackPosX = (targetLocalPosLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (targetLocalPosTopPc ?? 0.0) * ivSize.height;
@@ -216,8 +216,8 @@ class TargetConfig {
 
   void setTargetStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = CAPIState.iwPos(wName);
-    Size ivSize = CAPIState.iwSize(wName);
+    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
 
     targetLocalPosTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     targetLocalPosLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
@@ -225,8 +225,8 @@ class TargetConfig {
 
   void setBtnStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = CAPIState.iwPos(wName);
-    Size ivSize = CAPIState.iwSize(wName);
+    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
+    Size ivSize = TargetGroupWrapper.iwSize(wName);
 
     btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);

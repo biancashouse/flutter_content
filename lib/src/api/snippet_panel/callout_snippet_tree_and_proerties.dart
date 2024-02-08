@@ -22,7 +22,7 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
     if (w != null) return w;
 
     // if (root?.child == null) return 190;
-    w = min(CAPIBloC.I.state.snippetTreeCalloutW ?? 400, 600);
+    w = min(FC().capiBloc.state.snippetTreeCalloutW ?? 400, 600);
     return w > 0 ? w : 400;
   }
 
@@ -33,7 +33,7 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
 // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-    h = min(CAPIBloC.I.state.snippetTreeCalloutH ?? 500, Useful.scrH - 50);
+    h = min(FC().capiBloc.state.snippetTreeCalloutH ?? 500, Useful.scrH - 50);
     return h > 0 ? h : 500;
   }
 
@@ -49,11 +49,11 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
     onDismissedF: onDismissedF,
 // onHiddenF: () {
 //   STreeNode.unhighlightSelectedNode();
-//   CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
+//   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
 //   Callout.dismiss(TREENODE_MENU_CALLOUT);
 //   MaterialAppWrapper.showAllPinkSnippetOverlays();
 //   if (snippetBloc.state.canUndo()) {
-//     CAPIBloC.I.add(const CAPIEvent.saveModel());
+//     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
 //   }
 // },
     suppliedCalloutW: width(),
@@ -105,7 +105,7 @@ void showSnippetTreeAndPropertiesCallout({
   // to check for any change
   // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
   EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  String? originalClipboardJson = CAPIBloC.I.state.jsonClipboard;
+  String? originalClipboardJson = FC().capiBloc.state.jsonClipboard;
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
   Callout.showOverlay(

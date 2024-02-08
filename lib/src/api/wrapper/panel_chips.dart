@@ -118,11 +118,11 @@
 //     if (Callout.anyPresent([snippetBeingEdited?.rootNode?.name ?? ''])) return;
 //     MaterialAppWrapperState? parentMAState() => MaterialAppWrapper.of(context);
 //     hideAllSingleTargetBtns();
-//     // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-//     // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+//     // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+//     // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
 //     String? snippetName = CAPIState.snippetPlacementMap[panelName];
 //     if (snippetName != null) {
-//       CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
+//       FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
 //       Useful.afterNextBuildDo(() {
 //         SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
 //         if (snippetBeingEdited != null) {
@@ -133,13 +133,13 @@
 //               // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
 //               STreeNode.unhighlightSelectedNode();
 //               Callout.dismiss('selected-panel-border-overlay');
-//               CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
-//               CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+//               FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+//               FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
 //               // removeNodePropertiesCallout();
 //               Callout.dismiss(TREENODE_MENU_CALLOUT);
 //               MaterialAppWrapperState.removeAllNodeWidgetOverlays();
 //               if (snippetBeingEdited.state.canUndo()) {
-//                 CAPIBloC.I.add(const CAPIEvent.saveModel());
+//                 FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
 //               }
 //             },
 //           );
@@ -152,13 +152,13 @@
 //     // CAPIState.snippetStateMap[snippetBeingEdited.snippetName] = snippetBeingEdited.state;
 //     STreeNode.unhighlightSelectedNode();
 //     Callout.dismiss('selected-panel-border-overlay');
-//     CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
-//     CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+//     FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+//     FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
 //     Callout.dismiss(snippetBeingEdited.rootNode?.name ?? "snippet name ?!");
 //     // removeNodePropertiesCallout();
 //     Callout.dismiss(TREENODE_MENU_CALLOUT);
 //     if (snippetBeingEdited.state.canUndo()) {
-//       CAPIBloC.I.add(const CAPIEvent.saveModel());
+//       FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
 //     }
 //   }
 // }

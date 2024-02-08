@@ -51,18 +51,16 @@ class _FakeCAPIState_1 extends _i1.SmartFake implements _i3.CAPIState {
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
   @override
-  _i4.Future<(_i5.CAPIModel?, String?)> getCAPIModel(
-          {required String? appName}) =>
+  _i4.Future<_i5.CAPIModel?> getCAPIModel({required String? appName}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCAPIModel,
           [],
           {#appName: appName},
         ),
-        returnValue: _i4.Future<(_i5.CAPIModel?, String?)>.value((null, null)),
-        returnValueForMissingStub:
-            _i4.Future<(_i5.CAPIModel?, String?)>.value((null, null)),
-      ) as _i4.Future<(_i5.CAPIModel?, String?)>);
+        returnValue: _i4.Future<_i5.CAPIModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.CAPIModel?>.value(),
+      ) as _i4.Future<_i5.CAPIModel?>);
 
   @override
   _i4.Future<void> createOrUpdateModel({required _i5.CAPIModel? model}) =>

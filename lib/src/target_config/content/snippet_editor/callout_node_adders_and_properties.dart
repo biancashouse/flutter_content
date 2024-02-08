@@ -23,7 +23,7 @@
 //   ScrollController? ancestorHScrollController,
 //   ScrollController? ancestorVScrollController,
 // }) async {
-//   CAPIBloc bloc = CAPIBloc.I;
+//   CAPIBloc bloc = FlutterContent().capiBloc;
 //
 //   // Text _menuItemText(String nodeTypeName) => Text(nodeTypeName.substring(0, nodeTypeName.length - 4));
 //
@@ -75,7 +75,7 @@
 //             style: Theme.of(context).textTheme.labelSmall?.copyWith(
 //                   color: Colors.black,
 //                   fontStyle: selectedNode is MultiChildNode && selectedNode.children.isEmpty ? FontStyle.italic : FontStyle.normal,
-//                   // fontWeight: CAPIBloc.I.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
+//                   // fontWeight: FlutterContent().capiBloc.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
 //                 ),
 //             textScaleFactor: 1.8,
 //           ),
@@ -224,7 +224,7 @@
 //           style: Theme.of(context).textTheme.labelSmall?.copyWith(
 //             color: Colors.black,
 //             fontStyle: state.selectedNode is MultiChildNode && (state.selectedNode as MultiChildNode).children.isEmpty ? FontStyle.italic : FontStyle.normal,
-//             // fontWeight: CAPIBloc.I.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
+//             // fontWeight: FlutterContent().capiBloc.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
 //           ),
 //           textScaleFactor: 1.8,
 //         ),
@@ -250,7 +250,7 @@
 //         context,
 //         state.selectedNodeParent,
 //             (type) {
-//           CAPIBloc.I.add(CAPIEvent.wrapWith(selectedNode: state.selectedNode!, type: type));
+//           FlutterContent().capiBloc.add(CAPIEvent.wrapWith(selectedNode: state.selectedNode!, type: type));
 //           removeNodePropertiesCallout();
 //         },
 //       ).toList(),
@@ -260,7 +260,7 @@
 //         state.selectedNodeParent,
 //         action,
 //             (type) {
-//           CAPIBloc.I.add(CAPIEvent.addSiblingBefore(selectedNode: state.selectedNode!, type: type));
+//           FlutterContent().capiBloc.add(CAPIEvent.addSiblingBefore(selectedNode: state.selectedNode!, type: type));
 //           removeNodePropertiesCallout();
 //         },
 //       ).toList(),
@@ -270,7 +270,7 @@
 //         state.selectedNodeParent,
 //         action,
 //             (type) {
-//           CAPIBloc.I.add(CAPIEvent.addSiblingAfter(selectedNode: state.selectedNode!, type: type));
+//           FlutterContent().capiBloc.add(CAPIEvent.addSiblingAfter(selectedNode: state.selectedNode!, type: type));
 //           removeNodePropertiesCallout();
 //         },
 //       ).toList(),
@@ -280,7 +280,7 @@
 //         state.selectedNodeParent,
 //         action,
 //             (type) {
-//           CAPIBloc.I.add(CAPIEvent.addChild(selectedNode: state.selectedNode!, type: type));
+//           FlutterContent().capiBloc.add(CAPIEvent.addChild(selectedNode: state.selectedNode!, type: type));
 //           removeNodePropertiesCallout();
 //         },
 //       ).toList(),

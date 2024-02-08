@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -151,7 +150,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   STreeNode(){
     nodeWidgetGK = GlobalKey();
-    CAPIState.gkSTreeNodeMap[nodeWidgetGK = GlobalKey()] = this;
+    FC().gkSTreeNodeMap[nodeWidgetGK = GlobalKey()] = this;
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -169,6 +168,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? nodeWidgetGK;  // gets used in toWidget()
 
+  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) => node.findNearestAncestorOfType(SnippetRootNode) as SnippetRootNode?;
+  
   List<PTreeNode> properties(BuildContext context) {
     return createPropertiesList(context);
   } //_properties ??= createPropertiesList();
@@ -185,7 +186,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
   void refreshWithUpdate(VoidCallback assignF) {
-    SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
+    SnippetBloC? snippetBloc = FC().snippetBeingEdited;
     SnippetState? snippetBlocState = snippetBloc?.state;
     snippetBlocState?.ur.createUndo(snippetBlocState);
     assignF.call();
@@ -304,13 +305,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   Future<void> possiblyHighlightSelectedNode(BuildContext context) async {
     
-    if (FlutterContent.I.selectedNode == this) {
-      if (true || FlutterContent.I.highlightedNode != FlutterContent.I.selectedNode) {
+    if (FC().selectedNode == this) {
+      if (true || FC().highlightedNode != FC().selectedNode) {
         Useful.afterNextBuildDo(() {
           if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
             unhighlightSelectedNode();
           }
-          SnippetBloC? snippetBloc = FlutterContent.I.snippetBeingEdited;
+          SnippetBloC? snippetBloc = FC().snippetBeingEdited;
           Rect? r = snippetBloc?.state.selectedWidgetGK?.globalPaintBounds();
           if (r != null) {
             double thickness = 4;
@@ -356,7 +357,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               ),
               targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
             );
-            FlutterContent.I.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+            FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
             // Useful.afterMsDelayDo(1000, () {
             //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
             // });
@@ -459,7 +460,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   if (capiBloc.state.jsonClipboard != null && action != AddAction.wrapWith) {
 //     return MenuItemButton(
 //       onPressed: () {
-//         CAPIBloC bloc = CAPIBloC.I;
+//         CAPIBloC bloc = FlutterContent().capiBloc;
 //         String clipboardJson = bloc.state.jsonClipboard!;
 //         STreeNode clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
 //         SnippetBloC? snippetBloc = bloc.state.snippetBeingEdited;
@@ -488,7 +489,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   if (bloc.state.jsonClipboard != null && action != AddAction.wrapWith) {
 //     return MenuItemButton(
 //       onPressed: () {
-//         CAPIBloc bloc = CAPIBloc.I;
+//         CAPIBloc bloc = FlutterContent().capiBloc;
 //         String clipboardJson = bloc.state.jsonClipboard!;
 //         Node clipboardNode = NodeMapper.fromJson(clipboardJson);
 //         switch (action) {

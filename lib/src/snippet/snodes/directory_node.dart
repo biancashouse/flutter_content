@@ -47,7 +47,7 @@ class DirectoryNode extends MultiChildNode with DirectoryNodeMappable {
     SnippetPanelState? ss = SnippetPanel.of(context);
     if (!(ss?.mounted ?? false)) return const Icon(Icons.error, color: Colors.red);
 
-    // TreeController<Node> treeC = CAPIBloc.I.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
+    // TreeController<Node> treeC = FlutterContent().capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
     SnippetTreeController treeC = SnippetTreeController(
       roots: [this],
       childrenProvider: (STreeNode node) {

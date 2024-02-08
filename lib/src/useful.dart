@@ -13,7 +13,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
@@ -65,7 +65,7 @@ class Useful {
 
   static String asset(String name) {
     // only need to specify the asset pkg when used by a client project; i.e. not within the flutter_content project itself
-    return FlutterContent.I.skipAssetPkgName ? name : 'packages/flutter_content/$name';
+    return FC().skipAssetPkgName ? name : 'packages/flutter_content/$name';
   }
 
   // must be called from a widget build

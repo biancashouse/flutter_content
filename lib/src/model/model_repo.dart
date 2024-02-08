@@ -1,7 +1,7 @@
 import 'package:flutter_content/flutter_content.dart';
 
 abstract class IModelRepository {
-  Future<(CAPIModel?, String?)> getCAPIModel({required String appName});
+  Future<CAPIModel?> getCAPIModel({required String appName});
 
   Future<void> createOrUpdateModel({required CAPIModel model});
 

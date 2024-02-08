@@ -2,12 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:flutter_content/src/overlays/callouts/callout_config.dart';
 import 'package:flutter_content/src/overlays/callouts/callout_config_toolbar.dart';
-import 'package:get_it/get_it.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(String snippetName) => Callout.anyPresent([snippetName]);
@@ -46,15 +43,15 @@ void showSnippetContentCallout({
     // final ScrollController? ancestorHScrollController,
     // final ScrollController? ancestorVScrollController,
     ) {
-  // CAPIBloc bloc = CAPIBloc.I;
+  // CAPIBloc bloc = FlutterContent().capiBloc;
   // GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
   // bool ignoreBarrierTaps = false;
   double minHeight = 0;
   // int maxLines = 5;
-  // TargetConfig? initialTC; // = initialTC; //CAPIBloc.I.state.tcByNameOrUid(initialTC);
+  // TargetConfig? initialTC; // = initialTC; //FlutterContent().capiBloc.state.tcByNameOrUid(initialTC);
   GlobalKey? targetGK() => initialTC.single
-      ? GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[initialTC.wName]
-      : GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[initialTC.uid.toString()];
+      ? FC().getSingleTargetGk(initialTC.wName)
+      : FC().getMultiTargetGk(initialTC.uid.toString())!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = snippetName;
@@ -97,13 +94,13 @@ void showSnippetContentCallout({
         initialTC
           ..calloutWidth = newSize.width
           ..calloutHeight = newSize.height - CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(initialTC);
-        CAPIBloC.I.add(CAPIEvent.targetConfigChanged(newTC: initialTC));
+        FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: initialTC));
       },
       onDragEndedF: (Offset newPos) {
         if (newPos.dy / Useful.scrH != initialTC.calloutTopPc || newPos.dx / Useful.scrW != initialTC.calloutLeftPc) {
           initialTC.calloutTopPc = newPos.dy / Useful.scrH;
           initialTC.calloutLeftPc = newPos.dx / Useful.scrW;
-          CAPIBloC.I.add(CAPIEvent.targetConfigChanged(newTC: initialTC, keepTargetsHidden: true));
+          FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: initialTC, keepTargetsHidden: true));
           // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
           // tc.setTextCalloutPos(newPos);
         }

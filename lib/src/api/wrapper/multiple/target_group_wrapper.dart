@@ -8,7 +8,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:get_it/get_it.dart';
+
 
 import 'positioned_target_cover.dart';
 import 'positioned_target_cover_btn.dart';
@@ -28,6 +28,22 @@ class TargetGroupWrapper extends StatefulWidget {
   State<TargetGroupWrapper> createState() => TargetGroupWrapperState();
 
   static TargetGroupWrapperState? of(BuildContext context) => context.findAncestorStateOfType<TargetGroupWrapperState>();
+
+  /// the following statics are actually all UI-related and span all blocs...
+  // can have multiple transformable widgets and preferredSize widgets under the MaterialApp
+  // want new sizes to be available immediately after changing, hence not part of bloc, but static (global) instead
+  // keys are wrapper name (WidgetWrapper or ImageWrapper)
+  static Map<String, Offset> iwPosMap = {};
+  static Map<String, Size> iwSizeMap = {};
+  static Size iwSize(String wName) => iwSizeMap[wName] ?? Size.zero;
+  static Offset iwPos(String wName) => iwPosMap[wName] ?? Offset.zero;
+  static Rect wwRect(String wName) => Rect.fromLTWH(
+    iwPos(wName).dx,
+    iwPos(wName).dy,
+    iwSize(wName).width,
+    iwSize(wName).height,
+  );
+
 
 // static void hideAllTargets({required CAPIBloc bloc, required String name, final TargetConfig? exception}) {
 //   CAPITargetConfig? config = bloc.state.imageConfig(name);
@@ -60,7 +76,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
 
   // Orientation? _lastO;
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   TransformableScaffoldState? get parentTW => TransformableScaffold.of(context);
 
@@ -70,8 +86,8 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
   void initState() {
     super.initState();
 
-    if (parentTW?.widget.ancestorHScrollController != null) CAPIState.registerScrollController(parentTW!.widget.ancestorHScrollController!);
-    if (parentTW?.widget.ancestorVScrollController != null) CAPIState.registerScrollController(parentTW!.widget.ancestorVScrollController!);
+    if (parentTW?.widget.ancestorHScrollController != null) FC().registerScrollController(parentTW!.widget.ancestorHScrollController!);
+    if (parentTW?.widget.ancestorVScrollController != null) FC().registerScrollController(parentTW!.widget.ancestorVScrollController!);
 
     Useful.afterNextBuildDo(() {
       // register ww with AppWrapper
@@ -108,7 +124,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
       // ignore but then don't update pos
     }
     if (globalPos != null) {
-      CAPIState.iwPosMap[widget.name] = globalPos;
+      TargetGroupWrapper.iwPosMap[widget.name] = globalPos;
     }
   }
 
@@ -228,7 +244,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    CAPIBloC bloc = CAPIBloC.I;
+    CAPIBloC bloc = FC().capiBloc;
     // print("TargetGroupWrapperState.build");
     return NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -320,7 +336,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
   // }
 
   Positioned buildPositionedTargetForPlay(TargetConfig tc) {
-    GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()] = GlobalKey();
+    FC().setMultiTargetGk(tc.uid.toString(), GlobalKey());
     double radius = tc.radius;
     return Positioned(
       top: tc
@@ -332,7 +348,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
       child: Container(
         decoration: BoxDecoration(color: FUCHSIA_X.withOpacity(.2), shape: BoxShape.circle),
         //color:Colors.pink.withOpacity(.2),
-        key: GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()] = GlobalKey(),
+        key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
         width: radius * 2,
         height: radius * 2,
       ),
@@ -387,7 +403,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
           });
         },
         child: SizedBox.fromSize(
-          size: CAPIState.iwSize(widget.name),
+          size: TargetGroupWrapper.iwSize(widget.name),
           child: ModalBarrier(
             color: !bloc.state.playList.isNotEmpty ? Colors.purple.withOpacity(.25) : null,
             dismissible: false,
@@ -400,13 +416,13 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
     //print("sizeMap: ${sizeMap.toString()}");
     // var gkMap = CAPIState.gkMap;
     // print("gkMap: ${gkMap.toString()}");
-    return CAPIState.iwSizeMap.containsKey(widget.name)
+    return TargetGroupWrapper.iwSizeMap.containsKey(widget.name)
         ? IgnorePointer(
       ignoring: true, //!state.aTargetIsSelected(),
       child: MeasureSizeBox(
         // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
         onSizedCallback: (Size size) {
-          CAPIState.iwSizeMap[widget.name] = size;
+          TargetGroupWrapper.iwSizeMap[widget.name] = size;
           // print("MeasureSizeBox => ${size.toString()}");
         },
         child: widget.child,
@@ -415,7 +431,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
         : MeasureSizeBox(
       // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
       onSizedCallback: (Size size) {
-        CAPIState.iwSizeMap[widget.name] = size;
+        TargetGroupWrapper.iwSizeMap[widget.name] = size;
         // print("MeasureSizeBox => ${size.toString()}");
         // force a rebuild with the measured size
         Useful.afterNextBuildDo(() {
@@ -439,7 +455,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   const IntegerCircleAvatar(this.tc,
       {this.num, required this.textColor, required this.bgColor, required this.radius, required this.fontSize, this.selected = false, super.key});
 
-  CAPIBloC get bloc => CAPIBloC.I;
+  CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) =>

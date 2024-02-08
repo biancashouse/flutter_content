@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 
 part 'snippet_ref_node.mapper.dart';
 
@@ -42,7 +41,7 @@ class SnippetRefNode extends ChildlessNode with SnippetRefNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     try {
-      var rootNode = CAPIState.rootNodeOfNamedSnippet(snippetName);
+      var rootNode = FC().rootNodeOfNamedSnippet(snippetName);
       if (rootNode == null) return const Icon(Icons.error, color: Colors.red);
       return rootNode.toWidget(context, this);
     } catch (e) {

@@ -6,7 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
-import 'package:get_it/get_it.dart';
+
 import '../pnodes/groups/text_style_group.dart';
 
 part 'default_text_style_node.mapper.dart';
@@ -39,7 +39,7 @@ class DefaultTextStyleNode extends SingleChildNode with DefaultTextStyleNodeMapp
           snode: this,
           name: 'namedTextStyle',
           stringValue: namedTextStyle,
-          options: FlutterContent.I.namedStyles.keys.toList(),
+          options: FC().namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           calloutButtonSize: const Size(280, 20),
           calloutSize: const Size(280, 48),

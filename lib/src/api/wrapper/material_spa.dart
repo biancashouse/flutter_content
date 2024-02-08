@@ -12,12 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_proerties.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
+import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
-import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -40,7 +39,7 @@ class MaterialSPA extends StatefulWidget {
   final FirebaseOptions? fbOptions;
   final Map<String, NamedTextStyle> namedStyles;
   final bool hideStatusBar;
-  final CAPIBloC? testBloc;
+  final IModelRepository? testModelRepo; // created in tests by a when(mockRepository.getCAPIModel(appName: appName...
   final Widget? testWidget;
 
   // final bool localTestingFilePaths;
@@ -56,7 +55,7 @@ class MaterialSPA extends StatefulWidget {
     this.fbOptions,
     this.namedStyles = const {},
     this.hideStatusBar = true,
-    @visibleForTesting this.testBloc,
+    @visibleForTesting this.testModelRepo,
     @visibleForTesting this.testWidget,
     super.key,
   });
@@ -87,10 +86,10 @@ class MaterialSPA extends StatefulWidget {
   //           if (snippetName != null) {
   //             // edit the snippet
   //             hideAllSingleTargetBtns();
-  //             // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //             // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+  //             // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+  //             // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
   //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
-  //             CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
+  //             FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
   //             Useful.afterNextBuildDo(() {
   //               SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
   //               if (snippetBeingEdited != null) {
@@ -142,12 +141,12 @@ class MaterialSPA extends StatefulWidget {
   //           onTap: () {
   //             // edit the snippet
   //             hideAllSingleTargetBtns();
-  //             // CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //             // CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+  //             // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+  //             // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
   //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
   //             String? snippetName = CAPIState.snippetPlacementMap[panelName];
   //             if (snippetName != null) {
-  //               CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
+  //               FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
   //               Useful.afterNextBuildDo(() {
   //                 SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
   //                 if (snippetBeingEdited != null) {
@@ -193,6 +192,7 @@ class MaterialSPA extends StatefulWidget {
 class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin {
   FireStoreModelRepository fbModelRepo = FireStoreModelRepository();
   late Future<CAPIBloC> fInitApp;
+  bool _inited = false;
   int tapCount = 0;
   DateTime? lastTapTime;
 
@@ -211,10 +211,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     // see conditional imports for web or mobile
     registerWebViewImplementation();
 
-    if (widget.testBloc == null) {
-      print("fInitApp = _initApp();");
-      fInitApp = _initApp();
-    }
+    fInitApp = _initApp();
   }
 
   // cannot initWithContext() here - see transformable_widget_wrapper.dart and widget_wrapper.dart
@@ -228,65 +225,65 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     Map<String, TargetConfig> singleTargetMap = {};
     late Map<String, TargetGroupConfig>? targetGroupMap;
     late Map<String, SnippetRootNode> snippetsMap;
-    CAPIModel? model;
-    String? lastSavedModelJson;
+    late CAPIModel model;
 
-    if (widget.fbOptions != null) fbModelRepo.initFireStore(options: widget.fbOptions);
+    if (widget.testModelRepo == null) {
+      if (widget.fbOptions != null) fbModelRepo.initFireStore(options: widget.fbOptions);
 
-    if (kReleaseMode) {
-      // read from json file asset
-      if (widget.initialValueJsonAssetPath != null) {
-        try {
-          String configFileS = await rootBundle.loadString(widget.initialValueJsonAssetPath!, cache: false);
-          model = CAPIModel.fromJson(json.decode(configFileS));
-        } catch (e) {
-          // failed to read json asset - ignore
+      if (kReleaseMode) {
+        // read from json file asset
+        if (widget.initialValueJsonAssetPath != null) {
+          try {
+            String configFileS = await rootBundle.loadString(widget.initialValueJsonAssetPath!, cache: false);
+            model = CAPIModel.fromJson(json.decode(configFileS));
+          } catch (e) {
+            // failed to read json asset - ignore
+          }
         }
       }
-    }
 
-    if (kIsWeb) {
-      // only init local storage if not already setup
-      try {
-        var checkIfAlreadySet = HydratedBloc.storage;
-      } catch (e) {
-        // init local storage access
-        var dir = kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
-        HydratedBloc.storage = await HydratedStorage.build(
-          storageDirectory: dir,
-        );
-      }
-    }
-
-    //possibly init firebase, then read model
-    // try to read model from firebase
-    // print("getFBModel()...");
-    CAPIModel? fbModel;
-
-    if (widget.fbOptions != null) {
-      var modelAndModelJson = await fbModelRepo.getCAPIModel(appName: widget.appName);
-      fbModel = modelAndModelJson.$1;
-      lastSavedModelJson = modelAndModelJson.$2;
-    }
-
-    // print("getFBModel() returned ${fbModel.toString()}");
-    // if can't get model from FB, try localstorage
-    if (fbModel == null) {
-      var modelJson = HydratedBloc.storage.read("flutter-content");
-      if (modelJson != null) {
+      if (kIsWeb) {
+        // only init local storage if not already setup
         try {
-          Map<String, dynamic> decoded = jsonDecode(modelJson);
-          model = CAPIModel.fromJson(decoded);
+          HydratedBloc.storage;
         } catch (e) {
-          targetGroupMap = {};
-          snippetsMap = {};
+          // init local storage access
+          var dir = kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
+          HydratedBloc.storage = await HydratedStorage.build(
+            storageDirectory: dir,
+          );
         }
+      }
+
+      //possibly init firebase, then read model
+      // try to read model from firebase
+      // print("getFBModel()...");
+      CAPIModel? fbModel;
+
+      if (widget.fbOptions != null) {
+        fbModel = await fbModelRepo.getCAPIModel(appName: widget.appName);
+      }
+
+      // print("getFBModel() returned ${fbModel.toString()}");
+      // if can't get model from FB, try localstorage
+      if (fbModel == null) {
+        var modelJson = HydratedBloc.storage.read("flutter-content");
+        if (modelJson != null) {
+          try {
+            Map<String, dynamic> decoded = jsonDecode(modelJson);
+            model = CAPIModel.fromJson(decoded);
+          } catch (e) {
+            targetGroupMap = {};
+            snippetsMap = {};
+          }
+        }
+      } else {
+        model = fbModel;
       }
     } else {
-      model = fbModel;
+      // widget testing repo should  supply a model via a when(mockRepository.getCAPIModel(appName: appName...
+      model = await widget.testModelRepo?.getCAPIModel(appName: widget.appName) ?? CAPIModel(appName: widget.appName);
     }
-
-    model ??= CAPIModel(appName: widget.appName);
 
     targetGroupMap = _parseTargetGroups(model);
     for (TargetGroupConfig tgConfig in targetGroupMap.values) {
@@ -308,85 +305,75 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     CAPIBloC capiBloc = CAPIBloC(
       modelRepo: fbModelRepo,
       appName: widget.appName,
-      lastSavedModelJson: lastSavedModelJson,
       // useFirebase: GetIt.I.isRegistered<FirebaseFirestore>(),
       // localTestingFilePaths: widget.localTestingFilePaths,
       targetGroupMap: targetGroupMap,
       singleTargetMap: singleTargetMap,
       // jsonRootDirectoryNode: model.jsonRootDirectoryNode,
       jsonClipboard: model.jsonClipboard,
+      lastSavedModelJson: jsonEncode(model.toJson()),
       // snippetsMap: snippetsMap,
     );
-    CAPIState.snippetsMap = parseSnippetJsons(model);
 
-    if (!GetIt.I.isRegistered<FlutterContent>(instanceName: "fc")) {
-      GetIt.I.registerSingleton<FlutterContent>(FlutterContent.init(capiBloc:capiBloc), instanceName: "fc");
-    }
+    // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
+    FC().init(
+      capiBloc: capiBloc,
+      snippetsMap: parseSnippetJsons(model),
+      namedStyles: widget.namedStyles,
+    );
 
     return capiBloc;
   }
 
   @override
   Widget build(BuildContext context) => Builder(builder: (context) {
-        return widget.testBloc == null
-            ? FutureBuilder<CAPIBloC>(
-                future: fInitApp,
-                builder: (context, snapshot) {
-                  bool done = snapshot.connectionState == ConnectionState.done && snapshot.hasData;
-                  print("done (has data)");
-                  CAPIBloC? newBloc = done ? snapshot.data : null;
-                  if (!done || newBloc == null) return const Offstage();
-                  // create the clipboard overlay and hide
-                  // start the app with the main bloC
-                  Useful.afterNextBuildDo(() {
-                    _showFloatingClipboard();
-                    Callout.hide("floating-clipboard");
-                    print("showDevToolsButton");
-                    showDevToolsButton(context);
-                  });
-                     return BlocProvider<CAPIBloC>(
-                    create: (BuildContext context) => newBloc,
-                    child: MaterialApp(
-                      theme: widget.materialAppThemeF(),
-                      debugShowCheckedModeBanner: false,
-                      scrollBehavior: const ConstantScrollBehavior(),
-                      home: RawKeyboardListener(
-                        autofocus: true,
-                        focusNode: FocusNode(), // <-- more magic
-                        onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
-                        child: Builder(builder: (context) {
-                          Useful.instance.initWithContext(context);
-                          return widget.testWidget != null
-                              ? widget.testWidget!
-                              : widget.webHome != null && widget.mobileHome != null
-                                  ? HomePageProvider().getWebOrMobileHomePage(widget.webHome!, widget.mobileHome!)
-                                  : const Icon(
-                                      Icons.error_outlined,
-                                      color: Colors.red,
-                                      size: 40,
-                                    );
-                        }),
-                      ),
-                    ),
-                  );
-                },
-              )
-            // TESTING ONLY
-            : BlocProvider<CAPIBloC>(
-                create: (BuildContext context) => widget.testBloc!,
+        return FutureBuilder<CAPIBloC>(
+          future: fInitApp,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+              print("done (has data)");
+              // create the clipboard overlay and hide
+              // start the app with the main bloC
+              if (!_inited) {
+                Useful.afterNextBuildDo(() {
+                  _showFloatingClipboard();
+                  Callout.hide("floating-clipboard");
+                  print("showDevToolsButton");
+                  showDevToolsButton(context);
+                });
+                _inited = true;
+              }
+              return BlocProvider<CAPIBloC>(
+                create: (BuildContext context) => snapshot.data!,
                 child: MaterialApp(
                   theme: widget.materialAppThemeF(),
+                  debugShowCheckedModeBanner: false,
+                  scrollBehavior: const ConstantScrollBehavior(),
                   home: RawKeyboardListener(
                     autofocus: true,
                     focusNode: FocusNode(), // <-- more magic
                     onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
                     child: Builder(builder: (context) {
                       Useful.instance.initWithContext(context);
-                      return widget.testWidget!;
+                      return widget.testWidget != null
+                          ? widget.testWidget!
+                          : widget.webHome != null && widget.mobileHome != null
+                              ? HomePageProvider().getWebOrMobileHomePage(widget.webHome!, widget.mobileHome!)
+                              : const Icon(
+                                  Icons.error_outlined,
+                                  color: Colors.red,
+                                  size: 40,
+                                );
                     }),
                   ),
                 ),
               );
+            } else {
+              return const Offstage();
+            }
+          },
+        );
+        // TESTING ONLY
       });
 
   // @override
@@ -555,22 +542,22 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     MaterialSPA.inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
     hideAllSingleTargetBtns();
-    CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+    FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
   static exitEditMode() {
     MaterialSPA.inEditMode.value = false;
     removeAllNodeWidgetOverlays();
-    String feature = FlutterContent.I.snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
+    String feature = FC().snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
     if (Callout.anyPresent([feature])) {
       Callout.dismiss(feature);
     }
     if (Useful.cachedContext != null) {
       showDevToolsButton(Useful.cachedContext!);
     }
-    CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+    FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
     unhideAllSingleTargetBtns();
-    CAPIBloC.I.add(const CAPIEvent.forceRefresh());
+    FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
   _enterOrExitEditMode(RawKeyEvent event, DateTime? lastTapTime, int tapCount) {
@@ -585,9 +572,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // only called with MaterialAppWrapper context
   static void showAllNodeWidgetOverlays(context) {
     void traverseAndMeasure(BuildContext el, STreeNode? parent) {
-      if (CAPIState.gkSTreeNodeMap.containsKey(el.widget.key)) {
+      if (FC().gkSTreeNodeMap.containsKey(el.widget.key)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = CAPIState.gkSTreeNodeMap[gk];
+        STreeNode? node = FC().gkSTreeNodeMap[gk];
         if (node != null) {
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
@@ -634,7 +621,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // }
 
   static void removeAllNodeWidgetOverlays() {
-    for (GlobalKey nodeWidgetGK in CAPIState.gkSTreeNodeMap.keys) {
+    for (GlobalKey nodeWidgetGK in FC().gkSTreeNodeMap.keys) {
       Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
   }
@@ -648,11 +635,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     } else {
       highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
     }
-    CAPIBloC.I.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
+    FC().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
     // var currCtx = startingAtNode.nodeWidgetGK?.currentContext;
     Useful.afterNextBuildDo(() {
-      SnippetBloC? snippetBeingEdited = FlutterContent.I.snippetBeingEdited;
-      if (FlutterContent.I.snippetBeingEdited != null) {
+      SnippetBloC? snippetBeingEdited = FC().snippetBeingEdited;
+      if (FC().snippetBeingEdited != null) {
         // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
         showSnippetTreeAndPropertiesCallout(
           snippetBloc: snippetBeingEdited!,
@@ -661,13 +648,13 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
             Callout.dismiss('selected-panel-border-overlay');
-            CAPIBloC.I.add(const CAPIEvent.unhideAllTargetGroups());
-            CAPIBloC.I.add(const CAPIEvent.popSnippetBloc());
+            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+            FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
 // removeNodePropertiesCallout();
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
             if (snippetBeingEdited.state.canUndo()) {
-              CAPIBloC.I.add(const CAPIEvent.saveModel());
+              FC().capiBloc.add(const CAPIEvent.saveModel());
             }
           },
         );
@@ -700,12 +687,12 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             ? InkWell(
                 onTap: () {
                   print("tapped");
-                  String? snippetName = CAPIState.rootNodeOfSnippet(node)?.name;
+                  String? snippetName = STreeNode.rootNodeOfSnippet(node)?.name;
                   if (snippetName == null) return;
 // edit the root snippet
                   hideAllSingleTargetBtns();
-// CAPIBloc.I.add(const CAPIEvent.hideAllTargetGroupBtns());
-// CAPIBloc.I.add(const CAPIEvent.hideTargetGroupsExcept());
+// FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+// FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
                   removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
                   pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node);

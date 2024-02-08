@@ -36,7 +36,7 @@ enum OutlinedBorderEnum {
         menuItems: values.map((e) => e.toMenuItem()).toList(),
         originalEnumIndex: enumValueIndex,
         onChangeF: (newIndex) {
-          // CAPIBloC.I.selectedNode?.hidePropertiesWhileDragging = false;
+          // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
           onChangedF?.call(newIndex);
         },
         wrap: true,

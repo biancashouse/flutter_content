@@ -47,7 +47,6 @@ dependencies:
   firebase_auth: ^4.7.2
   cloud_firestore: ^4.8.4
   firebase_storage: ^11.2.5
-  get_it: ^7.6.0
   google_fonts: ^6.1.0
   watcher: ^1.1.0
   pointer_interceptor: ^0.9.3+6

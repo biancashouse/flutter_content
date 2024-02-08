@@ -7,7 +7,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,7 +17,7 @@ import 'snippet_bloc_test.mocks.dart';
 void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.test_snippet);
+  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.empty_snippet);
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   const appName = 'flutter-content-widget-test';
@@ -59,23 +58,20 @@ void main() {
   );
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final mockCapiBloc = MockCAPIBloC()..add(const CAPIEvent.appStarted());
+  // final mockCapiBloc = MockCAPIBloC()..add(const CAPIEvent.appStarted());
   // sample data -----------
   setUpAll(() {
     mockRepository = MockModelRepository();
     when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
       final modelSnippetJson = modelSnippetRoot.toJson();
-      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
-      String encodedModelJsonS = model.toJson().toString();
-      return (model, encodedModelJsonS);
+      return CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
     });
     // snippetState = snippetBloc.state;
-    FlutterContent.init(capiBloc: mockCapiBloc);
+    // FC().init(capiBloc: mockCapiBloc, snippetsMap: {snippetName: modelSnippetRoot}, namedStyles: {});
     // GetIt.I.registerSingleton<CAPIBloC>(mockCapiBloc);
   });
 
   testWidgets('Flutter Content widget test', (WidgetTester tester) async {
-
     // Create a mock instance https://pub.dev/packages/bloc_test
 
     // whenListen(
@@ -100,9 +96,9 @@ void main() {
     await tester.pumpWidget(
       MaterialSPA(
         appName: 'flutter-content-widget-test',
-        testBloc: mockCapiBloc,
+        testModelRepo: mockRepository,
         testWidget: FlutterContentPage(panelName: "my-panel", snippetName: SnippetTemplate.scaffold_with_tabs.name),
-         materialAppThemeF: () => ThemeData(
+        materialAppThemeF: () => ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           primaryColor: FUCHSIA_X,
           primarySwatch: Colors.purple,

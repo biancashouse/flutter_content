@@ -59,7 +59,7 @@ abstract class Node extends Object {
 
     return [];
   }
-
+  
   Node? findNearestAncestorOfType(Type type) {
     Node? node = this;
     while (node != null && node.runtimeType != type) {
@@ -79,7 +79,7 @@ abstract class Node extends Object {
         ],
       );
 
-  CAPIBloC get capiBloc => CAPIBloC.I;
+  CAPIBloC get capiBloc => FC().capiBloc;
 }
 
 class SnippetTreeController extends TreeController<STreeNode> {

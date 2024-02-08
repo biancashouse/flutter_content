@@ -41,7 +41,7 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
 
   // // @override
   // String toSource(BuildContext context) {
-  //   CAPIBloc bloc = CAPIBloc.I;
+  //   CAPIBloc bloc = FlutterContent().capiBloc;
   //   return '';
   // }
 }
