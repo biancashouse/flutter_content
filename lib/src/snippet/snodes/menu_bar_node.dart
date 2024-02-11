@@ -6,7 +6,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'menu_bar_node.mapper.dart';
 
 @MappableClass()
-class MenuBarNode extends MultiChildNode with MenuBarNodeMappable {
+class MenuBarNode extends MC with MenuBarNodeMappable {
   MenuBarNode({
     required super.children,
   });

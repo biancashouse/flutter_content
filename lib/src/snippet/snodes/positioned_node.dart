@@ -6,7 +6,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'positioned_node.mapper.dart';
 
 @MappableClass()
-class PositionedNode extends SingleChildNode with PositionedNodeMappable {
+class PositionedNode extends SC with PositionedNodeMappable {
   double? top;
   double? left;
   double? bottom;

@@ -7,7 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'stepper_node.mapper.dart';
 
 @MappableClass()
-class StepperNode extends MultiChildNode with StepperNodeMappable {
+class StepperNode extends MC with StepperNodeMappable {
   String? name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 
   StepperNode({

@@ -13,7 +13,7 @@ import 'edgeinsets_node_value.dart';
 part 'container_node.mapper.dart';
 
 @MappableClass()
-class ContainerNode extends SingleChildNode with ContainerNodeMappable {
+class ContainerNode extends SC with ContainerNodeMappable {
   int? fillColor1Value;
   int? fillColor2Value;
   int? fillColor3Value;

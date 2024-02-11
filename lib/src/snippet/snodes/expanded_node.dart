@@ -6,7 +6,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'expanded_node.mapper.dart';
 
 @MappableClass()
-class ExpandedNode extends SingleChildNode with ExpandedNodeMappable {
+class ExpandedNode extends SC with ExpandedNodeMappable {
   int flex;
 
   ExpandedNode({

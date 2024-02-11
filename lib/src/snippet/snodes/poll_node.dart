@@ -10,7 +10,7 @@ part 'poll_node.mapper.dart';
 
 // poll must always have first child richtext as the title
 @MappableClass()
-class PollNode extends MultiChildNode with PollNodeMappable {
+class PollNode extends MC with PollNodeMappable {
   String name;
   String title;
   int? startDate;

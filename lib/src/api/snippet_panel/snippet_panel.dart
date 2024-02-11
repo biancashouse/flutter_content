@@ -68,11 +68,16 @@ class SnippetPanel extends StatefulWidget {
 
   static void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
-  static SnippetRootNode getTemplate(SnippetTemplate template) => templates.firstWhere((root) => root.name == template.name);
+  static SnippetRootNode getTemplate(SnippetTemplate template) {
+    var rootNode = templates.firstWhere((root) => root.name == template.name).cloneSnippet();
+    rootNode.setParents(null);
+    return rootNode;
+  }
   static List<SnippetRootNode> templates = [
     // empty snippet for test only
     SnippetRootNode(
       name: SnippetTemplate.empty_snippet.name,
+      child: PlaceholderNode()
     ),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(

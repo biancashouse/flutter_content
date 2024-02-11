@@ -8,7 +8,7 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 part 'menu_item_button_node.mapper.dart';
 
 @MappableClass()
-class MenuItemButtonNode extends ChildlessNode with MenuItemButtonNodeMappable {
+class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
   String itemLabel;
   String? destinationPanelName;
   String? destinationSnippetName;

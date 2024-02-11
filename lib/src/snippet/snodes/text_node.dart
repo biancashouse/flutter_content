@@ -12,7 +12,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'text_node.mapper.dart';
 
 @MappableClass()
-class TextNode extends ChildlessNode with TextNodeMappable {
+class TextNode extends CL with TextNodeMappable {
   String text;
   TextStyleGroup? textStyleGroup;
   String? namedTextStyle;

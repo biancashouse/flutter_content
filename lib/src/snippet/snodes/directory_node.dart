@@ -7,7 +7,7 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 part 'directory_node.mapper.dart';
 
 @MappableClass()
-class DirectoryNode extends MultiChildNode with DirectoryNodeMappable {
+class DirectoryNode extends MC with DirectoryNodeMappable {
   String name;
 
   DirectoryNode({

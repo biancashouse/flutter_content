@@ -12,7 +12,7 @@ import '../pnodes/groups/text_style_group.dart';
 part 'default_text_style_node.mapper.dart';
 
 @MappableClass()
-class DefaultTextStyleNode extends SingleChildNode with DefaultTextStyleNodeMappable {
+class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   TextStyleGroup? textStyleGroup;
   String? namedTextStyle;
   TextAlignEnum? textAlign;

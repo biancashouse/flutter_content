@@ -7,7 +7,7 @@ import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 part 'singlechildscrollview_node.mapper.dart';
 
 @MappableClass()
-class SingleChildScrollViewNode extends SingleChildNode with SingleChildScrollViewNodeMappable {
+class SingleChildScrollViewNode extends SC with SingleChildScrollViewNodeMappable {
   EdgeInsetsValue? padding;
 
   SingleChildScrollViewNode({

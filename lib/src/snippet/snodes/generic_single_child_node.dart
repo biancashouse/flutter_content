@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'generic_single_child_node.mapper.dart';
 
 @MappableClass()
-class GenericSingleChildNode extends SingleChildNode with GenericSingleChildNodeMappable {
+class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   String propertyName; // Widget property name, such as title, body, leading,bottom etc
   GenericSingleChildNode({
     required this.propertyName,

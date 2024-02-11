@@ -11,13 +11,13 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'rich_text_node.mapper.dart';
 
 @MappableClass()
-class RichTextNode extends ChildlessNode with RichTextNodeMappable {
+class RichTextNode extends CL with RichTextNodeMappable {
   TextAlignEnum? textAlign;
   TextDirectionEnum? textDirection;
   bool? softWrap;
   TextOverflowEnum? overflow;
   double? textScaleFactor;
-  TextSpanNode text; //child
+  InlineSpanNode text; //child
 
   RichTextNode({
     this.textAlign,

@@ -110,7 +110,6 @@ class NodeWidget extends StatelessWidget {
           Useful.afterNextBuildDo(() {
             snippetBloc.add(SnippetEvent.selectNode(
               node: entry.node,
-              showProperties: true,
               // imageTC: tc,
               selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
@@ -297,7 +296,7 @@ class NodeWidget extends StatelessWidget {
                 ? Colors.white
                 : textColor,
         fontSize: 12.0,
-        fontStyle: selectedNode is MultiChildNode && !selectedNode.children.isNotEmpty ? FontStyle.italic : FontStyle.normal,
+        fontStyle: selectedNode is MC && !selectedNode.children.isNotEmpty ? FontStyle.italic : FontStyle.normal,
         fontWeight: snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode == selectedNode ? FontWeight.bold : FontWeight.normal,
       ),
     );

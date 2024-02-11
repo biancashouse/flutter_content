@@ -8,7 +8,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'submenu_button_node.mapper.dart';
 
 @MappableClass()
-class SubmenuButtonNode extends MultiChildNode with SubmenuButtonNodeMappable {
+class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   String itemLabel;
 
   // Node? child; always just use a Text(itemLabel)

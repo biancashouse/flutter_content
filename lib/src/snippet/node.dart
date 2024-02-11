@@ -38,13 +38,13 @@ abstract class Node extends Object {
       children = node.children ?? [];
     } else if (node is WidgetSpanNode) {
       children = node.child != null ? [node.child!] : [];
-    } else if (node is ChildlessNode) {
+    } else if (node is CL) {
       children = [];
-    } else if (node is SingleChildNode) {
+    } else if (node is SC) {
       children = [if (node.child != null) node.child!];
     } else if (node is GenericMultiChildNode) {
       children = node.children;
-    } else if (node is MultiChildNode) {
+    } else if (node is MC) {
       children = node.children;
     }
 
@@ -123,9 +123,9 @@ class SnippetTreeController extends TreeController<STreeNode> {
       startingNodes: [startingNode],
       descendCondition: (_) => true,
       returnCondition: (node) => node.runtimeType == type,
-      onTraverse: (node) {
-        print(node.toString());
-      },
+      // onxTraverse: (node) {
+      //   print(node.toString());
+      // },
     );
     return foundNode;
   }

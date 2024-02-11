@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'snippet_ref_node.mapper.dart';
 
 @MappableClass()
-class SnippetRefNode extends ChildlessNode with SnippetRefNodeMappable {
+class SnippetRefNode extends CL with SnippetRefNodeMappable {
   String snippetName;
 
   SnippetRefNode({

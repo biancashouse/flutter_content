@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'generic_multi_child_node.mapper.dart';
 
 @MappableClass()
-class GenericMultiChildNode extends MultiChildNode with GenericMultiChildNodeMappable {
+class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   String propertyName; // Widget property name, such as actions
   GenericMultiChildNode({
     required this.propertyName,

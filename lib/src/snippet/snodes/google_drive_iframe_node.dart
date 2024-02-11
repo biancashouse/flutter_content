@@ -6,7 +6,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 part 'google_drive_iframe_node.mapper.dart';
 
 @MappableClass()
-class GoogleDriveIFrameNode extends ChildlessNode with GoogleDriveIFrameNodeMappable {
+class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   String name;
   String folderId;
   String resourceKey;

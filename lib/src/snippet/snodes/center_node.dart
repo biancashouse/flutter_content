@@ -6,7 +6,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'center_node.mapper.dart';
 
 @MappableClass()
-class CenterNode extends SingleChildNode with CenterNodeMappable {
+class CenterNode extends SC with CenterNodeMappable {
   CenterNode({
     super.child,
   });

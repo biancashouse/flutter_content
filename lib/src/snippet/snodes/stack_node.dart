@@ -11,7 +11,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'stack_node.mapper.dart';
 
 @MappableClass()
-class StackNode extends MultiChildNode with StackNodeMappable {
+class StackNode extends MC with StackNodeMappable {
   StackFitEnum fit;
   ClipEnum clipBehavior;
   AlignmentEnum alignment;

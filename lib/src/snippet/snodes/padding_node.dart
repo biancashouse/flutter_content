@@ -10,7 +10,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'padding_node.mapper.dart';
 
 @MappableClass()
-class PaddingNode extends SingleChildNode with PaddingNodeMappable {
+class PaddingNode extends SC with PaddingNodeMappable {
   EdgeInsetsValue? padding;
 
   PaddingNode({

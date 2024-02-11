@@ -9,7 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 part 'align_node.mapper.dart';
 
 @MappableClass()
-class AlignNode extends SingleChildNode with AlignNodeMappable {
+class AlignNode extends SC with AlignNodeMappable {
   AlignmentEnum alignment;
 
   AlignNode({

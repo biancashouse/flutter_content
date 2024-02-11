@@ -71,7 +71,7 @@ class ClipboardNodeWidget extends StatelessWidget {
                       : Colors.black,
                   fontWeight: selected ? FontWeight.bold : FontWeight.normal,
                   fontStyle:
-                  entry.node is MultiChildNode && !entry.hasChildren ? FontStyle.italic : FontStyle.normal,
+                  entry.node is MC && !entry.hasChildren ? FontStyle.italic : FontStyle.normal,
                 ),
               ),
             ),

@@ -5,8 +5,8 @@ import 'package:flutter_content/flutter_content.dart';
 part 'single_child_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'sc', includeSubClasses: singleChildSubClasses)
-abstract class SingleChildNode extends STreeNode with SingleChildNodeMappable {
+abstract class SC extends STreeNode with SCMappable {
   STreeNode? child;
 
-  SingleChildNode({this.child});
+  SC({this.child});
 }

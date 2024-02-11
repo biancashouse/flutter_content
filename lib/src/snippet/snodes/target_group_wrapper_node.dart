@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'target_group_wrapper_node.mapper.dart';
 
 @MappableClass()
-class TargetGroupWrapperNode extends SingleChildNode with TargetGroupWrapperNodeMappable {
+class TargetGroupWrapperNode extends SC with TargetGroupWrapperNodeMappable {
   SnippetName name;
 
   TargetGroupWrapperNode({

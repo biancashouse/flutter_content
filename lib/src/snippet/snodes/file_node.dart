@@ -14,7 +14,7 @@ get googleSlidesIconSrc => Useful.asset('images/google-icons/slides.png');
 get googleFormsIconSrc => Useful.asset('images/google-icons/forms.png');
 
 @MappableClass()
-class FileNode extends ChildlessNode with FileNodeMappable {
+class FileNode extends CL with FileNodeMappable {
   String name;
   String src;
 

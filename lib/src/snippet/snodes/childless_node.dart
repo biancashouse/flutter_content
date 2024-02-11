@@ -5,6 +5,6 @@ import 'package:flutter_content/flutter_content.dart';
 part 'childless_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'cl', includeSubClasses: childlessSubClasses)
-abstract class ChildlessNode extends STreeNode with ChildlessNodeMappable {
-  ChildlessNode();
+abstract class CL extends STreeNode with CLMappable {
+  CL();
 }

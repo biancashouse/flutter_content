@@ -8,7 +8,7 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 part 'step_node.mapper.dart';
 
 @MappableClass()
-class StepNode extends ChildlessNode with StepNodeMappable {
+class StepNode extends CL with StepNodeMappable {
   String titleSnippetName;
   String subtitleSnippetName;
   String contentSnippetName;

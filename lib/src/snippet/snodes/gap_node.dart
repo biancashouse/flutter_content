@@ -11,7 +11,7 @@ import 'package:gap/gap.dart';
 part 'gap_node.mapper.dart';
 
 @MappableClass()
-class GapNode extends ChildlessNode with GapNodeMappable {
+class GapNode extends CL with GapNodeMappable {
   double gap;
 
   GapNode({

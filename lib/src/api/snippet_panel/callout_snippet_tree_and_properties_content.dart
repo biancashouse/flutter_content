@@ -359,10 +359,14 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
               ),
               IconButton(
                 hoverColor: Colors.white30,
-                onPressed: () {
+                onPressed: () async {
                   Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                   if (snippetBloc.state.selectedNode is! RichTextNode) {
                     snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+                    Useful.afterNextBuildDo(() async {
+                      await Future.delayed(const Duration(milliseconds: 1000));
+                      snippetBloc.add(const SnippetEvent.completeDeletion());
+                    });
                   }
                   Callout.dismiss("TreeNodeMenu");
                 },
@@ -412,7 +416,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   bool _canReplace(STreeNode? selectNodeParent) => true;
 
-  bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MultiChildNode || selectNodeParent is TextSpanNode);
+  bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC || selectNodeParent is TextSpanNode);
 
   bool _canWrap(STreeNode selectedNode) => (selectedNode is! InlineSpanNode &&
       selectedNode is! SnippetRootNode &&
@@ -425,8 +429,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
       ((selectedNode is SnippetRootNode && selectedNode.child == null) ||
           // || (selectedNode is! ChildlessNode && !entry.hasChildren))
           // (selectedNode is RichTextNode && selectedNode.text == null) ||
-          (selectedNode is SingleChildNode && selectedNode.child == null) ||
-          (selectedNode is MultiChildNode || selectedNode is TextSpanNode));
+          (selectedNode is SC && selectedNode.child == null) ||
+          (selectedNode is MC || selectedNode is TextSpanNode));
 
   Widget editTreeStructureIconButtons(snippetBloc) {
     return Center(
@@ -596,7 +600,6 @@ class SnippetTreePane extends StatelessWidget {
               snippetBloc.add(
                 SnippetEvent.selectNode(
                   node: parent,
-                  showProperties: false,
                   selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
                   selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
                 ),

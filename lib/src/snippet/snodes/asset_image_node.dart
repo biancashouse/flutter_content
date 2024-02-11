@@ -10,7 +10,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'asset_image_node.mapper.dart';
 
 @MappableClass()
-class AssetImageNode extends ChildlessNode with AssetImageNodeMappable {
+class AssetImageNode extends CL with AssetImageNodeMappable {
   String name;
   double? width;
   double? height;

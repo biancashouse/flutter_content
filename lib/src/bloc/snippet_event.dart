@@ -7,10 +7,8 @@ part 'snippet_event.freezed.dart';
 
 @freezed
 class SnippetEvent with _$SnippetEvent {
-
   const factory SnippetEvent.selectNode({
     required STreeNode node,
-    required bool showProperties,
     required GlobalKey selectedWidgetGK,
     required GlobalKey selectedTreeNodeGK,
     // TargetConfig? imageTC,
@@ -23,7 +21,6 @@ class SnippetEvent with _$SnippetEvent {
     required STreeNode node,
     required String newSnippetName,
   }) = SaveNodeAsSnippet;
-
 
   const factory SnippetEvent.highlightNode({
     required STreeNode? node,
@@ -38,29 +35,30 @@ class SnippetEvent with _$SnippetEvent {
   // }) = ShowNodeProperties;
 
   const factory SnippetEvent.replaceSelectionWith({
-    required Type type,
-    String? snippetName,
+    Type? type,
+    STreeNode? testNode,
   }) = ReplaceSelectionWith;
 
   const factory SnippetEvent.wrapWith({
-    required Type type,
-    String? snippetName,
+    Type? type,
+    STreeNode? testNode,
   }) = WrapWith;
 
   const factory SnippetEvent.appendChild({
-    required Type type,
-    String? snippetRefName,
+    Type? type,
+    STreeNode? testNode,
     Type? widgetSpanChildType,
+    STreeNode? testWidgetSpanChildNode,
   }) = AppendChild;
 
   const factory SnippetEvent.addSiblingBefore({
-    required Type type,
-    String? snippetRefName,
+    Type? type,
+    STreeNode? testNode,
   }) = AddSiblingBefore;
 
   const factory SnippetEvent.addSiblingAfter({
-    required Type type,
-    String? snippetRefName,
+    Type? type,
+    STreeNode? testNode,
   }) = AddSiblingAfter;
 
   const factory SnippetEvent.pasteReplacement({
@@ -71,6 +69,7 @@ class SnippetEvent with _$SnippetEvent {
   const factory SnippetEvent.pasteChild({
     required STreeNode clipboardNode,
     Type? widgetSpanChildType,
+    STreeNode? testWidgetSpanChildNode,
   }) = PasteChild;
 
   const factory SnippetEvent.pasteSiblingBefore({
@@ -82,6 +81,7 @@ class SnippetEvent with _$SnippetEvent {
   }) = PasteSiblingAfter;
 
   const factory SnippetEvent.deleteNodeTapped() = DeleteNodeTapped;
+  const factory SnippetEvent.completeDeletion() = CompleteDeletion;
 
   // const factory SnippetEvent.addNode({
   //   required STreeNode adder2InsertBefore,

@@ -8,7 +8,7 @@ import 'package:flutter_content/src/flutter_polls/flutter_poll_option.dart';
 part 'poll_option_node.mapper.dart';
 
 @MappableClass()
-class PollOptionNode extends ChildlessNode with PollOptionNodeMappable {
+class PollOptionNode extends CL with PollOptionNodeMappable {
   String optionId;
   String text;
 

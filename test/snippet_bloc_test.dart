@@ -109,7 +109,6 @@ void main() {
       act: (bloc) =>
           bloc.add(SnippetEvent.selectNode(
             node: firstTabViewNode,
-            showProperties: false,
             selectedWidgetGK: selectedWidgetGK,
             selectedTreeNodeGK: selectedTreeNodeGK,
           )),
@@ -130,7 +129,6 @@ void main() {
       act: (bloc) {
         bloc.add(SnippetEvent.selectNode(
           node: emptySnippetRoot,
-          showProperties: false,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK,
         ),);

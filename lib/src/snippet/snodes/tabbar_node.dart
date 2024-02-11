@@ -9,7 +9,7 @@ import 'edgeinsets_node_value.dart';
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
-class TabBarNode extends MultiChildNode with TabBarNodeMappable {
+class TabBarNode extends MC with TabBarNodeMappable {
   int? selectedLabelColorValue;
   int? unselectedLabelColorValue;
   int? indicatorColorValue;

@@ -7,7 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'aspect_ratio_node.mapper.dart';
 
 @MappableClass()
-class AspectRatioNode extends SingleChildNode with AspectRatioNodeMappable {
+class AspectRatioNode extends SC with AspectRatioNodeMappable {
   double aspectRatio;
 
   AspectRatioNode({

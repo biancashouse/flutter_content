@@ -10,7 +10,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'split_view_node.mapper.dart';
 
 @MappableClass()
-class SplitViewNode extends MultiChildNode with SplitViewNodeMappable {
+class SplitViewNode extends MC with SplitViewNodeMappable {
   AxisEnum axis;
   bool resizeable;
 

@@ -10,7 +10,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'flexible_node.mapper.dart';
 
 @MappableClass()
-class FlexibleNode extends SingleChildNode with FlexibleNodeMappable {
+class FlexibleNode extends SC with FlexibleNodeMappable {
   int flex;
   FlexFitEnum fit;
 

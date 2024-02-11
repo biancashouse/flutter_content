@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'snippet_root_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
-class SnippetRootNode extends SingleChildNode with SnippetRootNodeMappable {
+class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   bool isEmbedded;
   String tags;
@@ -49,7 +49,7 @@ class SnippetRootNode extends SingleChildNode with SnippetRootNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     // root snippet - always has a gk so callout can point to it
     setParent(parentNode);
-    return child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red, size: 24);
+    return child?.toWidget(context, this) ?? const Placeholder();
   }
 
   @override

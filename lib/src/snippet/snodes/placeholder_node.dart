@@ -7,7 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'placeholder_node.mapper.dart';
 
 @MappableClass()
-class PlaceholderNode extends ChildlessNode with PlaceholderNodeMappable {
+class PlaceholderNode extends CL with PlaceholderNodeMappable {
   String? name;
   String? centredLabel;
   int? colorValue;

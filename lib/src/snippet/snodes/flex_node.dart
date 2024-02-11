@@ -9,7 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dar
 part 'flex_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'flex', includeSubClasses: flexSubClasses)
-abstract class FlexNode extends MultiChildNode with FlexNodeMappable {
+abstract class FlexNode extends MC with FlexNodeMappable {
   MainAxisAlignmentEnum? mainAxisAlignment;
   MainAxisSizeEnum? mainAxisSize;
   CrossAxisAlignmentEnum? crossAxisAlignment;

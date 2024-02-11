@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'sizedbox_node.mapper.dart';
 
 @MappableClass()
-class SizedBoxNode extends SingleChildNode with SizedBoxNodeMappable {
+class SizedBoxNode extends SC with SizedBoxNodeMappable {
   double? width;
   double? height;
 

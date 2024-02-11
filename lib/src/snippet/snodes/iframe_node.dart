@@ -13,7 +13,7 @@ const sampleDocSrc =
     'https://docs.google.com/document/d/e/2PACX-1vS3QgXGHNtrKoCpojpXILZfmZM9WLABVnWDnFIsD2FUhHnHo6cG_YKdKqYa3bWw7L5pgdU-4b2u5TIy/pub?embedded=true';
 
 @MappableClass()
-class IFrameNode extends ChildlessNode with IFrameNodeMappable {
+class IFrameNode extends CL with IFrameNodeMappable {
   // String name;
   String? src;
   double iframeWidth;

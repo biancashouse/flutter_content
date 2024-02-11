@@ -7,7 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'tabbarview_node.mapper.dart';
 
 @MappableClass()
-class TabBarViewNode extends MultiChildNode with TabBarViewNodeMappable {
+class TabBarViewNode extends MC with TabBarViewNodeMappable {
   TabBarViewNode({
     required super.children,
   });

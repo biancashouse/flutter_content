@@ -484,7 +484,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     try {
       for (String snippetJson in model.snippetEncodedJsons.values) {
         SnippetRootNode rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
-        snippetMap[rootNode.name] = rootNode;
+        snippetMap[rootNode.name] = rootNode..setParents(null);
       }
     } catch (e) {
       print("_parseSnippetJsons(): ${e.toString()}");
@@ -571,10 +571,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   // only called with MaterialAppWrapper context
   static void showAllNodeWidgetOverlays(context) {
+    var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el, STreeNode? parent) {
-      if (FC().gkSTreeNodeMap.containsKey(el.widget.key)) {
+      if (gkSTreeNodeMap.containsKey(el.widget.key)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = FC().gkSTreeNodeMap[gk];
+        STreeNode? node = gkSTreeNodeMap[gk];
         if (node != null) {
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
@@ -661,7 +662,6 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 // select node
         snippetBeingEdited.add(SnippetEvent.selectNode(
           node: selectedNode ?? startingAtNode,
-          showProperties: true,
           selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
           selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,

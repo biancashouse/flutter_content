@@ -8,7 +8,7 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 part 'button_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
-abstract class ButtonNode extends SingleChildNode with ButtonNodeMappable {
+abstract class ButtonNode extends SC with ButtonNodeMappable {
   ButtonStyleGroup? buttonStyleGroup;
   String? namedButtonStyle;
   String? onTapHandlerName;

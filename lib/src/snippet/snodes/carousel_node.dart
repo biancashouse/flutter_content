@@ -18,7 +18,7 @@ List<String> kDemoImages = [
 ];
 
 @MappableClass()
-class CarouselNode extends MultiChildNode with CarouselNodeMappable {
+class CarouselNode extends MC with CarouselNodeMappable {
   bool autoPlay;
   int autoPlayIntervalSecs;
   bool enlargeCenterPage;
