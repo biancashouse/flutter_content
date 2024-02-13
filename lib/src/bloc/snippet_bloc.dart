@@ -37,7 +37,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     on<HighlightNode>((event, emit) => _highlightNode(event, emit));
     on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<ForceSnippetRefresh>((event, emit) => _forceSnippetRefresh(event, emit));
-    on<WrapWith>((event, emit) => _wrapWith(event, emit));
+    on<WrapSelectionWith>((event, emit) => _wrapWith(event, emit));
     on<ReplaceSelectionWith>((event, emit) => _replaceWith(event, emit));
     on<AppendChild>((event, emit) => _addChild(event, emit));
     on<AddSiblingBefore>((event, emit) => _addSiblingBefore(event, emit));
@@ -162,27 +162,30 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       if (parent is SC && sel is CL) {
         parent.child = null;
       } else if (parent is SC && sel is SC) {
-        parent.child = sel.child;
+        parent.child = sel.child?..setParent(parent);
       } else if (parent is SC && sel is MC && sel.children.isEmpty) {
         parent.child = null;
       } else if (parent is SC && sel is MC && sel.children.length < 2) {
-        parent.child = sel.children.first;
+        parent.child = sel.children.first..setParent(parent);
       } else if (parent is MC && sel is CL) {
         parent.children.remove(sel);
       } else if (parent is MC && sel is SC && sel.child != null) {
         int index = parent.children.indexOf(sel);
-        parent.children[index] = sel.child!;
-      } else if (parent is MC && sel is SC && sel.child == null) {
+        parent.children[index] = sel.child!..setParent(parent);
+      } else if (parent is MC && sel is MC && sel.children.length == 1) {
+        int index = parent.children.indexOf(sel);
+        parent.children[index] = sel.children.first..setParent(parent);
+      } else if (parent is MC && ((sel is SC && sel.child == null) || (sel is MC && sel.children.isEmpty))) {
         parent.children.remove(sel);
       } else if (parent is RichTextNode && sel is TextSpanNode && sel.children?.length == 1) {
-        parent.text = sel.children!.first;
-      } else if (parent is RichTextNode && sel is WidgetSpanNode) {
-        parent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true);
+        parent.text = sel.children!.first..setParent(parent);
+      } else if (parent is RichTextNode && (sel is WidgetSpanNode || sel is TextSpanNode && sel.children?.length != 1)) {
+        parent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)..setParent(parent);
       } else if (parent is TextSpanNode) {
         parent.children!.remove(sel);
       }
       // snippet must comprise at least, a placeholder
-      if (parent is SnippetRootNode) {
+      if (parent is SnippetRootNode && parent.child == null) {
         parent.child = PlaceholderNode()..setParent(parent);
       }
     } catch (e) {
@@ -380,12 +383,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (TextButtonNode) => TextButtonNode(),
         const (TextNode) => TextNode(text: childNode is TabBarNode ? 'new Tab' : ''),
         const (TextSpanNode) => TextSpanNode(children: []),
-        const (TitleSnippetRootNode) => TitleSnippetRootNode(name: 'title', child: childNode),
         const (WidgetSpanNode) => WidgetSpanNode(child: childNode),
         _ => throw (Exception(notFoundMsg)),
       };
 
-  void _wrapWith(WrapWith event, emit) {
+  void _wrapWith(WrapSelectionWith event, emit) {
     if (!state.aNodeIsSelected) return;
 
     STreeNode sel = state.selectedNode!;
@@ -393,9 +395,16 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     STreeNode w = event.type != null ? _typeAsATreeNode(event.type!, sel, "_wrapWith() missing ${event.type.toString()}") : event.testNode!;
 
     if (w is CL || w is WidgetSpanNode) return;
-    if (w is TextSpanNode && sel is! InlineSpanNode) return;
+    if (sel is InlineSpanNode && w is! InlineSpanNode) return;
     if (w is PollNode && sel is! PollOptionNode) return;
+    if (sel is PollOptionNode && w is! PollNode) return;
     if (w is StepperNode && sel is! StepNode) return;
+    if (sel is StepNode && w is! StepperNode) return;
+    if (sel is ExpandedNode && w is! FlexNode) return;
+    if (sel is FlexibleNode && w is! FlexNode) return;
+    if (sel is PositionedNode && w is! StackNode) return;
+    if (sel is InlineSpanNode && sel.parent is RichTextNode && w is RichTextNode) return;
+    if (sel is InlineSpanNode && sel.parent is! RichTextNode && w is! InlineSpanNode) return;
 
     try {
       _createSnippetUndo();
@@ -470,8 +479,9 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // }
 
   void _replaceWith(ReplaceSelectionWith event, emit) {
-    if (state.aNodeIsSelected) {
+    if (state.aNodeIsSelected ) {
       STreeNode selectedNode = state.selectedNode!;
+      if (event.type == selectedNode.runtimeType) return;
       _createSnippetUndo();
       STreeNode newNode =
           event.type != null ? _typeAsATreeNode(event.type!, null, "_replaceWith() missing ${event.type.toString()}") : event.testNode!;
@@ -484,6 +494,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
     if (sel is InlineSpanNode && r is! InlineSpanNode) return;
     if (sel is! InlineSpanNode && r is InlineSpanNode) return;
+    if (sel is PollOptionNode && r is! PollOptionNode) return;
+    if (sel is StepNode && r is! StepNode) return;
 
     STreeNode parent = sel.parent as STreeNode;
 
@@ -735,6 +747,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       (state.selectedNode?.parent as TextSpanNode).children?.insert(i, newNode as InlineSpanNode);
     }
 
+    newNode.setParent(parent);
     state.treeC.expand(newNode);
     emit(state.copyWith(
       selectedNode: newNode,

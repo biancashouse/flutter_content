@@ -39,10 +39,10 @@ class SnippetEvent with _$SnippetEvent {
     STreeNode? testNode,
   }) = ReplaceSelectionWith;
 
-  const factory SnippetEvent.wrapWith({
+  const factory SnippetEvent.wrapSelectionWith({
     Type? type,
     STreeNode? testNode,
-  }) = WrapWith;
+  }) = WrapSelectionWith;
 
   const factory SnippetEvent.appendChild({
     Type? type,

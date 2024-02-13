@@ -1,0 +1,639 @@
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/snippet_event.dart';
+import 'package:flutter_content/src/bloc/snippet_state.dart';
+import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  late SnippetRootNode snippet;
+  late SnippetTreeController treeC;
+  late SnippetBloC snippetBloc;
+  late STreeNode nodeTBD;
+  late RichTextNode rtNode;
+
+  late TextNode cl1;
+  late TextNode cl2;
+  late CenterNode sc1;
+  late CenterNode sc2;
+  late RowNode mc1;
+  late RowNode mc2;
+
+  final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
+  final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
+  final ur = SnippetTreeUR();
+
+  // setupAll() runs once before any test in the suite
+  setUpAll(() async {
+    // print('Setting up common resources...');
+  });
+
+  setUp(() {
+    cl1 = TextNode(text: 'cl1');
+    cl2 = TextNode(text: 'cl2');
+    sc1 = CenterNode();
+    sc2 = CenterNode();
+    mc1 = RowNode(children: []);
+    mc2 = RowNode(children: []);
+  });
+
+  void test_snippet_setup(STreeNode child) {
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)..setParents(null);
+    treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
+    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+  }
+
+  /// reusable expected states
+  expectedState_NoSelection(SnippetBloC bloc) => bloc.state.copyWith(
+        selectedNode: null,
+        showProperties: false,
+        nodeBeingDeleted: null,
+      );
+
+  expectedState_SelectedNode(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
+        selectedNode: node,
+        showProperties: true,
+        selectedWidgetGK: selectedWidgetGK,
+        selectedTreeNodeGK: selectedTreeNodeGK,
+        nodeBeingDeleted: null,
+      );
+
+  expectedState_NodeBeingDeleted(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
+        nodeBeingDeleted: node,
+        selectedNode: node,
+        showProperties: true,
+      );
+
+  blocTest<SnippetBloC, SnippetState>('delete only child (a CL) in snippet',
+      setUp: () => test_snippet_setup(cl1),
+      build: () => snippetBloc,
+      act: (bloc) {
+        bloc.add(SnippetEvent.selectNode(node: cl1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+        // don't delete yet - just set nodeBeingDeleted
+        bloc.add(const SnippetEvent.deleteNodeTapped());
+        // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+        bloc.add(const SnippetEvent.completeDeletion());
+      },
+      expect: () => <SnippetState>[
+            expectedState_SelectedNode(snippetBloc, cl1),
+            expectedState_NodeBeingDeleted(snippetBloc, cl1),
+            expectedState_NoSelection(snippetBloc),
+          ],
+      tearDown: () {
+        expect(snippet.child, isA<PlaceholderNode>());
+        expect(snippet.anyMissingParents(), false);
+      });
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete only child (SC) in snippet',
+    setUp: () => test_snippet_setup(sc1),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc1),
+      expectedState_NodeBeingDeleted(snippetBloc, sc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, isA<PlaceholderNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an SC node having a child (*)',
+    setUp: () => test_snippet_setup(sc1..child = cl1),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc1),
+      expectedState_NodeBeingDeleted(snippetBloc, sc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete only child (MC) in snippet',
+    setUp: () => test_snippet_setup(mc1),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, isA<PlaceholderNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having a single child (*)',
+    setUp: () => test_snippet_setup(mc1..children = [cl1]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having >1 child (*)',
+    setUp: () => test_snippet_setup(mc1..children = [cl1, cl2]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, mc1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete only child (RichText) in snippet',
+    setUp: () => test_snippet_setup(nodeTBD = RichTextNode(text: TextSpanNode(text: 'rich text span'))),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, isA<PlaceholderNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an empty SC node having an SC parent',
+    setUp: () => test_snippet_setup(sc1..child = sc2),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc2),
+      expectedState_NodeBeingDeleted(snippetBloc, sc2),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(sc1.child, isNull);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an SC node having an SC parent and a child (*)',
+    setUp: () => test_snippet_setup(sc1..child = (sc2..child = cl1)),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc2),
+      expectedState_NodeBeingDeleted(snippetBloc, sc2),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(sc1.child, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having no children',
+    setUp: () => test_snippet_setup(sc1..child = mc1),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(sc1.child, isNull);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having a single child',
+    setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1])),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(sc1.child, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node a with >1 child',
+    setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1, cl2])),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(sc1.child, mc1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an SC node with MC parent',
+    setUp: () => test_snippet_setup(mc1..children = [sc1]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc1),
+      expectedState_NodeBeingDeleted(snippetBloc, sc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.isEmpty, true);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an SC node having (*) child, and having MC parent',
+    setUp: () => test_snippet_setup(mc1..children = [sc1..child = cl1]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, sc1),
+      expectedState_NodeBeingDeleted(snippetBloc, sc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.first, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an empty MC node with MC parent',
+    setUp: () => test_snippet_setup(mc1..children = [mc2]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc2),
+      expectedState_NodeBeingDeleted(snippetBloc, mc2),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.isEmpty, true);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having a single (*) child, and having MC parent',
+    setUp: () => test_snippet_setup(mc1
+      ..children = [
+        mc2..children = [cl1]
+      ]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc2),
+      expectedState_NodeBeingDeleted(snippetBloc, mc2),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.first, cl1);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete an MC node having >1 child, and having MC parent',
+    setUp: () => test_snippet_setup(mc1
+      ..children = [
+        mc2..children = [cl1, cl2]
+      ]),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, mc1),
+      expectedState_NodeBeingDeleted(snippetBloc, mc1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.first, mc2);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "delete a RichText's childless TextSpan",
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'monkey'))),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(rtNode.text, isA<TextSpanNode>());
+      expect((rtNode.text as TextSpanNode).text, 'xxx');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "delete a RichText's TextSpan that itself has a WidgetSpan",
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(children: [WidgetSpanNode()]))),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(rtNode.text, isA<WidgetSpanNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "delete a RichText's TextSpan that itself has a TextSpan with 1 (*) child",
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'tbd', children: [TextSpanNode(text: 'monkey')]))),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(rtNode.text, isA<TextSpanNode>());
+      expect((rtNode.text as TextSpanNode).text, 'monkey');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "delete a RichText's TextSpan that itself has >1 children",
+    setUp: () =>
+        test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'AAA', children: [TextSpanNode(text: 'TTT'), WidgetSpanNode()]))),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(rtNode.text, isA<TextSpanNode>());
+      expect((nodeTBD as TextSpanNode).text, 'AAA');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete first of 3 children from MultiChildNode',
+    setUp: () => test_snippet_setup(CenterNode(
+        child: mc1
+          ..children = [
+            nodeTBD = TextNode(text: '111'),
+            TextNode(text: '222'),
+            TextNode(text: '333'),
+          ])),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.length, 2);
+      expect((mc1.children.first as TextNode).text, '222');
+      expect((mc1.children.last as TextNode).text, '333');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete 2nd of 3 children from MultiChildNode',
+    setUp: () => test_snippet_setup(CenterNode(
+        child: mc1
+          ..children = [
+            TextNode(text: '111'),
+            nodeTBD = TextNode(text: '222'),
+            TextNode(text: '333'),
+          ])),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.length, 2);
+      expect((mc1.children.first as TextNode).text, '111');
+      expect((mc1.children.last as TextNode).text, '333');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete last of 3 children from MultiChildNode',
+    setUp: () => test_snippet_setup(CenterNode(
+        child: mc1
+          ..children = [
+            TextNode(text: '111'),
+            TextNode(text: '222'),
+            nodeTBD = TextNode(text: '333'),
+          ])),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(snippetBloc, nodeTBD),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(mc1.children.length, 2);
+      expect((mc1.children.first as TextNode).text, '111');
+      expect((mc1.children.last as TextNode).text, '222');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  // tearDown() runs after each test in the suite
+  tearDown(() {
+    // print('\nTearing down resources after a test...');
+  });
+
+  // tearDownAll() runs once after all tests in the suite
+  tearDownAll(() {
+    // print('\nTearing down common resources...');
+  });
+}

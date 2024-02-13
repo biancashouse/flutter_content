@@ -379,7 +379,7 @@ MenuItemButton _menuItemButton(
         if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
         if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
         if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
-        if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapWith(type: childType));
+        if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapSelectionWith(type: childType));
         Callout.dismiss(TREENODE_MENU_CALLOUT);
         FC().capiBloc.add(CAPIEvent.forceRefresh());
       },
