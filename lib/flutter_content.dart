@@ -229,10 +229,11 @@ class FC {
   late bool _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
+  String? lastSavedModelJson;
 
   // each snippet panel has a gk, a last selected node, and a ur
 
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() add a GK
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -303,7 +304,7 @@ class FC {
 
   Map<SnippetName, SnippetRootNode> get snippetsMap => _snippetsMap;
 
-  STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
+  // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 
   //avoids listening to the same scrollcontroller more than once for the purpose of refreshing the overlays
   void registerScrollController(ScrollController sController) {

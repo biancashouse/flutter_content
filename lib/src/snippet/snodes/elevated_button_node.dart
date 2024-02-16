@@ -33,7 +33,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
 
     return Container(
       // container only for possble selection gk
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       child: ElevatedButton(
         // if feature specified, must be a callout
         key: feature != null ? FC().setCalloutGk(feature, GlobalKey()) : null,

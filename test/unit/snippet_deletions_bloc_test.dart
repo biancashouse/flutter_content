@@ -12,6 +12,7 @@ void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
+  late SnippetRootNode snippetWithScaffoldAnd2Tabs;
   late STreeNode nodeTBD;
   late RichTextNode rtNode;
 
@@ -21,6 +22,10 @@ void main() {
   late CenterNode sc2;
   late RowNode mc1;
   late RowNode mc2;
+  late TabBarNode tb1;
+  late TabBarViewNode tbv1;
+  late STreeNode sel;
+  late STreeNode sel2;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -38,6 +43,34 @@ void main() {
     sc2 = CenterNode();
     mc1 = RowNode(children: []);
     mc2 = RowNode(children: []);
+    snippetWithScaffoldAnd2Tabs = SnippetRootNode(
+      name: 'test-snippet',
+      child: TransformableScaffoldNode(
+        scaffold: ScaffoldNode(
+          appBar: AppBarNode(
+            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+            bottom: GenericSingleChildNode(
+              propertyName: 'bottom',
+              child: tb1 = TabBarNode(
+                children: [
+                  sel2 = TextNode(text: 'tab 1'),
+                  TextNode(text: 'Tab 2'),
+                ],
+              ),
+            ),
+          ),
+          body: GenericSingleChildNode(
+            propertyName: 'body',
+            child: tbv1 = TabBarViewNode(
+              children: [
+                PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                sel = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   });
 
   void test_snippet_setup(STreeNode child) {
@@ -623,6 +656,49 @@ void main() {
       expect(mc1.children.length, 2);
       expect((mc1.children.first as TextNode).text, '111');
       expect((mc1.children.last as TextNode).text, '222');
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete 1st tab',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sel2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    skip: 3,
+    verify: (bloc) {
+      expect(tb1.parent?.parent, isA<AppBarNode>());
+      expect(tb1.children.length, 1);
+      expect(tbv1.children.length, tb1.children.length);
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete 2nd tab view',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: sel, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => [
+      expectedState_SelectedNode(snippetBloc, sel),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode type', isA<PlaceholderNode>())
+        ..having((state) => state.selectedNode?.parent, 'parent', isA<TabBarViewNode>()),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode type', isNull)
+    ],
+    verify: (bloc) {
+      expect(tbv1.parent, isA<GenericSingleChildNode>());
+      expect(tb1.children.length, 1);
+      expect(tbv1.children.length, tb1.children.length);
       expect(snippet.anyMissingParents(), false);
     },
   );

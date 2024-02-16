@@ -22,8 +22,8 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
     if (w != null) return w;
 
     // if (root?.child == null) return 190;
-    w = min(FC().capiBloc.state.snippetTreeCalloutW ?? 400, 600);
-    return w > 0 ? w : 400;
+    w = min(FC().capiBloc.state.snippetTreeCalloutW ?? 500, 600);
+    return w > 0 ? w : 500;
   }
 
   double height() {

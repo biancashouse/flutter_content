@@ -102,7 +102,7 @@ class PollNode extends MC with PollNodeMappable {
                 ],
               )
             : FlutterPoll(
-              key: nodeWidgetGK,
+              key: createNodeGK(),
               pollName: name,
               titleWidget: Center(child: Useful.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
               startDate: startDate,

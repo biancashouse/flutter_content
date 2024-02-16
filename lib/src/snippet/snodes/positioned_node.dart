@@ -57,7 +57,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Positioned(
-            key: nodeWidgetGK,      top: top,
+            key: createNodeGK(),      top: top,
       left: left,
       bottom: bottom,
       right: right,

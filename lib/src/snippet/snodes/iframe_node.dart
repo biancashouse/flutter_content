@@ -121,7 +121,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
     String RESOURCE_KEY = '';
     return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty
         ? Center(
-            key: nodeWidgetGK,
+            key: createNodeGK(),
              child: IFrame(
               //name: name,
               src: src ??
@@ -136,7 +136,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
             : Column(
                 children: [
                   Placeholder(),
-                  Row(key: nodeWidgetGK, children: [
+                  Row(key: createNodeGK(), children: [
                     const Icon(Icons.code, size: 32, color: Colors.red),
                     Useful.coloredText('src missing!', color: Colors.red),
                   ]),

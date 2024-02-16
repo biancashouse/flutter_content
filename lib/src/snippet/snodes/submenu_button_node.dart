@@ -56,7 +56,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return SubmenuButton(
-            key: nodeWidgetGK,      style: Useful.buttonStyle(36),
+            key: createNodeGK(),      style: Useful.buttonStyle(36),
       menuStyle: MenuStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {

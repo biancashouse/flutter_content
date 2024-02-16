@@ -36,13 +36,12 @@ class NodePropertyButton_String extends StatefulWidget {
 }
 
 class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
-  late GlobalKey propertyBtnGK;
+  GlobalKey? propertyBtnGK;
   GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
 
   @override
   void initState() {
     super.initState();
-    propertyBtnGK = GlobalKey();
   }
 
   @override
@@ -113,7 +112,7 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
             );
           },
           child: Container(
-            key: propertyBtnGK,
+            key: propertyBtnGK = GlobalKey(debugLabel: widget.label),
             // margin: const EdgeInsets.only(top: 8),
             width: widget.calloutButtonSize.width,
             height: widget.calloutButtonSize.height,

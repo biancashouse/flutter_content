@@ -3,37 +3,34 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/stepper_with_controller.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 
 part 'step_node.mapper.dart';
 
 @MappableClass()
 class StepNode extends CL with StepNodeMappable {
-  String titleSnippetName;
-  String subtitleSnippetName;
-  String contentSnippetName;
+  GenericSingleChildNode title;
+  GenericSingleChildNode subtitle;
+  GenericSingleChildNode content;
 
   StepNode({
-    required this.titleSnippetName,
-    required this.subtitleSnippetName,
-    required this.contentSnippetName,
+    required this.title,
+    required this.subtitle,
+    required this.content,
   });
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) => [];
 
-  Step toStep(BuildContext context) {
-    // highlightSelectedNode(context);
-
-    STreeNode? titleSnippet = FC().rootNodeOfNamedSnippet(titleSnippetName);
-    STreeNode? subtitleSnippet = FC().rootNodeOfNamedSnippet(subtitleSnippetName);
-    STreeNode? contentSnippet = FC().rootNodeOfNamedSnippet(contentSnippetName);
-
-    return Step(
+  Step toStep(BuildContext context, int index, FCStepperState parent) {
+     return Step(
       // key: nodeGK,
-      title: titleSnippet?.toWidget(context, this) ?? Icon(Icons.warning_amber),
-      subtitle: subtitleSnippet?.toWidget(context, this) ?? Icon(Icons.warning_amber),
-      content: contentSnippet?.toWidget(context, this) ?? Icon(Icons.warning_amber),
+       isActive: parent.currentStep >= index,
+      title: title.toWidgetProperty(context, this),
+      subtitle: subtitle.toWidgetProperty(context, this),
+      content: content.toWidgetProperty(context, this),
+       label: Text('monkey'),
     );
   }
 

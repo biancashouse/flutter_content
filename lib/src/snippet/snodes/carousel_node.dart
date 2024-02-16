@@ -3,18 +3,18 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_axis.dart';
-import 'package:gap/gap.dart';
 
 part 'carousel_node.mapper.dart';
 
 List<String> kDemoImages = [
-  'images/carousel-demo/2-carnations.jpeg',
-  'images/carousel-demo/blue-jug.jpeg',
-  'images/carousel-demo/cherries.jpeg',
-  'images/carousel-demo/grapes.jpeg',
-  'images/carousel-demo/honey.jpeg',
-  'images/carousel-demo/lamp.webp',
-  'images/carousel-demo/pears.jpg',
+  'lib/assets/images/carousel-demo/2-carnations.jpeg',
+  'lib/assets/images/carousel-demo/blue-jug.jpeg',
+  'lib/assets/images/carousel-demo/cherries.jpeg',
+  'lib/assets/images/carousel-demo/grapes.jpeg',
+  'lib/assets/images/carousel-demo/honey.jpeg',
+  'lib/assets/images/carousel-demo/jug.webp',
+  'lib/assets/images/carousel-demo/lamp.jpeg',
+  'lib/assets/images/carousel-demo/pears.jpg',
 ];
 
 @MappableClass()
@@ -91,7 +91,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                       boxShadow: kElevationToShadow[2],
                       image: DecorationImage(
                           image: AssetImage(
-                            name, /*package: 'flutter_content'*/
+                            '$name', package:'flutter_content',
                           ),
                           fit: BoxFit.fill),
                     ),

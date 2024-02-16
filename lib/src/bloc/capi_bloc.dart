@@ -18,7 +18,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   CAPIBloC({
     required this.modelRepo,
     required String appName,
-    required String? lastSavedModelJson,
     // bool useFirebase = false,
     // required bool localTestingFilePaths,
     required Map<String, TargetGroupConfig> targetGroupMap,
@@ -33,7 +32,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
     appName: appName,
-    lastSavedModelJson: lastSavedModelJson,
     // useFirebase: useFirebase,
     // localTestingFilePaths: localTestingFilePaths,
     targetGroupMap: targetGroupMap,
@@ -163,8 +161,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     CAPIModel model = _stateToModel();
     String jsonS = jsonEncode(model.toJson());
 
+    // testing
+    var testModel = jsonDecode(jsonS);
+
     // only save if changes detected
-    if (jsonS == state.lastSavedModelJson) return;
+    if (jsonS == FC().lastSavedModelJson) return;
 
     final stopwatch = Stopwatch()
       ..start();
@@ -205,10 +206,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (stopwatch.elapsedMilliseconds < 2000) await Future.delayed(Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     Callout.dismissAll(onlyToasts: true);
     // update last value
-    emit(state.copyWith(
-      lastSavedModelJson: jsonS,
-      force: state.force + 1,
-    ));
+    FC().lastSavedModelJson = jsonS;
   }
 
   CAPIModel _stateToModel() =>
@@ -870,12 +868,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //     : SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR(), selectedNodeIndex: -1, selectedNodeParentIndex: -1);
     SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR());
     FC().pushSnippet(newSnippetBloc);
-    emit(state.copyWith(
-      hideAllTargetGroupPlayBtns: true,
-      hideTargetsExcept: null,
-      hideSnippetPencilIcons: true,
-      force: state.force + 1,
-    ));
+    // emit(state.copyWith(
+    //   hideAllTargetGroupPlayBtns: true,
+    //   hideTargetsExcept: null,
+    //   hideSnippetPencilIcons: true,
+    // ));
   }
 
   Future<void> _popSnippetBloc(PopSnippetBloc event, emit) async {
@@ -888,7 +885,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         hideTargetsExcept: null,
         hideIframes: false,
         hideSnippetPencilIcons: false,
-        force: state.force + 1,
       ));
   }
 }

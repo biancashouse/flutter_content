@@ -1,7 +1,5 @@
 // ignore_for_file: camel_case_types
 
-import 'dart:collection';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,12 +71,10 @@ class SnippetPanel extends StatefulWidget {
     rootNode.setParents(null);
     return rootNode;
   }
+
   static List<SnippetRootNode> templates = [
     // empty snippet for test only
-    SnippetRootNode(
-      name: SnippetTemplate.empty_snippet.name,
-      child: PlaceholderNode()
-    ),
+    SnippetRootNode(name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
       name: SnippetTemplate.scaffold_with_tabs.name,
@@ -174,7 +170,10 @@ class SnippetPanel extends StatefulWidget {
 class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
   late String snippetNameToUse;
   TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  late Queue<int> _tabQ;
+  GlobalKey? tabBarGK;
+  late List<int> prevTabQ;
+  bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
+  final tabQSize = ValueNotifier<int>(0);
 
   TransformableScaffoldState? get parentTSState => TransformableScaffold.of(context);
 
@@ -206,6 +205,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void createTabController(int numTabs) {
     tabC?.dispose();
     tabC = TabController(vsync: this, length: numTabs);
+
     // tabC!.addListener(() {
     //   setState(() {
     //     _tabQ.clear();
@@ -223,7 +223,31 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // register snippet? with panel
     FC().snippetPlacementMap[widget.panelName] = snippetNameToUse;
 
-    _tabQ = Queue<int>();
+    prevTabQ = [];
+
+    Useful.afterNextBuildDo(() {
+      if (tabC != null) {
+        Useful.afterMsDelayDo(1000, () {
+          tabC!.addListener(() {
+            if (!(tabC?.indexIsChanging ?? true)) {
+              if (tabBarGK != null) {
+                TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+                if (tbNode != null && !(backBtnPressed??false)) {
+                  prevTabQ.add(tbNode.selection);
+                  tbNode.selection = tabC!.index;
+                  tabQSize.value = prevTabQ.length;
+                  print("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+                } else {
+                  tbNode?.selection = tabC!.index;
+                  backBtnPressed = false;
+                }
+              }
+            }
+          });
+          print("*** start listening to tab controller");
+        });
+      }
+    });
   }
 
   // @override
@@ -368,14 +392,17 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
       snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     }
-    // in case no entry found in panel map nor a snippet name supplied, use/create a default snipper for this panel.
+    // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
     SnippetRootNode snippetRoot = getOrCreateSnippetFromTemplate();
+
+    print("build snippet ${snippetNameToUse}");
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
       key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
       // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
       builder: (innerContext, state) {
+        print("BloC build snippet ${snippetNameToUse}");
         try {
           return snippetRoot.toWidget(innerContext, null);
         } catch (e) {

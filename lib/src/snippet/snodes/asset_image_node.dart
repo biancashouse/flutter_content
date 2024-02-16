@@ -163,7 +163,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     possiblyHighlightSelectedNode(context);
     return name.isNotEmpty
         ? SizedBox(
-            key: nodeWidgetGK,
+            key: createNodeGK(),
             width: width,
             height: height,
             child: Image.asset(
@@ -177,7 +177,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
             ),
           )
         : Placeholder(
-            key: nodeWidgetGK,
+            key: createNodeGK(),
             color: Colors.purpleAccent,
             strokeWidth: 2.0,
             fallbackWidth: (width ?? 400) * (scale ?? 1.0),

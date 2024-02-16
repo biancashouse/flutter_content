@@ -42,10 +42,11 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     Widget scaffold = Scaffold(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
       appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?, // guaranteed the widget is actually an AppBar
       body: body.toWidgetProperty(context, this),

@@ -17,6 +17,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dar
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_material3_text_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
@@ -1414,6 +1415,11 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // StackFit -------------
     if (sameType<T, StackFitEnum?>()) {
       return StackFitEnum.propertyNodeContents(
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
+    }
+    // StepperType -------------
+    if (sameType<T, StepperTypeEnum?>()) {
+      return StepperTypeEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextAlign -------------

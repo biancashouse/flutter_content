@@ -231,7 +231,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       }
       if (outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
         return Container(
-          key: nodeWidgetGK,
+          key: createNodeGK(),
           decoration: ShapeDecoration(
             shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
             color: fillColor1Value != null ? Color(fillColor1Value!) : null,
@@ -245,7 +245,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         );
       } else {
         return Container(
-          key: nodeWidgetGK,
+          key: createNodeGK(),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: fillColor1Value != null ? Color(fillColor1Value!) : null,

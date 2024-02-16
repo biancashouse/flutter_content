@@ -42,7 +42,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Flexible(
-            key: nodeWidgetGK,      flex: flex,
+            key: createNodeGK(),      flex: flex,
       fit: fit.flutterValue,
       child: child?.toWidget(context, this) ??
           const Icon(

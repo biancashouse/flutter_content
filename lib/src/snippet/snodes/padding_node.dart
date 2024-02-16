@@ -33,7 +33,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Padding(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
       child: child?.toWidget(context, this),
     );

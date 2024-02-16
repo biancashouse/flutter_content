@@ -46,7 +46,7 @@ class GapNode extends CL with GapNodeMappable {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return Gap(
-      key: nodeWidgetGK, gap,
+      key: createNodeGK(), gap,
       // crossAxisExtent: 10,
     );
   }

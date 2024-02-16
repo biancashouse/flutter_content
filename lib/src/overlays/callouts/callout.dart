@@ -238,8 +238,10 @@ class Callout extends StatefulWidget {
   }) {
     if (targetGkF != null) {
       GlobalKey? gk = targetGkF.call();
-      var ctx = targetGkF.call()?.currentContext;
-      if (ctx == null) {
+      var cs = gk?.currentState;
+      var cw = gk?.currentWidget;
+      var cc = gk?.currentContext;
+      if (cc == null) {
         print('${calloutConfig.feature} missing target gk - overlay not shown');
         return;
       }

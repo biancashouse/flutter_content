@@ -36,7 +36,8 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Expanded(
-            key: nodeWidgetGK,      flex: flex,
+      key: createNodeGK(),
+      flex: flex,
       child: child?.toWidget(context, this) ??
           const Icon(
             Icons.square,

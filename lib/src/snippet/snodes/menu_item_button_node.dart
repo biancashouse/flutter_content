@@ -61,7 +61,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return MenuItemButton(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       onPressed: () {
         if (destinationPanelName != null) {
           destinationSnippetName ??= '$destinationPanelName:default-snippet';

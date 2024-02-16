@@ -69,7 +69,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
     possiblyHighlightSelectedNode(context);
     return child != null
         ? DefaultTextStyle.merge(
-            key: nodeWidgetGK,
+            key: createNodeGK(),
             style: textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle),
             textAlign: textAlign?.flutterValue,
             child: child!.toWidget(context, this),

@@ -3,14 +3,18 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/stepper_with_controller.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart';
 
 part 'stepper_node.mapper.dart';
 
 @MappableClass()
 class StepperNode extends MC with StepperNodeMappable {
+  StepperTypeEnum type;
   String? name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 
   StepperNode({
+    this.type = StepperTypeEnum.vertical,
     this.name,
     required super.children, // can only be StepNodes
   });
@@ -18,6 +22,12 @@ class StepperNode extends MC with StepperNodeMappable {
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) =>
       [
+        EnumPropertyValueNode<StepperTypeEnum?>(
+          snode: this,
+          name: 'type',
+          valueIndex: type.index,
+          onIndexChange: (newValue) => refreshWithUpdate(() => type = StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
+        ),
         StringPropertyValueNode(
           snode: this,
           name: 'name',
@@ -33,18 +43,11 @@ class StepperNode extends MC with StepperNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
-    List<STreeNode> children = super.children;
-    List<Step> steps = [];
-    for (STreeNode childNode in children) {
-      if (childNode is StepNode) {
-        steps.add(childNode.toStep(context));
-      }
-    }
     return possiblyCheckHeightConstraint(
       parentNode,
-      Stepper(
-        key: nodeWidgetGK,
-        steps: [],
+      FCStepper(
+        this,
+        key: createNodeGK(),
       ),
     );
   }

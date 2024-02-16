@@ -38,7 +38,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final msvC = useState<MultiSplitViewController>(MultiSplitViewController(areas: [Area(size: 250)]));
+    final msvC = useState<MultiSplitViewController>(MultiSplitViewController(areas: [Area(size: 220)]));
     final snippetBloc = context.watch<SnippetBloC>();
     final STreeNode? selectedNode = snippetBloc.state.selectedNode;
     final List<PTreeNode> propertyNodes = selectedNode?.properties(context) ?? [];
@@ -218,68 +218,71 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                 // hspacer(16),
               ],
             ),
-            body: MultiSplitViewTheme(
-              data: MultiSplitViewThemeData(dividerThickness: 24),
-              child: MultiSplitView(
-                axis: Axis.horizontal,
-                controller: msvC.value,
-                // onWeightChange: () => setState(() {}),
-                dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
-                  return Container(
-                    color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
-                    child: Icon(
-                      Icons.drag_indicator,
-                      color: highlighted ? Colors.blueAccent: Colors.white,
-                    ),
-                  );
-                },
-                children: [
-                  // SNIPPET TREE
-                  GestureDetector(
-                    onTap: () {
-                      snippetBloc.add(const SnippetEvent.clearNodeSelection());
-                      Callout.hide("floating-clipboard");
-                    },
-                    child: SnippetTreePane(snippetBloc: snippetBloc),
-                  ),
-                  // NODE PROPERTIES
-                  if (selectedNode?.pTreeC != null)
+            body: Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: MultiSplitViewTheme(
+                data: MultiSplitViewThemeData(dividerThickness: 24),
+                child: MultiSplitView(
+                  axis: Axis.horizontal,
+                  controller: msvC.value,
+                  // onWeightChange: () => setState(() {}),
+                  dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+                    return Container(
+                      color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
+                      child: Icon(
+                        Icons.drag_indicator,
+                        color: highlighted ? Colors.blueAccent : Colors.white,
+                      ),
+                    );
+                  },
+                  children: [
+                    // SNIPPET TREE
                     GestureDetector(
                       onTap: () {
                         snippetBloc.add(const SnippetEvent.clearNodeSelection());
                         Callout.hide("floating-clipboard");
                       },
-                      child: Container(
-                        color: Colors.purpleAccent[100],
-                        child: Center(
-                          child: ListView(
-                            controller: selectedNode!.propertiesPaneSC!,
-                            shrinkWrap: true,
-                            children: [
-                              // icon buttons
-                              ExpansionTile(
-                                title: Useful.coloredText('...', color: Colors.white),
-                                backgroundColor: Colors.black,
-                                collapsedBackgroundColor: Colors.black,
-                                onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
-                                initiallyExpanded: FC().showingNodeButtons,
-                                children: [nodeButtons(snippetBloc)],
-                              ),
-                              // NODE PROPERTIES TREE
-                              if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
-                              if (true || propertyNodes.isNotEmpty && !(selectedNode.hidePropertiesWhileDragging ?? false))
-                                Material(
-                                    color: Colors.black,
-                                    child: PropertiesTreeView(
-                                      treeC: selectedNode.pTreeC!,
-                                    )),
-                              // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-                            ],
+                      child: SnippetTreePane(snippetBloc: snippetBloc),
+                    ),
+                    // NODE PROPERTIES
+                    if (selectedNode?.pTreeC != null)
+                      GestureDetector(
+                        onTap: () {
+                          snippetBloc.add(const SnippetEvent.clearNodeSelection());
+                          Callout.hide("floating-clipboard");
+                        },
+                        child: Container(
+                          color: Colors.purpleAccent[100],
+                          child: Center(
+                            child: ListView(
+                              controller: selectedNode!.propertiesPaneSC!,
+                              shrinkWrap: true,
+                              children: [
+                                // icon buttons
+                                ExpansionTile(
+                                  title: Useful.coloredText('...', color: Colors.white),
+                                  backgroundColor: Colors.black,
+                                  collapsedBackgroundColor: Colors.black,
+                                  onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
+                                  initiallyExpanded: FC().showingNodeButtons,
+                                  children: [nodeButtons(snippetBloc)],
+                                ),
+                                // NODE PROPERTIES TREE
+                                if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
+                                if (true || propertyNodes.isNotEmpty && !(selectedNode.hidePropertiesWhileDragging ?? false))
+                                  Material(
+                                      color: Colors.black,
+                                      child: PropertiesTreeView(
+                                        treeC: selectedNode.pTreeC!,
+                                      )),
+                                // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
             ),
             // endDrawer: Drawer(
@@ -405,7 +408,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                  action: NodeAction.replace, label: 'Replace with...', bgColor: Colors.yellow),
+                  action: NodeAction.replace, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
             ),
           editTreeStructureIconButtons(snippetBloc),
           vspacer(10),

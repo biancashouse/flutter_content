@@ -228,22 +228,22 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     late CAPIModel model;
 
     if (widget.testModelRepo == null) {
-      if (widget.fbOptions != null) fbModelRepo.initFireStore(options: widget.fbOptions);
+      if (widget.fbOptions != null) {
+        await fbModelRepo.initFireStore(options: widget.fbOptions);
 
-      if (kReleaseMode) {
-        // read from json file asset
-        if (widget.initialValueJsonAssetPath != null) {
-          try {
-            String configFileS = await rootBundle.loadString(widget.initialValueJsonAssetPath!, cache: false);
-            model = CAPIModel.fromJson(json.decode(configFileS));
-          } catch (e) {
-            // failed to read json asset - ignore
-          }
-        }
-      }
+        // if (kReleaseMode) {
+        //   // read from json file asset
+        //   if (widget.initialValueJsonAssetPath != null) {
+        //     try {
+        //       String configFileS = await rootBundle.loadString(widget.initialValueJsonAssetPath!, cache: false);
+        //       model = CAPIModel.fromJson(json.decode(configFileS));
+        //     } catch (e) {
+        //       // failed to read json asset - ignore
+        //     }
+        //   }
+        // }
 
-      if (kIsWeb) {
-        // only init local storage if not already setup
+        // ensure hydrated storage initialised
         try {
           HydratedBloc.storage;
         } catch (e) {
@@ -253,32 +253,32 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             storageDirectory: dir,
           );
         }
-      }
 
-      //possibly init firebase, then read model
-      // try to read model from firebase
-      // print("getFBModel()...");
-      CAPIModel? fbModel;
+        //possibly init firebase, then read model
+        // try to read model from firebase
+        // print("getFBModel()...");
+        CAPIModel? fbModel;
 
-      if (widget.fbOptions != null) {
-        fbModel = await fbModelRepo.getCAPIModel(appName: widget.appName);
-      }
-
-      // print("getFBModel() returned ${fbModel.toString()}");
-      // if can't get model from FB, try localstorage
-      if (fbModel == null) {
-        var modelJson = HydratedBloc.storage.read("flutter-content");
-        if (modelJson != null) {
-          try {
-            Map<String, dynamic> decoded = jsonDecode(modelJson);
-            model = CAPIModel.fromJson(decoded);
-          } catch (e) {
-            targetGroupMap = {};
-            snippetsMap = {};
-          }
+        if (widget.fbOptions != null) {
+          model = await fbModelRepo.getCAPIModel(appName: widget.appName) ?? CAPIModel(appName: widget.appName);
         }
-      } else {
-        model = fbModel;
+
+        // // print("getFBModel() returned ${fbModel.toString()}");
+        // // if can't get model from FB, try localstorage
+        // if (fbModel == null) {
+        //   var modelJson = HydratedBloc.storage.read("flutter-content");
+        //   if (modelJson != null) {
+        //     try {
+        //       Map<String, dynamic> decoded = jsonDecode(modelJson);
+        //       model = CAPIModel.fromJson(decoded);
+        //     } catch (e) {
+        //       targetGroupMap = {};
+        //       snippetsMap = {};
+        //     }
+        //   }
+        // } else {
+        //   model = fbModel;
+        // }
       }
     } else {
       // widget testing repo should  supply a model via a when(mockRepository.getCAPIModel(appName: appName...
@@ -302,6 +302,8 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     //     ? NodeMapper.fromJson(model.jsonRootDirectoryNode!) as DirectoryNode
     //     : DirectoryNode(name: 'root', children: []);
 
+    FC().lastSavedModelJson = jsonEncode(model.toJson());
+
     CAPIBloC capiBloc = CAPIBloC(
       modelRepo: fbModelRepo,
       appName: widget.appName,
@@ -311,7 +313,6 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       singleTargetMap: singleTargetMap,
       // jsonRootDirectoryNode: model.jsonRootDirectoryNode,
       jsonClipboard: model.jsonClipboard,
-      lastSavedModelJson: jsonEncode(model.toJson()),
       // snippetsMap: snippetsMap,
     );
 
@@ -542,7 +543,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     MaterialSPA.inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
     hideAllSingleTargetBtns();
-    FC().capiBloc.add(const CAPIEvent.forceRefresh());
+    // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
   static exitEditMode() {
@@ -557,7 +558,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     }
     FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
     unhideAllSingleTargetBtns();
-    FC().capiBloc.add(const CAPIEvent.forceRefresh());
+    // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
   _enterOrExitEditMode(RawKeyEvent event, DateTime? lastTapTime, int tapCount) {
@@ -572,7 +573,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // only called with MaterialAppWrapper context
   static void showAllNodeWidgetOverlays(context) {
     var gkSTreeNodeMap = FC().gkSTreeNodeMap;
-    void traverseAndMeasure(BuildContext el, STreeNode? parent) {
+    void traverseAndMeasure(BuildContext el) {
       if (gkSTreeNodeMap.containsKey(el.widget.key)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         STreeNode? node = gkSTreeNodeMap[gk];
@@ -580,17 +581,17 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
           print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
-          node.setParent(parent);
-          parent = node;
+          // node.setParent(parent);
+          // parent = node;
           _showNodeWidgetOverlay(node, r!);
         }
       }
       el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl, parent);
+        traverseAndMeasure(innerEl);
       });
     }
 
-    traverseAndMeasure(context, null);
+    traverseAndMeasure(context);
   }
 
   // only called with MaterialAppWrapper context
@@ -636,9 +637,10 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     } else {
       highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
     }
+    var cc = startingAtNode.nodeWidgetGK?.currentContext;
     FC().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
-    // var currCtx = startingAtNode.nodeWidgetGK?.currentContext;
     Useful.afterNextBuildDo(() {
+      var cc = startingAtNode.nodeWidgetGK?.currentContext;
       SnippetBloC? snippetBeingEdited = FC().snippetBeingEdited;
       if (FC().snippetBeingEdited != null) {
         // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
@@ -689,12 +691,14 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                   print("tapped");
                   String? snippetName = STreeNode.rootNodeOfSnippet(node)?.name;
                   if (snippetName == null) return;
+                  var cc = node.nodeWidgetGK?.currentContext;
 // edit the root snippet
                   hideAllSingleTargetBtns();
 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
                   removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
+                  cc = node.nodeWidgetGK?.currentContext;
                   pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node);
                   // Useful.afterNextBuildDo(() {
                   MaterialSPAState.showNodeWidgetOverlay(context, node);

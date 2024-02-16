@@ -148,11 +148,6 @@ enum NodeAction {
 ])
 abstract class STreeNode extends Node with STreeNodeMappable {
 
-  STreeNode() {
-    nodeWidgetGK = GlobalKey();
-    FC().gkSTreeNodeMap[nodeWidgetGK = GlobalKey()] = this;
-  }
-
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
 
@@ -267,6 +262,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<String> sensibleParents() => const [];
 
+  GlobalKey createNodeGK() {
+    nodeWidgetGK = GlobalKey();
+    FC().gkSTreeNodeMap[nodeWidgetGK!] = this;
+    return nodeWidgetGK!;
+  }
+
   void setParents(STreeNode? parent) {
     setParent(parent);
     var children = Node.snippetTreeChildrenProvider(this);
@@ -289,75 +290,71 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // check nodes are identical
   bool isSame(STreeNode otherNode) => toJson() == otherNode.toJson();
 
-Widget toWidget(BuildContext context, STreeNode parentNode) => const Placeholder();
+  Widget toWidget(BuildContext context, STreeNode parentNode) => const Placeholder();
 
-Widget possiblyCheckHeightConstraint(STreeNode? parentNode, Widget actualWidget) {
-  /*
+  Widget possiblyCheckHeightConstraint(STreeNode? parentNode, Widget actualWidget) {
+    /*
       use LayoutBuilder to check for infinite maxHeight error.
       skip the check if parent is a SizedBox or a SingleChildScrollView.
      */
-  if (parentNode is SizedBoxNode || parentNode is SingleChildScrollViewNode) {
-    return actualWidget;
-  } else {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return constraints.maxHeight == double.infinity
-            ? Row(
-          children: [
-            const Icon(
-              Icons.error,
-              color: Colors.red,
-            ),
-            hspacer(10),
-            Text('${toString()} has infinite maxHeight constraint!'),
-          ],
-        )
-            : actualWidget;
-      },
-    );
+    if (parentNode is SizedBoxNode || parentNode is SingleChildScrollViewNode) {
+      return actualWidget;
+    } else {
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return constraints.maxHeight == double.infinity
+              ? Row(
+                  children: [
+                    const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                    hspacer(10),
+                    Text('${toString()} has infinite maxHeight constraint!'),
+                  ],
+                )
+              : actualWidget;
+        },
+      );
+    }
   }
-}
 
-static void unhighlightSelectedNode
-() => Callout.dismiss
-(
-SELECTED_NODE_BORDER_CALLOUT);
+  static void unhighlightSelectedNode() => Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
-Future<void> possiblyHighlightSelectedNode(BuildContext context) async {
-
-if (FC().selectedNode == this) {
-if (true || FC().highlightedNode != FC().selectedNode) {
-Useful.afterNextBuildDo(() {
-if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
-unhighlightSelectedNode();
-}
-SnippetBloC? snippetBloc = FC().snippetBeingEdited;
-Rect? r = snippetBloc?.state.selectedWidgetGK?.globalPaintBounds();
-if (r != null) {
-double thickness = 4;
-double w = r.width + thickness * 2;
-double h = r.height + thickness * 2;
-Offset translate = Offset(-thickness, -thickness);
+  Future<void> possiblyHighlightSelectedNode(BuildContext context) async {
+    if (FC().selectedNode == this) {
+      if (true || FC().highlightedNode != FC().selectedNode) {
+        Useful.afterNextBuildDo(() {
+          if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
+            unhighlightSelectedNode();
+          }
+          SnippetBloC? snippetBloc = FC().snippetBeingEdited;
+          Rect? r = snippetBloc?.state.selectedWidgetGK?.globalPaintBounds();
+          if (r != null) {
+            double thickness = 4;
+            double w = r.width + thickness * 2;
+            double h = r.height + thickness * 2;
+            Offset translate = Offset(-thickness, -thickness);
 // if (r.top < thickness || r.left < thickness || r.bottom < thickness || r.right < thickness) {
 //   w = r.width;
 //   h = r.height;
 //   thickness = 10;
 //   translate = Offset.zero;
 // }
-print("Showing $SELECTED_NODE_BORDER_CALLOUT");
-Callout.showOverlay(
-ensureLowestOverlay: true,
-calloutConfig: CalloutConfig(
-feature: SELECTED_NODE_BORDER_CALLOUT,
-initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
-suppliedCalloutW: w,
-suppliedCalloutH: h,
-color: Colors.transparent,
-arrowType: ArrowType.NO_CONNECTOR,
-draggable: false,
-transparentPointer: true,
-),
-boxContentF: (context) => InkWell(
+            print("Showing $SELECTED_NODE_BORDER_CALLOUT");
+            Callout.showOverlay(
+              ensureLowestOverlay: true,
+              calloutConfig: CalloutConfig(
+                feature: SELECTED_NODE_BORDER_CALLOUT,
+                initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
+                suppliedCalloutW: w,
+                suppliedCalloutH: h,
+                color: Colors.transparent,
+                arrowType: ArrowType.NO_CONNECTOR,
+                draggable: false,
+                transparentPointer: true,
+              ),
+              boxContentF: (context) => InkWell(
 // onTap: () {
 //   // removeNodeMenuCallout();
 //   showNodePropertiesCallout(
@@ -366,26 +363,26 @@ boxContentF: (context) => InkWell(
 //     targetGKF: () => Node.selectionGK, //nodeGK,
 //   );
 // },
-child: Container(
-width: w,
-height: h,
-decoration: BoxDecoration(
-color: Colors.transparent,
-border: Border.all(color: Colors.purpleAccent.withOpacity(.5), width: thickness),
-),
-),
-),
-targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
-);
-FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+                child: Container(
+                  width: w,
+                  height: h,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(color: Colors.purpleAccent.withOpacity(.5), width: thickness),
+                  ),
+                ),
+              ),
+              targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
+            );
+            FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
 // Useful.afterMsDelayDo(1000, () {
 //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
 // });
-}
-});
-}
-}
-}
+          }
+        });
+      }
+    }
+  }
 
 // can be a MenuItemButton (default) or a SubmenuButton (override)
 // List<Widget> toMenuItems(BuildContext context, {
@@ -474,7 +471,7 @@ FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
 //   }
 // }
 
-String toSource(BuildContext context) => '';
+  String toSource(BuildContext context) => '';
 
 // MenuItemButton? _pasteMI(BuildContext context, AddAction action) {
 //   if (capiBloc.state.jsonClipboard != null && action != AddAction.wrapWith) {

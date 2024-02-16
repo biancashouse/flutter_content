@@ -68,7 +68,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Container(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       width: 800,
       height: nodeCount * 60,
       padding: const EdgeInsets.all(10),

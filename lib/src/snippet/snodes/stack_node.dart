@@ -6,7 +6,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'stack_node.mapper.dart';
 
@@ -29,19 +28,19 @@ class StackNode extends MC with StackNodeMappable {
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => StackFitEnum.of(newValue ?? StackFitEnum.loose.index)),
+          onIndexChange: (newValue) => refreshWithUpdate(() => fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
         ),
         EnumPropertyValueNode<ClipEnum?>(
           snode: this,
           name: 'clipBehavior',
           valueIndex: clipBehavior.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => ClipEnum.of(newValue ?? ClipEnum.hardEdge.index)),
+          onIndexChange: (newValue) => refreshWithUpdate(() => clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
         ),
         EnumPropertyValueNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => AlignmentEnum.of(newValue ?? AlignmentEnum.topLeft.index)),
+          onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
         ),
       ];
 
@@ -64,7 +63,7 @@ class StackNode extends MC with StackNodeMappable {
                   ],
                 )
               : Stack(
-                  key: nodeWidgetGK,
+                  key: createNodeGK(),
                   fit: fit.flutterValue,
                   clipBehavior: clipBehavior.flutterValue,
                   alignment: alignment.flutterValue,

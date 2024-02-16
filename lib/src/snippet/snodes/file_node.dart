@@ -73,7 +73,7 @@ class FileNode extends CL with FileNodeMappable {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     return SizedBox(
-            key: nodeWidgetGK,      width: 200,
+            key: createNodeGK(),      width: 200,
       height: 30,
       child: Row(
         mainAxisSize: MainAxisSize.min,

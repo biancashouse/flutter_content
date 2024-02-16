@@ -45,29 +45,41 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
+    setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode(context);
     // find scaffold node
-     // add a back button if scaffold has tabs
-    Widget? leadingWidget;
+    // add a back button if scaffold has tabs
     SnippetPanelState? spState = SnippetPanel.of(context);
-    int numTabNodes = spState?.tabC?.length??0;
-    if (numTabNodes > 0) {
-      leadingWidget = IconButton(
-        onPressed: () {
-          var dtc = DefaultTabController.of(context);
-        },
-        icon: Icon(Icons.arrow_back),
-      );
-    } else {
-      leadingWidget = leading?.toWidgetProperty(context, this);
+    Widget leadingWidget() {
+      if (spState != null) {
+        if (spState.prevTabQ.isNotEmpty) {
+          return IconButton(
+            onPressed: () {
+              if (spState.prevTabQ.isNotEmpty) {
+                int prev = spState.prevTabQ.removeLast();
+                spState.backBtnPressed = true;
+                spState.tabC?.index = prev;
+                spState.tabQSize.value = spState.prevTabQ.length;
+                print("back to tab: $prev,  ${spState.prevTabQ.toString()}");
+              }
+            },
+            icon: Icon(Icons.arrow_back),
+          );
+        } else {
+          return const Offstage();
+        }
+      } else {
+        return const Offstage();
+      }
     }
+
     var bottomWidget = bottom?.toWidgetProperty(context, this);
     var actionWidgets = actions?.toWidgetProperty(context, this);
+
     try {
       return AppBar(
-        key: nodeWidgetGK,
-        leading: leadingWidget,
+        key: createNodeGK(),
+        leading: ListenableBuilder(listenable: spState!.tabQSize, builder: (_, __) => leadingWidget()),
         title: title?.toWidgetProperty(context, this),
         bottom: bottomWidget as PreferredSizeWidget,
         actions: actionWidgets,

@@ -9,7 +9,6 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/undo_re
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  late SnippetRootNode emptySnippet;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
@@ -17,19 +16,7 @@ void main() {
   late STreeNode sel;
   late RichTextNode rtNode;
 
-  late TextNode cl1;
-  late TextNode cl2;
-  late TextNode cl3;
-  late GapNode clR;
   late CenterNode sc1;
-  late CenterNode sc2;
-  late CenterNode sc3;
-  late ContainerNode scR;
-  late RowNode mc1;
-  late RowNode mc2;
-  late RowNode mc3;
-  late ColumnNode mcR;
-  late PlaceholderNode placeholder;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -41,20 +28,8 @@ void main() {
   });
 
   setUp(() {
-    cl1 = TextNode(text: 'cl1');
-    cl2 = TextNode(text: 'cl2');
-    cl3 = TextNode(text: 'cl3');
-    clR = GapNode(gap: 10);
     sc1 = CenterNode();
-    sc2 = CenterNode();
-    sc3 = CenterNode();
-    scR = ContainerNode();
-    mc1 = RowNode(children: []);
-    mc2 = RowNode(children: []);
-    mc3 = RowNode(children: []);
-    mcR = ColumnNode(children: []);
     rtNode = RichTextNode(text: TextSpanNode(text: 'rich text'));
-    placeholder = PlaceholderNode();
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
@@ -212,7 +187,11 @@ void main() {
   blocTest<SnippetBloC, SnippetState>(
     'wrap Step with a Stepper',
     setUp: () => test_snippet_setup(
-        sc1.child = sel = StepNode(contentSnippetName: 'content-snippet-name', subtitleSnippetName: '', titleSnippetName: 'title'),
+        sc1.child = sel = StepNode(
+          title: GenericSingleChildNode(propertyName: 'title', child: TextNode()),
+          subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode()),
+          content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
+        ),
         select: sel),
     build: () => snippetBloc,
     seed: () => selectedState,
@@ -231,7 +210,11 @@ void main() {
   blocTest<SnippetBloC, SnippetState>(
     'try to wrap Step with a non Stack',
     setUp: () => test_snippet_setup(
-        sc1.child = sel = StepNode(contentSnippetName: 'content-snippet-name', subtitleSnippetName: '', titleSnippetName: 'title'),
+        sc1.child = sel = StepNode(
+          title: GenericSingleChildNode(propertyName: 'title', child: TextNode()),
+          subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode()),
+          content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
+        ),
         select: sel),
     build: () => snippetBloc,
     seed: () => selectedState,

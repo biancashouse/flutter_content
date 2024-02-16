@@ -15,6 +15,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   int? indicatorColorValue;
   EdgeInsetsValue? padding;
   double? indicatorWeight;
+  int selection;
 
   TabBarNode({
     this.selectedLabelColorValue,
@@ -22,6 +23,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     this.indicatorColorValue,
     this.padding,
     this.indicatorWeight = 2.0,
+    this.selection = 1,
     required super.children,
   });
 
@@ -82,11 +84,15 @@ class TabBarNode extends MC with TabBarNodeMappable {
     // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
     SnippetPanelState? spState = SnippetPanel.of(context);
     spState?.createTabController(children.length);
+    List<Widget> tabs = [];
+    for (STreeNode node in children) {
+      tabs.add(node.toWidget(context, this));
+    }
     try {
       return TabBar(
-        key: nodeWidgetGK,
-        controller: spState!.tabC,
-        tabs: children.map((node) => node.toWidget(context, this)).toList(),
+        key: spState?.tabBarGK = createNodeGK(),
+        controller: spState!.tabC?..index = selection ?? 0,
+        tabs: tabs,
         labelColor: selectedLabelColorValue != null ? Color(selectedLabelColorValue!) : null,
         unselectedLabelColor: unselectedLabelColorValue != null ? Color(unselectedLabelColorValue!) : null,
         indicatorColor: indicatorColorValue != null ? Color(indicatorColorValue!) : null,

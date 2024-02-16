@@ -126,7 +126,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
     return Container(
       // container only for possble selection gk
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       child: kDebugMode
           ? GestureDetector(
               onLongPress: f != null

@@ -31,7 +31,7 @@ class CenterNode extends SC with CenterNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Center(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       child: child?.toWidget(context, this),
     );
   }

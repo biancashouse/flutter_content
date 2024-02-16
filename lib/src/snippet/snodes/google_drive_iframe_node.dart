@@ -7,18 +7,22 @@ part 'google_drive_iframe_node.mapper.dart';
 
 @MappableClass()
 class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
+  // Open the Drive file, Menu Option: File | Share | Publish to web, Embed Tab
+  // <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false"></iframe>
+  //
+  // <iframe src="https://docs.google.com/document/d/e/2PACX-1vTkJLCy0EmKeg2OzAekWbNWQrG5GKCdZMFiSAeg-U_2IM_cJINlNWrv5-HuxGRyCg/pub?embedded=true"></iframe>
   String name;
   String folderId;
   String resourceKey;
-  double iframeWidth;
-  double iframeHeight;
+  double? iframeWidth;
+  double? iframeHeight;
 
   GoogleDriveIFrameNode({
     this.name = '',
     this.folderId = '',
     this.resourceKey = '',
-    this.iframeWidth = 800, // not 595?
-    this.iframeHeight = 800, // not 842?
+    this.iframeWidth, // not 595?
+    this.iframeHeight, // not 842?
   });
 
   @override
@@ -51,14 +55,14 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'iframeWidth',
           decimalValue: iframeWidth,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeWidth = newValue ?? 800),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeWidth = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'iframeHeight',
           decimalValue: iframeHeight,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeHeight = newValue ?? 800),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeHeight = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
       ];
@@ -131,26 +135,26 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode(context);
-    String src =
-        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
+    String src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false';
+//        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
-    return folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && !FC().areAnySnippetsBeingEdited
+    return true //|| folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && !FC().areAnySnippetsBeingEdited
         ? SizedBox(
-            key: nodeWidgetGK,
+            key: createNodeGK(),
             width: iframeWidth,
             height: iframeHeight,
             child: IFrame(
               // name: name,
               src: src,
-              iframeW: iframeWidth,
-              iframeH: iframeHeight,
+              iframeW: iframeWidth ?? double.infinity,
+              iframeH: iframeHeight ?? double.infinity,
               forceRefresh: true,
             ),
           )
         : FC().areAnySnippetsBeingEdited
             ? Placeholder()
             : Row(
-                key: nodeWidgetGK,
+                key: createNodeGK(),
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.code, size: 32, color: Colors.red),

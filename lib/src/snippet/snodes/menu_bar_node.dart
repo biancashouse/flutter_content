@@ -29,7 +29,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
       return Text('new MenuBar');
     } else {
       return MenuBar(
-        key: nodeWidgetGK,
+        key: createNodeGK(),
         children: super.children.map((child) => child.toWidget(context, this)).toList(),
       );
     }

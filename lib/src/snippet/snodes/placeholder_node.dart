@@ -58,16 +58,25 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
     possiblyHighlightSelectedNode(context);
     Widget? childWidget;
     if (centredLabel?.isNotEmpty ?? false) {
-      childWidget = Container(
-          alignment: Alignment.center,
-          color: colorValue != null ? Color(colorValue!) : null,
-          child: Text(
-            centredLabel!,
-            textScaler: TextScaler.linear(3),
-          ));
+      childWidget = Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+                alignment: Alignment.center,
+                width: 150,
+                height: 70,
+                color: colorValue != null ? Color(colorValue!) : null,
+                child: Text(
+                  centredLabel!,
+                  textScaler: TextScaler.linear(3),
+                )),
+          ),
+        ],
+      );
     }
     return Placeholder(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       fallbackWidth: width ?? 400,
       fallbackHeight: height ?? 400,
       child: childWidget,

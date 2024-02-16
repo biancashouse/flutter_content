@@ -54,7 +54,6 @@ class CAPIState with _$CAPIState {
     @Default(0) int force, // hacky way to force a transition
     //
     @Default(true) bool ONLY_TESTING,
-    required String? lastSavedModelJson,
   }) = _CAPIState;
 
   // bool aTargetIsSelected() => selectedTarget != null;

@@ -59,7 +59,7 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
     return possiblyCheckHeightConstraint(
       parentNode,
       Column(
-        key: nodeWidgetGK,
+        key: createNodeGK(),
         mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
         mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
         crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,

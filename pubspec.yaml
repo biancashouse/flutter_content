@@ -102,8 +102,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - images/
-    - images/google-icons/
-    - images/carousel-demo/
-    - assets/
+    - lib/assets/images/
+    - lib/assets/images/google-icons/
+    - lib/assets/images/carousel-demo/
     - startup-scripts/

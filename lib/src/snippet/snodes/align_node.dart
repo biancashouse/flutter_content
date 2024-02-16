@@ -60,7 +60,7 @@ class AlignNode extends SC with AlignNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode(context);
     return Align(
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       alignment: alignment.flutterValue,
       child: child?.toWidget(context, this),
     );

@@ -32,7 +32,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
     return Container(
       // container only for possble selection gk
-      key: nodeWidgetGK,
+      key: createNodeGK(),
       child: FilledButton(
         // if feature specified, must be a callout
         key: feature != null ? FC().setCalloutGk(feature, GlobalKey()) : null,

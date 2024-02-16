@@ -70,7 +70,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       setParent(parentNode);
       possiblyHighlightSelectedNode(context);
       RichText rt = RichText(
-        key: nodeWidgetGK,
+        key: createNodeGK(),
         text: rootTextSpan,
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,

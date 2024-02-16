@@ -72,7 +72,7 @@ abstract class Node extends Object {
   Widget? logoSrc() => Row(
         children: [
           Image.asset(
-            Useful.asset('images/pub.dev.png'),
+            Useful.asset('lib/assets/images/pub.dev.png'),
             width: 16,
           ),
           const Gap(8),
