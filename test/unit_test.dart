@@ -7,7 +7,7 @@ import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:pretty_json/pretty_json.dart';
+// import 'package:pretty_json/pretty_json.dart';
 
 import 'snippet_bloc_test.mocks.dart';
 
@@ -63,6 +63,6 @@ void main() {
 
     expect(snippetMap.values.first.name, snippetName);
 
-    printPrettyJson(model.toJson(), indent: 2);
+    // printPrettyJson(model.toJson(), indent: 2);
   });
 }

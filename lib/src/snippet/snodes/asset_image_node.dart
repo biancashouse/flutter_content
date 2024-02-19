@@ -160,7 +160,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return name.isNotEmpty
         ? SizedBox(
             key: createNodeGK(),

@@ -26,6 +26,7 @@ void main() {
   late TabBarViewNode tbv1;
   late STreeNode sel;
   late STreeNode sel2;
+  late GenericSingleChildNode stepTitleProperty;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -55,6 +56,7 @@ void main() {
                 children: [
                   sel2 = TextNode(text: 'tab 1'),
                   TextNode(text: 'Tab 2'),
+                  TextNode(text: 'Stepper Tab'),
                 ],
               ),
             ),
@@ -65,6 +67,13 @@ void main() {
               children: [
                 PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
                 sel = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                StepperNode(children: [
+                  StepNode(
+                    title: stepTitleProperty = GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'the title')),
+                    subtitle: GenericSingleChildNode(propertyName: 'subtitle'),
+                    content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'some content')),
+                  )
+                ]),
               ],
             ),
           ),
@@ -100,25 +109,27 @@ void main() {
         showProperties: true,
       );
 
-  blocTest<SnippetBloC, SnippetState>('delete only child (a CL) in snippet',
-      setUp: () => test_snippet_setup(cl1),
-      build: () => snippetBloc,
-      act: (bloc) {
-        bloc.add(SnippetEvent.selectNode(node: cl1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
-        // don't delete yet - just set nodeBeingDeleted
-        bloc.add(const SnippetEvent.deleteNodeTapped());
-        // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
-        bloc.add(const SnippetEvent.completeDeletion());
-      },
-      expect: () => <SnippetState>[
-            expectedState_SelectedNode(snippetBloc, cl1),
-            expectedState_NodeBeingDeleted(snippetBloc, cl1),
-            expectedState_NoSelection(snippetBloc),
-          ],
-      tearDown: () {
-        expect(snippet.child, isA<PlaceholderNode>());
-        expect(snippet.anyMissingParents(), false);
-      });
+  blocTest<SnippetBloC, SnippetState>(
+    'delete only child (a CL) in snippet',
+    setUp: () => test_snippet_setup(cl1),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: cl1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => <SnippetState>[
+      expectedState_SelectedNode(snippetBloc, cl1),
+      expectedState_NodeBeingDeleted(snippetBloc, cl1),
+      expectedState_NoSelection(snippetBloc),
+    ],
+    tearDown: () {
+      expect(snippet.child, isA<PlaceholderNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
 
   blocTest<SnippetBloC, SnippetState>(
     'delete only child (SC) in snippet',
@@ -138,6 +149,25 @@ void main() {
     ],
     tearDown: () {
       expect(snippet.child, isA<PlaceholderNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "delete step's title property",
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(node: stepTitleProperty.child!, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      // don't delete yet - just set nodeBeingDeleted
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    skip: 3,
+    tearDown: () {
+      expect(stepTitleProperty.child, isA<TextNode>());
+      expect((stepTitleProperty.child as TextNode).text, 'must have a title widget!');
       expect(snippet.anyMissingParents(), false);
     },
   );
@@ -672,7 +702,7 @@ void main() {
     skip: 3,
     verify: (bloc) {
       expect(tb1.parent?.parent, isA<AppBarNode>());
-      expect(tb1.children.length, 1);
+      expect(tb1.children.length, 2);
       expect(tbv1.children.length, tb1.children.length);
       expect(snippet.anyMissingParents(), false);
     },
@@ -692,12 +722,11 @@ void main() {
       const TypeMatcher<SnippetState>()
         ..having((state) => state.selectedNode, 'selectedNode type', isA<PlaceholderNode>())
         ..having((state) => state.selectedNode?.parent, 'parent', isA<TabBarViewNode>()),
-      const TypeMatcher<SnippetState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', isNull)
+      const TypeMatcher<SnippetState>()..having((state) => state.selectedNode, 'selectedNode type', isNull)
     ],
     verify: (bloc) {
       expect(tbv1.parent, isA<GenericSingleChildNode>());
-      expect(tb1.children.length, 1);
+      expect(tb1.children.length, 2);
       expect(tbv1.children.length, tb1.children.length);
       expect(snippet.anyMissingParents(), false);
     },

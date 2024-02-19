@@ -252,7 +252,7 @@ class TextNode extends CL with TextNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     try {
       return Text(
         key: createNodeGK(),

@@ -1144,119 +1144,115 @@ class GradientPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    return SizedBox(width: 180,
-      child: Row(
-          mainAxisSize:MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-        NodePropertyButtonColor(
-          label: '',
-          originalColor: color1Value != null ? Color(color1Value!) : null,
-          onChangeF: (Color? newColor) {
-            if (newColor != null) {
-              onColorChange.call(
-                color1Value = newColor.value,
-                color2Value,
-                color3Value,
-                color4Value,
-                color5Value,
-                color6Value,
-              );
-            }
-          },
-          calloutButtonSize: const Size(24,24),
-        ),
-            NodePropertyButtonColor(
-              label: '',
-              originalColor: color2Value != null ? Color(color2Value!) : null,
-              onChangeF: (Color? newColor) {
-                if (newColor != null) {
-                  onColorChange.call(
-                    color1Value,
-                    color2Value = newColor.value,
-                    color3Value,
-                    color4Value,
-                    color5Value,
-                    color6Value,
-                  );
-                }
-              },
-              calloutButtonSize: const Size(24,24),
-            )
-      ,
-            NodePropertyButtonColor(
-              label: '',
-              originalColor: color3Value != null ? Color(color3Value!) : null,
-              onChangeF: (Color? newColor) {
-                if (newColor != null) {
-                  onColorChange.call(
-                    color1Value,
-                    color2Value,
-                    color3Value = newColor.value,
-                    color4Value,
-                    color5Value,
-                    color6Value,
-                  );
-                }
-              },
-              calloutButtonSize: const Size(24,24),
-            )
-      ,
-            NodePropertyButtonColor(
-              label: '',
-              originalColor: color4Value != null ? Color(color4Value!) : null,
-              onChangeF: (Color? newColor) {
-                if (newColor != null) {
-                  onColorChange.call(
-                    color1Value,
-                    color2Value,
-                    color3Value,
-                    color4Value = newColor.value,
-                    color5Value,
-                    color6Value,
-                  );
-                }
-              },
-              calloutButtonSize: const Size(24,24),
-            )
-      ,
-            NodePropertyButtonColor(
-              label: '',
-              originalColor: color5Value != null ? Color(color5Value!) : null,
-              onChangeF: (Color? newColor) {
-                if (newColor != null) {
-                  onColorChange.call(
-                    color1Value,
-                    color2Value,
-                    color3Value,
-                    color4Value,
-                    color5Value = newColor.value,
-                    color6Value,
-                  );
-                }
-              },
-              calloutButtonSize: const Size(24,24),
-            )
-      ,
-            NodePropertyButtonColor(
-              label: '',
-              originalColor: color6Value != null ? Color(color6Value!) : null,
-              onChangeF: (Color? newColor) {
-                if (newColor != null) {
-                  onColorChange.call(
-                    color1Value,
-                    color2Value,
-                    color3Value,
-                    color4Value,
-                    color5Value,
-                    color6Value = newColor.value,
-                  );
-                }
-              },
-              calloutButtonSize: const Size(24,24),
-            )
-
-          ]),
+    return Tooltip(
+      message: name,
+      child: SizedBox(
+        width: 180,
+        child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color1Value != null ? Color(color1Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value = newColor.value,
+                  color2Value,
+                  color3Value,
+                  color4Value,
+                  color5Value,
+                  color6Value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          ),
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color2Value != null ? Color(color2Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value,
+                  color2Value = newColor.value,
+                  color3Value,
+                  color4Value,
+                  color5Value,
+                  color6Value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          ),
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color3Value != null ? Color(color3Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value,
+                  color2Value,
+                  color3Value = newColor.value,
+                  color4Value,
+                  color5Value,
+                  color6Value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          ),
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color4Value != null ? Color(color4Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value,
+                  color2Value,
+                  color3Value,
+                  color4Value = newColor.value,
+                  color5Value,
+                  color6Value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          ),
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color5Value != null ? Color(color5Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value,
+                  color2Value,
+                  color3Value,
+                  color4Value,
+                  color5Value = newColor.value,
+                  color6Value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          ),
+          NodePropertyButtonColor(
+            label: '',
+            originalColor: color6Value != null ? Color(color6Value!) : null,
+            onChangeF: (Color? newColor) {
+              if (newColor != null) {
+                onColorChange.call(
+                  color1Value,
+                  color2Value,
+                  color3Value,
+                  color4Value,
+                  color5Value,
+                  color6Value = newColor.value,
+                );
+              }
+            },
+            calloutButtonSize: const Size(24, 24),
+          )
+        ]),
+      ),
     );
   }
 }
@@ -1351,7 +1347,11 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // Alignment -------------
     if (sameType<T, DecorationShapeEnum?>()) {
       return DecorationShapeEnum.propertyNodeContents(
-          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex),
+      );
     }
     // ArrowType -------------
     if (sameType<T, ArrowTypeEnum?>()) {

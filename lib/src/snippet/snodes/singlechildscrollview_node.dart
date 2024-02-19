@@ -34,7 +34,7 @@ class SingleChildScrollViewNode extends SC with SingleChildScrollViewNodeMappabl
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     var targetGK = nodeWidgetGK;
     return SingleChildScrollView(
       key: targetGK,

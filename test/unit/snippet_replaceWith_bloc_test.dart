@@ -25,12 +25,12 @@ void main() {
 
   /// reusable expected states
   expectedState_SelectedNode(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
-    selectedNode: node,
-    showProperties: true,
-    selectedWidgetGK: selectedWidgetGK,
-    selectedTreeNodeGK: selectedTreeNodeGK,
-    nodeBeingDeleted: null,
-  );
+        selectedNode: node,
+        showProperties: true,
+        selectedWidgetGK: selectedWidgetGK,
+        selectedTreeNodeGK: selectedTreeNodeGK,
+        nodeBeingDeleted: null,
+      );
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -44,8 +44,7 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)
-      ..setParents(null);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)..setParents(null);
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
     if (select != null) {
@@ -97,8 +96,7 @@ void main() {
     act: (bloc) {
       bloc.add(const SnippetEvent.replaceSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[
-    ],
+    expect: () => <SnippetState>[],
     verify: (bloc) {
       expect(sc1.child, isA<RichTextNode>());
       expect(rt2.text, isA<WidgetSpanNode>());
@@ -114,8 +112,7 @@ void main() {
     act: (bloc) {
       bloc.add(const SnippetEvent.replaceSelectionWith(type: TextSpanNode));
     },
-    expect: () => <SnippetState>[
-    ],
+    expect: () => <SnippetState>[],
     verify: (bloc) {
       expect(sc1.child, isA<TextNode>());
       expect(snippet.anyMissingParents(), false);
@@ -130,8 +127,7 @@ void main() {
     act: (bloc) {
       bloc.add(const SnippetEvent.replaceSelectionWith(type: TextNode));
     },
-    expect: () => <SnippetState>[
-    ],
+    expect: () => <SnippetState>[],
     verify: (bloc) {
       expect(sc1.child, isA<PollNode>());
       expect((sc1.child as PollNode).children.first, isA<PollOptionNode>());
@@ -141,18 +137,22 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "try to replace a Step with a non-Step",
-    setUp: () => test_snippet_setup(sc1..child = (StepperNode(children: [sel = StepNode(
-      title: GenericSingleChildNode(propertyName: 'title', child: TextNode()),
-      subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode()),
-      content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
-    )])), select: sel),
+    setUp: () => test_snippet_setup(
+        sc1
+          ..child = (StepperNode(children: [
+            sel = StepNode(
+              title: GenericSingleChildNode(propertyName: 'title', child: TextNode()),
+              subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode()),
+              content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
+            )
+          ])),
+        select: sel),
     build: () => snippetBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const SnippetEvent.replaceSelectionWith(type: TextNode));
     },
-    expect: () => <SnippetState>[
-    ],
+    expect: () => <SnippetState>[],
     verify: (bloc) {
       expect(sc1.child, isA<StepperNode>());
       expect((sc1.child as StepperNode).children.first, isA<StepNode>());
@@ -170,7 +170,8 @@ void main() {
       bloc.add(const SnippetEvent.replaceSelectionWith(type: ContainerNode));
     },
     expect: () => [
-      expectedState_SelectedNode(snippetBloc, cl1),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode type', cl1),
       const TypeMatcher<SnippetState>()
         ..having((state) => state.selectedNode, 'selectedNode type', isA<ContainerNode>())
         ..having((state) => state.selectedNode?.parent, 'parent', cl1.parent)
@@ -178,6 +179,28 @@ void main() {
     verify: (bloc) {
       // expect(sc1.child, isA<StepperNode>());
       // expect((sc1.child as StepperNode).children.first, isA<StepNode>());
+      expect(snippet.anyMissingParents(), false);
+    },
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    "replace a SizedBox containing a Poll with a Container",
+    setUp: () => test_snippet_setup(
+        sc1..child = (sel = SizedBoxNode(child: PollNode(children: [PollOptionNode(optionId: 'optionId', text: 'text')]))),
+        select: sel),
+    build: () => snippetBloc,
+    seed: () => selectedState,
+    act: (bloc) {
+      bloc.add(const SnippetEvent.replaceSelectionWith(type: ContainerNode));
+    },
+    expect: () => [
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode type', isA<ContainerNode>())
+        ..having((state) => state.selectedNode?.parent, 'parent', sc1)
+    ],
+    verify: (bloc) {
+      expect(sc1.child, isA<ContainerNode>());
+      expect((sc1.child as ContainerNode).child, isNotNull);
       expect(snippet.anyMissingParents(), false);
     },
   );

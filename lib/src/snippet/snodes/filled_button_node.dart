@@ -28,7 +28,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
     Feature? feature = calloutConfigGroup?.contentSnippetName;
 
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
 
     return Container(
       // container only for possble selection gk

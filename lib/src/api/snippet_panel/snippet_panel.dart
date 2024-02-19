@@ -233,7 +233,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
               if (tabBarGK != null) {
                 TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
                 if (tbNode != null && !(backBtnPressed??false)) {
-                  prevTabQ.add(tbNode.selection);
+                  prevTabQ.add(tbNode.selection??0);
                   tbNode.selection = tabC!.index;
                   tabQSize.value = prevTabQ.length;
                   print("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");

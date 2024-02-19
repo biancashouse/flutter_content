@@ -29,7 +29,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
 
     setParent(parentNode);
 
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
 
     return Container(
       // container only for possble selection gk

@@ -47,7 +47,7 @@ class StackNode extends MC with StackNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     try {
       return LayoutBuilder(
         builder: (context, constraints) {

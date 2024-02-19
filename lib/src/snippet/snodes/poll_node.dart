@@ -81,7 +81,7 @@ class PollNode extends MC with PollNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
 
     // find
     return LayoutBuilder(

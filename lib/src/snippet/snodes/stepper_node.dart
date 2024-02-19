@@ -42,7 +42,7 @@ class StepperNode extends MC with StepperNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return possiblyCheckHeightConstraint(
       parentNode,
       FCStepper(

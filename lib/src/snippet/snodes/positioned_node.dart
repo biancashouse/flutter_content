@@ -55,7 +55,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return Positioned(
             key: createNodeGK(),      top: top,
       left: left,

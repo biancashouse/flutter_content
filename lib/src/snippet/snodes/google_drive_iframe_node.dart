@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/iframe.dart';
+import 'package:html/parser.dart' as html;
 
 part 'google_drive_iframe_node.mapper.dart';
 
@@ -134,7 +135,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     String src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false';
 //        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
@@ -145,7 +146,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
             height: iframeHeight,
             child: IFrame(
               // name: name,
-              src: src,
+              src: extractUrlFromIframe(src)
+                  ?? '<iframe src="https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"></iframe>',
               iframeW: iframeWidth ?? double.infinity,
               iframeH: iframeHeight ?? double.infinity,
               forceRefresh: true,
@@ -161,6 +163,13 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
                   Useful.coloredText('folder id missing!', color: Colors.red),
                 ],
               );
+  }
+
+
+  String? extractUrlFromIframe(String iframeTag) {
+    RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+    Iterable<RegExpMatch> matches = exp.allMatches(iframeTag);
+    return matches.first.group(0);
   }
 
   // : Row(
@@ -185,7 +194,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 
   @override
   Widget? logoSrc() => Image.asset(
-        Useful.asset('images/google-icons/google-drive-icon.webp'),
+        Useful.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
         width: 24,
       );
 

@@ -31,7 +31,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return Padding(
       key: createNodeGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),

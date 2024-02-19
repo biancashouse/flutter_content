@@ -73,7 +73,7 @@ class NodeWidget extends StatelessWidget {
                 treeController.toggleExpansion(entry.node);
               } else {
                 // instead of expanding current node, do a cascading expand
-                treeController.expandCascading([entry.node]);
+                treeController.expand(entry.node);
               }
             },
           )
@@ -88,10 +88,10 @@ class NodeWidget extends StatelessWidget {
       // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
       // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
       onTap: () {
-        if (onClipboard || entry.node is GenericSingleChildNode) return;
+        if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
 
         if (!treeController.getExpansionState(entry.node)) {
-          treeController.expandCascading([entry.node]);
+          treeController.expand(entry.node);
         }
 
         Callout.dismiss(TREENODE_MENU_CALLOUT);
@@ -115,7 +115,7 @@ class NodeWidget extends StatelessWidget {
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             Useful.afterNextBuildDo(() {
-              MaterialSPAState.showNodeWidgetOverlay(context, entry.node);
+              MaterialSPAState.showNodeWidgetOverlay(entry.node);
             });
            });
         }

@@ -853,7 +853,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           roots: event.visibleDecendantNode != null ? [event.visibleDecendantNode!] : [rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
         )
-          ..expandAll();
+          ;//..expandAll();
     // SnippetState? prevSnippetState = CAPIState.snippetStateMap[event.snippetName];
     // SnippetBloC newSnippetBloc = prevSnippetState != null
     //     ? SnippetBloC(

@@ -30,7 +30,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode(context);
+      possiblyHighlightSelectedNode();
       return AspectRatio(
         key: createNodeGK(),
         aspectRatio: aspectRatio,

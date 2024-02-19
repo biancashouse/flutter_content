@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/surround/dotted_decoration.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_radio_menu.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 
 part 'enum_decoration.mapper.dart';
 
@@ -31,7 +32,7 @@ enum DecorationShapeEnum {
           onChangedF?.call(newIndex);
         },
         wrap: true,
-        calloutButtonSize: const Size(130, 40),
+        calloutButtonSize: const Size(150, 40),
         calloutSize: const Size(240, 220),
       );
 
@@ -83,7 +84,6 @@ enum DecorationShapeEnum {
     Gradient? fillGradient = fillColors.length > 1 ? LinearGradient(colors: fillColors) : null;
     if (fillColors.length == 1) fillColor = fillColors.first;
     if (fillColors.isEmpty) fillColor = Colors.white;
-    Color? borderColor;
     List<Color> borderColors = [];
     if (borderColor1 != null) borderColors.add(borderColor1);
     if (borderColor2 != null) borderColors.add(borderColor2);
@@ -91,66 +91,77 @@ enum DecorationShapeEnum {
     if (borderColor4 != null) borderColors.add(borderColor4);
     if (borderColor5 != null) borderColors.add(borderColor5);
     if (borderColor6 != null) borderColors.add(borderColor6);
-    LinearGradient? borderGradient = borderColors.length > 1 ? LinearGradient(colors: borderColors) : null;
-    if (borderColors.length == 1) borderColor = borderColors.first;
-    if (borderColors.isEmpty) borderColor = Colors.black;
+    BoxBorder? border;
+    if (borderColors.length == 1) {
+      border = Border.all(color: borderColors.first, width: thickness ?? 3);
+    } else if (borderColors.length > 1) {
+      const rainbowGradient = LinearGradient(colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.purpleAccent]);
+      LinearGradient borderGradient = LinearGradient(colors: borderColors);
+      border = GradientBoxBorder(gradient: borderGradient, width: thickness ?? 3);
+    }
     return switch (this) {
       DecorationShapeEnum.rectangle => BoxDecoration(
           shape: BoxShape.rectangle,
-          border: borderColor != null ? Border.all(color: borderColor, width: thickness ?? 2) : null,
-          //gradient: borderGradient,
+          border: border,
+          gradient: fillGradient,
           color: fillColor,
         ),
       DecorationShapeEnum.rounded_rectangle => BoxDecoration(
           shape: BoxShape.rectangle,
-          border: borderColor != null ? Border.all(color: borderColor, width: thickness ?? 2) : null,
+          border: border,
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
-          //gradient: borderGradient,
+          gradient: fillGradient,
           color: fillColor,
         ),
       DecorationShapeEnum.rectangle_dotted => DottedDecoration(
           shape: Shape.box,
           dash: const <int>[3, 3],
-          borderColor: borderColor = Colors.grey,
+          borderColor: borderColors.firstOrNull ?? Colors.grey,
           strokeWidth: 3,
           fillColor: fillColor ?? Colors.white,
+          fillGradient: fillGradient,
         ),
       DecorationShapeEnum.rounded_rectangle_dotted => DottedDecoration(
           shape: Shape.box,
           dash: const <int>[3, 3],
-          borderColor: borderColor = Colors.grey,
+          borderColor: borderColors.firstOrNull ?? Colors.grey,
           strokeWidth: 3,
-          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
           fillColor: fillColor ?? Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
+          fillGradient: fillGradient,
         ),
       DecorationShapeEnum.circle => BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: borderColor ?? Colors.black, width: thickness ?? 2),
-          color: fillColor ?? Colors.white,
+          border: border,
+          color: fillGradient != null ? null : fillColor ?? Colors.white,
+          gradient: fillGradient,
         ),
       DecorationShapeEnum.bevelled => ShapeDecoration(
           shape: BeveledRectangleBorder(
-            side: BorderSide(color: borderColor ?? Colors.black, width: thickness ?? 1),
+            side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 1),
             borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 6)),
           ),
-          color: fillColor ?? Colors.white,
+          color: fillGradient != null ? null : fillColor ?? Colors.white,
+          gradient: fillGradient,
         ),
       DecorationShapeEnum.stadium => ShapeDecoration(
           shape: StadiumBorder(
-            side: BorderSide(color: borderColor ?? Colors.black, width: thickness ?? 2),
+            side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 2),
           ),
-          color: fillColor ?? Colors.white,
+          color: fillGradient != null ? null : fillColor ?? Colors.white,
+          gradient: fillGradient,
         ),
       DecorationShapeEnum.star => ShapeDecoration(
           shape: StarBorder(
-            side: BorderSide(color: borderColor ?? Colors.black, width: thickness ?? 2),
+            side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 2),
             points: starPoints?.toDouble() ?? 7,
             // innerRadiusRatio: _model.innerRadiusRatio,
             // pointRounding: _model.pointRounding,
             // valleyRounding: _model.valleyRounding,
             // rotation: 0,
           ),
-          color: fillColor ?? Colors.white,
+          color: fillGradient != null ? null : fillColor ?? Colors.white,
+          gradient: fillGradient,
         ),
     };
   }

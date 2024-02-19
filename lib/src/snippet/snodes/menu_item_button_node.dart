@@ -59,7 +59,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return MenuItemButton(
       key: createNodeGK(),
       onPressed: () {

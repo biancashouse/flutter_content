@@ -20,6 +20,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/clipboa
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
@@ -195,6 +196,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   bool _inited = false;
   int tapCount = 0;
   DateTime? lastTapTime;
+  // YoutubePlayerController? ytController;
 
   @override
   void initState() {
@@ -322,6 +324,12 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       snippetsMap: parseSnippetJsons(model),
       namedStyles: widget.namedStyles,
     );
+
+    // ytController = YoutubePlayerController.fromVideoId(
+    //   videoId: 'zWh3CShX_do',
+    //   autoPlay: false,
+    //   params: const YoutubePlayerParams(showFullscreenButton: true),
+    // );
 
     return capiBloc;
   }
@@ -516,10 +524,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
           feature: "editMode-FAB",
           suppliedCalloutW: 60,
           suppliedCalloutH: 60,
-          initialCalloutPos: Offset(40, screenSize.height - 100),
+          initialCalloutPos: FC().editModeBtnPos(context),
           color: MaterialSPA.inEditMode.value ? Colors.purple : Colors.white,
           arrowType: ArrowType.NO_CONNECTOR,
           circleShape: true,
+          onDragEndedF: (newPos) => FC().setEditModeBtnPos(newPos),
         ));
   }
 
@@ -595,7 +604,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   }
 
   // only called with MaterialAppWrapper context
-  static void showNodeWidgetOverlay(context, STreeNode node) {
+  static void showNodeWidgetOverlay(STreeNode node) {
     Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       removeAllNodeWidgetOverlays();
@@ -701,7 +710,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                   cc = node.nodeWidgetGK?.currentContext;
                   pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node);
                   // Useful.afterNextBuildDo(() {
-                  MaterialSPAState.showNodeWidgetOverlay(context, node);
+                  MaterialSPAState.showNodeWidgetOverlay(node);
                   // });
                 },
                 child: Container(

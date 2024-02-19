@@ -15,7 +15,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   int? indicatorColorValue;
   EdgeInsetsValue? padding;
   double? indicatorWeight;
-  int selection;
+  int? selection;
 
   TabBarNode({
     this.selectedLabelColorValue,
@@ -23,7 +23,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     this.indicatorColorValue,
     this.padding,
     this.indicatorWeight = 2.0,
-    this.selection = 1,
+    this.selection,
     required super.children,
   });
 
@@ -78,7 +78,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     // find transformable scaffold node then its corr state object
     // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
     // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;

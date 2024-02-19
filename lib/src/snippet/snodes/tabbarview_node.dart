@@ -18,7 +18,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     SnippetPanelState? spState = SnippetPanel.of(context);
     int numTabNodes = spState?.tabC?.length ?? 0;
     List<Widget> childWidgets = children.map((node) => TabBarViewPage(child: node.toWidget(context, this))).toList();

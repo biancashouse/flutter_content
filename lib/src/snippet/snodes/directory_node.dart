@@ -66,7 +66,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
     // treeC.expand(this);
     treeC.expandCascading([this]);
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return Container(
       key: createNodeGK(),
       width: 800,

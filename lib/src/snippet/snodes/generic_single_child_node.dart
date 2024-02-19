@@ -19,9 +19,10 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   Widget toWidget(BuildContext context, STreeNode parentNode) => Useful.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   @override
-  Widget toWidgetProperty(BuildContext context, STreeNode? parentNode) {
+  Widget? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
+    if (child == null) return null;
     try {
       Widget? childWidget = child?.toWidget(context, this);
       if (childWidget == null) throw(Exception('Failed to create widget for property: $propertyName'));

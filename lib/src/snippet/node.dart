@@ -30,6 +30,12 @@ abstract class Node extends Object {
         if (node.title != null) node.title!,
         if (node.bottom != null) node.bottom!,
       ];
+    } else if (node is StepNode) {
+      children = [
+        node.title,
+        if (node.subtitle != null) node.subtitle!,
+        node.content,
+      ];
     } else if (node is GenericSingleChildNode) {
       children = node.child != null ? [node.child!] : [];
     } else if (node is RichTextNode) {

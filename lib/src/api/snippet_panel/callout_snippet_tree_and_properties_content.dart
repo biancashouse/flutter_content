@@ -49,7 +49,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
         childrenProvider: Node.propertyTreeChildrenProvider,
       );
       //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-      snippetBloc.state.treeC.expandCascading(snippetBloc.state.treeC.roots);
+      snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
       selectedNode.propertiesPaneSC ??= ScrollController()
         ..addListener(() {
           selectedNode.propertiesPaneScrollPos = selectedNode.propertiesPaneSC?.offset ?? 0.0;
@@ -318,93 +318,105 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
       color: Colors.black,
       child: Column(
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              IconButton(
-                hoverColor: Colors.white30,
-                onPressed: () {
-                  snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
-                  Useful.afterNextBuildDo(() {
-                    if (FC().capiBloc.state.jsonClipboard != null) {
-                      Callout.unhide("floating-clipboard");
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && snippetBloc.state.selectedNode is! GenericMultiChildNode)
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  hoverColor: Colors.white30,
+                  onPressed: () {
+                    // some properties cannot be deleted
+                    if (snippetBloc.state.selectedNode.parent is GenericSingleChildNode) {
+                      GenericSingleChildNode gc = snippetBloc.state.selectedNode.parent;
+                      if (gc.parent is StepNode && (gc.propertyName == 'title' || gc.propertyName == 'content')) return;
                     }
-                  });
-                  Callout.hide("TreeNodeMenu");
-                },
-                icon: Icon(
-                  Icons.cut,
-                  color:
-                      Colors.orange.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
-                ),
-                tooltip: 'Cut',
-              ),
-              // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
-              IconButton(
-                hoverColor: Colors.white30,
-                onPressed: () {
-                  Useful.afterNextBuildDo(() {
-                    snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
+                    snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
                     Useful.afterNextBuildDo(() {
                       if (FC().capiBloc.state.jsonClipboard != null) {
                         Callout.unhide("floating-clipboard");
                       }
                     });
-                  });
-                  Callout.hide("TreeNodeMenu");
-                },
-                icon: Icon(
-                  Icons.copy,
-                  color: Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
-                ),
-                tooltip: 'Copy',
-              ),
-              IconButton(
-                hoverColor: Colors.white30,
-                onPressed: () async {
-                  Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                  if (snippetBloc.state.selectedNode is! RichTextNode) {
-                    snippetBloc.add(const SnippetEvent.deleteNodeTapped());
-                    Useful.afterNextBuildDo(() async {
-                      await Future.delayed(const Duration(milliseconds: 1000));
-                      snippetBloc.add(const SnippetEvent.completeDeletion());
-                    });
-                  }
-                  Callout.dismiss("TreeNodeMenu");
-                },
-                icon: Icon(Icons.delete,
+                    Callout.hide("TreeNodeMenu");
+                  },
+                  icon: Icon(
+                    Icons.cut,
                     color:
-                        Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
-                tooltip: 'Remove',
-              ),
-              if (snippetBloc.state.selectedNode is! SnippetRootNode)
+                        Colors.orange.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
+                  ),
+                  tooltip: 'Cut',
+                ),
+                // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
                 IconButton(
                   hoverColor: Colors.white30,
                   onPressed: () {
-                    // TODO save as new snippet and replace with snippet ref node
-                    showSaveAsCallout(
-                        selectedNode: snippetBloc.state.selectedNode,
-                        //targetGKF: () => targetGK,
-                        saveModelF: (s) {
-                          snippetBloc.add(SnippetEvent.saveNodeAsSnippet(
-                            node: snippetBloc.state.selectedNode!,
-                            newSnippetName: s,
-                          ));
-                        });
-                    Callout.dismiss(TREENODE_MENU_CALLOUT);
+                    Useful.afterNextBuildDo(() {
+                      snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
+                      Useful.afterNextBuildDo(() {
+                        if (FC().capiBloc.state.jsonClipboard != null) {
+                          Callout.unhide("floating-clipboard");
+                        }
+                      });
+                    });
+                    Callout.hide("TreeNodeMenu");
                   },
-                  icon: const Icon(
-                    Icons.link,
-                    color: Colors.blue,
+                  icon: Icon(
+                    Icons.copy,
+                    color:
+                        Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
                   ),
-                  tooltip: 'Save a a new Snippet...',
+                  tooltip: 'Copy',
                 ),
-            ],
-          ),
+                IconButton(
+                  hoverColor: Colors.white30,
+                  onPressed: () async {
+                    // some properties cannot be deleted
+                    if (snippetBloc.state.selectedNode.parent is GenericSingleChildNode) {
+                      GenericSingleChildNode gc = snippetBloc.state.selectedNode.parent;
+                      if (gc.parent is StepNode && (gc.propertyName == 'title' || gc.propertyName == 'content')) return;
+                    }
+                    Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                    if (snippetBloc.state.selectedNode is! RichTextNode) {
+                      snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+                      Useful.afterNextBuildDo(() async {
+                        await Future.delayed(const Duration(milliseconds: 1000));
+                        snippetBloc.add(const SnippetEvent.completeDeletion());
+                      });
+                    }
+                    Callout.dismiss("TreeNodeMenu");
+                  },
+                  icon: Icon(Icons.delete,
+                      color:
+                          Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
+                  tooltip: 'Remove',
+                ),
+                if (snippetBloc.state.selectedNode is! SnippetRootNode)
+                  IconButton(
+                    hoverColor: Colors.white30,
+                    onPressed: () {
+                      // TODO save as new snippet and replace with snippet ref node
+                      showSaveAsCallout(
+                          selectedNode: snippetBloc.state.selectedNode,
+                          //targetGKF: () => targetGK,
+                          saveModelF: (s) {
+                            snippetBloc.add(SnippetEvent.saveNodeAsSnippet(
+                              node: snippetBloc.state.selectedNode!,
+                              newSnippetName: s,
+                            ));
+                          });
+                      Callout.dismiss(TREENODE_MENU_CALLOUT);
+                    },
+                    icon: const Icon(
+                      Icons.link,
+                      color: Colors.blue,
+                    ),
+                    tooltip: 'Save a a new Snippet...',
+                  ),
+              ],
+            ),
           // tree structure icon buttons
           // replace button
-          if (_canReplace(snippetBloc.state.selectedNode!))
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && _canReplace(snippetBloc.state.selectedNode!))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
@@ -421,7 +433,9 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC || selectNodeParent is TextSpanNode);
 
-  bool _canWrap(STreeNode selectedNode) => (selectedNode is! InlineSpanNode &&
+  bool _canWrap(STreeNode selectedNode) => (selectedNode is! GenericSingleChildNode &&
+      selectedNode is! GenericMultiChildNode &&
+      selectedNode is! InlineSpanNode &&
       selectedNode is! SnippetRootNode &&
       selectedNode is! FileNode &&
       selectedNode is! PollOptionNode &&

@@ -107,7 +107,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                   ))
             .toList();
 
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return CarouselSlider.builder(
       itemCount: images.length,
       options: CarouselOptions(

@@ -68,7 +68,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context, isRoot: true)) as TextSpan;
       setParent(parentNode);
-      possiblyHighlightSelectedNode(context);
+      possiblyHighlightSelectedNode();
       RichText rt = RichText(
         key: createNodeGK(),
         text: rootTextSpan,

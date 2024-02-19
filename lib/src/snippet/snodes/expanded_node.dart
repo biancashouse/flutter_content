@@ -34,7 +34,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return Expanded(
       key: createNodeGK(),
       flex: flex,

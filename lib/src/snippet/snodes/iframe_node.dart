@@ -49,14 +49,14 @@ class IFrameNode extends CL with IFrameNodeMappable {
           name: 'iframeWidth',
           decimalValue: iframeWidth,
           onDoubleChange: (newValue) => refreshWithUpdate(() => iframeWidth = newValue ?? 800),
-          calloutButtonSize: const Size(90, 30),
+          calloutButtonSize: const Size(90, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'iframeHeight',
           decimalValue: iframeHeight,
           onDoubleChange: (newValue) => refreshWithUpdate(() => iframeHeight = newValue ?? 800),
-          calloutButtonSize: const Size(90, 30),
+          calloutButtonSize: const Size(90, 20),
         ),
       ];
 
@@ -116,7 +116,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     String FOLDER_ID = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
     String RESOURCE_KEY = '';
     return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty
@@ -124,8 +124,11 @@ class IFrameNode extends CL with IFrameNodeMappable {
             key: createNodeGK(),
              child: IFrame(
               //name: name,
-              src: src ??
-                  'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
+              // src: src ??
+              //     'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
+               src: src != null
+                   ? extractUrlFromIframe(src!)!
+                   : '<iframe src="https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"></iframe>',
               iframeW: iframeWidth,
               iframeH: iframeHeight,
               forceRefresh: true,
@@ -142,6 +145,12 @@ class IFrameNode extends CL with IFrameNodeMappable {
                   ]),
                 ],
               );
+  }
+
+  String? extractUrlFromIframe(String iframeTag) {
+    RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+    Iterable<RegExpMatch> matches = exp.allMatches(iframeTag);
+    return matches.first.group(0);
   }
 
   // : Row(

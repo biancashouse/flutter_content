@@ -44,7 +44,7 @@ class RowNode extends FlexNode with RowNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return LayoutBuilder(builder: (context, constraints) {
       return constraints.maxWidth == double.infinity
           ? Row(

@@ -46,7 +46,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     // find scaffold node
     // add a back button if scaffold has tabs
     SnippetPanelState? spState = SnippetPanel.of(context);
@@ -75,12 +75,13 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
     var bottomWidget = bottom?.toWidgetProperty(context, this);
     var actionWidgets = actions?.toWidgetProperty(context, this);
+    var titleWidget = title?.toWidgetProperty(context, this);
 
     try {
       return AppBar(
         key: createNodeGK(),
         leading: ListenableBuilder(listenable: spState!.tabQSize, builder: (_, __) => leadingWidget()),
-        title: title?.toWidgetProperty(context, this),
+        title: titleWidget,
         bottom: bottomWidget as PreferredSizeWidget,
         actions: actionWidgets,
         backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,

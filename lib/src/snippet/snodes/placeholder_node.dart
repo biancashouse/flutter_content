@@ -55,7 +55,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     Widget? childWidget;
     if (centredLabel?.isNotEmpty ?? false) {
       childWidget = Stack(

@@ -40,7 +40,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return Flexible(
             key: createNodeGK(),      flex: flex,
       fit: fit.flutterValue,

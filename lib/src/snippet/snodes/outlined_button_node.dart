@@ -34,7 +34,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
     Feature? feature = calloutConfigGroup?.contentSnippetName;
 
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
 
     return Container(
       // container only for possble selection gk

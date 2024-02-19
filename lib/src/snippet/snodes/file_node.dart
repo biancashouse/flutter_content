@@ -5,13 +5,13 @@ import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'file_node.mapper.dart';
 
-get googleDocsIconSrc => Useful.asset('images/google-icons/docs.png');
+get googleDocsIconSrc => Useful.asset('lib/assets/images/google-icons/docs.png');
 
-get googleSheetsIconSrc => Useful.asset('images/google-icons/sheets.png');
+get googleSheetsIconSrc => Useful.asset('lib/assets/images/google-icons/sheets.png');
 
-get googleSlidesIconSrc => Useful.asset('images/google-icons/slides.png');
+get googleSlidesIconSrc => Useful.asset('lib/assets/images/google-icons/slides.png');
 
-get googleFormsIconSrc => Useful.asset('images/google-icons/forms.png');
+get googleFormsIconSrc => Useful.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()
 class FileNode extends CL with FileNodeMappable {
@@ -71,7 +71,7 @@ class FileNode extends CL with FileNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return SizedBox(
             key: createNodeGK(),      width: 200,
       height: 30,

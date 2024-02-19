@@ -54,7 +54,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     //Icon(Icons.info, size: 28, color: Colors.red);
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return SubmenuButton(
             key: createNodeGK(),      style: Useful.buttonStyle(36),
       menuStyle: MenuStyle(

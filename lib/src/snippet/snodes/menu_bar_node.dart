@@ -23,7 +23,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     List<Widget> menuBarChildren = super.children.map((child) => child.toWidget(context, this)).toList();
     if (menuBarChildren.isEmpty) {
       return Text('new MenuBar');

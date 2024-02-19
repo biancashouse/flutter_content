@@ -21,7 +21,7 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   @override
   List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     List<Widget> childWidgets = children.map((node) => node.toWidget(context, this)).toList();
     return childWidgets;
   }

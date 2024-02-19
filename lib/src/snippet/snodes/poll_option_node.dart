@@ -34,7 +34,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return parent is PollNode
         ? FlutterPollOption(
             key: createNodeGK(),
@@ -46,7 +46,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   // FlutterPollOption toPollOption(BuildContext context, STreeNode? parentNode) {
   //   parent = parentNode;  // propagating parents down from root
-  //   possiblyHighlightSelectedNode(context);
+  //   possiblyHighlightSelectedNode();
   //   var targetGK = nodeWidgetGK;
   //
   //   return Icon(Icons.warning_amber)

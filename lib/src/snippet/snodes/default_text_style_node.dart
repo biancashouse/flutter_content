@@ -66,7 +66,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return child != null
         ? DefaultTextStyle.merge(
             key: createNodeGK(),

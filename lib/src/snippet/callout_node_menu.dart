@@ -363,6 +363,7 @@ List<Widget> menuAnchorWidgets(
       _menuItemButton("Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),
       _menuItemButton("TabBar", snippetBloc, selectedNode, TabBarNode, action),
       _menuItemButton("TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+      _menuItemButton("Youtube", snippetBloc, selectedNode, YTNode, action),
       _addSnippetsSubmenu(snippetBloc, selectedNode, action),
     ];
 

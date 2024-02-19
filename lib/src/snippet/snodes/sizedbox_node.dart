@@ -36,7 +36,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     var targetGK = nodeWidgetGK;
     return SizedBox(
       key: targetGK,

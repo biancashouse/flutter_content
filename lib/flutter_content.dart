@@ -78,6 +78,7 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
+export 'src/snippet/snodes/yt_node.dart';
 
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
@@ -230,6 +231,10 @@ class FC {
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
   String? lastSavedModelJson;
+  Offset? _editModeBtnPos;
+
+  Offset editModeBtnPos(context) => _editModeBtnPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
+  void setEditModeBtnPos(Offset newPos) => _editModeBtnPos = newPos;
 
   // each snippet panel has a gk, a last selected node, and a ur
 

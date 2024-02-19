@@ -76,6 +76,7 @@ const List<Type> childlessSubClasses = [
   StepNode,
   MenuItemButtonNode,
   PlaceholderNode,
+  YTNode,
 ];
 
 const List<Type> singleChildSubClasses = [
@@ -147,7 +148,6 @@ enum NodeAction {
   InlineSpanNode,
 ])
 abstract class STreeNode extends Node with STreeNodeMappable {
-
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
 
@@ -186,6 +186,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     snippetBlocState?.ur.createUndo(snippetBlocState);
     assignF.call();
     capiBloc.add(const CAPIEvent.forceRefresh());
+    Useful.afterNextBuildDo(() {
+      if (snippetBlocState?.selectedNode != null) {
+        MaterialSPAState.showNodeWidgetOverlay((snippetBlocState?.selectedNode)!);
+      }
+    });
   }
 
   //
@@ -321,15 +326,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   static void unhighlightSelectedNode() => Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
-  Future<void> possiblyHighlightSelectedNode(BuildContext context) async {
+  Future<void> possiblyHighlightSelectedNode() async {
     if (FC().selectedNode == this) {
       if (true || FC().highlightedNode != FC().selectedNode) {
         Useful.afterNextBuildDo(() {
-          if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
-            unhighlightSelectedNode();
-          }
+          // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
+          unhighlightSelectedNode();
+          // }
           SnippetBloC? snippetBloc = FC().snippetBeingEdited;
-          Rect? r = snippetBloc?.state.selectedWidgetGK?.globalPaintBounds();
+          var gk = snippetBloc?.state.selectedWidgetGK;
+          Rect? r = gk?.globalPaintBounds();
           if (r != null) {
             double thickness = 4;
             double w = r.width + thickness * 2;

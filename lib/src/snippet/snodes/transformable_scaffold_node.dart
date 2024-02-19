@@ -23,7 +23,7 @@ class TransformableScaffoldNode extends STreeNode with TransformableScaffoldNode
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode(context);
+    possiblyHighlightSelectedNode();
     return TransformableScaffold(suppliedScaffold: scaffold.toWidget(context, this));
   }
 
