@@ -12,7 +12,7 @@ void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
-  late SnippetRootNode snippetWithScaffoldAnd2Tabs;
+  late SnippetRootNode snippetWithScaffoldAnd3Tabs;
   late STreeNode nodeTBD;
   late RichTextNode rtNode;
 
@@ -25,8 +25,9 @@ void main() {
   late TabBarNode tb1;
   late TabBarViewNode tbv1;
   late STreeNode sel;
-  late STreeNode sel2;
+  late STreeNode text1;
   late GenericSingleChildNode stepTitleProperty;
+  late AppBarNode appBar;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -44,17 +45,17 @@ void main() {
     sc2 = CenterNode();
     mc1 = RowNode(children: []);
     mc2 = RowNode(children: []);
-    snippetWithScaffoldAnd2Tabs = SnippetRootNode(
+    snippetWithScaffoldAnd3Tabs = SnippetRootNode(
       name: 'test-snippet',
       child: TransformableScaffoldNode(
         scaffold: ScaffoldNode(
-          appBar: AppBarNode(
+          appBar: appBar = AppBarNode(
             title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
             bottom: GenericSingleChildNode(
               propertyName: 'bottom',
               child: tb1 = TabBarNode(
                 children: [
-                  sel2 = TextNode(text: 'tab 1'),
+                  text1 = TextNode(text: 'tab 1'),
                   TextNode(text: 'Tab 2'),
                   TextNode(text: 'Stepper Tab'),
                 ],
@@ -83,7 +84,7 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..setParents(null);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
   }
@@ -155,7 +156,7 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "delete step's title property",
-    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
       bloc.add(SnippetEvent.selectNode(node: stepTitleProperty.child!, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
@@ -691,26 +692,32 @@ void main() {
   );
 
   blocTest<SnippetBloC, SnippetState>(
-    'delete 1st tab',
-    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    'delete 1st of 3 tabs',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sel2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(node: text1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.deleteNodeTapped());
       bloc.add(const SnippetEvent.completeDeletion());
     },
-    skip: 3,
-    verify: (bloc) {
-      expect(tb1.parent?.parent, isA<AppBarNode>());
-      expect(tb1.children.length, 2);
-      expect(tbv1.children.length, tb1.children.length);
-      expect(snippet.anyMissingParents(), false);
-    },
+    // skip: 3,
+    expect: () => [
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode', isNull),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => tb1.children.length, '#tabs', tbv1.children.length)
+        ..having((state) => tb1.children.length, '#tabs', 3),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => tb1.children.length, '#tabs', tbv1.children.length)
+      ..having((state) => snippet.anyMissingParents(), 'parents', false)
+        ..having((state) => tb1.children.length, '#tabs', 2)
+        ..having((state) => appBar.bottom?.child, 'bottom', TabBar)
+    ],
   );
 
   blocTest<SnippetBloC, SnippetState>(
     'delete 2nd tab view',
-    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
       bloc.add(SnippetEvent.selectNode(node: sel, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));

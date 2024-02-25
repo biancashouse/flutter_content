@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 
 // void showTreeNodeMenu() {
@@ -488,21 +487,19 @@ MenuItemButton? _pasteMI(
     return MenuItemButton(
       onPressed: () {
         CAPIBloC bloc = FC().capiBloc;
-        String clipboardJson = bloc.state.jsonClipboard!;
-        STreeNode clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
         SnippetBloC? snippetBloc = FC().snippetBeingEdited;
         switch (action) {
           case NodeAction.replace:
-            snippetBloc?.add(SnippetEvent.pasteReplacement(clipboardNode: clipboardNode));
+            snippetBloc?.add(const SnippetEvent.pasteReplacement());
             break;
           case NodeAction.addSiblingBefore:
-            snippetBloc?.add(SnippetEvent.pasteSiblingBefore(clipboardNode: clipboardNode));
+            snippetBloc?.add(const SnippetEvent.pasteSiblingBefore());
             break;
           case NodeAction.addSiblingAfter:
-            snippetBloc?.add(SnippetEvent.pasteSiblingAfter(clipboardNode: clipboardNode));
+            snippetBloc?.add(const SnippetEvent.pasteSiblingAfter());
             break;
           case NodeAction.addChild:
-            snippetBloc?.add(SnippetEvent.pasteChild(clipboardNode: clipboardNode));
+            snippetBloc?.add(const SnippetEvent.pasteChild());
             break;
           case NodeAction.wrapWith:
             break;

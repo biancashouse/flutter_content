@@ -19,10 +19,9 @@ void main() {
   late TextNode cl2;
   late TextNode cl3;
   late RowNode mc1;
-  late TabBarNode tb1;
-  late TabBarViewNode tbv1;
-  late STreeNode sel;
-  late STreeNode sel2;
+  late TabBarNode tb1, tb2;
+  late TabBarViewNode tbv1, tbv2;
+  late STreeNode selPl;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -39,16 +38,16 @@ void main() {
     cl3 = TextNode(text: 'cl3');
     mc1 = RowNode(children: []);
     snippetWithScaffoldAnd2Tabs = SnippetRootNode(
-      name: 'test-snippet',
+      name: 'test-snippet-2',
       child: TransformableScaffoldNode(
         scaffold: ScaffoldNode(
           appBar: AppBarNode(
             title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
             bottom: GenericSingleChildNode(
               propertyName: 'bottom',
-              child: tb1 = TabBarNode(
+              child: tb2 = TabBarNode(
                 children: [
-                  sel2 = TextNode(text: 'tab 1'),
+                  TextNode(text: 'tab 1'),
                   TextNode(text: 'Tab 2'),
                 ],
               ),
@@ -59,7 +58,7 @@ void main() {
             child: tbv1 = TabBarViewNode(
               children: [
                 PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                sel = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                selPl = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
               ],
             ),
           ),
@@ -69,9 +68,10 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..setParents(null);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    selectedState = snippetBloc.state;
     if (select != null) {
       selectedState = snippetBloc.state.copyWith(
         selectedNode: select,
@@ -132,7 +132,7 @@ void main() {
   );
 
   blocTest<SnippetBloC, SnippetState>(
-    'insert TextNode after last sibling',
+    'insert TextNode before last sibling',
     setUp: () => test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
     build: () => snippetBloc,
     seed: () => selectedState,
@@ -148,41 +148,41 @@ void main() {
   );
 
   blocTest<SnippetBloC, SnippetState>(
-    'insert 3rd tab between existing ones',
-    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    'insert a 3rd tab between the 2 existing ones',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
     build: () => snippetBloc,
+    // seed: () => selectedState,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sel, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(node: selPl, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.addSiblingBefore(type: SizedBoxNode));
       bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
     },
-    skip: 3,
     verify: (bloc) {
-      expect(sel, isA<PlaceholderNode>());
+      expect(selPl, isA<PlaceholderNode>());
+      expect(selPl.parent, isNotNull);
       expect(tbv1.children[0], isA<PlaceholderNode>());
       expect(tbv1.children[1], isA<SizedBoxNode>());
       expect(tbv1.children[2], isA<PlaceholderNode>());
-      expect(tb1.children.length, tbv1.children.length);
+      expect(tb2.children.length, tbv1.children.length);
       expect(snippet.anyMissingParents(), false);
     },
   );
 
   blocTest<SnippetBloC, SnippetState>(
-    'insert 3rd tab view between existing ones',
-    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs..setParents(null)),
+    'insert 3rd tab view after existing ones',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sel2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(node: selPl, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.addSiblingAfter(type: SizedBoxNode));
       bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
     },
-    skip: 3,
     verify: (bloc) {
-      expect(sel, isA<PlaceholderNode>());
-      expect(tb1.children.length, tbv1.children.length);
+      expect(selPl, isA<PlaceholderNode>());
       expect(tbv1.children[0], isA<PlaceholderNode>());
       expect(tbv1.children[1], isA<PlaceholderNode>());
-      expect(tbv1.children[2], isA<PlaceholderNode>());
+      expect(tbv1.children[2], isA<SizedBoxNode>());
+      expect(tb2.children.length, tbv1.children.length);
       expect(snippet.anyMissingParents(), false);
     },
   );

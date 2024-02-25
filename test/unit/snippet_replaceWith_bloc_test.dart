@@ -44,7 +44,7 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..setParents(null);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
     if (select != null) {

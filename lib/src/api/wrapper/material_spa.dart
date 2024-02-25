@@ -493,7 +493,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     try {
       for (String snippetJson in model.snippetEncodedJsons.values) {
         SnippetRootNode rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
-        snippetMap[rootNode.name] = rootNode..setParents(null);
+        snippetMap[rootNode.name] = rootNode..validateTree();
       }
     } catch (e) {
       print("_parseSnippetJsons(): ${e.toString()}");

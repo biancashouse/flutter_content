@@ -97,7 +97,7 @@ class TextStyleGroup with TextStyleGroupMappable {
             height: lh,
             color: colorVal != null ? Color(colorVal) : null,
           )
-        : fontSizeName != null
+        : (fontSizeName??fSizeName) != null
             ? fSizeName?.flutterTextStyle(themeData: Theme.of(context))?.copyWith(
                   fontSize: fSize,
                   fontStyle: fStyle?.flutterValue,

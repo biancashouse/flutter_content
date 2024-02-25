@@ -253,11 +253,12 @@ class TextNode extends CL with TextNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
+    TextStyle? ts = (textStyleGroup??TextStyleGroup()).toTextStyle(context, namedTextStyle: namedTextStyle);
     try {
       return Text(
         key: createNodeGK(),
         text,
-        style: textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle),
+        style: ts,
         textAlign: textAlign?.flutterValue,
       );
     } catch (e) {

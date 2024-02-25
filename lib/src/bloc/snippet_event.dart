@@ -62,23 +62,19 @@ class SnippetEvent with _$SnippetEvent {
   }) = AddSiblingAfter;
 
   const factory SnippetEvent.pasteReplacement({
-    required STreeNode clipboardNode,
+    // required STreeNode clipboardNode,
     Type? widgetSpanChildType,
   }) = PasteReplacement;
 
   const factory SnippetEvent.pasteChild({
-    required STreeNode clipboardNode,
+    // required STreeNode clipboardNode,
     Type? widgetSpanChildType,
     STreeNode? testWidgetSpanChildNode,
   }) = PasteChild;
 
-  const factory SnippetEvent.pasteSiblingBefore({
-    required STreeNode clipboardNode,
-  }) = PasteSiblingBefore;
+  const factory SnippetEvent.pasteSiblingBefore() = PasteSiblingBefore;
 
-  const factory SnippetEvent.pasteSiblingAfter({
-    required STreeNode clipboardNode,
-  }) = PasteSiblingAfter;
+  const factory SnippetEvent.pasteSiblingAfter() = PasteSiblingAfter;
 
   const factory SnippetEvent.deleteNodeTapped() = DeleteNodeTapped;
   const factory SnippetEvent.completeDeletion() = CompleteDeletion;
@@ -89,10 +85,13 @@ class SnippetEvent with _$SnippetEvent {
 
   const factory SnippetEvent.copyNode({
     required STreeNode node,
+    @Default(false) skipSave,
   }) = CopyNode;
 
   const factory SnippetEvent.cutNode({
+    required CAPIBloC capiBloc,
     required STreeNode node,
+    @Default(false) skipSave,
   }) = CutNode;
 
   // const factory SnippetEvent.pasteNode({

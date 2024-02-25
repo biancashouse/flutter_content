@@ -68,7 +68,7 @@ class SnippetPanel extends StatefulWidget {
 
   static SnippetRootNode getTemplate(SnippetTemplate template) {
     var rootNode = templates.firstWhere((root) => root.name == template.name).cloneSnippet();
-    rootNode.setParents(null);
+    rootNode.validateTree();
     return rootNode;
   }
 

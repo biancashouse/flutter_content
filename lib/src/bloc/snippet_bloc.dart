@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_material3_text_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/snippet/snodes/yt_node.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -101,7 +101,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       possiblyNewTreeC = SnippetTreeController(
         roots: [event.node],
         childrenProvider: Node.snippetTreeChildrenProvider,
-      );//..expandAll();
+      ); //..expandAll();
     }
     emit(state.copyWith(
       treeC: possiblyNewTreeC,
@@ -296,7 +296,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     String cutJson = event.node.toJson();
     _cutIncludingAnyChildren(event.node);
     state.treeC.rebuild();
-    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: cutJson));
+    bool well = state.rootNode.anyMissingParents();
+    event.capiBloc.add(CAPIEvent.updateClipboard(newContent: cutJson, skipSave: event.skipSave));
   }
 
   _cutIncludingAnyChildren(STreeNode node) {
@@ -349,7 +350,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // }
 
   Future<void> _copyNode(CopyNode event, emit) async {
-    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: event.node.toJson()));
+    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: event.node.toJson(), skipSave: event.skipSave));
   }
 
   STreeNode _typeAsATreeNode(Type t, STreeNode? childNode, String notFoundMsg) => switch (t) {
@@ -380,11 +381,16 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (OutlinedButtonNode) => OutlinedButtonNode(),
         const (PaddingNode) => PaddingNode(padding: EdgeInsetsValue(), child: childNode),
         const (PlaceholderNode) => PlaceholderNode(),
-        const (PollNode) => PollNode(name: 'sample-poll', title: 'Sample Poll', children: [
-            PollOptionNode(optionId: 'a', text: 'option 1 text?'),
-            PollOptionNode(optionId: 'b', text: 'option 2 text?'),
-            PollOptionNode(optionId: 'c', text: 'option 3 text?'),
-          ]),
+        const (PollNode) => ContainerNode(
+            decoration: DecorationShapeEnum.rounded_rectangle_dotted,
+            borderColor1Value: Colors.black.value,
+            borderThickness: 4,
+            child: PollNode(name: 'sample-poll', title: 'Sample Poll', children: [
+              PollOptionNode(optionId: 'a', text: 'option 1 text?'),
+              PollOptionNode(optionId: 'b', text: 'option 2 text?'),
+              PollOptionNode(optionId: 'c', text: 'option 3 text?'),
+            ]),
+          ),
         const (PollOptionNode) => PollOptionNode(optionId: 'id?', text: 'new option text?'),
         const (PositionedNode) => PositionedNode(top: 0, left: 0, child: childNode),
         const (RichTextNode) => RichTextNode(text: TextSpanNode(text: '', isRootTextSpan: true)),
@@ -576,6 +582,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       rethrow;
     }
 
+    state.rootNode.validateTree();
     state.treeC.expand(r);
     state.treeC.rebuild();
     emit(state.copyWith(
@@ -675,7 +682,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     } else if (selectedNode is WidgetSpanNode) {
       selectedNode.child = newNode;
     }
-    newNode.setParent(selectedNode);
+    // newNode.setParent(selectedNode);
+    state.rootNode.validateTree();
     state.treeC.expand(newNode);
     state.treeC.rebuild();
     emit(state.copyWith(
@@ -684,10 +692,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
-    if (state.aNodeIsSelected) {
+    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
+      STreeNode clipboardNode = STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
       _createSnippetUndo();
-      _replaceWithNewNodeOrClipboard(selectedNode, emit, event.clipboardNode);
+      _replaceWithNewNodeOrClipboard(selectedNode, emit, clipboardNode);
     }
 
     // // Container's Container parent should have an alignment property
@@ -713,9 +722,9 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteChild(PasteChild event, emit) {
-    if (state.aNodeIsSelected) {
+    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
-      STreeNode clipboardNode = event.clipboardNode;
+      STreeNode clipboardNode = STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
       _addOrPasteChild(selectedNode, emit, clipboardNode);
     }
   }
@@ -738,16 +747,17 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
-    if (state.aNodeIsSelected) {
+    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
+      STreeNode clipboardNode = STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
       _createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i = (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
-        _pasteSiblingAt(event.clipboardNode, emit, i);
+        _pasteSiblingAt(clipboardNode, emit, i);
       }
       if (state.selectedNode?.parent is TextSpanNode) {
         int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
-        _pasteSiblingAt(event.clipboardNode, emit, i);
+        _pasteSiblingAt(clipboardNode, emit, i);
       }
     }
   }
@@ -770,16 +780,17 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
-    if (state.aNodeIsSelected) {
+    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
+      STreeNode clipboardNode = STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
       _createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i = (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
-        _pasteSiblingAt(event.clipboardNode, emit, i + 1);
+        _pasteSiblingAt(clipboardNode, emit, i + 1);
       }
       if (state.selectedNode?.parent is TextSpanNode) {
         int i = (state.selectedNode?.parent as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
-        _pasteSiblingAt(event.clipboardNode, emit, i + 1);
+        _pasteSiblingAt(clipboardNode, emit, i + 1);
       }
     }
   }
@@ -816,10 +827,14 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
     if (state.selectedNode?.parent is MC) {
       (state.selectedNode?.parent as MC).children.insert(i, newNode);
+      newNode.setParent(state.selectedNode?.parent);
     }
     if (state.selectedNode?.parent is TextSpanNode) {
       (state.selectedNode?.parent as TextSpanNode).children?.insert(i, newNode as InlineSpanNode);
+      newNode.setParent(state.selectedNode?.parent);
     }
+
+    state.rootNode.validateTree();
 
     if (newNode is RichTextNode) {
       state.treeC.expand(newNode);

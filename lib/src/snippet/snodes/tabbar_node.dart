@@ -97,10 +97,14 @@ class TabBarNode extends MC with TabBarNodeMappable {
         unselectedLabelColor: unselectedLabelColorValue != null ? Color(unselectedLabelColorValue!) : null,
         indicatorColor: indicatorColorValue != null ? Color(indicatorColorValue!) : null,
         indicatorWeight: indicatorWeight = 2.0,
-        padding: padding?.toEdgeInsets(),
+        indicator: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        padding: padding?.toEdgeInsets() ?? EdgeInsets.all(8),
       );
     } catch (e) {
-      print('TabBarNode.toWidget() failed!');
+      print('TabBarNode.toWidget() failed! ${e.toString()}');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

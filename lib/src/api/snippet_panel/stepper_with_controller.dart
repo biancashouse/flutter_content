@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 class FCStepper extends StatefulWidget {
   final StepperNode stepperNode;
 
-  FCStepper(this.stepperNode, {super.key});
+  const FCStepper(this.stepperNode, {super.key});
 
   @override
   State<FCStepper> createState() => FCStepperState();

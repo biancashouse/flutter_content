@@ -284,6 +284,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       jsonClipboard: event.newContent,
       force: state.force + 1,
     ));
+    if (event.skipSave) return;
     _saveModel(event, emit);
   }
 

@@ -7,7 +7,8 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/undo_re
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import 'snippet_bloc_test.mocks.dart';
+import 'unit_test.mocks.dart';
+
 
 void main() {
   const appName = 'flutter-content-test-app';

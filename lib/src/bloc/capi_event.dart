@@ -108,6 +108,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.updateClipboard({
     required String? newContent,
+    @Default(false) skipSave,
   }) = UpdateClipboard;
 
   // const factory CAPIEvent.createdSnippet({
@@ -145,7 +146,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.restoredSnippetBloc({
     required SnippetBloC restoredBloc,
-}) = RestoredSnippetBloc;
+  }) = RestoredSnippetBloc;
 
   const factory CAPIEvent.showDirectoryTree() = ShowDirectoryTree;
 
@@ -153,19 +154,19 @@ class CAPIEvent with _$CAPIEvent {
     @Default(false) bool save,
   }) = RemoveDirectoryTree;
 
-  // const factory CAPIEvent.changedSnippetTreeCalloutSize({
-  //   required double? newW,
-  //   required double? newH,
-  // }) = ChangedSnippetTreeCalloutSize;
-  //
-  // const factory CAPIEvent.changedSnippetTreeCalloutPos({
-  //   required Offset newOffset,
-  // }) = ChangedSnippetTreeCalloutPos;
-  //
-  // const factory CAPIEvent.changedDirectoryTreeCalloutSize({
-  //   required double? newW,
-  //   required double? newH,
-  // }) = ChangedDirectoryTreeCalloutSize;
+// const factory CAPIEvent.changedSnippetTreeCalloutSize({
+//   required double? newW,
+//   required double? newH,
+// }) = ChangedSnippetTreeCalloutSize;
+//
+// const factory CAPIEvent.changedSnippetTreeCalloutPos({
+//   required Offset newOffset,
+// }) = ChangedSnippetTreeCalloutPos;
+//
+// const factory CAPIEvent.changedDirectoryTreeCalloutSize({
+//   required double? newW,
+//   required double? newH,
+// }) = ChangedDirectoryTreeCalloutSize;
 
 // const factory CAPIEvent.changedSnippetPropertiesCalloutSize({
 //   required double? newW,

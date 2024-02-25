@@ -273,11 +273,28 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return nodeWidgetGK!;
   }
 
-  void setParents(STreeNode? parent) {
+  void validateTree() {
+    _setParents(null);
+    // ensure No. tabs matches No. tab views
+    TabBarNode? tabBar = findDescendant(TabBarNode) as TabBarNode?;
+    TabBarViewNode? tabBarView = findDescendant(TabBarViewNode) as TabBarViewNode?;
+    if ((tabBar?.children.length ?? 0) > (tabBarView?.children.length ?? 0)) {
+      tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
+    } else if ((tabBar?.children.length ?? 0) < (tabBarView?.children.length ?? 0)) {
+      tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
+    }
+    bool doubleCheck = anyMissingParents();
+    print("missing parents: $doubleCheck");
+    if (tabBar != null ) {
+      print("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
+    }
+  }
+
+  void _setParents(STreeNode? parent) {
     setParent(parent);
     var children = Node.snippetTreeChildrenProvider(this);
     for (STreeNode child in children) {
-      child.setParents(this);
+      child._setParents(this);
     }
   }
 
@@ -292,7 +309,28 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return false;
   }
 
-  // check nodes are identical
+  STreeNode? findDescendant(Type type) {
+    //
+    STreeNode? foundChild;
+    void findMatchingChild(STreeNode parent) {
+      bool keepSearching = true;
+      for (STreeNode child in Node.snippetTreeChildrenProvider(parent)) {
+        if (!keepSearching) return;
+        if (child.runtimeType == type) {
+          foundChild = child;
+          keepSearching = false;
+        } else {
+          findMatchingChild(child);
+        }
+      }
+    }
+
+    //
+    findMatchingChild(this);
+    return foundChild;
+  }
+
+// check nodes are identical
   bool isSame(STreeNode otherNode) => toJson() == otherNode.toJson();
 
   Widget toWidget(BuildContext context, STreeNode parentNode) => const Placeholder();
@@ -330,9 +368,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     if (FC().selectedNode == this) {
       if (true || FC().highlightedNode != FC().selectedNode) {
         Useful.afterNextBuildDo(() {
-          // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
+// if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
           unhighlightSelectedNode();
-          // }
+// }
           SnippetBloC? snippetBloc = FC().snippetBeingEdited;
           var gk = snippetBloc?.state.selectedWidgetGK;
           Rect? r = gk?.globalPaintBounds();

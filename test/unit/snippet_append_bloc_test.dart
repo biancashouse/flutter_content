@@ -58,7 +58,7 @@ void main() {
   });
 
   void test_snippet_setup() {
-    snippet = snippetWithScaffoldAnd2Tabs..setParents(null);
+    snippet = snippetWithScaffoldAnd2Tabs..validateTree();
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
   }

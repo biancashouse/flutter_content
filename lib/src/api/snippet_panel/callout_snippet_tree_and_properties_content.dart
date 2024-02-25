@@ -314,6 +314,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
   }
 
   Widget nodeButtons(snippetBloc) {
+    var gc = snippetBloc.state.selectedNode.parent;
     return Container(
       color: Colors.black,
       child: Column(
@@ -327,11 +328,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     // some properties cannot be deleted
-                    if (snippetBloc.state.selectedNode.parent is GenericSingleChildNode) {
-                      GenericSingleChildNode gc = snippetBloc.state.selectedNode.parent;
-                      if (gc.parent is StepNode && (gc.propertyName == 'title' || gc.propertyName == 'content')) return;
-                    }
-                    snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
+                    if (gc is GenericSingleChildNode? && gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
+                    snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!, capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
                       if (FC().capiBloc.state.jsonClipboard != null) {
                         Callout.unhide("floating-clipboard");
@@ -341,9 +339,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   },
                   icon: Icon(
                     Icons.cut,
-                    color:
-                        Colors.orange.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
-                  ),
+                      color: Colors.orange.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                          snippetBloc.state.selectedNode is SnippetRefNode ||
+                          (gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
+                          ? .5
+                          : 1.0)),
                   tooltip: 'Cut',
                 ),
                 // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
@@ -371,10 +371,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () async {
                     // some properties cannot be deleted
-                    if (snippetBloc.state.selectedNode.parent is GenericSingleChildNode) {
-                      GenericSingleChildNode gc = snippetBloc.state.selectedNode.parent;
-                      if (gc.parent is StepNode && (gc.propertyName == 'title' || gc.propertyName == 'content')) return;
-                    }
+                    // some properties cannot be deleted
+                    if (gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     if (snippetBloc.state.selectedNode is! RichTextNode) {
                       snippetBloc.add(const SnippetEvent.deleteNodeTapped());
@@ -386,8 +384,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color:
-                          Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
+                      color: Colors.red.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                              snippetBloc.state.selectedNode is SnippetRefNode ||
+                              (gc is GenericSingleChildNode? && gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
+                          ? .5
+                          : 1.0)),
                   tooltip: 'Remove',
                 ),
                 if (snippetBloc.state.selectedNode is! SnippetRootNode)

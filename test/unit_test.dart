@@ -7,15 +7,15 @@ import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-// import 'package:pretty_json/pretty_json.dart';
 
-import 'snippet_bloc_test.mocks.dart';
+import 'unit_test.mocks.dart';
+
 
 void main() {
   late MockModelRepository mockRepository;
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
-  late STreeNode firstTabViewNode;
+  late SnippetPanel snippetPanel;
 
   setUp(() {
     mockRepository = MockModelRepository();
@@ -41,7 +41,7 @@ void main() {
               propertyName: 'body',
               child: TabBarViewNode(
                 children: [
-                  firstTabViewNode = PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                  PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
                   PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
                 ],
               ),
@@ -52,6 +52,7 @@ void main() {
       final snippetJson = scaffoldWithTabs.toJson();
       return CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
     });
+    snippetPanel = SnippetPanel(panelName: "test-panel", snippetName: snippetName);
   });
 
   test('read the model from the repo', () async {
@@ -63,6 +64,6 @@ void main() {
 
     expect(snippetMap.values.first.name, snippetName);
 
-    // printPrettyJson(model.toJson(), indent: 2);
+    // expect(snippetPanel != null, isTrue);
   });
 }

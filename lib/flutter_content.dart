@@ -21,6 +21,7 @@ export 'src/api/wrapper/material_spa.dart';
 export 'src/api/wrapper/multiple/target_group_wrapper.dart';
 export 'src/api/wrapper/old_transformable_scaffold.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
+export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
@@ -243,7 +244,7 @@ class FC {
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
   final Map<STreeNode, Set<PTreeNode>> expandedNodes = {};
-  bool showingNodeButtons = false;
+  bool showingNodeButtons = true;
 
   bool get skipAssetPkgName => _skipAssetPkgName;
 
