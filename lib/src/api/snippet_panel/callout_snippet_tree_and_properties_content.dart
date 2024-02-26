@@ -38,10 +38,12 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final msvC = useState<MultiSplitViewController>(MultiSplitViewController(areas: [Area(size: 220)]));
+    final msvC = useState<MultiSplitViewController>(
+        MultiSplitViewController(areas: [Area(size: 220)]));
     final snippetBloc = context.watch<SnippetBloC>();
     final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-    final List<PTreeNode> propertyNodes = selectedNode?.properties(context) ?? [];
+    final List<PTreeNode> propertyNodes =
+        selectedNode?.properties(context) ?? [];
     if (selectedNode != null) {
       // get a new treeController only when snippet selected
       selectedNode.pTreeC = PTreeNodeTreeController(
@@ -52,7 +54,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
       snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
       selectedNode.propertiesPaneSC ??= ScrollController()
         ..addListener(() {
-          selectedNode.propertiesPaneScrollPos = selectedNode.propertiesPaneSC?.offset ?? 0.0;
+          selectedNode.propertiesPaneScrollPos =
+              selectedNode.propertiesPaneSC?.offset ?? 0.0;
         });
     }
     return StatefulBuilder(
@@ -76,8 +79,10 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
         // restore scrollPos
         if (selectedNode?.propertiesPaneSC?.hasClients ?? false) {
           Useful.afterNextBuildDo(() {
-            if (selectedNode?.propertiesPaneScrollPos != selectedNode?.propertiesPaneSC?.offset) {
-              selectedNode?.propertiesPaneSC?.jumpTo(selectedNode.propertiesPaneScrollPos ?? 0.0);
+            if (selectedNode?.propertiesPaneScrollPos !=
+                selectedNode?.propertiesPaneSC?.offset) {
+              selectedNode?.propertiesPaneSC
+                  ?.jumpTo(selectedNode.propertiesPaneScrollPos ?? 0.0);
             }
           });
         }
@@ -90,7 +95,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
               backgroundColor: Colors.black,
               title: Tooltip(
                 message: 'snippet name',
-                child: Useful.coloredText(snippetBloc.snippetName, fontSize: 16.0, color: Colors.white),
+                child: Useful.coloredText(snippetBloc.snippetName,
+                    fontSize: 16.0, color: Colors.white),
               ),
               // title: GestureDetector(
               //   onTap: () {
@@ -171,12 +177,16 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
                   icon: Icon(
                     Icons.undo,
-                    color: Colors.white.withOpacity(snippetBloc.state.canUndo() ? 1.0 : .25),
+                    color: Colors.white
+                        .withOpacity(snippetBloc.state.canUndo() ? 1.0 : .25),
                   ),
                   onPressed: () {
-                    if (snippetBloc.state.canUndo()) snippetBloc.add(SnippetEvent.undo(name: snippetBloc.snippetName));
+                    if (snippetBloc.state.canUndo())
+                      snippetBloc.add(
+                          SnippetEvent.undo(name: snippetBloc.snippetName));
                     Useful.afterNextBuildDo(() {
-                      snippetBloc.state.treeC.expandCascading([snippetBloc.rootNode!]);
+                      snippetBloc.state.treeC
+                          .expandCascading([snippetBloc.rootNode!]);
                     });
                   },
                 ),
@@ -184,12 +194,16 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
                   icon: Icon(
                     Icons.redo,
-                    color: Colors.white.withOpacity(snippetBloc.state.canRedo() ? 1.0 : .25),
+                    color: Colors.white
+                        .withOpacity(snippetBloc.state.canRedo() ? 1.0 : .25),
                   ),
                   onPressed: () {
-                    if (snippetBloc.state.canRedo()) snippetBloc.add(SnippetEvent.redo(name: snippetBloc.snippetName));
+                    if (snippetBloc.state.canRedo())
+                      snippetBloc.add(
+                          SnippetEvent.redo(name: snippetBloc.snippetName));
                     Useful.afterNextBuildDo(() {
-                      snippetBloc.state.treeC.expandCascading([snippetBloc.rootNode!]);
+                      snippetBloc.state.treeC
+                          .expandCascading([snippetBloc.rootNode!]);
                     });
                   },
                 ),
@@ -226,9 +240,12 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   axis: Axis.horizontal,
                   controller: msvC.value,
                   // onWeightChange: () => setState(() {}),
-                  dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+                  dividerBuilder: (axis, index, resizable, dragging,
+                      highlighted, themeData) {
                     return Container(
-                      color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
+                      color: dragging
+                          ? Colors.purpleAccent[200]
+                          : Colors.purpleAccent[100],
                       child: Icon(
                         Icons.drag_indicator,
                         color: highlighted ? Colors.blueAccent : Colors.white,
@@ -239,7 +256,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     // SNIPPET TREE
                     GestureDetector(
                       onTap: () {
-                        snippetBloc.add(const SnippetEvent.clearNodeSelection());
+                        snippetBloc
+                            .add(const SnippetEvent.clearNodeSelection());
                         Callout.hide("floating-clipboard");
                       },
                       child: SnippetTreePane(snippetBloc: snippetBloc),
@@ -248,7 +266,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     if (selectedNode?.pTreeC != null)
                       GestureDetector(
                         onTap: () {
-                          snippetBloc.add(const SnippetEvent.clearNodeSelection());
+                          snippetBloc
+                              .add(const SnippetEvent.clearNodeSelection());
                           Callout.hide("floating-clipboard");
                         },
                         child: Container(
@@ -260,16 +279,24 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                               children: [
                                 // icon buttons
                                 ExpansionTile(
-                                  title: Useful.coloredText('...', color: Colors.white),
+                                  title: Useful.coloredText('...',
+                                      color: Colors.white),
                                   backgroundColor: Colors.black,
                                   collapsedBackgroundColor: Colors.black,
-                                  onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
+                                  onExpansionChanged: (bool isExpanded) =>
+                                      FC().showingNodeButtons = isExpanded,
                                   initiallyExpanded: FC().showingNodeButtons,
                                   children: [nodeButtons(snippetBloc, context)],
                                 ),
                                 // NODE PROPERTIES TREE
-                                if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
-                                if (true || propertyNodes.isNotEmpty && !(selectedNode.hidePropertiesWhileDragging ?? false))
+                                if (propertyNodes.isEmpty)
+                                  Useful.coloredText(' (no properties)',
+                                      color: Colors.white),
+                                if (true ||
+                                    propertyNodes.isNotEmpty &&
+                                        !(selectedNode
+                                                .hidePropertiesWhileDragging ??
+                                            false))
                                   Material(
                                       color: Colors.black,
                                       child: PropertiesTreeView(
@@ -319,7 +346,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
       color: Colors.black,
       child: Column(
         children: [
-          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && snippetBloc.state.selectedNode is! GenericMultiChildNode)
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode &&
+              snippetBloc.state.selectedNode is! GenericMultiChildNode)
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -328,8 +356,13 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     // some properties cannot be deleted
-                    if (gc is GenericSingleChildNode? && gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
-                    snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!, capiBloc: FC().capiBloc));
+                    if (gc is GenericSingleChildNode? &&
+                        gc?.parent is StepNode &&
+                        (gc?.propertyName == 'title' ||
+                            gc?.propertyName == 'content')) return;
+                    snippetBloc.add(SnippetEvent.cutNode(
+                        node: snippetBloc.state.selectedNode!,
+                        capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
                       if (FC().capiBloc.state.jsonClipboard != null) {
                         Callout.unhide("floating-clipboard");
@@ -337,13 +370,16 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     });
                     Callout.hide("TreeNodeMenu");
                   },
-                  icon: Icon(
-                    Icons.cut,
-                      color: Colors.orange.withOpacity(!snippetBloc.state.aNodeIsSelected ||
-                          snippetBloc.state.selectedNode is SnippetRefNode ||
-                          (gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
-                          ? .5
-                          : 1.0)),
+                  icon: Icon(Icons.cut,
+                      color: Colors.orange.withOpacity(
+                          !snippetBloc.state.aNodeIsSelected ||
+                                  snippetBloc.state.selectedNode
+                                      is SnippetRefNode ||
+                                  (gc?.parent is StepNode &&
+                                      (gc?.propertyName == 'title' ||
+                                          gc?.propertyName == 'content'))
+                              ? .5
+                              : 1.0)),
                   tooltip: 'Cut',
                 ),
                 // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
@@ -351,7 +387,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     Useful.afterNextBuildDo(() {
-                      snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
+                      snippetBloc.add(SnippetEvent.copyNode(
+                          node: snippetBloc.state.selectedNode!));
                       Useful.afterNextBuildDo(() {
                         if (FC().capiBloc.state.jsonClipboard != null) {
                           Callout.unhide("floating-clipboard");
@@ -362,40 +399,44 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   },
                   icon: Icon(
                     Icons.copy,
-                    color:
-                        Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
+                    color: Colors.green.withOpacity(snippetBloc
+                                .state.aNodeIsSelected &&
+                            snippetBloc.state.selectedNode is! SnippetRefNode
+                        ? 1.0
+                        : .25),
                   ),
                   tooltip: 'Copy',
                 ),
                 IconButton(
                   hoverColor: Colors.white30,
                   onPressed: () async {
+                    // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
                     // some properties cannot be deleted
-                    // some properties cannot be deleted
-                    if (snippetBloc.state.selectedNode?.isAStepNodeTitleOrContentPropertyWidget()) return;
-                    if (snippetBloc.state.selectedNode?.isAScaffoldTabWidget()) return;
-                    if (snippetBloc.state.selectedNode?.isAScaffoldTabViewWidget()) return;
+                    if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                    if (snippetBloc.state.selectedNode is! RichTextNode) {
-                      snippetBloc.add(const SnippetEvent.deleteNodeTapped());
-                      Useful.afterNextBuildDo(() async {
-                        await Future.delayed(const Duration(milliseconds: 1000));
-                        snippetBloc.add(const SnippetEvent.completeDeletion());
-                        Useful.afterNextBuildDo(() {
-                          // if was tab or tabview, reset the tab Q and controller
-                          SnippetPanelState? spState = SnippetPanel.of(context);
-                          spState?.resetTabQandC;
-                        });
+                    snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+                    Useful.afterNextBuildDo(() async {
+                      await Future.delayed(const Duration(milliseconds: 1000));
+                      snippetBloc.add(const SnippetEvent.completeDeletion());
+                      Useful.afterNextBuildDo(() {
+                        // if was tab or tabview, reset the tab Q and controller
+                        SnippetPanelState? spState = SnippetPanel.of(context);
+                        spState?.resetTabQandC;
                       });
-                    }
+                    });
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity(!snippetBloc.state.aNodeIsSelected ||
-                              snippetBloc.state.selectedNode is SnippetRefNode ||
-                              (gc is GenericSingleChildNode? && gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
-                          ? .5
-                          : 1.0)),
+                      color: Colors.red.withOpacity(
+                          !snippetBloc.state.aNodeIsSelected ||
+                                  snippetBloc.state.selectedNode
+                                      is SnippetRefNode ||
+                                  (gc is GenericSingleChildNode? &&
+                                      gc?.parent is StepNode &&
+                                      (gc?.propertyName == 'title' ||
+                                          gc?.propertyName == 'content'))
+                              ? .5
+                              : 1.0)),
                   tooltip: 'Remove',
                 ),
                 if (snippetBloc.state.selectedNode is! SnippetRootNode)
@@ -424,11 +465,15 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
             ),
           // tree structure icon buttons
           // replace button
-          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && _canReplace(snippetBloc.state.selectedNode!))
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode &&
+              _canReplace(snippetBloc.state.selectedNode!))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                  action: NodeAction.replace, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
+              child: insertItemMenuAnchor(
+                  snippetBloc, snippetBloc.state.selectedNode!,
+                  action: NodeAction.replace,
+                  label: 'Replace with...',
+                  bgColor: Colors.lightBlueAccent),
             ),
           editTreeStructureIconButtons(snippetBloc),
           vspacer(10),
@@ -439,15 +484,17 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   bool _canReplace(STreeNode? selectNodeParent) => true;
 
-  bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC || selectNodeParent is TextSpanNode);
+  bool _canAddSiblng(STreeNode? selectNodeParent) =>
+      (selectNodeParent is MC || selectNodeParent is TextSpanNode);
 
-  bool _canWrap(STreeNode selectedNode) => (selectedNode is! GenericSingleChildNode &&
-      selectedNode is! GenericMultiChildNode &&
-      selectedNode is! InlineSpanNode &&
-      selectedNode is! SnippetRootNode &&
-      selectedNode is! FileNode &&
-      selectedNode is! PollOptionNode &&
-      selectedNode is! StepNode);
+  bool _canWrap(STreeNode selectedNode) =>
+      (selectedNode is! GenericSingleChildNode &&
+          selectedNode is! GenericMultiChildNode &&
+          selectedNode is! InlineSpanNode &&
+          selectedNode is! SnippetRootNode &&
+          selectedNode is! FileNode &&
+          selectedNode is! PollOptionNode &&
+          selectedNode is! StepNode);
 
   bool _canAddChld(STreeNode selectedNode) =>
       selectedNode is! SnippetRefNode &&
@@ -475,25 +522,33 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(30)),
                       ),
                       alignment: Alignment.center,
                       child: Text(snippetBloc.state.selectedNode.toString()),
                     ),
                   ),
-                  if (snippetBloc.state.selectedNode is! RowNode && _canAddSiblng(snippetBloc.state.selectedNode.parent))
+                  if (snippetBloc.state.selectedNode is! RowNode &&
+                      _canAddSiblng(snippetBloc.state.selectedNode.parent))
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                              action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
+                          insertItemMenuAnchor(
+                              snippetBloc, snippetBloc.state.selectedNode!,
+                              action: NodeAction.addSiblingBefore,
+                              tooltip: 'Insert sibling before...',
+                              bgColor: Colors.blue),
                           vspacer(12),
                           // snippetBloc.state.selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
-                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                              action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
+                          insertItemMenuAnchor(
+                              snippetBloc, snippetBloc.state.selectedNode!,
+                              action: NodeAction.addSiblingAfter,
+                              tooltip: 'Insert sibling after...',
+                              bgColor: Colors.blue),
                         ],
                       ),
                     ),
@@ -501,21 +556,28 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     Positioned(
                       top: 10,
                       left: 10,
-                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                          action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
+                      child: insertItemMenuAnchor(
+                          snippetBloc, snippetBloc.state.selectedNode!,
+                          action: NodeAction.wrapWith,
+                          tooltip: 'Wrap with...',
+                          bgColor: Colors.blue),
                     ),
                   if (_canAddChld(snippetBloc.state.selectedNode!))
                     Positioned(
                       bottom: 10,
                       right: 10,
-                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                          action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
+                      child: insertItemMenuAnchor(
+                          snippetBloc, snippetBloc.state.selectedNode!,
+                          action: NodeAction.addChild,
+                          tooltip: 'Add child...',
+                          bgColor: Colors.blue),
                     ),
                 ],
               ),
             ),
           ),
-          if (snippetBloc.state.selectedNode is RowNode && _canAddSiblng(snippetBloc.state.selectedNode.parent))
+          if (snippetBloc.state.selectedNode is RowNode &&
+              _canAddSiblng(snippetBloc.state.selectedNode.parent))
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -526,10 +588,16 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                        action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
-                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                        action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
+                    insertItemMenuAnchor(
+                        snippetBloc, snippetBloc.state.selectedNode!,
+                        action: NodeAction.addSiblingBefore,
+                        tooltip: 'Insert sibling before...',
+                        bgColor: Colors.blue),
+                    insertItemMenuAnchor(
+                        snippetBloc, snippetBloc.state.selectedNode!,
+                        action: NodeAction.addSiblingAfter,
+                        tooltip: 'Insert sibling after...',
+                        bgColor: Colors.blue),
                   ],
                 ),
               ),
@@ -556,7 +624,8 @@ class SnippetTreePane extends StatelessWidget {
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
         menuChildren: menuChildren,
-        builder: (BuildContext context, MenuController controller, Widget? child) {
+        builder:
+            (BuildContext context, MenuController controller, Widget? child) {
           return Center(
               child: TextButton.icon(
             key: key,
@@ -570,7 +639,8 @@ class SnippetTreePane extends StatelessWidget {
             icon: const Icon(Icons.add),
             label: const Text('add root widget'),
             style: ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.white.withOpacity(.9)),
+              backgroundColor:
+                  MaterialStatePropertyAll(Colors.white.withOpacity(.9)),
               //padding: MaterialStatePropertyAll(EdgeInsets.zero),
             ),
           ));
@@ -591,14 +661,16 @@ class SnippetTreePane extends StatelessWidget {
               height: 1200,
               child: Builder(builder: (context) {
                 final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-                if (snippetBloc.rootNode != snippetBloc.treeC.roots.first && snippetBloc.treeC.roots.first is! ScaffoldNode) {
+                if (snippetBloc.rootNode != snippetBloc.treeC.roots.first &&
+                    snippetBloc.treeC.roots.first is! ScaffoldNode) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       navigateUpTreeButton(),
-                      Expanded(child: SnippetTreeView(snippetBloc: snippetBloc)),
+                      Expanded(
+                          child: SnippetTreeView(snippetBloc: snippetBloc)),
                     ],
                   );
                 }
@@ -626,7 +698,8 @@ class SnippetTreePane extends StatelessWidget {
                 SnippetEvent.selectNode(
                   node: parent,
                   selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-                  selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+                  selectedTreeNodeGK:
+                      GlobalKey(debugLabel: 'selectedTreeNodeGK'),
                 ),
               );
             }
@@ -680,7 +753,9 @@ class SnippetTreeView extends HookWidget {
         // print("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         return TreeIndentation(
           guide: IndentGuide.connectingLines(
-            color: FC().aNodeIsSelected && entry.node == FC().selectedNode ? Colors.green : Colors.white,
+            color: FC().aNodeIsSelected && entry.node == FC().selectedNode
+                ? Colors.green
+                : Colors.white,
             indent: 40.0,
           ),
           entry: entry,

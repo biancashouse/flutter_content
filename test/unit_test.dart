@@ -26,7 +26,8 @@ void main() {
           scaffold: ScaffoldNode(
             appBar: AppBarNode(
               bgColorValue: Colors.black.value,
-              title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+              title: GenericSingleChildNode(
+                  propertyName: 'title', child: TextNode(text: 'my title')),
               bottom: GenericSingleChildNode(
                 propertyName: 'bottom',
                 child: TabBarNode(
@@ -41,8 +42,11 @@ void main() {
               propertyName: 'body',
               child: TabBarViewNode(
                 children: [
-                  PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                  PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                  PlaceholderNode(
+                      centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                  PlaceholderNode(
+                      centredLabel: 'page 2',
+                      colorValue: Colors.blueAccent.value),
                 ],
               ),
             ),
@@ -50,7 +54,8 @@ void main() {
         ),
       )..validateTree();
       final snippetJson = scaffoldWithTabs.toJson();
-      return CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
+      return CAPIModel(
+          appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
     });
     SnippetPanel(panelName: "test-panel", snippetName: snippetName);
   });
@@ -60,7 +65,8 @@ void main() {
 
     expect(model!.appName, appName);
 
-    Map<String, SnippetRootNode> snippetMap = MaterialSPAState.parseSnippetJsons(model);
+    Map<String, SnippetRootNode> snippetMap =
+        MaterialSPAState.parseSnippetJsons(model);
 
     expect(snippetMap.values.first.name, snippetName);
 
@@ -75,5 +81,4 @@ void main() {
     expect(firstTabNode.isAScaffoldTabWidget(), isTrue);
     expect(firstTabNode.canBeDeleted(), isTrue);
   });
-
 }

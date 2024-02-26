@@ -163,7 +163,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? nodeWidgetGK; // gets used in toWidget()
 
-  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) => node.findNearestAncestor<SnippetRootNode>();
+  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) =>
+      node.findNearestAncestor<SnippetRootNode>();
 
   List<PTreeNode> properties(BuildContext context) {
     return createPropertiesList(context);
@@ -188,7 +189,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     capiBloc.add(const CAPIEvent.forceRefresh());
     Useful.afterNextBuildDo(() {
       if (snippetBlocState?.selectedNode != null) {
-        MaterialSPAState.showNodeWidgetOverlay((snippetBlocState?.selectedNode)!);
+        MaterialSPAState.showNodeWidgetOverlay(
+            (snippetBlocState?.selectedNode)!);
       }
     });
   }
@@ -267,12 +269,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   bool canBeDeleted() {
     ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
+    if (this is RichTextNode) return false;
     TabBarNode? tabBar = scaffold?.appBar?.bottom?.child as TabBarNode?;
     TabBarViewNode? tabBarView = scaffold?.body.child as TabBarViewNode?;
     var firstTab = tabBar?.children.firstOrNull;
     var firstTabView = tabBar?.children.firstOrNull;
-    int numTabs = tabBar?.children.length??99;
-    int numTabBiews = tabBarView?.children.length??99;
+    int numTabs = tabBar?.children.length ?? 99;
+    int numTabBiews = tabBarView?.children.length ?? 99;
     if (firstTab == this && numTabs < 2) {
       return false;
     }
@@ -292,19 +295,27 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   void validateTree() {
     _setParents(null);
+    //ensure no tabs have empty text
+    if (this is TextNode &&
+        (this as TextNode).text.isEmpty &&
+        parent is TabBarNode) {
+      (this as TextNode).text = 'new tab';
+    }
     // ensure No. tabs matches No. tab views
     TabBarNode? tabBar = findDescendant(TabBarNode) as TabBarNode?;
-    TabBarViewNode? tabBarView = findDescendant(TabBarViewNode) as TabBarViewNode?;
+    TabBarViewNode? tabBarView =
+        findDescendant(TabBarViewNode) as TabBarViewNode?;
     if ((tabBar?.children.length ?? 0) > (tabBarView?.children.length ?? 0)) {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
-    } else if ((tabBar?.children.length ?? 0) < (tabBarView?.children.length ?? 0)) {
+    } else if ((tabBar?.children.length ?? 0) <
+        (tabBarView?.children.length ?? 0)) {
       tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
     }
-    bool doubleCheck = anyMissingParents();
-    print("missing parents: $doubleCheck");
-    if (tabBar != null) {
-      print("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
-    }
+    // bool doubleCheck = anyMissingParents();
+    // print("missing parents: $doubleCheck");
+    // if (tabBar != null) {
+    //   print("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
+    // }
   }
 
   void _setParents(STreeNode? parent) {
@@ -318,7 +329,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool anyMissingParents() {
     var children = Node.snippetTreeChildrenProvider(this);
     for (STreeNode child in children) {
-      bool foundAMissingParent = child.parent != this || child.anyMissingParents();
+      bool foundAMissingParent =
+          child.parent != this || child.anyMissingParents();
       if (foundAMissingParent) {
         return true;
       }
@@ -327,11 +339,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   bool isAScaffoldTabWidget() {
-    return parent is TabBarNode && parent?.parent is GenericSingleChildNode && (parent?.parent as GenericSingleChildNode?)?.propertyName == 'bottom';
+    return parent is TabBarNode &&
+        parent?.parent is GenericSingleChildNode &&
+        (parent?.parent as GenericSingleChildNode?)?.propertyName == 'bottom';
   }
 
   bool isAScaffoldTabViewWidget() =>
-      parent is TabBarViewNode && parent?.parent is GenericSingleChildNode && (parent?.parent as GenericSingleChildNode?)?.propertyName == 'body';
+      parent is TabBarViewNode &&
+      parent?.parent is GenericSingleChildNode &&
+      (parent?.parent as GenericSingleChildNode?)?.propertyName == 'body';
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
     var node = parent?.parent;
@@ -372,9 +388,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // check nodes are identical
   bool isSame(STreeNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget toWidget(BuildContext context, STreeNode parentNode) => const Placeholder();
+  Widget toWidget(BuildContext context, STreeNode parentNode) =>
+      const Placeholder();
 
-  Widget possiblyCheckHeightConstraint(STreeNode? parentNode, Widget actualWidget) {
+  Widget possiblyCheckHeightConstraint(
+      STreeNode? parentNode, Widget actualWidget) {
     /*
       use LayoutBuilder to check for infinite maxHeight error.
       skip the check if parent is a SizedBox or a SingleChildScrollView.
@@ -401,7 +419,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
   }
 
-  static void unhighlightSelectedNode() => Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+  static void unhighlightSelectedNode() =>
+      Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
   Future<void> possiblyHighlightSelectedNode() async {
     if (FC().selectedNode == this) {
@@ -429,7 +448,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               ensureLowestOverlay: true,
               calloutConfig: CalloutConfig(
                 feature: SELECTED_NODE_BORDER_CALLOUT,
-                initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
+                initialCalloutPos:
+                    r.topLeft.translate(translate.dx, translate.dy),
                 suppliedCalloutW: w,
                 suppliedCalloutH: h,
                 color: Colors.transparent,
@@ -451,13 +471,17 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                   height: h,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
-                    border: Border.all(color: Colors.purpleAccent.withOpacity(.5), width: thickness),
+                    border: Border.all(
+                        color: Colors.purpleAccent.withOpacity(.5),
+                        width: thickness),
                   ),
                 ),
               ),
               targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
             );
-            FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+            FC()
+                .snippetBeingEdited
+                ?.add(SnippetEvent.highlightNode(node: this));
 // Useful.afterMsDelayDo(1000, () {
 //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
 // });
