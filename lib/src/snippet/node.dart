@@ -66,14 +66,14 @@ abstract class Node extends Object {
     return [];
   }
   
-  Node? findNearestAncestorOfType(Type type) {
-    Node? node = this;
-    while (node != null && node.runtimeType != type) {
-      print(node.toString());
-      node = node.parent;
-    }
-    return node;
-  }
+  // Node? findNearestAncestorOfType(Type type) {
+  //   Node? node = this;
+  //   while (node != null && node.runtimeType != type) {
+  //     print(node.toString());
+  //     node = node.parent;
+  //   }
+  //   return node;
+  // }
 
   Widget? logoSrc() => Row(
         children: [

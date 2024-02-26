@@ -163,7 +163,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? nodeWidgetGK; // gets used in toWidget()
 
-  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) => node.findNearestAncestorOfType(SnippetRootNode) as SnippetRootNode?;
+  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) => node.findNearestAncestor<SnippetRootNode>();
 
   List<PTreeNode> properties(BuildContext context) {
     return createPropertiesList(context);
@@ -265,6 +265,23 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //   return mis;
   // }
 
+  bool canBeDeleted() {
+    ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
+    TabBarNode? tabBar = scaffold?.appBar?.bottom?.child as TabBarNode?;
+    TabBarViewNode? tabBarView = scaffold?.body.child as TabBarViewNode?;
+    var firstTab = tabBar?.children.firstOrNull;
+    var firstTabView = tabBar?.children.firstOrNull;
+    int numTabs = tabBar?.children.length??99;
+    int numTabBiews = tabBarView?.children.length??99;
+    if (firstTab == this && numTabs < 2) {
+      return false;
+    }
+    if (firstTabView == this && numTabBiews < 2) {
+      return false;
+    }
+    return true;
+  }
+
   List<String> sensibleParents() => const [];
 
   GlobalKey createNodeGK() {
@@ -285,7 +302,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     bool doubleCheck = anyMissingParents();
     print("missing parents: $doubleCheck");
-    if (tabBar != null ) {
+    if (tabBar != null) {
       print("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
     }
   }
@@ -309,6 +326,18 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return false;
   }
 
+  bool isAScaffoldTabWidget() {
+    return parent is TabBarNode && parent?.parent is GenericSingleChildNode && (parent?.parent as GenericSingleChildNode?)?.propertyName == 'bottom';
+  }
+
+  bool isAScaffoldTabViewWidget() =>
+      parent is TabBarViewNode && parent?.parent is GenericSingleChildNode && (parent?.parent as GenericSingleChildNode?)?.propertyName == 'body';
+
+  bool isAStepNodeTitleOrContentPropertyWidget() {
+    var node = parent?.parent;
+    return node is StepNode && (node.title == this || node.content == this);
+  }
+
   STreeNode? findDescendant(Type type) {
     //
     STreeNode? foundChild;
@@ -328,6 +357,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     //
     findMatchingChild(this);
     return foundChild;
+  }
+
+  T? findNearestAncestor<T>() {
+    //
+    Node? nodeParent = parent;
+
+    while (nodeParent != null && nodeParent.runtimeType != T) {
+      nodeParent = nodeParent.parent;
+    }
+    return nodeParent as T?;
   }
 
 // check nodes are identical

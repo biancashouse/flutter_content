@@ -265,7 +265,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                                   collapsedBackgroundColor: Colors.black,
                                   onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
                                   initiallyExpanded: FC().showingNodeButtons,
-                                  children: [nodeButtons(snippetBloc)],
+                                  children: [nodeButtons(snippetBloc, context)],
                                 ),
                                 // NODE PROPERTIES TREE
                                 if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
@@ -313,7 +313,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
     );
   }
 
-  Widget nodeButtons(snippetBloc) {
+  Widget nodeButtons(snippetBloc, context) {
     var gc = snippetBloc.state.selectedNode.parent;
     return Container(
       color: Colors.black,
@@ -372,13 +372,20 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   onPressed: () async {
                     // some properties cannot be deleted
                     // some properties cannot be deleted
-                    if (gc?.parent is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
+                    if (snippetBloc.state.selectedNode?.isAStepNodeTitleOrContentPropertyWidget()) return;
+                    if (snippetBloc.state.selectedNode?.isAScaffoldTabWidget()) return;
+                    if (snippetBloc.state.selectedNode?.isAScaffoldTabViewWidget()) return;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     if (snippetBloc.state.selectedNode is! RichTextNode) {
                       snippetBloc.add(const SnippetEvent.deleteNodeTapped());
                       Useful.afterNextBuildDo(() async {
                         await Future.delayed(const Duration(milliseconds: 1000));
                         snippetBloc.add(const SnippetEvent.completeDeletion());
+                        Useful.afterNextBuildDo(() {
+                          // if was tab or tabview, reset the tab Q and controller
+                          SnippetPanelState? spState = SnippetPanel.of(context);
+                          spState?.resetTabQandC;
+                        });
                       });
                     }
                     Callout.dismiss("TreeNodeMenu");

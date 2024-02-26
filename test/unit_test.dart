@@ -10,12 +10,12 @@ import 'package:mockito/mockito.dart';
 
 import 'unit_test.mocks.dart';
 
-
 void main() {
   late MockModelRepository mockRepository;
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
-  late SnippetPanel snippetPanel;
+
+  late STreeNode firstTabNode;
 
   setUp(() {
     mockRepository = MockModelRepository();
@@ -31,7 +31,7 @@ void main() {
                 propertyName: 'bottom',
                 child: TabBarNode(
                   children: [
-                    TextNode(text: 'tab 1'),
+                    firstTabNode = TextNode(text: 'tab 1'),
                     TextNode(text: 'Tab 2'),
                   ],
                 ),
@@ -48,11 +48,11 @@ void main() {
             ),
           ),
         ),
-      );
+      )..validateTree();
       final snippetJson = scaffoldWithTabs.toJson();
       return CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
     });
-    snippetPanel = SnippetPanel(panelName: "test-panel", snippetName: snippetName);
+    SnippetPanel(panelName: "test-panel", snippetName: snippetName);
   });
 
   test('read the model from the repo', () async {
@@ -66,4 +66,14 @@ void main() {
 
     // expect(snippetPanel != null, isTrue);
   });
+
+  test('STreeNode.findNearestAncestor<ScaffoldNode>', () async {
+    var foundNode = firstTabNode.findNearestAncestor<ScaffoldNode>();
+
+    expect(foundNode != null, isTrue);
+    expect(foundNode, isA<ScaffoldNode>());
+    expect(firstTabNode.isAScaffoldTabWidget(), isTrue);
+    expect(firstTabNode.canBeDeleted(), isTrue);
+  });
+
 }

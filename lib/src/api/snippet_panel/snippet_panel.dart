@@ -173,7 +173,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
   bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
-  final tabQSize = ValueNotifier<int>(0);
+  final prevTabQSize = ValueNotifier<int>(0);
 
   TransformableScaffoldState? get parentTSState => TransformableScaffold.of(context);
 
@@ -235,7 +235,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                 if (tbNode != null && !(backBtnPressed??false)) {
                   prevTabQ.add(tbNode.selection??0);
                   tbNode.selection = tabC!.index;
-                  tabQSize.value = prevTabQ.length;
+                  prevTabQSize.value = prevTabQ.length;
                   print("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
                 } else {
                   tbNode?.selection = tabC!.index;
@@ -248,6 +248,15 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
         });
       }
     });
+  }
+
+  void resetTabQandC() {
+    prevTabQ = [];
+    if (tabBarGK != null) {
+      TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+      tbNode?.selection = 0;
+      tabC?.index = 0;
+    }
   }
 
   // @override

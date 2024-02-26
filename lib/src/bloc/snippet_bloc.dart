@@ -161,7 +161,22 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     try {
       STreeNode sel = state.selectedNode!;
       STreeNode parent = sel.parent as STreeNode;
-      if (parent is SC && sel is CL) {
+      // tab-related
+      if (sel.isAScaffoldTabWidget()) {
+        int index = (parent as TabBarNode).children.indexOf(sel);
+        parent.children.remove(sel);
+        ScaffoldNode? scaffold = parent.parent?.parent?.parent as ScaffoldNode?;
+        if (scaffold?.body.child is TabBarViewNode?) {
+          (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
+        }
+      } else if (sel.isAScaffoldTabViewWidget()) {
+        int index = (parent as TabBarViewNode).children.indexOf(sel);
+        parent.children.remove(sel);
+        ScaffoldNode? scaffold = parent.parent?.parent as ScaffoldNode?;
+        if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
+          (scaffold?.appBar!.bottom!.child as TabBarNode).children.removeAt(index);
+        }
+      } else if (parent is SC && sel is CL) {
         parent.child = null;
       } else if (parent is SC && sel is SC) {
         parent.child = sel.child?..setParent(parent);
@@ -170,21 +185,6 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       } else if (parent is SC && sel is MC && sel.children.length < 2) {
         parent.child = sel.children.first..setParent(parent);
       } else if (parent is MC && sel is CL) {
-        if (parent is TabBarNode && parent.parent is GenericSingleChildNode && (parent.parent as GenericSingleChildNode?)?.propertyName == 'bottom') {
-          int index = parent.children.indexOf(sel);
-          ScaffoldNode? scaffold = parent.parent?.parent?.parent as ScaffoldNode?;
-          if (scaffold?.body.child is TabBarViewNode?) {
-            (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
-          }
-        } else if (parent is TabBarViewNode &&
-            parent.parent is GenericSingleChildNode &&
-            (parent.parent as GenericSingleChildNode?)?.propertyName == 'body') {
-          int index = parent.children.indexOf(sel);
-          ScaffoldNode? scaffold = parent.parent?.parent as ScaffoldNode?;
-          if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
-            (scaffold?.appBar!.bottom!.child as TabBarNode).children.removeAt(index);
-          }
-        }
         parent.children.remove(sel);
       } else if (parent is MC && sel is SC && sel.child != null) {
         int index = parent.children.indexOf(sel);

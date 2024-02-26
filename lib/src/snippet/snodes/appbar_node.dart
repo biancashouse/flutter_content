@@ -59,7 +59,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
                 int prev = spState.prevTabQ.removeLast();
                 spState.backBtnPressed = true;
                 spState.tabC?.index = prev;
-                spState.tabQSize.value = spState.prevTabQ.length;
+                spState.prevTabQSize.value = spState.prevTabQ.length;
                 print("back to tab: $prev,  ${spState.prevTabQ.toString()}");
               }
             },
@@ -80,7 +80,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     try {
       return AppBar(
         key: createNodeGK(),
-        leading: ListenableBuilder(listenable: spState!.tabQSize, builder: (_, __) => leadingWidget()),
+        leading: ListenableBuilder(listenable: spState!.prevTabQSize, builder: (_, __) => leadingWidget()),
         title: titleWidget,
         bottom: bottomWidget as PreferredSizeWidget,
         actions: actionWidgets,

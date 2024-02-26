@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:math';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -88,10 +90,11 @@ class TabBarNode extends MC with TabBarNodeMappable {
     for (STreeNode node in children) {
       tabs.add(node.toWidget(context, this));
     }
+    spState?.tabC?.index = min(selection ?? 0, children.length-1);
     try {
       return TabBar(
         key: spState?.tabBarGK = createNodeGK(),
-        controller: spState!.tabC?..index = selection ?? 0,
+        controller: spState?.tabC,
         tabs: tabs,
         labelColor: selectedLabelColorValue != null ? Color(selectedLabelColorValue!) : null,
         unselectedLabelColor: unselectedLabelColorValue != null ? Color(unselectedLabelColorValue!) : null,
