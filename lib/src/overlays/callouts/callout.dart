@@ -644,7 +644,7 @@ class CalloutState extends State<Callout> {
 
   @override
   void dispose() {
-    print("disposed: ${_config.feature}");
+    print("callout disposed: ${_config.feature}");
     Callout.deRegisterOE(Callout.findOE(_config.feature), force: true);
     super.dispose();
   }
@@ -687,7 +687,7 @@ class CalloutState extends State<Callout> {
 
   void showOP() {
     // may be called before target sized properly
-    if (_waitingForAnyImagesToRender) {
+    if (false && _waitingForAnyImagesToRender) {
       Useful.afterMsDelayDo(_AllowImagesToRenderMs, () {
         opController.show;
       });
@@ -717,9 +717,9 @@ class CalloutState extends State<Callout> {
         opController.show();
       });
     } else {
-      Useful.afterNextBuildDo(() {
+      // Useful.afterNextBuildDo(() {
         opController.show();
-      });
+      // });
     }
 
     _possiblyAnimateSeparation();

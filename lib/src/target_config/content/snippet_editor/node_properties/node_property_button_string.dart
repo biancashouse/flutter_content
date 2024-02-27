@@ -68,7 +68,8 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
       ),
       // arrowThickness: ArrowThickness.THIN,
       color: Colors.white,
-      arrowColor: Colors.red,
+      // arrowColor: Colors.red,
+      arrowType: ArrowType.NO_CONNECTOR,
       finalSeparation: 0.0,
       initialCalloutAlignment: Alignment.topLeft,
       initialTargetAlignment: Alignment.topLeft,
@@ -103,7 +104,7 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
             options: widget.options,
           ),
         );
-    Widget target(ctx) => GestureDetector(
+    return GestureDetector(
           onTap: () {
             Callout.showOverlay(
               calloutConfig: calloutConfig,
@@ -122,6 +123,5 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
             child: labelWidget,
           ),
         );
-    return target(context);
   }
 }

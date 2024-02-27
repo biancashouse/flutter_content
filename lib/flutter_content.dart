@@ -233,6 +233,7 @@ class FC {
   late Map<String, NamedTextStyle> _namedStyles;
   String? lastSavedModelJson;
   Offset? _editModeBtnPos;
+  bool skipEditModeEscape = false;  // property editors can set this to prevent exit from EditMode
 
   Offset editModeBtnPos(context) => _editModeBtnPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
   void setEditModeBtnPos(Offset newPos) => _editModeBtnPos = newPos;

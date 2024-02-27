@@ -25,7 +25,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   double? width;
   double? height;
   AlignmentEnum? alignment;
-  DecorationShapeEnum? decoration;
+  DecorationShapeEnum decoration;
   double? borderThickness;
   int? borderColor1Value;
   int? borderColor2Value;
@@ -61,7 +61,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
     this.width,
     this.height,
     this.alignment,
-    this.decoration,
+    this.decoration = DecorationShapeEnum.rectangle,
     this.borderThickness,
     this.borderColor1Value,
     this.borderColor2Value,
@@ -130,8 +130,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
           EnumPropertyValueNode<DecorationShapeEnum?>(
             snode: this,
             name: 'decoration',
-            valueIndex: decoration?.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue)),
+            valueIndex: decoration.index,
+            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue) ?? DecorationShapeEnum.rectangle),
           ),
           // FILL COLOR(s)
           GradientPropertyValueNode(
@@ -176,14 +176,14 @@ class ContainerNode extends SC with ContainerNodeMappable {
             name: 'thickness',
             decimalValue: borderThickness,
             onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
-            calloutButtonSize: const Size(60, 20),
+            calloutButtonSize: const Size(90, 20),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'radius',
             decimalValue: borderRadius,
             onDoubleChange: (newValue) => refreshWithUpdate(() => borderRadius = newValue),
-            calloutButtonSize: const Size(60, 20),
+            calloutButtonSize: const Size(90, 20),
           ),
         ],
       ),

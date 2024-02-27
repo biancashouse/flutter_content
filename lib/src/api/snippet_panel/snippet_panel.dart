@@ -110,41 +110,41 @@ class SnippetPanel extends StatefulWidget {
         name: SnippetTemplate.scaffold_with_menubar.name,
         child: TransformableScaffoldNode(
             scaffold: ScaffoldNode(
-          appBar: AppBarNode(
-            bgColorValue: Colors.black.value,
-            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: MenuBarNode(children: [
-                MenuItemButtonNode(itemLabel: 'item 1'),
-                MenuItemButtonNode(itemLabel: 'item 2'),
-                MenuItemButtonNode(itemLabel: 'item 3'),
-              ]),
-            ),
-          ),
-          body: GenericSingleChildNode(
-            propertyName: 'body',
-            child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
-          ),
-        ))),
+              appBar: AppBarNode(
+                bgColorValue: Colors.black.value,
+                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                bottom: GenericSingleChildNode(
+                  propertyName: 'bottom',
+                  child: MenuBarNode(children: [
+                    MenuItemButtonNode(itemLabel: 'item 1'),
+                    MenuItemButtonNode(itemLabel: 'item 2'),
+                    MenuItemButtonNode(itemLabel: 'item 3'),
+                  ]),
+                ),
+              ),
+              body: GenericSingleChildNode(
+                propertyName: 'body',
+                child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
+              ),
+            ))),
     SnippetRootNode(
         name: SnippetTemplate.scaffold_with_actions.name,
         child: TransformableScaffoldNode(
             scaffold: ScaffoldNode(
-          appBar: AppBarNode(
-            bgColorValue: Colors.black.value,
-            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-            actions: GenericMultiChildNode(propertyName: 'actions', children: [
-              FilledButtonNode(child: TextNode(text: 'action 1')),
-              FilledButtonNode(child: TextNode(text: 'action 2')),
-              FilledButtonNode(child: TextNode(text: 'action 3')),
-            ]),
-          ),
-          body: GenericSingleChildNode(
-            propertyName: 'body',
-            child: PlaceholderNode(name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
-          ),
-        ))),
+              appBar: AppBarNode(
+                bgColorValue: Colors.black.value,
+                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                actions: GenericMultiChildNode(propertyName: 'actions', children: [
+                  FilledButtonNode(child: TextNode(text: 'action 1')),
+                  FilledButtonNode(child: TextNode(text: 'action 2')),
+                  FilledButtonNode(child: TextNode(text: 'action 3')),
+                ]),
+              ),
+              body: GenericSingleChildNode(
+                propertyName: 'body',
+                child: PlaceholderNode(name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
+              ),
+            ))),
   ];
 
   // static SnippetNode getRootNode(SnippetName snippetName) {
@@ -168,12 +168,13 @@ class SnippetPanel extends StatefulWidget {
 }
 
 class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
-  late String snippetNameToUse;
+  // late String snippetNameToUse;
   TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
   bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
+  late SnippetRootNode snippetRoot;
 
   TransformableScaffoldState? get parentTSState => TransformableScaffold.of(context);
 
@@ -218,10 +219,11 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void initState() {
     super.initState();
 
-    snippetNameToUse = widget.snippetName;
-
     // register snippet? with panel
-    FC().snippetPlacementMap[widget.panelName] = snippetNameToUse;
+    FC().snippetPlacementMap[widget.panelName] = widget.snippetName;
+
+    // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
+    snippetRoot = getOrCreateSnippetFromTemplate();
 
     prevTabQ = [];
 
@@ -232,8 +234,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             if (!(tabC?.indexIsChanging ?? true)) {
               if (tabBarGK != null) {
                 TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
-                if (tbNode != null && !(backBtnPressed??false)) {
-                  prevTabQ.add(tbNode.selection??0);
+                if (tbNode != null && !(backBtnPressed ?? false)) {
+                  prevTabQ.add(tbNode.selection ?? 0);
                   tbNode.selection = tabC!.index;
                   prevTabQSize.value = prevTabQ.length;
                   print("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
@@ -398,20 +400,18 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // panel name is always supplied, but snippet name can be omitted,
     // in which case a default snippet name is used: Snippet[pName].
     // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-    if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
-      snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
-    }
-    // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
-    SnippetRootNode snippetRoot = getOrCreateSnippetFromTemplate();
+    // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
+    //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
+    // }
 
-    print("build snippet ${snippetNameToUse}");
+    print("build snippet ${widget.panelName}");
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
       key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
       // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
       builder: (innerContext, state) {
-        print("BloC build snippet ${snippetNameToUse}");
+        print("BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
         try {
           return snippetRoot.toWidget(innerContext, null);
         } catch (e) {

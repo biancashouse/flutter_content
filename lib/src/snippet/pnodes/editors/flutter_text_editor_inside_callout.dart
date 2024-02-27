@@ -48,41 +48,44 @@ class FlutterTextEditorInsideCallout extends HookWidget {
     }, []);
 
     final focusTest = useFocusNode(
-      canRequestFocus: true,
-      onKey: (node, event) {
-        if ((textInputType == TextInputType.number || numLines == 1 || event.isShiftPressed) && event.isKeyPressed(LogicalKeyboardKey.enter)) {
-          node.unfocus();
-          // onDoneF.call(calloutConfig.teC!.text);
-          return KeyEventResult.handled;
-        }
-        if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
-          // Do something
-          // Next 2 line needed If you don't want to update the text field with new line.
-          node.unfocus();
-          onDoneF.call(originalText);
-          return KeyEventResult.handled;
-        }
-        return KeyEventResult.ignored;
-      }
-    );
+        canRequestFocus: true,
+        onKeyEvent: (node, event) {
+          if ((textInputType == TextInputType.number || numLines == 1 || HardwareKeyboard.instance.isShiftPressed) &&
+              HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
+            node.unfocus();
+            onDoneF.call(calloutConfig.teC!.text);
+            return KeyEventResult.handled;
+          }
+          if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.escape)) {
+            // Do something
+            // Next 2 line needed If you don't want to update the text field with new line.
+            node.unfocus();
+            onDoneF.call(originalText);
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        });
 
     calloutConfig.teC?.text = originalText;
 
-     calloutConfig.focusNode!.onKey = (node, event) {
-      if ((textInputType == TextInputType.number || numLines == 1 || event.isShiftPressed) && event.isKeyPressed(LogicalKeyboardKey.enter)) {
-        node.unfocus();
-        // onDoneF.call(calloutConfig.teC!.text);
-        return KeyEventResult.handled;
-      }
-      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
-        // Do something
-        // Next 2 line needed If you don't want to update the text field with new line.
-        node.unfocus();
-        onDoneF.call(originalText);
-        return KeyEventResult.handled;
-      }
-      return KeyEventResult.ignored;
-    };
+    // calloutConfig.focusNode!.onKeyEvent = (node, event) {
+    //   print('calloutConfig.focusNode!.onKeyEvent');
+    //   if ((textInputType == TextInputType.number || numLines == 1 || HardwareKeyboard.instance.isShiftPressed) &&
+    //       HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
+    //     node.unfocus();
+    //     // onDoneF.call(calloutConfig.teC!.text);
+    //     return KeyEventResult.handled;
+    //   }
+    //   if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.escape)) {
+    //     // Do something
+    //     // Next 2 line needed If you don't want to update the text field with new line.
+    //     node.unfocus();
+    //     onDoneF.call(originalText);
+    //     return KeyEventResult.handled;
+    //   }
+    //   return KeyEventResult.ignored;
+    // };
+
     return Container(
       color: Colors.white,
       padding: padding ?? EdgeInsets.all(8),
@@ -99,7 +102,8 @@ class FlutterTextEditorInsideCallout extends HookWidget {
         //   // border: const OutlineInputBorder(),
         //   // isDense: true,
         // ),
-        focusNode: focusTest, //calloutConfig.focusNode!,
+        focusNode: focusTest,
+        //calloutConfig.focusNode!,
         autofocus: false,
         onEditingComplete: () {
           onDoneF.call(calloutConfig.teC!.text);

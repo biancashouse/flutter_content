@@ -88,7 +88,10 @@ class TabBarNode extends MC with TabBarNodeMappable {
     spState?.createTabController(children.length);
     List<Widget> tabs = [];
     for (STreeNode node in children) {
-      tabs.add(node.toWidget(context, this));
+      tabs.add(Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: node.toWidget(context, this),
+      ));
     }
     spState?.tabC?.index = min(selection ?? 0, children.length-1);
     try {

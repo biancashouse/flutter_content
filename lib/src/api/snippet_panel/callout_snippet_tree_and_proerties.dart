@@ -19,7 +19,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onDismissedF) {
   double width() {
     double? w = HydratedBloc.storage.read("snippet-tree-callout-width");
-    if (w != null) return w;
+    if (w != null) return w.abs();
 
     // if (root?.child == null) return 190;
     w = min(FC().capiBloc.state.snippetTreeCalloutW ?? 500, 600);
@@ -28,7 +28,7 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
 
   double height() {
     double? h = HydratedBloc.storage.read("snippet-tree-callout-height");
-    if (h != null) return h;
+    if (h != null) return h.abs();
 
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;

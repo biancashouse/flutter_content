@@ -266,9 +266,9 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     if (selectedNode?.pTreeC != null)
                       GestureDetector(
                         onTap: () {
-                          snippetBloc
-                              .add(const SnippetEvent.clearNodeSelection());
-                          Callout.hide("floating-clipboard");
+                          // snippetBloc
+                          //     .add(const SnippetEvent.clearNodeSelection());
+                          // Callout.hide("floating-clipboard");
                         },
                         child: Container(
                           color: Colors.purpleAccent[100],

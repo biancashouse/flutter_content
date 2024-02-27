@@ -196,11 +196,15 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   bool _inited = false;
   int tapCount = 0;
   DateTime? lastTapTime;
+  late FocusNode focusNode;
+
   // YoutubePlayerController? ytController;
 
   @override
   void initState() {
     super.initState();
+
+    focusNode = FocusNode();
 
     if (widget.hideStatusBar) {
       // https://medium.com/@mustafatahirhussein/these-quick-tips-will-surely-help-you-to-build-a-better-flutter-app-6db93c1095b6
@@ -360,8 +364,10 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                   scrollBehavior: const ConstantScrollBehavior(),
                   home: RawKeyboardListener(
                     autofocus: true,
-                    focusNode: FocusNode(), // <-- more magic
-                    onKey: (event) => _enterOrExitEditMode(event, lastTapTime, tapCount),
+                    focusNode: focusNode, // <-- more magic
+                    onKey: (event) {
+                      _enterOrExitEditMode(event, lastTapTime, tapCount);
+                    },
                     child: Builder(builder: (context) {
                       Useful.instance.initWithContext(context);
                       return widget.testWidget != null
@@ -572,11 +578,25 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   _enterOrExitEditMode(RawKeyEvent event, DateTime? lastTapTime, int tapCount) {
     bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
-    if (!MaterialSPA.inEditMode.value && (event.isControlPressed || event.isAltPressed || event.isShiftPressed) && isEsc && event is RawKeyUpEvent) {
-      enterEditMode(context);
-    } else if (MaterialSPA.inEditMode.value && isEsc) {
-      exitEditMode();
-    }
+    print("skip: ${FC().skipEditModeEscape}");
+
+    // wait a few millis in case Escaping from a property editor
+    Future.delayed(const Duration(milliseconds: 50), () {
+      if (!FC().skipEditModeEscape) {
+        if (!MaterialSPA.inEditMode.value &&
+            (HardwareKeyboard.instance.isShiftPressed || event.isAltPressed || event.isShiftPressed) &&
+            isEsc &&
+            event is RawKeyUpEvent) {
+          enterEditMode(context);
+        } else if (MaterialSPA.inEditMode.value && isEsc) {
+          exitEditMode();
+        }
+        //  now reset flag with debounce duration
+      }
+      Future.delayed(const Duration(milliseconds: 300), () {
+        FC().skipEditModeEscape = false;
+      });
+    });
   }
 
   // only called with MaterialAppWrapper context

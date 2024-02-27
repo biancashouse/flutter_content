@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor_inside_callout.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
+import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_editor_button.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum EdgeInsetsInputModeEnum { all, symmetrical, only }
@@ -87,7 +89,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: _tappableNumber(
                     ei.value.top,
                     'top',
-                        (s) {
+                    (s) {
                       double? newTop = double.tryParse(s);
                       if (newTop != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -107,7 +109,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: _tappableNumber(
                     ei.value.left,
                     'left',
-                        (s) {
+                    (s) {
                       double? newLeft = double.tryParse(s);
                       if (newLeft != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -127,7 +129,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: _tappableNumber(
                     ei.value.right,
                     'right',
-                        (s) {
+                    (s) {
                       double? newRight = double.tryParse(s);
                       if (newRight != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -147,7 +149,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: _tappableNumber(
                     ei.value.bottom,
                     'bottom',
-                        (s) {
+                    (s) {
                       double? newBottom = double.tryParse(s);
                       if (newBottom != null) {
                         // print(inputMode.name);
@@ -171,40 +173,65 @@ class EdgeInsetsPropertyEditor extends HookWidget {
     );
   }
 
-
-  Widget _tappableNumber(final double value, final String label, final ValueChanged<String> onChangedF) =>
-      SizedBox(
+  Widget _tappableNumber(final double value, final String label, final ValueChanged<String> onChangedF) => SizedBox(
         width: 60,
         height: 40,
         child: Align(
           alignment: Alignment.center,
-          child: NodePropertyCalloutButton(
+          child: NodePropertyEditor_Double(
+            originalValue: value,
+            onChangedF: onChangedF,
             alignment: Alignment.center,
             label: value.toString(),
             calloutButtonSize: const Size(60, 30),
-            calloutContents: (ctx) =>
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  child: FlutterTextEditorInsideCallout(
-                    originalText: value.toString(),
-                    label: label,
-                    onDoneF: (s) {
-                      if (value.toString() != s) onChangedF(s);
-                      Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-                    },
-                    skipLabelText: true,
-                    skipHelperText: true,
-                    textInputType: TextInputType.number,
-                  ),
-                ),
-            initialTargetAlignment: Alignment.center,
-            initialCalloutAlignment: Alignment.center,
-            draggable: false,
-            calloutSize: const Size(70, 40),
+            calloutContents: (ctx) => Container(
+              padding: const EdgeInsets.all(4),
+              child: FlutterTextEditor(
+                originalText: value.toString(),
+                label: label,
+                onDoneF: (s) {
+                  if (value.toString() != s) onChangedF(s);
+                },
+                skipLabelText: true,
+                skipHelperText: true,
+                textInputType: TextInputType.number,
+              ),
+            ),
           ),
         ),
       );
 }
+
+Widget _tappableNumberOLD(final double value, final String label, final ValueChanged<String> onChangedF) => SizedBox(
+      width: 60,
+      height: 40,
+      child: Align(
+        alignment: Alignment.center,
+        child: NodePropertyCalloutButton(
+          alignment: Alignment.center,
+          label: value.toString(),
+          calloutButtonSize: const Size(60, 30),
+          calloutContents: (ctx) => Container(
+            padding: const EdgeInsets.all(4),
+            child: FlutterTextEditorInsideCallout(
+              originalText: value.toString(),
+              label: label,
+              onDoneF: (s) {
+                if (value.toString() != s) onChangedF(s);
+                Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+              },
+              skipLabelText: true,
+              skipHelperText: true,
+              textInputType: TextInputType.number,
+            ),
+          ),
+          initialTargetAlignment: Alignment.topLeft,
+          initialCalloutAlignment: Alignment.topLeft,
+          draggable: false,
+          calloutSize: const Size(70, 40),
+        ),
+      ),
+    );
 
 // class _Checkbox extends StatefulWidget {
 //   final bool initialState;
