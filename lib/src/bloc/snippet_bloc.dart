@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
@@ -409,16 +408,14 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (PaddingNode) =>
           PaddingNode(padding: EdgeInsetsValue(), child: childNode),
         const (PlaceholderNode) => PlaceholderNode(),
-        const (PollNode) => ContainerNode(
-            decoration: DecorationShapeEnum.rounded_rectangle_dotted,
-            borderColor1Value: Colors.black.value,
-            borderThickness: 4,
-            child:
-                PollNode(name: 'sample-poll', title: 'Sample Poll', children: [
+        const (PollNode) => PollNode(
+            name: 'sample-poll',
+            title: 'Sample Poll',
+            children: [
               PollOptionNode(optionId: 'a', text: 'option 1 text?'),
               PollOptionNode(optionId: 'b', text: 'option 2 text?'),
               PollOptionNode(optionId: 'c', text: 'option 3 text?'),
-            ]),
+            ],
           ),
         const (PollOptionNode) =>
           PollOptionNode(optionId: 'id?', text: 'new option text?'),
@@ -524,14 +521,22 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
       if (w is SC) {
         w.child = wChild;
-      } else if (w is MC) {
-        w.children = [wChild];
       } else if (w is TextSpanNode) {
         w.children = [wChild as InlineSpanNode];
       } else if (w is PollNode) {
         w.children = [wChild as PollOptionNode];
+        // wrap poll in a border
+        final Node? pollParent = w.parent;
+        w = ContainerNode(
+            decoration: DecorationShapeEnum.rounded_rectangle_dotted,
+            borderColor1Value: Colors.black.value,
+            borderThickness: 4,
+            child: w)..setParent((pollParent));
+        w.child!.setParent(w);
       } else if (w is StepperNode) {
         w.children = [wChild as StepNode];
+      } else if (w is MC) {
+        w.children = [wChild];
       }
 
       if (parent is SC) {

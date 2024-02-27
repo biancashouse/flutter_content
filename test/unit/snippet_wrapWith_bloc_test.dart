@@ -161,10 +161,11 @@ void main() {
       bloc.add(const SnippetEvent.wrapSelectionWith(type: PollNode));
     },
     expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent as STreeNode),
+      expectedState_SelectedNode(snippetBloc, sel.parent?.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<PollNode>());
+      expect(sel.parent?.parent, isA<ContainerNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );

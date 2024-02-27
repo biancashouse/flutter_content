@@ -7,8 +7,13 @@ import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+import '../unit_test.mocks.dart';
 
 void main() {
+  late MockModelRepository mockRepository;
+  late CAPIBloC capiBloc;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
@@ -32,6 +37,37 @@ void main() {
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
   final ur = SnippetTreeUR();
+
+  const snippetName = 'scaffold-with-tabs';
+  final modelSnippetRoot = SnippetRootNode(
+    name: snippetName,
+    child: TransformableScaffoldNode(
+      scaffold: ScaffoldNode(
+        appBar: AppBarNode(
+          bgColorValue: Colors.black.value,
+          title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+          bottom: GenericSingleChildNode(
+            propertyName: 'bottom',
+            child: TabBarNode(
+              children: [
+                TextNode(text: 'tab 1'),
+                TextNode(text: 'Tab 2'),
+              ],
+            ),
+          ),
+        ),
+        body: GenericSingleChildNode(
+          propertyName: 'body',
+          child: TabBarViewNode(
+            children: [
+              PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
+              PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -80,6 +116,25 @@ void main() {
           ),
         ),
       ),
+    );
+    mockRepository = MockModelRepository();
+    const appName = 'flutter-content-test-app';
+    when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+      final modelSnippetJson = modelSnippetRoot.toJson();
+      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
+      String encodedModelJsonS = model.toJson().toString();
+      return model;
+    });
+    capiBloc = CAPIBloC(
+      appName: appName,
+      modelRepo: mockRepository,
+      singleTargetMap: {},
+      targetGroupMap: {},
+    );
+    FC().init(
+      capiBloc: capiBloc,
+      snippetsMap: {},
+      namedStyles: {},
     );
   });
 

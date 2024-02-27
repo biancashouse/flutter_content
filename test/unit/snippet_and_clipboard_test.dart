@@ -12,12 +12,11 @@ import '../unit_test.mocks.dart';
 
 void main() {
   late MockModelRepository mockRepository;
+  late CAPIBloC capiBloc;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
   late SnippetState selectedState;
-  late CAPIModel model;
-  late CAPIBloC capiBloc;
   late Map<String, dynamic> encodedModelJson;
   late SnippetState snippetState;
   const appName = 'flutter-content-test-app';
@@ -93,6 +92,7 @@ void main() {
       );
     }
   }
+
 
   setUp(() {
     mockRepository = MockModelRepository();
