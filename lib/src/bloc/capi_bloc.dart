@@ -31,20 +31,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double? snippetPropertiesCalloutW,
     // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
-    appName: appName,
-    // useFirebase: useFirebase,
-    // localTestingFilePaths: localTestingFilePaths,
-    targetGroupMap: targetGroupMap,
-    // jsonRootDirectoryNode: jsonRootDirectoryNode,
-    jsonClipboard: jsonClipboard,
-    // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
-    snippetTreeCalloutW: snippetTreeCalloutW,
-    snippetTreeCalloutH: snippetTreeCalloutH,
-    // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
-    // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
-    // snippetsMap: snippetsMap,
-    modelUR: ModelUR(),
-  )) {
+          appName: appName,
+          // useFirebase: useFirebase,
+          // localTestingFilePaths: localTestingFilePaths,
+          targetGroupMap: targetGroupMap,
+          // jsonRootDirectoryNode: jsonRootDirectoryNode,
+          jsonClipboard: jsonClipboard,
+          // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
+          snippetTreeCalloutW: snippetTreeCalloutW,
+          snippetTreeCalloutH: snippetTreeCalloutH,
+          // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
+          // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
+          // snippetsMap: snippetsMap,
+          modelUR: ModelUR(),
+        )) {
     // init the static map
     for (String id in singleTargetMap.keys) {
       SingleTargetWrapper.singleTargetMap[id] = singleTargetMap[id]!.clone();
@@ -167,8 +167,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // only save if changes detected
     if (jsonS == FC().lastSavedModelJson) return;
 
-    final stopwatch = Stopwatch()
-      ..start();
+    final stopwatch = Stopwatch()..start();
     // print('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
     Callout.showTextToast(
       feature: "saving-model",
@@ -209,8 +208,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     FC().lastSavedModelJson = jsonS;
   }
 
-  CAPIModel _stateToModel() =>
-      CAPIModel(
+  CAPIModel _stateToModel() => CAPIModel(
         appName: state.appName,
         targetGroupConfigs: state.targetGroupMap,
         targetConfigs: SingleTargetWrapper.singleTargetMap,
@@ -359,9 +357,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
   void _newTargetGroup(NewTarget event, emit) {
-    int newTargetUid = DateTime
-        .now()
-        .millisecondsSinceEpoch;
+    int newTargetUid = DateTime.now().millisecondsSinceEpoch;
     TargetConfig newItem = TargetConfig(
       uid: newTargetUid, //event.wName.hashCode,
       wName: event.wName,
@@ -849,26 +845,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _pushSnippetBloc(PushSnippetBloc event, emit) {
     SnippetRootNode? rootNode = FC().rootNodeOfNamedSnippet(event.snippetName);
     if (rootNode == null) return;
-    SnippetTreeController newTreeC() =>
-        SnippetTreeController(
+
+    SnippetTreeController newTreeC() => SnippetTreeController(
           roots: event.visibleDecendantNode != null ? [event.visibleDecendantNode!] : [rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
-        )
-          ;//..expandAll();
-    // SnippetState? prevSnippetState = CAPIState.snippetStateMap[event.snippetName];
-    // SnippetBloC newSnippetBloc = prevSnippetState != null
-    //     ? SnippetBloC(
-    //   rootNode: rootNode,
-    //   treeC: prevSnippetState.treeC,
-    //   treeUR: prevSnippetState.ur,
-    //   selectedNodeIndex: prevSnippetState.selectedNodeIndex,
-    //   selectedNodeParentIndex: prevSnippetState.selectedNodeParentIndex,
-    //   selectedWidgetGK: prevSnippetState.selectedWidgetGK,
-    //   selectedTreeNodeGK: prevSnippetState.selectedTreeNodeGK,
-    // )
-    //     : SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR(), selectedNodeIndex: -1, selectedNodeParentIndex: -1);
-    SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC(), treeUR: SnippetTreeUR());
+        );
+
+    SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC()..expandAll(), treeUR: SnippetTreeUR());
     FC().pushSnippet(newSnippetBloc);
+
     // emit(state.copyWith(
     //   hideAllTargetGroupPlayBtns: true,
     //   hideTargetsExcept: null,
@@ -887,29 +872,29 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         hideIframes: false,
         hideSnippetPencilIcons: false,
       ));
+    }
   }
-}
 
-Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
-  SnippetBloC? beforeUndoOrRedo = FC().popSnippet();
-  FC().pushSnippet(event.restoredBloc);
-  // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
-  // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FlutterContent().snippetsMap);
-  SnippetRootNode rootNode = event.restoredBloc.rootNode;
-  FC().snippetsMap[rootNode.name] = rootNode;
+  Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
+    SnippetBloC? beforeUndoOrRedo = FC().popSnippet();
+    FC().pushSnippet(event.restoredBloc);
+    // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
+    // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FlutterContent().snippetsMap);
+    SnippetRootNode rootNode = event.restoredBloc.rootNode;
+    FC().snippetsMap[rootNode.name] = rootNode;
 
-  emit(state.copyWith(
-    // snippetsMap: newSnippetsMap,
-    force: state.force + 1,
-  ));
-}
+    emit(state.copyWith(
+      // snippetsMap: newSnippetsMap,
+      force: state.force + 1,
+    ));
+  }
 
-void _setPanelSnippet(SetPanelSnippet event, emit) {
-  FC().snippetPlacementMap[event.panelName] = event.snippetName;
-  emit(state.copyWith(
-    force: state.force + 1,
-  ));
-}
+  void _setPanelSnippet(SetPanelSnippet event, emit) {
+    FC().snippetPlacementMap[event.panelName] = event.snippetName;
+    emit(state.copyWith(
+      force: state.force + 1,
+    ));
+  }
 
 // void _dockChangeSnippetEditor(DockChangeSnippetEditor event, emit) {
 //   DockEnum newDock;
@@ -1012,5 +997,4 @@ void _setPanelSnippet(SetPanelSnippet event, emit) {
 // }
 
 // the tree nodes do not have a reference to their parent BloC object
-
 }

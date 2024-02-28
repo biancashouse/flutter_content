@@ -72,7 +72,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
                         Callout.dismiss(feature);
                       },
                     ),
-                    color: calloutConfigGroup?.color ?? Colors.white,
+                    color: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
                   )),
             );
           }

@@ -110,11 +110,17 @@ class ContainerNode extends SC with ContainerNodeMappable {
           ),
         ],
       ),
-      EdgeInsetsPropertyValueNode(
+      PropertyGroup(
         snode: this,
         name: 'padding',
-        eiValue: padding,
-        onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+        children: [
+          EdgeInsetsPropertyValueNode(
+            snode: this,
+            name: 'padding',
+            eiValue: padding,
+            onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+          ),
+        ],
       ),
       EnumPropertyValueNode<AlignmentEnum?>(
         snode: this,

@@ -253,7 +253,9 @@ class FC {
 
   Map<String, NamedTextStyle> get namedStyles => _namedStyles;
 
-  //Snippet Stack
+  PTreeNodeTreeController? selectedNodePTree;
+
+  // Snippet Stack
   final Queue<SnippetBloC> _snippetsBeingEdited = Queue<SnippetBloC>();
 
   SnippetBloC? get snippetBeingEdited => areAnySnippetsBeingEdited ? _snippetsBeingEdited.first : null;

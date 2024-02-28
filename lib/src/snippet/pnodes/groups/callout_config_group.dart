@@ -12,7 +12,7 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
   AlignmentEnum? targetAlignment;
   // AlignmentEnum? calloutAlignment;
   Offset? calloutPos;
-  Color? color;
+  int? colorValue;
   ArrowTypeEnum? arrowType;
   Color? arrowColor;
   double? separation;
@@ -27,7 +27,7 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
     this.targetAlignment,
     // this.calloutAlignment,
     this.calloutPos,
-    this.color,
+    this.colorValue,
     this.arrowType,
     this.arrowColor,
     this.separation,

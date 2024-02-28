@@ -38,26 +38,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('tree build');
     final msvC = useState<MultiSplitViewController>(
         MultiSplitViewController(areas: [Area(size: 220)]));
     final snippetBloc = context.watch<SnippetBloC>();
     final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-    final List<PTreeNode> propertyNodes =
-        selectedNode?.properties(context) ?? [];
-    if (selectedNode != null) {
-      // get a new treeController only when snippet selected
-      selectedNode.pTreeC = PTreeNodeTreeController(
-        roots: propertyNodes,
-        childrenProvider: Node.propertyTreeChildrenProvider,
-      );
-      //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-      snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
-      selectedNode.propertiesPaneSC ??= ScrollController()
-        ..addListener(() {
-          selectedNode.propertiesPaneScrollPos =
-              selectedNode.propertiesPaneSC?.offset ?? 0.0;
-        });
-    }
     return StatefulBuilder(
       // buildWhen: (prev, curr) => prev.selectedNode == curr.selectedNode,
       builder: (BuildContext context, StateSetter setState) {
@@ -289,14 +274,9 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                                   children: [nodeButtons(snippetBloc, context)],
                                 ),
                                 // NODE PROPERTIES TREE
-                                if (propertyNodes.isEmpty)
+                                if (selectedNode.pTreeC!.roots.isEmpty)
                                   Useful.coloredText(' (no properties)',
                                       color: Colors.white),
-                                if (true ||
-                                    propertyNodes.isNotEmpty &&
-                                        !(selectedNode
-                                                .hidePropertiesWhileDragging ??
-                                            false))
                                   Material(
                                       color: Colors.black,
                                       child: PropertiesTreeView(

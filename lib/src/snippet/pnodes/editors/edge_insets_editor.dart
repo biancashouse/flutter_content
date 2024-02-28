@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor_inside_callout.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_editor_button.dart';
+import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_double.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum EdgeInsetsInputModeEnum { all, symmetrical, only }
@@ -184,54 +181,10 @@ class EdgeInsetsPropertyEditor extends HookWidget {
             alignment: Alignment.center,
             label: value.toString(),
             calloutButtonSize: const Size(60, 30),
-            calloutContents: (ctx) => Container(
-              padding: const EdgeInsets.all(4),
-              child: FlutterTextEditor(
-                originalText: value.toString(),
-                label: label,
-                onDoneF: (s) {
-                  if (value.toString() != s) onChangedF(s);
-                },
-                skipLabelText: true,
-                skipHelperText: true,
-                textInputType: TextInputType.number,
-              ),
-            ),
           ),
         ),
       );
 }
-
-Widget _tappableNumberOLD(final double value, final String label, final ValueChanged<String> onChangedF) => SizedBox(
-      width: 60,
-      height: 40,
-      child: Align(
-        alignment: Alignment.center,
-        child: NodePropertyCalloutButton(
-          alignment: Alignment.center,
-          label: value.toString(),
-          calloutButtonSize: const Size(60, 30),
-          calloutContents: (ctx) => Container(
-            padding: const EdgeInsets.all(4),
-            child: FlutterTextEditorInsideCallout(
-              originalText: value.toString(),
-              label: label,
-              onDoneF: (s) {
-                if (value.toString() != s) onChangedF(s);
-                Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-              },
-              skipLabelText: true,
-              skipHelperText: true,
-              textInputType: TextInputType.number,
-            ),
-          ),
-          initialTargetAlignment: Alignment.topLeft,
-          initialCalloutAlignment: Alignment.topLeft,
-          draggable: false,
-          calloutSize: const Size(70, 40),
-        ),
-      ),
-    );
 
 // class _Checkbox extends StatefulWidget {
 //   final bool initialState;

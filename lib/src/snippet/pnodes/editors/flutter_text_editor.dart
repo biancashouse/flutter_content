@@ -54,32 +54,35 @@ class FlutterTextEditor extends HookWidget {
     return Container(
       color: Colors.white,
       padding: padding ?? EdgeInsets.all(8),
-      child: TextField(
-        maxLines: numLines == 1 ? numLines : null,
-        style: const TextStyle(fontSize: 16, fontFamily: 'monospace', color: Colors.black),
-        controller: teC,
-        keyboardType: textInputType,
-        decoration: null,
-        // decoration: InputDecoration(
-        //   labelText: skipLabelText ? null : label,
-        //   labelStyle: skipLabelText ? null : Useful.enclosureLabelTextStyle,
-        //   helperText: skipHelperText ? null : helperText,
-        //   // border: const OutlineInputBorder(),
-        //   // isDense: true,
-        // ),
-        focusNode: focusTest,
-        autofocus: true,
-        onEditingComplete: () {
-          onDoneF.call(teC.text);
-        },
-        onChanged: (s) {
-          if (textInputType == TextInputType.number && s.contains('.')) {
-            teC!.text = s.replaceAll('.', '');
-          }
-        },
-        onTapOutside: (_) {
-          onDoneF.call(teC.text);
-        },
+      child: FocusScope(
+        canRequestFocus: true,
+        child: TextField(
+          maxLines: numLines == 1 ? numLines : null,
+          style: const TextStyle(fontSize: 16, fontFamily: 'monospace', color: Colors.black),
+          controller: teC,
+          keyboardType: textInputType,
+          decoration: null,
+          // decoration: InputDecoration(
+          //   labelText: skipLabelText ? null : label,
+          //   labelStyle: skipLabelText ? null : Useful.enclosureLabelTextStyle,
+          //   helperText: skipHelperText ? null : helperText,
+          //   // border: const OutlineInputBorder(),
+          //   // isDense: true,
+          // ),
+          focusNode: focusTest,
+          autofocus: true,
+          onEditingComplete: () {
+            onDoneF.call(teC.text);
+          },
+          onChanged: (s) {
+            if (textInputType == TextInputType.number && s.contains('.')) {
+              teC!.text = s.replaceAll('.', '');
+            }
+          },
+          onTapOutside: (_) {
+            onDoneF.call(teC.text);
+          },
+        ),
       ),
     );
   }

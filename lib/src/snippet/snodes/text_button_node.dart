@@ -67,7 +67,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
                             Callout.dismiss(feature);
                           },
                         ),
-                        color: calloutConfigGroup?.color ?? Colors.white,
+                        color: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
                       ),
                     ));
           }

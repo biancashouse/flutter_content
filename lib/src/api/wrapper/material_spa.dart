@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_proerties.dart';
+import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
@@ -609,7 +609,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
         if (node != null) {
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-          print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+          // print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
           // node.setParent(parent);
           // parent = node;
           _showNodeWidgetOverlay(node, r!);
@@ -659,7 +659,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   // node is where the snippet tree starts (not necc the snippet's root node)
   // selection is poss a current (lower) selection in the tree
-  static void pushThenShowNamedSnippetWithNodeSelected(SnippetName snippetName, STreeNode startingAtNode, STreeNode? selectedNode) {
+  static void pushThenShowNamedSnippetWithNodeSelected(SnippetName snippetName, STreeNode startingAtNode, STreeNode? selectedNode, context) {
     STreeNode? highestNode;
     if (startingAtNode is ScaffoldNode) {
       highestNode = startingAtNode;
@@ -690,9 +690,24 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             }
           },
         );
+        // set the properties tree
+        STreeNode sel = selectedNode ?? startingAtNode;
+        final List<PTreeNode> propertyNodes = sel.properties(context);
+        // get a new treeController only when snippet selected
+        sel.pTreeC ??= PTreeNodeTreeController(
+          roots: propertyNodes,
+          childrenProvider: Node.propertyTreeChildrenProvider,
+        );
+        //showTreeNodeMenu(context, () => STreeNode.selectionGK);
+        // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
+        sel.propertiesPaneSC ??= ScrollController()
+          ..addListener(() {
+            sel.propertiesPaneScrollPos = sel.propertiesPaneSC?.offset ?? 0.0;
+          });
+
 // select node
         snippetBeingEdited.add(SnippetEvent.selectNode(
-          node: selectedNode ?? startingAtNode,
+          node: sel,
           selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
           selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
@@ -728,7 +743,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                   removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
                   cc = node.nodeWidgetGK?.currentContext;
-                  pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node);
+                  pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node, context);
                   // Useful.afterNextBuildDo(() {
                   MaterialSPAState.showNodeWidgetOverlay(node);
                   // });

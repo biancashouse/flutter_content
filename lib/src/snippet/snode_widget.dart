@@ -116,8 +116,21 @@ class NodeWidget extends StatelessWidget {
             ));
             Useful.afterNextBuildDo(() {
               MaterialSPAState.showNodeWidgetOverlay(entry.node);
+              // create selected node's properties tree
+              final List<PTreeNode> propertyNodes = entry.node.properties(context);
+              // get a new treeController only when snippet selected
+              entry.node.pTreeC ??= PTreeNodeTreeController(
+                roots: propertyNodes,
+                childrenProvider: Node.propertyTreeChildrenProvider,
+              );
+              //showTreeNodeMenu(context, () => STreeNode.selectionGK);
+              // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
+              entry.node.propertiesPaneSC ??= ScrollController()
+                ..addListener(() {
+                  entry.node.propertiesPaneScrollPos = entry.node.propertiesPaneSC?.offset ?? 0.0;
+                });
             });
-           });
+          });
         }
 
         // removeNodePropertiesCallout();
@@ -156,30 +169,30 @@ class NodeWidget extends StatelessWidget {
       // onDoubleTap: () {
       //   _longPressedOrDoubleTapped(snippetBloc);
 
-        // if (onClipboard) return;
-        //
-        // // removeNodePropertiesCallout();
-        // Callout.dismiss(TREENODE_MENU_CALLOUT);
-        //
-        // snippetBloc.add(SnippetEvent.selectNode(
-        //   node: entry.node,
-        //   nodeParent: entry.parent?.node,
-        //   showProperties: true,
-        //   // imageTC: tc,
-        // ));
-        //
-        // Useful.afterNextBuildDo(() {
-        //   if (entry.node is SnippetRefNode) {
-        //     _pushThenEditSnippet();
-        //   } else {
-        //     // showNodeAddersAndPropertiesCallout(
-        //     //   context: context,
-        //     //   selectedNode: entry.node as STreeNode,
-        //     //   selectionParentNode: entry.parent?.node as STreeNode?,
-        //     //   nodeGK: () => nodeGK,
-        //     // );
-        //   }
-        // });
+      // if (onClipboard) return;
+      //
+      // // removeNodePropertiesCallout();
+      // Callout.dismiss(TREENODE_MENU_CALLOUT);
+      //
+      // snippetBloc.add(SnippetEvent.selectNode(
+      //   node: entry.node,
+      //   nodeParent: entry.parent?.node,
+      //   showProperties: true,
+      //   // imageTC: tc,
+      // ));
+      //
+      // Useful.afterNextBuildDo(() {
+      //   if (entry.node is SnippetRefNode) {
+      //     _pushThenEditSnippet();
+      //   } else {
+      //     // showNodeAddersAndPropertiesCallout(
+      //     //   context: context,
+      //     //   selectedNode: entry.node as STreeNode,
+      //     //   selectionParentNode: entry.parent?.node as STreeNode?,
+      //     //   nodeGK: () => nodeGK,
+      //     // );
+      //   }
+      // });
       // },
       // onLongPress: () {
       //   Callout(
