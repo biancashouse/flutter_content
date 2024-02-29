@@ -49,3 +49,5 @@ app.*.map.json
 /jic/
 /.fvm/
 /gemini_api_key.txt
+/compals/
+/ios.jic/

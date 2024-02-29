@@ -5,6 +5,8 @@ maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 # github mirrored from bitbucket
 #homepage: https://bitbucket:org/biancashouse/flutter_content/src/master/
+issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
+repository: https://github.com/biancashouse/flutter-content
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -43,10 +45,10 @@ dependencies:
   dart_mappable: ^4.0.1
   smooth_page_indicator: ^1.1.0
   firebase_core: ^2.25.4
-  firebase_analytics: ^10.8.6
-  firebase_auth: ^4.17.5
-  cloud_firestore: ^4.15.5
-  firebase_storage: ^11.6.6
+  firebase_analytics: ^10.8.7
+  firebase_auth: ^4.17.6
+  cloud_firestore: ^4.15.6
+  firebase_storage: ^11.6.7
   google_fonts: ^6.1.0
   watcher: ^1.1.0
   pointer_interceptor: ^0.10.1
@@ -54,10 +56,10 @@ dependencies:
   # compals
   url_launcher: ^6.2.5
   intl: ^0.18.1
-  timeago: any
+  timeago: ^3.6.1
   #flutter_polls: ^0.1.5
   flutter_hooks: ^0.20.3
-  calendar_date_picker2: ^0.5.3
+  calendar_date_picker2: ^0.5.5
   gap: ^3.0.1
   auto_size_text_field: ^2.2.2
   carousel_slider: ^4.2.1
@@ -68,7 +70,6 @@ dependencies:
   webview_flutter_web: ^0.2.2+4
   webview_flutter_platform_interface: ^2.7.0
   percent_indicator: ^4.2.3
-  flutter_html_iframe: ^3.0.0-beta.2
   on_screen_ruler: ^0.0.1
   collection: ^1.18.0
   rotated_corner_decoration: ^2.1.0+1
@@ -77,10 +78,10 @@ dependencies:
   youtube_parser: ^2.1.3
   flutter_localization: ^0.2.0
   #pretty_json: ^2.0.0
+  meta: ^1.11.0
 
 dependency_overrides:
-  web: 0.5.0 # latest version as of now
-  meta: 1.12.0
+  web: ^0.5.0 # latest version as of now
 
 dev_dependencies:
   flutter_test:
