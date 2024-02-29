@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // void removeSnippetTreeCallout(String snippetName) => Callout.removeOverlay(snippetName);

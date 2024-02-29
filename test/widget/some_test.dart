@@ -61,7 +61,7 @@ class _MyCounterState extends State<MyCounter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Counter'),
+        title: const Text('Counter'),
       ),
       body: Center(
         child: Column(
@@ -69,11 +69,11 @@ class _MyCounterState extends State<MyCounter> {
           children: <Widget>[
             Text(
               '$_count',
-              style: TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 24),
             ),
             ElevatedButton(
               onPressed: _increment,
-              child: Text('Increment'),
+              child: const Text('Increment'),
             ),
           ],
         ),

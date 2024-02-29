@@ -1,5 +1,7 @@
 name: Build and Release APK
-on: push
+on:
+  push:
+    branches: [ main ]
 jobs:
   hosting:
     name: Deploy Website
@@ -11,7 +13,8 @@ jobs:
       # Install Flutter command
       - uses: subosito/flutter-action@v2.8.0
         with:
-          channel: 'dev'
+          channel: 'stable'
+          cache: true
 
       # Build Website
       - name: Build Website
