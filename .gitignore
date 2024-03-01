@@ -39,8 +39,8 @@ app.*.symbols
 app.*.map.json
 
 # generated; such a built_value, freezed, mapper etc.
-*.mapper.dart
-*.freezed.dart
+#*.mapper.dart
+#*.freezed.dart
 
 # Android Studio will place build artifacts here
 /android/app/debug

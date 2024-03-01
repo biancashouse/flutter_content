@@ -1,0 +1,99 @@
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
+
+part of 'inlinespan_node.dart';
+
+class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
+  InlineSpanNodeMapper._();
+
+  static InlineSpanNodeMapper? _instance;
+  static InlineSpanNodeMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = InlineSpanNodeMapper._());
+      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      TextSpanNodeMapper.ensureInitialized();
+      WidgetSpanNodeMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'InlineSpanNode';
+
+  static bool _$isExpanded(InlineSpanNode v) => v.isExpanded;
+  static const Field<InlineSpanNode, bool> _f$isExpanded =
+      Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static PTreeNodeTreeController? _$pTreeC(InlineSpanNode v) => v.pTreeC;
+  static const Field<InlineSpanNode, PTreeNodeTreeController> _f$pTreeC =
+      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
+  static double? _$propertiesPaneScrollPos(InlineSpanNode v) =>
+      v.propertiesPaneScrollPos;
+  static const Field<InlineSpanNode, double> _f$propertiesPaneScrollPos = Field(
+      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
+      mode: FieldMode.member);
+  static ScrollController? _$propertiesPaneSC(InlineSpanNode v) =>
+      v.propertiesPaneSC;
+  static const Field<InlineSpanNode, ScrollController> _f$propertiesPaneSC =
+      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
+  static bool? _$hidePropertiesWhileDragging(InlineSpanNode v) =>
+      v.hidePropertiesWhileDragging;
+  static const Field<InlineSpanNode, bool> _f$hidePropertiesWhileDragging =
+      Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
+          mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(InlineSpanNode v) =>
+      v.nodeWidgetGK;
+  static const Field<InlineSpanNode, GlobalKey<State<StatefulWidget>>>
+      _f$nodeWidgetGK =
+      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
+
+  @override
+  final MappableFields<InlineSpanNode> fields = const {
+    #isExpanded: _f$isExpanded,
+    #pTreeC: _f$pTreeC,
+    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
+    #propertiesPaneSC: _f$propertiesPaneSC,
+    #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
+    #nodeWidgetGK: _f$nodeWidgetGK,
+  };
+
+  @override
+  final String discriminatorKey = 'snode';
+  @override
+  final dynamic discriminatorValue = 'InlineSpanNode';
+  @override
+  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+
+  static InlineSpanNode _instantiate(DecodingData data) {
+    throw MapperException.missingSubclass(
+        'InlineSpanNode', 'is', '${data.value['is']}');
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static InlineSpanNode fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<InlineSpanNode>(map);
+  }
+
+  static InlineSpanNode fromJson(String json) {
+    return ensureInitialized().decodeJson<InlineSpanNode>(json);
+  }
+}
+
+mixin InlineSpanNodeMappable {
+  String toJson();
+  Map<String, dynamic> toMap();
+  InlineSpanNodeCopyWith<InlineSpanNode, InlineSpanNode, InlineSpanNode>
+      get copyWith;
+}
+
+abstract class InlineSpanNodeCopyWith<$R, $In extends InlineSpanNode, $Out>
+    implements STreeNodeCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  InlineSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
