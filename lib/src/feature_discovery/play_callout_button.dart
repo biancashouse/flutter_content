@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/gotits/gotits_helper_string.dart';
-import 'package:flutter_content/src/overlays/callouts/callout_config.dart';
 
 class PlayCalloutButton extends StatefulWidget {
   final Feature feature;
@@ -29,9 +27,9 @@ class PlayCalloutButton extends StatefulWidget {
     this.separation = 40.0,
     this.gotitAxis,
     this.onGotitF,
-    Key? key,
+    super.key,
     this.arrowColor,
-  }) : super(key: key);
+  });
 
   @override
   PlayCalloutButtonState createState() => PlayCalloutButtonState();

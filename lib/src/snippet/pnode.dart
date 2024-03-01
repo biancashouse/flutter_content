@@ -194,7 +194,7 @@ class TextStylePropertyGroup extends PropertyGroup {
   @override
   Widget toPropertyNodeContents(BuildContext context) {
     // not used in a property group node
-    throw UnimplementedError(this.runtimeType.toString());
+    throw UnimplementedError(runtimeType.toString());
   }
 
 // List<PTreeNode> get children => [
@@ -846,8 +846,9 @@ class DecimalPropertyValueNode extends PTreeNode {
             var split = s.split('/');
             double? w = double.tryParse(split[0]);
             double? h = double.tryParse(split[1]);
-            if (w != null && h != null)
+            if (w != null && h != null) {
               onDoubleChange.call(decimalValue = w / h);
+            }
           } else {
             onDoubleChange.call(decimalValue = double.tryParse(s));
           }
@@ -946,15 +947,16 @@ class SizePropertyValueNode extends PTreeNode {
                   var split = s.split('/');
                   double? part1 = double.tryParse(split[0]);
                   double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null)
+                  if (part1 != null && part2 != null) {
                     onSizeChange.call((widthValue = part1 / part2, part2));
+                  }
                 } else {
                   onSizeChange
                       .call((widthValue = double.tryParse(s), heightValue));
                 }
               },
             ),
-            SizedBox(width: 40, child: const Text('x')),
+            const SizedBox(width: 40, child: Text('x')),
             NodePropertyButton_String(
               originalText: heightValue != null ? heightValue.toString() : '',
               label: 'height',
@@ -974,8 +976,9 @@ class SizePropertyValueNode extends PTreeNode {
                   var split = s.split('/');
                   double? part1 = double.tryParse(split[0]);
                   double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null)
+                  if (part1 != null && part2 != null) {
                     onSizeChange.call((part2, heightValue = part1 / part2));
+                  }
                 } else {
                   onSizeChange
                       .call((widthValue, heightValue = double.tryParse(s)));

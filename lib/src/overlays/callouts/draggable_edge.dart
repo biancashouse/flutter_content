@@ -11,7 +11,7 @@ class DraggableEdge_OP extends StatelessWidget {
   final CalloutConfig parent;
   final Color color;
 
-  const DraggableEdge_OP({required this.side, required this.thickness, required this.parent, required this.color, Key? key}) : super(key: key);
+  const DraggableEdge_OP({required this.side, required this.thickness, required this.parent, required this.color, super.key});
 
   Axis axis() {
     switch (side) {

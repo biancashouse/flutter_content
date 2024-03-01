@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'asset_image_node.mapper.dart';
 

@@ -361,7 +361,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     TargetConfig newItem = TargetConfig(
       uid: newTargetUid, //event.wName.hashCode,
       wName: event.wName,
-      snippetName: "${newTargetUid}",
+      snippetName: "$newTargetUid",
       single: false,
     );
     // newItem.init(

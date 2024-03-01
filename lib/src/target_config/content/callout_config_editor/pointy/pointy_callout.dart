@@ -92,8 +92,7 @@ class _PointyToolState extends State<PointyTool> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = []
-      ..addAll([
+    List<Widget> widgets = [...[
         ArrowType.NO_CONNECTOR,
         ArrowType.POINTY,
       ]
@@ -106,8 +105,7 @@ class _PointyToolState extends State<PointyTool> {
                   onPressed: () => _onPressed(t, tc),
                 ),
               ))
-          .toList())
-      ..addAll([
+          , ...[
         ArrowType.VERY_THIN,
         ArrowType.THIN,
         ArrowType.MEDIUM,
@@ -123,8 +121,7 @@ class _PointyToolState extends State<PointyTool> {
                   onPressed: () => _onPressed(t, tc),
                 ),
               ))
-          .toList())
-      ..addAll([
+          , ...[
         ArrowType.VERY_THIN_REVERSED,
         ArrowType.THIN_REVERSED,
         ArrowType.MEDIUM_REVERSED,
@@ -140,7 +137,10 @@ class _PointyToolState extends State<PointyTool> {
                   onPressed: () => _onPressed(t, tc),
                 ),
               ))
-          .toList());
+          ]
+      
+      
+      ;
     if (tc.arrowType != ArrowType.NO_CONNECTOR.index && tc.arrowType != ArrowType.POINTY.index) {
       widgets.add(
         OutlinedButton(

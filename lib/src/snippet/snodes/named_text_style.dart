@@ -61,7 +61,7 @@ class NamedTextStyle {
   TextStyle? toTextStyle(ThemeData themeData) => fontFamily != null
       ? GoogleFonts.getFont(
           fontFamily!,
-          textStyle: fontSizeName != null ? fontSizeName!.flutterTextStyle(themeData: themeData) : null,
+          textStyle: fontSizeName?.flutterTextStyle(themeData: themeData),
           fontSize: fontSize,
           fontStyle: fontStyle?.flutterValue,
           fontWeight: fontWeight?.flutterValue,

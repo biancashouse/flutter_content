@@ -541,7 +541,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   void _showFloatingClipboard() {
     Size screenSize = MediaQuery.of(context).size;
     Callout.showOverlay(
-        boxContentF: (context) => ClipboardView(),
+        boxContentF: (context) => const ClipboardView(),
         calloutConfig: CalloutConfig(
           feature: "floating-clipboard",
           suppliedCalloutW: 300,

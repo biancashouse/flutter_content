@@ -91,7 +91,7 @@ class _ColorHolder extends StatelessWidget {
               ),
             ),
           )
-        : Container(
+        : SizedBox(
             height: 40,
             width: 40,
             child: IconButton(

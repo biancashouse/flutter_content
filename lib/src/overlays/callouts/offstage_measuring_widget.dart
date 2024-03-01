@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/measuring/find_global_rect.dart';
 
 class OffstageMeasuringWidget extends StatefulWidget {
   final Widget child;

@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/useful.dart';
 
 /// https://www.flutterbeads.com/multiline-textfield-in-flutter/
 ///
@@ -144,7 +143,7 @@ class TextEditorState extends State<TextEditor> {
 
   @override
   void dispose() {
-    _txtController?.dispose();
+    _txtController.dispose();
     super.dispose();
   }
 
@@ -203,12 +202,12 @@ class TextEditorState extends State<TextEditor> {
       ],
       decoration: widget.isPassword
           ? InputDecoration(
-              border: UnderlineInputBorder(),
+              border: const UnderlineInputBorder(),
               //hintText: "Password",
               labelText: _txtController.text.isEmpty ? "Password" : '',
               labelStyle: Useful.enclosureLabelTextStyle,
               helperText: "Forgot password ?\nContact Ian on 0404 950 122\n",
-              helperStyle: TextStyle(color: Colors.green),
+              helperStyle: const TextStyle(color: Colors.green),
               suffixIcon: IconButton(
                 icon: Icon(passwordVisible ? Icons.visibility : Icons.visibility_off),
                 onPressed: () {

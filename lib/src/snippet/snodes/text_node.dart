@@ -6,7 +6,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 
 import '../pnodes/groups/text_style_group.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'text_node.mapper.dart';
 

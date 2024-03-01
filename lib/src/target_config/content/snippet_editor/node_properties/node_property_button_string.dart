@@ -112,7 +112,7 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
               targetGkF: () => propertyBtnGK,
             );
           },
-          child: Container(
+          child: SizedBox(
             key: propertyBtnGK = GlobalKey(debugLabel: widget.label),
             // margin: const EdgeInsets.only(top: 8),
             width: widget.calloutButtonSize.width,

@@ -10,8 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_content:
-    path: ../
+  flutter_content:  ^0.0.3
 
 dev_dependencies:
   flutter_test:

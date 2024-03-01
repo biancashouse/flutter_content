@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'button_node.mapper.dart';
 
@@ -451,5 +450,5 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   // }
 
   @override
-  Size get nodeAddersAndPropertiesCalloutSize => Size(460, 600);
+  Size get nodeAddersAndPropertiesCalloutSize => const Size(460, 600);
 }

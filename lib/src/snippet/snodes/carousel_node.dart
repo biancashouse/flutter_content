@@ -91,7 +91,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
                       boxShadow: kElevationToShadow[2],
                       image: DecorationImage(
                           image: AssetImage(
-                            '$name', package:'flutter_content',
+                            name, package:'flutter_content',
                           ),
                           fit: BoxFit.fill),
                     ),

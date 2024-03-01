@@ -99,7 +99,7 @@ class DiscoveryController {
     }
 
     if (_onFinishedPlaying != null) {
-      _onFinishedPlaying!();
+      _onFinishedPlaying();
     }
     // print('End of Feature Discovery');
   }

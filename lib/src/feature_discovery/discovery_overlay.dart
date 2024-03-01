@@ -1,7 +1,6 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/src/gotits/gotits_helper_int.dart';
 import 'package:flutter_content/src/gotits/gotits_helper_string.dart';
 
 import 'featured_widget.dart';
@@ -20,8 +19,8 @@ class DiscoveryOverlay extends StatelessWidget {
     this.showOverlay,
     this.buildOverlayF,
     required this.parent,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

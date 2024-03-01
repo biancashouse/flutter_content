@@ -31,7 +31,7 @@ class NodePropertyButtonEnum extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                (Useful.coloredText(label.isNotEmpty ? '${label}: ' : '', color: Colors.white)),
+                (Useful.coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
                 originalEnumIndex == null ? Useful.coloredText('...', color: Colors.white) : mi,
               ],
             )

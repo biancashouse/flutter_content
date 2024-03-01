@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImprovedDraggableScrollableSheet extends StatefulWidget {
-  const ImprovedDraggableScrollableSheet({Key? key}) : super(key: key);
+  const ImprovedDraggableScrollableSheet({super.key});
 
   @override
   State<ImprovedDraggableScrollableSheet> createState() => _ImprovedDraggableScrollableSheetState();
@@ -71,9 +71,9 @@ class _ImprovedDraggableScrollableSheetState extends State<ImprovedDraggableScro
 
 class _CommentsHeader extends StatelessWidget {
   const _CommentsHeader({
-    Key? key,
+    super.key,
     required this.scrollController,
-  }) : super(key: key);
+  });
 
   final ScrollController scrollController;
 

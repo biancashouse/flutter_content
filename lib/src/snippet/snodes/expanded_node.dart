@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'expanded_node.mapper.dart';
 
@@ -49,7 +48,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   @override
   String toSource(BuildContext context) {
     return '''Expanded(
-        flex: ${flex},
+        flex: $flex,
         child: ${child?.toSource(context) ?? 'const Icon(Icons.square, color: Colors.red)'}
       )''';
   }

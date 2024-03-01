@@ -53,7 +53,7 @@ class FlutterTextEditor extends HookWidget {
 
     return Container(
       color: Colors.white,
-      padding: padding ?? EdgeInsets.all(8),
+      padding: padding ?? const EdgeInsets.all(8),
       child: FocusScope(
         canRequestFocus: true,
         child: TextField(
@@ -76,7 +76,7 @@ class FlutterTextEditor extends HookWidget {
           },
           onChanged: (s) {
             if (textInputType == TextInputType.number && s.contains('.')) {
-              teC!.text = s.replaceAll('.', '');
+              teC.text = s.replaceAll('.', '');
             }
           },
           onTapOutside: (_) {

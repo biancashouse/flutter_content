@@ -60,7 +60,7 @@ class SnippetPanel extends StatefulWidget {
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static Map<HandlerName, void Function(BuildContext)> _handlers = {};
+  static final Map<HandlerName, void Function(BuildContext)> _handlers = {};
 
   static registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
 

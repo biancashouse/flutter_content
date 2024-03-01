@@ -153,7 +153,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
             ),
           )
         : FC().areAnySnippetsBeingEdited
-            ? Placeholder()
+            ? const Placeholder()
             : Row(
                 key: createNodeGK(),
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/overlays/callouts/callout_config.dart';
 import 'package:flutter_content/src/overlays/callouts/coord.dart';
 import 'package:flutter_content/src/overlays/callouts/line.dart';
 import 'package:flutter_content/src/overlays/callouts/path_util.dart';

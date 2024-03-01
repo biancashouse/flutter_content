@@ -1,8 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
 
-import 'package:google_fonts/google_fonts.dart';
 
 part 'edgeinsets_node_value.mapper.dart';
 

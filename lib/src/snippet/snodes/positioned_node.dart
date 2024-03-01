@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'positioned_node.mapper.dart';
 
@@ -76,10 +75,10 @@ class PositionedNode extends SC with PositionedNodeMappable {
   String toSource(BuildContext context) {
     return child != null
         ? '''Positioned(
-      top: ${top},
-      left: ${left},
-      bottom: ${bottom},
-      right: ${right},
+      top: $top,
+      left: $left,
+      bottom: $bottom,
+      right: $right,
       child: ${child!.toSource(context)},
     )'''
         : 'const Offstage()';

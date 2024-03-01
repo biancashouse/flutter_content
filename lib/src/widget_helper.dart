@@ -18,9 +18,9 @@ Widget boxedStep(
     double theBorderWidth = 2.0}) {
   if (!SHOW_BOXED) {
     return SizedBox(
-      child: theChild,
       width: width,
       height: height,
+      child: theChild,
     );
   }
 
@@ -28,9 +28,9 @@ Widget boxedStep(
     return !SHOW_BOXED && (force == null)
         ? Container(
             color: theBgColor,
-            child: theChild,
             width: width,
             height: height,
+            child: theChild,
           )
         : Container(
             padding: EdgeInsets.all(thePadding!),
@@ -38,9 +38,9 @@ Widget boxedStep(
                 color: theBgColor,
                 border: Border.all(width: theBorderWidth),
                 borderRadius: BorderRadius.all(Radius.circular(notRounded != null ? 0.0 : 16.0))),
-            child: theChild,
             width: width,
             height: height,
+            child: theChild,
           );
   } else {
     return emptyZeroSizedContainer();

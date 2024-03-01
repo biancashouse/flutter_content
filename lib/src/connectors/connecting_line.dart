@@ -7,7 +7,6 @@ import 'package:flutter_content/src/overlays/callouts/coord.dart';
 import 'package:flutter_content/src/overlays/callouts/line.dart';
 import 'package:flutter_content/src/overlays/callouts/pointing_line.dart';
 
-import '../overlays/overlay_manager.dart';
 
 class ConnectingLine {
   final Feature feature;

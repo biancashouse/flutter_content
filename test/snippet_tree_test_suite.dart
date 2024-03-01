@@ -1,10 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
 

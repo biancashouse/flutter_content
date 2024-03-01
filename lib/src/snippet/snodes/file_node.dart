@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'file_node.mapper.dart';
 
@@ -93,7 +92,7 @@ class FileNode extends CL with FileNodeMappable {
     if (src.contains('https://docs.google.com/spreadsheets/')) return Image.asset(googleSheetsIconSrc, height: 24);
     if (src.contains('https://docs.google.com/presentation/')) return Image.asset(googleSlidesIconSrc, height: 24);
     if (src.contains('https://docs.google.com/forms/')) return Image.asset(googleSlidesIconSrc, height: 24);
-    return Offstage(); //Icon(Icons.question_mark, color: Colors.red);
+    return const Offstage(); //Icon(Icons.question_mark, color: Colors.red);
   }
 
   @override

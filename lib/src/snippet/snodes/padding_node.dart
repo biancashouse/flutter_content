@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 import 'edgeinsets_node_value.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'padding_node.mapper.dart';
 

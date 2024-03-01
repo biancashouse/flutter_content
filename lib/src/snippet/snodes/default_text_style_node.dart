@@ -3,7 +3,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 

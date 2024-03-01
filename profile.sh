@@ -578,12 +578,6 @@ export PATH=$PATH:/Users/ianw/Library/Android/sdk/tools/
 # add grpc proto compiler to path and dart protoc plugin
 export PATH=$PATH:/Installed/protoc-3.11.4-osx-x86_64/bin:$HOME/.pub-cache/bin
 
-#----------------------
-# AWS Security for ianw
-export AWS_ACCESS_KEY_ID=AKIAZOT2IBVFP6ORNGGV
-export AWS_SECRET_ACCESS_KEY=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
-export AWS_DEFAULT_REGION=ap-southeast-2
-#----------------------
 export PATH=$FLUTTER_HOME/bin:$PATH
 #---------------------- fvm -------------------------
 export PATH=/Users/ianw/fvm/versions/3.16.1/bin:$PATH

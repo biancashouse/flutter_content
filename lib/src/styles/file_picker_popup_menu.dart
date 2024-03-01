@@ -142,7 +142,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
 
     menuItems.add(
         // from GALLERY
-        Container(
+        SizedBox(
       width: double.infinity,
       child: TextButton.icon(
         onPressed: () async {
@@ -164,7 +164,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
 
     menuItems.add(
         // from FILE SYSTEM
-        Container(
+        SizedBox(
       width: double.infinity,
       child: TextButton.icon(
         onPressed: () async {

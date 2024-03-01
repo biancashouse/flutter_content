@@ -46,7 +46,7 @@ class TargetGroupConfig {
   Map<String, dynamic> toJson() => _$TargetGroupConfigToJson(this);
 
   TargetGroupConfig clone() {
-    var cloneJson = this.toJson();
+    var cloneJson = toJson();
     TargetGroupConfig clonedITC = TargetGroupConfig.fromJson(cloneJson);
     return clonedITC;
   }
@@ -278,7 +278,7 @@ class TargetConfig {
   }
 
   TargetConfig clone() {
-    var cloneJson = this.toJson();
+    var cloneJson = toJson();
     TargetConfig clonedTC = TargetConfig.fromJson(cloneJson);
     // clonedTC._bloc = this._bloc;
     // clonedTC._gk = this._gk;
@@ -286,7 +286,7 @@ class TargetConfig {
     // clonedTC._imageUrlFocusNode = this._imageUrlFocusNode;
     // clonedTC._transientMatrix = this._transientMatrix;
     // clonedTC._rect = this._rect;
-    clonedTC.visible = this.visible;
+    clonedTC.visible = visible;
     return clonedTC;
   }
 }

@@ -256,7 +256,7 @@ class FlutterPollState extends State<FlutterPoll> {
                               if (showTextInputButton) Useful.coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
                               Container(
                                 color: showTextInputButton ? Colors.red[900] : Colors.white,
-                                padding: EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(4),
                                 child: showTextInputButton
                                     ? NodePropertyButton_String(
                                         originalText: voterId ?? '',

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnode.dart';
 
 
 class NodePropertyEditorBool extends StatefulWidget {

@@ -10,7 +10,7 @@ class Blink extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _BlinkState createState() => _BlinkState();
 
-  const Blink({required this.child, this.dontAnimate = false, this.bgColor = Colors.yellowAccent, this.animateColor = false, Key? key}) : super(key:key);
+  const Blink({required this.child, this.dontAnimate = false, this.bgColor = Colors.yellowAccent, this.animateColor = false, super.key});
 }
 
 class _BlinkState extends State<Blink> with SingleTickerProviderStateMixin {

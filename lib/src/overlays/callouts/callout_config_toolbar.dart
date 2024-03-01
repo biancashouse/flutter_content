@@ -51,7 +51,7 @@ class CalloutConfigToolbar extends StatelessWidget {
         width: CALLOUT_CONFIG_TOOLBAR_W(tc),
         height: CALLOUT_CONFIG_TOOLBAR_H(tc),
         child: Draggable(
-          feedback: Offstage(),
+          feedback: const Offstage(),
           onDragUpdate: (DragUpdateDetails dud) {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

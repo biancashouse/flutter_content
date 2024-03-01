@@ -14,8 +14,7 @@ class PointingLine extends StatefulWidget {
   final bool animate;
   final int pointingAnimationDuration;
 
-  const PointingLine(this.from, this.to, this.arrowThickness, this.arrowColor, {this.lengthDeltaPc=0.0, this.animate = false, this.pointingAnimationDuration=300, Key? key})
-  : super(key:key);
+  const PointingLine(this.from, this.to, this.arrowThickness, this.arrowColor, {this.lengthDeltaPc=0.0, this.animate = false, this.pointingAnimationDuration=300, super.key});
 
   @override
   State<StatefulWidget> createState() => _PointingLineState();

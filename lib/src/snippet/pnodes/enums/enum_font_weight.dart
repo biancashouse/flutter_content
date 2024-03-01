@@ -41,7 +41,7 @@ enum FontWeightEnum  {
           onChangedF?.call(newIndex);
         },
         wrap: true,
-        calloutButtonSize: Size(200, 30),
+        calloutButtonSize: const Size(200, 30),
         calloutSize: Size(180, values.length * 40),
       );
 

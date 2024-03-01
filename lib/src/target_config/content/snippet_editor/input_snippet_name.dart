@@ -42,7 +42,7 @@ class InputSnippetName extends StatefulWidget {
   // final TargetKeyFunc targetGKF;
   final ValueChanged<String> saveModelF;
 
-  const InputSnippetName({
+  const InputSnippetName({super.key, 
     required this.selectedNode,
     this.selectionParentNode,
     // required this.targetGKF,

@@ -12,7 +12,7 @@ class ResizeSlider extends StatefulWidget {
   final bool showValue;
   final Function(double) onChange;
 
-  const ResizeSlider({
+  const ResizeSlider({super.key, 
     required this.value,
     this.icon,
     this.iconSize,

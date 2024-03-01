@@ -8,11 +8,9 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -21,7 +19,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_platform/universal_platform.dart';
 import "package:yaml/yaml.dart";
 
-import 'snippet/pnodes/enums/enum_material3_text_size.dart';
 
 class Useful {
   // late SharedPreferences _prefs;
@@ -355,9 +352,9 @@ class Useful {
     double spareOnLeft = L - calloutW;
     double spareOnRight = R - calloutW;
     double maxSpare = [spareAbove, spareBelow, spareOnLeft, spareOnRight].reduce(max);
-    if (maxSpare == spareOnRight)
+    if (maxSpare == spareOnRight) {
       return Alignment.centerRight;
-    else if (maxSpare == spareOnLeft)
+    } else if (maxSpare == spareOnLeft)
       return Alignment.centerLeft;
     else if (maxSpare == spareAbove)
       return Alignment.topCenter;
@@ -480,7 +477,7 @@ class Useful {
         letterSpacing: letterSpacing,
       );
 
-  static final MIN_VISIBLE = 40.0;
+  static const MIN_VISIBLE = 40.0;
 
   static (double, double) ensureOnScreen(Rect calloutRect) {
     double resultLeft = calloutRect.left;

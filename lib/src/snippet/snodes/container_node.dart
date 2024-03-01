@@ -247,7 +247,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       if (true || outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
         return Container(
           key: createNodeGK(),
-          decoration: decoration?.toDecoration(
+          decoration: decoration.toDecoration(
             fillColor1: fillColor1Value != null ? Color(fillColor1Value!) : null,
             fillColor2: fillColor2Value != null ? Color(fillColor2Value!) : null,
             fillColor3: fillColor3Value != null ? Color(fillColor3Value!) : null,

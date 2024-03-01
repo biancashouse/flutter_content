@@ -8,9 +8,9 @@ class GotitsHelper {
     //print(_features.toString());
 
     if (_features == null) {
-      if (notUsingHydratedStorage)
+      if (notUsingHydratedStorage) {
         _features = [];
-      else {
+      } else {
         String? gotitList = HydratedBloc.storage.read('gotits');
         _features = gotitList?.substring(1, gotitList.length - 1).split(',').toList() ?? [];
       }

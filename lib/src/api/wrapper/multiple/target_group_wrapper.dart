@@ -275,7 +275,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
           // suspendws OR resumed OR selection changed
           return true; //previous.isSuspended(widget.name) != current.isSuspended(widget.name) //||
           // previous.selectedTarget(widget.name) != current.selectedTarget(widget.name) ||
-              ; //previous.isPlaying != current.isPlaying;
+//previous.isPlaying != current.isPlaying;
         }, builder: (context, CAPIState state) {
           // print("--- ${widget.name} builder");
           return SizedBox(
@@ -474,13 +474,13 @@ class IntegerCircleAvatar extends StatelessWidget {
             child: Container(
                 decoration:  ShapeDecoration(
                     color: bgColor,
-                    shape: CircleBorder(
+                    shape: const CircleBorder(
                       side: BorderSide(color: Colors.white),
                     )),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    '${num}',
+                    '$num',
                     style: TextStyle(color: textColor, fontSize: fontSize),
                   ),
                 )),

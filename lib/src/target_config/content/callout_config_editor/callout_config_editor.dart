@@ -165,7 +165,7 @@ class CalloutConfigEditorState extends State<CalloutConfigEditor> {
                     ),
                     Container(
                       padding: const EdgeInsets.all(8.0),
-                      margin: EdgeInsets.only(bottom: 1),
+                      margin: const EdgeInsets.only(bottom: 1),
                       color: Colors.white,
                       child: Text('CalloutAlignment: ${_nodeCalloutAlignment.toString()}', style: TextStyle(color: Colors.blue[900])),
                     ),

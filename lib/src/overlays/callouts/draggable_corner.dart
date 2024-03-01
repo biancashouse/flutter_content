@@ -11,7 +11,7 @@ class DraggableCorner_OP extends StatelessWidget {
   final CalloutConfig parent;
   final Color color;
 
-  const DraggableCorner_OP({required this.alignment, required this.thickness, required this.parent, required this.color, Key? key}) : super(key: key);
+  const DraggableCorner_OP({required this.alignment, required this.thickness, required this.parent, required this.color, super.key});
 
   BorderRadius getBorderRadius(Alignment alignment) {
     if (alignment == Alignment.topLeft) {

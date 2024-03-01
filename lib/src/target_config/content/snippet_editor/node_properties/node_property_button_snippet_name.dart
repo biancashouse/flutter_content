@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/flutter_text_editor_inside_callout.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
-import 'package:flutter_content/src/text_editing/edit_txt2.dart';
 import 'package:flutter_content/src/text_editing/text_editor_with_autocomplete.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 
@@ -119,7 +114,7 @@ class _NodePropertyButton_SnippetNameState extends State<NodePropertyButton_Snip
               targetGkF: () => propertyBtnGK,
             );
           },
-          child: Container(
+          child: SizedBox(
             key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),
             width: widget.calloutButtonSize.width,
@@ -127,7 +122,7 @@ class _NodePropertyButton_SnippetNameState extends State<NodePropertyButton_Snip
             // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             // color: Colors.white70,
             // alignment: Alignment.center,
-            child: labelWidget ?? (widget.label != null ? Text(widget.label!) : const Offstage()),
+            child: labelWidget ?? (widget.label != null ? Text(widget.label) : const Offstage()),
           ),
         );
     return target(context);

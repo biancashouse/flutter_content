@@ -12,7 +12,7 @@ import 'unit_test.mocks.dart';
 
 void main() {
   const appName = 'flutter-content-test-app';
-  final SCAFFOLD_WITH_TABS = SnippetTemplate.scaffold_with_tabs.name;
+  final scaffoldWithTabs = SnippetTemplate.scaffold_with_tabs.name;
 
   late MockModelRepository mockRepo;
   late CAPIModel? model;
@@ -38,7 +38,7 @@ void main() {
       (_) async => CAPIModel(
         appName: appName,
         snippetEncodedJsons: {
-          SCAFFOLD_WITH_TABS: scaffoldWithTabsSnippet.toJson(),
+          scaffoldWithTabs: scaffoldWithTabsSnippet.toJson(),
         },
       ),
     );
@@ -59,7 +59,7 @@ void main() {
     expect(model?.appName, appName);
     Map<String, SnippetRootNode> snippetsMap = MaterialSPAState.parseSnippetJsons(model!);
     SnippetRootNode rootNode = snippetsMap.values.first;
-    expect(rootNode.name, SCAFFOLD_WITH_TABS);
+    expect(rootNode.name, scaffoldWithTabs);
     SnippetTreeController treeC = SnippetTreeController(roots: [scaffoldWithTabsSnippet], childrenProvider: Node.snippetTreeChildrenProvider);
     STreeNode? searchResult = treeC.findNodeTypeInTree(rootNode, TextNode);
     expect(searchResult, isNotNull);
@@ -73,7 +73,7 @@ void main() {
     expect(model?.appName, appName);
     Map<String, SnippetRootNode> snippetsMap = MaterialSPAState.parseSnippetJsons(model!);
     SnippetRootNode rootNode = snippetsMap.values.first;
-    expect(rootNode.name, SCAFFOLD_WITH_TABS);
+    expect(rootNode.name, scaffoldWithTabs);
     expect(rootNode.child, isA<TransformableScaffoldNode>());
     expect((rootNode.child as TransformableScaffoldNode).scaffold, isA<ScaffoldNode>());
     expect(rootNode.child!.parent, rootNode);

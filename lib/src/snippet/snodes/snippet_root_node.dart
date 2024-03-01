@@ -58,7 +58,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   }
 
   SnippetRootNode cloneSnippet() {
-    String jsonS = this.toJson();
+    String jsonS = toJson();
     return STreeNodeMapper.fromJson(jsonS) as SnippetRootNode;
   }
 

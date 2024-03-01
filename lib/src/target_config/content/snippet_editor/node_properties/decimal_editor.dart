@@ -61,7 +61,7 @@ class DecimalEditor extends HookWidget {
         ],
         decoration: InputDecoration(
           isCollapsed: true,
-          contentPadding: EdgeInsets.all(9),
+          contentPadding: const EdgeInsets.all(9),
           labelText: label,
           labelStyle: Useful.enclosureLabelTextStyle,
           helperText: helperText,

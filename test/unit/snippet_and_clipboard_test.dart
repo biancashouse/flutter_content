@@ -247,8 +247,9 @@ void main() {
               type: TextNode,
             ),
           );
-        } else
+        } else {
           print("selection nul!");
+        }
       },
       skip: 1,
       expect: () => [
@@ -279,8 +280,9 @@ void main() {
               type: TextNode,
             ),
           );
-        } else
+        } else {
           print("selection nul!");
+        }
       },
       skip: 1,
       expect: () => [

@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/overlays/callouts/callout_config.dart';
 import 'package:intl/intl.dart';
 
 class DateRange {

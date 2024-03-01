@@ -73,7 +73,6 @@ class _TextField extends StatefulWidget {
     this.fontSize,
     this.w,
     this.h,
-    super.key,
   });
   @override
   State<_TextField> createState() => _TextFieldState();
@@ -122,7 +121,7 @@ class _TextFieldState extends State<_TextField> {
         ],
         decoration: InputDecoration(
           isCollapsed: true,
-          contentPadding: EdgeInsets.all(9),
+          contentPadding: const EdgeInsets.all(9),
           labelText: widget.label,
           labelStyle: Useful.enclosureLabelTextStyle,
           helperText: widget.helperText,

@@ -381,7 +381,7 @@ MenuItemButton _menuItemButton(
         if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
         if (action == NodeAction.wrapWith) snippetBloc.add(SnippetEvent.wrapSelectionWith(type: childType));
         Callout.dismiss(TREENODE_MENU_CALLOUT);
-        FC().capiBloc.add(CAPIEvent.forceRefresh());
+        FC().capiBloc.add(const CAPIEvent.forceRefresh());
       },
       child: Useful.coloredText(label, fontWeight: FontWeight.bold),
     );
@@ -398,15 +398,15 @@ SubmenuButton _addSnippetsSubmenu(
       MenuItemButton(
         onPressed: () {
           if (action == NodeAction.replace) {
-            snippetBloc.add(SnippetEvent.replaceSelectionWith(type: SnippetRootNode));
+            snippetBloc.add(const SnippetEvent.replaceSelectionWith(type: SnippetRootNode));
           } else if (action == NodeAction.addSiblingBefore) {
-            snippetBloc.add(SnippetEvent.addSiblingBefore(type: SnippetRootNode));
+            snippetBloc.add(const SnippetEvent.addSiblingBefore(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addSiblingAfter) {
-            snippetBloc.add(SnippetEvent.addSiblingAfter(type: SnippetRootNode));
+            snippetBloc.add(const SnippetEvent.addSiblingAfter(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addChild) {
-            snippetBloc.add(SnippetEvent.appendChild(type: SnippetRootNode));
+            snippetBloc.add(const SnippetEvent.appendChild(type: SnippetRootNode));
             // removeNodePropertiesCallout();
           }
         },

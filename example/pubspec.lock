@@ -393,10 +393,11 @@ packages:
   flutter_content:
     dependency: "direct main"
     description:
-      path: ".."
-      relative: true
-    source: path
-    version: "0.0.2"
+      name: flutter_content
+      sha256: "73aa6eeeb75a5fd7b53b83a8ae841bfbb530b5c7a95954827ac747f6ea220066"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   flutter_fancy_tree_view:
     dependency: transitive
     description:

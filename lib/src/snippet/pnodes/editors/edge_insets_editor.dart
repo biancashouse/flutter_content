@@ -75,7 +75,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
               // onChangedF(value);
             },
           ),
-          Container(
+          SizedBox(
             // color: Colors.white,
             width: 200,
             height: 100,

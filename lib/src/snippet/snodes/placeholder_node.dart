@@ -69,7 +69,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                 color: colorValue != null ? Color(colorValue!) : null,
                 child: Text(
                   centredLabel!,
-                  textScaler: TextScaler.linear(3),
+                  textScaler: const TextScaler.linear(3),
                 )),
           ),
         ],

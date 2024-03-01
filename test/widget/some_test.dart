@@ -36,7 +36,7 @@ void main() {
 class MyCounter extends StatefulWidget {
   final int initialCount;
 
-  const MyCounter({Key? key, required this.initialCount}) : super(key: key);
+  const MyCounter({super.key, required this.initialCount});
 
   @override
   State<MyCounter> createState() => _MyCounterState();

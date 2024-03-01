@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/snippet/callout_node_menu.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
@@ -166,12 +165,13 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         .withOpacity(snippetBloc.state.canUndo() ? 1.0 : .25),
                   ),
                   onPressed: () {
-                    if (snippetBloc.state.canUndo())
+                    if (snippetBloc.state.canUndo()) {
                       snippetBloc.add(
                           SnippetEvent.undo(name: snippetBloc.snippetName));
+                    }
                     Useful.afterNextBuildDo(() {
                       snippetBloc.state.treeC
-                          .expandCascading([snippetBloc.rootNode!]);
+                          .expandCascading([snippetBloc.rootNode]);
                     });
                   },
                 ),
@@ -183,12 +183,13 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         .withOpacity(snippetBloc.state.canRedo() ? 1.0 : .25),
                   ),
                   onPressed: () {
-                    if (snippetBloc.state.canRedo())
+                    if (snippetBloc.state.canRedo()) {
                       snippetBloc.add(
                           SnippetEvent.redo(name: snippetBloc.snippetName));
+                    }
                     Useful.afterNextBuildDo(() {
                       snippetBloc.state.treeC
-                          .expandCascading([snippetBloc.rootNode!]);
+                          .expandCascading([snippetBloc.rootNode]);
                     });
                   },
                 ),
@@ -595,10 +596,10 @@ class SnippetTreePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (snippetBloc.rootNode!.child == null) {
+    if (snippetBloc.rootNode.child == null) {
       List<Widget> menuChildren = menuAnchorWidgets(
         snippetBloc,
-        snippetBloc.rootNode!,
+        snippetBloc.rootNode,
         NodeAction.addChild,
       );
       return MenuAnchor(

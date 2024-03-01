@@ -3,10 +3,7 @@ import 'dart:developer' as developer;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/gotits/gotits_helper_string.dart';
-import 'package:flutter_content/src/useful.dart';
 
-import '../overlays/overlay_manager.dart';
 import 'discovery_controller.dart';
 import 'discovery_overlay.dart';
 
@@ -118,7 +115,7 @@ class FeaturedWidget extends StatefulWidget {
             ),
           ),
           if (includeGotit)
-            Align(child: gotitButtonForDiscoverableContainer(context, theParent: this), alignment: getAlignment() ?? Alignment.bottomLeft)
+            Align(alignment: getAlignment() ?? Alignment.bottomLeft, child: gotitButtonForDiscoverableContainer(context, theParent: this))
         ],
       );
 
@@ -127,7 +124,7 @@ class FeaturedWidget extends StatefulWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           theContent as Widget,
-          includeGotit ? Align(child: gotitButtonForDiscoverableContainer(context, theParent: this), alignment: getAlignment()!) : const Offstage(),
+          includeGotit ? Align(alignment: getAlignment()!, child: gotitButtonForDiscoverableContainer(context, theParent: this)) : const Offstage(),
         ],
       );
 
@@ -454,9 +451,9 @@ class FeaturedWidgetState extends State<FeaturedWidget> with TickerProviderState
           child: Material(
             color: Colors.transparent,
             child: GestureDetector(
-              child: widget.childBuilder(context),
               onTap: tapActivate,
               onDoubleTap: doubleTapActivate,
+              child: widget.childBuilder(context),
             ),
           ),
         ),
@@ -553,8 +550,8 @@ class PointOutContent extends StatelessWidget {
     this.contentSize,
     this.touchTargetRadius,
     this.touchTargetToContentPadding,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
 //  OverlayContentOrientationEnum getContentOrientation(Offset position) {
 //    if (Responsive.isCloseToTopOrBottom(position, screenSize)) {
@@ -937,7 +934,7 @@ class PositionedCentred extends StatelessWidget {
   final Offset? pos;
   final Widget? child;
 
-  const PositionedCentred({this.pos, this.child, Key? key}) : super(key: key);
+  const PositionedCentred({this.pos, this.child, super.key});
 
   @override
   Widget build(BuildContext context) {

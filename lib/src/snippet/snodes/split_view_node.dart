@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_axis.dart';
 import 'package:multi_split_view/multi_split_view.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'split_view_node.mapper.dart';
 

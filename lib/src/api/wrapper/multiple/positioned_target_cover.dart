@@ -28,7 +28,6 @@ class PositionedTarget extends StatelessWidget {
       child: Draggable(
         key: FC().setMultiTargetGk(initialTC.uid.toString(), GlobalKey()),
         feedback: _draggableTargetBeingDragged(tc),
-        child: _draggableTargetNotBeingDragged(tc, Colors.white.withOpacity(.1)),
         childWhenDragging: const Offstage(),
         dragAnchorStrategy: (Draggable<Object> draggable, BuildContext context, Offset position) {
           return Offset(tc.radius,tc.radius);
@@ -67,10 +66,10 @@ class PositionedTarget extends StatelessWidget {
           //   }
           // });
         },
+        child: _draggableTargetNotBeingDragged(tc, Colors.white.withOpacity(.1)),
       ),
     )
-    : Icon(Icons.warning, color: Colors.red,);
-    ;
+    : const Icon(Icons.warning, color: Colors.red,);
   }
 
   Widget _draggableTargetNotBeingDragged(TargetConfig tc, Color bgColor) {

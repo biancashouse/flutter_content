@@ -63,7 +63,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
                 print("back to tab: $prev,  ${spState.prevTabQ.toString()}");
               }
             },
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
           );
         } else {
           return const Offstage();

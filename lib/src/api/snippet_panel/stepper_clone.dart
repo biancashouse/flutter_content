@@ -572,7 +572,7 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
               margin: const EdgeInsetsDirectional.only(start: 8.0),
               child: IconButton(
                 onPressed: widget.onStepCancel,
-                icon: Icon(Icons.close),
+                icon: const Icon(Icons.close),
               ),
               // child: TextButton(
               //   onPressed: widget.onStepCancel,

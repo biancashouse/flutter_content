@@ -10,7 +10,7 @@ class DiscoveryOverlayBuilder extends StatefulWidget {
   final WidgetBuilder? overlayBuilderF;
   final Widget? child;
 
-  const DiscoveryOverlayBuilder({required this.parent, this.showOverlay = false, this.overlayBuilderF, this.child, Key? key}) : super(key: key);
+  const DiscoveryOverlayBuilder({required this.parent, this.showOverlay = false, this.overlayBuilderF, this.child, super.key});
 
   @override
   _DiscoveryOverlayBuilderState createState() => _DiscoveryOverlayBuilderState();

@@ -30,7 +30,7 @@ class RainbowSurround extends StatelessWidget {
           ).createShader(bounds);
         },
         child: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: const ShapeDecoration(
             // color: Colors.black87,
             shape: RoundedRectangleBorder(

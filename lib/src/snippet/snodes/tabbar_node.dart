@@ -107,7 +107,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        padding: padding?.toEdgeInsets() ?? EdgeInsets.all(8),
+        padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
       );
     } catch (e) {
       print('TabBarNode.toWidget() failed! ${e.toString()}');

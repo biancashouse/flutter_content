@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_flex_fit.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'flexible_node.mapper.dart';
 

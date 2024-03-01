@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/gotits/gotits_helper_int.dart';
-import 'package:flutter_content/src/gotits/gotits_helper_string.dart';
 
-import '../overlays/overlay_manager.dart';
 import 'play_callout_button.dart';
 
 class FlatIconButtonWithHelpCalloutButton extends StatefulWidget {
@@ -40,7 +37,7 @@ class FlatIconButtonWithHelpCalloutButton extends StatefulWidget {
   final Function? onGotitF;
 
   const FlatIconButtonWithHelpCalloutButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     this.onLongPress,
     this.onHighlightChanged,
@@ -72,7 +69,7 @@ class FlatIconButtonWithHelpCalloutButton extends StatefulWidget {
     this.separation,
     this.shouldAutoSetGotit = false,
     this.onGotitF
-  }) : super(key:key);
+  });
 
   @override
   _FlatIconButtonWithHelpCalloutButtonState createState() => _FlatIconButtonWithHelpCalloutButtonState();

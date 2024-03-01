@@ -6,7 +6,7 @@ class NumericKeypad extends StatefulWidget {
   final String initialValue;
   final Function(String s) onClosedF;
 
-  const NumericKeypad({
+  const NumericKeypad({super.key, 
     required this.label,
     this.initialValue = "0",
     required this.onClosedF,

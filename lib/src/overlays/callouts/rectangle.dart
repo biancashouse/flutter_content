@@ -9,7 +9,7 @@ import 'side.dart';
 const double RECTANGLE_MOE = 1.1;
 
 class Rectangle extends Rect {
-  Rectangle.fromPoints(Offset a, Offset b) : super.fromPoints(a, b);
+  Rectangle.fromPoints(super.a, super.b) : super.fromPoints();
 
   Rectangle.fromRect(Rect r) : super.fromPoints(r.topLeft, r.bottomRight);
 

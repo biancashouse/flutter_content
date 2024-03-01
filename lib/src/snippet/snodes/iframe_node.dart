@@ -1,11 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/iframe.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 part 'iframe_node.mapper.dart';
 
@@ -117,8 +113,8 @@ class IFrameNode extends CL with IFrameNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode();
-    String FOLDER_ID = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
-    String RESOURCE_KEY = '';
+    String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
+    String resourceKey = '';
     return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty
         ? Center(
             key: createNodeGK(),
@@ -135,10 +131,10 @@ class IFrameNode extends CL with IFrameNodeMappable {
             ),
           )
         : FC().areAnySnippetsBeingEdited
-            ? Placeholder()
+            ? const Placeholder()
             : Column(
                 children: [
-                  Placeholder(),
+                  const Placeholder(),
                   Row(key: createNodeGK(), children: [
                     const Icon(Icons.code, size: 32, color: Colors.red),
                     Useful.coloredText('src missing!', color: Colors.red),

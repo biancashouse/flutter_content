@@ -6,7 +6,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
-import 'package:flutter_content/src/bloc/capi_bloc.dart';
 
 part 'rich_text_node.mapper.dart';
 
@@ -75,8 +74,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,
         softWrap: softWrap ?? true,
-        overflow: overflow?.flutterValue ?? TextOverflow.clip,
-        textScaleFactor: textScaleFactor ?? 1.0,
+        overflow: overflow?.flutterValue ?? TextOverflow.clip, textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
       );
       return rt;
     } catch (e) {

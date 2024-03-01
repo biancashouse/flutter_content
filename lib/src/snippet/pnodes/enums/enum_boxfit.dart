@@ -24,8 +24,8 @@ enum BoxFitEnum {
   String toSource() => 'BoxFit.$name';
 
   Widget toMenuItem() => Container(
-      width:280, height:60, child: _toMenuItem(),
-  decoration: BoxDecoration(color: Colors.purple[700]),);
+      width:280, height:60,
+  decoration: BoxDecoration(color: Colors.purple[700]), child: _toMenuItem(),);
 
   Widget _toMenuItem() => switch (this) {
         BoxFitEnum.fill => Useful.coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),

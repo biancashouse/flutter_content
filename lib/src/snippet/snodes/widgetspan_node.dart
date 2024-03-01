@@ -24,7 +24,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     } catch (e) {
       print('cannot render $FLUTTER_TYPE!');
     }
-    return const WidgetSpan(child: const Icon(Icons.error, color: Colors.redAccent));
+    return const WidgetSpan(child: Icon(Icons.error, color: Colors.redAccent));
   }
 
   @override

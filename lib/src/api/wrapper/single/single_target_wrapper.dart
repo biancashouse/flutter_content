@@ -151,7 +151,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
             if (context.mounted) {
               playSingleTarget(context, justPlaying: false, tc: singleTC);
               Useful.afterMsDelayDo(1000, () {
-                FC().capiBloc.add(CAPIEvent.popSnippetBloc());
+                FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
               });
             }
 
@@ -234,8 +234,8 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
           .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!);
       if (targetRect != null) {
         bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
-        bloc.add(CAPIEvent.hideAllTargetGroupBtns());
-        bloc.add(CAPIEvent.hideIframes(hide: true));
+        bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+        bloc.add(const CAPIEvent.hideIframes(hide: true));
         hideAllSingleTargetBtns();
         showSnippetContentCallout(
           initialTC: tc,
