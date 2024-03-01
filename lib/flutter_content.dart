@@ -19,7 +19,7 @@ export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/wrapper/material_app_wrapper.dart';
 export 'src/api/wrapper/material_spa.dart';
 export 'src/api/wrapper/multiple/target_group_wrapper.dart';
-export 'src/api/wrapper/old_transformable_scaffold.dart';
+export 'src/api/wrapper/transformable_scaffold.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 

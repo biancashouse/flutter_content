@@ -394,10 +394,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_content
-      sha256: "73aa6eeeb75a5fd7b53b83a8ae841bfbb530b5c7a95954827ac747f6ea220066"
+      sha256: d4ea1f83aab60b9acf282b97020dbadc056e1b40788e7de7b7f1836e6fd986e3
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.4"
   flutter_fancy_tree_view:
     dependency: transitive
     description:
