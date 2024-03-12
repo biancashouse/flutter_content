@@ -55,7 +55,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           return [];
         }
         if (node is DirectoryNode) {
-          return node.children ?? [];
+          return node.children;
         }
         // unexpected
         return [];

@@ -21,7 +21,7 @@ void main() {
   late SnippetState snippetState;
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
-  late TransformableScaffoldNode scaffoldAnd2TabsAndStepper;
+  late ScaffoldNode scaffoldAnd2TabsAndStepper;
   late TabBarNode selTabBar;
   late TabBarViewNode selTabBarView;
   late TextNode selText;
@@ -33,7 +33,8 @@ void main() {
   final ur = SnippetTreeUR();
 
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.getTemplate(SnippetTemplate.empty_snippet);
+  SnippetRootNode emptySnippetRoot =
+      SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'some-name');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -43,43 +44,47 @@ void main() {
   STreeNode? secondSizedBoxNode = SizedBoxNode();
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
-    child: TransformableScaffoldNode(
-      scaffold: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.black.value,
-          title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-          bottom: GenericSingleChildNode(
-            propertyName: 'bottom',
-            child: TabBarNode(
-              children: [
-                TextNode(text: 'tab 1'),
-                TextNode(text: 'Tab 2'),
-              ],
-            ),
-          ),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: TabBarViewNode(
+    child: ScaffoldNode(
+      appBar: AppBarNode(
+        bgColorValue: Colors.black.value,
+        title: GenericSingleChildNode(
+            propertyName: 'title', child: TextNode(text: 'my title')),
+        bottom: GenericSingleChildNode(
+          propertyName: 'bottom',
+          child: TabBarNode(
             children: [
-              firstTabViewNode = PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              TextNode(text: 'tab 1'),
+              TextNode(text: 'Tab 2'),
             ],
           ),
+        ),
+      ),
+      body: GenericSingleChildNode(
+        propertyName: 'body',
+        child: TabBarViewNode(
+          children: [
+            firstTabViewNode = PlaceholderNode(
+                centredLabel: 'page 1', colorValue: Colors.yellow.value),
+            PlaceholderNode(
+                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+          ],
         ),
       ),
     ),
   );
 
   // sample data -----------
-  SnippetTreeController newTreeC(SnippetRootNode rootNode) => SnippetTreeController(
+  SnippetTreeController newTreeC(SnippetRootNode rootNode) =>
+      SnippetTreeController(
         roots: [rootNode],
         childrenProvider: Node.snippetTreeChildrenProvider,
       );
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
-    treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)
+      ..validateTree();
+    treeC = SnippetTreeController(
+        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
     selectedState = snippetBloc.state;
     if (select != null) {
@@ -93,30 +98,36 @@ void main() {
     }
   }
 
-
   setUp(() {
-    mockRepository = MockModelRepository();
-    when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
-      final modelSnippetJson = modelSnippetRoot.toJson();
-      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
-      String encodedModelJsonS = model.toJson().toString();
-      return model;
-    });
-    capiBloc = CAPIBloC(
-      appName: appName,
-      modelRepo: mockRepository,
-      singleTargetMap: {},
-      targetGroupMap: {},
-    );
-    FC().init(
-      capiBloc: capiBloc,
-      snippetsMap: {},
-      namedStyles: {},
-    );
-    scaffoldAnd2TabsAndStepper = TransformableScaffoldNode(
-      scaffold: ScaffoldNode(
+    return Future(() async {
+      mockRepository = MockModelRepository();
+      when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+        final modelSnippetJson = modelSnippetRoot.toJson();
+        CAPIModel model = CAPIModel(
+            appName: appName,
+            snippetEncodedJsons: {snippetName: modelSnippetJson});
+        String encodedModelJsonS = model.toJson().toString();
+        return model;
+      });
+      capiBloc = CAPIBloC(
+        appName: appName,
+        modelRepo: mockRepository,
+        singleTargetMap: {},
+        targetGroupMap: {},
+      );
+      FC().init(
+        appName: 'example',
+        packageName: 'flutter_content',
+        version: '1.0',
+        buildNumber: '0.0.1',
+        capiBloc: capiBloc,
+        snippetsMap: {},
+        namedStyles: {},
+      );
+      scaffoldAnd2TabsAndStepper = ScaffoldNode(
         appBar: AppBarNode(
-          title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+          title: GenericSingleChildNode(
+              propertyName: 'title', child: TextNode(text: 'my title')),
           bottom: GenericSingleChildNode(
             propertyName: 'bottom',
             child: selTabBar = TabBarNode(
@@ -160,12 +171,13 @@ void main() {
                       child: ContainerNode(),
                     )),
               ]),
-              PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              PlaceholderNode(
+                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   });
 
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
@@ -175,7 +187,8 @@ void main() {
 
       expect(model?.appName, appName);
 
-      Map<String, SnippetRootNode> snippetMap = MaterialSPAState.parseSnippetJsons(model!);
+      Map<String, SnippetRootNode> snippetMap =
+          MaterialSPAState.parseSnippetJsons(model!);
 
       SnippetRootNode rootNode = snippetMap.values.first;
       expect(rootNode.name, snippetName);
@@ -191,7 +204,10 @@ void main() {
     // --- selection node test
     blocTest<SnippetBloC, SnippetState>(
       'select a node',
-      build: () => snippetBloc = SnippetBloC(rootNode: modelSnippetRoot, treeC: newTreeC(modelSnippetRoot), treeUR: SnippetTreeUR()),
+      build: () => snippetBloc = SnippetBloC(
+          rootNode: modelSnippetRoot,
+          treeC: newTreeC(modelSnippetRoot),
+          treeUR: SnippetTreeUR()),
       act: (bloc) => bloc.add(SnippetEvent.selectNode(
         node: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,
@@ -209,7 +225,10 @@ void main() {
     // --- append TextNode to snippet root
     blocTest<SnippetBloC, SnippetState>(
       'append a child ColumnNode to a TabViewNode',
-      build: () => SnippetBloC(rootNode: emptySnippetRoot, treeC: newTreeC(emptySnippetRoot), treeUR: SnippetTreeUR()),
+      build: () => SnippetBloC(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          treeUR: SnippetTreeUR()),
       act: (bloc) {
         bloc.add(
           SnippetEvent.selectNode(
@@ -223,15 +242,20 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<SnippetState>()
-          ..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())
+          ..having((state) => state.selectedNode, 'selectedNode type',
+              isA<TextNode>())
           ..having((state) => state.selectedNode?.parent, 'parent', isNotNull)
-          ..having((state) => state.selectedNode?.parent, 'parent', equals(firstTabViewNode))
+          ..having((state) => state.selectedNode?.parent, 'parent',
+              equals(firstTabViewNode))
       ],
     );
     // --- append node test to a ColumnNode
     blocTest<SnippetBloC, SnippetState>(
       'append a TextNode to columnNode',
-      build: () => SnippetBloC(rootNode: emptySnippetRoot, treeC: newTreeC(emptySnippetRoot), treeUR: SnippetTreeUR()),
+      build: () => SnippetBloC(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          treeUR: SnippetTreeUR()),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,
@@ -254,8 +278,10 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<SnippetState>()
-          ..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())
-          ..having((state) => state.selectedNode?.parent, 'parent', isA<ColumnNode>())
+          ..having((state) => state.selectedNode, 'selectedNode type',
+              isA<TextNode>())
+          ..having((state) => state.selectedNode?.parent, 'parent',
+              isA<ColumnNode>())
       ],
     );
   });
@@ -264,7 +290,10 @@ void main() {
     // --- append node test to a ColumnNode
     blocTest<SnippetBloC, SnippetState>(
       'append a TextNode to columnNode',
-      build: () => SnippetBloC(rootNode: emptySnippetRoot, treeC: newTreeC(emptySnippetRoot), treeUR: SnippetTreeUR()),
+      build: () => SnippetBloC(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          treeUR: SnippetTreeUR()),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,
@@ -287,8 +316,10 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<SnippetState>()
-          ..having((state) => state.selectedNode, 'selectedNode type', isA<TextNode>())
-          ..having((state) => state.selectedNode?.parent, 'parent', isA<ColumnNode>())
+          ..having((state) => state.selectedNode, 'selectedNode type',
+              isA<TextNode>())
+          ..having((state) => state.selectedNode?.parent, 'parent',
+              isA<ColumnNode>())
       ],
     );
 
@@ -302,7 +333,10 @@ void main() {
           capiBloc: capiBloc,
           skipSave: true,
         ));
-        bloc.add(SnippetEvent.selectNode(node: step1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+        bloc.add(SnippetEvent.selectNode(
+            node: step1,
+            selectedWidgetGK: selectedWidgetGK,
+            selectedTreeNodeGK: selectedTreeNodeGK));
         bloc.add(const SnippetEvent.pasteSiblingBefore());
       },
       skip: 3,

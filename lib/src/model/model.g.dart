@@ -56,7 +56,7 @@ TargetConfig _$TargetConfigFromJson(Map<String, dynamic> json) => TargetConfig(
           (json['transformTranslateX'] as num?)?.toDouble() ?? 0.0,
       transformTranslateY:
           (json['transformTranslateY'] as num?)?.toDouble() ?? 0.0,
-      radius: (json['radius'] as num?)?.toDouble() ?? 30,
+      radiusPc: (json['radiusPc'] as num?)?.toDouble(),
       calloutDurationMs: json['calloutDurationMs'] as int? ?? 1500,
       calloutWidth: (json['calloutWidth'] as num?)?.toDouble() ?? 400,
       calloutHeight: (json['calloutHeight'] as num?)?.toDouble() ?? 85,
@@ -84,7 +84,7 @@ Map<String, dynamic> _$TargetConfigToJson(TargetConfig instance) =>
       'single': instance.single,
       'targetLocalPosLeftPc': instance.targetLocalPosLeftPc,
       'targetLocalPosTopPc': instance.targetLocalPosTopPc,
-      'radius': instance.radius,
+      'radiusPc': instance.radiusPc,
       'btnLocalTopPc': instance.btnLocalTopPc,
       'btnLocalLeftPc': instance.btnLocalLeftPc,
       'calloutTopPc': instance.calloutTopPc,

@@ -13,7 +13,6 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   static STreeNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = STreeNodeMapper._());
-      TransformableScaffoldNodeMapper.ensureInitialized();
       ScaffoldNodeMapper.ensureInitialized();
       AppBarNodeMapper.ensureInitialized();
       SCMapper.ensureInitialized();
@@ -30,18 +29,6 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   static bool _$isExpanded(STreeNode v) => v.isExpanded;
   static const Field<STreeNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(STreeNode v) => v.pTreeC;
-  static const Field<STreeNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(STreeNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<STreeNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(STreeNode v) =>
-      v.propertiesPaneSC;
-  static const Field<STreeNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(STreeNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<STreeNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -56,9 +43,6 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   @override
   final MappableFields<STreeNode> fields = const {
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

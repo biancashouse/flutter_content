@@ -1,3 +1,11 @@
+## 0.0.6
+
+* Wrapping buttons, that are in an overlay above an IFrame, PointerInterceptor
+
+## 0.0.5
+
+* TransformableScaffold was not in flutter_content.dart
+
 ## 0.0.4
 
 * added freezed and mapper generated files to the pkg repo

@@ -29,7 +29,7 @@ class FlutterTextEditor extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final teC = useTextEditingController(text: originalText ?? '');
+    final teC = useTextEditingController(text: originalText);
 
     final focusTest = useFocusNode(
         canRequestFocus: true,

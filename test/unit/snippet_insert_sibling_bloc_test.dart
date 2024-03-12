@@ -39,28 +39,29 @@ void main() {
     mc1 = RowNode(children: []);
     snippetWithScaffoldAnd2Tabs = SnippetRootNode(
       name: 'test-snippet-2',
-      child: TransformableScaffoldNode(
-        scaffold: ScaffoldNode(
-          appBar: AppBarNode(
-            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: tb2 = TabBarNode(
-                children: [
-                  TextNode(text: 'tab 1'),
-                  TextNode(text: 'Tab 2'),
-                ],
-              ),
-            ),
-          ),
-          body: GenericSingleChildNode(
-            propertyName: 'body',
-            child: tbv1 = TabBarViewNode(
+      child: ScaffoldNode(
+        appBar: AppBarNode(
+          title: GenericSingleChildNode(
+              propertyName: 'title', child: TextNode(text: 'my title')),
+          bottom: GenericSingleChildNode(
+            propertyName: 'bottom',
+            child: tb2 = TabBarNode(
               children: [
-                PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                selPl = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                TextNode(text: 'tab 1'),
+                TextNode(text: 'Tab 2'),
               ],
             ),
+          ),
+        ),
+        body: GenericSingleChildNode(
+          propertyName: 'body',
+          child: tbv1 = TabBarViewNode(
+            children: [
+              PlaceholderNode(
+                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
+              selPl = PlaceholderNode(
+                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            ],
           ),
         ),
       ),
@@ -68,8 +69,10 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
-    treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)
+      ..validateTree();
+    treeC = SnippetTreeController(
+        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
     selectedState = snippetBloc.state;
     if (select != null) {
@@ -85,7 +88,8 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     'insert TextNode before first sibling',
-    setUp: () => test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
+    setUp: () =>
+        test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
     build: () => snippetBloc,
     seed: () => selectedState,
     act: (bloc) {
@@ -101,7 +105,8 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     'insert TextNode after first sibling',
-    setUp: () => test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
+    setUp: () =>
+        test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
     build: () => snippetBloc,
     seed: () => selectedState,
     act: (bloc) {
@@ -117,7 +122,8 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     'insert TextNode after last sibling',
-    setUp: () => test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
+    setUp: () =>
+        test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
     build: () => snippetBloc,
     seed: () => selectedState,
     act: (bloc) {
@@ -133,7 +139,8 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     'insert TextNode before last sibling',
-    setUp: () => test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
+    setUp: () =>
+        test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
     build: () => snippetBloc,
     seed: () => selectedState,
     act: (bloc) {
@@ -153,7 +160,10 @@ void main() {
     build: () => snippetBloc,
     // seed: () => selectedState,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: selPl, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: selPl,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.addSiblingBefore(type: SizedBoxNode));
       bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
     },
@@ -173,7 +183,10 @@ void main() {
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: selPl, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: selPl,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.addSiblingAfter(type: SizedBoxNode));
       bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
     },

@@ -39,18 +39,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static bool _$isExpanded(PlaceholderNode v) => v.isExpanded;
   static const Field<PlaceholderNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(PlaceholderNode v) => v.pTreeC;
-  static const Field<PlaceholderNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(PlaceholderNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<PlaceholderNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(PlaceholderNode v) =>
-      v.propertiesPaneSC;
-  static const Field<PlaceholderNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PlaceholderNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PlaceholderNode, bool> _f$hidePropertiesWhileDragging =
@@ -70,9 +58,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
     #width: _f$width,
     #height: _f$height,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

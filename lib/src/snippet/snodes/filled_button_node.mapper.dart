@@ -42,18 +42,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   static bool _$isExpanded(FilledButtonNode v) => v.isExpanded;
   static const Field<FilledButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(FilledButtonNode v) => v.pTreeC;
-  static const Field<FilledButtonNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(FilledButtonNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<FilledButtonNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(FilledButtonNode v) =>
-      v.propertiesPaneSC;
-  static const Field<FilledButtonNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FilledButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FilledButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -75,9 +63,6 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,

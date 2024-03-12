@@ -72,7 +72,7 @@
 //   //   if (y < -0.75)
 //   //     y = -1.0;
 //   //   else if (y > 0.75) y = 1.0;
-//   //   print("$x, $y");
+//   //   debugPrint("$x, $y");
 //   //   return Alignment(x, y);
 //   // }
 //
@@ -105,8 +105,8 @@
 //     _aController = AnimationController(vsync: this);
 //
 //     _aController.addListener(() {
-//       print("_aController status: ${_aController.status}");
-//       print("_aController status: ${_aController.toStringDetails()}");
+//       debugPrint("_aController status: ${_aController.status}");
+//       debugPrint("_aController status: ${_aController.toStringDetails()}");
 //     });
 //
 //     // initially no transform
@@ -321,7 +321,7 @@
 //   //     lastTapTime.value = now;
 //   //
 //   //     if (tapCount.value == 3) {
-//   //       print('Three taps detected!');
+//   //       debugPrint('Three taps detected!');
 //   //       if (!MaterialAppWrapper.inEditMode.value) {
 //   //         _enterEditMode();
 //   //       } else {

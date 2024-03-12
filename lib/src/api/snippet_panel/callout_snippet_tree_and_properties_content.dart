@@ -54,19 +54,19 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
         // pTreeC?.addListener(() {
         //   // may have toggled an expansion
         //   CAPIState.expandedNodes[state.selectedNode!] = pTreeC.expandedNodes;
-        //   print('expanded: ${CAPIState.expandedNodes.length}');
+        //   debugPrint('expanded: ${CAPIState.expandedNodes.length}');
         // });
         // GlobalKey snippetNodeAddChildBtnGK = GlobalKey();
         final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-        // print("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
-        // print('${FlutterContent().capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
+        // debugPrint("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
+        // debugPrint('${FlutterContent().capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
         // restore scrollPos
-        if (selectedNode?.propertiesPaneSC?.hasClients ?? false) {
+        if (selectedNode?.propertiesPaneSC()?.hasClients ?? false) {
           Useful.afterNextBuildDo(() {
             if (selectedNode?.propertiesPaneScrollPos !=
-                selectedNode?.propertiesPaneSC?.offset) {
-              selectedNode?.propertiesPaneSC
-                  ?.jumpTo(selectedNode.propertiesPaneScrollPos ?? 0.0);
+                selectedNode?.propertiesPaneSC()?.offset) {
+              selectedNode?.propertiesPaneSC()
+                  ?.jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
             }
           });
         }
@@ -250,42 +250,35 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     ),
                     // NODE PROPERTIES
                     if (selectedNode?.pTreeC != null)
-                      GestureDetector(
-                        onTap: () {
-                          // snippetBloc
-                          //     .add(const SnippetEvent.clearNodeSelection());
-                          // Callout.hide("floating-clipboard");
-                        },
-                        child: Container(
-                          color: Colors.purpleAccent[100],
-                          child: Center(
-                            child: ListView(
-                              controller: selectedNode!.propertiesPaneSC!,
-                              shrinkWrap: true,
-                              children: [
-                                // icon buttons
-                                ExpansionTile(
-                                  title: Useful.coloredText('...',
-                                      color: Colors.white),
-                                  backgroundColor: Colors.black,
-                                  collapsedBackgroundColor: Colors.black,
-                                  onExpansionChanged: (bool isExpanded) =>
-                                      FC().showingNodeButtons = isExpanded,
-                                  initiallyExpanded: FC().showingNodeButtons,
-                                  children: [nodeButtons(snippetBloc, context)],
-                                ),
-                                // NODE PROPERTIES TREE
-                                if (selectedNode.pTreeC!.roots.isEmpty)
-                                  Useful.coloredText(' (no properties)',
-                                      color: Colors.white),
-                                  Material(
-                                      color: Colors.black,
-                                      child: PropertiesTreeView(
-                                        treeC: selectedNode.pTreeC!,
-                                      )),
-                                // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-                              ],
-                            ),
+                      Container(
+                        color: Colors.purpleAccent[100],
+                        child: Center(
+                          child: ListView(
+                            controller: selectedNode!.propertiesPaneSC(),
+                            shrinkWrap: true,
+                            children: [
+                              // icon buttons
+                              ExpansionTile(
+                                title: Useful.coloredText('...',
+                                    color: Colors.white),
+                                backgroundColor: Colors.black,
+                                collapsedBackgroundColor: Colors.black,
+                                onExpansionChanged: (bool isExpanded) =>
+                                    FC().showingNodeButtons = isExpanded,
+                                initiallyExpanded: FC().showingNodeButtons,
+                                children: [nodeButtons(snippetBloc, context)],
+                              ),
+                              // NODE PROPERTIES TREE
+                              if (selectedNode.pTreeC(context).roots.isEmpty)
+                                Useful.coloredText(' (no properties)',
+                                    color: Colors.white),
+                              Material(
+                                  color: Colors.black,
+                                  child: PropertiesTreeView(
+                                    treeC: selectedNode.pTreeC(context),
+                                  )),
+                              // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+                            ],
                           ),
                         ),
                       ),
@@ -649,7 +642,7 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      navigateUpTreeButton(),
+                      navigateUpTreeButton(context),
                       Expanded(
                           child: SnippetTreeView(snippetBloc: snippetBloc)),
                     ],
@@ -664,34 +657,49 @@ class SnippetTreePane extends StatelessWidget {
     }
   }
 
-  Widget navigateUpTreeButton() => FilledButton(
+  Widget navigateUpTreeButton(context) => FilledButton(
         onPressed: () {
           // change tree root to parent
           STreeNode treeRootNode = snippetBloc.treeC.roots.first;
           STreeNode? parent = treeRootNode.parent as STreeNode?;
-          if (parent != null) {
-            // go up again if parent is a property widget
-            if (parent is GenericSingleChildNode) {
-              parent = parent.parent as STreeNode?;
-            }
-            if (parent != null) {
-              snippetBloc.add(
-                SnippetEvent.selectNode(
-                  node: parent,
-                  selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-                  selectedTreeNodeGK:
-                      GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-                ),
-              );
-            }
-            // Callout.dismiss(snippetBloc.snippetName);
-            // if (parent != null) {
-            //   Useful.afterNextBuildDo(() {
-            //     MaterialSPAState.pushThenShowNamedSnippetWithNodeSelected(
-            //         snippetBloc.snippetName, parent!, snippetBloc.state.selectedNode);
-            //   });
-            // }
+          if (parent is GenericSingleChildNode) {
+            parent = parent.parent as STreeNode?;
           }
+          if (parent != null) {
+            snippetBloc.add(const SnippetEvent.clearNodeSelection());
+            Useful.afterNextBuildDo(() {
+              snippetBloc.add(SnippetEvent.selectNode(
+                node: parent!,
+                // imageTC: tc,
+                selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+                selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+              ));
+              Useful.afterNextBuildDo(() {
+                parent?.showNodeWidgetOverlay();
+                // create selected node's properties tree
+                // final List<PTreeNode> propertyNodes =
+                //     parent.properties(context);
+                // // get a new treeController only when snippet selected
+                // parent.pTreeC ??= PTreeNodeTreeController(
+                //   roots: propertyNodes,
+                //   childrenProvider: Node.propertyTreeChildrenProvider,
+                // );
+                snippetBloc.treeC.expand(parent!);
+                // parent.propertiesPaneSC ??= ScrollController()
+                //   ..addListener(() {
+                //     parent!.propertiesPaneScrollPos =
+                //         parent.propertiesPaneSC?.offset ?? 0.0;
+                //   });
+              });
+            });
+          }
+          // Callout.dismiss(snippetBloc.snippetName);
+          // if (parent != null) {
+          //   Useful.afterNextBuildDo(() {
+          //     MaterialSPAState.pushThenShowNamedSnippetWithNodeSelected(
+          //         snippetBloc.snippetName, parent!, snippetBloc.state.selectedNode);
+          //   });
+          // }
         },
         style: const ButtonStyle().copyWith(
           backgroundColor: const MaterialStatePropertyAll(Colors.transparent),
@@ -731,7 +739,7 @@ class SnippetTreeView extends HookWidget {
       // filter or all
       nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
         // if (bloc.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
-        // print("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
+        // debugPrint("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         return TreeIndentation(
           guide: IndentGuide.connectingLines(
             color: FC().aNodeIsSelected && entry.node == FC().selectedNode

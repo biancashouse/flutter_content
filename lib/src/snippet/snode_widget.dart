@@ -108,6 +108,18 @@ class NodeWidget extends StatelessWidget {
           }
           snippetBloc.add(const SnippetEvent.clearNodeSelection());
           Useful.afterNextBuildDo(() {
+            final List<PTreeNode> propertyNodes = entry.node.properties(context);
+            // get a new treeController only when snippet selected
+            // entry.node.pTreeC ??= PTreeNodeTreeController(
+            //   roots: propertyNodes,
+            //   childrenProvider: Node.propertyTreeChildrenProvider,
+            // );
+            // //showTreeNodeMenu(context, () => STreeNode.selectionGK);
+            // // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
+            // entry.node.propertiesPaneSC() ??= ScrollController()
+            //   ..addListener(() {
+            //     entry.node.propertiesPaneScrollPos = entry.node.propertiesPaneSC?.offset ?? 0.0;
+            //   });
             snippetBloc.add(SnippetEvent.selectNode(
               node: entry.node,
               // imageTC: tc,
@@ -117,18 +129,6 @@ class NodeWidget extends StatelessWidget {
             Useful.afterNextBuildDo(() {
               MaterialSPAState.showNodeWidgetOverlay(entry.node);
               // create selected node's properties tree
-              final List<PTreeNode> propertyNodes = entry.node.properties(context);
-              // get a new treeController only when snippet selected
-              entry.node.pTreeC ??= PTreeNodeTreeController(
-                roots: propertyNodes,
-                childrenProvider: Node.propertyTreeChildrenProvider,
-              );
-              //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-              // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
-              entry.node.propertiesPaneSC ??= ScrollController()
-                ..addListener(() {
-                  entry.node.propertiesPaneScrollPos = entry.node.propertiesPaneSC?.offset ?? 0.0;
-                });
             });
           });
         }
@@ -139,7 +139,7 @@ class NodeWidget extends StatelessWidget {
         //     if (context.mounted) {
         //       showTreeNodeMenu(context, () => STreeNode.selectionGK);
         //     } else
-        //       print("context fucked.");
+        //       debugPrint("context fucked.");
         //   });
         // }
 
@@ -293,8 +293,8 @@ class NodeWidget extends StatelessWidget {
 
     bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
     if (badParent) {
-      print("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
-      print("sensible parents: ${selectedNode.sensibleParents().toString()}");
+      debugPrint("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
+      debugPrint("sensible parents: ${selectedNode.sensibleParents().toString()}");
     }
 
     Color textColor = Colors.black;

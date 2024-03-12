@@ -45,7 +45,7 @@ class SnippetRefNode extends CL with SnippetRefNodeMappable {
       if (rootNode == null) return const Icon(Icons.error, color: Colors.red);
       return rootNode.toWidget(context, this);
     } catch (e) {
-      print('cannot render $FLUTTER_TYPE!');
+      debugPrint('cannot render $FLUTTER_TYPE!');
     }
     return const Icon(Icons.error, color: Colors.redAccent);
   }

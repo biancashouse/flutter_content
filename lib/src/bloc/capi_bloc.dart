@@ -61,7 +61,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<TargetMoved>((event, emit) => _targetMoved(event, emit));
     // on<BtnMoved>((event, emit) => _btnMoved(event, emit));
     // on<NewTargetManual>((event, emit) => _newTargetManual(event, emit));
-    on<NewTarget>((event, emit) => _newTargetGroup(event, emit));
+    on<NewTarget>((event, emit) => _newTarget(event, emit));
     // on<ListViewRefreshed>((event, emit) => _listViewRefreshed(event, emit));
     on<DeleteTarget>((event, emit) => _deleteTarget(event, emit));
     // on<SelectTarget>((event, emit) => _selectTarget(event, emit));
@@ -69,7 +69,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<HideAllTargetGroups>((event, emit) => _hideAllTargetGroups(event, emit));
     on<HideAllTargetGroupBtns>((event, emit) => _hideAllTargetGroupBtns(event, emit));
     on<HideTargetGroupsExcept>((event, emit) => _hideTargetGroupsExcept(event, emit));
-    on<ShowOnlyOneTargetGroup>((event, emit) => _showOnlyOneTargetGroup(event, emit));
+    on<ShowOnlyOneTarget>((event, emit) => _showOnlyOneTargetGroup(event, emit));
     on<UnhideAllTargetGroups>((event, emit) => _unhideAllTargetGroups(event, emit));
     // on<ChangedOrder>((event, emit) => _changedOrder(event, emit));
     // on<ClearSelection>((event, emit) => _clearSelection(event, emit));
@@ -168,7 +168,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (jsonS == FC().lastSavedModelJson) return;
 
     final stopwatch = Stopwatch()..start();
-    // print('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+    // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
     Callout.showTextToast(
       feature: "saving-model",
       msgText: 'saving changes...',
@@ -217,16 +217,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       );
 
   Map<String, String> _encodeAllSnippets() {
+    debugPrint('_encodeAllSnippets:');
     List<SnippetRootNode>? rootNodes = FC().snippetsMap.values.toList();
     Map<String, String> snippetJsons = {};
     for (SnippetRootNode rootNode in rootNodes) {
+      debugPrint(rootNode.name);
+      debugPrint(rootNode.toJson());
       snippetJsons[rootNode.name] = rootNode.toJson();
     }
     return snippetJsons;
   }
 
   void _forceRefresh(event, emit) {
-    // print("forceRefresh");
+    // debugPrint("forceRefresh");
     emit(state.copyWith(
       force: state.force + 1,
     ));
@@ -356,7 +359,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   ));
 // }
 
-  void _newTargetGroup(NewTarget event, emit) {
+  void _newTarget(NewTarget event, emit) {
     int newTargetUid = DateTime.now().millisecondsSinceEpoch;
     TargetConfig newItem = TargetConfig(
       uid: newTargetUid, //event.wName.hashCode,
@@ -398,7 +401,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ));
       _saveModel(event, emit);
     } catch (e) {
-      print("\nUnable to remove tc !\n");
+      debugPrint("\nUnable to remove tc !\n");
     }
   }
 
@@ -432,7 +435,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
-  Future<void> _showOnlyOneTargetGroup(ShowOnlyOneTargetGroup event, emit) async {
+  Future<void> _showOnlyOneTargetGroup(ShowOnlyOneTarget event, emit) async {
     emit(state.copyWith(
       hideTargetsExcept: event.tc,
       hideAllTargetGroupPlayBtns: true,
@@ -472,15 +475,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //       Callout? targetCallout = Useful.om.findCallout(CAPI.TARGET_CALLOUT.feature((featureSeed), selectedTargetIndex));
 //       if (targetCallout != null) {
 //         selectedTarget!.setTargetLocalPosPc(Offset(targetCallout.left!, targetCallout.top!));
-//         print("final callout pos (${targetCallout.left},${targetCallout.top})");
-//         print("targetGlobalPos now: ${selectedTarget!.targetGlobalPos()}");
+//         debugPrint("final callout pos (${targetCallout.left},${targetCallout.top})");
+//         debugPrint("targetGlobalPos now: ${selectedTarget!.targetGlobalPos()}");
 //       }
 //       ivScale = 1.0;
 //       ivTranslate = Offset.zero;
-//       print("new child local pos (${selectedTarget!.childLocalPosLeftPc},${selectedTarget!.childLocalPosTopPc})");
+//       debugPrint("new child local pos (${selectedTarget!.childLocalPosLeftPc},${selectedTarget!.childLocalPosTopPc})");
 //       // selectedTarget!.childLocalPosLeftPc = savedChildLocalPosPc!.dx;
 //       // selectedTarget!.childLocalPosTopPc = savedChildLocalPosPc!.dy;
-//       print("previous child local pos (${savedChildLocalPosPc!.dx},${savedChildLocalPosPc!.dy})");
+//       debugPrint("previous child local pos (${savedChildLocalPosPc!.dx},${savedChildLocalPosPc!.dy})");
 //       int saveSelection = selectedTargetIndex;
 //       selectedTargetIndex = -1;
 //       transformationController.value = Matrix4.identity();
@@ -685,7 +688,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //       targetMap[name] = tc;
 //     }
 //   } catch (e) {
-//     print("_parseImageTargets(): ${e.toString()}");
+//     debugPrint("_parseImageTargets(): ${e.toString()}");
 //     rethrow;
 //   }
 //   return targetMap;
@@ -930,7 +933,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedSnippetPropertiesCalloutSize(ChangedSnippetPropertiesCalloutSize event, emit) {
-//   // print('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
+//   // debugPrint('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
 //   emit(state.copyWith(
 //     force: state.force + 1,
 //     snippetPropertiesCalloutW: event.newW,

@@ -24,11 +24,12 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) {
-    // print("ContainerNode.properties()...");
+    // debugPrint("ContainerNode.properties()...");
     return [
       ColorPropertyValueNode(
         snode: this,
         name: 'bg color',
+        tooltip: "The fill color to use for an app bar's Material.",
         colorValue: bgColorValue,
         onColorIntChange: (newValue) => refreshWithUpdate(() => bgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
@@ -36,6 +37,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
       ColorPropertyValueNode(
         snode: this,
         name: 'fg color',
+        tooltip: 'The default color for Text and Icons within the app bar.',
         colorValue: fgColorValue,
         onColorIntChange: (newValue) => refreshWithUpdate(() => fgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
@@ -60,7 +62,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
                 spState.backBtnPressed = true;
                 spState.tabC?.index = prev;
                 spState.prevTabQSize.value = spState.prevTabQ.length;
-                print("back to tab: $prev,  ${spState.prevTabQ.toString()}");
+                debugPrint("back to tab: $prev,  ${spState.prevTabQ.toString()}");
               }
             },
             icon: const Icon(Icons.arrow_back),
@@ -88,7 +90,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
         foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
       );
     } catch (e) {
-      print('AppBarNode.toWidget() failed!');
+      debugPrint('AppBarNode.toWidget() failed!');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

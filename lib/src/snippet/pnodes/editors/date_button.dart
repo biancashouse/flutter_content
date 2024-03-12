@@ -147,7 +147,7 @@ class DateButton extends HookWidget {
           );
           if (values != null) {
             // ignore: avoid_print
-            print(_getValueText(
+            debugPrint(_getValueText(
               config.calendarType,
               values,
             ));

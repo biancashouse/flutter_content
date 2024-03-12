@@ -50,10 +50,10 @@ class InputSnippetName extends StatefulWidget {
   });
 
   @override
-  _InputSnippetNameState createState() => _InputSnippetNameState();
+  InputSnippetNameState createState() => InputSnippetNameState();
 }
 
-class _InputSnippetNameState extends State<InputSnippetName> {
+class InputSnippetNameState extends State<InputSnippetName> {
   FocusNode? _focusNode;
   late TextEditingController _txtController;
   Color buttonColor = Colors.grey.withOpacity(.5);
@@ -145,7 +145,7 @@ class _InputSnippetNameState extends State<InputSnippetName> {
               ],
             ),
             onPressed: () {
-              if (_txtController.text.isNotEmpty ?? false) {
+              if (_txtController.text.isNotEmpty) {
                 widget.saveModelF.call(_txtController.text);
                  Callout.dismiss("input-snippet-name");
               }

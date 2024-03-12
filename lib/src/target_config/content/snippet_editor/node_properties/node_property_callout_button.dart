@@ -4,6 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 class NodePropertyCalloutButton extends StatefulWidget {
   final Alignment alignment;
   final String? label;
+  final String? tooltip;
   final Widget? labelWidget;
   final WidgetBuilder calloutContents;
   final Color menuBgColor;
@@ -16,6 +17,7 @@ class NodePropertyCalloutButton extends StatefulWidget {
   const NodePropertyCalloutButton({
     this.alignment = Alignment.centerLeft,
     this.label,
+    this.tooltip,
     this.labelWidget,
     required this.calloutContents,
     required this.calloutButtonSize,
@@ -79,15 +81,17 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         onTap: (){
           Callout.unhideParentCallout(ctx, animateSeparation: false);
         },
-        child: Container(
-          key: propertyBtnGK,
-          // margin: const EdgeInsets.only(top: 8),
-          width: widget.calloutButtonSize.width,
-          height: widget.calloutButtonSize.height,
-          // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          color: widget.labelWidget != null ? null : Colors.white70,
-          alignment: widget.alignment,
-          child: widget.labelWidget ?? (widget.label != null ? Text(widget.label!) : const Offstage()),
+        child: Tooltip(message: widget.tooltip??'',
+          child: Container(
+            key: propertyBtnGK,
+            // margin: const EdgeInsets.only(top: 8),
+            width: widget.calloutButtonSize.width,
+            height: widget.calloutButtonSize.height,
+            // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            color: widget.labelWidget != null ? null : Colors.white70,
+            alignment: widget.alignment,
+            child: widget.labelWidget ?? (widget.label != null ? Text(widget.label!) : const Offstage()),
+          ),
         ),
       ),
     );

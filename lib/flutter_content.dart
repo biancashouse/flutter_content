@@ -19,7 +19,7 @@ export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/wrapper/material_app_wrapper.dart';
 export 'src/api/wrapper/material_spa.dart';
 export 'src/api/wrapper/multiple/target_group_wrapper.dart';
-export 'src/api/wrapper/transformable_scaffold.dart';
+export 'src/api/wrapper/zoomer.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 
@@ -105,12 +105,11 @@ export 'src/snippet/snodes/subtitle_snippet_root_node.dart';
 export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
 export 'src/snippet/snodes/target_group_wrapper_node.dart';
-export 'src/snippet/snodes/target_wrapper_node.dart';
+export 'src/snippet/snodes/target_button_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
-export 'src/snippet/snodes/transformable_scaffold_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/target_config/content/expansion_tile_section.dart';
 export 'src/text_editing/text_editor.dart';
@@ -137,7 +136,11 @@ typedef Feature = String;
 typedef EmailAddress = String;
 typedef VoterId = String;
 typedef PollOptionId = String; // 'a', 'b', 'c' etc.
-typedef OptionCountsAndVoterRecord = ({Map<PollOptionId, int>? optionVoteCountMap, PollOptionId? userVotedForOptionId, int? when});
+typedef OptionCountsAndVoterRecord = ({
+  Map<PollOptionId, int>? optionVoteCountMap,
+  PollOptionId? userVotedForOptionId,
+  int? when
+});
 
 typedef SnippetName = String;
 typedef PanelName = String;
@@ -156,7 +159,8 @@ typedef HandlerName = String;
 
 typedef PropertyName = String;
 
-typedef CalloutConfigChangedF = void Function(AlignmentEnum newTA, ArrowTypeEnum newAT);
+typedef CalloutConfigChangedF = void Function(
+    AlignmentEnum newTA, ArrowTypeEnum newAT);
 
 typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();
@@ -165,8 +169,10 @@ typedef CAPIBlocFunc = CAPIBloC Function();
 typedef GKMap = Map<Feature, GlobalKey>;
 typedef FeatureList = List<Feature>;
 
-typedef FeaturedWidgetHelpContentBuilder = Widget Function(BuildContext context, FeaturedWidget? parent);
-typedef FeaturedWidgetActionF = void Function(BuildContext, DiscoveryController);
+typedef FeaturedWidgetHelpContentBuilder = Widget Function(
+    BuildContext context, FeaturedWidget? parent);
+typedef FeaturedWidgetActionF = void Function(
+    BuildContext, DiscoveryController);
 
 typedef TextStyleF = TextStyle Function();
 typedef TextAlignF = TextAlign Function();
@@ -206,6 +212,10 @@ class FC {
 
   // called by _initApp() to set the late variables
   init({
+    required String appName,
+    required String packageName,
+    required String version,
+    required String buildNumber,
     required CAPIBloC capiBloc,
     required Map<SnippetName, SnippetRootNode> snippetsMap,
     List<String> googleFontNames = const [
@@ -215,8 +225,13 @@ class FC {
       'Merriweather Sans',
     ],
     Map<String, NamedTextStyle> namedStyles = const {},
-    bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
+    bool skipAssetPkgName =
+        false, // would only use true when pkg dir is actually inside current project
   }) {
+    this.appName = appName;
+    this.packageName = packageName;
+    this.version = version;
+    this.buildNumber = buildNumber;
     _capiBloc = capiBloc;
     _snippetsMap = snippetsMap;
     _googleFontNames = googleFontNames;
@@ -226,25 +241,52 @@ class FC {
   }
 
   // set by .init()
+  /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
+  late String appName;
+
+  /// The package name. `bundleIdentifier` on iOS, `getPackageName` on Android.
+  late String packageName;
+
+  /// The package version. `CFBundleShortVersionString` on iOS, `versionName` on Android.
+  late String version;
+
+  /// The build number. `CFBundleVersion` on iOS, `versionCode` on Android.
+  /// Note, on iOS if an app has no buildNumber specified this property will return version
+  /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
+  late String buildNumber;
+
   late CAPIBloC _capiBloc;
   late Map<SnippetName, SnippetRootNode> _snippetsMap;
-  late bool _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
+  late bool
+      _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
   String? lastSavedModelJson;
   Offset? _editModeBtnPos;
-  bool skipEditModeEscape = false;  // property editors can set this to prevent exit from EditMode
+  bool skipEditModeEscape =
+      false; // property editors can set this to prevent exit from EditMode
 
-  Offset editModeBtnPos(context) => _editModeBtnPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
+  final inEditMode = ValueNotifier<bool>(false);
+
+  Offset editModeBtnPos(context) =>
+      _editModeBtnPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
   void setEditModeBtnPos(Offset newPos) => _editModeBtnPos = newPos;
 
-  // each snippet panel has a gk, a last selected node, and a ur
+  registerHandler(HandlerName name, void Function(BuildContext) f) =>
+      _handlers[name] = f;
 
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
+  void Function(BuildContext)? namedHandler(HandlerName name) =>
+      _handlers[name];
+
+  // each snippet panel has a gk, a last selected node, and a ur
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
+      {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
   final Map<STreeNode, Set<PTreeNode>> expandedNodes = {};
+  final Map<HandlerName, void Function(BuildContext)> _handlers = {};
+
   bool showingNodeButtons = true;
 
   bool get skipAssetPkgName => _skipAssetPkgName;
@@ -253,18 +295,22 @@ class FC {
 
   Map<String, NamedTextStyle> get namedStyles => _namedStyles;
 
-  PTreeNodeTreeController? selectedNodePTree;
+  // PTreeNodeTreeController? selectedNodePTree;
+  SnippetRootNode? targetSnippetBeingConfigured;
 
   // Snippet Stack
   final Queue<SnippetBloC> _snippetsBeingEdited = Queue<SnippetBloC>();
 
-  SnippetBloC? get snippetBeingEdited => areAnySnippetsBeingEdited ? _snippetsBeingEdited.first : null;
+  SnippetBloC? get snippetBeingEdited =>
+      areAnySnippetsBeingEdited ? _snippetsBeingEdited.first : null;
 
   bool get areAnySnippetsBeingEdited => _snippetsBeingEdited.isNotEmpty;
 
-  void pushSnippet(SnippetBloC snippetBloc) => _snippetsBeingEdited.addFirst(snippetBloc);
+  void pushSnippet(SnippetBloC snippetBloc) =>
+      _snippetsBeingEdited.addFirst(snippetBloc);
 
-  SnippetBloC? popSnippet() => areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
+  SnippetBloC? popSnippet() =>
+      areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
 
   final GKMap _calloutGkMap = {};
 
@@ -307,7 +353,8 @@ class FC {
 
   bool get aNodeIsSelected => selectedNode != null;
 
-  SnippetRootNode? rootNodeOfNamedSnippet(SnippetName name) => snippetsMap[name];
+  SnippetRootNode? rootNodeOfNamedSnippet(SnippetName name) =>
+      snippetsMap[name];
 
   CAPIBloC get capiBloc => _capiBloc;
 
@@ -321,5 +368,4 @@ class FC {
       sController.addListener(() => Callout.refreshAll());
     }
   }
-
 }

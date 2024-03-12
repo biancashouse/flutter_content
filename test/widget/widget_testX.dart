@@ -11,7 +11,7 @@ void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
   SnippetRootNode emptySnippetRoot =
-      SnippetPanel.getTemplate(SnippetTemplate.empty_snippet);
+      SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'empty_snippet');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   const appName = 'flutter-content-widget-test';
@@ -23,8 +23,7 @@ void main() {
   STreeNode? secondSizedBoxNode = SizedBoxNode();
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
-    child: TransformableScaffoldNode(
-      scaffold: ScaffoldNode(
+    child: ScaffoldNode(
         appBar: AppBarNode(
           bgColorValue: Colors.black.value,
           title: GenericSingleChildNode(
@@ -51,7 +50,6 @@ void main() {
           ),
         ),
       ),
-    ),
   );
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');

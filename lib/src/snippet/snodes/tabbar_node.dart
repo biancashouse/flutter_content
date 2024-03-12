@@ -110,7 +110,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
         padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
       );
     } catch (e) {
-      print('TabBarNode.toWidget() failed! ${e.toString()}');
+      debugPrint('TabBarNode.toWidget() failed! ${e.toString()}');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

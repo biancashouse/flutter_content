@@ -72,7 +72,7 @@ enum Material3TextSizeEnum {
         children: [
           Text(
             name.substring(0, name.length - 1),
-            // textScaleFactor: .9,
+            // textScaler: TextScaler.linear(.9),
             softWrap: false,
             style: flutterTextStyle(themeData: themeData)?.copyWith(
               overflow: TextOverflow.fade,

@@ -78,7 +78,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       );
       return rt;
     } catch (e) {
-      print('cannot render $FLUTTER_TYPE!');
+      debugPrint('cannot render $FLUTTER_TYPE!');
     }
     return const Icon(Icons.error, color: Colors.redAccent);
   }
@@ -92,7 +92,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //     textDirection: ${textDirection?.flutterValue ?? TextDirection.ltr},
   //     softWrap: ${softWrap ?? true},
   //     overflow: ${overflow?.flutterValue ?? TextOverflow.clip},
-  //     textScaleFactor: ${textScaleFactor ?? 1.0},
+  //     textScaler: TextScaler.linear(${textScaleFactor ?? 1.0}),
   //   )''';
   // }
 

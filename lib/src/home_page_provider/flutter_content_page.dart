@@ -2,49 +2,59 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
-class FlutterContentPage extends StatefulWidget {
+class FlutterContentPage extends HookWidget {
   final PanelName panelName;
   final SnippetName snippetName;
   final SnippetTemplate? fromTemplate;
 
-  const FlutterContentPage({required this.panelName, required this.snippetName, this.fromTemplate, super.key});
-
-  @override
-  _FlutterContentPageState createState() => _FlutterContentPageState();
-}
-
-class _FlutterContentPageState extends State<FlutterContentPage> with SingleTickerProviderStateMixin {
-  ScrollController sc = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  const FlutterContentPage(
+      {required this.panelName,
+      required this.snippetName,
+      this.fromTemplate,
+      super.key});
 
   // https://github.com/flutter/flutter/issues/25827
   @override
-  Widget build(BuildContext context) => Useful.isAndroid ? _buildAndroid(context) : _build(context);
+  Widget build(BuildContext context) {
+    final snippetPanel = useState<SnippetPanel>(
+      SnippetPanel(
+        panelName: panelName,
+        snippetName: snippetName,
+        fromTemplate: fromTemplate,
+      ),
+    );
+    final zoomer = useState<Zoomer>(
+      Zoomer(
+          child: Useful.isAndroid
+              ? _buildAndroid(context, snippetPanel.value)
+              : snippetPanel.value),
+    );
+    return zoomer.value;
+  }
 
   // wait for android to register screen size
-  Widget _buildAndroid(BuildContext context) => FutureBuilder<double?>(
-      future: _whenNotZero(
-        Stream<double>.periodic(const Duration(milliseconds: 50), (_) => MediaQuery.of(context).size.width),
-      ),
-      builder: (BuildContext context, snapshot) {
-        if (snapshot.hasData && (snapshot.data ?? 0) > 0) {
-          return _build(context);
-        }
-        return const CircularProgressIndicator(
-          color: Colors.orange,
-        );
-      });
+  Widget _buildAndroid(BuildContext context, SnippetPanel snippetPanel) =>
+      FutureBuilder<double?>(
+          future: _whenNotZero(
+            Stream<double>.periodic(const Duration(milliseconds: 50),
+                (_) => MediaQuery.of(context).size.width),
+          ),
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.hasData && (snapshot.data ?? 0) > 0) {
+              return snippetPanel;
+              ;
+            }
+            return const CircularProgressIndicator(
+              color: Colors.orange,
+            );
+          });
 
-  Widget _build(BuildContext context) => SnippetPanel(
-        panelName: widget.panelName,
-        snippetName: widget.snippetName,
-        fromTemplate: widget.fromTemplate,
-      );
+  //       panelName: widget.panelName,
+  //       snippetName: widget.snippetName,
+  //       fromTemplate: widget.fromTemplate,
+  //     );
 
   // TransformableScaffold(
   //   scaffoldBody: () => Scaffold(

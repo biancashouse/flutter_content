@@ -22,8 +22,7 @@ void main() {
     when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
       final scaffoldWithTabs = SnippetRootNode(
         name: snippetName,
-        child: TransformableScaffoldNode(
-          scaffold: ScaffoldNode(
+        child: ScaffoldNode(
             appBar: AppBarNode(
               bgColorValue: Colors.black.value,
               title: GenericSingleChildNode(
@@ -51,7 +50,6 @@ void main() {
               ),
             ),
           ),
-        ),
       )..validateTree();
       final snippetJson = scaffoldWithTabs.toJson();
       return CAPIModel(

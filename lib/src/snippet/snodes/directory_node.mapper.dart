@@ -31,18 +31,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   static bool _$isExpanded(DirectoryNode v) => v.isExpanded;
   static const Field<DirectoryNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(DirectoryNode v) => v.pTreeC;
-  static const Field<DirectoryNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(DirectoryNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<DirectoryNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(DirectoryNode v) =>
-      v.propertiesPaneSC;
-  static const Field<DirectoryNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(DirectoryNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<DirectoryNode, bool> _f$hidePropertiesWhileDragging =
@@ -59,9 +47,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     #name: _f$name,
     #children: _f$children,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

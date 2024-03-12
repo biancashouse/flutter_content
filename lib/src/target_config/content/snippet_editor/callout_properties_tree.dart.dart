@@ -84,7 +84,7 @@
 //       ),
 //       body: GestureDetector(
 //         onTap: () {
-//           print("clear selection");
+//           debugPrint("clear selection");
 //           bloc.add(const CAPIEvent.clearNodeSelection());
 //           Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
 //           Callout.removeOverlay("TreeNodeMenu".hashCode);
@@ -158,7 +158,7 @@
 //       // filter or all
 //       nodeBuilder: (BuildContext context, TreeEntry<Node> entry) {
 //         // if (root?.child != null) return Offstage();
-//         // print("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
+//         // debugPrint("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
 //         return TreeIndentation(
 //           guide: const IndentGuide.connectingLines(
 //             color: Colors.blueAccent,

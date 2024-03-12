@@ -40,19 +40,6 @@ class GoogleDriveIFrameNodeMapper
   static bool _$isExpanded(GoogleDriveIFrameNode v) => v.isExpanded;
   static const Field<GoogleDriveIFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(GoogleDriveIFrameNode v) => v.pTreeC;
-  static const Field<GoogleDriveIFrameNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(GoogleDriveIFrameNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<GoogleDriveIFrameNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(GoogleDriveIFrameNode v) =>
-      v.propertiesPaneSC;
-  static const Field<GoogleDriveIFrameNode, ScrollController>
-      _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(GoogleDriveIFrameNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GoogleDriveIFrameNode, bool>
@@ -77,9 +64,6 @@ class GoogleDriveIFrameNodeMapper
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #savedWidget: _f$savedWidget,

@@ -5,14 +5,23 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 
 class NodePropertyButtonColor extends StatefulWidget {
   final String label;
+  final String? tooltip;
   final Color? originalColor;
   final ValueChanged<Color?> onChangeF;
   final Size calloutButtonSize;
 
-  const NodePropertyButtonColor({required this.label, required this.originalColor, required this.onChangeF, required this.calloutButtonSize, super.key});
+  const NodePropertyButtonColor({
+    required this.label,
+    this.tooltip,
+    required this.originalColor,
+    required this.onChangeF,
+    required this.calloutButtonSize,
+    super.key,
+  });
 
   @override
-  State<NodePropertyButtonColor> createState() => _NodePropertyButtonColorState();
+  State<NodePropertyButtonColor> createState() =>
+      _NodePropertyButtonColorState();
 }
 
 class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
@@ -40,6 +49,7 @@ class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
             ));
     return NodePropertyCalloutButton(
       labelWidget: colorLabel,
+      tooltip: widget.tooltip,
       calloutButtonSize: widget.calloutButtonSize,
       calloutContents: (ctx) {
         return Center(

@@ -224,7 +224,7 @@
 //     double h = 300;
 //     List<TargetConfig> list = parent.bloc.state.imageTargetListMap[parent.widget.name] ?? [];
 //     h += list.length * 30;
-//     // print("h(${bloc.state.selectedTargetIndex(widget.name)}) = $h");
+//     // debugPrint("h(${bloc.state.selectedTargetIndex(widget.name)}) = $h");
 //     return h;
 //   }
 //

@@ -9,15 +9,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:universal_platform/universal_platform.dart';
-import "package:yaml/yaml.dart";
 
 
 class Useful {
@@ -25,13 +20,12 @@ class Useful {
   // late LocalStoreHydrated _localStore;
   // final Map<String, OverlayManager> _oms = {};
 
-  BuildContext? _cachedContext;
-  late MediaQueryData _mqd;
-  late _Responsive _responsive;
-
   Useful._();
 
   static final instance = Useful._();
+
+  late MediaQueryData _mqd;
+  late _Responsive _responsive;
 
   // static SharedPreferences get prefs => instance._prefs;
 
@@ -58,7 +52,6 @@ class Useful {
 
   // static OverlayManager namedOM(String name) => instance._overlays[name]!;
 
-  static BuildContext? get cachedContext => instance._cachedContext;
 
   static String asset(String name) {
     // only need to specify the asset pkg when used by a client project; i.e. not within the flutter_content project itself
@@ -68,8 +61,8 @@ class Useful {
   // must be called from a widget build
   void initWithContext(BuildContext context) {
     _responsive = _Responsive().init();
-    if (cachedContext != null) return;
-    _cachedContext = context;
+    if (rootContext != null) return;
+    _rootContext = context;
     _mqd = MediaQuery.of(context);
     // if (!instance._oms.containsKey("root")) instance._oms["root"] = OverlayManager(Overlay.of(context, rootOverlay: true));
     afterNextBuildDo(() {
@@ -143,7 +136,7 @@ class Useful {
         skipHeightConstraintWarning: skipHeightConstraintWarning,
       ); //Measuring.findGlobalRect(_offstageGK!);
       if (rect != null) {
-        print('_measureThenRenderCallout: width:${rect.width}, height:${rect.height}');
+        debugPrint('_measureThenRenderCallout: width:${rect.width}, height:${rect.height}');
         return rect.size;
       }
     }
@@ -154,9 +147,9 @@ class Useful {
   //   if (instance._oms.containsKey(name)) return;
   //   instance._oms[name] = OverlayManager(Overlay.of(context));
   //   if (instance._oms[name] == instance._oms["root"]) {
-  //     print('@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@');
-  //     print("Could not find Overlay $name using this context!");
-  //     print('@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@');
+  //     debugPrint('@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@');
+  //     debugPrint("Could not find Overlay $name using this context!");
+  //     debugPrint('@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!@');
   //   }
   // }
 
@@ -168,9 +161,25 @@ class Useful {
 
   // static double get keyboardHeight => instance._mqd.viewInsets.bottom;
 
+
+  // The warning: "Don't use 'BuildContext's across async gaps." occurs
+  // because after an async call, it's not guaranteed the current context will
+  // still exist.
+  // The workaround is to perform the async call inside a StatefulWidget and use
+  // didChangeDependencies() to set this globally available variable.
+  // BuildContext? _latestContext;
+  // when a context is needed in a static method, this root context can be used.
+  // It has to be set in a top level widget.
+  BuildContext? _rootContext;
+
+  // static BuildContext? get latestContext => instance._latestContext;
+  static BuildContext? get rootContext => instance._rootContext;
+  // static set latestContext(BuildContext? newContext) => instance._latestContext = newContext;
+  static set rootContext(BuildContext? newContext) => instance._rootContext = newContext;
+
   static double get kbdH {
-    if (cachedContext == null || (!isIOS && !isAndroid)) return 0.0;
-    FlutterView view = View.of(cachedContext!);
+    if (Useful.rootContext == null || (!isIOS && !isAndroid)) return 0.0;
+    FlutterView view = View.of(rootContext!);
     final viewInsets = EdgeInsets.fromViewPadding(view.viewInsets, view.devicePixelRatio);
     return viewInsets.bottom;
   }
@@ -197,24 +206,6 @@ class Useful {
   static bool get useTabletLayout => !kIsWeb && instance._mqd.size.shortestSide >= 600;
 
   static EdgeInsets get viewPadding => instance._mqd.viewPadding;
-
-  static late PackageInfo _packageInfo;
-
-  static String get actualVersion => _packageInfo.version;
-
-  static String get actualBuildNumber => _packageInfo.buildNumber;
-
-  static Future<bool> informUserOfNewVersion() async {
-    _packageInfo = await PackageInfo.fromPlatform();
-    // decide whether new version loaded
-    String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '$actualVersion-$actualBuildNumber';
-    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
-      if (storedVersionAndBuild != null) return true;
-    }
-    return false;
-  }
 
   static debug() {
     developer.log('queryData.size.width = $scrW');
@@ -260,7 +251,7 @@ class Useful {
   // void restoreScrollOffsetsAfterNextBuild() {
   //   _saveScrollOffsets();
   //   Useful.afterNextBuildDo(() {
-  //     print('restoreScrollOffsetsAfterNextBuild');
+  //     debugPrint('restoreScrollOffsetsAfterNextBuild');
   //     if (_vScrollControllerOffset != null && (editingPageState?.vScrollController.hasClients ?? false)) {
   //       editingPageState?.vScrollController.jumpTo(_vScrollControllerOffset!);
   //     }
@@ -337,7 +328,7 @@ class Useful {
     } else if (y > 0.75) {
       y = 1.0;
     }
-    // print("$x, $y");
+    // debugPrint("$x, $y");
     return Alignment(x, y);
   }
 
@@ -382,13 +373,6 @@ class Useful {
     // if (calloutW < L) return Alignment.centerLeft;
     //
     // return Alignment.center;
-  }
-
-  static Future<String> getPubspecYamlStringValue(final String name) async {
-    final yamlString = await rootBundle.loadString('pubspec.yaml');
-    final parsedYaml = loadYaml(yamlString);
-    final String ver = parsedYaml[name];
-    return ver;
   }
 
   static Offset? findGlobalPos(GlobalKey key) {
@@ -495,23 +479,39 @@ class Useful {
     return (resultLeft, resultTop);
   }
 
-  static (double, double) ensureOnScreenOLD(Rect calloutRect) {
-    double startingCalloutLeft = calloutRect.left;
-    double startingCalloutTop = calloutRect.top;
-    double resultLeft = startingCalloutLeft;
-    double resultTop = startingCalloutTop;
-    // adjust s.t entirely visible
-    if (startingCalloutLeft + calloutRect.width > Useful.scrW) {
-      resultLeft = Useful.scrW - calloutRect.width;
-    }
-    if (startingCalloutTop + calloutRect.height > (Useful.scrH - Useful.kbdH)) {
-      resultTop = Useful.scrH - calloutRect.height - Useful.kbdH;
-    }
-    if (startingCalloutLeft < 0) resultLeft = 0;
-    if (startingCalloutTop < 0) resultTop = 0;
+  static Rect restrictRectToScreen(Rect rect) {
+    // Clamp left and top to screen bounds
+    final left = max(rect.left, 0.0);
+    final top = max(rect.top, 0.0);
 
-    return (resultLeft, resultTop);
+    // Clamp right and bottom to prevent going off-screen
+    final right = min(rect.right, scrW);
+    final bottom = min(rect.bottom, scrH);
+
+    // Ensure width and height remain positive (might be 0 if completely off-screen)
+    final width = max(0.0, right - left);
+    final height = max(0.0, bottom - top);
+
+    return Rect.fromLTWH(left, top, width, height);
   }
+
+  // static (double, double) ensureOnScreenOLD(Rect calloutRect) {
+  //   double startingCalloutLeft = calloutRect.left;
+  //   double startingCalloutTop = calloutRect.top;
+  //   double resultLeft = startingCalloutLeft;
+  //   double resultTop = startingCalloutTop;
+  //   // adjust s.t entirely visible
+  //   if (startingCalloutLeft + calloutRect.width > Useful.scrW) {
+  //     resultLeft = Useful.scrW - calloutRect.width;
+  //   }
+  //   if (startingCalloutTop + calloutRect.height > (Useful.scrH - Useful.kbdH)) {
+  //     resultTop = Useful.scrH - calloutRect.height - Useful.kbdH;
+  //   }
+  //   if (startingCalloutLeft < 0) resultLeft = 0;
+  //   if (startingCalloutTop < 0) resultTop = 0;
+  //
+  //   return (resultLeft, resultTop);
+  // }
 }
 
 enum PlatformEnum { android, ios, web, windows, osx, fuchsia, linux }
@@ -657,8 +657,13 @@ extension GlobalKeyExtension on GlobalKey {
     var cc = currentWidget;
     final renderObject = currentContext?.findRenderObject();
     final translation = renderObject?.getTransformTo(null).getTranslation();
+    Rect? paintBounds;
+    try {
+      paintBounds = renderObject?.paintBounds;
+    } catch(e) {
+      debugPrint('paintBounds = renderObject?.paintBounds - ${e.toString()}');
+    }
     // possibly warn about the target having an infinite width
-    final paintBounds = renderObject?.paintBounds;
     if (!_alreadyGaveGlobalPosAndSizeWarning &&
         !skipWidthConstraintWarning &&
         !skipHeightConstraintWarning &&
@@ -744,7 +749,7 @@ extension GlobalKeyExtension on GlobalKey {
 //   final Completer<Rect> completer = Completer<Rect>();
 //   OverlayEntry? entry;
 //   entry = OverlayEntry(builder: (BuildContext ctx) {
-//     print(Theme.of(context).platform);
+//     debugPrint(Theme.of(context).platform);
 //     return Material(
 //       child: MeasureWidget(
 //         boxConstraints: boxConstraints,

@@ -1,14 +1,11 @@
 {
   "hosting": {
-    "site": "flutter-content-studio",
-    "source": ".",
+    "public": "build/web",
+    "target": "staging-deploy",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "us-central1"
-    }
+    ]
   }
 }

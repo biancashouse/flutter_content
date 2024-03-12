@@ -25,6 +25,8 @@ void main() {
   late TextNode cl2;
   late CenterNode sc1;
   late CenterNode sc2;
+  late ContainerNode container1;
+  late CenterNode tbView1;
   late RowNode mc1;
   late RowNode mc2;
   late TabBarNode tb1;
@@ -41,29 +43,30 @@ void main() {
   const snippetName = 'scaffold-with-tabs';
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
-    child: TransformableScaffoldNode(
-      scaffold: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.black.value,
-          title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-          bottom: GenericSingleChildNode(
-            propertyName: 'bottom',
-            child: TabBarNode(
-              children: [
-                TextNode(text: 'tab 1'),
-                TextNode(text: 'Tab 2'),
-              ],
-            ),
-          ),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: TabBarViewNode(
+    child: ScaffoldNode(
+      appBar: AppBarNode(
+        bgColorValue: Colors.black.value,
+        title: GenericSingleChildNode(
+            propertyName: 'title', child: TextNode(text: 'my title')),
+        bottom: GenericSingleChildNode(
+          propertyName: 'bottom',
+          child: TabBarNode(
             children: [
-              PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              TextNode(text: 'tab 1'),
+              TextNode(text: 'Tab 2'),
             ],
           ),
+        ),
+      ),
+      body: GenericSingleChildNode(
+        propertyName: 'body',
+        child: TabBarViewNode(
+          children: [
+            PlaceholderNode(
+                centredLabel: 'page 1', colorValue: Colors.yellow.value),
+            PlaceholderNode(
+                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+          ],
         ),
       ),
     ),
@@ -75,18 +78,19 @@ void main() {
   });
 
   setUp(() {
-    cl1 = TextNode(text: 'cl1');
-    cl2 = TextNode(text: 'cl2');
-    sc1 = CenterNode();
-    sc2 = CenterNode();
-    mc1 = RowNode(children: []);
-    mc2 = RowNode(children: []);
-    snippetWithScaffoldAnd3Tabs = SnippetRootNode(
-      name: 'test-snippet',
-      child: TransformableScaffoldNode(
-        scaffold: ScaffoldNode(
+    return Future(() async {
+      cl1 = TextNode(text: 'cl1');
+      cl2 = TextNode(text: 'cl2');
+      sc1 = CenterNode();
+      sc2 = CenterNode();
+      mc1 = RowNode(children: []);
+      mc2 = RowNode(children: []);
+      snippetWithScaffoldAnd3Tabs = SnippetRootNode(
+        name: 'test-snippet',
+        child: ScaffoldNode(
           appBar: appBar = AppBarNode(
-            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+            title: GenericSingleChildNode(
+                propertyName: 'title', child: TextNode(text: 'my title')),
             bottom: GenericSingleChildNode(
               propertyName: 'bottom',
               child: tb1 = TabBarNode(
@@ -102,45 +106,59 @@ void main() {
             propertyName: 'body',
             child: tbv1 = TabBarViewNode(
               children: [
-                PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                sel = PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                tbView1 = CenterNode(child: container1 = ContainerNode()),
+                sel = PlaceholderNode(
+                    centredLabel: 'page 2',
+                    colorValue: Colors.blueAccent.value),
                 StepperNode(children: [
                   StepNode(
-                    title: stepTitleProperty = GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'the title')),
+                    title: stepTitleProperty = GenericSingleChildNode(
+                        propertyName: 'title',
+                        child: TextNode(text: 'the title')),
                     subtitle: GenericSingleChildNode(propertyName: 'subtitle'),
-                    content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'some content')),
+                    content: GenericSingleChildNode(
+                        propertyName: 'content',
+                        child: TextNode(text: 'some content')),
                   )
                 ]),
               ],
             ),
           ),
         ),
-      ),
-    );
-    mockRepository = MockModelRepository();
-    const appName = 'flutter-content-test-app';
-    when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
-      final modelSnippetJson = modelSnippetRoot.toJson();
-      CAPIModel model = CAPIModel(appName: appName, snippetEncodedJsons: {snippetName: modelSnippetJson});
-      String encodedModelJsonS = model.toJson().toString();
-      return model;
+      );
+      mockRepository = MockModelRepository();
+      const appName = 'flutter-content-test-app';
+      when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+        final modelSnippetJson = modelSnippetRoot.toJson();
+        CAPIModel model = CAPIModel(
+            appName: appName,
+            snippetEncodedJsons: {snippetName: modelSnippetJson});
+        // String encodedModelJsonS = model.toJson().toString();
+        return model;
+      });
+      capiBloc = CAPIBloC(
+        appName: appName,
+        modelRepo: mockRepository,
+        singleTargetMap: {},
+        targetGroupMap: {},
+      );
+      FC().init(
+        appName: 'example',
+        packageName: 'flutter_content',
+        version: '1.0',
+        buildNumber: '0.0.1',
+        capiBloc: capiBloc,
+        snippetsMap: {},
+        namedStyles: {},
+      );
     });
-    capiBloc = CAPIBloC(
-      appName: appName,
-      modelRepo: mockRepository,
-      singleTargetMap: {},
-      targetGroupMap: {},
-    );
-    FC().init(
-      capiBloc: capiBloc,
-      snippetsMap: {},
-      namedStyles: {},
-    );
   });
 
   void test_snippet_setup(STreeNode child) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
-    treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)
+      ..validateTree();
+    treeC = SnippetTreeController(
+        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
     snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
   }
 
@@ -151,7 +169,8 @@ void main() {
         nodeBeingDeleted: null,
       );
 
-  expectedState_SelectedNode(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
+  expectedState_SelectedNode(SnippetBloC bloc, STreeNode node) =>
+      bloc.state.copyWith(
         selectedNode: node,
         showProperties: true,
         selectedWidgetGK: selectedWidgetGK,
@@ -159,7 +178,8 @@ void main() {
         nodeBeingDeleted: null,
       );
 
-  expectedState_NodeBeingDeleted(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
+  expectedState_NodeBeingDeleted(SnippetBloC bloc, STreeNode node) =>
+      bloc.state.copyWith(
         nodeBeingDeleted: node,
         selectedNode: node,
         showProperties: true,
@@ -170,7 +190,10 @@ void main() {
     setUp: () => test_snippet_setup(cl1),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: cl1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: cl1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -192,7 +215,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -214,7 +240,10 @@ void main() {
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: stepTitleProperty.child!, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: stepTitleProperty.child!,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -223,7 +252,8 @@ void main() {
     skip: 3,
     tearDown: () {
       expect(stepTitleProperty.child, isA<TextNode>());
-      expect((stepTitleProperty.child as TextNode).text, 'must have a title widget!');
+      expect((stepTitleProperty.child as TextNode).text,
+          'must have a title widget!');
       expect(snippet.anyMissingParents(), false);
     },
   );
@@ -233,7 +263,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = cl1),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -255,7 +288,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -277,7 +313,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1..children = [cl1]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -299,7 +338,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1..children = [cl1, cl2]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -318,10 +360,14 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     'delete only child (RichText) in snippet',
-    setUp: () => test_snippet_setup(nodeTBD = RichTextNode(text: TextSpanNode(text: 'rich text span'))),
+    setUp: () => test_snippet_setup(
+        nodeTBD = RichTextNode(text: TextSpanNode(text: 'rich text span'))),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -343,7 +389,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = sc2),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc2,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -365,7 +414,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = (sc2..child = cl1)),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc2,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -387,7 +439,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = mc1),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -409,7 +464,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1])),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -431,7 +489,10 @@ void main() {
     setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1, cl2])),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -453,7 +514,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1..children = [sc1]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -475,7 +539,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1..children = [sc1..child = cl1]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -497,7 +564,10 @@ void main() {
     setUp: () => test_snippet_setup(mc1..children = [mc2]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc2,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -522,7 +592,10 @@ void main() {
       ]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc2, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc2,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -547,7 +620,10 @@ void main() {
       ]),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: mc1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: mc1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -566,10 +642,14 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "delete a RichText's childless TextSpan",
-    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'monkey'))),
+    setUp: () => test_snippet_setup(
+        rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'monkey'))),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -589,10 +669,14 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "delete a RichText's TextSpan that itself has a WidgetSpan",
-    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(children: [WidgetSpanNode()]))),
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(
+        text: nodeTBD = TextSpanNode(children: [WidgetSpanNode()]))),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -611,10 +695,15 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "delete a RichText's TextSpan that itself has a TextSpan with 1 (*) child",
-    setUp: () => test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'tbd', children: [TextSpanNode(text: 'monkey')]))),
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(
+        text: nodeTBD = TextSpanNode(
+            text: 'tbd', children: [TextSpanNode(text: 'monkey')]))),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -634,11 +723,16 @@ void main() {
 
   blocTest<SnippetBloC, SnippetState>(
     "delete a RichText's TextSpan that itself has >1 children",
-    setUp: () =>
-        test_snippet_setup(rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'AAA', children: [TextSpanNode(text: 'TTT'), WidgetSpanNode()]))),
+    setUp: () => test_snippet_setup(rtNode = RichTextNode(
+        text: nodeTBD = TextSpanNode(
+            text: 'AAA',
+            children: [TextSpanNode(text: 'TTT'), WidgetSpanNode()]))),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -667,7 +761,10 @@ void main() {
           ])),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -697,7 +794,10 @@ void main() {
           ])),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -727,7 +827,10 @@ void main() {
           ])),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: nodeTBD, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: nodeTBD,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const SnippetEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -747,15 +850,24 @@ void main() {
   );
 
   blocTest<SnippetBloC, SnippetState>(
-    'delete 1st of 3 tabs',
+    'delete 1st of 3 tabs - leaving 2 tabs',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: text1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: container1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      bloc.add(const SnippetEvent.completeDeletion());
+      bloc.add(SnippetEvent.selectNode(
+          node: text1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.deleteNodeTapped());
       bloc.add(const SnippetEvent.completeDeletion());
     },
-    // skip: 3,
+    skip: 3,
     expect: () => [
       const TypeMatcher<SnippetState>()
         ..having((state) => state.selectedNode, 'selectedNode', isNull),
@@ -764,9 +876,34 @@ void main() {
         ..having((state) => tb1.children.length, '#tabs', 3),
       const TypeMatcher<SnippetState>()
         ..having((state) => tb1.children.length, '#tabs', tbv1.children.length)
-      ..having((state) => snippet.anyMissingParents(), 'parents', false)
+        ..having((state) => snippet.anyMissingParents(), 'parents', false)
         ..having((state) => tb1.children.length, '#tabs', 2)
         ..having((state) => appBar.bottom?.child, 'bottom', TabBar)
+    ],
+  );
+
+  blocTest<SnippetBloC, SnippetState>(
+    'delete 1st of 3 tabs - deletes but retains 3 tabs',
+    setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
+    build: () => snippetBloc,
+    act: (bloc) {
+      bloc.add(SnippetEvent.selectNode(
+          node: tbView1,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(const SnippetEvent.deleteNodeTapped());
+      bloc.add(const SnippetEvent.completeDeletion());
+    },
+    expect: () => [
+      const TypeMatcher<SnippetState>()
+        ..having(
+            (state) => state.selectedNode, 'selectedNode', isA<CenterNode>()),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode', tbView1)
+        ..having((state) => state.nodeBeingDeleted, 'selectedNode', tbView1),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode', isNull)
+        ..having((state) => state.nodeBeingDeleted, 'nodeBeingDeleted', isNull),
     ],
   );
 
@@ -775,16 +912,22 @@ void main() {
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
     build: () => snippetBloc,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: sel, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(SnippetEvent.selectNode(
+          node: sel,
+          selectedWidgetGK: selectedWidgetGK,
+          selectedTreeNodeGK: selectedTreeNodeGK));
       bloc.add(const SnippetEvent.deleteNodeTapped());
       bloc.add(const SnippetEvent.completeDeletion());
     },
     expect: () => [
       expectedState_SelectedNode(snippetBloc, sel),
       const TypeMatcher<SnippetState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', isA<PlaceholderNode>())
-        ..having((state) => state.selectedNode?.parent, 'parent', isA<TabBarViewNode>()),
-      const TypeMatcher<SnippetState>()..having((state) => state.selectedNode, 'selectedNode type', isNull)
+        ..having((state) => state.selectedNode, 'selectedNode type',
+            isA<PlaceholderNode>())
+        ..having((state) => state.selectedNode?.parent, 'parent',
+            isA<TabBarViewNode>()),
+      const TypeMatcher<SnippetState>()
+        ..having((state) => state.selectedNode, 'selectedNode type', isNull)
     ],
     verify: (bloc) {
       expect(tbv1.parent, isA<GenericSingleChildNode>());

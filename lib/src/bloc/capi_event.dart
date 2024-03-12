@@ -32,9 +32,9 @@ class CAPIEvent with _$CAPIEvent {
     TargetConfig? tc,
   }) = HideTargetGroupsExcept;
 
-  const factory CAPIEvent.showOnlyOneTargetGroup({
+  const factory CAPIEvent.showOnlyOneTarget({
     TargetConfig? tc,
-  }) = ShowOnlyOneTargetGroup;
+  }) = ShowOnlyOneTarget;
 
   const factory CAPIEvent.hideAllTargetGroupBtns() = HideAllTargetGroupBtns;
 

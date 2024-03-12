@@ -8,8 +8,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'capi_state.freezed.dart';
 // part 'cc_state.g.dart';
 
-const Duration DEFAULT_TRANSITION_DURATION_MS = Duration(milliseconds: 500);
 const Duration ms300 = Duration(milliseconds: 300);
+const Duration ms500 = Duration(milliseconds: 500);
+const Duration immediate = Duration(milliseconds: 0);
 
 @freezed
 class CAPIState with _$CAPIState {

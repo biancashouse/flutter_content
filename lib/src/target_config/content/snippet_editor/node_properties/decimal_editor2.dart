@@ -87,15 +87,15 @@ class _TextFieldState extends State<_TextField> {
     super.initState();
     teC = TextEditingController(text: widget.originalS ?? '');
     focusNode = FocusNode();
-    focusNode.onKey = (node, event) {
-      if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+    focusNode.onKeyEvent = (node, event) {
+      if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
         node.unfocus();
         widget.onChangedF.call(teC.text);
         // Do something
         // Next 2 line needed If you don't want to update the text field with new line.
         return KeyEventResult.handled;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+      if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.escape)) {
         // Do something
         // Next 2 line needed If you don't want to update the text field with new line.
         widget.onChangedF.call(widget.originalS??'');

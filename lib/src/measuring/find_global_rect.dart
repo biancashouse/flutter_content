@@ -22,7 +22,7 @@
 // //         return bounds;
 // //       }
 // //     } catch (e) {
-// //       // print("findGlobalRect: ${e.toString()}");
+// //       // debugPrint("findGlobalRect: ${e.toString()}");
 // //       return null;
 // //     }
 // //   } else
@@ -61,7 +61,7 @@
 // //   final Completer<Rect> completer = Completer<Rect>();
 // //   OverlayEntry? entry;
 // //   entry = OverlayEntry(builder: (BuildContext ctx) {
-// //     print(Theme.of(context).platform);
+// //     debugPrint(Theme.of(context).platform);
 // //     return Material(
 // //       child: MeasureWidget(
 // //         boxConstraints: boxConstraints,

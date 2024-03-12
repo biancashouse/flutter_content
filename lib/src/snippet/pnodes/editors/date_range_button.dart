@@ -51,7 +51,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
 
   @override
   void dispose() {
-    print('*** disposing DateRangeButton');
+    debugPrint('*** disposing DateRangeButton');
     super.dispose();
   }
   @override
@@ -245,7 +245,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
               },
               onValueChanged: (List<DateTime?> newDTs) {
                 // ignore: avoid_print
-                print(_getValueText(
+                debugPrint(_getValueText(
                   config.calendarType,
                   newDTs,
                 ));

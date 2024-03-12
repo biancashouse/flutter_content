@@ -47,7 +47,7 @@
 //     } else {
 //       initialOffset = Offset(Useful.scrW - -10, Useful.scrH / 2 - h / 2 - 10);
 //     }
-//     // print('initialOffset (${initialOffset.dx}, ${initialOffset.dy}), and Useful.screenW is ${Useful.scrW} and screenH is ${Useful.scrH}');
+//     // debugPrint('initialOffset (${initialOffset.dx}, ${initialOffset.dy}), and Useful.screenW is ${Useful.scrW} and screenH is ${Useful.scrH}');
 //     return initialOffset;
 //   }
 //
@@ -86,7 +86,7 @@
 // //               child: Text(
 // //                 msgText,
 // //                 softWrap: true,
-// //                 textScaleFactor: textScaleFactor,
+// //                 textScaler: TextScaler.linear(textScaleFactor),
 // //                 style: TextStyle(fontSize: 24, color: textColor),
 // //               ),
 // //             ),
@@ -179,7 +179,7 @@
 //                           child: Text(
 //                             msgText,
 //                             softWrap: true,
-//                             textScaleFactor: textScaleFactor,
+//                             textScaler: TextScaler.linear(textScaleFactor),
 //                             style: TextStyle(fontSize: 24, color: textColor),
 //                           ),
 //                         ),

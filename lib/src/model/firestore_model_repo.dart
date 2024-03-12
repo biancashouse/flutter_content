@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:intl/intl.dart';
 
@@ -58,7 +59,7 @@ class FireStoreModelRepository implements IModelRepository {
             model = CAPIModel.fromJson(decoded);
           }
         } catch (e) {
-          print(e.toString());
+          debugPrint(e.toString());
         }
         return model;
       }
@@ -91,13 +92,13 @@ class FireStoreModelRepository implements IModelRepository {
             optionCountsMap[key] = intValue;
           } else {
             // Handle the case where the value cannot be converted to int
-            print("Warning: Value for key '$key' cannot be converted to int.");
+            debugPrint("Warning: Value for key '$key' cannot be converted to int.");
           }
         } else if (value is double) {
           optionCountsMap[key] = value.toInt();
         } else {
           // Handle the case where the value is of an unsupported type
-          print("Warning: Value for key '$key' is of unsupported type.");
+          debugPrint("Warning: Value for key '$key' is of unsupported type.");
         }
       });
       // get user's vote (if exists)
@@ -129,7 +130,7 @@ class FireStoreModelRepository implements IModelRepository {
     //   DocumentSnapshot snap = await voterDocRef.get();
     //   if (snap.exists) {
     //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-    //     print("user voted ${data['when']}");
+    //     debugPrint("user voted ${data['when']}");
     //     userVotedForOption = pollOptionId;
     //   }
     // }
@@ -186,7 +187,7 @@ class FireStoreModelRepository implements IModelRepository {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
       Timestamp when = voterData['when'];
       PollOptionId votedFor = voterData['option-id'];
-      print('already voted for option $votedFor,  $when');
+      debugPrint('already voted for option $votedFor,  $when');
     }
   }
 

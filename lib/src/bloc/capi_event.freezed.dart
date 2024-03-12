@@ -23,7 +23,7 @@ mixin _$CAPIEvent {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -54,7 +54,7 @@ mixin _$CAPIEvent {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -82,7 +82,7 @@ mixin _$CAPIEvent {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -112,8 +112,7 @@ mixin _$CAPIEvent {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -139,7 +138,7 @@ mixin _$CAPIEvent {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -163,7 +162,7 @@ mixin _$CAPIEvent {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -287,7 +286,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -321,7 +320,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -352,7 +351,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -388,8 +387,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -418,7 +416,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -445,7 +443,7 @@ class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -558,7 +556,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -592,7 +590,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -623,7 +621,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -659,8 +657,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -689,7 +686,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -716,7 +713,7 @@ class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -828,7 +825,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -862,7 +859,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -893,7 +890,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -929,8 +926,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -959,7 +955,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -986,7 +982,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1073,7 +1069,7 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -1107,7 +1103,7 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -1138,7 +1134,7 @@ class _$HideAllTargetGroupsImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -1174,8 +1170,7 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -1204,7 +1199,7 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1231,7 +1226,7 @@ class _$HideAllTargetGroupsImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1341,7 +1336,7 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -1375,7 +1370,7 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -1406,7 +1401,7 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -1442,8 +1437,7 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -1472,7 +1466,7 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1499,7 +1493,7 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1534,22 +1528,20 @@ abstract class HideTargetGroupsExcept implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$ShowOnlyOneTargetGroupImplCopyWith<$Res> {
-  factory _$$ShowOnlyOneTargetGroupImplCopyWith(
-          _$ShowOnlyOneTargetGroupImpl value,
-          $Res Function(_$ShowOnlyOneTargetGroupImpl) then) =
-      __$$ShowOnlyOneTargetGroupImplCopyWithImpl<$Res>;
+abstract class _$$ShowOnlyOneTargetImplCopyWith<$Res> {
+  factory _$$ShowOnlyOneTargetImplCopyWith(_$ShowOnlyOneTargetImpl value,
+          $Res Function(_$ShowOnlyOneTargetImpl) then) =
+      __$$ShowOnlyOneTargetImplCopyWithImpl<$Res>;
   @useResult
   $Res call({TargetConfig? tc});
 }
 
 /// @nodoc
-class __$$ShowOnlyOneTargetGroupImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$ShowOnlyOneTargetGroupImpl>
-    implements _$$ShowOnlyOneTargetGroupImplCopyWith<$Res> {
-  __$$ShowOnlyOneTargetGroupImplCopyWithImpl(
-      _$ShowOnlyOneTargetGroupImpl _value,
-      $Res Function(_$ShowOnlyOneTargetGroupImpl) _then)
+class __$$ShowOnlyOneTargetImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$ShowOnlyOneTargetImpl>
+    implements _$$ShowOnlyOneTargetImplCopyWith<$Res> {
+  __$$ShowOnlyOneTargetImplCopyWithImpl(_$ShowOnlyOneTargetImpl _value,
+      $Res Function(_$ShowOnlyOneTargetImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1557,7 +1549,7 @@ class __$$ShowOnlyOneTargetGroupImplCopyWithImpl<$Res>
   $Res call({
     Object? tc = freezed,
   }) {
-    return _then(_$ShowOnlyOneTargetGroupImpl(
+    return _then(_$ShowOnlyOneTargetImpl(
       tc: freezed == tc
           ? _value.tc
           : tc // ignore: cast_nullable_to_non_nullable
@@ -1568,24 +1560,24 @@ class __$$ShowOnlyOneTargetGroupImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ShowOnlyOneTargetGroupImpl
+class _$ShowOnlyOneTargetImpl
     with DiagnosticableTreeMixin
-    implements ShowOnlyOneTargetGroup {
-  const _$ShowOnlyOneTargetGroupImpl({this.tc});
+    implements ShowOnlyOneTarget {
+  const _$ShowOnlyOneTargetImpl({this.tc});
 
   @override
   final TargetConfig? tc;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.showOnlyOneTargetGroup(tc: $tc)';
+    return 'CAPIEvent.showOnlyOneTarget(tc: $tc)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.showOnlyOneTargetGroup'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.showOnlyOneTarget'))
       ..add(DiagnosticsProperty('tc', tc));
   }
 
@@ -1593,7 +1585,7 @@ class _$ShowOnlyOneTargetGroupImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ShowOnlyOneTargetGroupImpl &&
+            other is _$ShowOnlyOneTargetImpl &&
             (identical(other.tc, tc) || other.tc == tc));
   }
 
@@ -1603,9 +1595,9 @@ class _$ShowOnlyOneTargetGroupImpl
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ShowOnlyOneTargetGroupImplCopyWith<_$ShowOnlyOneTargetGroupImpl>
-      get copyWith => __$$ShowOnlyOneTargetGroupImplCopyWithImpl<
-          _$ShowOnlyOneTargetGroupImpl>(this, _$identity);
+  _$$ShowOnlyOneTargetImplCopyWith<_$ShowOnlyOneTargetImpl> get copyWith =>
+      __$$ShowOnlyOneTargetImplCopyWithImpl<_$ShowOnlyOneTargetImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1615,7 +1607,7 @@ class _$ShowOnlyOneTargetGroupImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -1638,7 +1630,7 @@ class _$ShowOnlyOneTargetGroupImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return showOnlyOneTargetGroup(tc);
+    return showOnlyOneTarget(tc);
   }
 
   @override
@@ -1649,7 +1641,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -1669,7 +1661,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return showOnlyOneTargetGroup?.call(tc);
+    return showOnlyOneTarget?.call(tc);
   }
 
   @override
@@ -1680,7 +1672,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -1701,8 +1693,8 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (showOnlyOneTargetGroup != null) {
-      return showOnlyOneTargetGroup(tc);
+    if (showOnlyOneTarget != null) {
+      return showOnlyOneTarget(tc);
     }
     return orElse();
   }
@@ -1716,8 +1708,7 @@ class _$ShowOnlyOneTargetGroupImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -1735,7 +1726,7 @@ class _$ShowOnlyOneTargetGroupImpl
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return showOnlyOneTargetGroup(this);
+    return showOnlyOneTarget(this);
   }
 
   @override
@@ -1746,7 +1737,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1762,7 +1753,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return showOnlyOneTargetGroup?.call(this);
+    return showOnlyOneTarget?.call(this);
   }
 
   @override
@@ -1773,7 +1764,7 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -1790,21 +1781,21 @@ class _$ShowOnlyOneTargetGroupImpl
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (showOnlyOneTargetGroup != null) {
-      return showOnlyOneTargetGroup(this);
+    if (showOnlyOneTarget != null) {
+      return showOnlyOneTarget(this);
     }
     return orElse();
   }
 }
 
-abstract class ShowOnlyOneTargetGroup implements CAPIEvent {
-  const factory ShowOnlyOneTargetGroup({final TargetConfig? tc}) =
-      _$ShowOnlyOneTargetGroupImpl;
+abstract class ShowOnlyOneTarget implements CAPIEvent {
+  const factory ShowOnlyOneTarget({final TargetConfig? tc}) =
+      _$ShowOnlyOneTargetImpl;
 
   TargetConfig? get tc;
   @JsonKey(ignore: true)
-  _$$ShowOnlyOneTargetGroupImplCopyWith<_$ShowOnlyOneTargetGroupImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$ShowOnlyOneTargetImplCopyWith<_$ShowOnlyOneTargetImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1862,7 +1853,7 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -1896,7 +1887,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -1927,7 +1918,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -1963,8 +1954,7 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -1993,7 +1983,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2020,7 +2010,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2102,7 +2092,7 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -2136,7 +2126,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -2167,7 +2157,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -2203,8 +2193,7 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -2233,7 +2222,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2260,7 +2249,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2387,7 +2376,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -2421,7 +2410,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -2452,7 +2441,7 @@ class _$OverrideTargetGKImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -2488,8 +2477,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -2518,7 +2506,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2545,7 +2533,7 @@ class _$OverrideTargetGKImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2676,7 +2664,7 @@ class _$TargetConfigChangedImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -2710,7 +2698,7 @@ class _$TargetConfigChangedImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -2741,7 +2729,7 @@ class _$TargetConfigChangedImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -2777,8 +2765,7 @@ class _$TargetConfigChangedImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -2807,7 +2794,7 @@ class _$TargetConfigChangedImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2834,7 +2821,7 @@ class _$TargetConfigChangedImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -2919,7 +2906,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -2953,7 +2940,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -2984,7 +2971,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -3020,8 +3007,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -3050,7 +3036,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3077,7 +3063,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3195,7 +3181,7 @@ class _$UpdateClipboardImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -3229,7 +3215,7 @@ class _$UpdateClipboardImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -3260,7 +3246,7 @@ class _$UpdateClipboardImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -3296,8 +3282,7 @@ class _$UpdateClipboardImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -3326,7 +3311,7 @@ class _$UpdateClipboardImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3353,7 +3338,7 @@ class _$UpdateClipboardImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3438,7 +3423,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -3472,7 +3457,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -3503,7 +3488,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -3539,8 +3524,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -3569,7 +3553,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3596,7 +3580,7 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3701,7 +3685,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -3735,7 +3719,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -3766,7 +3750,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -3802,8 +3786,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -3832,7 +3815,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3859,7 +3842,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -3984,7 +3967,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -4018,7 +4001,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -4049,7 +4032,7 @@ class _$SetPanelSnippetImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -4085,8 +4068,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -4115,7 +4097,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4142,7 +4124,7 @@ class _$SetPanelSnippetImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4271,7 +4253,7 @@ class _$PushSnippetBlocImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -4305,7 +4287,7 @@ class _$PushSnippetBlocImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -4336,7 +4318,7 @@ class _$PushSnippetBlocImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -4372,8 +4354,7 @@ class _$PushSnippetBlocImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -4402,7 +4383,7 @@ class _$PushSnippetBlocImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4429,7 +4410,7 @@ class _$PushSnippetBlocImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4546,7 +4527,7 @@ class _$PopSnippetBlocImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -4580,7 +4561,7 @@ class _$PopSnippetBlocImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -4611,7 +4592,7 @@ class _$PopSnippetBlocImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -4647,8 +4628,7 @@ class _$PopSnippetBlocImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -4677,7 +4657,7 @@ class _$PopSnippetBlocImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4704,7 +4684,7 @@ class _$PopSnippetBlocImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4818,7 +4798,7 @@ class _$RestoredSnippetBlocImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -4852,7 +4832,7 @@ class _$RestoredSnippetBlocImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -4883,7 +4863,7 @@ class _$RestoredSnippetBlocImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -4919,8 +4899,7 @@ class _$RestoredSnippetBlocImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -4949,7 +4928,7 @@ class _$RestoredSnippetBlocImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -4976,7 +4955,7 @@ class _$RestoredSnippetBlocImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -5061,7 +5040,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -5095,7 +5074,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -5126,7 +5105,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -5162,8 +5141,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -5192,7 +5170,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -5219,7 +5197,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
@@ -5328,7 +5306,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
     required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTargetGroup,
+    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
@@ -5362,7 +5340,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
     TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
@@ -5393,7 +5371,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
     TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTargetGroup,
+    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
@@ -5429,8 +5407,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
         hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTargetGroup value)
-        showOnlyOneTargetGroup,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
     required TResult Function(HideAllTargetGroupBtns value)
         hideAllTargetGroupBtns,
     required TResult Function(UnhideAllTargetGroups value)
@@ -5459,7 +5436,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
@@ -5486,7 +5463,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTargetGroup value)? showOnlyOneTargetGroup,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,

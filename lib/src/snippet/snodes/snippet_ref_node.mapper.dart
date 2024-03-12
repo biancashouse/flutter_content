@@ -27,18 +27,6 @@ class SnippetRefNodeMapper extends SubClassMapperBase<SnippetRefNode> {
   static bool _$isExpanded(SnippetRefNode v) => v.isExpanded;
   static const Field<SnippetRefNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(SnippetRefNode v) => v.pTreeC;
-  static const Field<SnippetRefNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(SnippetRefNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<SnippetRefNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(SnippetRefNode v) =>
-      v.propertiesPaneSC;
-  static const Field<SnippetRefNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SnippetRefNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SnippetRefNode, bool> _f$hidePropertiesWhileDragging =
@@ -54,9 +42,6 @@ class SnippetRefNodeMapper extends SubClassMapperBase<SnippetRefNode> {
   final MappableFields<SnippetRefNode> fields = const {
     #snippetName: _f$snippetName,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

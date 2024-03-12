@@ -35,7 +35,7 @@ class BubbleShape_OP extends CustomPainter {
 			 * rectangle around calloutR
 			 */
       //PathUtil.roundedRect(path, callout.top!, callout.left!, callout.cR().width, callout.cR().height, callout.roundedCorners);
-      // print('no pointy');
+      // debugPrint('no pointy');
     } else {
       Rectangle calloutR = callout.cR();
       Offset cspCentre = calloutR.center;
@@ -94,7 +94,7 @@ class BubbleShape_OP extends CustomPainter {
       /*
 				 * finally, close shape by drawing pb2 to pointy and back to pb1
 				 */
-      // print("path.lineTo(${callout.tE!.x}, ${callout.tE!.y})");
+      // debugPrint("path.lineTo(${callout.tE!.x}, ${callout.tE!.y})");
       path.lineTo(callout.tE!.x, callout.tE!.y);
       path.lineTo(pointyBase1.x, pointyBase1.y);
     }
@@ -103,13 +103,13 @@ class BubbleShape_OP extends CustomPainter {
   }
 
   void _partialRectWithAll4CornersRounded(Path path, Coord pb1, Coord pb2, Rectangle theRect, callout) {
-    // print("partialRectWith4CornersRounded");
+    // debugPrint("partialRectWith4CornersRounded");
     Coord pos = Coord.clone(pb1);
     path.moveTo(pos.x, pos.y);
     // path.addOval(Rect.fromCenter(center: pos.asOffset, width: 4, height: 4)); //TODO TBD
     Side? startingSide = theRect.whichSide(pos);
     if (startingSide == null) {
-      print('startSide NULL!');
+      debugPrint('startSide NULL!');
       return;
     }
     Side side = startingSide;
@@ -126,12 +126,12 @@ class BubbleShape_OP extends CustomPainter {
   }
 
   void _partialRectWith3CornersRounded(Path path, Coord pb1, Coord pb2, Rectangle theRect, callout) {
-    // print("partialRectWith3CornersRounded");
+    // debugPrint("partialRectWith3CornersRounded");
     Coord pos = Coord.clone(pb1);
     path.moveTo(pos.x, pos.y);
     Side? startingSide = theRect.whichSide(pos);
     if (startingSide == null) {
-      print('startSide NULL!');
+      debugPrint('startSide NULL!');
       return;
     }
     Side side = startingSide;

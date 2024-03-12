@@ -22,8 +22,8 @@ void main() {
   late SnippetTreeController emptyTreeC;
   late SnippetTreeUR ur;
 
-  final SnippetRootNode emptySnippet = SnippetPanel.getTemplate(SnippetTemplate.empty_snippet);
-  final SnippetRootNode scaffoldWithTabsSnippet = SnippetPanel.getTemplate(SnippetTemplate.scaffold_with_tabs);
+  final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'empty_snippet');
+  final SnippetRootNode scaffoldWithTabsSnippet = SnippetPanel.createSnippetFromTemplate(SnippetTemplate.scaffold_with_tabs, 'scaffold_with_tabs');
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -74,10 +74,9 @@ void main() {
     Map<String, SnippetRootNode> snippetsMap = MaterialSPAState.parseSnippetJsons(model!);
     SnippetRootNode rootNode = snippetsMap.values.first;
     expect(rootNode.name, scaffoldWithTabs);
-    expect(rootNode.child, isA<TransformableScaffoldNode>());
-    expect((rootNode.child as TransformableScaffoldNode).scaffold, isA<ScaffoldNode>());
+    expect(rootNode.child, isA<ScaffoldNode>());
     expect(rootNode.child!.parent, rootNode);
-    expect((rootNode.child as TransformableScaffoldNode).scaffold.parent, isA<TransformableScaffoldNode>());
+    expect(rootNode.anyMissingParents(), false);
 
     // printPrettyJson(rootNode.toMap(), indent: 2);
   });

@@ -27,7 +27,7 @@ class _OffstageMeasuringWidgetState extends State<OffstageMeasuringWidget> {
     SchedulerBinding.instance.endOfFrame.then((_) {
       // Rect? rect = Measuring.findGlobalRect(gk);
       Rect? rect = gk.globalPaintBounds();
-      print('OffstageMeasuringWidget size: ${rect.toString()}');
+      debugPrint('OffstageMeasuringWidget size: ${rect.toString()}');
       // only the size is useful, because widget is rendered offstage
       if (rect != null) {
         widget.onSized?.call(Size(rect.width, rect.height));

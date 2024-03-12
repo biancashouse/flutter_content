@@ -16,7 +16,7 @@ class PathUtil {
 			 * rectangle around calloutR
 			 */
       //PathUtil.roundedRect(path, callout.top!, callout.left!, callout.cR().width, callout.cR().height, callout.roundedCorners);
-      // print('no pointy');
+      // debugPrint('no pointy');
     } else {
       Rectangle calloutR = config.cR();
       Offset cspCentre = calloutR.center;
@@ -75,7 +75,7 @@ class PathUtil {
       /*
 				 * finally, close shape by drawing pb2 to pointy and back to pb1
 				 */
-      // print("path.lineTo(${callout.tE!.x}, ${callout.tE!.y})");
+      // debugPrint("path.lineTo(${callout.tE!.x}, ${callout.tE!.y})");
       path.lineTo(config.tE!.x, config.tE!.y);
       path.lineTo(pointyBase1.x, pointyBase1.y);
     }
@@ -87,13 +87,13 @@ class PathUtil {
 	 * starting at theStartPos, draw rectangle from pb1 to pb2 clockwise
 	 */
   static void partialRectWithAll4CornersRounded(Path path, Coord pb1, Coord pb2, Rectangle theRect, config) {
-    // print("partialRectWith4CornersRounded");
+    // debugPrint("partialRectWith4CornersRounded");
     Coord pos = Coord.clone(pb1);
     path.moveTo(pos.x, pos.y);
     // path.addOval(Rect.fromCenter(center: pos.asOffset, width: 4, height: 4)); //TODO TBD
     Side? startingSide = theRect.whichSide(pos);
     if (startingSide == null) {
-      print('startSide NULL!');
+      debugPrint('startSide NULL!');
       return;
     }
     Side side = startingSide;
@@ -110,12 +110,12 @@ class PathUtil {
   }
 
   static void partialRectWith3CornersRounded(Path path, Coord pb1, Coord pb2, Rectangle theRect, config) {
-    // print("partialRectWith3CornersRounded");
+    // debugPrint("partialRectWith3CornersRounded");
     Coord pos = Coord.clone(pb1);
     path.moveTo(pos.x, pos.y);
     Side? startingSide = theRect.whichSide(pos);
     if (startingSide == null) {
-      print('startSide NULL!');
+      debugPrint('startSide NULL!');
       return;
     }
     Side side = startingSide;
@@ -304,7 +304,7 @@ class PathUtil {
         path.lineTo(result.x = theRect.right - theRadius + 1, result.y = theRect.top);
         break;
       default:
-        print("drawToStartOfNextCorner - Not on a Side !");
+        debugPrint("drawToStartOfNextCorner - Not on a Side !");
     }
     return result;
   }
@@ -325,7 +325,7 @@ class PathUtil {
 //       path.lineTo(result.x = theRect.right, result.y = theRect.top);
 //       break;
 //     default:
-//       print("drawToStartOfNextCorner - Not on a Side !");
+//       debugPrint("drawToStartOfNextCorner - Not on a Side !");
 //   }
 //   return result;
 // }

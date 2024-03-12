@@ -120,18 +120,6 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static bool _$isExpanded(ContainerNode v) => v.isExpanded;
   static const Field<ContainerNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(ContainerNode v) => v.pTreeC;
-  static const Field<ContainerNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(ContainerNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<ContainerNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(ContainerNode v) =>
-      v.propertiesPaneSC;
-  static const Field<ContainerNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ContainerNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ContainerNode, bool> _f$hidePropertiesWhileDragging =
@@ -175,9 +163,6 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #outlinedBorderGroup: _f$outlinedBorderGroup,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -31,18 +31,6 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static bool _$isExpanded(AspectRatioNode v) => v.isExpanded;
   static const Field<AspectRatioNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(AspectRatioNode v) => v.pTreeC;
-  static const Field<AspectRatioNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(AspectRatioNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<AspectRatioNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(AspectRatioNode v) =>
-      v.propertiesPaneSC;
-  static const Field<AspectRatioNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AspectRatioNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AspectRatioNode, bool> _f$hidePropertiesWhileDragging =
@@ -59,9 +47,6 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     #aspectRatio: _f$aspectRatio,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

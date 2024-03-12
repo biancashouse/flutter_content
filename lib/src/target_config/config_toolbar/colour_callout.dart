@@ -66,8 +66,8 @@ class ColourTool extends StatefulWidget {
 }
 
 class _ColourToolState extends State<ColourTool> {
-  late ArrowType _arrowType;
-  late bool _animate;
+  // late ArrowType _arrowType;
+  // late bool _animate;
 
   TargetConfig get tc => widget.tc;
 
@@ -76,8 +76,8 @@ class _ColourToolState extends State<ColourTool> {
   @override
   void initState() {
     super.initState();
-    _arrowType = tc.getArrowType();
-    _animate = tc.animateArrow;
+    // _arrowType = tc.getArrowType();
+    // _animate = tc.animateArrow;
   }
 
   @override
@@ -94,8 +94,14 @@ class _ColourToolState extends State<ColourTool> {
               bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
               Callout.dismiss(CAPI.COLOUR_CALLOUT.name);
               Useful.afterNextBuildDo(() {
-                Callout.refreshOverlay(tc.snippetName, f: () {});
-                reshowSnippetContentCallout(tc, widget.onParentBarrierTappedF, widget.allowButtonCallouts, widget.justPlaying);
+                widget.onParentBarrierTappedF.call();
+                // Callout.refreshOverlay(tc.snippetName, f: () {});
+                // reshowSnippetContentCallout(
+                //   tc,
+                //   widget.allowButtonCallouts,
+                //   widget.justPlaying,
+                //   widget.onParentBarrierTappedF,
+                // );
               });
               //reshowSnippetContentCallout(tc);
               // Useful.afterMsDelayDo(1000, () {

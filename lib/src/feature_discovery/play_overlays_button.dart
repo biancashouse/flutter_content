@@ -34,7 +34,7 @@ class PlayOverlaysButtonState extends State<PlayOverlaysButton> {
 
   @override
   Widget build(BuildContext context) {
-    //print('alreadyGotIt ${widget.features} is ${alreadyGotAllFeatures(context)}');
+    //debugPrint('alreadyGotIt ${widget.features} is ${alreadyGotAllFeatures(context)}');
     int? activeFeature = widget.discoveryController.activeFeature();
     Color? featureColor = activeFeature != null ? DiscoveryController.featureFgColors[activeFeature] :Colors.white;
     //FeaturedWidget activeFw = widget.discoveryController.widgetOf(activeFeature);

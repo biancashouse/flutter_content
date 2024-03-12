@@ -19,6 +19,6 @@ class EdgeInsetsValue with EdgeInsetsValueMappable {
   });
 
   EdgeInsets toEdgeInsets() => EdgeInsets.only(
-    left:left??0, top:top??0, bottom:bottom??0, right:right??0
+    left:left, top:top, bottom:bottom, right:right
   );
 }

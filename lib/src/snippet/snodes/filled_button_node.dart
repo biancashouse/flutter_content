@@ -23,7 +23,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     ButtonStyle? btnStyle = buttonStyleGroup?.toButtonStyle(context);
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? SnippetPanel.namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
     // possible callout
     Feature? feature = calloutConfigGroup?.contentSnippetName;
 

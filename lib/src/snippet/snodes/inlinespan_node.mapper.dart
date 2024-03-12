@@ -26,18 +26,6 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   static bool _$isExpanded(InlineSpanNode v) => v.isExpanded;
   static const Field<InlineSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(InlineSpanNode v) => v.pTreeC;
-  static const Field<InlineSpanNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(InlineSpanNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<InlineSpanNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(InlineSpanNode v) =>
-      v.propertiesPaneSC;
-  static const Field<InlineSpanNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(InlineSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<InlineSpanNode, bool> _f$hidePropertiesWhileDragging =
@@ -52,9 +40,6 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   @override
   final MappableFields<InlineSpanNode> fields = const {
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

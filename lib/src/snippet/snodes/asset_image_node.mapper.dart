@@ -44,18 +44,6 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static bool _$isExpanded(AssetImageNode v) => v.isExpanded;
   static const Field<AssetImageNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(AssetImageNode v) => v.pTreeC;
-  static const Field<AssetImageNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(AssetImageNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<AssetImageNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(AssetImageNode v) =>
-      v.propertiesPaneSC;
-  static const Field<AssetImageNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AssetImageNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AssetImageNode, bool> _f$hidePropertiesWhileDragging =
@@ -76,9 +64,6 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
     #height: _f$height,
     #scale: _f$scale,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

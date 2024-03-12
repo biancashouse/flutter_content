@@ -122,7 +122,7 @@ class _NodePropertyButton_SnippetNameState extends State<NodePropertyButton_Snip
             // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             // color: Colors.white70,
             // alignment: Alignment.center,
-            child: labelWidget ?? (widget.label != null ? Text(widget.label) : const Offstage()),
+            child: labelWidget,
           ),
         );
     return target(context);

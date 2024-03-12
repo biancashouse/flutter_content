@@ -27,41 +27,44 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) => [
-    PropertyGroup(snode: this,
-      name: 'buttonStyle',
-      
-      children: [],
-    ),
-    StringPropertyValueNode(
-      snode:this,
-      name: 'namedButtonStyle',
-      stringValue: namedButtonStyle,
-      onStringChange: (newValue) => refreshWithUpdate(() => namedButtonStyle = newValue),
-      calloutButtonSize: const Size(280, 70),
-      calloutSize: const Size(280, 70),
-    ),
-    StringPropertyValueNode(
-      snode:this,
-      name: 'onTapHandlerName',
-      stringValue: onTapHandlerName,
-      onStringChange: (newValue) => refreshWithUpdate(() => onTapHandlerName = newValue),
-      calloutButtonSize: const Size(280, 70),
-      calloutSize: const Size(280, 70),
-    ),
-    PropertyGroup(snode: this,
-      name: 'calloutConfig',
-      
-      children: [],
-    )  ];
+        ButtonStylePropertyGroup(
+          snode: this,
+          buttonStyleGroup: buttonStyleGroup,
+          onGroupChange: (newGroup) {},
+        ),
+        StringPropertyValueNode(
+          snode: this,
+          name: 'namedButtonStyle',
+          stringValue: namedButtonStyle,
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => namedButtonStyle = newValue),
+          calloutButtonSize: const Size(280, 70),
+          calloutSize: const Size(280, 70),
+        ),
+        StringPropertyValueNode(
+          snode: this,
+          name: 'onTapHandlerName',
+          stringValue: onTapHandlerName,
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => onTapHandlerName = newValue),
+          calloutButtonSize: const Size(280, 70),
+          calloutSize: const Size(280, 70),
+        ),
+        PropertyGroup(
+          snode: this,
+          name: 'calloutConfig',
+          children: [],
+        )
+      ];
 
   // @override
   // List<PTreeNode> properties() => [ PropertyGroup(snode: this,
   //       toString: 'button properties',
-  //       
+  //
   //       children: [
   //         PropertyGroup(snode: this,
   //           toString: 'buttonStyle',
-  //           
+  //
   //           children: [],
   //         ),
   //         StringPropertyValueNode(
@@ -76,7 +79,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //         ),
   //         PropertyGroup(snode: this,
   //           toString: 'calloutConfig',
-  //           
+  //
   //           children: [],
   //         )
   //       ],
@@ -111,7 +114,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //           if (scrollNotification is ScrollStartNotification) {
   //           } else if (scrollNotification is ScrollUpdateNotification) {
   //           } else if (scrollNotification is ScrollEndNotification) {
-  //             // print('ScrollEndNotification');
+  //             // debugPrint('ScrollEndNotification');
   //             Callout.removeOverlay(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.index);
   //             CalloutConfigEditorState? cceState = calloutConfigEditorGK.currentState;
   //             cceState?.reShow();
@@ -449,6 +452,5 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //   ];
   // }
 
-  @override
   Size get nodeAddersAndPropertiesCalloutSize => const Size(460, 600);
 }

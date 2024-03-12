@@ -27,7 +27,7 @@
 //   void initState() {
 //     super.initState();
 //
-//     print("IFrame initState");
+//     debugPrint("IFrame initState");
 //
 //     _iframeElement = IFrameElement();
 //     _iframeElement.src = widget.src;
@@ -86,13 +86,13 @@ class IFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var navigationParams = const PlatformNavigationDelegateCreationParams();
+    // var navigationParams = const PlatformNavigationDelegateCreationParams();
     var controllerParams = const PlatformWebViewControllerCreationParams();
     var controller = PlatformWebViewController(controllerParams)
       // ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
         LoadRequestParams(
-          uri: Uri.parse(src ?? 'http://example.com'),
+          uri: Uri.parse(src),
         ),
       );
     var gestureRecognizers = <Factory<OneSequenceGestureRecognizer>>{

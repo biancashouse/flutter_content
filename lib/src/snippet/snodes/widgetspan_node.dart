@@ -22,7 +22,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
         child: child != null ? child!.toWidget(context, this) : boxChild(child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
-      print('cannot render $FLUTTER_TYPE!');
+      debugPrint('cannot render $FLUTTER_TYPE!');
     }
     return const WidgetSpan(child: Icon(Icons.error, color: Colors.redAccent));
   }

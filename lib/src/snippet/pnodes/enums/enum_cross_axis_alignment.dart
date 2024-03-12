@@ -42,7 +42,7 @@ enum CrossAxisAlignmentEnum  {
       );
 
   Widget toMenuItem(bool isRow) {
-    // print("isRow:$isRow CrossAxisAlignment toWidget ${name}");
+    // debugPrint("isRow:$isRow CrossAxisAlignment toWidget ${name}");
     return Container(
       padding: const EdgeInsets.all(8),
       height: isRow ? 50 : 90,

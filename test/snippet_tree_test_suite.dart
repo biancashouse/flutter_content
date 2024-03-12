@@ -24,7 +24,7 @@ void main() {
   });
 
   test('snippet comprises just a placeholder node', () async {
-    expect(SnippetPanel.getTemplate(SnippetTemplate.empty_snippet).child, isA<PlaceholderNode>());
+    expect(SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'empty_snippet').child, isA<PlaceholderNode>());
     // printPrettyJson(rootNode.toMap(), indent: 2);
   });
 

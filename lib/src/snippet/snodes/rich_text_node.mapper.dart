@@ -46,18 +46,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
   static bool _$isExpanded(RichTextNode v) => v.isExpanded;
   static const Field<RichTextNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(RichTextNode v) => v.pTreeC;
-  static const Field<RichTextNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(RichTextNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<RichTextNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(RichTextNode v) =>
-      v.propertiesPaneSC;
-  static const Field<RichTextNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(RichTextNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<RichTextNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -78,9 +66,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #textScaleFactor: _f$textScaleFactor,
     #text: _f$text,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

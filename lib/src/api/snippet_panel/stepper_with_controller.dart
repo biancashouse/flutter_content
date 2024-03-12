@@ -35,7 +35,7 @@ class FCStepperState extends State<FCStepper> {
       onStepContinue: () {
         final isLastStep = currentStep == steps.length - 1;
         if (isLastStep) {
-          print("steps completed.");
+          debugPrint("steps completed.");
         } else {
           if (currentStep <= steps.length) {
             setState(() {

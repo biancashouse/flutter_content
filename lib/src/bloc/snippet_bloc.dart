@@ -30,7 +30,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK,
         )) {
-    // print("\n\nCreating SnippetBloC ${node.name}\n\n");
+    // debugPrint("\n\nCreating SnippetBloC ${node.name}\n\n");
     // events
     on<SelectNode>((event, emit) => _selectNode(event, emit));
     on<ClearNodeSelection>((event, emit) => _clearNodeSelection(event, emit));
@@ -62,7 +62,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // }
 
   void _forceSnippetRefresh(event, emit) {
-    print("forceSnippetRefresh");
+    debugPrint("forceSnippetRefresh");
     emit(state.copyWith(
       force: state.force + 1,
     ));
@@ -145,8 +145,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     _createSnippetUndo();
     if (_possiblyRemoveFromParentButNotChildren()) {
       state.treeC.rebuild();
-      // print("--------------");
-      // print(state.snippetTreeC.roots.first.toMap());
+      // debugPrint("--------------");
+      // debugPrint(state.snippetTreeC.roots.first.toMap());
       emit(state.copyWith(
         nodeBeingDeleted: null,
         selectedNode: null,
@@ -164,14 +164,15 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       STreeNode sel = state.selectedNode!;
       STreeNode parent = sel.parent as STreeNode;
       // tab-related
-      if (sel.isAScaffoldTabWidget()) {
+      if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
         int index = (parent as TabBarNode).children.indexOf(sel);
         parent.children.remove(sel);
         ScaffoldNode? scaffold = parent.parent?.parent?.parent as ScaffoldNode?;
         if (scaffold?.body.child is TabBarViewNode?) {
           (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
         }
-      } else if (sel.isAScaffoldTabViewWidget()) {
+        // tabView-related
+      } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
         int index = (parent as TabBarViewNode).children.indexOf(sel);
         parent.children.remove(sel);
         ScaffoldNode? scaffold = parent.parent?.parent as ScaffoldNode?;
@@ -226,7 +227,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           ..setParent(parent);
       }
     } catch (e) {
-      print(
+      debugPrint(
           "\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
       rethrow;
     }
@@ -301,7 +302,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   //     }
   //   }
   //   } catch (e) {
-  //     print("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
+  //     debugPrint("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
   //     rethrow;
   //   }
   // }
@@ -475,10 +476,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           SubmenuButtonNode(menuChildren: childNode != null ? [childNode] : []),
         const (SubtitleSnippetRootNode) =>
           SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
-        const (TargetWrapperNode) =>
-          TargetWrapperNode(snippetName: 'name', child: childNode),
+        const (TargetButtonNode) =>
+          TargetButtonNode(name: 'no name!', child: childNode),
         const (TargetGroupWrapperNode) =>
-          TargetGroupWrapperNode(name: 'name', child: childNode),
+          TargetGroupWrapperNode(name: 'name?', child: childNode),
         const (TextButtonNode) => TextButtonNode(),
         const (TextNode) => TextNode(text: 'abc'),
         const (TextSpanNode) => TextSpanNode(children: []),
@@ -554,7 +555,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         selectedNode: w,
       ));
     } catch (e) {
-      print("\n ***  _wrapWith() - failed!  ***");
+      debugPrint("\n ***  _wrapWith() - failed!  ***");
       rethrow;
     }
   }
@@ -648,7 +649,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         child.setParent(r);
       }
     } catch (e) {
-      print("\n ***  _replaceWithNewNodeOrClipboard() - failed!  ***");
+      debugPrint("\n ***  _replaceWithNewNodeOrClipboard() - failed!  ***");
       rethrow;
     }
 
@@ -1066,7 +1067,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
   SnippetTreeController get treeC => state.treeC;
 
-  String get snippetName => rootNode.name ?? 'missing rootNode!';
+  String get snippetName => rootNode.name;
 
 // SnippetBloC clone() => SnippetBloC(
 //       node: rootNode!,

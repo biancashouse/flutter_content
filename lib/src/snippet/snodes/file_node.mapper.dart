@@ -28,17 +28,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   static bool _$isExpanded(FileNode v) => v.isExpanded;
   static const Field<FileNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(FileNode v) => v.pTreeC;
-  static const Field<FileNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(FileNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<FileNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(FileNode v) => v.propertiesPaneSC;
-  static const Field<FileNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FileNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FileNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -55,9 +44,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
     #name: _f$name,
     #src: _f$src,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

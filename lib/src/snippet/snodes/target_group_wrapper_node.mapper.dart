@@ -14,7 +14,7 @@ class TargetGroupWrapperNodeMapper
   static TargetGroupWrapperNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetGroupWrapperNodeMapper._());
-      SCMapper.ensureInitialized().addSubMapper(_instance!);
+      ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -32,21 +32,6 @@ class TargetGroupWrapperNodeMapper
   static bool _$isExpanded(TargetGroupWrapperNode v) => v.isExpanded;
   static const Field<TargetGroupWrapperNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(TargetGroupWrapperNode v) =>
-      v.pTreeC;
-  static const Field<TargetGroupWrapperNode, PTreeNodeTreeController>
-      _f$pTreeC = Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(TargetGroupWrapperNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<TargetGroupWrapperNode, double>
-      _f$propertiesPaneScrollPos = Field(
-          'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(TargetGroupWrapperNode v) =>
-      v.propertiesPaneSC;
-  static const Field<TargetGroupWrapperNode, ScrollController>
-      _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(TargetGroupWrapperNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TargetGroupWrapperNode, bool>
@@ -59,25 +44,44 @@ class TargetGroupWrapperNodeMapper
   static const Field<TargetGroupWrapperNode, GlobalKey<State<StatefulWidget>>>
       _f$nodeWidgetGK =
       Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
+  static ButtonStyleGroup? _$buttonStyleGroup(TargetGroupWrapperNode v) =>
+      v.buttonStyleGroup;
+  static const Field<TargetGroupWrapperNode, ButtonStyleGroup>
+      _f$buttonStyleGroup =
+      Field('buttonStyleGroup', _$buttonStyleGroup, mode: FieldMode.member);
+  static String? _$namedButtonStyle(TargetGroupWrapperNode v) =>
+      v.namedButtonStyle;
+  static const Field<TargetGroupWrapperNode, String> _f$namedButtonStyle =
+      Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
+  static String? _$onTapHandlerName(TargetGroupWrapperNode v) =>
+      v.onTapHandlerName;
+  static const Field<TargetGroupWrapperNode, String> _f$onTapHandlerName =
+      Field('onTapHandlerName', _$onTapHandlerName, mode: FieldMode.member);
+  static CalloutConfigGroup? _$calloutConfigGroup(TargetGroupWrapperNode v) =>
+      v.calloutConfigGroup;
+  static const Field<TargetGroupWrapperNode, CalloutConfigGroup>
+      _f$calloutConfigGroup =
+      Field('calloutConfigGroup', _$calloutConfigGroup, mode: FieldMode.member);
 
   @override
   final MappableFields<TargetGroupWrapperNode> fields = const {
     #name: _f$name,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #buttonStyleGroup: _f$buttonStyleGroup,
+    #namedButtonStyle: _f$namedButtonStyle,
+    #onTapHandlerName: _f$onTapHandlerName,
+    #calloutConfigGroup: _f$calloutConfigGroup,
   };
 
   @override
-  final String discriminatorKey = 'sc';
+  final String discriminatorKey = 'button';
   @override
   final dynamic discriminatorValue = 'TargetGroupWrapperNode';
   @override
-  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
 
   static TargetGroupWrapperNode _instantiate(DecodingData data) {
     return TargetGroupWrapperNode(
@@ -142,7 +146,7 @@ extension TargetGroupWrapperNodeValueCopy<$R, $Out>
 abstract class TargetGroupWrapperNodeCopyWith<
     $R,
     $In extends TargetGroupWrapperNode,
-    $Out> implements SCCopyWith<$R, $In, $Out> {
+    $Out> implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override

@@ -95,7 +95,7 @@ enum DecorationShapeEnum {
     if (borderColors.length == 1) {
       border = Border.all(color: borderColors.first, width: thickness ?? 3);
     } else if (borderColors.length > 1) {
-      const rainbowGradient = LinearGradient(colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.purpleAccent]);
+      // const rainbowGradient = LinearGradient(colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.purpleAccent]);
       LinearGradient borderGradient = LinearGradient(colors: borderColors);
       border = GradientBoxBorder(gradient: borderGradient, width: thickness ?? 3);
     }

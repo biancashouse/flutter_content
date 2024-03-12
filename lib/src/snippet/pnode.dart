@@ -34,25 +34,31 @@ import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
 import 'pnodes/enums/enum_decoration.dart';
 import 'pnodes/groups/button_style_group.dart';
+import 'pnodes/groups/callout_config_group.dart';
 import 'pnodes/groups/outlined_border_group.dart';
 
 abstract class PTreeNode extends Node {
   final PropertyName name;
+  final String? tooltip;
   final STreeNode snode;
 
   PTreeNode({
     required this.name,
+    this.tooltip,
     required this.snode,
   });
 
-  Widget toPropertyNodeContents(BuildContext context);
+  Widget toPropertyNodeContents(BuildContext context) {
+    // not used in a property group node
+    throw UnimplementedError();
+  }
 
   void revertToOriginalValue();
 
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
     if (_selectedPropertyGK.currentState == null) return _selectedPropertyGK;
-    print(
+    debugPrint(
         "_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }
@@ -75,12 +81,6 @@ class PropertyGroup extends PTreeNode {
     required super.name,
     required this.children,
   });
-
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    // not used in a property group node
-    throw UnimplementedError();
-  }
 
   @override
   void revertToOriginalValue() {
@@ -191,12 +191,6 @@ class TextStylePropertyGroup extends PropertyGroup {
     ];
   }
 
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    // not used in a property group node
-    throw UnimplementedError(runtimeType.toString());
-  }
-
 // List<PTreeNode> get children => [
 //       FontFamilyPropertyValueNode(
 //         name: 'fontFamily',
@@ -271,7 +265,7 @@ class ButtonStylePropertyGroup extends PropertyGroup {
   final ValueChanged<ButtonStyleGroup> onGroupChange;
 
   ButtonStylePropertyGroup({
-    required super.name,
+    super.name = 'buttonStyle',
     required this.buttonStyleGroup,
     required this.onGroupChange,
     required super.snode,
@@ -294,7 +288,7 @@ class ButtonStylePropertyGroup extends PropertyGroup {
           ),
           ColorPropertyValueNode(
             snode: super.snode,
-            name: 'color',
+            name: 'b/g color',
             colorValue: buttonStyleGroup?.bgColorValue,
             onColorIntChange: (newValue) {
               buttonStyleGroup ??= ButtonStyleGroup();
@@ -419,12 +413,6 @@ class ButtonStylePropertyGroup extends PropertyGroup {
       ),
     ];
   }
-
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    // not used in a property group node
-    throw UnimplementedError();
-  }
 }
 
 class OutlinedBorderPropertyGroup extends PropertyGroup {
@@ -461,11 +449,63 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
       ),
     ];
   }
+}
 
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    // not used in a property group node
-    throw UnimplementedError();
+class CalloutConfigPropertyGroup extends PropertyGroup {
+  CalloutConfigGroup? ccGroup;
+  final ValueChanged<CalloutConfigGroup> onGroupChange;
+
+  CalloutConfigPropertyGroup({
+    required super.name,
+    required this.ccGroup,
+    required this.onGroupChange,
+    required super.snode,
+    super.children = const [],
+  }) {
+    super.children = [
+      StringPropertyValueNode(
+        snode: super.snode,
+        name: 'name',
+        stringValue: name,
+        options: FC().snippetsMap.keys.toList(),
+        onStringChange: (newValue) {},
+        calloutButtonSize: const Size(280, 20),
+        calloutSize: const Size(280, 48),
+      ),
+      SnippetNamePropertyValueNode(
+        stringValue: ccGroup?.contentSnippetName,
+        onStringChange: (newValue) {
+          ccGroup ??= CalloutConfigGroup();
+          ccGroup!.contentSnippetName = newValue;
+          onGroupChange.call(ccGroup!);
+        },
+        calloutButtonSize: const Size(280, 20),
+        calloutSize: const Size(280, 48),
+        snode: super.snode,
+        name: name,
+      ),
+      EnumPropertyValueNode<AlignmentEnum?>(
+        snode: super.snode,
+        name: 'target alignment',
+        valueIndex: ccGroup?.targetAlignment?.index,
+        onIndexChange: (newValue) {
+          ccGroup ??= CalloutConfigGroup();
+          ccGroup!.targetAlignment = AlignmentEnum.of(newValue);
+          onGroupChange.call(ccGroup!);
+        },
+      ),
+      OffsetPropertyValueNode(
+        topValue: ccGroup?.calloutPos?.dy,
+        leftValue: ccGroup?.calloutPos?.dx,
+        onOffsetChange: (newValue) {
+          ccGroup ??= CalloutConfigGroup();
+          ccGroup!.calloutPos = Offset(newValue.$1!, newValue.$2!);
+          onGroupChange.call(ccGroup!);
+        },
+        name: 'calloutPos',
+        snode: snode,
+      ),
+    ];
   }
 }
 
@@ -503,12 +543,6 @@ class BorderSidePropertyGroup extends PropertyGroup {
         },
       ),
     ];
-  }
-
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    // not used in a property group node
-    throw UnimplementedError();
   }
 }
 
@@ -570,7 +604,7 @@ class SnippetRefPropertyValueNode extends PTreeNode {
             ? '$name: \n$snippetName'
             : '$name: $snippetName'
         : '$name...';
-    // print('stringValue: $stringValue, displayedname: $displayedname');
+    // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
     // TODO use pushSnippet...
     return NodePropertyCalloutButton(
       labelWidget: Text(
@@ -637,7 +671,7 @@ class SnippetRefPropertyValueNode extends PTreeNode {
 //             ? '$name: \n$stringValue'
 //             : '$name: $stringValue'
 //         : '$name...';
-//     // print('stringValue: $stringValue, displayedname: $displayedname');
+//     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
 //     return NodePropertyCalloutButton(
 //       labelWidget: Text(
 //         displayedName,
@@ -839,7 +873,7 @@ class DecimalPropertyValueNode extends PTreeNode {
         // calloutSize: calloutSize,
         onChangeF: (s) {
           if (s.toLowerCase() == 'infinity') {
-            onDoubleChange.call(decimalValue = double.infinity);
+            onDoubleChange.call(decimalValue = 999999999);
             return;
           }
           if (s.contains('/') && s.split('/').length == 2) {
@@ -940,7 +974,7 @@ class SizePropertyValueNode extends PTreeNode {
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
                   onSizeChange
-                      .call((widthValue = double.infinity, heightValue));
+                      .call((widthValue = 999999999, heightValue));
                   return;
                 }
                 if (s.contains('/') && s.split('/').length == 2) {
@@ -969,7 +1003,7 @@ class SizePropertyValueNode extends PTreeNode {
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
                   onSizeChange
-                      .call((widthValue, heightValue = double.infinity));
+                      .call((widthValue, heightValue = 999999999));
                   return;
                 }
                 if (s.contains('/') && s.split('/').length == 2) {
@@ -982,6 +1016,93 @@ class SizePropertyValueNode extends PTreeNode {
                 } else {
                   onSizeChange
                       .call((widthValue, heightValue = double.tryParse(s)));
+                }
+              },
+            ),
+          ],
+        ),
+      );
+}
+
+class OffsetPropertyValueNode extends PTreeNode {
+  double? topValue;
+  double? leftValue;
+  final ValueChanged<(double?, double?)> onOffsetChange;
+
+  // final Offset calloutOffset;
+
+  // NodePropertyButton_String? button;
+
+  OffsetPropertyValueNode({
+    required this.topValue,
+    required this.leftValue,
+    required this.onOffsetChange,
+    required super.name,
+    required super.snode,
+  });
+
+  @override
+  void revertToOriginalValue() {
+    onOffsetChange((topValue = null, leftValue = null));
+  }
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) => SizedBox(
+        width: 200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            NodePropertyButton_String(
+              originalText: topValue != null ? topValue.toString() : '',
+              label: 'width',
+              skipLabelText: true,
+              skipHelperText: true,
+              //inputType: double,
+              calloutButtonSize: const Size(80, 20),
+              calloutSize: const Size(120, 80),
+              onChangeF: (s) {
+                if (s.toLowerCase() == 'infinity') {
+                  onOffsetChange.call((topValue = 999999999, leftValue));
+                  return;
+                }
+                if (s.contains('/') && s.split('/').length == 2) {
+                  var split = s.split('/');
+                  double? part1 = double.tryParse(split[0]);
+                  double? part2 = double.tryParse(split[1]);
+                  if (part1 != null && part2 != null) {
+                    onOffsetChange.call((topValue = part1 / part2, part2));
+                  }
+                } else {
+                  onOffsetChange
+                      .call((topValue = double.tryParse(s), leftValue));
+                }
+              },
+            ),
+            const SizedBox(width: 40, child: Text('x')),
+            NodePropertyButton_String(
+              originalText: leftValue != null ? leftValue.toString() : '',
+              label: 'height',
+              skipLabelText: true,
+              skipHelperText: true,
+              //inputType: double,
+              calloutButtonSize: const Size(80, 20),
+              calloutSize: const Size(120, 80),
+              // calloutOffset: calloutOffset,
+              onChangeF: (s) {
+                if (s.toLowerCase() == 'infinity') {
+                  onOffsetChange.call((topValue, leftValue = 999999999));
+                  return;
+                }
+                if (s.contains('/') && s.split('/').length == 2) {
+                  var split = s.split('/');
+                  double? part1 = double.tryParse(split[0]);
+                  double? part2 = double.tryParse(split[1]);
+                  if (part1 != null && part2 != null) {
+                    onOffsetChange.call((part2, leftValue = part1 / part2));
+                  }
+                } else {
+                  onOffsetChange
+                      .call((topValue, leftValue = double.tryParse(s)));
                 }
               },
             ),
@@ -1103,7 +1224,8 @@ class ColorPropertyValueNode extends PTreeNode {
     required this.onColorIntChange,
     required super.snode,
     required super.name,
-    this.calloutButtonSize = const Size(60, 30),
+    super.tooltip,
+    this.calloutButtonSize = const Size(120, 20),
   });
 
   @override
@@ -1115,6 +1237,7 @@ class ColorPropertyValueNode extends PTreeNode {
   Widget toPropertyNodeContents(BuildContext context) =>
       NodePropertyButtonColor(
         label: name,
+        tooltip: tooltip,
         originalColor: colorValue != null ? Color(colorValue!) : null,
         onChangeF: (Color? newColor) {
           if (newColor != null) {

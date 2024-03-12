@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -10,20 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-// import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 // conditional import for webview ------------------
-import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
+import 'register_ios_or_android_webview.dart'
+    if (dart.library.html) 'register_web_webview.dart';
 //--------------------------------------------------
 
 /// this widget must enclose your MaterialApp, or CupertinoApp or WidgetsApp
@@ -31,6 +29,7 @@ import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_w
 /// the app's overlay and not in your widget tree as you might have expected.
 class MaterialSPA extends StatefulWidget {
   final String appName;
+  final String title;
 
   // final SnippetName pageSnippetName;
   final String? initialValueJsonAssetPath;
@@ -40,13 +39,15 @@ class MaterialSPA extends StatefulWidget {
   final FirebaseOptions? fbOptions;
   final Map<String, NamedTextStyle> namedStyles;
   final bool hideStatusBar;
-  final IModelRepository? testModelRepo; // created in tests by a when(mockRepository.getCAPIModel(appName: appName...
+  final IModelRepository?
+      testModelRepo; // created in tests by a when(mockRepository.getCAPIModel(appName: appName...
   final Widget? testWidget;
 
   // final bool localTestingFilePaths;
 
   const MaterialSPA({
     required this.appName,
+    this.title = '',
     // required this.pageSnippetName,
     this.initialValueJsonAssetPath,
     // this.localTestingFilePaths = false,
@@ -77,7 +78,7 @@ class MaterialSPA extends StatefulWidget {
   //       // skipHeightConstraintWarning: skipHeightConstraintWarning,
   //       ); //Measuring.findGlobalRect(_offstageGK!);
   //   if (rect != null) {
-  //     print('$panelName ${rect.toString()}');
+  //     debugPrint('$panelName ${rect.toString()}');
   //     // overlay rect with a transparent pink rect, and a 3px surround
   //     Callout.showOverlay(
   //       ensureLowestOverlay: true,
@@ -180,17 +181,18 @@ class MaterialSPA extends StatefulWidget {
   // }
   // }
 
-  static MaterialSPAState? of(BuildContext context) => context.findAncestorStateOfType<MaterialSPAState>();
+  static MaterialSPAState? of(BuildContext context) =>
+      context.findAncestorStateOfType<MaterialSPAState>();
 
   // static bool escKeyPressedZFor3Secs = false;
-  static final inEditMode = ValueNotifier<bool>(false);
 
   @override
   State<MaterialSPA> createState() => MaterialSPAState();
 }
 
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
-class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin {
+class MaterialSPAState extends State<MaterialSPA>
+    with TickerProviderStateMixin {
   FireStoreModelRepository fbModelRepo = FireStoreModelRepository();
   late Future<CAPIBloC> fInitApp;
   bool _inited = false;
@@ -230,7 +232,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   Future<CAPIBloC> _initApp() async {
     Map<String, TargetConfig> singleTargetMap = {};
     late Map<String, TargetGroupConfig>? targetGroupMap;
-    late Map<String, SnippetRootNode> snippetsMap;
+    // late Map<String, SnippetRootNode> snippetsMap;
     late CAPIModel model;
 
     if (widget.testModelRepo == null) {
@@ -254,7 +256,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
           HydratedBloc.storage;
         } catch (e) {
           // init local storage access
-          var dir = kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
+          var dir = kIsWeb
+              ? HydratedStorage.webStorageDirectory
+              : await getTemporaryDirectory();
           HydratedBloc.storage = await HydratedStorage.build(
             storageDirectory: dir,
           );
@@ -262,14 +266,15 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
         //possibly init firebase, then read model
         // try to read model from firebase
-        // print("getFBModel()...");
-        CAPIModel? fbModel;
+        // debugPrint("getFBModel()...");
+        // CAPIModel? fbModel;
 
         if (widget.fbOptions != null) {
-          model = await fbModelRepo.getCAPIModel(appName: widget.appName) ?? CAPIModel(appName: widget.appName);
+          model = await fbModelRepo.getCAPIModel(appName: widget.appName) ??
+              CAPIModel(appName: widget.appName);
         }
 
-        // // print("getFBModel() returned ${fbModel.toString()}");
+        // // debugPrint("getFBModel() returned ${fbModel.toString()}");
         // // if can't get model from FB, try localstorage
         // if (fbModel == null) {
         //   var modelJson = HydratedBloc.storage.read("flutter-content");
@@ -288,7 +293,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       }
     } else {
       // widget testing repo should  supply a model via a when(mockRepository.getCAPIModel(appName: appName...
-      model = await widget.testModelRepo?.getCAPIModel(appName: widget.appName) ?? CAPIModel(appName: widget.appName);
+      model =
+          await widget.testModelRepo?.getCAPIModel(appName: widget.appName) ??
+              CAPIModel(appName: widget.appName);
     }
 
     targetGroupMap = _parseTargetGroups(model);
@@ -322,8 +329,14 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       // snippetsMap: snippetsMap,
     );
 
+    var pkgInfo = await PackageInfo.fromPlatform();
+
     // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
     FC().init(
+      appName: pkgInfo.appName,
+      version: pkgInfo.version,
+      buildNumber: pkgInfo.buildNumber,
+      packageName: pkgInfo.packageName,
       capiBloc: capiBloc,
       snippetsMap: parseSnippetJsons(model),
       namedStyles: widget.namedStyles,
@@ -343,15 +356,15 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
         return FutureBuilder<CAPIBloC>(
           future: fInitApp,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
-              print("done (has data)");
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              // debugPrint("done (has data)");
               // create the clipboard overlay and hide
               // start the app with the main bloC
               if (!_inited) {
                 Useful.afterNextBuildDo(() {
                   _showFloatingClipboard();
                   Callout.hide("floating-clipboard");
-                  print("showDevToolsButton");
                   showDevToolsButton(context);
                 });
                 _inited = true;
@@ -361,25 +374,41 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                 child: MaterialApp(
                   theme: widget.materialAppThemeF(),
                   debugShowCheckedModeBanner: false,
+                  title: widget.title,
                   scrollBehavior: const ConstantScrollBehavior(),
-                  home: RawKeyboardListener(
-                    autofocus: true,
-                    focusNode: focusNode, // <-- more magic
-                    onKey: (event) {
-                      _enterOrExitEditMode(event, lastTapTime, tapCount);
+                  home: NotificationListener<SizeChangedLayoutNotification>(
+                    onNotification:
+                        (SizeChangedLayoutNotification notification) {
+                      debugPrint("MaterialSPA SizeChangedLayoutNotification}");
+                      return true;
                     },
-                    child: Builder(builder: (context) {
-                      Useful.instance.initWithContext(context);
-                      return widget.testWidget != null
-                          ? widget.testWidget!
-                          : widget.webHome != null && widget.mobileHome != null
-                              ? HomePageProvider().getWebOrMobileHomePage(widget.webHome!, widget.mobileHome!)
-                              : const Icon(
-                                  Icons.error_outlined,
-                                  color: Colors.red,
-                                  size: 40,
-                                );
-                    }),
+                    child: SizeChangedLayoutNotifier(
+                      child: KeyboardListener(
+                        autofocus: true,
+                        focusNode: focusNode, // <-- more magic
+                        onKeyEvent: (KeyEvent event) {
+                          bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
+                          if (FC().inEditMode.value && isEsc) {
+                            exitEditMode();
+                          }
+                          // _enterOrExitEditMode(event, lastTapTime, tapCount);
+                        },
+                        child: Builder(builder: (context) {
+                          Useful.instance.initWithContext(context);
+                          return widget.testWidget != null
+                              ? widget.testWidget!
+                              : widget.webHome != null &&
+                                      widget.mobileHome != null
+                                  ? HomePageProvider().getWebOrMobileHomePage(
+                                      widget.webHome!, widget.mobileHome!)
+                                  : const Icon(
+                                      Icons.error_outlined,
+                                      color: Colors.red,
+                                      size: 40,
+                                    );
+                        }),
+                      ),
+                    ),
                   ),
                 ),
               );
@@ -395,7 +424,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // Widget build2(BuildContext context) => Builder(builder: (context) {
   //       return NotificationListener<SizeChangedLayoutNotification>(
   //           onNotification: (SizeChangedLayoutNotification notification) {
-  //             print("_CAPIAppWrapperState onNotification: ${notification.toString()}");
+  //             debugPrint("_CAPIAppWrapperState onNotification: ${notification.toString()}");
   //             // MaterialAppWrapper.iwSizeMap = {};
   //             bool screenSizeChanged = false;
   //             Size screenSize = MediaQuery.of(context).size;
@@ -419,7 +448,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   //                       child: BlocProvider<CAPIBloc>(
   //                         create: (BuildContext context) => newBloc,
   //                         child: Builder(builder: (context) {
-  //                           print("MaterialAppWrapper => MaterialApp");
+  //                           debugPrint("MaterialAppWrapper => MaterialApp");
   //                           return MaterialApp(
   //                             theme: widget.materialAppThemeF(),
   //                             debugShowCheckedModeBanner: false,
@@ -445,7 +474,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
           }
         }
       } catch (e) {
-        print("_parseImageTargets(): ${e.toString()}");
+        debugPrint("_parseImageTargets(): ${e.toString()}");
         rethrow;
       }
     }
@@ -464,7 +493,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 //         }
 //       }
 //     } catch (e) {
-//       print("_parseWidgetTargets(): ${e.toString()}");
+//       debugPrint("_parseWidgetTargets(): ${e.toString()}");
 //       rethrow;
 //     }
 //   }
@@ -488,7 +517,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 //         }
 //       }
 //     } catch (e) {
-//       print("_initTargets(): ${e.toString()}");
+//       debugPrint("_initTargets(): ${e.toString()}");
 //       rethrow;
 //     }
 //   }
@@ -502,38 +531,46 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
         snippetMap[rootNode.name] = rootNode..validateTree();
       }
     } catch (e) {
-      print("_parseSnippetJsons(): ${e.toString()}");
+      debugPrint("_parseSnippetJsons(): ${e.toString()}");
       // rethrow;
     }
     return snippetMap;
   }
 
-  static void showDevToolsButton(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+   static Future<void> showDevToolsButton(BuildContext context) async {
+    // debugPrint("showDevToolsButton");
+    // Size screenSize = MediaQuery.of(context).size;
+    String ver = '${FC().version}-${FC().buildNumber}';
     Callout.showOverlay(
-        boxContentF: (context) => FloatingActionButton.large(
-              tooltip: 'highlight snippets\nfor editing',
-              elevation: 6,
-              onPressed: () async {
-                MaterialSPAState? rootState = MaterialSPA.of(context);
-                if (rootState != null) {
-                  enterEditMode(rootState.context);
-                }
-              },
-              child: const Icon(
-                Icons.search,
-                //color: Colors.purpleAccent,
-                size: 30,
+        boxContentF: (context) => PointerInterceptor(
+              child: Tooltip(
+                message: "Edit this widget's tree (v.$ver)",
+                child: TextButton.icon(
+                  onPressed: () async {
+                    MaterialSPAState? rootState = MaterialSPA.of(context);
+                    if (rootState != null) {
+                      enterEditMode(rootState.context);
+                    }
+                  },
+                  label: Useful.coloredText('edit...',
+                      color: Colors.white, fontSize: 24),
+                  icon: const Icon(
+                    Icons.account_tree_outlined,
+                    color: Colors.white,
+                    size: 36,
+                  ),
+                ),
               ),
             ),
         calloutConfig: CalloutConfig(
           feature: "editMode-FAB",
-          suppliedCalloutW: 60,
+          suppliedCalloutW: 150,
           suppliedCalloutH: 60,
           initialCalloutPos: FC().editModeBtnPos(context),
-          color: MaterialSPA.inEditMode.value ? Colors.purple : Colors.white,
+          color: FUCHSIA_X,
           arrowType: ArrowType.NO_CONNECTOR,
-          circleShape: true,
+          //circleShape: true,
+          roundedCorners: 24,
           onDragEndedF: (newPos) => FC().setEditModeBtnPos(newPos),
         ));
   }
@@ -555,64 +592,89 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   static enterEditMode(BuildContext context) {
     Callout.dismiss("editMode-FAB");
-    MaterialSPA.inEditMode.value = true;
+    FC().inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
     hideAllSingleTargetBtns();
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
-  static exitEditMode() {
-    MaterialSPA.inEditMode.value = false;
+   static exitEditMode() {
+    FC().inEditMode.value = false;
     removeAllNodeWidgetOverlays();
-    String feature = FC().snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
+    String feature =
+        FC().snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
     if (Callout.anyPresent([feature])) {
       Callout.dismiss(feature);
     }
-    if (Useful.cachedContext != null) {
-      showDevToolsButton(Useful.cachedContext!);
+    if (Useful.rootContext != null) {
+      showDevToolsButton(Useful.rootContext!);
     }
     FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
     unhideAllSingleTargetBtns();
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
-  _enterOrExitEditMode(RawKeyEvent event, DateTime? lastTapTime, int tapCount) {
-    bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
-    print("skip: ${FC().skipEditModeEscape}");
-
-    // wait a few millis in case Escaping from a property editor
-    Future.delayed(const Duration(milliseconds: 50), () {
-      if (!FC().skipEditModeEscape) {
-        if (!MaterialSPA.inEditMode.value &&
-            (HardwareKeyboard.instance.isShiftPressed || event.isAltPressed || event.isShiftPressed) &&
-            isEsc &&
-            event is RawKeyUpEvent) {
-          enterEditMode(context);
-        } else if (MaterialSPA.inEditMode.value && isEsc) {
-          exitEditMode();
-        }
-        //  now reset flag with debounce duration
-      }
-      Future.delayed(const Duration(milliseconds: 300), () {
-        FC().skipEditModeEscape = false;
-      });
-    });
-  }
+  // _enterOrExitEditMode(KeyEvent event, DateTime? lastTapTime, int tapCount) {
+  //   bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
+  //   debugPrint("isEsc: $isEsc");
+  //
+  //   if (MaterialSPA.inEditMode.value && isEsc) {
+  //     exitEditMode();
+  //   }
+  //
+  //
+  //   // wait a few millis in case Escaping from a property editor
+  //   Future.delayed(const Duration(milliseconds: 50), () {
+  //     if (!FC().skipEditModeEscape) {
+  //       if (!MaterialSPA.inEditMode.value &&
+  //           // (HardwareKeyboard.instance.isShiftPressed ||
+  //           //     HardwareKeyboard.instance.isAltPressed ||
+  //           //     HardwareKeyboard.instance.isShiftPressed) &&
+  //           !isEsc &&
+  //           event is KeyUpEvent) {
+  //         enterEditMode(context);
+  //       } else
+  //       //  now reset flag with debounce duration
+  //     }
+  //     Future.delayed(const Duration(milliseconds: 300), () {
+  //       FC().skipEditModeEscape = false;
+  //     });
+  //   });
+  // }
 
   // only called with MaterialAppWrapper context
   static void showAllNodeWidgetOverlays(context) {
+    // debugPrint('showAllNodeWidgetOverlays...');
+    // if currently configuring a target, only show for the current target's snippet
+    bool configuringATarget = Callout.anyPresent(['config-toolbar']);
     var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el) {
-      if (gkSTreeNodeMap.containsKey(el.widget.key)) {
+      if ((gkSTreeNodeMap.containsKey(el.widget.key))
+      ) {
+        // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         STreeNode? node = gkSTreeNodeMap[gk];
         if (node != null) {
+          if (node.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured) {
+            debugPrint("targetSnippetBeingConfigured: ${node.toString()}");
+          }
+          debugPrint('Rect? r = gk.globalPaintBounds...');
 // measure node
-          Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-          // print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
-          // node.setParent(parent);
-          // parent = node;
-          _showNodeWidgetOverlay(node, r!);
+          Rect? r = gk.globalPaintBounds(
+              skipWidthConstraintWarning: true,
+              skipHeightConstraintWarning: true);
+          if (node is PlaceholderNode) {
+            debugPrint('PlaceholderNode');
+          }
+          if (r != null) {
+            r = Useful.restrictRectToScreen(r);
+            debugPrint("========>  r restricted to ${r.toString()}");
+            // debugPrint('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+            // node.setParent(parent);
+            // parent = node;
+            debugPrint('_showNodeWidgetOverlay...');
+            node.showTappableNodeWidgetOverlay(r);
+          }
         }
       }
       el.visitChildElements((innerEl) {
@@ -625,10 +687,13 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   // only called with MaterialAppWrapper context
   static void showNodeWidgetOverlay(STreeNode node) {
-    Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    Rect? r = node.nodeWidgetGK?.globalPaintBounds(
+        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
-      removeAllNodeWidgetOverlays();
-      _showNodeWidgetOverlay(node, r, tappable: false, below: true);
+      r = Useful.restrictRectToScreen(r);
+      debugPrint("========>  r restricted to ${r.toString()}");
+      MaterialSPAState.removeAllNodeWidgetOverlays();
+      node.showNodeWidgetOverlay();
     }
   }
 
@@ -652,130 +717,127 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // }
 
   static void removeAllNodeWidgetOverlays() {
+    // debugPrint('removeAllNodeWidgetOverlays - start');
     for (GlobalKey nodeWidgetGK in FC().gkSTreeNodeMap.keys) {
       Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
+    // debugPrint('removeAllNodeWidgetOverlays - ended');
   }
 
-  // node is where the snippet tree starts (not necc the snippet's root node)
-  // selection is poss a current (lower) selection in the tree
-  static void pushThenShowNamedSnippetWithNodeSelected(SnippetName snippetName, STreeNode startingAtNode, STreeNode? selectedNode, context) {
-    STreeNode? highestNode;
-    if (startingAtNode is ScaffoldNode) {
-      highestNode = startingAtNode;
-    } else {
-      highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
+//   static void _showNodeWidgetOverlay(
+//     STreeNode node,
+//     Rect r,) {
+// // overlay rect with a transparent pink rect, and a 3px surround
+//     Rect restrictedRect = Useful.restrictRectToScreen(r);
+//     debugPrint("=== _showNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
+//     const int BORDER = 3;
+//     double borderLeft = max(restrictedRect.left - 3, 0);
+//     double borderTop = max(restrictedRect.top - 3, 0);
+//     double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
+//     double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+//     Rect borderRect =
+//         Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+//     debugPrint("=== _showNodeWidgetOverlay =====>  borderRect ${borderRect.toString()}");
+//     Callout.showOverlay(
+//       ensureLowestOverlay: true,
+//       boxContentF: (context) => PointerInterceptor(
+//         child: Container(
+//                 width: borderRect.width,
+//                 height: borderRect.height,
+//                 decoration: BoxDecoration(
+// //color: Colors.purpleAccent.withOpacity(.1),
+//                   border: Border.all(
+//                       width: 2,
+//                       color: Colors.purpleAccent,
+//                       style: BorderStyle.solid),
+//                 ),
+//               ),
+//       ),
+//       calloutConfig: CalloutConfig(
+//         feature: '${node.nodeWidgetGK.hashCode}-pink-overlay',
+//         suppliedCalloutW: borderRect.width + 6,
+//         suppliedCalloutH: borderRect.height + 6,
+//         initialCalloutPos: borderRect.topLeft.translate(-3, -3),
+//         color: Colors.transparent,
+//         arrowType: ArrowType.NO_CONNECTOR,
+//         draggable: false,
+//       ),
+//       targetGkF: () => node.nodeWidgetGK,
+//     );
+//   }
+
+//   static void _showTappableNodeWidgetOverlay(
+//       STreeNode node,
+//       Rect r, ) {
+// // overlay rect with a transparent pink rect, and a 3px surround
+//     Rect restrictedRect = Useful.restrictRectToScreen(r);
+//     debugPrint("=== _showNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
+//     const int BORDER = 3;
+//     double borderLeft = max(restrictedRect.left - 3, 0);
+//     double borderTop = max(restrictedRect.top - 3, 0);
+//     double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
+//     double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+//     Rect borderRect =
+//     Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+//     debugPrint("=== _showNodeWidgetOverlay =====>  borderRect ${borderRect.toString()}");
+//     Callout.showOverlay(
+//       ensureLowestOverlay: false,
+//       boxContentF: (context) => PointerInterceptor(
+//         child: InkWell(
+//           onTap: () {
+//             // debugPrint("tapped");
+//             SnippetName? snippetName = node.rootNodeOfSnippet()?.name;
+//             if (snippetName == null) return;
+//             var cc = node.nodeWidgetGK?.currentContext;
+// // edit the root snippet
+//             hideAllSingleTargetBtns();
+// // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+// // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
+//             removeAllNodeWidgetOverlays();
+// // actually push node parent, then select node - more user-friendly
+//             cc = node.nodeWidgetGK?.currentContext;
+//             pushThenShowNamedSnippetWithNodeSelected(
+//                 snippetName, node, node, context);
+//             // Useful.afterNextBuildDo(() {
+//             MaterialSPAState.showNodeWidgetOverlay(node);
+//             // });
+//           },
+//           child: Container(
+//             width: borderRect.width,
+//             height: borderRect.height,
+//             decoration: BoxDecoration(
+// //color: Colors.purpleAccent.withOpacity(.1),
+//               border: Border.all(
+//                   width: 2,
+//                   color: Colors.purpleAccent,
+//                   style: BorderStyle.solid),
+//             ),
+//           ),
+//         ),
+//       ),
+//       calloutConfig: CalloutConfig(
+//         feature: '${node.nodeWidgetGK.hashCode}-pink-overlay',
+//         suppliedCalloutW: borderRect.width + 6,
+//         suppliedCalloutH: borderRect.height + 6,
+//         initialCalloutPos: borderRect.topLeft.translate(-3, -3),
+//         color: Colors.transparent,
+//         arrowType: ArrowType.NO_CONNECTOR,
+//         draggable: false,
+//       ),
+//       targetGkF: () => node.nodeWidgetGK,
+//     );
+//   }
+
+  static Future<bool> canInformUserOfNewVersion() async {
+    // decide whether new version loaded
+    String? storedVersionAndBuild =
+        await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild = '${FC().version}-${FC().buildNumber}';
+    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
+      await HydratedBloc.storage
+          .write('versionAndBuild', latestVersionAndBuild);
+      if (storedVersionAndBuild != null) return true;
     }
-    var cc = startingAtNode.nodeWidgetGK?.currentContext;
-    FC().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
-    Useful.afterNextBuildDo(() {
-      var cc = startingAtNode.nodeWidgetGK?.currentContext;
-      SnippetBloC? snippetBeingEdited = FC().snippetBeingEdited;
-      if (FC().snippetBeingEdited != null) {
-        // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
-        showSnippetTreeAndPropertiesCallout(
-          snippetBloc: snippetBeingEdited!,
-          targetGKF: () => startingAtNode.nodeWidgetGK,
-          onDismissedF: () {
-// CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-            STreeNode.unhighlightSelectedNode();
-            Callout.dismiss('selected-panel-border-overlay');
-            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-            FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
-// removeNodePropertiesCallout();
-            Callout.dismiss(TREENODE_MENU_CALLOUT);
-            MaterialSPAState.exitEditMode();
-            if (snippetBeingEdited.state.canUndo()) {
-              FC().capiBloc.add(const CAPIEvent.saveModel());
-            }
-          },
-        );
-        // set the properties tree
-        STreeNode sel = selectedNode ?? startingAtNode;
-        final List<PTreeNode> propertyNodes = sel.properties(context);
-        // get a new treeController only when snippet selected
-        sel.pTreeC ??= PTreeNodeTreeController(
-          roots: propertyNodes,
-          childrenProvider: Node.propertyTreeChildrenProvider,
-        );
-        //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-        // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
-        sel.propertiesPaneSC ??= ScrollController()
-          ..addListener(() {
-            sel.propertiesPaneScrollPos = sel.propertiesPaneSC?.offset ?? 0.0;
-          });
-
-// select node
-        snippetBeingEdited.add(SnippetEvent.selectNode(
-          node: sel,
-          selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-          selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-// imageTC: tc,
-        ));
-// var nodeCtx = node.nodeWidgetGK?.currentContext;
-// Scrollable.ensureVisible(context);
-      }
-    });
-  }
-
-  static void _showNodeWidgetOverlay(STreeNode node, Rect r, {bool tappable = true, bool below = false}) {
-// overlay rect with a transparent pink rect, and a 3px surround
-    const int BORDER = 3;
-    double borderLeft = max(r.left - 3, 0);
-    double borderTop = max(r.top - 3, 0);
-    double borderRight = min(Useful.scrW, r.right + BORDER * 2);
-    double borderBottom = min(Useful.scrH, r.bottom + BORDER * 2);
-    Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
-    Callout.showOverlay(
-      ensureLowestOverlay: below,
-      boxContentF: (context) => PointerInterceptor(
-        child: tappable
-            ? InkWell(
-                onTap: () {
-                  print("tapped");
-                  String? snippetName = STreeNode.rootNodeOfSnippet(node)?.name;
-                  if (snippetName == null) return;
-                  var cc = node.nodeWidgetGK?.currentContext;
-// edit the root snippet
-                  hideAllSingleTargetBtns();
-// FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-// FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-                  removeAllNodeWidgetOverlays();
-// actually push node parent, then select node - more user-friendly
-                  cc = node.nodeWidgetGK?.currentContext;
-                  pushThenShowNamedSnippetWithNodeSelected(snippetName, node, node, context);
-                  // Useful.afterNextBuildDo(() {
-                  MaterialSPAState.showNodeWidgetOverlay(node);
-                  // });
-                },
-                child: Container(
-                  width: borderRect.width,
-                  height: borderRect.height,
-                  decoration: BoxDecoration(
-//color: Colors.purpleAccent.withOpacity(.1),
-                    border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
-                  ),
-                ),
-              )
-            : Container(
-                width: borderRect.width,
-                height: borderRect.height,
-                decoration: BoxDecoration(
-//color: Colors.purpleAccent.withOpacity(.1),
-                  border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
-                ),
-              ),
-      ),
-      calloutConfig: CalloutConfig(
-        feature: '${node.nodeWidgetGK.hashCode}-pink-overlay',
-        suppliedCalloutW: borderRect.width + 6,
-        suppliedCalloutH: borderRect.height + 6,
-        initialCalloutPos: borderRect.topLeft.translate(-3, -3),
-        color: Colors.transparent,
-        arrowType: ArrowType.NO_CONNECTOR,
-        draggable: false,
-      ),
-      targetGkF: () => node.nodeWidgetGK,
-    );
+    return false;
   }
 }

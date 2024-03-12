@@ -37,16 +37,6 @@ class CLMapper extends SubClassMapperBase<CL> {
   static bool _$isExpanded(CL v) => v.isExpanded;
   static const Field<CL, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(CL v) => v.pTreeC;
-  static const Field<CL, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(CL v) => v.propertiesPaneScrollPos;
-  static const Field<CL, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(CL v) => v.propertiesPaneSC;
-  static const Field<CL, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(CL v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CL, bool> _f$hidePropertiesWhileDragging = Field(
@@ -60,9 +50,6 @@ class CLMapper extends SubClassMapperBase<CL> {
   @override
   final MappableFields<CL> fields = const {
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

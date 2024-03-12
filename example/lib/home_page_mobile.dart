@@ -198,7 +198,7 @@ class HomePageMobileState extends State<HomePageMobile> with SingleTickerProvide
               elevation: 10,
               content: Text(
                 'no, drag the Puss ;-)',
-                textScaleFactor: 2,
+                textScaler: TextScaler.linear(2.0),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.yellow),
               ),
@@ -212,7 +212,7 @@ class HomePageMobileState extends State<HomePageMobile> with SingleTickerProvide
         child: Text(
           'Drag me with your finger to see\nFlutter interactivity in action ?',
           textAlign: TextAlign.center,
-          textScaleFactor: Useful.isPortrait ? .75 : 1,
+          textScaler: TextScaler.linear(Useful.isPortrait ? .75 : 1),
           style: const TextStyle(color: Colors.black),
         ),
       ),
@@ -282,7 +282,7 @@ class HomePageMobileState extends State<HomePageMobile> with SingleTickerProvide
                 offset += details.delta;
                 _removeCallout();
               });
-              // print('offset ${offset.toString()}');
+              // debugPrint('offset ${offset.toString()}');
             },
             onDoubleTap: () => setState(() => offset = Offset.zero),
             child: assetPicWithFadeIn(

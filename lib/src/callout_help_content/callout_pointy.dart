@@ -10,7 +10,7 @@
 //
 // void removePointyCallout() {
 //   if (Callout.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()])) {
-//     print("removePointyCallout");
+//     debugPrint("removePointyCallout");
 //     Callout.removeOverlay(CAPI.ARROW_TYPE_CALLOUT.feature(), true);
 //   }
 // }

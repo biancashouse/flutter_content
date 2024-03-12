@@ -16,8 +16,6 @@ abstract class Node extends Object {
 
     if (node is SnippetRootNode) {
       children = [if (node.child != null) node.child!];
-    } else if (node is TransformableScaffoldNode) {
-      children = [node.scaffold];
     } else if (node is ScaffoldNode) {
       children = [
         if (node.appBar != null) node.appBar!,
@@ -68,7 +66,7 @@ abstract class Node extends Object {
   // Node? findNearestAncestorOfType(Type type) {
   //   Node? node = this;
   //   while (node != null && node.runtimeType != type) {
-  //     print(node.toString());
+  //     debugPrint(node.toString());
   //     node = node.parent;
   //   }
   //   return node;
@@ -129,7 +127,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
       descendCondition: (_) => true,
       returnCondition: (node) => node.runtimeType == type,
       // onxTraverse: (node) {
-      //   print(node.toString());
+      //   debugPrint(node.toString());
       // },
     );
     return foundNode;
@@ -173,7 +171,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
     STreeNode rootNode = roots.first;
     String jsonS = rootNode.toJson();
     STreeNode clonedRootNode = STreeNodeMapper.fromJson(jsonS);
-    String newJsonS = clonedRootNode.toJson();
+    // String newJsonS = clonedRootNode.toJson();
     return SnippetTreeController(
       roots: [clonedRootNode],
       childrenProvider: childrenProvider,

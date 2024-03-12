@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
@@ -14,9 +13,9 @@ enum SnippetTemplate {
   scaffold_with_tabs,
   scaffold_with_menubar,
   scaffold_with_actions,
+  target_content_widget,
 }
 
-// TODO rename SnippetPanel to SnippetWidget
 class SnippetPanel extends StatefulWidget {
   final String panelName;
   final String snippetName;
@@ -50,107 +49,117 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   }) {
     handlers?.forEach((key, value) {
-      SnippetPanel.registerHandler(key, value);
-      print("registered handler '$key'");
+      FC().registerHandler(key, value);
+      debugPrint("registered handler '$key'");
     });
   }
 
-  static SnippetPanelState? of(BuildContext context) => context.findAncestorStateOfType<SnippetPanelState>();
+  static SnippetPanelState? of(BuildContext context) =>
+      context.findAncestorStateOfType<SnippetPanelState>();
 
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static final Map<HandlerName, void Function(BuildContext)> _handlers = {};
-
-  static registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
-
-  static void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
-
-  static SnippetRootNode getTemplate(SnippetTemplate template) {
-    var rootNode = templates.firstWhere((root) => root.name == template.name).cloneSnippet();
+  static SnippetRootNode createSnippetFromTemplate(SnippetTemplate template, String snippetName) {
+    var rootNode = templates
+        .firstWhere((root) => root.name == template.name)
+        .cloneSnippet();
     rootNode.validateTree();
+    rootNode.name = snippetName;
     return rootNode;
   }
 
   static List<SnippetRootNode> templates = [
     // empty snippet for test only
-    SnippetRootNode(name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
+    SnippetRootNode(
+        name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
+    SnippetRootNode(
+        name: SnippetTemplate.target_content_widget.name,
+        child: SizedBoxNode(
+            width: 200,
+            height: 150,
+            child: ContainerNode(fillColor1Value: Colors.white.value))),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
       name: SnippetTemplate.scaffold_with_tabs.name,
-      child: TransformableScaffoldNode(
-        scaffold: ScaffoldNode(
-          appBar: AppBarNode(
-            bgColorValue: Colors.black.value,
-            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: TabBarNode(
-                children: [
-                  TextNode(text: 'tab 1'),
-                  TextNode(text: 'Tab 2'),
-                ],
-              ),
-            ),
-          ),
-          body: GenericSingleChildNode(
-            propertyName: 'body',
-            child: TabBarViewNode(
+      child: ScaffoldNode(
+        appBar: AppBarNode(
+          bgColorValue: Colors.grey.value,
+          title: GenericSingleChildNode(
+              propertyName: 'title', child: TextNode(text: 'my title')),
+          bottom: GenericSingleChildNode(
+            propertyName: 'bottom',
+            child: TabBarNode(
               children: [
-                PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                TextNode(text: 'tab 1'),
+                TextNode(text: 'Tab 2'),
               ],
             ),
+          ),
+        ),
+        body: GenericSingleChildNode(
+          propertyName: 'body',
+          child: TabBarViewNode(
+            children: [
+              PlaceholderNode(
+                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
+              PlaceholderNode(
+                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            ],
           ),
         ),
       ),
     ),
     // Scaffold with a MenuBar in its AppBar bottom
     SnippetRootNode(
-        name: SnippetTemplate.scaffold_with_menubar.name,
-        child: TransformableScaffoldNode(
-            scaffold: ScaffoldNode(
-              appBar: AppBarNode(
-                bgColorValue: Colors.black.value,
-                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-                bottom: GenericSingleChildNode(
-                  propertyName: 'bottom',
-                  child: MenuBarNode(children: [
-                    MenuItemButtonNode(itemLabel: 'item 1'),
-                    MenuItemButtonNode(itemLabel: 'item 2'),
-                    MenuItemButtonNode(itemLabel: 'item 3'),
-                  ]),
-                ),
-              ),
-              body: GenericSingleChildNode(
-                propertyName: 'body',
-                child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
-              ),
-            ))),
+      name: SnippetTemplate.scaffold_with_menubar.name,
+      child: ScaffoldNode(
+        appBar: AppBarNode(
+          bgColorValue: Colors.grey.value,
+          title: GenericSingleChildNode(
+              propertyName: 'title', child: TextNode(text: 'my title')),
+          bottom: GenericSingleChildNode(
+            propertyName: 'bottom',
+            child: MenuBarNode(children: [
+              MenuItemButtonNode(itemLabel: 'item 1'),
+              MenuItemButtonNode(itemLabel: 'item 2'),
+              MenuItemButtonNode(itemLabel: 'item 3'),
+            ]),
+          ),
+        ),
+        body: GenericSingleChildNode(
+          propertyName: 'body',
+          child: PlaceholderNode(
+              name: 'body-placeholder', centredLabel: 'menu item destination'),
+        ),
+      ),
+    ),
     SnippetRootNode(
-        name: SnippetTemplate.scaffold_with_actions.name,
-        child: TransformableScaffoldNode(
-            scaffold: ScaffoldNode(
-              appBar: AppBarNode(
-                bgColorValue: Colors.black.value,
-                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-                actions: GenericMultiChildNode(propertyName: 'actions', children: [
-                  FilledButtonNode(child: TextNode(text: 'action 1')),
-                  FilledButtonNode(child: TextNode(text: 'action 2')),
-                  FilledButtonNode(child: TextNode(text: 'action 3')),
-                ]),
-              ),
-              body: GenericSingleChildNode(
-                propertyName: 'body',
-                child: PlaceholderNode(name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
-              ),
-            ))),
+      name: SnippetTemplate.scaffold_with_actions.name,
+      child: ScaffoldNode(
+        appBar: AppBarNode(
+          bgColorValue: Colors.grey.value,
+          title: GenericSingleChildNode(
+              propertyName: 'title', child: TextNode(text: 'my title')),
+          actions: GenericMultiChildNode(propertyName: 'actions', children: [
+            FilledButtonNode(child: TextNode(text: 'action 1')),
+            FilledButtonNode(child: TextNode(text: 'action 2')),
+            FilledButtonNode(child: TextNode(text: 'action 3')),
+          ]),
+        ),
+        body: GenericSingleChildNode(
+          propertyName: 'body',
+          child: PlaceholderNode(
+              name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
+        ),
+      ),
+    ),
   ];
 
   // static SnippetNode getRootNode(SnippetName snippetName) {
   //   SnippetNode? sNode = FlutterContent().capiBloc.state.rootNode(snippetName);
   //   if (sNode == null) {
-  //     // print("sNode is null");
+  //     // debugPrint("sNode is null");
   //     sNode = SnippetNode(name: snippetName, child: PlaceholderNode());
   //     // Snippet.reg(widget.onPressed, widget.onLongPress);
   //     FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(
@@ -167,27 +176,34 @@ class SnippetPanel extends StatefulWidget {
   }
 }
 
-class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
+class SnippetPanelState extends State<SnippetPanel>
+    with TickerProviderStateMixin {
   // late String snippetNameToUse;
-  TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
+  TabController?
+      tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
-  bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
+  bool?
+      backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
   late SnippetRootNode snippetRoot;
 
-  TransformableScaffoldState? get parentTSState => TransformableScaffold.of(context);
+  ZoomerState? get parentTSState => Zoomer.of(context);
 
   // if root already exists, return it.
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
   SnippetRootNode getOrCreateSnippetFromTemplate() {
-    SnippetRootNode? snippetRootNode = FC().rootNodeOfNamedSnippet(widget.snippetName);
+    SnippetRootNode? snippetRootNode =
+        FC().rootNodeOfNamedSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
     if (snippetRootNode == null && widget.fromTemplate != null) {
-      snippetRootNode = SnippetPanel.getTemplate(widget.fromTemplate!);
+      snippetRootNode =
+          SnippetPanel.createSnippetFromTemplate(widget.fromTemplate!, widget.snippetName);
     } else {
-      snippetRootNode ??= SnippetRootNode(name: widget.snippetName, child: PlaceholderNode()).cloneSnippet();
+      snippetRootNode ??=
+          SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
+              .cloneSnippet();
     }
     snippetRootNode.name = widget.snippetName;
     FC().snippetsMap[widget.snippetName] = snippetRootNode;
@@ -219,6 +235,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void initState() {
     super.initState();
 
+    debugPrint('*** SnippetPanel() ***');
+
     // register snippet? with panel
     FC().snippetPlacementMap[widget.panelName] = widget.snippetName;
 
@@ -233,12 +251,14 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           tabC!.addListener(() {
             if (!(tabC?.indexIsChanging ?? true)) {
               if (tabBarGK != null) {
-                TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+                TabBarNode? tbNode =
+                    FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
                 if (tbNode != null && !(backBtnPressed ?? false)) {
                   prevTabQ.add(tbNode.selection ?? 0);
                   tbNode.selection = tabC!.index;
                   prevTabQSize.value = prevTabQ.length;
-                  print("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+                  debugPrint(
+                      "tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
                 } else {
                   tbNode?.selection = tabC!.index;
                   backBtnPressed = false;
@@ -246,7 +266,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
               }
             }
           });
-          print("*** start listening to tab controller");
+          debugPrint("*** start listening to tab controller");
         });
       }
     });
@@ -404,18 +424,20 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     // }
 
-    print("build snippet ${widget.panelName}");
+    debugPrint("build snippet ${widget.panelName}");
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
-      key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+      key: FC().panelGkMap[widget.panelName] =
+          GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
       // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
       builder: (innerContext, state) {
-        print("BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
+        debugPrint(
+            "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
         try {
           return snippetRoot.toWidget(innerContext, null);
         } catch (e) {
-          print('snippetRoot.toWidget() failed!');
+          debugPrint('snippetRoot.toWidget() failed!');
           return Material(
             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
             child: SingleChildScrollView(
@@ -448,7 +470,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 //           : snapshot.hasData
 //               ? NotificationListener<SizeChangedLayoutNotification>(
 //                   onNotification: (SizeChangedLayoutNotification notification) {
-//                     // print("Snippet SizeChangedLayoutNotification - ${widget.sName}");
+//                     // debugPrint("Snippet SizeChangedLayoutNotification - ${widget.sName}");
 //                     return true;
 //                   },
 //                   child: SizeChangedLayoutNotifier(

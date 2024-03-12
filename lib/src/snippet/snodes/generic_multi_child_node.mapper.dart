@@ -32,19 +32,6 @@ class GenericMultiChildNodeMapper
   static bool _$isExpanded(GenericMultiChildNode v) => v.isExpanded;
   static const Field<GenericMultiChildNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(GenericMultiChildNode v) => v.pTreeC;
-  static const Field<GenericMultiChildNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(GenericMultiChildNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<GenericMultiChildNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(GenericMultiChildNode v) =>
-      v.propertiesPaneSC;
-  static const Field<GenericMultiChildNode, ScrollController>
-      _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(GenericMultiChildNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GenericMultiChildNode, bool>
@@ -63,9 +50,6 @@ class GenericMultiChildNodeMapper
     #propertyName: _f$propertyName,
     #children: _f$children,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

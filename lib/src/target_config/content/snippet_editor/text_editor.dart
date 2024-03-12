@@ -39,7 +39,7 @@ class _SnippetTextEditorState extends State<SnippetTextEditor> {
       maxLines: null,
       expands: true,
       onChanged: (text) {
-        print("Text changed to: $text");
+        debugPrint("Text changed to: $text");
       },
     );
   }

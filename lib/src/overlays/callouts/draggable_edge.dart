@@ -48,7 +48,7 @@ class DraggableEdge_OP extends StatelessWidget {
         onPointerMove: (PointerMoveEvent event) {
           double newTop = event.position.dy;
           double newLeft = event.position.dx;
-          // print("new pos: ${newLeft},${newTop}");
+          // debugPrint("new pos: ${newLeft},${newTop}");
           var deltaX = event.delta.dx;
           var deltaY = event.delta.dy;
           if (side == Side.LEFT) {
@@ -75,7 +75,7 @@ class DraggableEdge_OP extends StatelessWidget {
             }
           }
           // parent.calloutSize = Size(parent.calloutW, parent.calloutH);
-          // print('new height: ${parent.calloutH}');
+          // debugPrint('new height: ${parent.calloutH}');
           parent.movedOrResizedNotifier?.value++;
           parent.rebuild(() {
             if (_debounce?.isActive ?? false) _debounce?.cancel();

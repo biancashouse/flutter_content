@@ -3,17 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/measuring/measuring_wrapper.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
-Feature singleTargetBtnFeature(String snippetName) => "singleTargetBtnfeature:$snippetName";
+Feature singleTargetBtnFeature(String snippetName) =>
+    "singleTargetBtnfeature:$snippetName";
 
 void hideAllSingleTargetBtns() {
   FeatureList features = FC().singleTargetBtnFeatures;
-  // print("hideAllSingleTargetBtns - ${features.toString()} ");
+  // debugPrint("hideAllSingleTargetBtns - ${features.toString()} ");
   for (Feature feature in features) {
     Callout.hide(feature);
   }
@@ -21,7 +21,7 @@ void hideAllSingleTargetBtns() {
 
 void unhideAllSingleTargetBtns() {
   FeatureList features = FC().singleTargetBtnFeatures;
-  // print("unhideAllSingleTargetBtns - ${features.toString()} ");
+  // debugPrint("unhideAllSingleTargetBtns - ${features.toString()} ");
   for (Feature feature in features) {
     Callout.unhide(feature);
   }
@@ -46,38 +46,40 @@ class SingleTargetWrapper extends StatefulWidget {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
   }) {
-    assert(playButton == null || (playButtonAlignment != null && playButtonSize != null));
+    assert(playButton == null ||
+        (playButtonAlignment != null && playButtonSize != null));
   }
 
   @override
   State<SingleTargetWrapper> createState() => SingleTargetWrapperState();
 
-  static List<Feature> singleWidgetFeatures() => singleTargetMap.keys.map((s) => singleTargetBtnFeature(s)).toList();
+  static List<Feature> singleWidgetFeatures() =>
+      singleTargetMap.keys.map((s) => singleTargetBtnFeature(s)).toList();
 
   static Map<String, TargetConfig> singleTargetMap = {};
 
   static TargetConfig? singleTarget({required String name}) {
-    // print("singleTargetc: $name");
+    // debugPrint("singleTargetc: $name");
     TargetConfig? tc;
     // var singleTargets = singleTargetMap;
-    // print(singleTargets.toString());
+    // debugPrint(singleTargets.toString());
     try {
       // var names = singleTargetMap.values.map((tc) => tc.wName).toList();
-      // print("singleTarget keys: ${names.toString()}");
+      // debugPrint("singleTarget keys: ${names.toString()}");
       // for (TargetConfig atc in singleTargetMap.values) {
-      //   print("singleTarget: ${atc.toJson()}");
+      //   debugPrint("singleTarget: ${atc.toJson()}");
       // }
       tc = singleTargetMap.values.where((tc) => tc.wName == name).first;
-      // print("singleTarget: ${tc.toJson()}");
+      // debugPrint("singleTarget: ${tc.toJson()}");
     } catch (e) {
       // ignore and return null
     }
     return tc;
   }
-
 }
 
-class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+class SingleTargetWrapperState extends State<SingleTargetWrapper>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late TargetConfig singleTC;
   late Offset targetPos;
   late Size targetSize;
@@ -86,7 +88,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
   void initState() {
     super.initState();
 
-    print("C_SingleWidgetWrapperState.initState");
+    debugPrint("C_SingleWidgetWrapperState.initState");
 
     FC().setSingleTargetGk(widget.name, GlobalKey(debugLabel: widget.name));
 
@@ -98,7 +100,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
       snippetName: widget.name,
     );
     singleTC = SingleTargetWrapper.singleTargetMap[widget.name]!;
-    // print("singleTargetMap contains: ${CAPIState.singleTargetMap.keys.toList().toString()}");
+    // debugPrint("singleTargetMap contains: ${CAPIState.singleTargetMap.keys.toList().toString()}");
   }
 
   // @override
@@ -111,7 +113,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
   Widget build(BuildContext context) {
     return NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
-        // print("CAPIWidgetWrapperState on Size Change Notification - ${widget.name}");
+        // debugPrint("CAPIWidgetWrapperState on Size Change Notification - ${widget.name}");
         // measureWidget();
         return true;
       },
@@ -121,7 +123,8 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
             onSizeChangedF: (size) => targetSize = size,
             onPosChangedF: (pos) => targetPos = pos,
             onMeasuredF: () {
-              if (widget.playButton != null && (TransformableScaffold.of(context)?.mounted ?? false)) {
+              if (widget.playButton != null &&
+                  (Zoomer.of(context)?.mounted ?? false)) {
                 showSingleWidgetPlayButton();
               }
             },
@@ -142,7 +145,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
     features
       ..remove(feature)
       ..add(feature);
-    // print("showSingleWidgetPlayButton feature(${widget.name}): $feature");
+    // debugPrint("showSingleWidgetPlayButton feature(${widget.name}): $feature");
     Callout.showOverlay(
       boxContentF: (_) => Material(
         color: Colors.transparent,
@@ -193,7 +196,8 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
             //   // Useful.om.hideAllExceptFor(exceptions: [wwName.hashCode]);
             //   // bloc.add(const CAPIEvent.hideImageTargetsExcept());
             //   parentTW.applyTransform(tc.transformScale, tc.transformScale, ta, afterTransformF: () {
-            if (context.mounted) playSingleTarget(context, justPlaying: true, tc: singleTC);
+            if (context.mounted)
+              playSingleTarget(context, justPlaying: true, tc: singleTC);
             // });
             // Useful.afterMsDelayDo(tc.calloutDurationMs, () {
             //   parentTW?.resetTransform();
@@ -212,7 +216,9 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
       targetGkF: () => FC().getSingleTargetGk(widget.name),
       calloutConfig: CalloutConfig(
         feature: feature,
-        initialCalloutPos: _playButtonCenterPos().translate(-widget.playButtonSize!.width/2, -widget.playButtonSize!.height/2),
+        initialCalloutPos: _playButtonCenterPos().translate(
+            -widget.playButtonSize!.width / 2,
+            -widget.playButtonSize!.height / 2),
         suppliedCalloutW: widget.playButtonSize!.width,
         suppliedCalloutH: widget.playButtonSize!.height,
         roundedCorners: 20,
@@ -224,13 +230,15 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
     );
   }
 
-  static Future<void> playSingleTarget(context, {required bool justPlaying, required TargetConfig tc}) async {
-    print("Playing");
+  static Future<void> playSingleTarget(context,
+      {required bool justPlaying, required TargetConfig tc}) async {
+    debugPrint("Playing");
     CAPIBloC bloc = FC().capiBloc;
     // may not be wrapped inside a TransformableWrapper
-    TransformableScaffoldState? parentTW = TransformableScaffold.of(context);
-    if (parentTW == null) {
-      Rect? targetRect = FC().getSingleTargetGk(tc.wName)!
+    ZoomerState? zoomer = Zoomer.of(context);
+    if (zoomer == null) {
+      Rect? targetRect = FC()
+          .getSingleTargetGk(tc.wName)!
           .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!);
       if (targetRect != null) {
         bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
@@ -258,14 +266,20 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
       }
     } else {
       // is wrapped by a transformer
-      Rect? wrapperRect = (parentTW.widget.key as GlobalKey).globalPaintBounds(); //Measuring.findGlobalRect(parentTW.widget.key as GlobalKey);
-      Rect? targetRect = FC().getSingleTargetGk(tc.wName)!
+      Rect? wrapperRect = (zoomer.widget.key as GlobalKey)
+          .globalPaintBounds(); //Measuring.findGlobalRect(parentTW.widget.key as GlobalKey);
+      Rect? targetRect = FC()
+          .getSingleTargetGk(tc.wName)!
           .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_singleTargets)[tc.wName]!);
       if (wrapperRect != null && targetRect != null) {
-        bloc.add(CAPIEvent.showOnlyOneTargetGroup(tc: tc));
+        bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
         hideAllSingleTargetBtns();
-        Alignment ta = Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
-        parentTW.applyTransform(tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+        Alignment ta =
+            Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+        zoomer.applyTransform(
+            tc.transformScale,
+            tc.transformScale,
+            ta, afterTransformF: () {
           showSnippetContentCallout(
               initialTC: tc,
               snippetName: tc.snippetName,
@@ -273,7 +287,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
               allowButtonCallouts: false,
               onDiscardedF: () async {
                 removeSnippetContentCallout(tc.snippetName);
-                parentTW.resetTransform();
+                zoomer.resetTransform();
                 bloc.add(const CAPIEvent.unhideAllTargetGroups());
                 unhideAllSingleTargetBtns();
               });
@@ -281,7 +295,7 @@ class SingleTargetWrapperState extends State<SingleTargetWrapper> with SingleTic
             // remove after configured delay
             Useful.afterMsDelayDo(tc.calloutDurationMs, () async {
               removeSnippetContentCallout(tc.snippetName);
-              parentTW.resetTransform();
+              zoomer.resetTransform();
               unhideAllSingleTargetBtns();
               bloc.add(const CAPIEvent.unhideAllTargetGroups());
             });

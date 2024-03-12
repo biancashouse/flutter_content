@@ -109,7 +109,7 @@ void showSnippetTreeAndPropertiesCallout({
   Callout.showOverlay(
     calloutConfig: snippetTreeCalloutConfig(snippetBloc, onDismissedF),
     boxContentF: (_) {
-      // print('+++++++++++++++++++++++++++++ re-build SnippetTreeCalloutContents');
+      // debugPrint('+++++++++++++++++++++++++++++ re-build SnippetTreeCalloutContents');
       return BlocProvider<SnippetBloC>(
         create: (context) => snippetBloc,
         child: SnippetTreeAndPropertiesCalloutContents(
@@ -124,7 +124,7 @@ void showSnippetTreeAndPropertiesCallout({
 }
 
 // void _clearSelection() {
-//   print("clear selection");
+//   debugPrint("clear selection");
 //   snippetBloc.add(const SnippetEvent.clearNodeSelection());
 //   Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
 //   Callout.removeOverlay(TREENODE_MENU_CALLOUT);

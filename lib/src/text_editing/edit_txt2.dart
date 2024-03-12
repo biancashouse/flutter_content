@@ -97,7 +97,7 @@ void editText2({
         },
         // containsTextField: true,
         onResize: (Size newSize) {
-          calloutChildGK.currentState?.setState(() {});
+          // calloutChildGK.currentState?.setState(() {});
           onSizeChangeF?.call(newSize);
         },
         onDragF: (Offset newOffset) {

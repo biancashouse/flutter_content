@@ -38,12 +38,12 @@
 //     useEffect(() {
 //       // This function will be called once when the widget is first built.
 //       // Simulating initState behavior here.
-//       print('FlutterTextEditor initialized');
+//       debugPrint('FlutterTextEditor initialized');
 //       calloutConfig.teC ??= TextEditingController();
 //       calloutConfig.focusNode ??= FocusNode();
 //       return () {
 //         // Clean-up function (optional) called when the widget is disposed.
-//         print('FlutterTextEditor disposed');
+//         debugPrint('FlutterTextEditor disposed');
 //       };
 //     }, []);
 //
@@ -69,7 +69,7 @@
 //     calloutConfig.teC?.text = originalText;
 //
 //     // calloutConfig.focusNode!.onKeyEvent = (node, event) {
-//     //   print('calloutConfig.focusNode!.onKeyEvent');
+//     //   debugPrint('calloutConfig.focusNode!.onKeyEvent');
 //     //   if ((textInputType == TextInputType.number || numLines == 1 || HardwareKeyboard.instance.isShiftPressed) &&
 //     //       HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
 //     //     node.unfocus();
@@ -117,7 +117,7 @@
 //           // if (calloutConfig.focusNode?.canRequestFocus??false) {
 //           //   calloutConfig.focusNode!.requestFocus();
 //           // }
-//           print('x');
+//           debugPrint('x');
 //           // var state = Callout.of(context);
 //           // Callout.preventParentCalloutDrag(context);
 //         },

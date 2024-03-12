@@ -6,6 +6,7 @@ class OptionButton extends StatelessWidget {
   final Widget child;
   final Size? size;
   final Color? fillColor;
+  final String tooltip;
 
   const OptionButton({super.key,
     this.onPressed,
@@ -13,6 +14,7 @@ class OptionButton extends StatelessWidget {
     this.isActive = false,
     this.size,
     this.fillColor,
+    this.tooltip = '',
   });
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,12 @@ class OptionButton extends StatelessWidget {
       // fillColor: isActive ? Colors.white:null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: isActive ? Colors.yellow : Colors.white, width: isActive ? 5:1,),
+        side: BorderSide(color: isActive ? Colors.yellow : Colors.purple, width: isActive ? 5:1,),
       ),
       onPressed: (){
         onPressed?.call();
       },
-      child: child,
+      child: Tooltip(message:tooltip, child: child),
     );
   }
 }

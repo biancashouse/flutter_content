@@ -29,18 +29,6 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   static bool _$isExpanded(PollOptionNode v) => v.isExpanded;
   static const Field<PollOptionNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(PollOptionNode v) => v.pTreeC;
-  static const Field<PollOptionNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(PollOptionNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<PollOptionNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(PollOptionNode v) =>
-      v.propertiesPaneSC;
-  static const Field<PollOptionNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PollOptionNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PollOptionNode, bool> _f$hidePropertiesWhileDragging =
@@ -57,9 +45,6 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
     #optionId: _f$optionId,
     #text: _f$text,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

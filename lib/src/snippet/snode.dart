@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 part 'snode.mapper.dart';
 
@@ -93,8 +97,6 @@ const List<Type> singleChildSubClasses = [
   SnippetRootNode,
   DefaultTextStyleNode,
   AspectRatioNode,
-  TargetWrapperNode,
-  TargetGroupWrapperNode,
   GenericSingleChildNode,
 ];
 
@@ -119,6 +121,8 @@ const List<Type> buttonSubClasses = [
   TextButtonNode,
   FilledButtonNode,
   IconButtonNode,
+  TargetButtonNode,
+  TargetGroupWrapperNode,
 ];
 
 const List<Type> flexSubClasses = [
@@ -139,7 +143,6 @@ enum NodeAction {
 }
 
 @MappableClass(discriminatorKey: 'snode', includeSubClasses: [
-  TransformableScaffoldNode,
   ScaffoldNode,
   AppBarNode,
   CL,
@@ -148,23 +151,34 @@ enum NodeAction {
   InlineSpanNode,
 ])
 abstract class STreeNode extends Node with STreeNodeMappable {
+  PTreeNodeTreeController? _pTreeC;
+  ScrollController? _propertiesPaneSC;
+
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  PTreeNodeTreeController? pTreeC;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  double? propertiesPaneScrollPos;
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  ScrollController? propertiesPaneSC;
+  PTreeNodeTreeController pTreeC(BuildContext context) =>
+      _pTreeC ??= PTreeNodeTreeController(
+        roots: properties(context),
+        childrenProvider: Node.propertyTreeChildrenProvider,
+      );
+
+  double propertiesPaneScrollPos() => propertiesPaneSC().offset;
+
+  ScrollController propertiesPaneSC() =>
+      _propertiesPaneSC ??= ScrollController();
+  // ..addListener(() {
+  //   propertiesPaneScrollPos =
+  // });
+
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool? hidePropertiesWhileDragging;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? nodeWidgetGK; // gets used in toWidget()
 
-  static SnippetRootNode? rootNodeOfSnippet(STreeNode node) =>
-      node.findNearestAncestor<SnippetRootNode>();
+  SnippetRootNode? rootNodeOfSnippet() =>
+      findNearestAncestor<SnippetRootNode>();
 
   List<PTreeNode> properties(BuildContext context) {
     return createPropertiesList(context);
@@ -175,11 +189,184 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // // selection always uses this gk
   // static GlobalKey get selectedWidgetGK {
   //   if (_selectedWidgetGK.currentState == null) return _selectedWidgetGK;
-  //   print("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
+  //   debugPrint("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
   //   return GlobalKey(debugLabel: 'selectionGK was in use');
   // }
   //
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
+
+  void showTappableNodeWidgetOverlay(Rect r) {
+// overlay rect with a transparent pink rect, and a 3px surround
+    Rect restrictedRect = Useful.restrictRectToScreen(r);
+    debugPrint(
+        "=== showTappableNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
+    const int BORDER = 3;
+    double borderLeft = max(restrictedRect.left - 3, 0);
+    double borderTop = max(restrictedRect.top - 3, 0);
+    double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
+    double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+    Rect borderRect =
+        Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+    CalloutConfig cc = CalloutConfig(
+      feature: '${nodeWidgetGK.hashCode}-pink-overlay',
+      suppliedCalloutW: borderRect.width.abs() + 6,
+      suppliedCalloutH: borderRect.height.abs() + 6,
+      initialCalloutPos: borderRect.topLeft.translate(-3, -3),
+      color: Colors.transparent,
+      arrowType: ArrowType.NO_CONNECTOR,
+      draggable: false,
+    );
+
+    Callout.showOverlay(
+      ensureLowestOverlay: false,
+      boxContentF: (context) => PointerInterceptor(
+        child: InkWell(
+          onTap: () {
+            // debugPrint("tapped");
+            SnippetName? snippetName = rootNodeOfSnippet()?.name;
+            if (snippetName == null) return;
+            var cc = nodeWidgetGK?.currentContext;
+// edit the root snippet
+            hideAllSingleTargetBtns();
+// FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+// FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
+            MaterialSPAState.removeAllNodeWidgetOverlays();
+// actually push node parent, then select node - more user-friendly
+            cc = nodeWidgetGK?.currentContext;
+            pushThenShowNamedSnippetWithNodeSelected(
+                snippetName, this, this, context);
+            // Useful.afterNextBuildDo(() {
+            showNodeWidgetOverlay();
+            // });
+          },
+          child: Container(
+            width: borderRect.width.abs(),
+            height: borderRect.height.abs(),
+            decoration: BoxDecoration(
+//color: Colors.purpleAccent.withOpacity(.1),
+              border: Border.all(
+                  width: 2,
+                  color: Colors.purpleAccent,
+                  style: BorderStyle.solid),
+            ),
+          ),
+        ),
+      ),
+      calloutConfig: cc,
+      targetGkF: () => nodeWidgetGK,
+    );
+  }
+
+  void showNodeWidgetOverlay() {
+    Rect? r = nodeWidgetGK?.globalPaintBounds(
+        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    if (r != null) {
+      r = Useful.restrictRectToScreen(r);
+      MaterialSPAState.removeAllNodeWidgetOverlays();
+      Rect restrictedRect = Useful.restrictRectToScreen(r);
+      const int BORDER = 3;
+      double borderLeft = max(restrictedRect.left - 3, 0);
+      double borderTop = max(restrictedRect.top - 3, 0);
+      double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
+      double borderBottom =
+          min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+      Rect borderRect =
+          Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+      Callout.showOverlay(
+        ensureLowestOverlay: true,
+        boxContentF: (context) => PointerInterceptor(
+          child: Container(
+            width: borderRect.width,
+            height: borderRect.height,
+            decoration: BoxDecoration(
+//color: Colors.purpleAccent.withOpacity(.1),
+              border: Border.all(
+                  width: 2,
+                  color: Colors.purpleAccent,
+                  style: BorderStyle.solid),
+            ),
+          ),
+        ),
+        calloutConfig: CalloutConfig(
+          feature: '${nodeWidgetGK.hashCode}-pink-overlay',
+          suppliedCalloutW: borderRect.width + 6,
+          suppliedCalloutH: borderRect.height + 6,
+          initialCalloutPos: borderRect.topLeft.translate(-3, -3),
+          color: Colors.transparent,
+          arrowType: ArrowType.NO_CONNECTOR,
+          draggable: false,
+        ),
+        targetGkF: () => nodeWidgetGK,
+      );
+    }
+  }
+
+  // node is where the snippet tree starts (not necc the snippet's root node)
+  // selection is poss a current (lower) selection in the tree
+  void pushThenShowNamedSnippetWithNodeSelected(
+    SnippetName snippetName,
+    STreeNode startingAtNode,
+    STreeNode? selectedNode,
+    BuildContext context,
+  ) {
+    STreeNode? highestNode;
+    if (startingAtNode is ScaffoldNode) {
+      highestNode = startingAtNode;
+    } else {
+      highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
+    }
+    var cc = startingAtNode.nodeWidgetGK?.currentContext;
+    FC().capiBloc.add(CAPIEvent.pushSnippetBloc(
+        snippetName: snippetName, visibleDecendantNode: highestNode));
+    Useful.afterNextBuildDo(() {
+      var cc = startingAtNode.nodeWidgetGK?.currentContext;
+      SnippetBloC? snippetBeingEdited = FC().snippetBeingEdited;
+      if (FC().snippetBeingEdited != null) {
+        // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
+        showSnippetTreeAndPropertiesCallout(
+          snippetBloc: snippetBeingEdited!,
+          targetGKF: () => startingAtNode.nodeWidgetGK,
+          onDismissedF: () {
+// CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
+            STreeNode.unhighlightSelectedNode();
+            Callout.dismiss('selected-panel-border-overlay');
+            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+            FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
+// removeNodePropertiesCallout();
+            Callout.dismiss(TREENODE_MENU_CALLOUT);
+            MaterialSPAState.exitEditMode();
+            if (snippetBeingEdited.state.canUndo()) {
+              FC().capiBloc.add(const CAPIEvent.saveModel());
+            }
+          },
+        );
+        // set the properties tree
+        STreeNode sel = selectedNode ?? startingAtNode;
+        // final List<PTreeNode> propertyNodes = sel.properties(context);
+        // // get a new treeController only when snippet selected
+        // sel.pTreeC ??= PTreeNodeTreeController(
+        //   roots: propertyNodes,
+        //   childrenProvider: Node.propertyTreeChildrenProvider,
+        // );
+        // //showTreeNodeMenu(context, () => STreeNode.selectionGK);
+        // // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
+        // sel.propertiesPaneSC ??= ScrollController()
+        //   ..addListener(() {
+        //     sel.propertiesPaneScrollPos = sel.propertiesPaneSC?.offset ?? 0.0;
+        //   });
+
+// select node
+        snippetBeingEdited.add(SnippetEvent.selectNode(
+          node: sel,
+          selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+          selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+// imageTC: tc,
+        ));
+// var nodeCtx = node.nodeWidgetGK?.currentContext;
+// Scrollable.ensureVisible(context);
+      }
+    });
+  }
 
   void refreshWithUpdate(VoidCallback assignF) {
     SnippetBloC? snippetBloc = FC().snippetBeingEdited;
@@ -285,6 +472,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return true;
   }
 
+  bool hasChildren() =>
+      (this is SC && (this as SC).child != null) ||
+      (this is MC && (this as MC).children.isNotEmpty) ||
+      (this is TextSpanNode &&
+          ((this as TextSpanNode).children?.length ?? 0) > 0);
   List<String> sensibleParents() => const [];
 
   GlobalKey createNodeGK() {
@@ -312,9 +504,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
-    // print("missing parents: $doubleCheck");
+    // debugPrint("missing parents: $doubleCheck");
     // if (tabBar != null) {
-    //   print("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
+    //   debugPrint("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
     // }
   }
 
@@ -443,7 +635,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   thickness = 10;
 //   translate = Offset.zero;
 // }
-            print("Showing $SELECTED_NODE_BORDER_CALLOUT");
+            debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
             Callout.showOverlay(
               ensureLowestOverlay: true,
               calloutConfig: CalloutConfig(
@@ -497,7 +689,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   MenuItemButton? pasteMI,
 //   ValueChanged<Type>? onPressedF,
 // }) {
-//   // print(nodeTypeCandidates.toString());
+//   // debugPrint(nodeTypeCandidates.toString());
 //   List<Widget> widgets = [];
 //   //
 //   if (pasteMI != null) widgets.add(pasteMI);
@@ -651,7 +843,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
 // Text menuItemText(Type type) {
 //   String typeString = type.toString();
-//   print(typeString);
+//   debugPrint(typeString);
 //   return Text(typeString.substring(0, typeString.length - 4));
 // }
 

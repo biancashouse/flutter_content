@@ -79,20 +79,20 @@ class DiscoveryController {
   }
 
   void playNext() {
-//    //print('Gotits: ${repo.gotits()}');
+//    //debugPrint('Gotits: ${repo.gotits()}');
 //    _present.forEach((f, g) {
 //      //String key = repo.shortFeatureKey(f);
-//      //print('Present: $key');
+//      //debugPrint('Present: $key');
 //    });
 //    playList.forEach((f) {
 //      //String key = repo.shortFeatureKey(f);
-//      //print('playList: $key');
+//      //debugPrint('playList: $key');
 //    });
     while (++index < playList.length) {
       int playItem = playList[index];
       FeaturedWidget? foundW = findFeaturedWidget(playItem);
       if (foundW != null && !GotitsHelperInt.alreadyGotit(playItem)) {
-        //print('Playing: ${repo.shortFeatureKey(playItem)}');
+        //debugPrint('Playing: ${repo.shortFeatureKey(playItem)}');
         foundW.play();
         return;
       }
@@ -101,11 +101,11 @@ class DiscoveryController {
     if (_onFinishedPlaying != null) {
       _onFinishedPlaying();
     }
-    // print('End of Feature Discovery');
+    // debugPrint('End of Feature Discovery');
   }
 
   void stopPlay({Function? afterStopF}) {
-    //print('DISCOVERY STOPPED');
+    //debugPrint('DISCOVERY STOPPED');
     if (startPlayTimer?.isActive ?? false) {
       startPlayTimer!.cancel();
       startPlayTimer = null;
@@ -132,7 +132,7 @@ class DiscoveryController {
       PlayOverlaysButton? pb = pbgk.currentWidget as PlayOverlaysButton?;
       if (pbs != null && pb!.features.contains(theFeature)) {
         pbs.refresh(() {
-          //print('setState for playbuttons for $theFeature}');
+          //debugPrint('setState for playbuttons for $theFeature}');
         });
       }
     }

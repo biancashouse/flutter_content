@@ -20,7 +20,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ei = useState<EdgeInsetsValue>(originalValue ?? EdgeInsetsValue());
+    final ei = useState<EdgeInsetsValue>(originalValue);
     final inputMode = useState<EdgeInsetsInputModeEnum>(EdgeInsetsInputModeEnum.all);
     return SizedBox(
       width: 200,
@@ -149,7 +149,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                     (s) {
                       double? newBottom = double.tryParse(s);
                       if (newBottom != null) {
-                        // print(inputMode.name);
+                        // debugPrint(inputMode.name);
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
                           ei.value = EdgeInsetsValue(top: newBottom, left: newBottom, bottom: newBottom, right: newBottom);
                         } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {

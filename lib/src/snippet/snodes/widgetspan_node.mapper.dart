@@ -28,18 +28,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   static bool _$isExpanded(WidgetSpanNode v) => v.isExpanded;
   static const Field<WidgetSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(WidgetSpanNode v) => v.pTreeC;
-  static const Field<WidgetSpanNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(WidgetSpanNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<WidgetSpanNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(WidgetSpanNode v) =>
-      v.propertiesPaneSC;
-  static const Field<WidgetSpanNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(WidgetSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<WidgetSpanNode, bool> _f$hidePropertiesWhileDragging =
@@ -55,9 +43,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   final MappableFields<WidgetSpanNode> fields = const {
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

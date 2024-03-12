@@ -77,7 +77,7 @@
 //                   fontStyle: selectedNode is MultiChildNode && selectedNode.children.isEmpty ? FontStyle.italic : FontStyle.normal,
 //                   // fontWeight: FlutterContent().capiBloc.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
 //                 ),
-//             textScaleFactor: 1.8,
+//             textScaler: TextScaler.linear(1.8),
 //           ),
 //         ),
 //       ],
@@ -130,7 +130,7 @@
 //             width: selectedNode.nodeAddersAndPropertiesCalloutSize.width,
 //             height: selectedNode.nodeAddersAndPropertiesCalloutSize.height,
 //             child: Builder(builder: (context) {
-//               print("ListView newSize: ${selectedNode.nodeAddersAndPropertiesCalloutSize}");
+//               debugPrint("ListView newSize: ${selectedNode.nodeAddersAndPropertiesCalloutSize}");
 //               return ListView(
 //                 children: [
 //                   //
@@ -156,7 +156,7 @@
 //     resizeableH: true,
 //     resizeableV: true,
 //     onResize: (newSize) {
-//       print("resized: ${newSize.toString()}");
+//       debugPrint("resized: ${newSize.toString()}");
 //       Callout? callout = Useful.om.findCallout("NodeAddersAndProperties".hashCode);
 //       // STreeNode.setNodeAddersAndPropertiesCalloutSize(selectedNode.runtimeType, newSize);
 //       if (callout != null) {
@@ -226,7 +226,7 @@
 //             fontStyle: state.selectedNode is MultiChildNode && (state.selectedNode as MultiChildNode).children.isEmpty ? FontStyle.italic : FontStyle.normal,
 //             // fontWeight: FlutterContent().capiBloc.aNodeIsSelected ? FontWeight.bold : FontWeight.normal,
 //           ),
-//           textScaleFactor: 1.8,
+//           textScaler: TextScaler.linear(1.8),
 //         ),
 //       ),
 //     ],

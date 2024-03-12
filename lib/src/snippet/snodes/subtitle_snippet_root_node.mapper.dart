@@ -39,21 +39,6 @@ class SubtitleSnippetRootNodeMapper
   static bool _$isExpanded(SubtitleSnippetRootNode v) => v.isExpanded;
   static const Field<SubtitleSnippetRootNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(SubtitleSnippetRootNode v) =>
-      v.pTreeC;
-  static const Field<SubtitleSnippetRootNode, PTreeNodeTreeController>
-      _f$pTreeC = Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(SubtitleSnippetRootNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<SubtitleSnippetRootNode, double>
-      _f$propertiesPaneScrollPos = Field(
-          'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(SubtitleSnippetRootNode v) =>
-      v.propertiesPaneSC;
-  static const Field<SubtitleSnippetRootNode, ScrollController>
-      _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SubtitleSnippetRootNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SubtitleSnippetRootNode, bool>
@@ -74,9 +59,6 @@ class SubtitleSnippetRootNodeMapper
     #tags: _f$tags,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

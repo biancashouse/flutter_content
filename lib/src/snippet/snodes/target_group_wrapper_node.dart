@@ -1,11 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 
 part 'target_group_wrapper_node.mapper.dart';
 
 @MappableClass()
-class TargetGroupWrapperNode extends SC with TargetGroupWrapperNodeMappable {
+class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappable {
   SnippetName name;
 
   TargetGroupWrapperNode({
@@ -20,8 +22,8 @@ class TargetGroupWrapperNode extends SC with TargetGroupWrapperNodeMappable {
           name: 'wrapper name',
           stringValue: name,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
-          calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutButtonSize: const Size(280, 80),
+          calloutSize: const Size(280, 80),
         ),
       ];
 
@@ -40,13 +42,20 @@ class TargetGroupWrapperNode extends SC with TargetGroupWrapperNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    return TargetGroupWrapper(
+    return name != 'name?'
+    ? TargetGroupWrapper(
       name: name,
       child: super.child?.toWidget(context, this) ??
           const Icon(
             Icons.question_mark,
             color: Colors.orangeAccent,
           ),
+    )
+    : Row(
+      children: [
+        Text('wrapper must be assigned a name'),
+        const Icon(Icons.error, color: Colors.redAccent),
+      ],
     );
     return child?.toWidget(context, this) ??
         const Icon(

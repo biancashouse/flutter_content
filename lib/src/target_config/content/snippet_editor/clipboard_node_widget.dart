@@ -33,8 +33,8 @@ class ClipboardNodeWidget extends StatelessWidget {
             .sensibleParents()
             .isNotEmpty && !(entry.node as STreeNode).sensibleParents().contains((parentEntry?.node as STreeNode?)?.toString());
         if (badParent) {
-          print("bad ${(entry.node as STreeNode).toString()}, parent: ${(parentEntry?.node as STreeNode?)?.toString()}");
-          print("sensible parents: ${(entry.node as STreeNode).sensibleParents().toString()}");
+          debugPrint("bad ${(entry.node as STreeNode).toString()}, parent: ${(parentEntry?.node as STreeNode?)?.toString()}");
+          debugPrint("sensible parents: ${(entry.node as STreeNode).sensibleParents().toString()}");
         }
 
         String displayedNodeName = entry.node is SnippetRootNode && (entry.node as SnippetRootNode).name.isNotEmpty

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/wrapper/transformable_scaffold.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
+
+import 'positioned_target_cover_btn.dart';
 
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
@@ -19,28 +21,33 @@ class PositionedTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransformableScaffoldState? parentTW = TransformableScaffold.of(context);
-    // TargetGroupWrapperState? parentIW = FTargetGroupWrapper.of(context);
+    TargetGroupWrapperState? parentTW = TargetGroupWrapper.of(context);
+    ZoomerState? zoomer = Zoomer.of(context);
     TargetConfig? tc = bloc.state.tcByNameOrUid(initialTC);
-    return tc != null ? Positioned(
-      top: tc.targetStackPos().dy - tc.radius,
-      left: tc.targetStackPos().dx - tc.radius,
+    if (tc != null) {
+      Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+      double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
+      return Positioned(
+      top: tc.targetStackPos().dy - radius,
+      left: tc.targetStackPos().dx - radius,
       child: Draggable(
         key: FC().setMultiTargetGk(initialTC.uid.toString(), GlobalKey()),
         feedback: _draggableTargetBeingDragged(tc),
         childWhenDragging: const Offstage(),
         dragAnchorStrategy: (Draggable<Object> draggable, BuildContext context, Offset position) {
-          return Offset(tc.radius,tc.radius);
+          return Offset(radius,radius);
         },
         onDragUpdate: (DragUpdateDetails details) {
-          Offset newGlobalPos = details.globalPosition.translate(
-            parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-            parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-          );
+          Offset newGlobalPos = details.globalPosition
+            //   .translate(
+            // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
+            // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
+          // )
+          ;
           tc.setTargetStackPosPc(newGlobalPos);
         },
         onDragStarted: () {
-          print("drag started");
+          debugPrint("drag started");
           //removeSnippetContentCallout(widget.initialTC.snippetName);
         },
         onDragEnd: (DraggableDetails details) {
@@ -66,31 +73,81 @@ class PositionedTarget extends StatelessWidget {
           //   }
           // });
         },
-        child: _draggableTargetNotBeingDragged(tc, Colors.white.withOpacity(.1)),
+        child: _draggableTargetNotBeingDragged(context, tc, Colors.white.withOpacity(.1), parentTW, zoomer),
       ),
-    )
-    : const Icon(Icons.warning, color: Colors.red,);
+    );
+    } else {
+      return const Icon(Icons.warning, color: Colors.red,);
+    }
   }
 
-  Widget _draggableTargetNotBeingDragged(TargetConfig tc, Color bgColor) {
-    double radius = tc.radius;
-    return SizedBox(
-      width: radius * 2,
-      height: radius * 2,
-      child:
-      IntegerCircleAvatar(
-        tc,
-        num: bloc.state.targetIndex(tc) + 1,
-        bgColor: tc.calloutColor().withOpacity(.3),
-        radius: radius,
-        textColor: Colors.white,
-        fontSize: 18,
+  Widget _draggableTargetNotBeingDragged(context, TargetConfig tc, Color bgColor, parentTW, zoomer) {
+    Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+    double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
+    return GestureDetector(
+      onDoubleTap: () async {
+        Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
+            .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
+        Rect? targetRect = FC()
+            .getMultiTargetGk(tc.uid.toString())!
+            .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
+        if (wrapperRect != null && targetRect != null) {
+          hideAllSingleTargetBtns();
+          bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
+          Alignment ta = Useful.calcTargetAlignmentWithinWrapper(
+              wrapperRect, targetRect);
+          // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
+          zoomer.applyTransform(
+              tc.transformScale,
+              tc.transformScale,
+              ta, afterTransformF: () {
+            // showTargetConfigToolbarCallout(
+            //   tc,
+            //   parentTW.widget.ancestorHScrollController,
+            //   parentTW.widget.ancestorVScrollController,
+            //   onCloseF: () async {
+            //     removeTargetConfigToolbarCallout();
+            //     transformableWidgetWrapperState.resetTransform();
+            //     bloc.add(const CAPIEvent.unhideAllTargetGroups());
+            //     unhideAllSingleTargetBtns();
+            //   },
+            // );
+            showSnippetContentCallout(
+              // zoomer: parentZoomer,
+              initialTC: tc,
+              snippetName: tc.snippetName,
+              justPlaying: false,
+              allowButtonCallouts: false,
+              onDiscardedF: () async {
+                zoomer.resetTransform();
+                bloc.add(const CAPIEvent.unhideAllTargetGroups());
+                unhideAllSingleTargetBtns();
+              },
+            );
+            // show config toolbar in a toast
+            PositionedTargetPlayBtn.showConfigToolbar(tc, zoomer, parentTW);
+          });
+        }
+      },
+      child: SizedBox(
+        width: radius * 2,
+        height: radius * 2,
+        child:
+        IntegerCircleAvatar(
+          tc,
+          num: bloc.state.targetIndex(tc) + 1,
+          bgColor: tc.calloutColor().withOpacity(.3),
+          radius: radius,
+          textColor: Colors.white,
+          fontSize: 18,
+        ),
       ),
     );
   }
 
   Widget _draggableTargetBeingDragged(TargetConfig tc) {
-    double radius = tc.radius;
+    Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+    double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
     return SizedBox(
       width: tc.getScale(bloc.state) * radius * 2,
       height: tc.getScale(bloc.state) * radius * 2,

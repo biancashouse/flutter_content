@@ -42,18 +42,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   static bool _$isExpanded(ElevatedButtonNode v) => v.isExpanded;
   static const Field<ElevatedButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(ElevatedButtonNode v) => v.pTreeC;
-  static const Field<ElevatedButtonNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(ElevatedButtonNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<ElevatedButtonNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(ElevatedButtonNode v) =>
-      v.propertiesPaneSC;
-  static const Field<ElevatedButtonNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ElevatedButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ElevatedButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -76,9 +64,6 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,

@@ -254,11 +254,11 @@ class TextEditorWithAutocompleteState extends State<TextEditorWithAutocomplete> 
           textAlign: widget.textAlignF != null ? (widget.textAlignF!).call() : TextAlign.left,
           textAlignVertical: TextAlignVertical.top,
           onTap: () {
-            // print("TextField tapped");
+            // debugPrint("TextField tapped");
             // widget.focusNode.requestFocus();
           },
           onFieldSubmitted: (s) {
-            print('field submitted');
+            debugPrint('field submitted');
             onFieldSubmitted();
           },
           onChanged: (s) {
@@ -336,7 +336,7 @@ class TextEditorWithAutocompleteState extends State<TextEditorWithAutocomplete> 
     //   textAlign: widget.textAlignF != null ? (widget.textAlignF!).call() : TextAlign.left,
     //   textAlignVertical: TextAlignVertical.top,
     //   onTap: () {
-    //     // print("TextField tapped");
+    //     // debugPrint("TextField tapped");
     //     // widget.focusNode.requestFocus();
     //   },
     //   onChanged: (s) {

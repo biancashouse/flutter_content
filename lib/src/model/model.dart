@@ -66,7 +66,7 @@ class TargetConfig {
   bool single;
   double? targetLocalPosLeftPc;
   double? targetLocalPosTopPc;
-  double radius;
+  double? radiusPc;
   double? btnLocalTopPc;
   double? btnLocalLeftPc;
   double? calloutTopPc;
@@ -102,7 +102,7 @@ class TargetConfig {
     this.transformScale = 1.0,
     this.transformTranslateX = 0.0,
     this.transformTranslateY = 0.0,
-    this.radius = 30,
+    this.radiusPc,
     this.calloutDurationMs = 1500,
     this.calloutWidth = 400,
     this.calloutHeight = 85,

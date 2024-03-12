@@ -39,17 +39,6 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
   static bool _$isExpanded(YTNode v) => v.isExpanded;
   static const Field<YTNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(YTNode v) => v.pTreeC;
-  static const Field<YTNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(YTNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<YTNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(YTNode v) => v.propertiesPaneSC;
-  static const Field<YTNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(YTNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<YTNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -68,9 +57,6 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

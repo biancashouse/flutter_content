@@ -33,15 +33,15 @@ class DecimalEditor extends HookWidget {
   Widget build(BuildContext context) {
     final teC = useTextEditingController(text: originalS ?? '');
     final focusNode = useFocusNode();
-    focusNode.onKey = (node, event) {
-      if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+    focusNode.onKeyEvent = (node, event) {
+      if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.enter)) {
         node.unfocus();
         onChangedF.call(teC.text);
         // Do something
         // Next 2 line needed If you don't want to update the text field with new line.
         return KeyEventResult.handled;
       }
-      if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
+      if (HardwareKeyboard.instance.isLogicalKeyPressed(LogicalKeyboardKey.escape)) {
         // Do something
         // Next 2 line needed If you don't want to update the text field with new line.
         onChangedF.call(originalS??'');

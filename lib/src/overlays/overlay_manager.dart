@@ -23,9 +23,9 @@
 //   final Map<Feature, List<OverlayEntry>> _entryMap = {};
 //
 //   // void debugging() {
-//   //   print("_featureStack size: ${_featureStack.length}");
-//   //   print("_calloutMap size: ${_calloutMap.keys.length}");
-//   //   print("_entryMap size: ${_entryMap.length}");
+//   //   debugPrint("_featureStack size: ${_featureStack.length}");
+//   //   debugPrint("_calloutMap size: ${_calloutMap.keys.length}");
+//   //   debugPrint("_entryMap size: ${_entryMap.length}");
 //   // }
 //
 //   // always append entries, and remove from end of list; i.e. treat like a stack
@@ -34,7 +34,7 @@
 //
 //   // private, named constructor
 //   OverlayManager(this.overlayState) {
-//     // print("OverlayManager");
+//     // debugPrint("OverlayManager");
 //   }
 //
 //   void overlaySetState({VoidCallback? f}) {
@@ -131,7 +131,7 @@
 //           entry.remove();
 //           _entryMap[feature]?.remove(entry);
 //         } catch (e) {
-//           print("remove(${feature}) - ${e.toString()}");
+//           debugPrint("remove(${feature}) - ${e.toString()}");
 //         }
 //       }
 //       for (OverlayEntry entry in toBeMoved) {
@@ -153,7 +153,7 @@
 //             entry.remove();
 //             _entryMap[feature]?.remove(entry);
 //           } catch (e) {
-//             print("remove(${feature}) - ${e.toString()}");
+//             debugPrint("remove(${feature}) - ${e.toString()}");
 //           }
 //         }
 //         for (OverlayEntry entry in toBeMoved) {
@@ -173,7 +173,7 @@
 //           entry.remove();
 //           _entryMap[feature]?.remove(entry);
 //         } catch (e) {
-//           print("remove(${feature}) - ${e.toString()}");
+//           debugPrint("remove(${feature}) - ${e.toString()}");
 //         }
 //       }
 //       _calloutMap.remove(feature);
@@ -189,7 +189,7 @@
 //             entry.remove();
 //             _entryMap[feature]?.remove(entry);
 //           } catch (e) {
-//             print("remove(${feature}) - ${e.toString()}");
+//             debugPrint("remove(${feature}) - ${e.toString()}");
 //           }
 //         }
 //         _calloutMap.remove(feature);
@@ -302,7 +302,7 @@
 //   // }
 //
 //   // void refreshAllCallouts() {
-//   //   print('Overlay Helper refresh');
+//   //   debugPrint('Overlay Helper refresh');
 //   //   if (false) developer.log('refresh', name: 'om');
 //   //   for (var el in _overlayItems) {
 //   //     // if (el is ToastCallout) {
@@ -403,7 +403,7 @@
 // //     Callout foundCallout = _overlayItems[pos] as Callout;
 // //     foundCallout.completed(theResult);
 // //     _overlayItems.remove(foundCallout);
-// //     print("num overlay items is now: ${_overlayItems.length}");
+// //     debugPrint("num overlay items is now: ${_overlayItems.length}");
 // //   }
 // // }
 // //
@@ -413,7 +413,7 @@
 // //     ToastCallout foundToast = _overlayItems[pos] as ToastCallout;
 // //     foundToast.completed(theResult);
 // //     _overlayItems.remove(theToast);
-// //     print("num overlay items is now: ${_overlayItems.length}");
+// //     debugPrint("num overlay items is now: ${_overlayItems.length}");
 // //   }
 // // }
 //

@@ -322,7 +322,7 @@ packages:
     source: hosted
     version: "5.9.6"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       sha256: "797379ea206eaeeb62499775de812761493d0692890fdc7f90b6183a3369176d"
@@ -393,11 +393,10 @@ packages:
   flutter_content:
     dependency: "direct main"
     description:
-      name: flutter_content
-      sha256: d4ea1f83aab60b9acf282b97020dbadc056e1b40788e7de7b7f1836e6fd986e3
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.4"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.6"
   flutter_fancy_tree_view:
     dependency: transitive
     description:
@@ -407,7 +406,7 @@ packages:
     source: hosted
     version: "1.4.1"
   flutter_hooks:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_hooks
       sha256: cde36b12f7188c85286fba9b38cc5a902e7279f36dd676967106c041dc9dde70
@@ -605,6 +604,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  lorem_ipsum:
+    dependency: transitive
+    description:
+      name: lorem_ipsum
+      sha256: b018535db8525a45bbcd7a44e151480e2618e2111c5305725e3713ce7c6ba677
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   matcher:
     dependency: transitive
     description:

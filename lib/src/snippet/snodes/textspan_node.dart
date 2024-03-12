@@ -73,7 +73,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
         children: children?.map<InlineSpan>((inlinespanNode) => inlinespanNode.toInlineSpan(context, isRoot: false)).toList(),
       );
     } catch (e) {
-      print('cannot render $FLUTTER_TYPE!');
+      debugPrint('cannot render $FLUTTER_TYPE!');
     }
     return const WidgetSpan(child: Icon(Icons.error, color: Colors.redAccent));
   }
@@ -162,7 +162,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //                 value: textStyle?.fontStyle == FontStyleEnum.italic,
   //                 fillColor: const MaterialStatePropertyAll(Colors.purple),
   //                 onChanged: (bool? isChecked) {
-  //                   print("checked: $isChecked");
+  //                   debugPrint("checked: $isChecked");
   //                   textStyle ??= TextStyleNodeProperty();
   //                   textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
   //                   bloc.add(const CAPIEvent.forceRefresh());

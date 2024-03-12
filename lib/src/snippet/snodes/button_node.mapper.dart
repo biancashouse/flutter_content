@@ -19,6 +19,8 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       TextButtonNodeMapper.ensureInitialized();
       FilledButtonNodeMapper.ensureInitialized();
       IconButtonNodeMapper.ensureInitialized();
+      TargetButtonNodeMapper.ensureInitialized();
+      TargetGroupWrapperNodeMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -49,18 +51,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   static bool _$isExpanded(ButtonNode v) => v.isExpanded;
   static const Field<ButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(ButtonNode v) => v.pTreeC;
-  static const Field<ButtonNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(ButtonNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<ButtonNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(ButtonNode v) =>
-      v.propertiesPaneSC;
-  static const Field<ButtonNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ButtonNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -80,9 +70,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };
@@ -119,17 +106,9 @@ mixin ButtonNodeMappable {
 
 abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
-  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup;
-  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
-      get calloutConfigGroup;
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
-  $R call(
-      {ButtonStyleGroup? buttonStyleGroup,
-      String? onTapHandlerName,
-      CalloutConfigGroup? calloutConfigGroup,
-      STreeNode? child});
+  $R call({STreeNode? child});
   ButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

@@ -21,7 +21,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) {
-    // print("ContainerNode.properties()...");
+    // debugPrint("ContainerNode.properties()...");
     return [
       ColorPropertyValueNode(
         snode: this,

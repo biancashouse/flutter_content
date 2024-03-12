@@ -65,7 +65,7 @@
 //   //       // skipHeightConstraintWarning: skipHeightConstraintWarning,
 //   //       ); //Measuring.findGlobalRect(_offstageGK!);
 //   //   if (rect != null) {
-//   //     print('$panelName ${rect.toString()}');
+//   //     debugPrint('$panelName ${rect.toString()}');
 //   //     // overlay rect with a transparent pink rect, and a 3px surround
 //   //     Callout.showOverlay(
 //   //       ensureLowestOverlay: true,
@@ -244,7 +244,7 @@
 //
 //     //possibly init firebase, then read model
 //     // try to read model from firebase
-//     // print("getFBModel()...");
+//     // debugPrint("getFBModel()...");
 //     CAPIModel? fbModel;
 //
 //     if (widget.fbOptions != null) {
@@ -253,7 +253,7 @@
 //       lastSavedModelJson = modelAndModelJson.$2;
 //     }
 //
-//     // print("getFBModel() returned ${fbModel.toString()}");
+//     // debugPrint("getFBModel() returned ${fbModel.toString()}");
 //     // if can't get model from FB, try localstorage
 //     if (fbModel == null) {
 //       var modelJson = HydratedBloc.storage.read("flutter-content");
@@ -312,9 +312,9 @@
 //   }
 //
 //   Future<(CAPIModel?, String?)> getFBModel() async {
-//     // print("getFBModel()...1");
+//     // debugPrint("getFBModel()...1");
 //     CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-models');
-//     // print("getFBModel()...2");
+//     // debugPrint("getFBModel()...2");
 //     DocumentReference modelDocRef = modelsRef.doc(widget.appName);
 //     DocumentSnapshot snap = await modelDocRef.get();
 //     if (snap.exists) {
@@ -379,7 +379,7 @@
 //   // Widget build2(BuildContext context) => Builder(builder: (context) {
 //   //       return NotificationListener<SizeChangedLayoutNotification>(
 //   //           onNotification: (SizeChangedLayoutNotification notification) {
-//   //             print("_CAPIAppWrapperState onNotification: ${notification.toString()}");
+//   //             debugPrint("_CAPIAppWrapperState onNotification: ${notification.toString()}");
 //   //             // MaterialAppWrapper.iwSizeMap = {};
 //   //             bool screenSizeChanged = false;
 //   //             Size screenSize = MediaQuery.of(context).size;
@@ -403,7 +403,7 @@
 //   //                       child: BlocProvider<CAPIBloc>(
 //   //                         create: (BuildContext context) => newBloc,
 //   //                         child: Builder(builder: (context) {
-//   //                           print("MaterialAppWrapper => MaterialApp");
+//   //                           debugPrint("MaterialAppWrapper => MaterialApp");
 //   //                           return MaterialApp(
 //   //                             theme: widget.materialAppThemeF(),
 //   //                             debugShowCheckedModeBanner: false,
@@ -429,7 +429,7 @@
 //           }
 //         }
 //       } catch (e) {
-//         print("_parseImageTargets(): ${e.toString()}");
+//         debugPrint("_parseImageTargets(): ${e.toString()}");
 //         rethrow;
 //       }
 //     }
@@ -448,7 +448,7 @@
 // //         }
 // //       }
 // //     } catch (e) {
-// //       print("_parseWidgetTargets(): ${e.toString()}");
+// //       debugPrint("_parseWidgetTargets(): ${e.toString()}");
 // //       rethrow;
 // //     }
 // //   }
@@ -472,7 +472,7 @@
 // //         }
 // //       }
 // //     } catch (e) {
-// //       print("_initTargets(): ${e.toString()}");
+// //       debugPrint("_initTargets(): ${e.toString()}");
 // //       rethrow;
 // //     }
 // //   }
@@ -486,7 +486,7 @@
 //         snippetMap[rootNode.name] = rootNode;
 //       }
 //     } catch (e) {
-//       print("_parseSnippetJsons(): ${e.toString()}");
+//       debugPrint("_parseSnippetJsons(): ${e.toString()}");
 //       // rethrow;
 //     }
 //     return snippetMap;
@@ -580,7 +580,7 @@
 //         if (node != null) {
 // // measure node
 //           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-//           print('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+//           debugPrint('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
 //           node.parent = parent;
 //           parent = node;
 //           _showNodeWidgetOverlay(context, node, r!);
@@ -687,7 +687,7 @@
 //         child: tappable
 //             ? InkWell(
 //                 onTap: () {
-//                   print("tapped");
+//                   debugPrint("tapped");
 //                   String? snippetName = CAPIState.rootNodeOfSnippet(node)?.name;
 //                   if (snippetName == null) return;
 // // edit the root snippet

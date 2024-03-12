@@ -31,18 +31,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static bool _$isExpanded(ExpandedNode v) => v.isExpanded;
   static const Field<ExpandedNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(ExpandedNode v) => v.pTreeC;
-  static const Field<ExpandedNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(ExpandedNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<ExpandedNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(ExpandedNode v) =>
-      v.propertiesPaneSC;
-  static const Field<ExpandedNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ExpandedNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ExpandedNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -59,9 +47,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #flex: _f$flex,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -99,38 +99,43 @@ class EasyColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-        alignment: WrapAlignment.center,
-        children: List.generate(colors.length, (index) {
-          Color tickColor = index != 0 ? selectedIconColor : Colors.black;
-          // print("tickColor: ${tickColor.value} (white is ${Colors.white.value}");
-          return Container(
-              width: colorSelectorSize,
-              margin: EdgeInsets.all(optionsMargin),
-              child: AspectRatio(
-                  aspectRatio: 1,
-                  child: StatefulBuilder(
-                    builder: (context, setState) {
-                      return GestureDetector(
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: colors[index],
-                                border: Border.all(color:Colors.white),
-                                borderRadius: BorderRadius.circular(colorSelectorBorderRadius),
-                              ),
-                              child: Visibility(
-                                  visible: selected.value == colors[index].value,
-                                  child: Icon(
-                                    selectedIcon,
-                                    size: selectedIconSize,
-                                    color: tickColor,
-                                  ))),
-                          onTap: () {
-                            Color? newColor = (selected == colors[index]) ? null : colors[index];
-                            onChanged(newColor);
-                          });
-                    },
-                  )));
-        }));
+    return Column(
+      children: [
+        TextButton(onPressed: (){onChanged(Colors.transparent);}, child: Text('transparent'),),
+        Wrap(
+            alignment: WrapAlignment.center,
+            children: List.generate(colors.length, (index) {
+              Color tickColor = index != 0 ? selectedIconColor : Colors.black;
+              // debugPrint("tickColor: ${tickColor.value} (white is ${Colors.white.value}");
+              return Container(
+                  width: colorSelectorSize,
+                  margin: EdgeInsets.all(optionsMargin),
+                  child: AspectRatio(
+                      aspectRatio: 1,
+                      child: StatefulBuilder(
+                        builder: (context, setState) {
+                          return GestureDetector(
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    color: colors[index],
+                                    border: Border.all(color:Colors.white),
+                                    borderRadius: BorderRadius.circular(colorSelectorBorderRadius),
+                                  ),
+                                  child: Visibility(
+                                      visible: selected.value == colors[index].value,
+                                      child: Icon(
+                                        selectedIcon,
+                                        size: selectedIconSize,
+                                        color: tickColor,
+                                      ))),
+                              onTap: () {
+                                Color? newColor = (selected == colors[index]) ? null : colors[index];
+                                onChanged(newColor);
+                              });
+                        },
+                      )));
+            })),
+      ],
+    );
   }
 }

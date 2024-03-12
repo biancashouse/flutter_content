@@ -33,18 +33,6 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
   static bool _$isExpanded(IFrameNode v) => v.isExpanded;
   static const Field<IFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(IFrameNode v) => v.pTreeC;
-  static const Field<IFrameNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(IFrameNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<IFrameNode, double> _f$propertiesPaneScrollPos = Field(
-      'propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-      mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(IFrameNode v) =>
-      v.propertiesPaneSC;
-  static const Field<IFrameNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(IFrameNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<IFrameNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -62,9 +50,6 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

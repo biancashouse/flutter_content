@@ -238,12 +238,12 @@ class ContainerNode extends SC with ContainerNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     try {
-      OutlinedBorder? oBorder;
-      if (outlinedBorderGroup != null) {
-        oBorder = outlinedBorderGroup?.toOutlinedBorder(
-          radius: borderRadius,
-        );
-      }
+      // OutlinedBorder? oBorder;
+      // if (outlinedBorderGroup != null) {
+      //   oBorder = outlinedBorderGroup?.toOutlinedBorder(
+      //     radius: borderRadius,
+      //   );
+      // }
       if (true || outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
         return Container(
           key: createNodeGK(),
@@ -295,7 +295,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         );
       }
     } catch (e) {
-      print('cannot render $FLUTTER_TYPE!');
+      debugPrint('cannot render $FLUTTER_TYPE!');
     }
     return const Icon(Icons.error, color: Colors.redAccent);
   }

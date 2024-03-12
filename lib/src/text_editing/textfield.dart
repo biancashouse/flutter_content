@@ -228,7 +228,7 @@ class TextEditor3State extends State<TextEditor3> {
       textAlign: widget.textAlignF != null ? (widget.textAlignF!).call() : TextAlign.left,
       textAlignVertical: TextAlignVertical.top,
       onTap: () {
-        // print("TextField tapped");
+        // debugPrint("TextField tapped");
         // widget.focusNode.requestFocus();
       },
       onChanged: (s) {

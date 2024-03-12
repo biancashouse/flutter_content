@@ -504,7 +504,7 @@ Widget assetPicWithFadeIn(
 //   final TextPainter textPainter = TextPainter(
 //     text: TextSpan(text: text.replaceAll("`10`", "\n"), style: style),
 //     textDirection: Directionality.of(context),
-//     textScaleFactor: textScaleFactor,
+//     textScaler: TextScaler.linear(textScaleFactor),
 //     maxLines: 6,
 //   )..layout(minWidth: 0, maxWidth: double.infinity);
 //

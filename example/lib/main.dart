@@ -10,7 +10,8 @@ Future<void> main() async {
   runApp(MaterialSPA(
     appName: 'flutter-content-app',
     initialValueJsonAssetPath: "startup-scripts/example-config.json",
-    webHome: const FlutterContentPage(panelName: 'home', snippetName: 'home', fromTemplate: SnippetTemplate.scaffold_with_tabs),
+    webHome: const FlutterContentPage(panelName: 'home', snippetName: 'home-v2', fromTemplate: SnippetTemplate.scaffold_with_tabs),
+    // webHome: const ZoomerSamplePage(),
     mobileHome: const HomePageMobile(),
     materialAppThemeF: () => ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -23,6 +24,7 @@ Future<void> main() async {
       "white30": NamedTextStyle(color: Colors.white, fontSize: 30),
       "white36": NamedTextStyle(color: Colors.white, fontSize: 36),
       "yellow72": NamedTextStyle(color: Colors.yellow, fontSize: 72),
+      "blue-tab": NamedTextStyle(color: Colors.blue, fontSize: 24),
     },
   ));
 }

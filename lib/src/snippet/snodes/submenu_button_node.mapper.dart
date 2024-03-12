@@ -31,18 +31,6 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static bool _$isExpanded(SubmenuButtonNode v) => v.isExpanded;
   static const Field<SubmenuButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static PTreeNodeTreeController? _$pTreeC(SubmenuButtonNode v) => v.pTreeC;
-  static const Field<SubmenuButtonNode, PTreeNodeTreeController> _f$pTreeC =
-      Field('pTreeC', _$pTreeC, mode: FieldMode.member);
-  static double? _$propertiesPaneScrollPos(SubmenuButtonNode v) =>
-      v.propertiesPaneScrollPos;
-  static const Field<SubmenuButtonNode, double> _f$propertiesPaneScrollPos =
-      Field('propertiesPaneScrollPos', _$propertiesPaneScrollPos,
-          mode: FieldMode.member);
-  static ScrollController? _$propertiesPaneSC(SubmenuButtonNode v) =>
-      v.propertiesPaneSC;
-  static const Field<SubmenuButtonNode, ScrollController> _f$propertiesPaneSC =
-      Field('propertiesPaneSC', _$propertiesPaneSC, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SubmenuButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SubmenuButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -63,9 +51,6 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
     #itemLabel: _f$itemLabel,
     #menuChildren: _f$menuChildren,
     #isExpanded: _f$isExpanded,
-    #pTreeC: _f$pTreeC,
-    #propertiesPaneScrollPos: _f$propertiesPaneScrollPos,
-    #propertiesPaneSC: _f$propertiesPaneSC,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #children: _f$children,

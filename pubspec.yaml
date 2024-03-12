@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 0.0.4
+version: 0.0.6
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 # github mirrored from bitbucket
@@ -25,7 +25,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  yaml: ^3.1.2
   #url_strategy: ^0.2.0
   path_provider: ^2.0.11
   json_annotation: ^4.8.1
@@ -79,6 +78,7 @@ dependencies:
   flutter_localization: ^0.2.0
   #pretty_json: ^2.0.0
   meta: ^1.11.0
+  lorem_ipsum: ^0.0.3
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now
