@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'model.g.dart';
@@ -13,7 +14,7 @@ class CAPIModel {
 
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // int? lastModified;
-  Map<String, TargetConfig> targetConfigs;
+  // Map<String, TargetConfig> targetConfigs;
   Map<String, TargetGroupConfig> targetGroupConfigs;
   Map<SnippetName, EncodedSnippetJson> snippetEncodedJsons;
 
@@ -23,14 +24,15 @@ class CAPIModel {
   CAPIModel({
     this.appName,
     // this.lastModified,
-    this.targetConfigs = const {},
+    // this.targetConfigs = const {},
     this.targetGroupConfigs = const {},
     this.snippetEncodedJsons = const {},
     // this.jsonRootDirectoryNode,
     this.jsonClipboard,
   });
 
-  factory CAPIModel.fromJson(Map<String, dynamic> data) => _$CAPIModelFromJson(data);
+  factory CAPIModel.fromJson(Map<String, dynamic> data) =>
+      _$CAPIModelFromJson(data);
 
   Map<String, dynamic> toJson() => _$CAPIModelToJson(this);
 }
@@ -41,7 +43,8 @@ class TargetGroupConfig {
 
   TargetGroupConfig(this.targets);
 
-  factory TargetGroupConfig.fromJson(Map<String, dynamic> data) => _$TargetGroupConfigFromJson(data);
+  factory TargetGroupConfig.fromJson(Map<String, dynamic> data) =>
+      _$TargetGroupConfigFromJson(data);
 
   Map<String, dynamic> toJson() => _$TargetGroupConfigToJson(this);
 
@@ -57,13 +60,11 @@ class TargetGroupConfig {
 @JsonSerializable()
 class TargetConfig {
   int uid;
-
   double transformScale;
-  double transformTranslateX;
-  double transformTranslateY;
-
-  TargetGroupWrapperName wName;
-  bool single;
+  // double transformTranslateX;
+  // double transformTranslateY;
+  TargetsWrapperName wName;
+  // bool single;
   double? targetLocalPosLeftPc;
   double? targetLocalPosTopPc;
   double? radiusPc;
@@ -72,13 +73,22 @@ class TargetConfig {
   double? calloutTopPc;
   double? calloutLeftPc;
   bool showBtn;
+  bool canResizeH;
+  bool canResizeV;
   double calloutWidth;
   double calloutHeight;
   int calloutDurationMs;
-  int? calloutColorValue;
+  int? calloutFillColorValue;
+  int? calloutBorderColorValue;
+  DecorationShapeEnum calloutDecorationShape;
+  double calloutBorderRadius;
+  double calloutBorderThickness;
+  int? starPoints;
   String snippetName;
 
-  int? arrowType;
+  int? calloutArrowType;
+  int? calloutArrowColorValue;
+
   bool animateArrow;
 
   // @JsonKey(includeFromJson: false, includeToJson: false)
@@ -98,10 +108,10 @@ class TargetConfig {
   TargetConfig({
     required this.uid,
     required this.wName,
-    this.single = true,
+    // this.single = true,
     this.transformScale = 1.0,
-    this.transformTranslateX = 0.0,
-    this.transformTranslateY = 0.0,
+    // this.transformTranslateX = 0.0,
+    // this.transformTranslateY = 0.0,
     this.radiusPc,
     this.calloutDurationMs = 1500,
     this.calloutWidth = 400,
@@ -111,13 +121,21 @@ class TargetConfig {
     this.btnLocalTopPc, // initially shown directly over target
     this.btnLocalLeftPc,
     this.showBtn = true,
-    this.calloutColorValue,
+    this.canResizeH = true,
+    this.canResizeV = true,
+    this.calloutFillColorValue,
+    this.calloutBorderColorValue,
+    this.calloutDecorationShape = DecorationShapeEnum.rectangle,
+    this.calloutBorderRadius = 30,
+    this.calloutBorderThickness = 1,
+    this.starPoints,
     required this.snippetName,
-    this.arrowType = 1, // ArrowType.POINTY.index,
+    this.calloutArrowType = 1, // ArrowType.POINTY.index,
+    this.calloutArrowColorValue,
     this.animateArrow = false,
   }) {
     // textColorValue ??= Colors.blue[900]!.value;
-    calloutColorValue ??= Colors.grey.value;
+    calloutFillColorValue ??= Colors.grey.value;
     // fontWeightIndex = FontWeight.normal.index;
   }
 
@@ -146,20 +164,21 @@ class TargetConfig {
     return Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1);
   }
 
-  bool playingOrSelected(CAPIState state) =>
-      state.playList.isNotEmpty; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
+  bool playingOrSelected(CAPIState state) => state.playList
+      .isNotEmpty; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
-  double getScale(CAPIState state, {bool testing = false}) => playingOrSelected(state) || testing ? transformScale : 1.0;
+  double getScale(CAPIState state, {bool testing = false}) =>
+      playingOrSelected(state) || testing ? transformScale : 1.0;
 
-  Offset getTranslate(CAPIState state, {bool testing = false}) {
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
-    Offset translate =
-        playingOrSelected(state) || testing ? Offset(transformTranslateX * ivSize.width, transformTranslateY * ivSize.height) : Offset.zero;
-    return translate;
-  }
+  // Offset getTranslate(CAPIState state, {bool testing = false}) {
+  //   Size ivSize = TargetsWrapper.iwSize(wName);
+  //   Offset translate =
+  //       playingOrSelected(state) || testing ? Offset(transformTranslateX * ivSize.width, transformTranslateY * ivSize.height) : Offset.zero;
+  //   return translate;
+  // }
 
   ArrowType getArrowType() {
-    return ArrowType.values[arrowType ?? ArrowType.POINTY.index];
+    return ArrowType.values[calloutArrowType ?? ArrowType.POINTY.index];
   }
 
   // CAPIBloc get bloc => _bloc;
@@ -170,21 +189,26 @@ class TargetConfig {
   //
   // FocusNode imageUrlFocusNode() => _imageUrlFocusNode;
 
-  Color calloutColor() => calloutColorValue == null ? Colors.white : Color(calloutColorValue!);
+  Color calloutColor() => calloutFillColorValue == null
+      ? Colors.white
+      : Color(calloutFillColorValue!);
 
-  void setCalloutColor(Color? newColor) => calloutColorValue = newColor?.value;
+  void setCalloutColor(Color? newColor) =>
+      calloutFillColorValue = newColor?.value;
 
   Offset targetGlobalPos(CAPIState state) {
     // iv rect should always be measured
-    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
+    Offset ivTopLeft = TargetsWrapper.iwPos(wName);
+    Size ivSize = TargetsWrapper.iwSize(wName);
 
     // calc from matrix
     double scale = getScale(state);
-    Offset translate = getTranslate(state);
+    // Offset translate = getTranslate(state);
 
-    double globalPosX = ivTopLeft.dx + translate.dx + ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
-    double globalPosY = ivTopLeft.dy + translate.dy + ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
+    double globalPosX = ivTopLeft.dx + /* translate.dx + */
+        ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
+    double globalPosY = ivTopLeft.dy + /* translate.dy + */
+        ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
 
     // in prod, target callout will be much smaller
     // if (bloc.state.isPlaying(name)) {
@@ -196,7 +220,7 @@ class TargetConfig {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
+    Size ivSize = TargetsWrapper.iwSize(wName);
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -206,7 +230,7 @@ class TargetConfig {
 
   Offset targetStackPos() {
     // iv rect should always be measured
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
+    Size ivSize = TargetsWrapper.iwSize(wName);
 
     double stackPosX = (targetLocalPosLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (targetLocalPosTopPc ?? 0.0) * ivSize.height;
@@ -216,8 +240,8 @@ class TargetConfig {
 
   void setTargetStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
+    Offset ivTopLeft = TargetsWrapper.iwPos(wName);
+    Size ivSize = TargetsWrapper.iwSize(wName);
 
     targetLocalPosTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     targetLocalPosLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
@@ -225,8 +249,8 @@ class TargetConfig {
 
   void setBtnStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = TargetGroupWrapper.iwPos(wName);
-    Size ivSize = TargetGroupWrapper.iwSize(wName);
+    Offset ivTopLeft = TargetsWrapper.iwPos(wName);
+    Size ivSize = TargetsWrapper.iwSize(wName);
 
     btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
@@ -259,7 +283,8 @@ class TargetConfig {
 
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
-  factory TargetConfig.fromJson(Map<String, dynamic> data) => _$TargetConfigFromJson(data);
+  factory TargetConfig.fromJson(Map<String, dynamic> data) =>
+      _$TargetConfigFromJson(data);
 
   // @override
   // String toString() {

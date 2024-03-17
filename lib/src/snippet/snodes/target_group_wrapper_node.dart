@@ -43,7 +43,8 @@ class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappa
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     return name != 'name?'
-    ? TargetGroupWrapper(
+    ? TargetsWrapper(
+      key: createNodeGK(),
       name: name,
       child: super.child?.toWidget(context, this) ??
           const Icon(
@@ -51,10 +52,10 @@ class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappa
             color: Colors.orangeAccent,
           ),
     )
-    : Row(
+    : const Row(
       children: [
         Text('wrapper must be assigned a name'),
-        const Icon(Icons.error, color: Colors.redAccent),
+        Icon(Icons.error, color: Colors.redAccent),
       ],
     );
     return child?.toWidget(context, this) ??

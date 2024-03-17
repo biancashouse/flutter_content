@@ -25,14 +25,16 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
           snode: this,
           name: 'flex',
           intValue: flex,
-          onIntChange: (newValue) => refreshWithUpdate(() => flex = newValue ?? 1),
+          onIntChange: (newValue) =>
+              refreshWithUpdate(() => flex = newValue ?? 1),
           calloutButtonSize: const Size(70, 30),
         ),
         EnumPropertyValueNode<FlexFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index)),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index)),
         ),
       ];
 
@@ -41,7 +43,8 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     return Flexible(
-            key: createNodeGK(),      flex: flex,
+      key: createNodeGK(),
+      flex: flex,
       fit: fit.flutterValue,
       child: child?.toWidget(context, this) ??
           const Icon(

@@ -356,7 +356,7 @@ List<Widget> menuAnchorWidgets(
       _menuItemButton("SplitView", snippetBloc, selectedNode, SplitViewNode, action),
       _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
       _menuItemButton("Gap", snippetBloc, selectedNode, GapNode, action),
-      _menuItemButton("TargetWrapper", snippetBloc, selectedNode, TargetButtonNode, action),
+      // _menuItemButton("TargetWrapper", snippetBloc, selectedNode, TargetButtonNode, action),
       _menuItemButton("TargetGroupWrapper", snippetBloc, selectedNode, TargetGroupWrapperNode, action),
       _menuItemButton("Placeholder", snippetBloc, selectedNode, PlaceholderNode, action),
       _menuItemButton("Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),

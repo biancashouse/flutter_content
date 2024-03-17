@@ -21,7 +21,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // bool useFirebase = false,
     // required bool localTestingFilePaths,
     required Map<String, TargetGroupConfig> targetGroupMap,
-    required Map<String, TargetConfig> singleTargetMap,
+    // required Map<String, TargetConfig> singleTargetMap,
     String? jsonRootDirectoryNode,
     String? jsonClipboard,
     // required Map<SnippetName, SnippetRootNode> snippetsMap,
@@ -46,9 +46,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           modelUR: ModelUR(),
         )) {
     // init the static map
-    for (String id in singleTargetMap.keys) {
-      SingleTargetWrapper.singleTargetMap[id] = singleTargetMap[id]!.clone();
-    }
+    // for (String id in singleTargetMap.keys) {
+    //   SingleTargetWrapper.singleTargetMap[id] = singleTargetMap[id]!.clone();
+    // }
 
     // on<AppStarted>((event, emit) => _appStarted(event, emit));
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
@@ -211,18 +211,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   CAPIModel _stateToModel() => CAPIModel(
         appName: state.appName,
         targetGroupConfigs: state.targetGroupMap,
-        targetConfigs: SingleTargetWrapper.singleTargetMap,
+        // targetConfigs: SingleTargetWrapper.singleTargetMap,
         snippetEncodedJsons: _encodeAllSnippets(),
         jsonClipboard: state.jsonClipboard,
       );
 
   Map<String, String> _encodeAllSnippets() {
-    debugPrint('_encodeAllSnippets:');
+    // debugPrint('_encodeAllSnippets:');
     List<SnippetRootNode>? rootNodes = FC().snippetsMap.values.toList();
     Map<String, String> snippetJsons = {};
     for (SnippetRootNode rootNode in rootNodes) {
-      debugPrint(rootNode.name);
-      debugPrint(rootNode.toJson());
+      // debugPrint(rootNode.name);
+      // debugPrint(rootNode.toJson());
       snippetJsons[rootNode.name] = rootNode.toJson();
     }
     return snippetJsons;
@@ -365,7 +365,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       uid: newTargetUid, //event.wName.hashCode,
       wName: event.wName,
       snippetName: "$newTargetUid",
-      single: false,
+      // single: false,
     );
     // newItem.init(
     //   this,
@@ -530,13 +530,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _targetConfigChanged(TargetConfigChanged event, emit) {
     state.modelUR.createUndo(_stateToModel());
-    if (event.newTC.single) {
-      Map<String, TargetConfig> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
-      newMap[event.newTC.wName] = event.newTC;
-      emit(state.copyWith(
-        force: state.force + 1,
-      ));
-    } else {
+    // if (event.newTC.single) {
+    //   Map<String, TargetConfig> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
+    //   newMap[event.newTC.wName] = event.newTC;
+    //   emit(state.copyWith(
+    //     force: state.force + 1,
+    //   ));
+    // } else {
       Map<String, TargetGroupConfig> newMap = _addOrUpdateTargetGroupListMap(event.newTC.wName, event.newTC);
       emit(state.copyWith(
         targetGroupMap: newMap,
@@ -545,7 +545,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         hideTargetsExcept: event.keepTargetsHidden ? state.hideTargetsExcept : null,
         force: state.force + 1,
       ));
-    }
+    // }
     _saveModel(event, emit);
   }
 

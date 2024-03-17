@@ -109,6 +109,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
     possiblyHighlightSelectedNode();
     return CarouselSlider.builder(
+      key: createNodeGK(),
       itemCount: images.length,
       options: CarouselOptions(
         autoPlay: autoPlay,

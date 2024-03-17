@@ -22,8 +22,9 @@ class CAPIState with _$CAPIState {
     required String appName,
     // required bool useFirebase,
     // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-    String? initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
-     required ModelUR modelUR,
+    String?
+        initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+    required ModelUR modelUR,
     @Default(false) bool hideIframes,
     @Default(false) bool hideSnippetPencilIcons,
     // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
@@ -68,7 +69,13 @@ class CAPIState with _$CAPIState {
 
   TargetConfig? getNewestTarget() => newestTarget;
 
-  TargetConfig? tcByNameOrUid(TargetConfig tc) => tc.single ? SingleTargetWrapper.singleTarget(name: tc.wName) : _targetGroup(uid: tc.uid);
+  // TargetConfig? tcByNameOrUid(TargetConfig tc) => tc.single
+  //     ? SingleTargetWrapper.singleTarget(name: tc.wName)
+  //     : _targetGroup(
+  //   uid: tc.uid,
+  // );
+
+  TargetConfig? tcByUid(TargetConfig tc) => _targetGroup(uid: tc.uid);
 
   TargetConfig? _targetGroup({required int uid}) {
     // then must be an image target

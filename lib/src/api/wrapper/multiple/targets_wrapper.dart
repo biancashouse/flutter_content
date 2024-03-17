@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
@@ -11,22 +10,23 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'positioned_target_cover.dart';
 import 'positioned_target_cover_btn.dart';
 
-class TargetGroupWrapper extends StatefulWidget {
-  final TargetGroupWrapperName name;
+class TargetsWrapper extends StatefulWidget {
+  final TargetsWrapperName name;
   final Widget child;
   final bool hardEdge;
 
-  TargetGroupWrapper({
+  TargetsWrapper({
     required this.name,
     required this.child,
     this.hardEdge = true,
-  }) : super(key: GlobalKey());
+    required super.key
+  });
 
   @override
-  State<TargetGroupWrapper> createState() => TargetGroupWrapperState();
+  State<TargetsWrapper> createState() => TargetsWrapperState();
 
-  static TargetGroupWrapperState? of(BuildContext context) =>
-      context.findAncestorStateOfType<TargetGroupWrapperState>();
+  // static TargetsWrapperState? of(BuildContext context) =>
+  //     context.findAncestorStateOfType<TargetsWrapperState>();
 
   /// the following statics are actually all UI-related and span all blocs...
   // can have multiple transformable widgets and preferredSize widgets under the MaterialApp
@@ -42,6 +42,17 @@ class TargetGroupWrapper extends StatefulWidget {
         iwSize(wName).width,
         iwSize(wName).height,
       );
+
+  static Alignment? calcTargetAlignmentWithinTargetsWrapper(String twName, TargetConfig tc) {
+    Rect? wrapperRect = (FC().parentTW(twName)?.widget.key as GlobalKey)
+        .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
+    Rect? targetRect = FC()
+        .getMultiTargetGk(tc.uid.toString())!
+        .globalPaintBounds();
+    if (wrapperRect == null || targetRect == null) return null;
+
+    return Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+  }
 
 // static void hideAllTargets({required CAPIBloc bloc, required String name, final TargetConfig? exception}) {
 //   CAPITargetConfig? config = bloc.state.imageConfig(name);
@@ -62,7 +73,7 @@ class TargetGroupWrapper extends StatefulWidget {
 // }
 }
 
-class TargetGroupWrapperState extends State<TargetGroupWrapper> {
+class TargetsWrapperState extends State<TargetsWrapper> {
   // Rect? _selectedTargetRect;
 
   Offset? savedChildLocalPosPc;
@@ -76,15 +87,16 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
 
   CAPIBloC get bloc => FC().capiBloc;
 
-  late ZoomerState? zoomer;
-
   late TargetConfig tcToPlay;
+
+  ZoomerState? get zoomer => Zoomer.of(context)!;
 
   @override
   void initState() {
     super.initState();
 
-    zoomer = Zoomer.of(context)!;
+    FC().targetsWrappers[widget.name] = widget.key as GlobalKey;
+
 
     if (zoomer?.widget.ancestorHScrollController != null) {
       FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
@@ -96,7 +108,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
     Useful.afterNextBuildDo(
       () {
         // register ww with AppWrapper
-        measureIWPos();
+        measureIWPosAndSize();
         // if (widget.key != null) {
         //   Measuring.findGlobalRect(widget.key! as GlobalKey);
         //   // Size size = CAPIState.iwSize(widget.name);
@@ -119,21 +131,26 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
   //   super.didChangeDependencies();
   // }
 
-  void measureIWPos() {
+  void measureIWPosAndSize() {
+    var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
+
     Offset? globalPos;
     try {
-      globalPos = Useful.findGlobalPos(widget.key as GlobalKey)?.translate(
+      globalPos = newPosAndSize.$1?.translate(
         zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,
         zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
       );
+      if (globalPos != null) {
+        debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
+        debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
+        TargetsWrapper.iwPosMap[widget.name] = globalPos;
+        TargetsWrapper.iwSizeMap[widget.name] = newPosAndSize.$2!;
+      }
     } catch (e) {
       // ignore but then don't update pos
-    }
-    if (globalPos != null) {
-      TargetGroupWrapper.iwPosMap[widget.name] = globalPos;
+      debugPrint('measureIWPosAndSizze');
     }
   }
-
   // @override
   // void didChangeMetrics() {
   //   debugPrint("***  didChangeMetrics  ***");
@@ -251,6 +268,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
   @override
   Widget build(BuildContext context) {
     CAPIBloC bloc = FC().capiBloc;
+    return _stack(bloc);
     // debugPrint("TargetGroupWrapperState.build");
     return NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -259,37 +277,18 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
         // update size at end of resize
         _sizeChangedTimer?.cancel();
         _sizeChangedTimer = Timer(const Duration(milliseconds: 500), () {
-          measureIWPos();
-          // if (widget.key != null) {
-          //   Measuring.findGlobalRect(widget.key as GlobalKey);
-          //   // Size size = CAPIState.iwSize(widget.name);
-          //   // debugPrint("${widget.name} size: ${size.toString()}");
-          // }
-        });
-        bloc.add(const CAPIEvent.forceRefresh());
-        Useful.afterNextBuildDo(() {
-          measureIWPos();
-          // if (widget.key != null) {
-          //   Measuring.findGlobalRect(widget.key as GlobalKey);
-          //   // Size size = CAPIState.iwSize(widget.name);
-          //   // debugPrint("${widget.name} size: ${size.toString()}");
-          // }
+          bloc.add(const CAPIEvent.forceRefresh());
+          Useful.afterNextBuildDo(() {
+            debugPrint('SizeChangedLayoutNotification: measureIWPos...');
+            measureIWPosAndSize();
+          });
         });
         return true;
       },
       child: SizeChangedLayoutNotifier(
-        child: BlocBuilder<CAPIBloC, CAPIState>(buildWhen: (previous, current) {
-          // suspended OR resumed OR selection changed
-          return true; //previous.isSuspended(widget.name) != current.isSuspended(widget.name) //||
-          // previous.selectedTarget(widget.name) != current.selectedTarget(widget.name) ||
-//previous.isPlaying != current.isPlaying;
-        }, builder: (context, CAPIState state) {
-          // debugPrint("--- ${widget.name} builder");
-          return SizedBox(
-            child: _stack(bloc),
-          );
-          // cannot show any CC functionality until not suspended and have measured the child (i.e. after 1st build)
-        }),
+        child: SizedBox(
+          child: _stack(bloc),
+        ),
       ),
     );
   }
@@ -311,7 +310,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
                   bloc.state.hideTargetsExcept == tc))
             // if (!state.aTargetIsSelected() || state.selectedTarget!.uid == tc.uid )
             PositionedTarget(
-              name: widget.name,
+              twName: widget.name,
               initialTC: tc,
             ),
         // if (!state.aTargetIsSelected() && transformableWidgetWrapperState != null)
@@ -321,7 +320,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
             // if (state.hideTargetsExcept == null && tc.visible)
             if (!bloc.state.hideAllTargetGroupPlayBtns)
               PositionedTargetPlayBtn(
-                name: widget.name,
+                twName: widget.name,
                 initialTC: tc,
               ),
         // if (!state.isSuspended(widget.name) && (state.aTargetIsSelected(widget.name)))
@@ -344,7 +343,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
   Positioned buildPositionedTargetForPlay(TargetConfig tc) {
     FC().setMultiTargetGk(tc.uid.toString(), GlobalKey());
     double radius = tc.radiusPc != null
-        ? tc.radiusPc! * TargetGroupWrapper.iwSize(tc.wName).width
+        ? tc.radiusPc! * TargetsWrapper.iwSize(tc.wName).width
         : 30;
     return Positioned(
       top: tc.targetStackPos().dy - radius,
@@ -408,7 +407,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
           });
         },
         child: SizedBox.fromSize(
-          size: TargetGroupWrapper.iwSize(widget.name),
+          size: TargetsWrapper.iwSize(widget.name),
           child: ModalBarrier(
             color: !bloc.state.playList.isNotEmpty
                 ? Colors.purple.withOpacity(.25)
@@ -423,13 +422,13 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
     //debugPrint("sizeMap: ${sizeMap.toString()}");
     // var gkMap = CAPIState.gkMap;
     // debugPrint("gkMap: ${gkMap.toString()}");
-    return TargetGroupWrapper.iwSizeMap.containsKey(widget.name)
+    return TargetsWrapper.iwSizeMap.containsKey(widget.name)
         ? IgnorePointer(
             ignoring: true, //!state.aTargetIsSelected(),
             child: MeasureSizeBox(
               // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
               onSizedCallback: (Size size) {
-                TargetGroupWrapper.iwSizeMap[widget.name] = size;
+                TargetsWrapper.iwSizeMap[widget.name] = size;
                 // debugPrint("MeasureSizeBox => ${size.toString()}");
               },
               child: widget.child,
@@ -438,7 +437,7 @@ class TargetGroupWrapperState extends State<TargetGroupWrapper> {
         : MeasureSizeBox(
             // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
             onSizedCallback: (Size size) {
-              TargetGroupWrapper.iwSizeMap[widget.name] = size;
+              TargetsWrapper.iwSizeMap[widget.name] = size;
               // debugPrint("MeasureSizeBox => ${size.toString()}");
               // force a rebuild with the measured size
               Useful.afterNextBuildDo(() {

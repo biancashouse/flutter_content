@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/target_config/config_toolbar/callout_config_toolbar.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetPlayBtn extends StatelessWidget {
-  final String name;
+  final TargetsWrapperName twName;
   final TargetConfig initialTC;
 
   const PositionedTargetPlayBtn({
-    required this.name,
+    required this.twName,
     required this.initialTC,
     super.key,
   });
@@ -19,13 +20,12 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ZoomerState? zoomer = Zoomer.of(context);
-    TargetConfig? tc = bloc.state.tcByNameOrUid(initialTC);
-    return tc != null && zoomer != null
+    TargetConfig? tc = bloc.state.tcByUid(initialTC);
+    return tc != null
         ? Positioned(
             top: tc.btnStackPos().dy - bloc.state.CAPI_TARGET_BTN_RADIUS,
             left: tc.btnStackPos().dx - bloc.state.CAPI_TARGET_BTN_RADIUS,
-            child: _draggableSelectTargetBtn(context, bloc, tc, zoomer),
+            child: _draggableSelectTargetBtn(context, tc),
           )
         : const Icon(
             Icons.warning,
@@ -33,10 +33,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           );
   }
 
-  Widget _draggableSelectTargetBtn(BuildContext context, CAPIBloC bloc,
-      TargetConfig tc, ZoomerState zoomer) {
-    TargetGroupWrapperState? parentIW = TargetGroupWrapper.of(context);
-    CAPIBloC bloc = FC().capiBloc;
+  Widget _draggableSelectTargetBtn(BuildContext context, TargetConfig tc) {
     return Draggable(
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
@@ -49,51 +46,28 @@ class PositionedTargetPlayBtn extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          playTarget(context, tc, parentIW);
+          playTarget(context, tc);
         },
         onDoubleTap: () async {
-          Rect? wrapperRect = (parentIW?.widget.key as GlobalKey)
-              .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
-          Rect? targetRect = FC()
-              .getMultiTargetGk(tc.uid.toString())!
-              .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
-          if (wrapperRect != null && targetRect != null) {
-            hideAllSingleTargetBtns();
-            bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
-            Alignment ta = Useful.calcTargetAlignmentWithinWrapper(
-                wrapperRect, targetRect);
-            // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-            zoomer.applyTransform(
-                tc.transformScale,
-                tc.transformScale,
-                ta, afterTransformF: () {
-              // showTargetConfigToolbarCallout(
-              //   tc,
-              //   parentTW.widget.ancestorHScrollController,
-              //   parentTW.widget.ancestorVScrollController,
-              //   onCloseF: () async {
-              //     removeTargetConfigToolbarCallout();
-              //     transformableWidgetWrapperState.resetTransform();
-              //     bloc.add(const CAPIEvent.unhideAllTargetGroups());
-              //     unhideAllSingleTargetBtns();
-              //   },
-              // );
-              showSnippetContentCallout(
-                // zoomer: parentZoomer,
-                initialTC: tc,
-                snippetName: tc.snippetName,
-                justPlaying: false,
-                allowButtonCallouts: false,
-                onDiscardedF: () async {
-                  zoomer.resetTransform();
-                  bloc.add(const CAPIEvent.unhideAllTargetGroups());
-                  unhideAllSingleTargetBtns();
-                },
-              );
-              // show config toolbar in a toast
-              showConfigToolbar(tc, zoomer, parentIW);
-            });
-          }
+          Alignment? ta =
+              TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(
+                  twName, tc);
+          if (ta == null) return;
+
+          // hideAllSingleTargetBtns();
+          bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
+
+          // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
+          FC().parentTW(twName)?.zoomer?.applyTransform(
+              tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+            showSnippetContentCallout(
+              tc: tc,
+              twName: twName,
+              justPlaying: false,
+            );
+            // show config toolbar in a toast
+            showConfigToolbar(tc, twName, context);
+          });
         },
         child: IntegerCircleAvatar(
           tc,
@@ -136,8 +110,20 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               bloc.state.CAPI_TARGET_BTN_RADIUS,
             )
             .translate(
-              zoomer.widget.ancestorHScrollController?.offset ?? 0.0,
-              zoomer.widget.ancestorVScrollController?.offset ?? 0.0,
+              FC()
+                      .parentTW(twName)
+                      ?.zoomer
+                      ?.widget
+                      .ancestorHScrollController
+                      ?.offset ??
+                  0.0,
+              FC()
+                      .parentTW(twName)
+                      ?.zoomer
+                      ?.widget
+                      .ancestorVScrollController
+                      ?.offset ??
+                  0.0,
             ));
         bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
         // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
@@ -145,61 +131,50 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     );
   }
 
-  void playTarget(context, TargetConfig tc, parentIW) {
-    // var cw = tc.gk().currentWidget;
-    // tapped helper icon - transform scaffold corr to target widget, then show content callout
-    CAPIBloC bloc = FC().capiBloc;
-    Rect? wrapperRect = (parentIW?.widget.key as GlobalKey)
-        .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
-    Rect? targetRect = FC()
-        .getMultiTargetGk(tc.uid.toString())!
-        .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
-    if (wrapperRect != null && targetRect != null) {
-      ZoomerState? zoomer = Zoomer.of(context);
-      if (zoomer != null) {
-        Alignment ta =
-            Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
-        bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
-        bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-        hideAllSingleTargetBtns();
+  void playTarget(context, TargetConfig tc) {
+    Alignment? ta =
+        TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(twName, tc);
+    if (ta == null) return;
 
-        zoomer.applyTransform(
-            tc.transformScale,
-            tc.transformScale,
-            ta, afterTransformF: () {
-          showSnippetContentCallout(
-              initialTC: tc,
-              snippetName: tc.snippetName,
-              // parentTW.widget.ancestorHScrollController,
-              // parentTW.widget.ancestorVScrollController,
-              justPlaying: true,
-              allowButtonCallouts: false,
-              onDiscardedF: () {
-                // context will have changed, so use new (cached) one
-                zoomer.resetTransform();
-                unhideAllSingleTargetBtns();
-                bloc.add(const CAPIEvent.unhideAllTargetGroups());
-              });
-        });
-      }
-    }
+    // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
+    FC().parentTW(twName)?.zoomer?.applyTransform(
+        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+      bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
+      bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+      // hideAllSingleTargetBtns();
+      Useful.afterMsDelayDo(tc.calloutDurationMs, () {
+        FC().parentTW(twName)?.zoomer?.resetTransform();
+        FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+      });
+
+      showSnippetContentCallout(twName: twName, tc: tc, justPlaying: true);
+    });
   }
 
   static void showConfigToolbar(
-      TargetConfig tc, ZoomerState zoomer, TargetGroupWrapperState? parentIW) {
+    TargetConfig tc,
+    TargetsWrapperName twName,
+      BuildContext context,
+  ) {
+    Callout.dismiss('config-toolbar');
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
         feature: 'config-toolbar',
-        color: Colors.white,
+        fillColor: Colors.purpleAccent,
         suppliedCalloutW: 800,
         suppliedCalloutH: 60,
-        roundedCorners: 20,
+        decorationShape: DecorationShapeEnum.rounded_rectangle,
+        borderRadius: 20,
         animate: false,
         arrowType: ArrowType.NO_CONNECTOR,
+        initialCalloutPos: FC().calloutConfigToolbarPos(context),
+        onDragEndedF: (newPos) {
+          FC().setCalloutConfigToolbarPos(newPos);
+        }
       ),
       boxContentF: (ctx) => CalloutConfigToolbar(
+        twName: twName,
         tc: tc,
-        zoomer: zoomer,
         onCloseF: () {
           Callout.dismiss(tc.snippetName);
           // Callout.dismiss('config-toolbar');

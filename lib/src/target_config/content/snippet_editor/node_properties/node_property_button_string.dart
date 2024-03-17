@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/text_editing/text_editor_with_autocomplete.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 
-class NodePropertyButton_String extends StatefulWidget {
+class NodePropertyButton_String extends HookWidget {
   final String originalText;
   final List<String>? options;
   final String label;
@@ -16,7 +17,7 @@ class NodePropertyButton_String extends StatefulWidget {
   final bool skipHelperText;
   final Function(String) onChangeF;
 
-  const NodePropertyButton_String({
+  NodePropertyButton_String({
     required this.originalText,
     this.options,
     required this.label,
@@ -32,26 +33,17 @@ class NodePropertyButton_String extends StatefulWidget {
   });
 
   @override
-  State<NodePropertyButton_String> createState() => _NodePropertyButton_StringState();
-}
-
-class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
-  GlobalKey? propertyBtnGK;
-  GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    String textLabel = widget.originalText.isNotEmpty ? '${widget.label}: ${widget.originalText}' : '${widget.label}...';
-    Widget labelWidget = Text(
-      textLabel,
-      style: const TextStyle(color: Colors.white),
-      overflow: TextOverflow.ellipsis,
-    );
+    GlobalKey? propertyBtnGK;
+    GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
+    final textValue = useState<String>(originalText);
+    String textLabel() =>
+        textValue.value.isNotEmpty ? '$label: ${textValue.value}' : '$label...';
+    Widget labelWidget() => Text(
+          textLabel(),
+          style: const TextStyle(color: Colors.white),
+          overflow: TextOverflow.ellipsis,
+        );
     bool noBarrier = false;
     CalloutConfig calloutConfig = CalloutConfig(
       feature: '_NodePropertyButton_SnippetNameState',
@@ -67,17 +59,17 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
               },
       ),
       // arrowThickness: ArrowThickness.THIN,
-      color: Colors.white,
+      fillColor: Colors.white,
       // arrowColor: Colors.red,
       arrowType: ArrowType.NO_CONNECTOR,
       finalSeparation: 0.0,
       initialCalloutAlignment: Alignment.topLeft,
       initialTargetAlignment: Alignment.topLeft,
       modal: false,
-      suppliedCalloutW: widget.calloutSize.width,
-      suppliedCalloutH: widget.calloutSize.height,
-      resizeableH: widget.maxLines > 1,
-      resizeableV: widget.maxLines > 1,
+      suppliedCalloutW: calloutSize.width,
+      suppliedCalloutH: calloutSize.height,
+      resizeableH: maxLines > 1,
+      resizeableV: maxLines > 1,
       onDismissedF: () {},
       onAcceptedF: () {},
       // containsTextField: true,
@@ -92,36 +84,36 @@ class _NodePropertyButton_StringState extends State<NodePropertyButton_String> {
           padding: const EdgeInsets.all(10.0),
           child: TextEditorWithAutocomplete(
             key: calloutChildGK,
-            prompt: textLabel,
+            prompt: textLabel(),
             parentFeature: '_NodePropertyButton_SnippetNameState',
-            originalS: widget.originalText,
+            originalS: textValue.value,
             onTextChangedF: (s) {},
-            onEditingCompleteF: widget.onChangeF,
+            onEditingCompleteF: (s)=>onChangeF(textValue.value = s),
             dontAutoFocus: true,
             bgColor: Colors.white,
-            inputType: widget.inputType,
-            maxLines: widget.maxLines,
-            options: widget.options,
+            inputType: inputType,
+            maxLines: maxLines,
+            options: options,
           ),
         );
     return GestureDetector(
-          onTap: () {
-            Callout.showOverlay(
-              calloutConfig: calloutConfig,
-              boxContentF: boxContent,
-              targetGkF: () => propertyBtnGK,
-            );
-          },
-          child: SizedBox(
-            key: propertyBtnGK = GlobalKey(debugLabel: widget.label),
-            // margin: const EdgeInsets.only(top: 8),
-            width: widget.calloutButtonSize.width,
-            height: widget.calloutButtonSize.height,
-            // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            // color: Colors.white70,
-            // alignment: Alignment.center,
-            child: labelWidget,
-          ),
+      onTap: () {
+        Callout.showOverlay(
+          calloutConfig: calloutConfig,
+          boxContentF: boxContent,
+          targetGkF: () => propertyBtnGK,
         );
+      },
+      child: SizedBox(
+        key: propertyBtnGK = GlobalKey(debugLabel: label),
+        // margin: const EdgeInsets.only(top: 8),
+        width: calloutButtonSize.width,
+        height: calloutButtonSize.height,
+        // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        // color: Colors.white70,
+        // alignment: Alignment.center,
+        child: labelWidget(),
+      ),
+    );
   }
 }

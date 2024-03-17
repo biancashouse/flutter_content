@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/overlays/callouts/bubble_shape.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_content/src/overlays/callouts/draggable_corner.dart';
 import 'package:flutter_content/src/overlays/callouts/draggable_edge.dart';
 import 'package:flutter_content/src/overlays/callouts/line.dart';
 import 'package:flutter_content/src/overlays/callouts/pointing_line.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:transparent_pointer/transparent_pointer.dart';
 
@@ -69,10 +69,14 @@ class CalloutConfig {
 
   // double? width;
   // double? height;
-  double? minWidth;
-  double? minHeight;
-  Color? color;
-  final double roundedCorners;
+  final double? minWidth;
+  final double? minHeight;
+  Color? fillColor;
+  final Color? borderColor;
+  DecorationShapeEnum decorationShape;
+  final double borderRadius;
+  final double borderThickness;
+  final int? starPoints;
   final double lengthDeltaPc;
   final double? contentTranslateX;
   final double? contentTranslateY;
@@ -198,8 +202,14 @@ class CalloutConfig {
     this.forceMeasure = false,
     this.suppliedCalloutW,
     this.suppliedCalloutH,
+    this.minWidth,
     this.minHeight,
-    this.color,
+    this.fillColor,
+    this.decorationShape = DecorationShapeEnum.rectangle,
+    this.borderColor,
+    this.borderRadius = 0,
+    this.borderThickness = 0,
+    this.starPoints,
     this.lengthDeltaPc = 0.95,
     this.contentTranslateX,
     this.contentTranslateY,
@@ -217,7 +227,6 @@ class CalloutConfig {
     this.initialCalloutAlignment,
     this.initialCalloutPos,
     // this.onScreenAlignment,
-    this.roundedCorners = 0,
     this.animate = false,
     this.toDelta,
     this.fromDelta,
@@ -254,8 +263,14 @@ class CalloutConfig {
     this.initialAnimatedPositionDurationMs = 150,
     bool notUsingHydratedStorage = false,
   }) {
-    color ??= FUCHSIA_X.withOpacity(.9);
-    arrowColor ??= color;
+    // debugPrint(
+    //     'Feature: ${feature} CalloutConfig.decoration: ${decorationShape.toString()}');
+    if (decorationShape == DecorationShapeEnum.rectangle &&
+        (borderRadius ?? 0) > 0) {
+      decorationShape = DecorationShapeEnum.rounded_rectangle;
+    }
+    fillColor ??= FUCHSIA_X.withOpacity(.9);
+    arrowColor ??= fillColor;
     // assert((dragHandle != null) && (dragHandleHeight != null), 'if using a drag handle, it must have height > 0.0 !');
     // assert((widthF != null && heightF != null) || context != null, 'if either widthF or heightF null, must provide a context for measuring !');
     // if ((widthF == null || heightF == null) && context == null) {
@@ -269,7 +284,6 @@ class CalloutConfig {
 
     calloutW ??= suppliedCalloutW;
     calloutH ??= suppliedCalloutH;
-
 
     if (initialCalloutPos != null) {
       initialCalloutAlignment = initialTargetAlignment = null;
@@ -285,13 +299,14 @@ class CalloutConfig {
 
     initialised = true;
     // set gotit automatically once used
-    if (onlyOnce ?? false)
+    if (onlyOnce ?? false) {
       GotitsHelper.gotit(feature,
           notUsingHydratedStorage: notUsingHydratedStorage);
+    }
 
     isDraggable = draggable;
 
-    calloutColor = color ?? Colors.white;
+    calloutColor = fillColor ?? Colors.white;
     draggableColor ??= Colors.blue.withOpacity(.1); //JIC ??
   }
 
@@ -944,11 +959,13 @@ class CalloutConfig {
 
       startingCalloutLeft =
           tR!.left + startingCalloutTopLeftRelativeToTarget.dx;
-      if (!skipOnScreenCheck && startingCalloutLeft < 0)
+      if (!skipOnScreenCheck && startingCalloutLeft < 0) {
         startingCalloutLeft = 0.0;
+      }
       startingCalloutTop = tR!.top + startingCalloutTopLeftRelativeToTarget.dy;
-      if (!skipOnScreenCheck && startingCalloutTop < 0)
+      if (!skipOnScreenCheck && startingCalloutTop < 0) {
         startingCalloutTop = 0.0;
+      }
     } else {
       startingCalloutTop = initialCalloutPos!.dy;
       startingCalloutLeft = initialCalloutPos!.dx;
@@ -963,12 +980,16 @@ class CalloutConfig {
     needsToScrollH = calloutW! > Useful.scrW;
     needsToScrollV = calloutH! > (Useful.scrH - Useful.kbdH);
     if (!skipOnScreenCheck && !needsToScrollV && !needsToScrollH) {
-      var definitelyOnScreen = Useful.ensureOnScreen(Rect.fromLTWH(
-        actualLeft,
-        actualTop,
+      var definitelyOnScreen = Useful.ensureOnScreen(
+        Rect.fromLTWH(
+          actualLeft,
+          actualTop,
+          calloutW!,
+          calloutH!,
+        ),
         calloutW!,
         calloutH!,
-      ));
+      );
       actualLeft = definitelyOnScreen.$1;
       actualTop = definitelyOnScreen.$2;
     } else if (needsToScrollV) {
@@ -999,7 +1020,7 @@ class CalloutConfig {
         top: 0,
         left: 0,
         child: CustomPaint(
-          painter: BubbleShape_OP(calloutConfig: this, fillColor: color),
+          painter: BubbleShape_OP(calloutConfig: this, fillColor: fillColor),
           willChange: false,
         ),
       );
@@ -1017,17 +1038,22 @@ class CalloutConfig {
 
   void _onDragMove(DragUpdateDetails event) {
     if (preventDrag ||
-        !isDraggable /* || event.localPosition.dy >= (dragHandleHeight ?? 9999) */)
+        !isDraggable /* || event.localPosition.dy >= (dragHandleHeight ?? 9999) */) {
       return;
+    }
     rebuild(() {
       top = event.globalPosition.dy - dragCalloutOffset.dy;
       left = event.globalPosition.dx - dragCalloutOffset.dx;
-      var definitelyOnScreen = Useful.ensureOnScreen(Rect.fromLTWH(
-        left!,
-        top!,
+      var definitelyOnScreen = Useful.ensureOnScreen(
+        Rect.fromLTWH(
+          left!,
+          top!,
+          calloutW!,
+          dragHandleHeight ?? calloutH!,
+        ),
         calloutW!,
-        dragHandleHeight ?? calloutH!,
-      ));
+        0,
+      );
       left = definitelyOnScreen.$1;
       top = definitelyOnScreen.$2;
 
@@ -1036,16 +1062,44 @@ class CalloutConfig {
     });
   }
 
-  void _onDragEnd(DragEndDetails event) {
-    //if (preventDrag || !isDraggable || event.localPosition.dy >= (dragHandleHeight ?? 9999)) return;
-    if (dragging) {
-      rebuild(() {
-        var definitelyOnScreen = Useful.ensureOnScreen(Rect.fromLTWH(
+  void moveBy(double hDelta, double vDelta) {
+    rebuild(() {
+      if (top == null) return;
+      top = top! + vDelta - dragCalloutOffset.dy;
+      left = left! + hDelta - dragCalloutOffset.dx;
+      var definitelyOnScreen = Useful.ensureOnScreen(
+        Rect.fromLTWH(
           left!,
           top!,
           calloutW!,
           dragHandleHeight ?? calloutH!,
-        ));
+        ),
+        calloutW!,
+        calloutH!,
+      );
+      left = definitelyOnScreen.$1;
+      top = definitelyOnScreen.$2;
+
+      onDragF?.call(Offset(left!, top!));
+      movedOrResizedNotifier?.value++;
+      debugPrint('top: $top, left: $left');
+    });
+  }
+
+  void _onDragEnd(DragEndDetails event) {
+    //if (preventDrag || !isDraggable || event.localPosition.dy >= (dragHandleHeight ?? 9999)) return;
+    if (dragging) {
+      rebuild(() {
+        var definitelyOnScreen = Useful.ensureOnScreen(
+          Rect.fromLTWH(
+            left!,
+            top!,
+            calloutW!,
+            dragHandleHeight ?? calloutH!,
+          ),
+          calloutW!,
+          0,
+        );
         left = definitelyOnScreen.$1;
         top = definitelyOnScreen.$2;
         if (dragging) {
@@ -1098,7 +1152,7 @@ class CalloutConfig {
   Widget _cpi() => Padding(
         padding: const EdgeInsets.all(8.0),
         child: CircularProgressIndicator(
-          backgroundColor: color,
+          backgroundColor: fillColor,
         ),
       );
 
@@ -1358,10 +1412,12 @@ class CalloutConfig {
         Coord.fromOffset(cCentre), line, tR!);
     cE = Rectangle.getTargetIntersectionPoint2(
         Coord.fromOffset(tCentre), line, cR());
-    if (toDelta != null && toDelta != 0.0)
+    if (toDelta != null && toDelta != 0.0) {
       tE = Coord.changeDistanceBetweenPoints(cE, tE, toDelta);
-    if (fromDelta != null && fromDelta != 0.0)
+    }
+    if (fromDelta != null && fromDelta != 0.0) {
       cE = Coord.changeDistanceBetweenPoints(tE, cE, fromDelta);
+    }
     return line;
   }
 
@@ -1412,6 +1468,20 @@ class PositionedBoxContent extends StatelessWidget {
           -Useful.calcTargetAlignmentWithinWrapper(screenRect, cc.tR!);
       cc.initialCalloutAlignment = -cc.initialTargetAlignment!;
     }
+
+    var decoration = cc.decorationShape.toDecoration(
+      fillColor1: cc.fillColor,
+      borderColor1: cc.borderColor,
+      borderRadius: cc.borderRadius,
+      thickness: cc.borderThickness,
+      starPoints: cc.starPoints,
+    );
+    ShapeBorder? sb;
+    if (decoration is ShapeDecoration) {
+      final ob = decoration;
+      sb = ob.shape;
+    }
+
     return Positioned(
         top: (cc.top ?? 0) + (cc.contentTranslateY ?? 0.0),
         left: (cc.left ?? 0) + (cc.contentTranslateX ?? 0.0),
@@ -1424,37 +1494,23 @@ class PositionedBoxContent extends StatelessWidget {
             cc._onDragEnd(DragEndDetails());
           },
           child: TransparentPointer(
-            transparent: cc
-                .transparentPointer, // TRUE means treat as invisible, and pass events down below
-            child: Material(
-              type: MaterialType
-                  .transparency, //roundedCorners > 0 ? MaterialType.card : MaterialType.canvas,
-              borderRadius:
-                  BorderRadius.all(Radius.circular(cc.roundedCorners)),
-              // child: MediaQuery(
-              //   data: MediaQuery.of(context).copyWith(
-              //     boldText: false,
-              //     textScaler: const TextScaler.linear(1.0),
-              //   ),
-              child: Container(
-                width: cc.calloutW!.abs(),
-// - (gotitAxis == Axis.horizontal ? 50 : 0),
-                height: cc.calloutH!.abs(),
-// - (gotitAxis == Axis.vertical ? 50 : 0),
-                decoration: calloutConfig.circleShape
-                    ? const BoxDecoration(
-                        color: FUCHSIA_X, shape: BoxShape.circle)
-                    : BoxDecoration(
-                        color: cc.color,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(cc.roundedCorners)),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 7,
-                              spreadRadius: 9),
-                        ],
-                      ),
+            transparent: cc.transparentPointer,
+            child: Container(
+              decoration: cc.decorationShape.toDecoration(
+                fillColor1: cc.fillColor,
+                borderColor1: cc.borderColor,
+                borderRadius: cc.borderRadius,
+                thickness: cc.borderThickness,
+                starPoints: cc.starPoints,
+              ),
+              // decoration: ShapeDecoration(
+              //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
+              //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
+              // ),
+              width: cc.calloutW,
+              height: cc.calloutH,
+              child: Material(
+                type: MaterialType.transparency,
                 child: Stack(
                   children: <Widget>[
                     Align(
@@ -1484,8 +1540,45 @@ class PositionedBoxContent extends StatelessWidget {
                   ],
                 ),
               ),
-              // ),
-            ),
+            ), // TRUE means treat as invisible, and pass events down below
+//             child: Material(
+//               // shape: const StarBorder(
+//               //   side: BorderSide(color: Colors.black, width: 3),
+//               //   points: 7,
+//               //   // innerRadiusRatio: _model.innerRadiusRatio,
+//               //   // pointRounding: _model.pointRounding,
+//               //   // valleyRounding: _model.valleyRounding,
+//               //   // rotation: 0,
+//               // ),
+//               shape: sb,
+//               color: cc.fillColor,
+//               type: MaterialType
+//                   .transparency, //roundedCorners > 0 ? MaterialType.card : MaterialType.canvas,
+//               borderRadius: sb != null ? null : BorderRadius.all(Radius.circular(cc.borderRadius)),
+//               // child: MediaQuery(
+//               //   data: MediaQuery.of(context).copyWith(
+//               //     boldText: false,
+//               //     textScaler: const TextScaler.linear(1.0),
+//               //   ),
+//               child: SizedBox(
+//                 width: cc.calloutW!.abs(),
+// // - (gotitAxis == Axis.horizontal ? 50 : 0),
+//                 height: cc.calloutH!.abs(),
+// // - (gotitAxis == Axis.vertical ? 50 : 0),
+// //                 decoration: calloutConfig.circleShape
+// //                     ? const BoxDecoration(
+// //                         color: FUCHSIA_X, shape: BoxShape.circle)
+// //                     : BoxDecoration(
+// //                         color: cc.fillColor,
+// //                         borderRadius:
+// //                             BorderRadius.all(Radius.circular(cc.borderRadius)),
+// //                         boxShadow: const [
+// //                           BoxShadow(
+// //                               color: Colors.black12,
+// //                               blurRadius: 7,
+// //                               spreadRadius: 9),
+// //                         ],
+// //                       ),
           ),
         ));
   }

@@ -8,11 +8,6 @@ part of 'model.dart';
 
 CAPIModel _$CAPIModelFromJson(Map<String, dynamic> json) => CAPIModel(
       appName: json['appName'] as String?,
-      targetConfigs: (json['targetConfigs'] as Map<String, dynamic>?)?.map(
-            (k, e) =>
-                MapEntry(k, TargetConfig.fromJson(e as Map<String, dynamic>)),
-          ) ??
-          const {},
       targetGroupConfigs:
           (json['targetGroupConfigs'] as Map<String, dynamic>?)?.map(
                 (k, e) => MapEntry(
@@ -29,7 +24,6 @@ CAPIModel _$CAPIModelFromJson(Map<String, dynamic> json) => CAPIModel(
 
 Map<String, dynamic> _$CAPIModelToJson(CAPIModel instance) => <String, dynamic>{
       'appName': instance.appName,
-      'targetConfigs': instance.targetConfigs,
       'targetGroupConfigs': instance.targetGroupConfigs,
       'snippetEncodedJsons': instance.snippetEncodedJsons,
       'jsonClipboard': instance.jsonClipboard,
@@ -50,12 +44,7 @@ Map<String, dynamic> _$TargetGroupConfigToJson(TargetGroupConfig instance) =>
 TargetConfig _$TargetConfigFromJson(Map<String, dynamic> json) => TargetConfig(
       uid: json['uid'] as int,
       wName: json['wName'] as String,
-      single: json['single'] as bool? ?? true,
       transformScale: (json['transformScale'] as num?)?.toDouble() ?? 1.0,
-      transformTranslateX:
-          (json['transformTranslateX'] as num?)?.toDouble() ?? 0.0,
-      transformTranslateY:
-          (json['transformTranslateY'] as num?)?.toDouble() ?? 0.0,
       radiusPc: (json['radiusPc'] as num?)?.toDouble(),
       calloutDurationMs: json['calloutDurationMs'] as int? ?? 1500,
       calloutWidth: (json['calloutWidth'] as num?)?.toDouble() ?? 400,
@@ -65,9 +54,21 @@ TargetConfig _$TargetConfigFromJson(Map<String, dynamic> json) => TargetConfig(
       btnLocalTopPc: (json['btnLocalTopPc'] as num?)?.toDouble(),
       btnLocalLeftPc: (json['btnLocalLeftPc'] as num?)?.toDouble(),
       showBtn: json['showBtn'] as bool? ?? true,
-      calloutColorValue: json['calloutColorValue'] as int?,
+      canResizeH: json['canResizeH'] as bool? ?? true,
+      canResizeV: json['canResizeV'] as bool? ?? true,
+      calloutFillColorValue: json['calloutFillColorValue'] as int?,
+      calloutBorderColorValue: json['calloutBorderColorValue'] as int?,
+      calloutDecorationShape: $enumDecodeNullable(
+              _$DecorationShapeEnumEnumMap, json['calloutDecorationShape']) ??
+          DecorationShapeEnum.rectangle,
+      calloutBorderRadius:
+          (json['calloutBorderRadius'] as num?)?.toDouble() ?? 30,
+      calloutBorderThickness:
+          (json['calloutBorderThickness'] as num?)?.toDouble() ?? 1,
+      starPoints: json['starPoints'] as int?,
       snippetName: json['snippetName'] as String,
-      arrowType: json['arrowType'] as int? ?? 1,
+      calloutArrowType: json['calloutArrowType'] as int? ?? 1,
+      calloutArrowColorValue: json['calloutArrowColorValue'] as int?,
       animateArrow: json['animateArrow'] as bool? ?? false,
     )
       ..targetLocalPosLeftPc =
@@ -78,10 +79,7 @@ Map<String, dynamic> _$TargetConfigToJson(TargetConfig instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'transformScale': instance.transformScale,
-      'transformTranslateX': instance.transformTranslateX,
-      'transformTranslateY': instance.transformTranslateY,
       'wName': instance.wName,
-      'single': instance.single,
       'targetLocalPosLeftPc': instance.targetLocalPosLeftPc,
       'targetLocalPosTopPc': instance.targetLocalPosTopPc,
       'radiusPc': instance.radiusPc,
@@ -90,11 +88,31 @@ Map<String, dynamic> _$TargetConfigToJson(TargetConfig instance) =>
       'calloutTopPc': instance.calloutTopPc,
       'calloutLeftPc': instance.calloutLeftPc,
       'showBtn': instance.showBtn,
+      'canResizeH': instance.canResizeH,
+      'canResizeV': instance.canResizeV,
       'calloutWidth': instance.calloutWidth,
       'calloutHeight': instance.calloutHeight,
       'calloutDurationMs': instance.calloutDurationMs,
-      'calloutColorValue': instance.calloutColorValue,
+      'calloutFillColorValue': instance.calloutFillColorValue,
+      'calloutBorderColorValue': instance.calloutBorderColorValue,
+      'calloutDecorationShape':
+          _$DecorationShapeEnumEnumMap[instance.calloutDecorationShape]!,
+      'calloutBorderRadius': instance.calloutBorderRadius,
+      'calloutBorderThickness': instance.calloutBorderThickness,
+      'starPoints': instance.starPoints,
       'snippetName': instance.snippetName,
-      'arrowType': instance.arrowType,
+      'calloutArrowType': instance.calloutArrowType,
+      'calloutArrowColorValue': instance.calloutArrowColorValue,
       'animateArrow': instance.animateArrow,
     };
+
+const _$DecorationShapeEnumEnumMap = {
+  DecorationShapeEnum.rectangle: 'rectangle',
+  DecorationShapeEnum.rounded_rectangle: 'rounded_rectangle',
+  DecorationShapeEnum.rectangle_dotted: 'rectangle_dotted',
+  DecorationShapeEnum.rounded_rectangle_dotted: 'rounded_rectangle_dotted',
+  DecorationShapeEnum.circle: 'circle',
+  DecorationShapeEnum.bevelled: 'bevelled',
+  DecorationShapeEnum.stadium: 'stadium',
+  DecorationShapeEnum.star: 'star',
+};

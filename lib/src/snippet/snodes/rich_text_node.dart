@@ -73,8 +73,9 @@ class RichTextNode extends CL with RichTextNodeMappable {
         text: rootTextSpan,
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,
+        textScaler: TextScaler.linear(textScaleFactor??1.0),
         softWrap: softWrap ?? true,
-        overflow: overflow?.flutterValue ?? TextOverflow.clip, textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
+        overflow: overflow?.flutterValue ?? TextOverflow.clip,
       );
       return rt;
     } catch (e) {

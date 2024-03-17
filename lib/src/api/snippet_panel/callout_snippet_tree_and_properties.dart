@@ -14,7 +14,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 //
 // void refreshSnippetTreeCallout(String snippetName) => Callout.refreshOverlay(snippetName);
 
-CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onDismissedF) {
+CalloutConfig
+snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onDismissedF) {
   double width() {
     double? w = HydratedBloc.storage.read("snippet-tree-callout-width");
     if (w != null) return w.abs();
@@ -60,7 +61,7 @@ CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onD
 // barrierOpacity: .1,
 // arrowType: ArrowType.POINTY,
 // color: Colors.purpleAccent.shade100,
-    roundedCorners: 16,
+    borderRadius: 16,
 // initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
     finalSeparation: 40,
 // onBarrierTappedF: () async {
@@ -106,8 +107,9 @@ void showSnippetTreeAndPropertiesCallout({
   String? originalClipboardJson = FC().capiBloc.state.jsonClipboard;
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
+  CalloutConfig cc = snippetTreeCalloutConfig(snippetBloc, onDismissedF);
   Callout.showOverlay(
-    calloutConfig: snippetTreeCalloutConfig(snippetBloc, onDismissedF),
+    calloutConfig: cc,
     boxContentF: (_) {
       // debugPrint('+++++++++++++++++++++++++++++ re-build SnippetTreeCalloutContents');
       return BlocProvider<SnippetBloC>(

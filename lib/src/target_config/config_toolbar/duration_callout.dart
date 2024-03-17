@@ -19,9 +19,11 @@ Future<void> showTargetDurationCallout(
   final ScrollController? ancestorHScrollController,
   final ScrollController? ancestorVScrollController,
 }) async {
-  GlobalKey? targetGK = tc.single
-      ? FC().getSingleTargetGk(tc.wName)
-      : FC().getMultiTargetGk(tc.uid.toString());
+  GlobalKey? targetGK =
+  // tc.single
+  //     ? FC().getSingleTargetGk(tc.wName)
+  //     :
+  FC().getMultiTargetGk(tc.uid.toString());
 
   Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -29,8 +31,7 @@ Future<void> showTargetDurationCallout(
             label: 'onscreen duration (ms)',
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
-              CAPIBloC bloc = FC().capiBloc;
-              bloc.add(CAPIEvent.targetConfigChanged(newTC: tc..calloutDurationMs = int.tryParse(s)!));
+              tc.calloutDurationMs = int.tryParse(s)??0;
               Callout.dismiss(CAPI.DURATION_CALLOUT.name);
             },
           ),
@@ -52,7 +53,7 @@ Future<void> showTargetDurationCallout(
         suppliedCalloutW: 400,
         suppliedCalloutH: 450,
         draggable: true,
-        color: Colors.purpleAccent,
+        fillColor: Colors.purpleAccent,
         // showCloseButton: true,
         // onTopRightButtonPressF: () {
         //   debugPrint("closed");

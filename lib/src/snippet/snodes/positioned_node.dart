@@ -32,21 +32,24 @@ class PositionedNode extends SC with PositionedNodeMappable {
           snode: this,
           name: 'left',
           decimalValue: left,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => left = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => left = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'bottom',
           decimalValue: bottom,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => bottom = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => bottom = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'right',
           decimalValue: right,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => right = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => right = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];
@@ -56,7 +59,8 @@ class PositionedNode extends SC with PositionedNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     return Positioned(
-            key: createNodeGK(),      top: top,
+      key: createNodeGK(),
+      top: top,
       left: left,
       bottom: bottom,
       right: right,

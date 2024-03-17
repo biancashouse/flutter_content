@@ -411,7 +411,7 @@ class HomePageMobileState extends State<HomePageMobile> with SingleTickerProvide
             content: InkWell(
                 child: const Text(
                   'Tap to see more Flutter in action',
-                  textScaleFactor: 1.5,
+                  textScaler: TextScaler.linear(1.5),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.blue,

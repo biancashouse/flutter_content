@@ -764,8 +764,9 @@ class StringPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButton_String(
+  Widget toPropertyNodeContents(BuildContext context) {
+    debugPrint('toPropertyNodeContents');
+    return NodePropertyButton_String(
           // originalText: (stringValue??'').isNotEmpty
           //     ? nameOnSeparateLine
           //     ? '$name: \n$stringValue'
@@ -785,6 +786,7 @@ class StringPropertyValueNode extends PTreeNode {
           onChangeF: (s) {
             onStringChange(s);
           });
+  }
 }
 
 class SnippetNamePropertyValueNode extends PTreeNode {

@@ -24,7 +24,6 @@ class StepNode extends CL with StepNodeMappable {
 
   Step toStep(BuildContext context, int index, FCStepperState parent) {
      return Step(
-      // key: nodeGK,
        isActive: parent.currentStep >= index,
       title: title.toWidgetProperty(context, this) ?? Useful.coloredText('must have a title', color: Colors.red),
       subtitle: subtitle?.toWidgetProperty(context, this),

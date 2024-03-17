@@ -112,7 +112,7 @@ void main() {
       capiBloc = CAPIBloC(
         appName: appName,
         modelRepo: mockRepository,
-        singleTargetMap: {},
+        // singleTargetMap: {},
         targetGroupMap: {},
       );
       FC().init(

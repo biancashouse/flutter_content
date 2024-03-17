@@ -72,7 +72,7 @@ void editText2({
                 },
         ),
         // arrowThickness: ArrowThickness.THIN,
-        color: Colors.white,
+        fillColor: Colors.white,
         arrowColor: Colors.red,
         finalSeparation: separation??0.0,
         //developer.log('barrier tapped'),

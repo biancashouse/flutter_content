@@ -13,6 +13,7 @@ enum CAPI {
   TARGET_RADIUS_AND_ZOOM_CALLOUT,
   COLOUR_CALLOUT,
   ARROW_TYPE_CALLOUT,
+  MORE_CALLOUT_CONFIG_SETTINGS,
   TEXT_STYLE_CALLOUT,
   IMAGE_CALLOUT,
   // SNIPPET_CONTENT_CALLOUT,
@@ -191,8 +192,9 @@ class Callout extends StatefulWidget {
         // return const Icon(Icons.warning_amber);
       }
       OE? oeObj = findOE(calloutConfig.feature);
-      if ((calloutConfig.calloutW??0) <= 0) {
-        debugPrint('calloutW:${calloutConfig.calloutW} !!!  (feature:${calloutConfig.feature}');
+      if ((calloutConfig.calloutW ?? 0) <= 0) {
+        debugPrint(
+            'calloutW:${calloutConfig.calloutW} !!!  (feature:${calloutConfig.feature}');
       }
       return Visibility(
         visible: oeObj == null || !oeObj.isHidden,
@@ -238,7 +240,7 @@ class Callout extends StatefulWidget {
   }
 
   static void showOverlay({
-    ZoomerState? zoomer,  // if callout needs access to the zoomer
+    ZoomerState? zoomer, // if callout needs access to the zoomer
     required CalloutConfig calloutConfig,
     required WidgetBuilder boxContentF,
     TargetKeyFunc? targetGkF,
@@ -344,12 +346,12 @@ class Callout extends StatefulWidget {
           scale: 1.0,
           suppliedCalloutW: width,
           suppliedCalloutH: height,
-          color: backgroundColor,
+          fillColor: backgroundColor,
           elevation: elevation,
           modal: false,
           noBorder: true,
           animate: true,
-          roundedCorners: 10,
+          borderRadius: 10,
           alwaysReCalcSize: true,
           arrowType: ArrowType.NO_CONNECTOR,
           draggable: false,
@@ -421,12 +423,12 @@ class Callout extends StatefulWidget {
           scale: 1.0,
           suppliedCalloutW: width,
           suppliedCalloutH: height,
-          color: backgroundColor,
+          fillColor: backgroundColor,
           elevation: elevation,
           modal: false,
           noBorder: true,
           animate: true,
-          roundedCorners: 10,
+          borderRadius: 10,
           alwaysReCalcSize: true,
           arrowType: ArrowType.NO_CONNECTOR,
           draggable: false,
@@ -453,9 +455,9 @@ class Callout extends StatefulWidget {
           scale: 1.0,
           suppliedCalloutW: 600,
           suppliedCalloutH: 50,
-          color: Colors.black,
+          fillColor: Colors.black,
           elevation: 5,
-          roundedCorners: 10,
+          borderRadius: 10,
           alwaysReCalcSize: true,
           arrowType: ArrowType.NO_CONNECTOR,
           draggable: false,

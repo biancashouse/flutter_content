@@ -5,19 +5,19 @@ import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dar
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class ColourTool extends StatefulWidget {
+  final TargetsWrapperName twName;
   final TargetConfig tc;
   final VoidCallback onParentBarrierTappedF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
-  final bool allowButtonCallouts;
   final bool justPlaying;
 
   const ColourTool(
+    this.twName,
     this.tc,
     this.onParentBarrierTappedF, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
-    required this.allowButtonCallouts,
     required this.justPlaying,
     super.key,
   });
@@ -26,25 +26,27 @@ class ColourTool extends StatefulWidget {
   State<ColourTool> createState() => _ColourToolState();
 
   static show(
+    final TargetsWrapperName twName,
     final TargetConfig tc, {
     required VoidCallback onBarrierTappedF,
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
-    required final bool allowButtonCallouts,
     required final bool justPlaying,
   }) {
-    GlobalKey? targetGK = tc.single
-        ? FC().getSingleTargetGk(tc.wName)
-        : FC().getMultiTargetGk(tc.uid.toString());
+    GlobalKey? targetGK =
+        // tc.single
+        // ? FC().getSingleTargetGk(tc.wName)
+        // :
+        FC().getMultiTargetGk(tc.uid.toString());
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
         feature: CAPI.COLOUR_CALLOUT.name,
         suppliedCalloutW: 300,
-        suppliedCalloutH: 130,
-        color: Colors.purpleAccent,
-        roundedCorners: 16,
+        suppliedCalloutH: 160,
+        fillColor: Colors.purpleAccent,
+        borderRadius: 16,
         arrowType: ArrowType.NO_CONNECTOR,
         barrier: CalloutBarrier(
           opacity: 0.1,
@@ -52,11 +54,11 @@ class ColourTool extends StatefulWidget {
         notUsingHydratedStorage: true,
       ),
       boxContentF: (_) => ColourTool(
+        twName,
         tc,
         onBarrierTappedF,
         ancestorHScrollController: ancestorHScrollController,
         ancestorVScrollController: ancestorVScrollController,
-        allowButtonCallouts: allowButtonCallouts,
         justPlaying: justPlaying,
       ),
     );
@@ -91,18 +93,24 @@ class _ColourToolState extends State<ColourTool> {
             selected: tc.calloutColor(),
             onChanged: (color) {
               tc.setCalloutColor(color);
-              bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+              // Callout.refreshOverlay(tc.snippetName);
+              // // bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
               Callout.dismiss(CAPI.COLOUR_CALLOUT.name);
-              Useful.afterNextBuildDo(() {
-                widget.onParentBarrierTappedF.call();
-                // Callout.refreshOverlay(tc.snippetName, f: () {});
-                // reshowSnippetContentCallout(
-                //   tc,
-                //   widget.allowButtonCallouts,
-                //   widget.justPlaying,
-                //   widget.onParentBarrierTappedF,
-                // );
-              });
+              // Useful.afterNextBuildDo(() {
+              //   widget.onParentBarrierTappedF.call();
+              //   Callout.refreshOverlay(tc.snippetName, f: () {});
+              removeSnippetContentCallout(tc.snippetName);
+              FC()
+                  .parentTW(widget.twName)
+                  ?.zoomer
+                  ?.zoomImmediately(tc.transformScale, tc.transformScale);
+              showSnippetContentCallout(
+                twName: widget.twName,
+                tc: tc,
+                justPlaying: false,
+                // widget.onParentBarrierTappedF,
+              );
+              // });
               //reshowSnippetContentCallout(tc);
               // Useful.afterMsDelayDo(1000, () {
               //   Useful.om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);

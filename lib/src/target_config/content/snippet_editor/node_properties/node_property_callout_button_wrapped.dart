@@ -148,7 +148,7 @@ class _NodePropertyCalloutButtonWrappedState extends State<NodePropertyCalloutBu
             }),
         arrowType: ArrowType.VERY_THIN,
         arrowColor: Colors.blueAccent,
-        color: widget.menuBgColor,
+        fillColor: widget.menuBgColor,
         //alwaysReCalcSize: true,
         initialTargetAlignment: widget.initialTargetAlignment ?? Alignment.centerLeft,
         initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.centerLeft,

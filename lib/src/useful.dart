@@ -58,6 +58,8 @@ class Useful {
     return FC().skipAssetPkgName ? name : 'packages/flutter_content/$name';
   }
 
+  static void refreshMQ(BuildContext ctx) => instance._mqd = MediaQuery.of(ctx);
+
   // must be called from a widget build
   void initWithContext(BuildContext context) {
     _responsive = _Responsive().init();
@@ -461,20 +463,18 @@ class Useful {
         letterSpacing: letterSpacing,
       );
 
-  static const MIN_VISIBLE = 40.0;
-
-  static (double, double) ensureOnScreen(Rect calloutRect) {
+  static (double, double) ensureOnScreen(Rect calloutRect, double minVisibleH, double minVisibleV) {
     double resultLeft = calloutRect.left;
     double resultTop = calloutRect.top;
     // adjust s.t entirely visible
-    if (calloutRect.left > (Useful.scrW - MIN_VISIBLE)) {
-      resultLeft = Useful.scrW - MIN_VISIBLE;
+    if (calloutRect.left > (Useful.scrW - minVisibleH)) {
+      resultLeft = Useful.scrW - minVisibleH;
     }
-    if (calloutRect.top > (Useful.scrH - MIN_VISIBLE - Useful.kbdH)) {
-      resultTop = Useful.scrH - MIN_VISIBLE - Useful.kbdH;
+    if (calloutRect.top > (Useful.scrH - minVisibleV - Useful.kbdH)) {
+      resultTop = Useful.scrH - minVisibleV - Useful.kbdH;
     }
-    if (calloutRect.right < MIN_VISIBLE) resultLeft = MIN_VISIBLE - calloutRect.width;
-    if (calloutRect.bottom < MIN_VISIBLE) resultTop = MIN_VISIBLE - calloutRect.height;
+    if (calloutRect.right < minVisibleH) resultLeft = minVisibleH - calloutRect.width;
+    if (calloutRect.bottom < minVisibleV) resultTop = minVisibleV - calloutRect.height;
 
     return (resultLeft, resultTop);
   }
@@ -704,7 +704,7 @@ extension GlobalKeyExtension on GlobalKey {
           draggable: false,
           suppliedCalloutW: Useful.scrW * .7,
           suppliedCalloutH: 400,
-          color: Colors.white,
+          fillColor: Colors.white,
         ),
       );
     }

@@ -53,7 +53,7 @@ class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
           ),
         );
       },
-      calloutSize: const Size(280, 110),
+      calloutSize: const Size(280, 140),
     );
   }
 }

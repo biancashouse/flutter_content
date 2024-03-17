@@ -25,7 +25,7 @@ void showSaveAsCallout({
         arrowType: ArrowType.THIN,
         arrowColor: Colors.blue[900],
         finalSeparation: 60,
-        color: Colors.purpleAccent,
+        fillColor: Colors.purpleAccent,
         barrier: CalloutBarrier(
           opacity: 0.25,
           onTappedF: () async {

@@ -57,11 +57,11 @@ class PathUtil {
       if (calloutR.onSameSide(pointyBase1, pointyBase2)) {
         double distanceToNextCorner = calloutR.distanceToNextCorner(pointyBase1);
         double distanceToPrevCorner = calloutR.distanceToPreviousCorner(pointyBase2);
-        if (distanceToNextCorner > 0 && distanceToNextCorner < config.roundedCorners) {
+        if (distanceToNextCorner > 0 && distanceToNextCorner < config.borderRadius) {
           pointyBase1 = calloutR.nextClockwiseCorner(pointyBase1);
           pointyBase2 = calloutR.cleverTraverseAntiClockwise(pointyBase1, (pointyThickness ?? DEFAULT_THICKNESS) * 2);
           partialRectWith3CornersRounded(path, pointyBase1, pointyBase2, calloutR, config);
-        } else if (distanceToPrevCorner > 0 && distanceToPrevCorner < config.roundedCorners) {
+        } else if (distanceToPrevCorner > 0 && distanceToPrevCorner < config.borderRadius) {
           pointyBase2 = calloutR.previousClockwiseCorner(pointyBase2);
           pointyBase1 = calloutR.cleverTraverseClockwise(pointyBase2, (pointyThickness ?? DEFAULT_THICKNESS) * 2);
           partialRectWith3CornersRounded(path, pointyBase1, pointyBase2, calloutR, config);
@@ -99,8 +99,8 @@ class PathUtil {
     Side side = startingSide;
     bool allSidesTraversed = false;
     while (!allSidesTraversed) {
-      pos = PathUtil.lineToStartOfNextCorner(path, pos, theRect, config.roundedCorners, side: side);
-      if (config.roundedCorners > 0) pos = PathUtil.turnCornerClockwise(path, pos, theRect, config.roundedCorners, side: side);
+      pos = PathUtil.lineToStartOfNextCorner(path, pos, theRect, config.borderRadius, side: side);
+      if (config.borderRadius > 0) pos = PathUtil.turnCornerClockwise(path, pos, theRect, config.borderRadius, side: side);
       side = nextSide(side);
       allSidesTraversed = side == startingSide;
     }
@@ -121,8 +121,8 @@ class PathUtil {
     Side side = startingSide;
     bool threeSidesTraversed = false;
     while (!threeSidesTraversed) {
-      pos = PathUtil.lineToStartOfNextCorner(path, pos, theRect, config.roundedCorners, side: side);
-      if (config.roundedCorners > 0) pos = PathUtil.turnCornerClockwise(path, pos, theRect, config.roundedCorners, side: side);
+      pos = PathUtil.lineToStartOfNextCorner(path, pos, theRect, config.borderRadius, side: side);
+      if (config.borderRadius > 0) pos = PathUtil.turnCornerClockwise(path, pos, theRect, config.borderRadius, side: side);
       side = nextSide(side);
       threeSidesTraversed = side == previousSide(startingSide);
     }

@@ -18,20 +18,17 @@ class FlutterContentPage extends HookWidget {
   // https://github.com/flutter/flutter/issues/25827
   @override
   Widget build(BuildContext context) {
-    final snippetPanel = useState<SnippetPanel>(
-      SnippetPanel(
-        panelName: panelName,
-        snippetName: snippetName,
-        fromTemplate: fromTemplate,
-      ),
+    final snippetPanel = SnippetPanel(
+      panelName: panelName,
+      snippetName: snippetName,
+      fromTemplate: fromTemplate,
     );
-    final zoomer = useState<Zoomer>(
-      Zoomer(
-          child: Useful.isAndroid
-              ? _buildAndroid(context, snippetPanel.value)
-              : snippetPanel.value),
+    final zoomer = Zoomer(
+      child: Useful.isAndroid
+          ? _buildAndroid(context, snippetPanel)
+          : snippetPanel,
     );
-    return zoomer.value;
+    return zoomer;
   }
 
   // wait for android to register screen size
@@ -44,7 +41,6 @@ class FlutterContentPage extends HookWidget {
           builder: (BuildContext context, snapshot) {
             if (snapshot.hasData && (snapshot.data ?? 0) > 0) {
               return snippetPanel;
-              ;
             }
             return const CircularProgressIndicator(
               color: Colors.orange,

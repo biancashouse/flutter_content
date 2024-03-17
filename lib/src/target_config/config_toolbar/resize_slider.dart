@@ -10,14 +10,18 @@ class ResizeSlider extends StatefulWidget {
   final double? iconSize;
   final Color? color;
   final bool showValue;
-  final Function(double) onChange;
+  final ValueChanged<double> onChangeF;
+  final VoidCallback? onDragStartF;
+  final VoidCallback? onDragEndF;
 
   const ResizeSlider({super.key, 
     required this.value,
     this.icon,
     this.iconSize,
     this.color,
-    required this.onChange,
+    required this.onChangeF,
+    this.onDragStartF,
+    this.onDragEndF,
     this.min = 0,
     this.max = 100,
     this.showValue = true,
@@ -55,13 +59,15 @@ class _ResizeSliderState extends State<ResizeSlider> {
               value: _value,
               onChanged: (value) {
                 setState(() => _value = value);
-                widget.onChange(value);
+                widget.onChangeF(value);
               },
               onChangeStart: (_) {
                 Callout.preventParentCalloutDrag(context);
+                widget.onDragStartF?.call();
               },
               onChangeEnd: (_) {
                 Callout.allowParentCalloutDrag(context);
+                widget.onDragEndF?.call();
               },
               min: widget.min!,
               max: widget.max!,

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -19,59 +18,39 @@ void removeSnippetContentCallout(String snippetName) {
   }
 }
 
-void reshowSnippetContentCallout(
-  TargetConfig selectedTC,
-  bool allowButtonCallouts,
-  bool justPlaying,
-  VoidCallback onDiscardedF,
-) {
-  removeSnippetContentCallout(selectedTC.snippetName);
-  Useful.afterMsDelayDo(500, () {
-    showSnippetContentCallout(
-      initialTC: selectedTC,
-      snippetName: selectedTC.snippetName,
-      allowButtonCallouts: allowButtonCallouts,
-      justPlaying: justPlaying,
-      onDiscardedF: onDiscardedF,
-    );
-  });
-}
-
 /// returning false means user tapped the x
-void showSnippetContentCallout({
-  // ZoomerState? zoomer,
-  required TargetConfig initialTC,
-  required String snippetName,
+Future<void> showSnippetContentCallout({
+  required TargetsWrapperName twName,
+  required TargetConfig tc,
   required bool justPlaying,
-  required bool allowButtonCallouts,
-  required VoidCallback onDiscardedF,
-}
-    // final ScrollController? ancestorHScrollController,
-    // final ScrollController? ancestorVScrollController,
-    ) {
+}) async {
+  // possibly transform before showing callout
+  TargetsWrapperState? parentTW = FC().targetsWrappers[twName]?.currentState
+      as TargetsWrapperState?; //TargetsWrapper.of(context);
+
+  Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
+      .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
+  Rect? targetRect = FC()
+      .getMultiTargetGk(tc.uid.toString())!
+      .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
+
+  if (wrapperRect == null || targetRect == null) return;
+
   // CAPIBloc bloc = FlutterContent().capiBloc;
   // GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
   // bool ignoreBarrierTaps = false;
   double minHeight = 0;
   // int maxLines = 5;
-  // TargetConfig? initialTC; // = initialTC; //FlutterContent().capiBloc.state.tcByNameOrUid(initialTC);
-  GlobalKey? targetGK() => initialTC.single
-      ? FC().getSingleTargetGk(initialTC.wName)
-      : FC().getMultiTargetGk(initialTC.uid.toString())!;
+  // TargetConfig? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
+  GlobalKey? targetGK() => FC().getMultiTargetGk(tc.uid.toString())!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
-  Feature feature = snippetName;
-  FC().targetSnippetBeingConfigured = FC().rootNodeOfNamedSnippet(snippetName);
-  // SnippetPanel sPanel = SnippetPanel(
-  //   panelName: feature,
-  //   snippetName: snippetName,
-  //   allowButtonCallouts: allowButtonCallouts,
-  // );
-  // if snippet not yet created, do it now
-  FC().targetSnippetBeingConfigured ??=
-      (FC().snippetsMap[snippetName] = SnippetPanel.createSnippetFromTemplate(
-    SnippetTemplate.target_content_widget, snippetName
-  ));
+  Feature feature = tc.snippetName;
+  FC().targetSnippetBeingConfigured =
+      FC().rootNodeOfNamedSnippet(tc.snippetName);
+  FC().targetSnippetBeingConfigured ??= (FC().snippetsMap[tc.snippetName] =
+      SnippetPanel.createSnippetFromTemplate(
+          SnippetTemplate.target_content_widget, tc.snippetName));
   //  by now should definitely have created the target's snippet
   if (FC().targetSnippetBeingConfigured != null) {
     Callout.showOverlay(
@@ -88,44 +67,47 @@ void showSnippetContentCallout({
         feature: feature,
         // hScrollController: ancestorHScrollController,
         // vScrollController: ancestorVScrollController,
-        scale: initialTC.transformScale,
+        scale: tc.transformScale,
         // barrierOpacity: 0.1,
-        color: initialTC.calloutColor(),
-        arrowColor: initialTC.calloutColor(),
-        arrowType: initialTC.getArrowType(),
-        animate: initialTC.animateArrow,
-        initialCalloutPos: initialTC.getCalloutPos(),
+        fillColor: tc.calloutColor(),
+        decorationShape: tc.calloutDecorationShape,
+        borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
+        borderThickness: tc.calloutBorderThickness,
+        borderRadius: tc.calloutBorderRadius,
+        arrowColor: tc.calloutColor(),
+        arrowType: tc.getArrowType(),
+        animate: tc.animateArrow,
+        initialCalloutPos: tc.getCalloutPos(),
         // initialCalloutAlignment: Alignment.bottomCenter,
         // initialTargetAlignment: Alignment.topCenter,
         modal: false,
-        suppliedCalloutW: initialTC.calloutWidth,
-        suppliedCalloutH: initialTC.calloutHeight,
+        suppliedCalloutW: tc.calloutWidth,
+        suppliedCalloutH: tc.calloutHeight,
         minHeight: minHeight + 4,
         resizeableH: true,
         resizeableV: true,
         // containsTextField: true,
         // alwaysReCalcSize: true,
         onResize: (Size newSize) {
-          initialTC
+          tc
             ..calloutWidth = newSize.width
             ..calloutHeight = newSize.height;
-          FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: initialTC));
+          // FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
         },
         onDragEndedF: (Offset newPos) {
-          if (newPos.dy / Useful.scrH != initialTC.calloutTopPc ||
-              newPos.dx / Useful.scrW != initialTC.calloutLeftPc) {
-            initialTC.calloutTopPc = newPos.dy / Useful.scrH;
-            initialTC.calloutLeftPc = newPos.dx / Useful.scrW;
+          if (newPos.dy / Useful.scrH != tc.calloutTopPc ||
+              newPos.dx / Useful.scrW != tc.calloutLeftPc) {
+            tc.calloutTopPc = newPos.dy / Useful.scrH;
+            tc.calloutLeftPc = newPos.dx / Useful.scrW;
             FC().capiBloc.add(CAPIEvent.targetConfigChanged(
-                newTC: initialTC, keepTargetsHidden: true));
+                newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
           }
         },
         draggable: true,
         // frameTarget: true,
-        scaleTarget: initialTC.transformScale,
-        roundedCorners: 16,
+        scaleTarget: tc.transformScale,
         // separation: 100,
         // barrierOpacity: .1,
         // onBarrierTappedF: () async {
@@ -138,13 +120,17 @@ void showSnippetContentCallout({
         //     onBarrierTappedF?.call();
         //     Callout.removeOverlay(feature);
         // }
-        onDismissedF: onDiscardedF,
+        onDismissedF: () {
+          // FC().parentTW(twName)?.zoomer?.resetTransform();
+          // FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+        },
       ),
-      // configurableTarget: (kDebugMode && !justPlaying) ? initialTC : null,
-      removeAfterMs: justPlaying ? initialTC.calloutDurationMs : null,
+      // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
+      removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
     );
+
+    // explainPopupsAreDraggable();
   }
-  // explainPopupsAreDraggable();
 }
 
 // void showHelpContentPlayCallout(

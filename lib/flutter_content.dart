@@ -18,7 +18,7 @@ export 'src/api/panel/files_or_file_panel.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/wrapper/material_app_wrapper.dart';
 export 'src/api/wrapper/material_spa.dart';
-export 'src/api/wrapper/multiple/target_group_wrapper.dart';
+export 'src/api/wrapper/multiple/targets_wrapper.dart';
 export 'src/api/wrapper/zoomer.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
@@ -148,7 +148,7 @@ typedef EncodedSnippetJson = String;
 
 typedef SizeFunc = Size Function();
 typedef PosFunc = Offset Function();
-typedef TargetGroupWrapperName = String;
+typedef TargetsWrapperName = String;
 
 typedef DoubleFunc = double Function();
 
@@ -257,20 +257,33 @@ class FC {
 
   late CAPIBloC _capiBloc;
   late Map<SnippetName, SnippetRootNode> _snippetsMap;
+  Map<TargetsWrapperName, GlobalKey> targetsWrappers = {};
   late bool
       _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
   String? lastSavedModelJson;
   Offset? _editModeBtnPos;
+  Offset? _calloutConfigToolbarPos;
   bool skipEditModeEscape =
       false; // property editors can set this to prevent exit from EditMode
 
   final inEditMode = ValueNotifier<bool>(false);
 
+  Offset calloutConfigToolbarPos(context) =>
+      _calloutConfigToolbarPos ??
+      Offset(
+        Useful.scrW/2-350,
+        Useful.scrH/2 - 40,
+      );
+  void setCalloutConfigToolbarPos(Offset newPos) =>
+      _calloutConfigToolbarPos = newPos;
+
   Offset editModeBtnPos(context) =>
       _editModeBtnPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
   void setEditModeBtnPos(Offset newPos) => _editModeBtnPos = newPos;
+
+  bool? showingNodeOBoundaryOverlays;
 
   registerHandler(HandlerName name, void Function(BuildContext) f) =>
       _handlers[name] = f;
@@ -321,14 +334,14 @@ class FC {
     return gk;
   }
 
-  final GKMap _singleTargetGkMap = {};
+  // final GKMap _singleTargetGkMap = {};
 
-  GlobalKey? getSingleTargetGk(feature) => _singleTargetGkMap[feature];
+  // GlobalKey? getSingleTargetGk(feature) => _singleTargetGkMap[feature];
 
-  GlobalKey setSingleTargetGk(Feature feature, GlobalKey gk) {
-    _singleTargetGkMap[feature] = gk;
-    return gk;
-  }
+  // GlobalKey setSingleTargetGk(Feature feature, GlobalKey gk) {
+  //   _singleTargetGkMap[feature] = gk;
+  //   return gk;
+  // }
 
   final GKMap _multiTargetGkMap = {};
 
@@ -339,9 +352,11 @@ class FC {
     return gk;
   }
 
-  final FeatureList _singleTargetBtnFeatures = [];
+  TargetsWrapperState? parentTW(String twName) =>
+      FC().targetsWrappers[twName]?.currentState as TargetsWrapperState?;
+  // final FeatureList _singleTargetBtnFeatures = [];
 
-  FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
+  // FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
 
   bool get aSnippetIsBeingEdited => snippetBeingEdited != null;
 

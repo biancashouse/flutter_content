@@ -8,11 +8,11 @@ import 'positioned_target_cover_btn.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTarget extends StatelessWidget {
-  final String name;
+  final TargetsWrapperName twName;
   final TargetConfig initialTC;
 
   const PositionedTarget({
-    required this.name,
+    required this.twName,
     required this.initialTC,
     super.key,
   });
@@ -21,11 +21,9 @@ class PositionedTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TargetGroupWrapperState? parentTW = TargetGroupWrapper.of(context);
-    ZoomerState? zoomer = Zoomer.of(context);
-    TargetConfig? tc = bloc.state.tcByNameOrUid(initialTC);
+    TargetConfig? tc = bloc.state.tcByUid(initialTC);
     if (tc != null) {
-      Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+      Size ivSize = TargetsWrapper.iwSize(tc.wName);
       double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
       return Positioned(
       top: tc.targetStackPos().dy - radius,
@@ -73,7 +71,7 @@ class PositionedTarget extends StatelessWidget {
           //   }
           // });
         },
-        child: _draggableTargetNotBeingDragged(context, tc, Colors.white.withOpacity(.1), parentTW, zoomer),
+        child: _draggableTargetNotBeingDragged(context, tc, Colors.white.withOpacity(.1)),
       ),
     );
     } else {
@@ -81,23 +79,25 @@ class PositionedTarget extends StatelessWidget {
     }
   }
 
-  Widget _draggableTargetNotBeingDragged(context, TargetConfig tc, Color bgColor, parentTW, zoomer) {
-    Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+  Widget _draggableTargetNotBeingDragged(context, TargetConfig tc, Color bgColor) {
+    Size ivSize = TargetsWrapper.iwSize(tc.wName);
     double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
     return GestureDetector(
       onDoubleTap: () async {
+        return;
+        TargetsWrapperState? parentTW = FC().targetsWrappers[twName]?.currentState as TargetsWrapperState?; //TargetsWrapper.of(context);
         Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
             .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
         Rect? targetRect = FC()
             .getMultiTargetGk(tc.uid.toString())!
             .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
         if (wrapperRect != null && targetRect != null) {
-          hideAllSingleTargetBtns();
+          // hideAllSingleTargetBtns();
           bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
           Alignment ta = Useful.calcTargetAlignmentWithinWrapper(
               wrapperRect, targetRect);
           // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-          zoomer.applyTransform(
+          parentTW?.zoomer?.applyTransform(
               tc.transformScale,
               tc.transformScale,
               ta, afterTransformF: () {
@@ -113,19 +113,12 @@ class PositionedTarget extends StatelessWidget {
             //   },
             // );
             showSnippetContentCallout(
-              // zoomer: parentZoomer,
-              initialTC: tc,
-              snippetName: tc.snippetName,
+              tc: tc,
+              twName: twName,
               justPlaying: false,
-              allowButtonCallouts: false,
-              onDiscardedF: () async {
-                zoomer.resetTransform();
-                bloc.add(const CAPIEvent.unhideAllTargetGroups());
-                unhideAllSingleTargetBtns();
-              },
             );
             // show config toolbar in a toast
-            PositionedTargetPlayBtn.showConfigToolbar(tc, zoomer, parentTW);
+            PositionedTargetPlayBtn.showConfigToolbar(tc, twName, context);
           });
         }
       },
@@ -139,14 +132,14 @@ class PositionedTarget extends StatelessWidget {
           bgColor: tc.calloutColor().withOpacity(.3),
           radius: radius,
           textColor: Colors.white,
-          fontSize: 18,
+          fontSize: 14,
         ),
       ),
     );
   }
 
   Widget _draggableTargetBeingDragged(TargetConfig tc) {
-    Size ivSize = TargetGroupWrapper.iwSize(tc.wName);
+    Size ivSize = TargetsWrapper.iwSize(tc.wName);
     double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
     return SizedBox(
       width: tc.getScale(bloc.state) * radius * 2,

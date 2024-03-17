@@ -476,8 +476,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           SubmenuButtonNode(menuChildren: childNode != null ? [childNode] : []),
         const (SubtitleSnippetRootNode) =>
           SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
-        const (TargetButtonNode) =>
-          TargetButtonNode(name: 'no name!', child: childNode),
+        // const (TargetButtonNode) =>
+        //   TargetButtonNode(name: 'no name!', child: childNode),
         const (TargetGroupWrapperNode) =>
           TargetGroupWrapperNode(name: 'name?', child: childNode),
         const (TextButtonNode) => TextButtonNode(),

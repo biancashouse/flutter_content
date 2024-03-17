@@ -4,46 +4,42 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class PointyTool extends StatefulWidget {
+  final TargetsWrapperName twName;
   final TargetConfig tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
-  final bool allowButtonCallouts;
   final bool justPlaying;
-  final VoidCallback onDiscardedF;
 
   const PointyTool(
-    this.tc,{
+    this.twName,
+    this.tc, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
-    required this.allowButtonCallouts,
     required this.justPlaying,
-    required this.onDiscardedF,
     super.key,
   });
 
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetConfig tc,
-      {
-      final ScrollController? ancestorHScrollController,
+  static show(final TargetsWrapperName twName, final TargetConfig tc,
+      {final ScrollController? ancestorHScrollController,
       final ScrollController? ancestorVScrollController,
-      required final bool allowButtonCallouts,
-      required final bool justPlaying,
-      required VoidCallback onDiscardedF}) {
-    GlobalKey? targetGK = tc.single
-        ? FC().getSingleTargetGk(tc.wName)
-        : FC().getMultiTargetGk(tc.uid.toString());
+      required final bool justPlaying}) {
+    GlobalKey? targetGK =
+        // tc.single
+        //     ? FC().getSingleTargetGk(tc.wName)
+        //     :
+        FC().getMultiTargetGk(tc.uid.toString());
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
         boxContentF: (_) => PointyTool(
+              twName,
               tc,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
-              allowButtonCallouts: allowButtonCallouts,
               justPlaying: justPlaying,
-              onDiscardedF: onDiscardedF,
             ),
         calloutConfig: CalloutConfig(
           feature: CAPI.ARROW_TYPE_CALLOUT.name,
@@ -55,8 +51,8 @@ class PointyTool extends StatefulWidget {
             //   Callout.removeOverlay(CAPI.ARROW_TYPE_CALLOUT.name);
             // },
           ),
-          color: Colors.purpleAccent,
-          roundedCorners: 16,
+          fillColor: Colors.purpleAccent,
+          borderRadius: 16,
           arrowType: ArrowType.NO_CONNECTOR,
           notUsingHydratedStorage: true,
         ));
@@ -80,71 +76,87 @@ class _PointyToolState extends State<PointyTool> {
     _animate = tc.animateArrow;
   }
 
-  void _onPressed(ArrowType t, TargetConfig tc) {
+  void _onPressed(ArrowType t, TargetConfig tc, bool animate) {
     setState(() => _arrowType = t);
-    tc.arrowType = t.index;
-    bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+    tc.calloutArrowType = t.index;
+    // bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
     Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
-    Useful.afterNextBuildDo(() {
-      reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
-    });
+    // Useful.afterNextBuildDo(() {
+    //   widget.onParentBarrierTappedF.call();
+    //   Callout.refreshOverlay(tc.snippetName, f: () {});
+    removeSnippetContentCallout(tc.snippetName);
+    FC()
+        .parentTW(widget.twName)
+        ?.zoomer
+        ?.zoomImmediately(tc.transformScale, tc.transformScale);
+    showSnippetContentCallout(
+      twName: widget.twName,
+      tc: tc,
+      justPlaying: false,
+      // widget.onParentBarrierTappedF,
+    );
+    // Useful.afterNextBuildDo(() {
+    //   removeSnippetContentCallout(tc.snippetName);
+    //   showSnippetContentCallout(
+    //     twName: widget.twName,
+    //     tc:tc,
+    //     justPlaying: widget.justPlaying,
+    //   );
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> widgets = [...[
+    List<Widget> widgets = [
+      ...[
         ArrowType.NO_CONNECTOR,
         ArrowType.POINTY,
-      ]
-          .map((t) => Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: _ArrowTypeOption(
-                  arrowType: t,
-                  arrowColor: tc.calloutColor(),
-                  isActive: _arrowType == t,
-                  onPressed: () => _onPressed(t, tc),
-                ),
-              ))
-          , ...[
+      ].map((t) => Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: _ArrowTypeOption(
+              arrowType: t,
+              arrowColor: tc.calloutColor(),
+              isActive: _arrowType == t,
+              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+            ),
+          )),
+      ...[
         ArrowType.VERY_THIN,
         ArrowType.THIN,
         ArrowType.MEDIUM,
         ArrowType.LARGE,
         // ArrowType.HUGE,
-      ]
-          .map((t) => Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: _ArrowTypeOption(
-                  arrowType: t,
-                  arrowColor: tc.calloutColor(),
-                  isActive: _arrowType == t,
-                  onPressed: () => _onPressed(t, tc),
-                ),
-              ))
-          , ...[
+      ].map((t) => Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: _ArrowTypeOption(
+              arrowType: t,
+              arrowColor: tc.calloutColor(),
+              isActive: _arrowType == t,
+              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+            ),
+          )),
+      ...[
         ArrowType.VERY_THIN_REVERSED,
         ArrowType.THIN_REVERSED,
         ArrowType.MEDIUM_REVERSED,
         ArrowType.LARGE_REVERSED,
         // ArrowType.HUGE_REVERSED,
-      ]
-          .map((t) => Padding(
-                padding: const EdgeInsets.all(3.0),
-                child: _ArrowTypeOption(
-                  arrowType: t,
-                  arrowColor: tc.calloutColor(),
-                  isActive: _arrowType == t,
-                  onPressed: () => _onPressed(t, tc),
-                ),
-              ))
-          ]
-      
-      
-      ;
-    if (tc.arrowType != ArrowType.NO_CONNECTOR.index && tc.arrowType != ArrowType.POINTY.index) {
+      ].map((t) => Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: _ArrowTypeOption(
+              arrowType: t,
+              arrowColor: tc.calloutColor(),
+              isActive: _arrowType == t,
+              onPressed: () => _onPressed(t, tc, tc.animateArrow),
+            ),
+          ))
+    ];
+    if (tc.calloutArrowType != ArrowType.NO_CONNECTOR.index &&
+        tc.calloutArrowType != ArrowType.POINTY.index) {
       widgets.add(
         OutlinedButton(
-          style: OutlinedButton.styleFrom(backgroundColor: tc.animateArrow ? Colors.white : Colors.white60),
+          style: OutlinedButton.styleFrom(
+              backgroundColor: tc.animateArrow ? Colors.white : Colors.white60),
           child: const SizedBox(
             width: 75,
             child: Text(
@@ -155,11 +167,11 @@ class _PointyToolState extends State<PointyTool> {
           onPressed: () {
             setState(() => _animate = !_animate);
             tc.animateArrow = _animate;
-            bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+            _onPressed(tc.getArrowType(), tc, tc.animateArrow);
             Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
-            Useful.afterNextBuildDo(() {
-              reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
-            });
+            // Useful.afterNextBuildDo(() {
+            //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
+            // });
           },
         ),
       );
@@ -186,7 +198,8 @@ class _ArrowTypeOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bgColor = arrowColor == Colors.white ? Colors.black26 : Colors.black12;
+    Color bgColor =
+        arrowColor == Colors.white ? Colors.black26 : Colors.black12;
     return Container(
       decoration: BoxDecoration(
         color: bgColor,
@@ -206,20 +219,29 @@ class _ArrowTypeOption extends StatelessWidget {
                     : arrowType == ArrowType.VERY_THIN_REVERSED
                         ? Icon(Icons.north_east, color: arrowColor, size: 15)
                         : arrowType == ArrowType.THIN
-                            ? Icon(Icons.south_west, color: arrowColor, size: 20)
+                            ? Icon(Icons.south_west,
+                                color: arrowColor, size: 20)
                             : arrowType == ArrowType.THIN_REVERSED
-                                ? Icon(Icons.north_east, color: arrowColor, size: 20)
+                                ? Icon(Icons.north_east,
+                                    color: arrowColor, size: 20)
                                 : arrowType == ArrowType.MEDIUM
-                                    ? Icon(Icons.south_west, color: arrowColor, size: 25)
+                                    ? Icon(Icons.south_west,
+                                        color: arrowColor, size: 25)
                                     : arrowType == ArrowType.MEDIUM_REVERSED
-                                        ? Icon(Icons.north_east, color: arrowColor, size: 25)
+                                        ? Icon(Icons.north_east,
+                                            color: arrowColor, size: 25)
                                         : arrowType == ArrowType.LARGE
-                                            ? Icon(Icons.south_west, color: arrowColor, size: 35)
-                                            : arrowType == ArrowType.LARGE_REVERSED
-                                                ? Icon(Icons.north_east, color: arrowColor, size: 35)
+                                            ? Icon(Icons.south_west,
+                                                color: arrowColor, size: 35)
+                                            : arrowType ==
+                                                    ArrowType.LARGE_REVERSED
+                                                ? Icon(Icons.north_east,
+                                                    color: arrowColor, size: 35)
                                                 // : arrowType == ArrowType.HUGE
                                                 //     ? Icon(Icons.south_west, color: arrowColor, size: 40)
-                                                : Icon(Icons.north_east, color: arrowColor, size: 40),
+                                                : Icon(Icons.north_east,
+                                                    color: arrowColor,
+                                                    size: 40),
       ),
     );
   }

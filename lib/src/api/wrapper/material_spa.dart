@@ -222,15 +222,24 @@ class MaterialSPAState extends State<MaterialSPA>
     fInitApp = _initApp();
   }
 
-  // cannot initWithContext() here - see transformable_widget_wrapper.dart and widget_wrapper.dart
   // @override
   // void didChangeDependencies() {
-  //   Useful.instance.initWithContext(context, force: true);
+  //   debugPrint("didChangeDependencies");
+  //   // Useful.refreshMQ(context);
+  //   if (FC().showingNodeOBoundaryOverlays??false) {
+  //     MaterialSPAState.removeAllNodeWidgetOverlays();
+  //     MaterialSPAState.exitEditMode();
+  //     Useful.afterMsDelayDo(1000, () {
+  //       FC().capiBloc.add(const CAPIEvent.forceRefresh());
+  //       FC().snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
+  //       // MaterialSPAState.showAllNodeWidgetOverlays(context);
+  //     });
+  //   }
   //   super.didChangeDependencies();
   // }
 
   Future<CAPIBloC> _initApp() async {
-    Map<String, TargetConfig> singleTargetMap = {};
+    // Map<String, TargetConfig> singleTargetMap = {};
     late Map<String, TargetGroupConfig>? targetGroupMap;
     // late Map<String, SnippetRootNode> snippetsMap;
     late CAPIModel model;
@@ -299,16 +308,16 @@ class MaterialSPAState extends State<MaterialSPA>
     }
 
     targetGroupMap = _parseTargetGroups(model);
-    for (TargetGroupConfig tgConfig in targetGroupMap.values) {
-      for (TargetConfig tc in tgConfig.targets) {
-        tc.single = false;
-      }
-    }
+    // for (TargetGroupConfig tgConfig in targetGroupMap.values) {
+    //   for (TargetConfig tc in tgConfig.targets) {
+    //     tc.single = false;
+    //   }
+    // }
     // imageTargetListMap.values.forEach((TargetGroupConfig? mtconfig) => mtconfig?.imageTargets.forEach((tc) => tc.single = false));
-    singleTargetMap = model.targetConfigs;
-    for (TargetConfig tc in singleTargetMap.values) {
-      tc.single = true;
-    }
+    // singleTargetMap = model.targetConfigs;
+    // for (TargetConfig tc in singleTargetMap.values) {
+    //   tc.single = true;
+    // }
     // singleTargetMap.values.forEach((tc) => tc.single = true);
 
     // DirectoryNode rootDirectoryNode = model.jsonRootDirectoryNode != null
@@ -323,7 +332,7 @@ class MaterialSPAState extends State<MaterialSPA>
       // useFirebase: GetIt.I.isRegistered<FirebaseFirestore>(),
       // localTestingFilePaths: widget.localTestingFilePaths,
       targetGroupMap: targetGroupMap,
-      singleTargetMap: singleTargetMap,
+      // singleTargetMap: singleTargetMap,
       // jsonRootDirectoryNode: model.jsonRootDirectoryNode,
       jsonClipboard: model.jsonClipboard,
       // snippetsMap: snippetsMap,
@@ -380,6 +389,14 @@ class MaterialSPAState extends State<MaterialSPA>
                     onNotification:
                         (SizeChangedLayoutNotification notification) {
                       debugPrint("MaterialSPA SizeChangedLayoutNotification}");
+                      Callout.dismissAll(exceptFeatures: ["editMode-FAB"]);
+                      Useful.afterMsDelayDo(300, () {
+                        Useful.refreshMQ(context);
+                        if (FC().showingNodeOBoundaryOverlays ?? false) {
+                          MaterialSPAState.removeAllNodeWidgetOverlays();
+                          MaterialSPAState.showAllNodeWidgetOverlays(context);
+                        }
+                      });
                       return true;
                     },
                     child: SizeChangedLayoutNotifier(
@@ -387,7 +404,8 @@ class MaterialSPAState extends State<MaterialSPA>
                         autofocus: true,
                         focusNode: focusNode, // <-- more magic
                         onKeyEvent: (KeyEvent event) {
-                          bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
+                          bool isEsc =
+                              event.logicalKey == LogicalKeyboardKey.escape;
                           if (FC().inEditMode.value && isEsc) {
                             exitEditMode();
                           }
@@ -537,10 +555,11 @@ class MaterialSPAState extends State<MaterialSPA>
     return snippetMap;
   }
 
-   static Future<void> showDevToolsButton(BuildContext context) async {
+  static Future<void> showDevToolsButton(BuildContext context) async {
     // debugPrint("showDevToolsButton");
     // Size screenSize = MediaQuery.of(context).size;
     String ver = '${FC().version}-${FC().buildNumber}';
+    Callout.dismiss("editMode-FAB");
     Callout.showOverlay(
         boxContentF: (context) => PointerInterceptor(
               child: Tooltip(
@@ -567,10 +586,10 @@ class MaterialSPAState extends State<MaterialSPA>
           suppliedCalloutW: 150,
           suppliedCalloutH: 60,
           initialCalloutPos: FC().editModeBtnPos(context),
-          color: FUCHSIA_X,
+          fillColor: FUCHSIA_X,
           arrowType: ArrowType.NO_CONNECTOR,
           //circleShape: true,
-          roundedCorners: 24,
+          borderRadius: 24,
           onDragEndedF: (newPos) => FC().setEditModeBtnPos(newPos),
         ));
   }
@@ -584,9 +603,9 @@ class MaterialSPAState extends State<MaterialSPA>
           suppliedCalloutW: 300,
           suppliedCalloutH: 180,
           initialCalloutPos: Offset(screenSize.width - 400, 0),
-          color: Colors.transparent,
+          fillColor: Colors.transparent,
           arrowType: ArrowType.NO_CONNECTOR,
-          roundedCorners: 16,
+          borderRadius: 16,
         ));
   }
 
@@ -594,11 +613,11 @@ class MaterialSPAState extends State<MaterialSPA>
     Callout.dismiss("editMode-FAB");
     FC().inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
-    hideAllSingleTargetBtns();
+    // hideAllSingleTargetBtns();
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
-   static exitEditMode() {
+  static exitEditMode() {
     FC().inEditMode.value = false;
     removeAllNodeWidgetOverlays();
     String feature =
@@ -610,7 +629,7 @@ class MaterialSPAState extends State<MaterialSPA>
       showDevToolsButton(Useful.rootContext!);
     }
     FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
-    unhideAllSingleTargetBtns();
+    // unhideAllSingleTargetBtns();
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
@@ -646,11 +665,11 @@ class MaterialSPAState extends State<MaterialSPA>
   static void showAllNodeWidgetOverlays(context) {
     // debugPrint('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
+    FC().showingNodeOBoundaryOverlays = true;
     bool configuringATarget = Callout.anyPresent(['config-toolbar']);
     var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el) {
-      if ((gkSTreeNodeMap.containsKey(el.widget.key))
-      ) {
+      if ((gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         STreeNode? node = gkSTreeNodeMap[gk];
@@ -722,6 +741,7 @@ class MaterialSPAState extends State<MaterialSPA>
       Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
     // debugPrint('removeAllNodeWidgetOverlays - ended');
+    FC().showingNodeOBoundaryOverlays = false;
   }
 
 //   static void _showNodeWidgetOverlay(

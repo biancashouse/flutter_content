@@ -101,7 +101,7 @@ class EasyColorPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextButton(onPressed: (){onChanged(Colors.transparent);}, child: Text('transparent'),),
+        TextButton(onPressed: (){onChanged(Colors.transparent);}, child: const Text('transparent'),),
         Wrap(
             alignment: WrapAlignment.center,
             children: List.generate(colors.length, (index) {

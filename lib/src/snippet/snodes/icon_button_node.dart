@@ -113,7 +113,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
                       Callout.dismiss(feature);
                     },
                   ),
-                  color: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
+                  fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
                 )),
           );
         }

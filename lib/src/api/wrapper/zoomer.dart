@@ -61,20 +61,27 @@ class ZoomerState extends State<Zoomer>
     final Alignment alignment, {
     required VoidCallback afterTransformF,
   }) {
-    _matrix4Animation = Matrix4Tween(
-            begin: Matrix4.identity(),
-            end: (Matrix4.identity().scaled(scaleX, scaleY)))
-        .animate(_aController);
-    _transformAlignment = alignment;
-    _aController
-      ..duration = scaleX > 1 ? Zoomer.ZOOM_TRANSITION_DURATION_MS : Zoomer.ZOOM_IMMEDIATELY
-      ..forward().then((value) => afterTransformF.call());
+    if (scaleX == 1.0){
+      afterTransformF.call();
+    }
+    else {
+      _matrix4Animation = Matrix4Tween(
+          begin: Matrix4.identity(),
+          end: (Matrix4.identity().scaled(scaleX, scaleY)))
+          .animate(_aController);
+      _transformAlignment = alignment;
+      _aController
+        ..duration = scaleX > 1 ? Zoomer.ZOOM_TRANSITION_DURATION_MS : Zoomer
+            .ZOOM_IMMEDIATELY
+        ..reset()
+        ..forward().then((value) => afterTransformF.call());
+    }
   }
 
   void resetTransform() {
     Duration? savedDuration = _aController.duration;
     _aController
-      ..duration = Duration(milliseconds: 200)
+      ..duration = const Duration(milliseconds: 200)
       ..reverse().then((value) => {_aController.duration = savedDuration});
   }
 

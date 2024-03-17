@@ -70,7 +70,7 @@ class _NodePropertyButton_SnippetNameState extends State<NodePropertyButton_Snip
               },
       ),
       // arrowThickness: ArrowThickness.THIN,
-      color: Colors.white,
+      fillColor: Colors.white,
       arrowColor: Colors.red,
       finalSeparation: 0.0,
       initialCalloutAlignment: Alignment.topLeft,

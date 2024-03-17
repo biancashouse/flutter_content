@@ -135,7 +135,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
           // SHAPE
           EnumPropertyValueNode<DecorationShapeEnum?>(
             snode: this,
-            name: 'decoration',
+            name: 'shape',
             valueIndex: decoration.index,
             onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue) ?? DecorationShapeEnum.rectangle),
           ),

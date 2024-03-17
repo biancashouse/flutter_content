@@ -19,7 +19,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       TextButtonNodeMapper.ensureInitialized();
       FilledButtonNodeMapper.ensureInitialized();
       IconButtonNodeMapper.ensureInitialized();
-      TargetButtonNodeMapper.ensureInitialized();
       TargetGroupWrapperNodeMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();

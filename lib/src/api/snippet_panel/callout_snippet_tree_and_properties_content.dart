@@ -61,12 +61,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
         // debugPrint("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
         // debugPrint('${FlutterContent().capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
         // restore scrollPos
-        if (selectedNode?.propertiesPaneSC()?.hasClients ?? false) {
+        if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
           Useful.afterNextBuildDo(() {
             if (selectedNode?.propertiesPaneScrollPos !=
-                selectedNode?.propertiesPaneSC()?.offset) {
-              selectedNode?.propertiesPaneSC()
-                  ?.jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
+                selectedNode?.propertiesPaneSC().offset) {
+              selectedNode?.propertiesPaneSC().jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
             }
           });
         }

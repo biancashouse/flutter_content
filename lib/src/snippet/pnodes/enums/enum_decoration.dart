@@ -70,6 +70,9 @@ enum DecorationShapeEnum {
     double? borderRadius,
     int? starPoints,
   }) {
+    // if (this != DecorationShapeEnum.rectangle) {
+    //   print('blah');
+    // }
     // if no fill colors supplied, default to black.
     // if only one color supplied use that as color param
     // if >1 colors supplied use the colors in a gradient

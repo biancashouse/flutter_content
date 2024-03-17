@@ -121,7 +121,7 @@ const List<Type> buttonSubClasses = [
   TextButtonNode,
   FilledButtonNode,
   IconButtonNode,
-  TargetButtonNode,
+  // TargetButtonNode,
   TargetGroupWrapperNode,
 ];
 
@@ -212,7 +212,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       suppliedCalloutW: borderRect.width.abs() + 6,
       suppliedCalloutH: borderRect.height.abs() + 6,
       initialCalloutPos: borderRect.topLeft.translate(-3, -3),
-      color: Colors.transparent,
+      fillColor: Colors.transparent,
       arrowType: ArrowType.NO_CONNECTOR,
       draggable: false,
     );
@@ -227,7 +227,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             if (snippetName == null) return;
             var cc = nodeWidgetGK?.currentContext;
 // edit the root snippet
-            hideAllSingleTargetBtns();
+//             hideAllSingleTargetBtns();
 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
             MaterialSPAState.removeAllNodeWidgetOverlays();
@@ -272,6 +272,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
       Rect borderRect =
           Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+      CalloutConfig cc = CalloutConfig(
+        feature: '${nodeWidgetGK.hashCode}-pink-overlay',
+        suppliedCalloutW: borderRect.width + 6,
+        suppliedCalloutH: borderRect.height + 6,
+        initialCalloutPos: borderRect.topLeft.translate(-3, -3),
+        fillColor: Colors.transparent,
+        arrowType: ArrowType.NO_CONNECTOR,
+        draggable: false,
+      );
       Callout.showOverlay(
         ensureLowestOverlay: true,
         boxContentF: (context) => PointerInterceptor(
@@ -287,15 +296,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             ),
           ),
         ),
-        calloutConfig: CalloutConfig(
-          feature: '${nodeWidgetGK.hashCode}-pink-overlay',
-          suppliedCalloutW: borderRect.width + 6,
-          suppliedCalloutH: borderRect.height + 6,
-          initialCalloutPos: borderRect.topLeft.translate(-3, -3),
-          color: Colors.transparent,
-          arrowType: ArrowType.NO_CONNECTOR,
-          draggable: false,
-        ),
+        calloutConfig: cc,
         targetGkF: () => nodeWidgetGK,
       );
     }
@@ -340,6 +341,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             }
           },
         );
+
         // set the properties tree
         STreeNode sel = selectedNode ?? startingAtNode;
         // final List<PTreeNode> propertyNodes = sel.properties(context);
@@ -644,7 +646,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                     r.topLeft.translate(translate.dx, translate.dy),
                 suppliedCalloutW: w,
                 suppliedCalloutH: h,
-                color: Colors.transparent,
+                fillColor: Colors.transparent,
                 arrowType: ArrowType.NO_CONNECTOR,
                 draggable: false,
                 transparentPointer: true,
