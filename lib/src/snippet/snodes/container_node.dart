@@ -6,6 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 import '../pnodes/groups/outlined_border_group.dart';
 import 'edgeinsets_node_value.dart';
@@ -14,12 +15,7 @@ part 'container_node.mapper.dart';
 
 @MappableClass()
 class ContainerNode extends SC with ContainerNodeMappable {
-  int? fillColor1Value;
-  int? fillColor2Value;
-  int? fillColor3Value;
-  int? fillColor4Value;
-  int? fillColor5Value;
-  int? fillColor6Value;
+  UpTo6ColorValues? fillColorValues;
   EdgeInsetsValue? margin;
   EdgeInsetsValue? padding;
   double? width;
@@ -27,7 +23,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   AlignmentEnum? alignment;
   DecorationShapeEnum decoration;
   double? borderThickness;
-  int? borderColor1Value;
+  UpTo6ColorValues? borderColorValues;
   int? borderColor2Value;
   int? borderColor3Value;
   int? borderColor4Value;
@@ -50,12 +46,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   OutlinedBorderGroup? outlinedBorderGroup;
 
   ContainerNode({
-    this.fillColor1Value,
-    this.fillColor2Value,
-    this.fillColor3Value,
-    this.fillColor4Value,
-    this.fillColor5Value,
-    this.fillColor6Value,
+    this.fillColorValues,
     this.margin,
     this.padding,
     this.width,
@@ -63,12 +54,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
     this.alignment,
     this.decoration = DecorationShapeEnum.rectangle,
     this.borderThickness,
-    this.borderColor1Value,
-    this.borderColor2Value,
-    this.borderColor3Value,
-    this.borderColor4Value,
-    this.borderColor5Value,
-    this.borderColor6Value,
+    this.borderColorValues,
     this.borderRadius,
     this.starPoints,
     this.dash,
@@ -106,7 +92,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'margin',
             eiValue: margin,
-            onEIChangedF: (newValue) => refreshWithUpdate(() => margin = newValue),
+            onEIChangedF: (newValue) =>
+                refreshWithUpdate(() => margin = newValue),
           ),
         ],
       ),
@@ -118,7 +105,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'padding',
             eiValue: padding,
-            onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+            onEIChangedF: (newValue) =>
+                refreshWithUpdate(() => padding = newValue),
           ),
         ],
       ),
@@ -126,7 +114,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
         snode: this,
         name: 'alignment',
         valueIndex: alignment?.index,
-        onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+        onIndexChange: (newValue) =>
+            refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
       ),
       PropertyGroup(
         snode: this,
@@ -137,58 +126,42 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'shape',
             valueIndex: decoration.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue) ?? DecorationShapeEnum.rectangle),
+            onIndexChange: (newValue) => refreshWithUpdate(() => decoration =
+                DecorationShapeEnum.of(newValue) ??
+                    DecorationShapeEnum.rectangle),
           ),
           // FILL COLOR(s)
           GradientPropertyValueNode(
             snode: this,
             name: 'fill color(s)',
-            color1Value: fillColor1Value,
-            color2Value: fillColor2Value,
-            color3Value: fillColor3Value,
-            color4Value: fillColor4Value,
-            color5Value: fillColor5Value,
-            color6Value: fillColor6Value,
-            onColorChange: (newValue1, newValue2, newValue3, newValue4, newValue5, newValue6) => refreshWithUpdate(() {
-              fillColor1Value = newValue1;
-              fillColor2Value = newValue2;
-              fillColor3Value = newValue3;
-              fillColor4Value = newValue4;
-              fillColor5Value = newValue5;
-              fillColor6Value = newValue6;
+            colorValues: fillColorValues,
+            onColorChange: (newValues) => refreshWithUpdate(() {
+              fillColorValues = newValues;
             }),
           ),
           // FILL COLOR(s)
           GradientPropertyValueNode(
             snode: this,
             name: 'border color(s)',
-            color1Value: borderColor1Value,
-            color2Value: borderColor2Value,
-            color3Value: borderColor3Value,
-            color4Value: borderColor4Value,
-            color5Value: borderColor5Value,
-            color6Value: borderColor6Value,
-            onColorChange: (newValue1, newValue2, newValue3, newValue4, newValue5, newValue6) => refreshWithUpdate(() {
-              borderColor1Value = newValue1;
-              borderColor2Value = newValue2;
-              borderColor3Value = newValue3;
-              borderColor4Value = newValue4;
-              borderColor5Value = newValue5;
-              borderColor6Value = newValue6;
+            colorValues: borderColorValues,
+            onColorChange: (newValues) => refreshWithUpdate(() {
+              borderColorValues = newValues;
             }),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'thickness',
             decimalValue: borderThickness,
-            onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
+            onDoubleChange: (newValue) =>
+                refreshWithUpdate(() => borderThickness = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'radius',
             decimalValue: borderRadius,
-            onDoubleChange: (newValue) => refreshWithUpdate(() => borderRadius = newValue),
+            onDoubleChange: (newValue) =>
+                refreshWithUpdate(() => borderRadius = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
         ],
@@ -244,22 +217,14 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //     radius: borderRadius,
       //   );
       // }
-      if (true || outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
+      if (true ||
+          outlinedBorderGroup?.outlinedBorderType != null &&
+              outlinedBorderGroup?.side != null) {
         return Container(
           key: createNodeGK(),
           decoration: decoration.toDecoration(
-            fillColor1: fillColor1Value != null ? Color(fillColor1Value!) : null,
-            fillColor2: fillColor2Value != null ? Color(fillColor2Value!) : null,
-            fillColor3: fillColor3Value != null ? Color(fillColor3Value!) : null,
-            fillColor4: fillColor4Value != null ? Color(fillColor4Value!) : null,
-            fillColor5: fillColor5Value != null ? Color(fillColor5Value!) : null,
-            fillColor6: fillColor6Value != null ? Color(fillColor6Value!) : null,
-            borderColor1: borderColor1Value != null ? Color(borderColor1Value!) : null,
-            borderColor2: borderColor2Value != null ? Color(borderColor2Value!) : null,
-            borderColor3: borderColor3Value != null ? Color(borderColor3Value!) : null,
-            borderColor4: borderColor4Value != null ? Color(borderColor4Value!) : null,
-            borderColor5: borderColor5Value != null ? Color(borderColor5Value!) : null,
-            borderColor6: borderColor6Value != null ? Color(borderColor6Value!) : null,
+            fillColorValues: fillColorValues,
+            borderColorValues: borderColorValues,
             borderRadius: borderRadius,
             thickness: borderThickness,
             starPoints: starPoints,
@@ -276,23 +241,25 @@ class ContainerNode extends SC with ContainerNodeMappable {
           child: child?.toWidget(context, this),
         );
       } else {
-        return Container(
-          key: createNodeGK(),
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: fillColor1Value != null ? Color(fillColor1Value!) : null,
-            border: borderThickness != null || borderColor1Value != null
-                ? Border.all(width: borderThickness ?? 1.0, color: Color(borderColor1Value ?? Colors.black.value))
-                : null,
-            borderRadius: BorderRadius.circular(borderRadius ?? 0),
-          ),
-          padding: padding?.toEdgeInsets(),
-          margin: margin?.toEdgeInsets(),
-          width: width,
-          height: height,
-          alignment: alignment?.flutterValue,
-          child: child?.toWidget(context, this),
-        );
+        // return Container(
+        //   key: createNodeGK(),
+        //   decoration: BoxDecoration(
+        //     shape: BoxShape.rectangle,
+        //     color: fillColor1Value != null ? Color(fillColor1Value!) : null,
+        //     border: borderThickness != null || borderColor1Value != null
+        //         ? Border.all(
+        //             width: borderThickness ?? 1.0,
+        //             color: Color(borderColor1Value ?? Colors.black.value))
+        //         : null,
+        //     borderRadius: BorderRadius.circular(borderRadius ?? 0),
+        //   ),
+        //   padding: padding?.toEdgeInsets(),
+        //   margin: margin?.toEdgeInsets(),
+        //   width: width,
+        //   height: height,
+        //   alignment: alignment?.flutterValue,
+        //   child: child?.toWidget(context, this),
+        // );
       }
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');

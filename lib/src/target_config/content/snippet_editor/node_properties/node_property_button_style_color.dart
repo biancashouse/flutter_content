@@ -38,6 +38,7 @@ class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
               color: Colors.white,
             ));
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: colorLabel,
       calloutButtonSize: const Size(72, 36),
       calloutContents: (ctx) {

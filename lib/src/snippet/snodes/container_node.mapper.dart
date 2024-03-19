@@ -14,6 +14,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ContainerNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
+      UpTo6ColorValuesMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
       DecorationShapeEnumMapper.ensureInitialized();
@@ -27,24 +28,10 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   @override
   final String id = 'ContainerNode';
 
-  static int? _$fillColor1Value(ContainerNode v) => v.fillColor1Value;
-  static const Field<ContainerNode, int> _f$fillColor1Value =
-      Field('fillColor1Value', _$fillColor1Value, opt: true);
-  static int? _$fillColor2Value(ContainerNode v) => v.fillColor2Value;
-  static const Field<ContainerNode, int> _f$fillColor2Value =
-      Field('fillColor2Value', _$fillColor2Value, opt: true);
-  static int? _$fillColor3Value(ContainerNode v) => v.fillColor3Value;
-  static const Field<ContainerNode, int> _f$fillColor3Value =
-      Field('fillColor3Value', _$fillColor3Value, opt: true);
-  static int? _$fillColor4Value(ContainerNode v) => v.fillColor4Value;
-  static const Field<ContainerNode, int> _f$fillColor4Value =
-      Field('fillColor4Value', _$fillColor4Value, opt: true);
-  static int? _$fillColor5Value(ContainerNode v) => v.fillColor5Value;
-  static const Field<ContainerNode, int> _f$fillColor5Value =
-      Field('fillColor5Value', _$fillColor5Value, opt: true);
-  static int? _$fillColor6Value(ContainerNode v) => v.fillColor6Value;
-  static const Field<ContainerNode, int> _f$fillColor6Value =
-      Field('fillColor6Value', _$fillColor6Value, opt: true);
+  static UpTo6ColorValues? _$fillColorValues(ContainerNode v) =>
+      v.fillColorValues;
+  static const Field<ContainerNode, UpTo6ColorValues> _f$fillColorValues =
+      Field('fillColorValues', _$fillColorValues, opt: true);
   static EdgeInsetsValue? _$margin(ContainerNode v) => v.margin;
   static const Field<ContainerNode, EdgeInsetsValue> _f$margin =
       Field('margin', _$margin, opt: true);
@@ -67,24 +54,10 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static double? _$borderThickness(ContainerNode v) => v.borderThickness;
   static const Field<ContainerNode, double> _f$borderThickness =
       Field('borderThickness', _$borderThickness, opt: true);
-  static int? _$borderColor1Value(ContainerNode v) => v.borderColor1Value;
-  static const Field<ContainerNode, int> _f$borderColor1Value =
-      Field('borderColor1Value', _$borderColor1Value, opt: true);
-  static int? _$borderColor2Value(ContainerNode v) => v.borderColor2Value;
-  static const Field<ContainerNode, int> _f$borderColor2Value =
-      Field('borderColor2Value', _$borderColor2Value, opt: true);
-  static int? _$borderColor3Value(ContainerNode v) => v.borderColor3Value;
-  static const Field<ContainerNode, int> _f$borderColor3Value =
-      Field('borderColor3Value', _$borderColor3Value, opt: true);
-  static int? _$borderColor4Value(ContainerNode v) => v.borderColor4Value;
-  static const Field<ContainerNode, int> _f$borderColor4Value =
-      Field('borderColor4Value', _$borderColor4Value, opt: true);
-  static int? _$borderColor5Value(ContainerNode v) => v.borderColor5Value;
-  static const Field<ContainerNode, int> _f$borderColor5Value =
-      Field('borderColor5Value', _$borderColor5Value, opt: true);
-  static int? _$borderColor6Value(ContainerNode v) => v.borderColor6Value;
-  static const Field<ContainerNode, int> _f$borderColor6Value =
-      Field('borderColor6Value', _$borderColor6Value, opt: true);
+  static UpTo6ColorValues? _$borderColorValues(ContainerNode v) =>
+      v.borderColorValues;
+  static const Field<ContainerNode, UpTo6ColorValues> _f$borderColorValues =
+      Field('borderColorValues', _$borderColorValues, opt: true);
   static double? _$borderRadius(ContainerNode v) => v.borderRadius;
   static const Field<ContainerNode, double> _f$borderRadius =
       Field('borderRadius', _$borderRadius, opt: true);
@@ -130,15 +103,25 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static const Field<ContainerNode, GlobalKey<State<StatefulWidget>>>
       _f$nodeWidgetGK =
       Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
+  static int? _$borderColor2Value(ContainerNode v) => v.borderColor2Value;
+  static const Field<ContainerNode, int> _f$borderColor2Value =
+      Field('borderColor2Value', _$borderColor2Value, mode: FieldMode.member);
+  static int? _$borderColor3Value(ContainerNode v) => v.borderColor3Value;
+  static const Field<ContainerNode, int> _f$borderColor3Value =
+      Field('borderColor3Value', _$borderColor3Value, mode: FieldMode.member);
+  static int? _$borderColor4Value(ContainerNode v) => v.borderColor4Value;
+  static const Field<ContainerNode, int> _f$borderColor4Value =
+      Field('borderColor4Value', _$borderColor4Value, mode: FieldMode.member);
+  static int? _$borderColor5Value(ContainerNode v) => v.borderColor5Value;
+  static const Field<ContainerNode, int> _f$borderColor5Value =
+      Field('borderColor5Value', _$borderColor5Value, mode: FieldMode.member);
+  static int? _$borderColor6Value(ContainerNode v) => v.borderColor6Value;
+  static const Field<ContainerNode, int> _f$borderColor6Value =
+      Field('borderColor6Value', _$borderColor6Value, mode: FieldMode.member);
 
   @override
   final MappableFields<ContainerNode> fields = const {
-    #fillColor1Value: _f$fillColor1Value,
-    #fillColor2Value: _f$fillColor2Value,
-    #fillColor3Value: _f$fillColor3Value,
-    #fillColor4Value: _f$fillColor4Value,
-    #fillColor5Value: _f$fillColor5Value,
-    #fillColor6Value: _f$fillColor6Value,
+    #fillColorValues: _f$fillColorValues,
     #margin: _f$margin,
     #padding: _f$padding,
     #width: _f$width,
@@ -146,12 +129,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #alignment: _f$alignment,
     #decoration: _f$decoration,
     #borderThickness: _f$borderThickness,
-    #borderColor1Value: _f$borderColor1Value,
-    #borderColor2Value: _f$borderColor2Value,
-    #borderColor3Value: _f$borderColor3Value,
-    #borderColor4Value: _f$borderColor4Value,
-    #borderColor5Value: _f$borderColor5Value,
-    #borderColor6Value: _f$borderColor6Value,
+    #borderColorValues: _f$borderColorValues,
     #borderRadius: _f$borderRadius,
     #starPoints: _f$starPoints,
     #dash: _f$dash,
@@ -165,6 +143,11 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
+    #borderColor2Value: _f$borderColor2Value,
+    #borderColor3Value: _f$borderColor3Value,
+    #borderColor4Value: _f$borderColor4Value,
+    #borderColor5Value: _f$borderColor5Value,
+    #borderColor6Value: _f$borderColor6Value,
   };
 
   @override
@@ -176,12 +159,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
 
   static ContainerNode _instantiate(DecodingData data) {
     return ContainerNode(
-        fillColor1Value: data.dec(_f$fillColor1Value),
-        fillColor2Value: data.dec(_f$fillColor2Value),
-        fillColor3Value: data.dec(_f$fillColor3Value),
-        fillColor4Value: data.dec(_f$fillColor4Value),
-        fillColor5Value: data.dec(_f$fillColor5Value),
-        fillColor6Value: data.dec(_f$fillColor6Value),
+        fillColorValues: data.dec(_f$fillColorValues),
         margin: data.dec(_f$margin),
         padding: data.dec(_f$padding),
         width: data.dec(_f$width),
@@ -189,12 +167,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
         alignment: data.dec(_f$alignment),
         decoration: data.dec(_f$decoration),
         borderThickness: data.dec(_f$borderThickness),
-        borderColor1Value: data.dec(_f$borderColor1Value),
-        borderColor2Value: data.dec(_f$borderColor2Value),
-        borderColor3Value: data.dec(_f$borderColor3Value),
-        borderColor4Value: data.dec(_f$borderColor4Value),
-        borderColor5Value: data.dec(_f$borderColor5Value),
-        borderColor6Value: data.dec(_f$borderColor6Value),
+        borderColorValues: data.dec(_f$borderColorValues),
         borderRadius: data.dec(_f$borderRadius),
         starPoints: data.dec(_f$starPoints),
         dash: data.dec(_f$dash),
@@ -262,20 +235,19 @@ extension ContainerNodeValueCopy<$R, $Out>
 
 abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
+  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
+      get fillColorValues;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get margin;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
+  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
+      get borderColorValues;
   OutlinedBorderGroupCopyWith<$R, OutlinedBorderGroup, OutlinedBorderGroup>?
       get outlinedBorderGroup;
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {int? fillColor1Value,
-      int? fillColor2Value,
-      int? fillColor3Value,
-      int? fillColor4Value,
-      int? fillColor5Value,
-      int? fillColor6Value,
+      {UpTo6ColorValues? fillColorValues,
       EdgeInsetsValue? margin,
       EdgeInsetsValue? padding,
       double? width,
@@ -283,12 +255,7 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
       AlignmentEnum? alignment,
       DecorationShapeEnum? decoration,
       double? borderThickness,
-      int? borderColor1Value,
-      int? borderColor2Value,
-      int? borderColor3Value,
-      int? borderColor4Value,
-      int? borderColor5Value,
-      int? borderColor6Value,
+      UpTo6ColorValues? borderColorValues,
       double? borderRadius,
       int? starPoints,
       int? dash,
@@ -311,11 +278,19 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ContainerNode> $mapper =
       ContainerNodeMapper.ensureInitialized();
   @override
+  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
+      get fillColorValues => $value.fillColorValues?.copyWith
+          .$chain((v) => call(fillColorValues: v));
+  @override
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get margin =>
       $value.margin?.copyWith.$chain((v) => call(margin: v));
   @override
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding =>
       $value.padding?.copyWith.$chain((v) => call(padding: v));
+  @override
+  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
+      get borderColorValues => $value.borderColorValues?.copyWith
+          .$chain((v) => call(borderColorValues: v));
   @override
   OutlinedBorderGroupCopyWith<$R, OutlinedBorderGroup, OutlinedBorderGroup>?
       get outlinedBorderGroup => $value.outlinedBorderGroup?.copyWith
@@ -325,12 +300,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {Object? fillColor1Value = $none,
-          Object? fillColor2Value = $none,
-          Object? fillColor3Value = $none,
-          Object? fillColor4Value = $none,
-          Object? fillColor5Value = $none,
-          Object? fillColor6Value = $none,
+          {Object? fillColorValues = $none,
           Object? margin = $none,
           Object? padding = $none,
           Object? width = $none,
@@ -338,12 +308,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
           Object? alignment = $none,
           DecorationShapeEnum? decoration,
           Object? borderThickness = $none,
-          Object? borderColor1Value = $none,
-          Object? borderColor2Value = $none,
-          Object? borderColor3Value = $none,
-          Object? borderColor4Value = $none,
-          Object? borderColor5Value = $none,
-          Object? borderColor6Value = $none,
+          Object? borderColorValues = $none,
           Object? borderRadius = $none,
           Object? starPoints = $none,
           Object? dash = $none,
@@ -355,12 +320,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
           Object? outlinedBorderGroup = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
-        if (fillColor1Value != $none) #fillColor1Value: fillColor1Value,
-        if (fillColor2Value != $none) #fillColor2Value: fillColor2Value,
-        if (fillColor3Value != $none) #fillColor3Value: fillColor3Value,
-        if (fillColor4Value != $none) #fillColor4Value: fillColor4Value,
-        if (fillColor5Value != $none) #fillColor5Value: fillColor5Value,
-        if (fillColor6Value != $none) #fillColor6Value: fillColor6Value,
+        if (fillColorValues != $none) #fillColorValues: fillColorValues,
         if (margin != $none) #margin: margin,
         if (padding != $none) #padding: padding,
         if (width != $none) #width: width,
@@ -368,12 +328,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
         if (alignment != $none) #alignment: alignment,
         if (decoration != null) #decoration: decoration,
         if (borderThickness != $none) #borderThickness: borderThickness,
-        if (borderColor1Value != $none) #borderColor1Value: borderColor1Value,
-        if (borderColor2Value != $none) #borderColor2Value: borderColor2Value,
-        if (borderColor3Value != $none) #borderColor3Value: borderColor3Value,
-        if (borderColor4Value != $none) #borderColor4Value: borderColor4Value,
-        if (borderColor5Value != $none) #borderColor5Value: borderColor5Value,
-        if (borderColor6Value != $none) #borderColor6Value: borderColor6Value,
+        if (borderColorValues != $none) #borderColorValues: borderColorValues,
         if (borderRadius != $none) #borderRadius: borderRadius,
         if (starPoints != $none) #starPoints: starPoints,
         if (dash != $none) #dash: dash,
@@ -388,12 +343,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
       }));
   @override
   ContainerNode $make(CopyWithData data) => ContainerNode(
-      fillColor1Value: data.get(#fillColor1Value, or: $value.fillColor1Value),
-      fillColor2Value: data.get(#fillColor2Value, or: $value.fillColor2Value),
-      fillColor3Value: data.get(#fillColor3Value, or: $value.fillColor3Value),
-      fillColor4Value: data.get(#fillColor4Value, or: $value.fillColor4Value),
-      fillColor5Value: data.get(#fillColor5Value, or: $value.fillColor5Value),
-      fillColor6Value: data.get(#fillColor6Value, or: $value.fillColor6Value),
+      fillColorValues: data.get(#fillColorValues, or: $value.fillColorValues),
       margin: data.get(#margin, or: $value.margin),
       padding: data.get(#padding, or: $value.padding),
       width: data.get(#width, or: $value.width),
@@ -401,18 +351,8 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
       alignment: data.get(#alignment, or: $value.alignment),
       decoration: data.get(#decoration, or: $value.decoration),
       borderThickness: data.get(#borderThickness, or: $value.borderThickness),
-      borderColor1Value:
-          data.get(#borderColor1Value, or: $value.borderColor1Value),
-      borderColor2Value:
-          data.get(#borderColor2Value, or: $value.borderColor2Value),
-      borderColor3Value:
-          data.get(#borderColor3Value, or: $value.borderColor3Value),
-      borderColor4Value:
-          data.get(#borderColor4Value, or: $value.borderColor4Value),
-      borderColor5Value:
-          data.get(#borderColor5Value, or: $value.borderColor5Value),
-      borderColor6Value:
-          data.get(#borderColor6Value, or: $value.borderColor6Value),
+      borderColorValues:
+          data.get(#borderColorValues, or: $value.borderColorValues),
       borderRadius: data.get(#borderRadius, or: $value.borderRadius),
       starPoints: data.get(#starPoints, or: $value.starPoints),
       dash: data.get(#dash, or: $value.dash),

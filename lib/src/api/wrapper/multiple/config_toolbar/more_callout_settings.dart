@@ -186,9 +186,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
             const Text('resizeable V: '),
             NodePropertyEditorBool(
               name: '',
-              boolValue: tc.canResizeH,
+              boolValue: tc.canResizeV,
               onChanged: (newValue) {
-                tc.canResizeH = newValue;
+                tc.canResizeV = newValue;
                 _refreshContentCallout();
               },
             ),

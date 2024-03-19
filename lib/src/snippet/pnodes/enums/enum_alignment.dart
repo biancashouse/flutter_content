@@ -45,7 +45,6 @@ enum AlignmentEnum   {
         originalEnumIndex: enumValueIndex,
         onChangeF: (newIndex) {
           onChangedF?.call(newIndex);
-          
         },
         wrap: true,
         calloutButtonSize: const Size(120, 40),

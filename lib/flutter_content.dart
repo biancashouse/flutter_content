@@ -270,6 +270,10 @@ class FC {
 
   final inEditMode = ValueNotifier<bool>(false);
 
+  bool get canEditContent =>
+      HydratedBloc.storage.read("canEditContent") ?? false;
+  void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
+
   Offset calloutConfigToolbarPos(context) =>
       _calloutConfigToolbarPos ??
       Offset(

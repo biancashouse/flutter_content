@@ -29,6 +29,7 @@ class _NodePropertyButtonTextAlignState extends State<NodePropertyButtonTextAlig
         ? Text('textAlign: ${widget.textAlign!.name}', style: const TextStyle(color: Colors.white))
         : const Text('textAlign...', style: TextStyle(color: Colors.white));
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: textAlignLabel,
       calloutButtonSize: const Size(72, 36),
       calloutContents: (ctx) {

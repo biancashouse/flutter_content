@@ -5,6 +5,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -530,7 +531,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         final Node? pollParent = w.parent;
         w = ContainerNode(
             decoration: DecorationShapeEnum.rounded_rectangle_dotted,
-            borderColor1Value: Colors.black.value,
+            borderColorValues: UpTo6ColorValues(color1Value: Colors.black.value),
             borderThickness: 4,
             child: w)..setParent((pollParent));
         w.child!.setParent(w);

@@ -29,6 +29,7 @@ class _NodePropertyButtonOutlinedBorderState extends State<NodePropertyButtonOut
         ? Text('outlinedBorder: ${widget.ob!.name}', style: const TextStyle(color: Colors.white))
         : const Text('outlinedBorder...', style: TextStyle(color: Colors.white));
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: obLabel,
       calloutButtonSize: const Size(100, 36),
       calloutContents: (ctx) {

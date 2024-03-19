@@ -62,6 +62,9 @@ class MaterialSPA extends StatefulWidget {
     super.key,
   });
 
+  static GlobalKey _lockIconGK =
+      GlobalKey(); //will go null after user tap bianca
+
   // static void removeAllPinkSnippetOverlays() {
   //   return;
   // for (String panelName in CAPIState.snippetPanelGkMap.keys) {
@@ -389,7 +392,7 @@ class MaterialSPAState extends State<MaterialSPA>
                     onNotification:
                         (SizeChangedLayoutNotification notification) {
                       debugPrint("MaterialSPA SizeChangedLayoutNotification}");
-                      Callout.dismissAll(exceptFeatures: ["editMode-FAB"]);
+                      Callout.dismissAll(exceptFeatures: ["FAB"]);
                       Useful.afterMsDelayDo(300, () {
                         Useful.refreshMQ(context);
                         if (FC().showingNodeOBoundaryOverlays ?? false) {
@@ -555,34 +558,37 @@ class MaterialSPAState extends State<MaterialSPA>
     return snippetMap;
   }
 
+  /// either show edit btn fab, or lock icon fab
   static Future<void> showDevToolsButton(BuildContext context) async {
     // debugPrint("showDevToolsButton");
     // Size screenSize = MediaQuery.of(context).size;
     String ver = '${FC().version}-${FC().buildNumber}';
-    Callout.dismiss("editMode-FAB");
+    Callout.dismiss("FAB");
     Callout.showOverlay(
-        boxContentF: (context) => PointerInterceptor(
-              child: Tooltip(
-                message: "Edit this widget's tree (v.$ver)",
-                child: TextButton.icon(
-                  onPressed: () async {
-                    MaterialSPAState? rootState = MaterialSPA.of(context);
-                    if (rootState != null) {
-                      enterEditMode(rootState.context);
-                    }
-                  },
-                  label: Useful.coloredText('edit...',
-                      color: Colors.white, fontSize: 24),
-                  icon: const Icon(
-                    Icons.account_tree_outlined,
-                    color: Colors.white,
-                    size: 36,
+        boxContentF: (context) => FC().canEditContent
+            ? PointerInterceptor(
+                child: Tooltip(
+                  message: "Edit this widget's tree (v.$ver)",
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      MaterialSPAState? rootState = MaterialSPA.of(context);
+                      if (rootState != null) {
+                        enterEditMode(rootState.context);
+                      }
+                    },
+                    label: Useful.coloredText('edit...',
+                        color: Colors.white, fontSize: 24),
+                    icon: const Icon(
+                      Icons.account_tree_outlined,
+                      color: Colors.white,
+                      size: 36,
+                    ),
                   ),
                 ),
-              ),
-            ),
+              )
+            : _lockIconButton(),
         calloutConfig: CalloutConfig(
-          feature: "editMode-FAB",
+          feature: "FAB",
           suppliedCalloutW: 150,
           suppliedCalloutH: 60,
           initialCalloutPos: FC().editModeBtnPos(context),
@@ -610,9 +616,18 @@ class MaterialSPAState extends State<MaterialSPA>
   }
 
   static enterEditMode(BuildContext context) {
-    Callout.dismiss("editMode-FAB");
+    Callout.dismiss("FAB");
     FC().inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
+    Callout.showTextToast(
+      feature: 'tap-a-widget',
+      backgroundColor: Colors.white,
+      textColor: Colors.blue,
+      textScaleFactor: 2.5,
+      msgText: 'Tap a widget...',
+      onlyOnce: true,
+      height: 100,
+    );
     // hideAllSingleTargetBtns();
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
@@ -859,5 +874,75 @@ class MaterialSPAState extends State<MaterialSPA>
       if (storedVersionAndBuild != null) return true;
     }
     return false;
+  }
+
+  static Widget _lockIconButton() {
+    return IconButton(
+      key: MaterialSPA._lockIconGK,
+      onPressed: () {
+        Callout.showOverlay(
+          targetGkF: () => MaterialSPA._lockIconGK,
+          boxContentF: (ctx) => Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Useful.purpleText("Editor Access",
+                  fontSize: 24, family: 'Merriweather'),
+              SizedBox(
+                width: 200,
+                height: 100,
+                child: TextEditor(
+                  prompt: 'password',
+                  originalS: '',
+                  onTextChangedF: (s) {
+                    if (s == "lakebeachocean") {
+                      Callout.dismiss("EditorPassword");
+                      FC().setCanEdit(true);
+                      FC().capiBloc.add(const CAPIEvent.hideAllTargetGroups());
+                      Useful.afterNextBuildDo(() {
+                        FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+                      });
+                    }
+                  },
+                  dontAutoFocus: false,
+                  isPassword: true,
+                  onEditingCompleteF: (s) {
+                    // if (s == "lakebeachocean") {
+                    //   Useful.om.remove("TrainerPassword".hashCode);
+                    //   setState(() {
+                    //     HydratedBloc.storage.write("trainerIsSignedIn", true);
+                    //   });
+                    // }
+                  },
+                ),
+              ),
+            ],
+          ),
+          calloutConfig: CalloutConfig(
+            feature: "EditorPassword",
+            initialTargetAlignment: Alignment.topRight,
+            initialCalloutAlignment: Alignment.bottomLeft,
+            finalSeparation: 150,
+            barrier: CalloutBarrier(
+              opacity: .5,
+              onTappedF: () async {
+                Callout.dismiss("EditorPassword");
+              },
+            ),
+            suppliedCalloutW: 240,
+            suppliedCalloutH: 150,
+            borderRadius: 12,
+            fillColor: Colors.white,
+          ),
+        );
+      },
+      icon: const Icon(
+        Icons.lock,
+        color: Colors.blueAccent,
+      ),
+      iconSize: 36,
+      tooltip: 'editor login...',
+    );
   }
 }

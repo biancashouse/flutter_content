@@ -31,6 +31,7 @@ class _NodePropertyButtonFontFamilyState extends State<NodePropertyButtonFontFam
         ? Text('style.fontFamily: ${widget.originalFontFamily}', style: const TextStyle(color: Colors.white))
         : const Text('style.fontFamily...', style: TextStyle(color: Colors.white));
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: fontFamilyLabel,
       calloutButtonSize: const Size(200, 40),
       menuBgColor: widget.menuBgColor,

@@ -7,6 +7,7 @@ import 'package:flutter_content/src/overlays/callouts/draggable_edge.dart';
 import 'package:flutter_content/src/overlays/callouts/line.dart';
 import 'package:flutter_content/src/overlays/callouts/pointing_line.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:transparent_pointer/transparent_pointer.dart';
 
@@ -265,8 +266,7 @@ class CalloutConfig {
   }) {
     // debugPrint(
     //     'Feature: ${feature} CalloutConfig.decoration: ${decorationShape.toString()}');
-    if (decorationShape == DecorationShapeEnum.rectangle &&
-        (borderRadius ?? 0) > 0) {
+    if (decorationShape == DecorationShapeEnum.rectangle && borderRadius > 0) {
       decorationShape = DecorationShapeEnum.rounded_rectangle;
     }
     fillColor ??= FUCHSIA_X.withOpacity(.9);
@@ -1470,8 +1470,8 @@ class PositionedBoxContent extends StatelessWidget {
     }
 
     var decoration = cc.decorationShape.toDecoration(
-      fillColor1: cc.fillColor,
-      borderColor1: cc.borderColor,
+      fillColorValues: UpTo6ColorValues(color1Value: cc.fillColor?.value),
+      borderColorValues: UpTo6ColorValues(color1Value: cc.borderColor?.value),
       borderRadius: cc.borderRadius,
       thickness: cc.borderThickness,
       starPoints: cc.starPoints,
@@ -1497,8 +1497,8 @@ class PositionedBoxContent extends StatelessWidget {
             transparent: cc.transparentPointer,
             child: Container(
               decoration: cc.decorationShape.toDecoration(
-                fillColor1: cc.fillColor,
-                borderColor1: cc.borderColor,
+                fillColorValues: UpTo6ColorValues(color1Value: cc.fillColor?.value),
+                borderColorValues: UpTo6ColorValues(color1Value: cc.borderColor?.value),
                 borderRadius: cc.borderRadius,
                 thickness: cc.borderThickness,
                 starPoints: cc.starPoints,

@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:flutter_content/src/surround/dotted_decoration.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_radio_menu.dart';
 import 'package:gradient_borders/gradient_borders.dart';
@@ -54,18 +55,8 @@ enum DecorationShapeEnum {
       );
 
   Decoration? toDecoration({
-    Color? fillColor1,
-    Color? fillColor2,
-    Color? fillColor3,
-    Color? fillColor4,
-    Color? fillColor5,
-    Color? fillColor6,
-    Color? borderColor1,
-    Color? borderColor2,
-    Color? borderColor3,
-    Color? borderColor4,
-    Color? borderColor5,
-    Color? borderColor6,
+    UpTo6ColorValues? fillColorValues,
+    UpTo6ColorValues? borderColorValues,
     double? thickness,
     double? borderRadius,
     int? starPoints,
@@ -78,22 +69,22 @@ enum DecorationShapeEnum {
     // if >1 colors supplied use the colors in a gradient
     Color? fillColor;
     List<Color> fillColors = [];
-    if (fillColor1 != null) fillColors.add(fillColor1);
-    if (fillColor2 != null) fillColors.add(fillColor2);
-    if (fillColor3 != null) fillColors.add(fillColor3);
-    if (fillColor4 != null) fillColors.add(fillColor4);
-    if (fillColor5 != null) fillColors.add(fillColor5);
-    if (fillColor6 != null) fillColors.add(fillColor6);
+    if (fillColorValues?.color1Value != null) fillColors.add(Color(fillColorValues!.color1Value!));
+    if (fillColorValues?.color2Value != null) fillColors.add(Color(fillColorValues!.color2Value!));
+    if (fillColorValues?.color3Value != null) fillColors.add(Color(fillColorValues!.color3Value!));
+    if (fillColorValues?.color4Value != null) fillColors.add(Color(fillColorValues!.color4Value!));
+    if (fillColorValues?.color5Value != null) fillColors.add(Color(fillColorValues!.color5Value!));
+    if (fillColorValues?.color6Value != null) fillColors.add(Color(fillColorValues!.color6Value!));
     Gradient? fillGradient = fillColors.length > 1 ? LinearGradient(colors: fillColors) : null;
     if (fillColors.length == 1) fillColor = fillColors.first;
     if (fillColors.isEmpty) fillColor = Colors.white;
     List<Color> borderColors = [];
-    if (borderColor1 != null) borderColors.add(borderColor1);
-    if (borderColor2 != null) borderColors.add(borderColor2);
-    if (borderColor3 != null) borderColors.add(borderColor3);
-    if (borderColor4 != null) borderColors.add(borderColor4);
-    if (borderColor5 != null) borderColors.add(borderColor5);
-    if (borderColor6 != null) borderColors.add(borderColor6);
+    if (borderColorValues?.color1Value != null) borderColors.add(Color(borderColorValues!.color1Value!));
+    if (borderColorValues?.color2Value != null) borderColors.add(Color(borderColorValues!.color2Value!));
+    if (borderColorValues?.color3Value != null) borderColors.add(Color(borderColorValues!.color3Value!));
+    if (borderColorValues?.color4Value != null) borderColors.add(Color(borderColorValues!.color4Value!));
+    if (borderColorValues?.color5Value != null) borderColors.add(Color(borderColorValues!.color5Value!));
+    if (borderColorValues?.color6Value != null) borderColors.add(Color(borderColorValues!.color6Value!));
     BoxBorder? border;
     if (borderColors.length == 1) {
       border = Border.all(color: borderColors.first, width: thickness ?? 3);

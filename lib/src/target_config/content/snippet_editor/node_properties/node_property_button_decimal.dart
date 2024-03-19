@@ -46,5 +46,6 @@ class NodePropertyButtonDecimal extends StatelessWidget {
           );
         },
         calloutSize: calloutSize,
+    notifier: ValueNotifier<int>(0),
       );
 }

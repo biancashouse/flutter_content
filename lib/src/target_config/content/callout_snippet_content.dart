@@ -84,8 +84,8 @@ Future<void> showSnippetContentCallout({
         suppliedCalloutW: tc.calloutWidth,
         suppliedCalloutH: tc.calloutHeight,
         minHeight: minHeight + 4,
-        resizeableH: true,
-        resizeableV: true,
+        resizeableH: !justPlaying && tc.canResizeH,
+        resizeableV: !justPlaying && tc.canResizeV,
         // containsTextField: true,
         // alwaysReCalcSize: true,
         onResize: (Size newSize) {

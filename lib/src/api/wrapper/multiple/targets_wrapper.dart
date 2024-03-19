@@ -79,7 +79,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   Offset? savedChildLocalPosPc;
 
   Timer? _sizeChangedTimer;
-  bool targetCreationInProgress = false;
+  // bool playing = false;
 
   double? scrollOffset;
 
@@ -141,14 +141,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
       );
       if (globalPos != null) {
-        debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
-        debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
+        // debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
+        // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         TargetsWrapper.iwPosMap[widget.name] = globalPos;
         TargetsWrapper.iwSizeMap[widget.name] = newPosAndSize.$2!;
       }
     } catch (e) {
       // ignore but then don't update pos
-      debugPrint('measureIWPosAndSizze');
+      debugPrint('measureIWPosAndSizze! ${e.toString()}');
     }
   }
   // @override
@@ -340,24 +340,24 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   //   }
   // }
 
-  Positioned buildPositionedTargetForPlay(TargetConfig tc) {
-    FC().setMultiTargetGk(tc.uid.toString(), GlobalKey());
-    double radius = tc.radiusPc != null
-        ? tc.radiusPc! * TargetsWrapper.iwSize(tc.wName).width
-        : 30;
-    return Positioned(
-      top: tc.targetStackPos().dy - radius,
-      left: tc.targetStackPos().dx - radius,
-      child: Container(
-        decoration: BoxDecoration(
-            color: FUCHSIA_X.withOpacity(.2), shape: BoxShape.circle),
-        //color:Colors.pink.withOpacity(.2),
-        key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
-        width: radius * 2,
-        height: radius * 2,
-      ),
-    );
-  }
+  // Positioned buildPositionedTargetForPlay(TargetConfig tc) {
+  //   FC().setMultiTargetGk(tc.uid.toString(), GlobalKey());
+  //   double radius = tc.radiusPc != null
+  //       ? tc.radiusPc! * TargetsWrapper.iwSize(tc.wName).width
+  //       : 30;
+  //   return Positioned(
+  //     top: tc.targetStackPos().dy - radius,
+  //     left: tc.targetStackPos().dx - radius,
+  //     child: Container(
+  //       decoration: BoxDecoration(
+  //           color: FUCHSIA_X.withOpacity(.2), shape: BoxShape.circle),
+  //       //color:Colors.pink.withOpacity(.2),
+  //       key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
+  //       width: radius * 2,
+  //       height: radius * 2,
+  //     ),
+  //   );
+  // }
 
   // Widget _suspended_build() => MeasureSizeBox(
   //       // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
@@ -454,7 +454,6 @@ class IntegerCircleAvatar extends StatelessWidget {
   final int? num;
   final Color textColor;
   final Color bgColor;
-  final bool selected;
   final double radius;
   final double fontSize;
 
@@ -464,23 +463,20 @@ class IntegerCircleAvatar extends StatelessWidget {
       required this.bgColor,
       required this.radius,
       required this.fontSize,
-      this.selected = false,
       super.key});
 
   CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
-        backgroundColor: Colors.black.withOpacity(.1),
+        backgroundColor: const Color.fromRGBO(255,0,0,.01),
         radius: radius + 2,
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: radius + 1,
-          child: bloc.state.hideTargetsExcept != null
-              ? const Offstage()
-              : CircleAvatar(
+          child: CircleAvatar(
                   foregroundColor: textColor,
-                  backgroundColor: selected ? Colors.white12 : bgColor,
+                  backgroundColor: bgColor,
                   radius: radius,
                   child: Container(
                       decoration: ShapeDecoration(

@@ -243,8 +243,16 @@ class TargetConfig {
     Offset ivTopLeft = TargetsWrapper.iwPos(wName);
     Size ivSize = TargetsWrapper.iwSize(wName);
 
-    targetLocalPosTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
-    targetLocalPosLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
+    double targetLocalPosTop = globalPos.dy - ivTopLeft.dy;
+    double targetLocalPosLeft = globalPos.dx - ivTopLeft.dx;
+
+    targetLocalPosTopPc = targetLocalPosTop / ivSize.height;
+    targetLocalPosLeftPc = targetLocalPosLeft / ivSize.width;
+
+    targetLocalPosTopPc = max(0, targetLocalPosTopPc!);
+    targetLocalPosTopPc = min(targetLocalPosTopPc!, 1);
+    targetLocalPosLeftPc = max(0,targetLocalPosLeftPc!);
+    targetLocalPosLeftPc = min(targetLocalPosLeftPc!, 1);
   }
 
   void setBtnStackPosPc(Offset globalPos) {

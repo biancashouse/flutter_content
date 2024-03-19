@@ -173,7 +173,7 @@ class Callout extends StatefulWidget {
       //   debugPrint('root');
       // }
 
-      Rect? r = targetGkF?.call()?.globalPaintBounds(
+        Rect? r = targetGkF?.call()?.globalPaintBounds(
           skipWidthConstraintWarning: calloutConfig.calloutW != null,
           skipHeightConstraintWarning: calloutConfig.calloutH != null);
       if (r == null) {

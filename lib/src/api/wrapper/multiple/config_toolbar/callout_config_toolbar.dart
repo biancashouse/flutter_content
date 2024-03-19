@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
-import 'package:flutter_content/src/target_config/config_toolbar/more_callout_settings.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_radio_menu.dart';
 
 import 'colour_callout.dart';
 import 'duration_callout.dart';
+import 'more_callout_settings.dart';
 import 'pointy_callout.dart';
 import 'resize_slider.dart';
 
@@ -89,7 +89,9 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             child: SizedBox(
               width: 200,
               child: ResizeSlider(
-                  value: tc.radiusPc != null ? max(16, tc.radiusPc! * ivSize.width) : 30,
+                  value: tc.radiusPc != null
+                      ? max(16, tc.radiusPc! * ivSize.width)
+                      : 30,
                   icon: Icons.circle_rounded,
                   color: Colors.white70,
                   onChangeF: (value) {
@@ -97,8 +99,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     if (_debounce?.isActive ?? false) _debounce?.cancel();
                     // Set up a new debounce timer
                     _debounce = Timer(const Duration(milliseconds: 100), () {
-                      FC().capiBloc.add(CAPIEvent.targetConfigChanged(
-                          newTC: tc..radiusPc = value / ivSize.width));
+                      tc.radiusPc = value / ivSize.width;
+                      FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
                     });
                   },
                   min: 16.0,
@@ -248,6 +250,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               FC().parentTW(widget.twName)?.zoomer?.resetTransform();
+              FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
               FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
             },
           ),

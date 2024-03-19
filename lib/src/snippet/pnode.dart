@@ -1,6 +1,8 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
@@ -29,6 +31,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_snippet_name.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_string.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
@@ -36,6 +39,7 @@ import 'pnodes/enums/enum_decoration.dart';
 import 'pnodes/groups/button_style_group.dart';
 import 'pnodes/groups/callout_config_group.dart';
 import 'pnodes/groups/outlined_border_group.dart';
+import 'snodes/upto6color_values.dart';
 
 abstract class PTreeNode extends Node {
   final PropertyName name;
@@ -607,6 +611,7 @@ class SnippetRefPropertyValueNode extends PTreeNode {
     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
     // TODO use pushSnippet...
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: Text(
         displayedName,
         style: const TextStyle(color: Colors.white),
@@ -767,25 +772,25 @@ class StringPropertyValueNode extends PTreeNode {
   Widget toPropertyNodeContents(BuildContext context) {
     debugPrint('toPropertyNodeContents');
     return NodePropertyButton_String(
-          // originalText: (stringValue??'').isNotEmpty
-          //     ? nameOnSeparateLine
-          //     ? '$name: \n$stringValue'
-          //     : '$name: $stringValue'
-          //     : '$name...',
-          originalText: stringValue ?? '',
-          options: options,
-          label: super.name,
-          maxLines: numLines,
-          expands: expands,
-          skipLabelText: true,
-          skipHelperText: true,
-          // textInputType: const TextInputType.numberWithOptions(decimal: true),
-          calloutButtonSize: calloutButtonSize,
-          calloutSize: calloutSize,
-          // calloutSize: calloutSize,
-          onChangeF: (s) {
-            onStringChange(s);
-          });
+        // originalText: (stringValue??'').isNotEmpty
+        //     ? nameOnSeparateLine
+        //     ? '$name: \n$stringValue'
+        //     : '$name: $stringValue'
+        //     : '$name...',
+        originalText: stringValue ?? '',
+        options: options,
+        label: super.name,
+        maxLines: numLines,
+        expands: expands,
+        skipLabelText: true,
+        skipHelperText: true,
+        // textInputType: const TextInputType.numberWithOptions(decimal: true),
+        calloutButtonSize: calloutButtonSize,
+        calloutSize: calloutSize,
+        // calloutSize: calloutSize,
+        onChangeF: (s) {
+          onStringChange(s);
+        });
   }
 }
 
@@ -975,8 +980,7 @@ class SizePropertyValueNode extends PTreeNode {
               calloutSize: const Size(120, 80),
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
-                  onSizeChange
-                      .call((widthValue = 999999999, heightValue));
+                  onSizeChange.call((widthValue = 999999999, heightValue));
                   return;
                 }
                 if (s.contains('/') && s.split('/').length == 2) {
@@ -1004,8 +1008,7 @@ class SizePropertyValueNode extends PTreeNode {
               // calloutSize: calloutSize,
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
-                  onSizeChange
-                      .call((widthValue, heightValue = 999999999));
+                  onSizeChange.call((widthValue, heightValue = 999999999));
                   return;
                 }
                 if (s.contains('/') && s.split('/').length == 2) {
@@ -1251,21 +1254,11 @@ class ColorPropertyValueNode extends PTreeNode {
 }
 
 class GradientPropertyValueNode extends PTreeNode {
-  int? color1Value;
-  int? color2Value;
-  int? color3Value;
-  int? color4Value;
-  int? color5Value;
-  int? color6Value;
-  final void Function(int?, int?, int?, int?, int?, int?) onColorChange;
+  UpTo6ColorValues? colorValues;
+  final void Function(UpTo6ColorValues?) onColorChange;
 
   GradientPropertyValueNode({
-    required this.color1Value,
-    required this.color2Value,
-    required this.color3Value,
-    required this.color4Value,
-    required this.color5Value,
-    required this.color6Value,
+    required this.colorValues,
     required this.onColorChange,
     required super.snode,
     required super.name,
@@ -1273,14 +1266,7 @@ class GradientPropertyValueNode extends PTreeNode {
 
   @override
   void revertToOriginalValue() {
-    onColorChange.call(
-      color1Value = null,
-      color2Value = null,
-      color3Value = null,
-      color4Value = null,
-      color5Value = null,
-      color6Value = null,
-    );
+    onColorChange.call(colorValues = null);
   }
 
   @override
@@ -1293,108 +1279,156 @@ class GradientPropertyValueNode extends PTreeNode {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color1Value != null ? Color(color1Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value = newColor.value,
-                      color2Value,
-                      color3Value,
-                      color4Value,
-                      color5Value,
-                      color6Value,
-                    );
-                  }
+              StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return NodePropertyButtonColor(
+                  key: GlobalKey(),
+                  label: '',
+                  originalColor: colorValues?.color1Value != null
+                      ? Color(colorValues!.color1Value!)
+                      : null,
+                  onChangeF: (Color? newColor) {
+                    if (newColor != null) {
+                      setState(() => onColorChange.call(
+                            colorValues = UpTo6ColorValues(
+                              color1Value: newColor.value,
+                              color2Value: colorValues?.color2Value,
+                              color3Value: colorValues?.color3Value,
+                              color4Value: colorValues?.color4Value,
+                              color5Value: colorValues?.color5Value,
+                              color6Value: colorValues?.color6Value,
+                            ),
+                          ));
+                    }
+                  },
+                  calloutButtonSize: const Size(24, 24),
+                );
+              }),
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return NodePropertyButtonColor(
+                    label: '',
+                    originalColor: colorValues?.color2Value != null
+                        ? Color(colorValues!.color2Value!)
+                        : null,
+                    onChangeF: (Color? newColor) {
+                      if (newColor != null) {
+                        onColorChange.call(
+                          colorValues = UpTo6ColorValues(
+                            color1Value: colorValues?.color1Value,
+                            color2Value: newColor.value,
+                            color3Value: colorValues?.color3Value,
+                            color4Value: colorValues?.color4Value,
+                            color5Value: colorValues?.color5Value,
+                            color6Value: colorValues?.color6Value,
+                          ),
+                        );
+                      }
+                    },
+                    calloutButtonSize: const Size(24, 24),
+                  );
                 },
-                calloutButtonSize: const Size(24, 24),
               ),
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color2Value != null ? Color(color2Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value,
-                      color2Value = newColor.value,
-                      color3Value,
-                      color4Value,
-                      color5Value,
-                      color6Value,
-                    );
-                  }
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return NodePropertyButtonColor(
+                    label: '',
+                    originalColor: colorValues?.color3Value != null
+                        ? Color(colorValues!.color3Value!)
+                        : null,
+                    onChangeF: (Color? newColor) {
+                      if (newColor != null) {
+                        onColorChange.call(
+                          colorValues = UpTo6ColorValues(
+                            color1Value: colorValues?.color1Value,
+                            color2Value: colorValues?.color2Value,
+                            color3Value: newColor.value,
+                            color4Value: colorValues?.color4Value,
+                            color5Value: colorValues?.color5Value,
+                            color6Value: colorValues?.color6Value,
+                          ),
+                        );
+                      }
+                    },
+                    calloutButtonSize: const Size(24, 24),
+                  );
                 },
-                calloutButtonSize: const Size(24, 24),
               ),
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color3Value != null ? Color(color3Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value,
-                      color2Value,
-                      color3Value = newColor.value,
-                      color4Value,
-                      color5Value,
-                      color6Value,
-                    );
-                  }
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return NodePropertyButtonColor(
+                    label: '',
+                    originalColor: colorValues?.color4Value != null
+                        ? Color(colorValues!.color4Value!)
+                        : null,
+                    onChangeF: (Color? newColor) {
+                      if (newColor != null) {
+                        onColorChange.call(
+                          colorValues = UpTo6ColorValues(
+                            color1Value: colorValues?.color1Value,
+                            color2Value: colorValues?.color2Value,
+                            color3Value: colorValues?.color3Value,
+                            color4Value: newColor.value,
+                            color5Value: colorValues?.color5Value,
+                            color6Value: colorValues?.color6Value,
+                          ),
+                        );
+                      }
+                    },
+                    calloutButtonSize: const Size(24, 24),
+                  );
                 },
-                calloutButtonSize: const Size(24, 24),
               ),
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color4Value != null ? Color(color4Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value,
-                      color2Value,
-                      color3Value,
-                      color4Value = newColor.value,
-                      color5Value,
-                      color6Value,
-                    );
-                  }
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return NodePropertyButtonColor(
+                    label: '',
+                    originalColor: colorValues?.color5Value != null
+                        ? Color(colorValues!.color5Value!)
+                        : null,
+                    onChangeF: (Color? newColor) {
+                      if (newColor != null) {
+                        onColorChange.call(
+                          colorValues = UpTo6ColorValues(
+                            color1Value: colorValues?.color1Value,
+                            color2Value: colorValues?.color2Value,
+                            color3Value: colorValues?.color3Value,
+                            color4Value: colorValues?.color4Value,
+                            color5Value: newColor.value,
+                            color6Value: colorValues?.color6Value,
+                          ),
+                        );
+                      }
+                    },
+                    calloutButtonSize: const Size(24, 24),
+                  );
                 },
-                calloutButtonSize: const Size(24, 24),
               ),
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color5Value != null ? Color(color5Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value,
-                      color2Value,
-                      color3Value,
-                      color4Value,
-                      color5Value = newColor.value,
-                      color6Value,
-                    );
-                  }
+              StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return NodePropertyButtonColor(
+                    label: '',
+                    originalColor: colorValues?.color6Value != null
+                        ? Color(colorValues!.color6Value!)
+                        : null,
+                    onChangeF: (Color? newColor) {
+                      if (newColor != null) {
+                        setState(() => onColorChange.call(
+                              colorValues = UpTo6ColorValues(
+                                color1Value: colorValues?.color1Value,
+                                color2Value: colorValues?.color2Value,
+                                color3Value: colorValues?.color3Value,
+                                color4Value: colorValues?.color4Value,
+                                color5Value: colorValues?.color5Value,
+                                color6Value: newColor.value,
+                              ),
+                            ));
+                      }
+                    },
+                    calloutButtonSize: const Size(24, 24),
+                  );
                 },
-                calloutButtonSize: const Size(24, 24),
               ),
-              NodePropertyButtonColor(
-                label: '',
-                originalColor: color6Value != null ? Color(color6Value!) : null,
-                onChangeF: (Color? newColor) {
-                  if (newColor != null) {
-                    onColorChange.call(
-                      color1Value,
-                      color2Value,
-                      color3Value,
-                      color4Value,
-                      color5Value,
-                      color6Value = newColor.value,
-                    );
-                  }
-                },
-                calloutButtonSize: const Size(24, 24),
-              )
             ]),
       ),
     );
@@ -1494,8 +1528,7 @@ class EnumPropertyValueNode<T> extends PTreeNode {
           snode: snode,
           label: name,
           enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Alignment -------------
     if (sameType<T, DecorationShapeEnum?>()) {

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
-import 'package:flutter_content/src/target_config/config_toolbar/callout_config_toolbar.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
+
+import 'config_toolbar/callout_config_toolbar.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetPlayBtn extends StatelessWidget {
@@ -48,7 +49,12 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         onTap: () {
           playTarget(context, tc);
         },
+        onLongPress: (){
+          tc.setTargetStackPosPc(tc.btnStackPos());
+          bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+        },
         onDoubleTap: () async {
+          if (!FC().canEditContent) return;
           Alignment? ta =
               TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(
                   twName, tc);

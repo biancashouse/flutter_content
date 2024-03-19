@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -78,7 +79,9 @@ class SnippetPanel extends StatefulWidget {
         child: SizedBoxNode(
             width: 200,
             height: 150,
-            child: ContainerNode(fillColor1Value: Colors.white.value))),
+            child: ContainerNode(fillColorValues: UpTo6ColorValues(
+              color1Value: Colors.white.value,
+            )))),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
       name: SnippetTemplate.scaffold_with_tabs.name,

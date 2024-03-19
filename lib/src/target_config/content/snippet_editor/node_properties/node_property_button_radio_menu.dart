@@ -26,6 +26,7 @@ class NodePropertyButtonEnum extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget mi = menuItems[originalEnumIndex ?? 0];
     return NodePropertyCalloutButton(
+      notifier: ValueNotifier<int>(0),
       labelWidget: label.isNotEmpty
           ? Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -39,6 +40,8 @@ class NodePropertyButtonEnum extends StatelessWidget {
               ? Useful.coloredText('...', color: Colors.white)
               : mi,
       calloutButtonSize: calloutButtonSize,
+      initialCalloutAlignment: Alignment.bottomCenter,
+      initialTargetAlignment: Alignment.topCenter,
       calloutContents: (ctx) => Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -63,9 +66,9 @@ class NodePropertyButtonEnum extends StatelessWidget {
   void _changed(int? option) {
     if (option != null) {
       onChangeF.call(option);
-      Useful.afterMsDelayDo(500, () {
-        Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-      });
+      // Useful.afterMsDelayDo(500, () {
+      //   Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+      // });
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
 
-class NodePropertyButtonColor extends StatefulWidget {
+class NodePropertyButtonColor extends StatelessWidget {
   final String label;
   final String? tooltip;
   final Color? originalColor;
@@ -20,50 +20,39 @@ class NodePropertyButtonColor extends StatefulWidget {
   });
 
   @override
-  State<NodePropertyButtonColor> createState() =>
-      _NodePropertyButtonColorState();
-}
-
-class _NodePropertyButtonColorState extends State<NodePropertyButtonColor> {
-  late GlobalKey propertyBtnGK;
-
-  @override
-  void initState() {
-    super.initState();
-    propertyBtnGK = GlobalKey();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    Widget colorLabel = widget.originalColor != null
+    Widget colorLabel = originalColor != null
         ? Row(children: [
-            Text(widget.label,
+            Text(label,
                 style: const TextStyle(
                   color: Colors.white,
                 )),
-            Icon(Icons.square, color: widget.originalColor),
+            Icon(Icons.square, color: originalColor),
           ])
-        : Text('${widget.label}...',
+        : Text('$label...',
             style: const TextStyle(
               color: Colors.white,
             ));
     return NodePropertyCalloutButton(
       labelWidget: colorLabel,
-      tooltip: widget.tooltip,
-      calloutButtonSize: widget.calloutButtonSize,
+      tooltip: tooltip,
+      calloutButtonSize: calloutButtonSize,
+      initialCalloutAlignment: Alignment.bottomCenter,
+      initialTargetAlignment: Alignment.topCenter,
       calloutContents: (ctx) {
         return Center(
           child: EasyColorPicker(
-            selected: widget.originalColor ?? Colors.white,
+            selected: originalColor ?? Colors.white,
             onChanged: (color) {
-              widget.onChangeF.call(color);
+              onChangeF.call(color);
               // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-              Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+              // Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
             },
           ),
         );
       },
       calloutSize: const Size(280, 140),
+      notifier: ValueNotifier<int>(0),
     );
   }
 }

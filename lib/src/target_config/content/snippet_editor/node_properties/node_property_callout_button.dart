@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
-class NodePropertyCalloutButton extends StatefulWidget {
+class NodePropertyCalloutButton extends StatelessWidget {
   final Alignment alignment;
   final String? label;
   final String? tooltip;
@@ -13,6 +13,7 @@ class NodePropertyCalloutButton extends StatefulWidget {
   final bool? draggable;
   final Size calloutButtonSize;
   final Size calloutSize;
+  final ValueNotifier<int> notifier;
 
   const NodePropertyCalloutButton({
     this.alignment = Alignment.centerLeft,
@@ -26,37 +27,23 @@ class NodePropertyCalloutButton extends StatefulWidget {
     this.initialCalloutAlignment,
     this.menuBgColor = Colors.purpleAccent,
     this.draggable,
+    required this.notifier,
     super.key,
   });
-
-  @override
-  State<NodePropertyCalloutButton> createState() => _NodePropertyCalloutButtonState();
-}
-
-class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
-  late GlobalKey propertyBtnGK;
-  late ValueNotifier<int> notifier;
-
-  @override
-  void initState() {
-    super.initState();
-    propertyBtnGK = GlobalKey();
-    notifier = ValueNotifier<int>(0);
-  }
 
   @override
   Widget build(BuildContext context) {
     CalloutConfig config = CalloutConfig(
       feature: NODE_PROPERTY_CALLOUT_BUTTON,
-      suppliedCalloutW: widget.calloutSize.width,
-      suppliedCalloutH: widget.calloutSize.height,
+      suppliedCalloutW: calloutSize.width,
+      suppliedCalloutH: calloutSize.height,
       arrowType: ArrowType.NO_CONNECTOR,
       // arrowColor: Colors.blueAccent,
-      fillColor: widget.menuBgColor,
+      fillColor: menuBgColor,
       //alwaysReCalcSize: true,
-      initialTargetAlignment: widget.initialTargetAlignment ?? Alignment.center,
-      initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.center,
-      draggable: widget.draggable ?? true,
+      initialTargetAlignment: initialTargetAlignment ?? Alignment.center,
+      initialCalloutAlignment: initialCalloutAlignment ?? Alignment.center,
+      draggable: draggable ?? true,
       onDragStartedF: () {
         // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
       },
@@ -68,29 +55,29 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         opacity: .1,
         onTappedF: () async {
           // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-          Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+          // Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
         },
       ),
       containsTextField: true,
     );
     return Callout.wrapTarget(
       calloutConfig: config,
-      calloutBoxContentBuilderF: (ctx) => widget.calloutContents(ctx),
+      calloutBoxContentBuilderF: (ctx) => calloutContents(ctx),
       targetChangedNotifier: notifier,
       targetBuilderF: (ctx) => GestureDetector(
         onTap: (){
           Callout.unhideParentCallout(ctx, animateSeparation: false);
         },
-        child: Tooltip(message: widget.tooltip??'',
+        child: Tooltip(message: tooltip??'',
           child: Container(
-            key: propertyBtnGK,
+            // key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),
-            width: widget.calloutButtonSize.width,
-            height: widget.calloutButtonSize.height,
+            width: calloutButtonSize.width,
+            height: calloutButtonSize.height,
             // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            color: widget.labelWidget != null ? null : Colors.white70,
-            alignment: widget.alignment,
-            child: widget.labelWidget ?? (widget.label != null ? Text(widget.label!) : const Offstage()),
+            color: labelWidget != null ? null : Colors.white70,
+            alignment: alignment,
+            child: labelWidget ?? (label != null ? Text(label!) : const Offstage()),
           ),
         ),
       ),
@@ -105,15 +92,15 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
         CalloutConfig config = CalloutConfig(
           feature: NODE_PROPERTY_CALLOUT_BUTTON,
-          suppliedCalloutW: widget.calloutSize.width,
-          suppliedCalloutH: widget.calloutSize.height,
+          suppliedCalloutW: calloutSize.width,
+          suppliedCalloutH: calloutSize.height,
           arrowType: ArrowType.NO_CONNECTOR,
           // arrowColor: Colors.blueAccent,
-          fillColor: widget.menuBgColor,
+          fillColor: menuBgColor,
           //alwaysReCalcSize: true,
-          initialTargetAlignment: widget.initialTargetAlignment ?? Alignment.center,
-          initialCalloutAlignment: widget.initialCalloutAlignment ?? Alignment.center,
-          draggable: widget.draggable ?? true,
+          initialTargetAlignment: initialTargetAlignment ?? Alignment.center,
+          initialCalloutAlignment: initialCalloutAlignment ?? Alignment.center,
+          draggable: draggable ?? true,
           onDragStartedF: () {
             // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
           },
@@ -131,8 +118,8 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         );
         Callout.showOverlay(
           calloutConfig: config,
-          boxContentF: (ctx) => widget.calloutContents(ctx),
-          targetGkF: ()=>propertyBtnGK,
+          boxContentF: (ctx) => calloutContents(ctx),
+          // targetGkF: ()=>propertyBtnGK,
         );
         // Callout(
         //   feature: NODE_PROPERTY_CALLOUT_BUTTON,
@@ -161,14 +148,14 @@ class _NodePropertyCalloutButtonState extends State<NodePropertyCalloutButton> {
         // ).show();
       },
       child: Container(
-        key: propertyBtnGK,
+        // key: propertyBtnGK,
         // margin: const EdgeInsets.only(top: 8),
-        width: widget.calloutButtonSize.width,
-        height: widget.calloutButtonSize.height,
+        width: calloutButtonSize.width,
+        height: calloutButtonSize.height,
         // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        color: widget.labelWidget != null ? null : Colors.white70,
-        alignment: widget.alignment,
-        child: widget.labelWidget ?? (widget.label != null ? Text(widget.label!) : const Offstage()),
+        color: labelWidget != null ? null : Colors.white70,
+        alignment: alignment,
+        child: labelWidget ?? (label != null ? Text(label!) : const Offstage()),
       ),
     );
   }
