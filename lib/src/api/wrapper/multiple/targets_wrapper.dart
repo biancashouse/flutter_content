@@ -15,12 +15,11 @@ class TargetsWrapper extends StatefulWidget {
   final Widget child;
   final bool hardEdge;
 
-  TargetsWrapper({
-    required this.name,
-    required this.child,
-    this.hardEdge = true,
-    required super.key
-  });
+  const TargetsWrapper(
+      {required this.name,
+      required this.child,
+      this.hardEdge = true,
+      required super.key});
 
   @override
   State<TargetsWrapper> createState() => TargetsWrapperState();
@@ -43,12 +42,12 @@ class TargetsWrapper extends StatefulWidget {
         iwSize(wName).height,
       );
 
-  static Alignment? calcTargetAlignmentWithinTargetsWrapper(String twName, TargetConfig tc) {
+  static Alignment? calcTargetAlignmentWithinTargetsWrapper(
+      String twName, TargetConfig tc) {
     Rect? wrapperRect = (FC().parentTW(twName)?.widget.key as GlobalKey)
         .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
-    Rect? targetRect = FC()
-        .getMultiTargetGk(tc.uid.toString())!
-        .globalPaintBounds();
+    Rect? targetRect =
+        FC().getMultiTargetGk(tc.uid.toString())!.globalPaintBounds();
     if (wrapperRect == null || targetRect == null) return null;
 
     return Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
@@ -96,7 +95,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     super.initState();
 
     FC().targetsWrappers[widget.name] = widget.key as GlobalKey;
-
 
     if (zoomer?.widget.ancestorHScrollController != null) {
       FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
@@ -309,10 +307,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               (bloc.state.hideTargetsExcept == null ||
                   bloc.state.hideTargetsExcept == tc))
             // if (!state.aTargetIsSelected() || state.selectedTarget!.uid == tc.uid )
-            PositionedTarget(
-              twName: widget.name,
-              initialTC: tc,
-            ),
+            PositionedTarget(tc),
         // if (!state.aTargetIsSelected() && transformableWidgetWrapperState != null)
         if (zoomer != null)
           for (var tc in bloc.state.imageConfig(widget.name)?.targets ??
@@ -388,6 +383,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // },
         // long press creates a new target for this TargetWrapper
         onLongPressStart: (LongPressStartDetails details) {
+          if (!FC().canEditContent) return;
           bloc.add(const CAPIEvent.hideAllTargetGroups());
           bloc.add(
             CAPIEvent.newTarget(
@@ -456,6 +452,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   final Color bgColor;
   final double radius;
   final double fontSize;
+  final Widget? child;
 
   const IntegerCircleAvatar(this.tc,
       {this.num,
@@ -463,36 +460,36 @@ class IntegerCircleAvatar extends StatelessWidget {
       required this.bgColor,
       required this.radius,
       required this.fontSize,
+      this.child,
       super.key});
 
   CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
-        backgroundColor: const Color.fromRGBO(255,0,0,.01),
+        backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
         radius: radius + 2,
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: radius + 1,
           child: CircleAvatar(
-                  foregroundColor: textColor,
-                  backgroundColor: bgColor,
-                  radius: radius,
-                  child: Container(
-                      decoration: ShapeDecoration(
-                          color: bgColor,
-                          shape: const CircleBorder(
-                            side: BorderSide(color: Colors.white),
-                          )),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          '$num',
-                          style:
-                              TextStyle(color: textColor, fontSize: fontSize),
-                        ),
-                      )),
-                ),
+            foregroundColor: textColor,
+            backgroundColor: bgColor,
+            radius: radius,
+            child: Container(
+                decoration: ShapeDecoration(
+                    color: bgColor,
+                    shape: const CircleBorder(
+                      side: BorderSide(color: Colors.white),
+                    )),
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    '$num',
+                    style: TextStyle(color: textColor, fontSize: fontSize),
+                  ),
+                )),
+          ),
         ),
       );
 }

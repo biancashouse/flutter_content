@@ -180,6 +180,9 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               onChangeF: (newIndex) {
                 tc.calloutDecorationShape = DecorationShapeEnum.of(newIndex) ??
                     DecorationShapeEnum.rectangle;
+                if (tc.calloutDecorationShape == DecorationShapeEnum.star) {
+                  tc.calloutArrowTypeIndex = ArrowType.NO_CONNECTOR.index;
+                }
                 tc.calloutBorderColorValue = Colors.grey.value;
                 tc.calloutBorderThickness = 2;
                 removeSnippetContentCallout(tc.snippetName);

@@ -76,12 +76,13 @@ class SnippetPanel extends StatefulWidget {
         name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
     SnippetRootNode(
         name: SnippetTemplate.target_content_widget.name,
-        child: SizedBoxNode(
-            width: 200,
-            height: 150,
-            child: ContainerNode(fillColorValues: UpTo6ColorValues(
-              color1Value: Colors.white.value,
-            )))),
+        // child: SizedBoxNode(
+        //     width: 200,
+        //     height: 150,
+        //     child: ContainerNode(fillColorValues: UpTo6ColorValues(
+        //       color1Value: Colors.white.value,
+        //     ))),
+    ),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
       name: SnippetTemplate.scaffold_with_tabs.name,

@@ -67,7 +67,7 @@ TargetConfig _$TargetConfigFromJson(Map<String, dynamic> json) => TargetConfig(
           (json['calloutBorderThickness'] as num?)?.toDouble() ?? 1,
       starPoints: json['starPoints'] as int?,
       snippetName: json['snippetName'] as String,
-      calloutArrowType: json['calloutArrowType'] as int? ?? 1,
+      calloutArrowTypeIndex: json['calloutArrowType'] as int? ?? 1,
       calloutArrowColorValue: json['calloutArrowColorValue'] as int?,
       animateArrow: json['animateArrow'] as bool? ?? false,
     )
@@ -101,7 +101,7 @@ Map<String, dynamic> _$TargetConfigToJson(TargetConfig instance) =>
       'calloutBorderThickness': instance.calloutBorderThickness,
       'starPoints': instance.starPoints,
       'snippetName': instance.snippetName,
-      'calloutArrowType': instance.calloutArrowType,
+      'calloutArrowType': instance.calloutArrowTypeIndex,
       'calloutArrowColorValue': instance.calloutArrowColorValue,
       'animateArrow': instance.animateArrow,
     };

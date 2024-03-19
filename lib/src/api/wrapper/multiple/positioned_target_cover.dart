@@ -1,140 +1,127 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
-
-import 'positioned_target_cover_btn.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTarget extends StatelessWidget {
-  final TargetsWrapperName twName;
-  final TargetConfig initialTC;
+  final TargetConfig tc;
 
-  const PositionedTarget({
-    required this.twName,
-    required this.initialTC,
-    super.key,
+  const PositionedTarget(
+    this.tc,
+      {super.key,
   });
 
   CAPIBloC get bloc => FC().capiBloc;
 
   @override
   Widget build(BuildContext context) {
-    TargetConfig? tc = bloc.state.tcByUid(initialTC);
-    if (tc != null) {
-      Size ivSize = TargetsWrapper.iwSize(tc.wName);
-      double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
-      return Positioned(
-        top: tc.targetStackPos().dy - radius,
-        left: tc.targetStackPos().dx - radius,
-        child: FC().canEditContent
-            ? Draggable(
-                key: FC()
-                    .setMultiTargetGk(initialTC.uid.toString(), GlobalKey()),
-                feedback: _draggableTarget(tc),
-                childWhenDragging: const Offstage(),
-                dragAnchorStrategy: (Draggable<Object> draggable,
-                    BuildContext context, Offset position) {
-                  return Offset(radius, radius);
-                },
-                onDragUpdate: (DragUpdateDetails details) {
-                  Offset newLocalPos = details.localPosition;
-                  debugPrint(newLocalPos.toString());
-                  Offset newGlobalPos = details.globalPosition
-                      //   .translate(
-                      // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-                      // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-                      // )
-                      ;
-                  tc.setTargetStackPosPc(newGlobalPos);
-                },
-                onDragStarted: () {
-                  debugPrint("drag started");
-                  //removeSnippetContentCallout(widget.initialTC.snippetName);
-                },
-                onDragEnd: (DraggableDetails details) {
-                  // Offset newGlobalPos = details.offset.translate(
-                  //   parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-                  //   parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-                  // );
-                  // // tc.setTargetStackPosPc(newGlobalPos);
-                  // tc.setTargetStackPosPc(newGlobalPos.translate(
-                  //   tc.getScale(bloc.state) * tc.radius,
-                  //   tc.getScale(bloc.state) * tc.radius,
-                  // ));
-                  bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+    // in case initialTC replaced by a build ? huh!
+    // if (tc != null) {
+    double radius = tc.radius;
+    return Positioned(
+      top: tc.targetStackPos().dy - radius,
+      left: tc.targetStackPos().dx - radius,
+      child: FC().canEditContent
+          ? Draggable(
+              key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
+              feedback: _draggableTarget(tc),
+              childWhenDragging: const Offstage(),
+              dragAnchorStrategy: (Draggable<Object> draggable,
+                  BuildContext context, Offset position) {
+                return Offset(radius, radius);
+              },
+              onDragUpdate: (DragUpdateDetails details) {
+                Offset newLocalPos = details.localPosition;
+                debugPrint(newLocalPos.toString());
+                Offset newGlobalPos = details.globalPosition
+                    //   .translate(
+                    // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
+                    // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
+                    // )
+                    ;
+                tc.setTargetStackPosPc(newGlobalPos);
+              },
+              onDragStarted: () {
+                debugPrint("drag started");
+                //removeSnippetContentCallout(widget.initialTC.snippetName);
+              },
+              onDragEnd: (DraggableDetails details) {
+                // Offset newGlobalPos = details.offset.translate(
+                //   parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
+                //   parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
+                // );
+                // // tc.setTargetStackPosPc(newGlobalPos);
+                // tc.setTargetStackPosPc(newGlobalPos.translate(
+                //   tc.getScale(bloc.state) * tc.radius,
+                //   tc.getScale(bloc.state) * tc.radius,
+                // ));
+                bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
 
-                  // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
-                  // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
-                  //   if (bloC.state.aTargetIsSelected()) {
-                  //     showTargetConfigToolbarCallout(
-                  //       bloc, tc,
-                  //       ancestorHScrollController,
-                  //       ancestorVScrollController,
-                  //     );
-                  //   }
-                  // });
-                },
-                child: _draggableTargetNotBeingDragged(context, tc),
-              )
-            : CircleAvatar(
-                key: FC()
-                    .setMultiTargetGk(initialTC.uid.toString(), GlobalKey()),
-                backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
-                // backgroundColor: Colors.red,
-                radius: radius + 2,
-              ),
-      );
-    } else {
-      return const Icon(
-        Icons.warning,
-        color: Colors.red,
-      );
-    }
-  }
-
-  Widget _draggableTargetNotBeingDragged(
-      context, TargetConfig tc) {
-    // debugPrint('_draggableTargetNotBeingDragged');
-    Size ivSize = TargetsWrapper.iwSize(tc.wName);
-    double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
-    return SizedBox(
-      width: radius * 2,
-      height: radius * 2,
-      child: IntegerCircleAvatar(
-        tc,
-        num: bloc.state.targetIndex(tc) + 1,
-        bgColor: tc.calloutColor().withOpacity(.5),
-        radius: radius,
-        textColor: FC().canEditContent ? Colors.white : Colors.transparent,
-        fontSize: 14,
-      ),
+                // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
+                // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
+                //   if (bloC.state.aTargetIsSelected()) {
+                //     showTargetConfigToolbarCallout(
+                //       bloc, tc,
+                //       ancestorHScrollController,
+                //       ancestorVScrollController,
+                //     );
+                //   }
+                // });
+              },
+              child: _draggableTarget(tc),
+            )
+          : CircleAvatar(
+              key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
+              backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
+              // backgroundColor: Colors.red,
+              radius: radius + 2,
+            ),
     );
+    // } else {
+    //   return const Icon(
+    //     Icons.warning,
+    //     color: Colors.red,
+    //   );
+    // // }
   }
+
+  // Widget _draggableTargetNotBeingDragged(context, TargetConfig tc) {
+  //   // debugPrint('_draggableTargetNotBeingDragged');
+  //   double radius = tc.radius;
+  //   return SizedBox(
+  //     width: radius * 2,
+  //     height: radius * 2,
+  //     child: IntegerCircleAvatar(
+  //       tc,
+  //       num: bloc.state.targetIndex(tc) + 1,
+  //       bgColor: tc.calloutColor().withOpacity(.5),
+  //       radius: radius,
+  //       textColor: FC().canEditContent ? Colors.white : Colors.transparent,
+  //       fontSize: 14,
+  //     ),
+  //   );
+  // }
 
   Widget _draggableTarget(TargetConfig tc) {
     // debugPrint('_draggableTarget');
-    Size ivSize = TargetsWrapper.iwSize(tc.wName);
-    double radius = tc.radiusPc != null ? tc.radiusPc! * ivSize.width : 30;
+    double radius = tc.radius;
     return SizedBox(
       width: tc.getScale(bloc.state) * radius * 2,
       height: tc.getScale(bloc.state) * radius * 2,
-      child: TargetCover(
-        radius: tc.getScale(bloc.state) * radius,
-      ),
+      child: TargetCover(tc),
     );
   }
 }
 
 class TargetCover extends StatelessWidget {
-  final double radius;
+  final TargetConfig tc;
 
-  const TargetCover({required this.radius, super.key});
+  const TargetCover(this.tc, {super.key});
 
   @override
   Widget build(BuildContext context) {
     debugPrint('TargetCover');
+    double radius = tc.getScale(FC().capiBloc.state) * tc.radius;
     return Stack(
       children: [
         Align(
@@ -152,7 +139,18 @@ class TargetCover extends StatelessWidget {
           alignment: Alignment.center,
           child: CustomPaint(
             foregroundPainter: TargetPainter(),
-            size: Size(radius * 2, radius * 2),
+            size: Size(10 + radius * 2, 10 + radius * 2),
+          ),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: IntegerCircleAvatar(
+            tc,
+            num: FC().capiBloc.state.targetIndex(tc) + 1,
+            bgColor: tc.calloutColor().withOpacity(.5),
+            radius: radius,
+            textColor: FC().canEditContent ? Colors.white : Colors.transparent,
+            fontSize: 14,
           ),
         ),
       ],
@@ -171,9 +169,9 @@ class TargetPainter extends CustomPainter {
     Paint paintWhite() => Paint()
       ..color = Colors.white
       ..style = PaintingStyle.stroke;
-    Paint paintBlack() => Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke;
+    // Paint paintBlack() => Paint()
+    //   ..color = Colors.black
+    //   ..style = PaintingStyle.stroke;
     Paint paintPurple() => Paint()
       ..color = Colors.purpleAccent
       ..style = PaintingStyle.stroke;

@@ -78,7 +78,7 @@ class _PointyToolState extends State<PointyTool> {
 
   void _onPressed(ArrowType t, TargetConfig tc, bool animate) {
     setState(() => _arrowType = t);
-    tc.calloutArrowType = t.index;
+    tc.calloutArrowTypeIndex = t.index;
     // bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
     Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
     // Useful.afterNextBuildDo(() {
@@ -151,8 +151,8 @@ class _PointyToolState extends State<PointyTool> {
             ),
           ))
     ];
-    if (tc.calloutArrowType != ArrowType.NO_CONNECTOR.index &&
-        tc.calloutArrowType != ArrowType.POINTY.index) {
+    if (tc.calloutArrowTypeIndex != ArrowType.NO_CONNECTOR.index &&
+        tc.calloutArrowTypeIndex != ArrowType.POINTY.index) {
       widgets.add(
         OutlinedButton(
           style: OutlinedButton.styleFrom(

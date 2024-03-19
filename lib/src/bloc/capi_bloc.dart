@@ -374,8 +374,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   // FocusNode(),
     // );
     newItem.setTargetStackPosPc(event.newGlobalPos);
-    newItem.btnLocalLeftPc = newItem.targetLocalPosLeftPc;
+    bool onLeft = newItem.targetLocalPosLeftPc! < .5;
     newItem.btnLocalTopPc = newItem.targetLocalPosTopPc;
+    newItem.btnLocalLeftPc = newItem.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
+
     Map<String, TargetGroupConfig> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.wName, newItem);
     emit(state.copyWith(
       targetGroupMap: newTargetGroupListMap,

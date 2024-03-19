@@ -86,7 +86,7 @@ class TargetConfig {
   int? starPoints;
   String snippetName;
 
-  int? calloutArrowType;
+  int? calloutArrowTypeIndex;
   int? calloutArrowColorValue;
 
   bool animateArrow;
@@ -130,7 +130,7 @@ class TargetConfig {
     this.calloutBorderThickness = 1,
     this.starPoints,
     required this.snippetName,
-    this.calloutArrowType = 1, // ArrowType.POINTY.index,
+    this.calloutArrowTypeIndex = 1, // ArrowType.POINTY.index,
     this.calloutArrowColorValue,
     this.animateArrow = false,
   }) {
@@ -177,8 +177,13 @@ class TargetConfig {
   //   return translate;
   // }
 
+  double get radius {
+    Size ivSize = TargetsWrapper.iwSize(wName);
+    return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
+  }
+
   ArrowType getArrowType() {
-    return ArrowType.values[calloutArrowType ?? ArrowType.POINTY.index];
+    return ArrowType.values[calloutArrowTypeIndex ?? ArrowType.POINTY.index];
   }
 
   // CAPIBloc get bloc => _bloc;

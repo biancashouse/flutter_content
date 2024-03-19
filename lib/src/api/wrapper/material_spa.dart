@@ -939,7 +939,7 @@ class MaterialSPAState extends State<MaterialSPA>
       },
       icon: const Icon(
         Icons.lock,
-        color: Colors.blueAccent,
+        color: Colors.white,
       ),
       iconSize: 36,
       tooltip: 'editor login...',

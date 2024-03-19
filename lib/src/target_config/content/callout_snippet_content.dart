@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(String snippetName) =>
@@ -76,6 +77,7 @@ Future<void> showSnippetContentCallout({
         borderRadius: tc.calloutBorderRadius,
         arrowColor: tc.calloutColor(),
         arrowType: tc.getArrowType(),
+        fromDelta: tc.calloutDecorationShape == DecorationShapeEnum.star ? 60 : null,
         animate: tc.animateArrow,
         initialCalloutPos: tc.getCalloutPos(),
         // initialCalloutAlignment: Alignment.bottomCenter,
