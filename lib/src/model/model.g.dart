@@ -6,6 +6,40 @@ part of 'model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+AppModel _$AppModelFromJson(Map<String, dynamic> json) => AppModel(
+      currentBranchName: json['currentBranchName'] as String? ?? 'dev',
+      branches: (json['branches'] as Map<String, dynamic>?)?.map(
+            (k, e) =>
+                MapEntry(k, BranchModel.fromJson(e as Map<String, dynamic>)),
+          ) ??
+          const {},
+    );
+
+Map<String, dynamic> _$AppModelToJson(AppModel instance) => <String, dynamic>{
+      'currentBranchName': instance.currentBranchName,
+      'branches': instance.branches.map((k, e) => MapEntry(k, e.toJson())),
+    };
+
+BranchModel _$BranchModelFromJson(Map<String, dynamic> json) => BranchModel(
+      name: json['name'] as String,
+      undos: (json['undos'] as List<dynamic>?)?.map((e) => e as int).toList() ??
+          const [],
+      redos: (json['redos'] as List<dynamic>?)?.map((e) => e as int).toList() ??
+          const [],
+      discardeds: (json['discardeds'] as List<dynamic>?)
+              ?.map((e) => e as int)
+              .toList() ??
+          const [],
+    );
+
+Map<String, dynamic> _$BranchModelToJson(BranchModel instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'undos': instance.undos,
+      'redos': instance.redos,
+      'discardeds': instance.discardeds,
+    };
+
 CAPIModel _$CAPIModelFromJson(Map<String, dynamic> json) => CAPIModel(
       appName: json['appName'] as String?,
       targetGroupConfigs:
@@ -67,7 +101,7 @@ TargetConfig _$TargetConfigFromJson(Map<String, dynamic> json) => TargetConfig(
           (json['calloutBorderThickness'] as num?)?.toDouble() ?? 1,
       starPoints: json['starPoints'] as int?,
       snippetName: json['snippetName'] as String,
-      calloutArrowTypeIndex: json['calloutArrowType'] as int? ?? 1,
+      calloutArrowTypeIndex: json['calloutArrowTypeIndex'] as int? ?? 1,
       calloutArrowColorValue: json['calloutArrowColorValue'] as int?,
       animateArrow: json['animateArrow'] as bool? ?? false,
     )
@@ -101,7 +135,7 @@ Map<String, dynamic> _$TargetConfigToJson(TargetConfig instance) =>
       'calloutBorderThickness': instance.calloutBorderThickness,
       'starPoints': instance.starPoints,
       'snippetName': instance.snippetName,
-      'calloutArrowType': instance.calloutArrowTypeIndex,
+      'calloutArrowTypeIndex': instance.calloutArrowTypeIndex,
       'calloutArrowColorValue': instance.calloutArrowColorValue,
       'animateArrow': instance.animateArrow,
     };

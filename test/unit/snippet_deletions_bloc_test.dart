@@ -9,6 +9,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/undo_re
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../repo_test_suite.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
@@ -128,7 +129,11 @@ void main() {
       );
       mockRepository = MockModelRepository();
       const appName = 'flutter-content-test-app';
-      when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+      when(mockRepository.getCAPIModel(
+        appName: appName,
+        branchName: 'testing',
+        modelVersion: TEST_VERSION_ID,
+      )).thenAnswer((_) async {
         final modelSnippetJson = modelSnippetRoot.toJson();
         CAPIModel model = CAPIModel(
             appName: appName,
@@ -136,14 +141,19 @@ void main() {
         // String encodedModelJsonS = model.toJson().toString();
         return model;
       });
+      when(mockRepository.getAppInfo(appName: appName)).thenAnswer((_) async {
+        return AppModel();
+      });
       capiBloc = CAPIBloC(
         appName: appName,
         modelRepo: mockRepository,
         // singleTargetMap: {},
         targetGroupMap: {},
       );
+      AppModel? appInfo = await mockRepository.getAppInfo(appName: appName);
       FC().init(
         appName: 'example',
+        appInfo: appInfo ?? AppModel(),
         packageName: 'flutter_content',
         version: '1.0',
         buildNumber: '0.0.1',

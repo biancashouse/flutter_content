@@ -28,10 +28,10 @@ import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_bool.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_color.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_font_family.dart';
+import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_fs_browser.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_snippet_name.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_string.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
@@ -1433,6 +1433,40 @@ class GradientPropertyValueNode extends PTreeNode {
       ),
     );
   }
+}
+
+class FSImagePathPropertyValueNode extends PTreeNode {
+  String? stringValue;
+  final ValueChanged<String?> onPathChange;
+  final Size calloutButtonSize;
+
+  FSImagePathPropertyValueNode({
+    required this.stringValue,
+    required this.onPathChange,
+    required super.snode,
+    required super.name,
+    super.tooltip,
+    this.calloutButtonSize = const Size(120, 20),
+  });
+
+  @override
+  void revertToOriginalValue() {
+    onPathChange.call(stringValue = null);
+  }
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) =>
+      NodePropertyButtonFSBrowser(
+        label: name,
+        tooltip: tooltip,
+        originalFSPath: stringValue,
+        onChangeF: (String? newPath) {
+          if (newPath != null) {
+            onPathChange.call(stringValue = newPath);
+          }
+        },
+        calloutButtonSize: calloutButtonSize,
+      );
 }
 
 class FontFamilyPropertyValueNode extends PTreeNode {

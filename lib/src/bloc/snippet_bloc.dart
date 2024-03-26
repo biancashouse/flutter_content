@@ -5,6 +5,8 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
+import 'package:flutter_content/src/snippet/snodes/firebase_storage_image_node.dart';
+import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -313,7 +315,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     String cutJson = event.node.toJson();
     _cutIncludingAnyChildren(event.node);
     state.treeC.rebuild();
-    bool well = state.rootNode.anyMissingParents();
+    // bool well = state.rootNode.anyMissingParents();
     event.capiBloc.add(CAPIEvent.updateClipboard(
         newContent: cutJson, skipSave: event.skipSave));
   }
@@ -379,6 +381,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           AlignNode(child: childNode, alignment: AlignmentEnum.topLeft),
         const (AspectRatioNode) => AspectRatioNode(child: childNode),
         const (AssetImageNode) => AssetImageNode(),
+        const (FSImageNode) => FSImageNode(),
+        const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
         const (CarouselNode) =>
           CarouselNode(children: childNode != null ? [childNode] : []),
         const (CenterNode) => CenterNode(child: childNode),
@@ -394,10 +398,17 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
             child: childNode,
             textStyleGroup:
                 TextStyleGroup(fontSizeName: Material3TextSizeEnum.bodyM)),
+        // const (FSBucketNode) => FSBucketNode(
+        //     name: 'bucket name missing ?',
+        //     root: GenericSingleChildNode(
+        //         propertyName: 'root',
+        //         child: FSDirectoryNode(name: 'root', children: []))),
         const (DirectoryNode) => DirectoryNode(children: []),
+        // const (FSDirectoryNode) => FSDirectoryNode(children: []),
         const (ExpandedNode) => ExpandedNode(child: childNode),
         const (ElevatedButtonNode) => ElevatedButtonNode(),
         const (FileNode) => FileNode(name: '', src: ''),
+        // const (FSFileNode) => FSFileNode(name: ''),
         const (FilledButtonNode) => FilledButtonNode(),
         const (FlexibleNode) => FlexibleNode(child: childNode),
         const (GapNode) => GapNode(gap: 0),
@@ -531,9 +542,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         final Node? pollParent = w.parent;
         w = ContainerNode(
             decoration: DecorationShapeEnum.rounded_rectangle_dotted,
-            borderColorValues: UpTo6ColorValues(color1Value: Colors.black.value),
+            borderColorValues:
+                UpTo6ColorValues(color1Value: Colors.black.value),
             borderThickness: 4,
-            child: w)..setParent((pollParent));
+            child: w)
+          ..setParent((pollParent));
         w.child!.setParent(w);
       } else if (w is StepperNode) {
         w.children = [wChild as StepNode];
@@ -739,8 +752,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       selectedNode.children.add(newNode);
       // scaffoldNode?.numTabs++;
     } else if (selectedNode is TabBarViewNode) {
-      ScaffoldNode? scaffoldNode = state.treeC
-          .findNodeTypeInTree(rootNode, ScaffoldNode) as ScaffoldNode?;
+      // ScaffoldNode? scaffoldNode = state.treeC
+      //     .findNodeTypeInTree(rootNode, ScaffoldNode) as ScaffoldNode?;
       TabBarNode? tabBarNode =
           state.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
       STreeNode newTab = TextNode(text: 'new tab');

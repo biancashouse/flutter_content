@@ -79,6 +79,10 @@ dependencies:
   #pretty_json: ^2.0.0
   meta: ^1.11.0
   lorem_ipsum: ^0.0.3
+#  firebase_storage_web: ^3.7.3
+#  firebase_storage_mocks: ^0.6.1
+  firebase_cached_image: ^0.5.3
+  firebase_ui_storage: ^2.0.3
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

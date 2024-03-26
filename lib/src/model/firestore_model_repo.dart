@@ -2,67 +2,96 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 
 import 'model_repo.dart';
 
 class FireStoreModelRepository implements IModelRepository {
-  Future<FirebaseApp> initFireStore({String? name, FirebaseOptions? options}) async => await Firebase.initializeApp(options: options);
+  Future<FirebaseApp> initFireStore(
+          {String? name, FirebaseOptions? options}) async =>
+      await Firebase.initializeApp(options: options);
 
   @override
-  Future<void> createOrUpdateModel({required CAPIModel model}) async {
+  Future<void> createOrUpdateAppInfoAndCAPIModel({
+    required AppModel appInfo,
+    required CAPIModel model,
+  }) async {
     DateTime dttNow = DateTime.now();
     int now = dttNow.millisecondsSinceEpoch;
     String encodedModelJson = jsonEncode(model.toJson());
-    CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-models');
-    DocumentReference modelDocRef = modelsRef.doc(model.appName);
-    CollectionReference versionsRef = modelDocRef.collection('versions');
-    // // build version value from lastModified
-    // final f = DateFormat('yyyyMMddhhmm');
-    // DateTime lastVersionDateTime = DateTime.fromMillisecondsSinceEpoch(model.lastModified??0);
-    // String versionS = f.format(lastVersionDateTime);
-
-    await modelDocRef.set(
+    CollectionReference appsRef =
+        FirebaseFirestore.instance.collection('/flutter-content-models');
+    DocumentReference appDocRef = appsRef.doc(model.appName);
+    // create an undo for this version
+    Map<BranchName, BranchModel> branches = appInfo.branches;
+    late BranchModel branch;
+    if (!branches.containsKey(appInfo.currentBranchName)) {
+      branch = BranchModel(name: appInfo.currentBranchName);
+      appInfo.branches = {appInfo.currentBranchName: branch}..addAll(branches);
+      branch.undos = [now];
+    } else {
+      branch = appInfo.branches[appInfo.currentBranchName]!;
+      branch.undos = [now, ...branch.undos];
+    }
+    await appDocRef.set(
       {
-        "lastModified": DateFormat('hh:mm dd-MMM-yyyy').format(dttNow),
-        "latestVersion": now,
-        "size": encodedModelJson.length < 1024 ? "${encodedModelJson.length} bytes" : "${(encodedModelJson.length / 1024).toStringAsFixed(2)} Kb",
-        "publishedVersion": now,
+        "last-saved-doc-size": encodedModelJson.length < 1024
+            ? "${encodedModelJson.length} bytes"
+            : "${(encodedModelJson.length / 1024).toStringAsFixed(2)} Kb",
+        "appInfo": appInfo.toJson(),
       },
     );
-    DocumentReference newVersionDoc = versionsRef.doc("$now");
-    await newVersionDoc.set({"encodedJson": encodedModelJson});
+    CollectionReference branchesRef = appDocRef.collection('branches');
+    DocumentReference branchDocRef = branchesRef.doc(appInfo.currentBranchName);
+    CollectionReference branchVersionsRef = branchDocRef.collection('versions');
+    DocumentReference newVersionDocRef = branchVersionsRef.doc("$now");
+    await newVersionDocRef.set({
+      "encodedModelJson": encodedModelJson,
+    });
   }
 
   @override
-  Future<CAPIModel?> getCAPIModel({required String appName}) async {
-    // CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-models');
-    // DocumentReference modelDocRef = modelsRef.doc(widget.appName);
-    DocumentReference modelDocRef = FirebaseFirestore.instance.doc('/flutter-content-models/$appName');
-    DocumentSnapshot snap = await modelDocRef.get();
+  Future<AppModel?> getAppInfo({required String appName}) async {
+    DocumentReference appDocRef =
+        FirebaseFirestore.instance.doc('/flutter-content-models/$appName');
+    DocumentSnapshot snap = await appDocRef.get();
     if (snap.exists) {
       Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-      String? publishedVersion = data["publishedVersion"]?.toString();
-      CollectionReference versionsRef = modelDocRef.collection('versions');
-      DocumentReference publishedModelDoc = versionsRef.doc(publishedVersion);
-      snap = await publishedModelDoc.get();
-      if (snap.exists) {
-        Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-        String? encodedModelJson;
-        CAPIModel? model;
-        try {
-          encodedModelJson = data["encodedJson"];
-          if (encodedModelJson != null) {
-            Map<String, dynamic> decoded = jsonDecode(encodedModelJson);
-            model = CAPIModel.fromJson(decoded);
-          }
-        } catch (e) {
-          debugPrint(e.toString());
+      return AppModel.fromJson(data["appInfo"]);
+    }
+    return null;
+  }
+
+  @override
+  Future<CAPIModel?> getCAPIModel({
+    required String appName,
+    required BranchName branchName,
+    required VersionId modelVersion,
+  }) async {
+    DocumentReference appDocRef =
+        FirebaseFirestore.instance.doc('/flutter-content-models/$appName');
+    CollectionReference branchesRef = appDocRef.collection('branches');
+    DocumentReference branchDocRef = branchesRef.doc(branchName);
+    CollectionReference branchVersionsRef = branchDocRef.collection('versions');
+    DocumentReference versionDocRef = branchVersionsRef.doc("$modelVersion");
+    var snap = await versionDocRef.get();
+    if (snap.exists) {
+      Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+      EncodedModelJson? encodedModelJson;
+      CAPIModel? model;
+      try {
+        encodedModelJson = data["encodedModelJson"];
+        if (encodedModelJson != null) {
+          Map<String, dynamic> decoded = jsonDecode(encodedModelJson);
+          model = CAPIModel.fromJson(decoded);
         }
-        return model;
+      } catch (e) {
+        debugPrint(e.toString());
       }
+      return model;
     }
     return null;
   }
@@ -78,7 +107,8 @@ class FireStoreModelRepository implements IModelRepository {
     required String appName,
     required String pollName,
   }) async {
-    DocumentSnapshot docSnap = await FirebaseFirestore.instance.doc('/polls/$pollName').get();
+    DocumentSnapshot docSnap =
+        await FirebaseFirestore.instance.doc('/polls/$pollName').get();
     if (docSnap.exists) {
       Map<String, dynamic> pollData = docSnap.data() as Map<String, dynamic>;
       // convert map to <String,int>
@@ -92,7 +122,8 @@ class FireStoreModelRepository implements IModelRepository {
             optionCountsMap[key] = intValue;
           } else {
             // Handle the case where the value cannot be converted to int
-            debugPrint("Warning: Value for key '$key' cannot be converted to int.");
+            debugPrint(
+                "Warning: Value for key '$key' cannot be converted to int.");
           }
         } else if (value is double) {
           optionCountsMap[key] = value.toInt();
@@ -102,14 +133,25 @@ class FireStoreModelRepository implements IModelRepository {
         }
       });
       // get user's vote (if exists)
-      DocumentSnapshot voterSnap = await FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId').get();
+      DocumentSnapshot voterSnap = await FirebaseFirestore.instance
+          .doc('/polls/$pollName/voters/$voterId')
+          .get();
       if (voterSnap.exists) {
-        Map<String, dynamic> voterData = voterSnap.data() as Map<String, dynamic>;
+        Map<String, dynamic> voterData =
+            voterSnap.data() as Map<String, dynamic>;
         Timestamp when = voterData['when'];
         PollOptionId votedFor = voterData['option-id'];
-        return (optionVoteCountMap: optionCountsMap, userVotedForOptionId: votedFor, when: when.millisecondsSinceEpoch);
+        return (
+          optionVoteCountMap: optionCountsMap,
+          userVotedForOptionId: votedFor,
+          when: when.millisecondsSinceEpoch
+        );
       }
-      return (optionVoteCountMap: optionCountsMap, userVotedForOptionId: null, when: null);
+      return (
+        optionVoteCountMap: optionCountsMap,
+        userVotedForOptionId: null,
+        when: null
+      );
     }
     return (optionVoteCountMap: null, userVotedForOptionId: null, when: null);
     //
@@ -155,8 +197,8 @@ class FireStoreModelRepository implements IModelRepository {
 
     for (PollOptionId pollOptionId in pollOptionIds) {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
-      CollectionReference pollOptionVotes =
-      FirebaseFirestore.instance.collection('/flutter-content-models/$appName/polls/$pollName/options/$pollOptionId/voters');
+      CollectionReference pollOptionVotes = FirebaseFirestore.instance.collection(
+          '/flutter-content-models/$appName/polls/$pollName/options/$pollOptionId/voters');
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
       for (var doc in snap.docs) {
@@ -169,9 +211,14 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<void> saveVote({required String pollName, required VoterId voterId, required PollOptionId optionId, required Map<PollOptionId, int> newOptionVoteCountMap}) async {
+  Future<void> saveVote(
+      {required String pollName,
+      required VoterId voterId,
+      required PollOptionId optionId,
+      required Map<PollOptionId, int> newOptionVoteCountMap}) async {
     // check whether already voted
-    DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId');
+    DocumentReference userVoteDocRef =
+        FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId');
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
       // write the user's vote
@@ -182,7 +229,9 @@ class FireStoreModelRepository implements IModelRepository {
         },
       );
       // update the poll's record
-      await FirebaseFirestore.instance.doc('/polls/$pollName').set({"option-vote-counts": newOptionVoteCountMap});
+      await FirebaseFirestore.instance
+          .doc('/polls/$pollName')
+          .set({"option-vote-counts": newOptionVoteCountMap});
     } else {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
       Timestamp when = voterData['when'];
@@ -191,4 +240,18 @@ class FireStoreModelRepository implements IModelRepository {
     }
   }
 
+  Future<FSFolderNode> createAndPopulateFolderNode({
+      required Reference ref, FSFolderNode? parentNode}) async {
+    FSFolderNode result = FSFolderNode(ref: ref, children: []);
+    if (parentNode != null) {
+      result.setParent(parentNode);
+    }
+    ListResult lr = await ref.listAll();
+    for (Reference childFolderRef in lr.prefixes) {
+      result.children.add(
+        await createAndPopulateFolderNode(ref: childFolderRef, parentNode: result),
+      );
+    }
+    return result;
+  }
 }

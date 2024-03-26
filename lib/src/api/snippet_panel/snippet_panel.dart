@@ -239,7 +239,7 @@ class SnippetPanelState extends State<SnippetPanel>
   void initState() {
     super.initState();
 
-    debugPrint('*** SnippetPanel() ***');
+    // debugPrint('*** SnippetPanel() ***');
 
     // register snippet? with panel
     FC().snippetPlacementMap[widget.panelName] = widget.snippetName;

@@ -89,7 +89,7 @@ class ZoomerState extends State<Zoomer>
   void initState() {
     super.initState();
 
-    debugPrint('*** Zoomer() ***');
+    // debugPrint('*** Zoomer() ***');
 
     parentAppState =
         MaterialSPA.of(context.mounted ? context : updatedContext!);

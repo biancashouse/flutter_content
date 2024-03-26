@@ -189,7 +189,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
 
     // save to firebase
-    await modelRepo.createOrUpdateModel(model: model);
+    await modelRepo.createOrUpdateAppInfoAndCAPIModel(appInfo: FC().appInfo, model: model);
 
     // }
     // } else {

@@ -13,7 +13,8 @@ class C_FilesPanel extends StatefulWidget {
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
-  const C_FilesPanel({super.key, 
+  const C_FilesPanel({
+    super.key,
     required this.sName,
     required this.width,
     required this.height,
@@ -43,7 +44,8 @@ class FilesPanelState extends State<C_FilesPanel> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(width: 1, color: Colors.purpleAccent, style: BorderStyle.solid),
+        border: Border.all(
+            width: 1, color: Colors.purpleAccent, style: BorderStyle.solid),
       ),
       child: BlocBuilder<CAPIBloC, CAPIState>(builder: (context, state) {
         STreeNode? selectedFileOrDirectory = FC().selectedNode;
@@ -51,7 +53,13 @@ class FilesPanelState extends State<C_FilesPanel> {
           return const Placeholder();
         }
         if (selectedFileOrDirectory is DirectoryNode) {
-          return SizedBox(width: widget.width, height: widget.height, child: selectedFileOrDirectory.immediateChildrenOnly(snippetBloc, context));
+          return SizedBox(
+              width: widget.width,
+              height: widget.height,
+              child: selectedFileOrDirectory.immediateChildrenOnly(
+                snippetBloc,
+                context,
+              ));
         }
         if (selectedFileOrDirectory is FileNode) {
           return SizedBox(

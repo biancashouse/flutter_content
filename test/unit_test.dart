@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'repo_test_suite.dart';
 import 'unit_test.mocks.dart';
 
 void main() {
@@ -19,37 +20,44 @@ void main() {
 
   setUp(() {
     mockRepository = MockModelRepository();
-    when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+    when(mockRepository.getAppInfo(appName: appName)).thenAnswer((_) async {
+      return AppModel();
+    });
+    when(mockRepository.getCAPIModel(
+      appName: appName,
+      branchName: 'testing',
+      modelVersion: TEST_VERSION_ID,
+    )).thenAnswer((_) async {
       final scaffoldWithTabs = SnippetRootNode(
         name: snippetName,
         child: ScaffoldNode(
-            appBar: AppBarNode(
-              bgColorValue: Colors.black.value,
-              title: GenericSingleChildNode(
-                  propertyName: 'title', child: TextNode(text: 'my title')),
-              bottom: GenericSingleChildNode(
-                propertyName: 'bottom',
-                child: TabBarNode(
-                  children: [
-                    firstTabNode = TextNode(text: 'tab 1'),
-                    TextNode(text: 'Tab 2'),
-                  ],
-                ),
-              ),
-            ),
-            body: GenericSingleChildNode(
-              propertyName: 'body',
-              child: TabBarViewNode(
+          appBar: AppBarNode(
+            bgColorValue: Colors.black.value,
+            title: GenericSingleChildNode(
+                propertyName: 'title', child: TextNode(text: 'my title')),
+            bottom: GenericSingleChildNode(
+              propertyName: 'bottom',
+              child: TabBarNode(
                 children: [
-                  PlaceholderNode(
-                      centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                  PlaceholderNode(
-                      centredLabel: 'page 2',
-                      colorValue: Colors.blueAccent.value),
+                  firstTabNode = TextNode(text: 'tab 1'),
+                  TextNode(text: 'Tab 2'),
                 ],
               ),
             ),
           ),
+          body: GenericSingleChildNode(
+            propertyName: 'body',
+            child: TabBarViewNode(
+              children: [
+                PlaceholderNode(
+                    centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                PlaceholderNode(
+                    centredLabel: 'page 2',
+                    colorValue: Colors.blueAccent.value),
+              ],
+            ),
+          ),
+        ),
       )..validateTree();
       final snippetJson = scaffoldWithTabs.toJson();
       return CAPIModel(
@@ -59,7 +67,11 @@ void main() {
   });
 
   test('read the model from the repo', () async {
-    final model = await mockRepository.getCAPIModel(appName: appName);
+    final model = await mockRepository.getCAPIModel(
+      appName: appName,
+      branchName: 'testing',
+      modelVersion: TEST_VERSION_ID,
+    );
 
     expect(model!.appName, appName);
 

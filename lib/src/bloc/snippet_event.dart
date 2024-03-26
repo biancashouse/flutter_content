@@ -103,6 +103,11 @@ class SnippetEvent with _$SnippetEvent {
     required STreeNode? selectedNode, // null means clear selection
   }) = SelectedDirectoryOrNode;
 
+  // const factory SnippetEvent.selectedFSDirectoryOrNode({
+  //   required FSBucketNode bucket,
+  //   required STreeNode? selectedNode, // null means clear selection
+  // }) = SelectedFSDirectoryOrNode;
+
   const factory SnippetEvent.undo({
     required String name,
     @Default(false) bool skipRedo,

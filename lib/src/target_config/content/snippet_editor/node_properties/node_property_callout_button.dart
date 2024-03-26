@@ -59,6 +59,9 @@ class NodePropertyCalloutButton extends StatelessWidget {
         },
       ),
       containsTextField: true,
+      resizeableH: true,
+      resizeableV: true,
+      borderRadius: 16,
     );
     return Callout.wrapTarget(
       calloutConfig: config,

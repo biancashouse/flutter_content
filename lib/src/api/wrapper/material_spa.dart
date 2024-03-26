@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
+import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -245,7 +248,9 @@ class MaterialSPAState extends State<MaterialSPA>
     // Map<String, TargetConfig> singleTargetMap = {};
     late Map<String, TargetGroupConfig>? targetGroupMap;
     // late Map<String, SnippetRootNode> snippetsMap;
+    late AppModel appInfo;
     late CAPIModel model;
+    late FSFolderNode? rootFSFolderNode;
 
     if (widget.testModelRepo == null) {
       if (widget.fbOptions != null) {
@@ -261,6 +266,34 @@ class MaterialSPAState extends State<MaterialSPA>
         //       // failed to read json asset - ignore
         //     }
         //   }
+        // }
+
+        // init firebase storage
+        final storage = FirebaseStorage.instance;
+        final config = FirebaseUIStorageConfiguration(
+          storage: storage,
+        );
+        await FirebaseUIStorage.configure(config);
+        // read firebase storage folders (for creating a browser/picker)
+         var rootRef = FirebaseStorage.instance.ref(); // .child("/");
+         rootFSFolderNode = await fbModelRepo.createAndPopulateFolderNode(ref: rootRef);
+
+        // var storageRef = FirebaseStorage.instance.ref().child("/");
+        // var listResult = await storageRef.listAll();
+        // for (var prefix in listResult.prefixes) {
+        //   debugPrint(prefix.fullPath);
+        // }
+        // storageRef = FirebaseStorage.instance.ref().child("some-folder");
+        // listResult = await storageRef.listAll();
+        // for (var prefix in listResult.prefixes) {
+        //   debugPrint(prefix.fullPath);
+        // }
+        // storageRef =
+        //     FirebaseStorage.instance.ref().child("some-folder/folder-A");
+        // listResult = await storageRef.listAll();
+        // for (var prefix in listResult.prefixes) {
+        //   debugPrint(prefix.name);
+        //   debugPrint(prefix.fullPath);
         // }
 
         // ensure hydrated storage initialised
@@ -282,8 +315,22 @@ class MaterialSPAState extends State<MaterialSPA>
         // CAPIModel? fbModel;
 
         if (widget.fbOptions != null) {
-          model = await fbModelRepo.getCAPIModel(appName: widget.appName) ??
-              CAPIModel(appName: widget.appName);
+          appInfo = await fbModelRepo.getAppInfo(appName: widget.appName) ??
+              AppModel();
+          BranchName branchName = appInfo.currentBranchName ?? 'dev';
+          // pop most recent undo item
+          BranchModel branch =
+              appInfo.branches[branchName] ?? BranchModel(name: branchName);
+          VersionId? versionId = branch.undos.firstOrNull;
+          if (versionId == null) {
+            model = CAPIModel(appName: widget.appName);
+          } else {
+            model = await fbModelRepo.getCAPIModel(
+                    appName: widget.appName,
+                    branchName: appInfo.currentBranchName,
+                    modelVersion: versionId) ??
+                CAPIModel(appName: widget.appName);
+          }
         }
 
         // // debugPrint("getFBModel() returned ${fbModel.toString()}");
@@ -305,9 +352,12 @@ class MaterialSPAState extends State<MaterialSPA>
       }
     } else {
       // widget testing repo should  supply a model via a when(mockRepository.getCAPIModel(appName: appName...
-      model =
-          await widget.testModelRepo?.getCAPIModel(appName: widget.appName) ??
-              CAPIModel(appName: widget.appName);
+      model = await widget.testModelRepo?.getCAPIModel(
+            appName: widget.appName,
+            branchName: 'testing',
+            modelVersion: -1,
+          ) ??
+          CAPIModel(appName: widget.appName);
     }
 
     targetGroupMap = _parseTargetGroups(model);
@@ -346,6 +396,8 @@ class MaterialSPAState extends State<MaterialSPA>
     // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
     FC().init(
       appName: pkgInfo.appName,
+      appInfo: appInfo,
+      rootFSFolderNode: rootFSFolderNode,
       version: pkgInfo.version,
       buildNumber: pkgInfo.buildNumber,
       packageName: pkgInfo.packageName,
@@ -546,13 +598,15 @@ class MaterialSPAState extends State<MaterialSPA>
 
   static Map<SnippetName, SnippetRootNode> parseSnippetJsons(CAPIModel model) {
     Map<SnippetName, SnippetRootNode> snippetMap = {};
+    late String snippetJson;
     try {
-      for (String snippetJson in model.snippetEncodedJsons.values) {
+      for (snippetJson in model.snippetEncodedJsons.values) {
         SnippetRootNode rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
         snippetMap[rootNode.name] = rootNode..validateTree();
       }
     } catch (e) {
-      debugPrint("_parseSnippetJsons(): ${e.toString()}");
+      debugPrint("parseSnippetJsons(): ${e.toString()}");
+      debugPrint("${snippetJson}");
       // rethrow;
     }
     return snippetMap;
@@ -684,6 +738,8 @@ class MaterialSPAState extends State<MaterialSPA>
     bool configuringATarget = Callout.anyPresent(['config-toolbar']);
     var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el) {
+      // debugPrint('traverseAndMeasure(${el.toString()})');
+
       if ((gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
@@ -702,11 +758,11 @@ class MaterialSPAState extends State<MaterialSPA>
           }
           if (r != null) {
             r = Useful.restrictRectToScreen(r);
-            debugPrint("========>  r restricted to ${r.toString()}");
+            // debugPrint("========>  r restricted to ${r.toString()}");
             // debugPrint('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
             // node.setParent(parent);
             // parent = node;
-            debugPrint('_showNodeWidgetOverlay...');
+            // debugPrint('_showNodeWidgetOverlay...');
             node.showTappableNodeWidgetOverlay(r);
           }
         }
@@ -717,6 +773,8 @@ class MaterialSPAState extends State<MaterialSPA>
     }
 
     traverseAndMeasure(context);
+
+    // debugPrint('traverseAndMeasure(context) finished.');
   }
 
   // only called with MaterialAppWrapper context
@@ -725,7 +783,7 @@ class MaterialSPAState extends State<MaterialSPA>
         skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       r = Useful.restrictRectToScreen(r);
-      debugPrint("========>  r restricted to ${r.toString()}");
+      // debugPrint("========>  r restricted to ${r.toString()}");
       MaterialSPAState.removeAllNodeWidgetOverlays();
       node.showNodeWidgetOverlay();
     }
@@ -863,19 +921,6 @@ class MaterialSPAState extends State<MaterialSPA>
 //     );
 //   }
 
-  static Future<bool> canInformUserOfNewVersion() async {
-    // decide whether new version loaded
-    String? storedVersionAndBuild =
-        await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '${FC().version}-${FC().buildNumber}';
-    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage
-          .write('versionAndBuild', latestVersionAndBuild);
-      if (storedVersionAndBuild != null) return true;
-    }
-    return false;
-  }
-
   static Widget _lockIconButton() {
     return IconButton(
       key: MaterialSPA._lockIconGK,
@@ -901,7 +946,9 @@ class MaterialSPAState extends State<MaterialSPA>
                       FC().setCanEdit(true);
                       FC().capiBloc.add(const CAPIEvent.hideAllTargetGroups());
                       Useful.afterNextBuildDo(() {
-                        FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+                        FC()
+                            .capiBloc
+                            .add(const CAPIEvent.unhideAllTargetGroups());
                       });
                     }
                   },

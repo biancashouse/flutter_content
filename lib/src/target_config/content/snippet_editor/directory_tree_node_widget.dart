@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -21,12 +20,12 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TreeEntry<STreeNode>? parentEntry = entry.parent;
-    SnippetBloC snippetBloc = context.read<SnippetBloC>();
+    // SnippetBloC snippetBloc = context.read<SnippetBloC>();
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _name(snippetBloc, context),
+        _name(context),
         if (entry.hasChildren)
           ExpandIcon(
             key: GlobalKey(), //GlobalObjectKey(widget.entry.node),
@@ -46,7 +45,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
     );
   }
 
-  Widget _name(snippetBloc, context) {
+  Widget _name(context) {
     SnippetPanelState? snippet = SnippetPanel.of(context);
     String snippetName = snippet?.widget.snippetName ?? '???!!!';
     return GestureDetector(
@@ -64,7 +63,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.folder, size: 28, color: (entry.node as DirectoryNode).children.isNotEmpty
+                Icon(entry.node.isExpanded ? Icons.folder_open : Icons.folder, size: 28, color: (entry.node as DirectoryNode).children.isNotEmpty
                 ? Colors.amber : Colors.amber.withOpacity(.5)),
                 TextButton(
                   onPressed: () {

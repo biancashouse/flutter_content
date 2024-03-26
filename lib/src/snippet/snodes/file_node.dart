@@ -4,13 +4,29 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'file_node.mapper.dart';
 
-get googleDocsIconSrc => Useful.asset('lib/assets/images/google-icons/docs.png');
+Widget driveFileIcon(String src) {
+  if (src.contains('https://docs.google.com/document/'))
+    return Image.asset(googleDocsIconSrc, height: 24);
+  if (src.contains('https://docs.google.com/spreadsheets/'))
+    return Image.asset(googleSheetsIconSrc, height: 24);
+  if (src.contains('https://docs.google.com/presentation/'))
+    return Image.asset(googleSlidesIconSrc, height: 24);
+  if (src.contains('https://docs.google.com/forms/'))
+    return Image.asset(googleSlidesIconSrc, height: 24);
+  return Icon(Icons.question_mark, color: Colors.red);
+}
 
-get googleSheetsIconSrc => Useful.asset('lib/assets/images/google-icons/sheets.png');
+get googleDocsIconSrc =>
+    Useful.asset('lib/assets/images/google-icons/docs.png');
 
-get googleSlidesIconSrc => Useful.asset('lib/assets/images/google-icons/slides.png');
+get googleSheetsIconSrc =>
+    Useful.asset('lib/assets/images/google-icons/sheets.png');
 
-get googleFormsIconSrc => Useful.asset('lib/assets/images/google-icons/forms.png');
+get googleSlidesIconSrc =>
+    Useful.asset('lib/assets/images/google-icons/slides.png');
+
+get googleFormsIconSrc =>
+    Useful.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()
 class FileNode extends CL with FileNodeMappable {
@@ -32,7 +48,8 @@ class FileNode extends CL with FileNodeMappable {
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutSize: const Size(280, 70),
         ),
@@ -69,30 +86,24 @@ class FileNode extends CL with FileNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
+    setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
     return SizedBox(
-            key: createNodeGK(),      width: 200,
+      key: createNodeGK(),
+      width: 200,
       height: 30,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           hspacer(10),
-          Useful.coloredText(name.isEmpty ? 'filename?' : name, color: Colors.blue),
+          Useful.coloredText(name.isEmpty ? 'filename?' : name,
+              color: Colors.blue),
           hspacer(10),
-          _getFileIcon(),
+          driveFileIcon(src),
         ],
       ),
     );
-  }
-
-  Widget _getFileIcon() {
-    if (src.contains('https://docs.google.com/document/')) return Image.asset(googleDocsIconSrc, height: 24);
-    if (src.contains('https://docs.google.com/spreadsheets/')) return Image.asset(googleSheetsIconSrc, height: 24);
-    if (src.contains('https://docs.google.com/presentation/')) return Image.asset(googleSlidesIconSrc, height: 24);
-    if (src.contains('https://docs.google.com/forms/')) return Image.asset(googleSlidesIconSrc, height: 24);
-    return const Offstage(); //Icon(Icons.question_mark, color: Colors.red);
   }
 
   @override

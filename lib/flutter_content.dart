@@ -6,6 +6,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'src/bloc/bloc_observer.dart';
@@ -61,6 +62,7 @@ export 'src/snippet/snodes/container_node.dart';
 export 'src/snippet/snodes/content_snippet_root_node.dart';
 export 'src/snippet/snodes/default_text_style_node.dart';
 export 'src/snippet/snodes/directory_node.dart';
+export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/elevated_button_node.dart';
 export 'src/snippet/snodes/expanded_node.dart';
 export 'src/snippet/snodes/file_node.dart';
@@ -116,6 +118,11 @@ export 'src/text_editing/text_editor.dart';
 export 'src/useful.dart';
 export 'src/widget_helper.dart';
 
+export 'src/snippet/snodes/firebase_storage_image_node.dart';
+// export 'src/snippet/snodes/fs_bucket_node.dart';
+// export 'src/snippet/snodes/fs_directory_node.dart';
+// export 'src/snippet/snodes/fs_file_node.dart';
+
 // const String getIt_offstageGK = "offstage:gk";
 // const String getIt_offstageOverlay = "offstage-widget-builder";
 // const String getIt_capiBloc = "capiBloC";
@@ -143,7 +150,11 @@ typedef OptionCountsAndVoterRecord = ({
 });
 
 typedef SnippetName = String;
+typedef BucketName = String;
+typedef BranchName = String;
 typedef PanelName = String;
+typedef VersionId = int;
+typedef EncodedModelJson = String;
 typedef EncodedSnippetJson = String;
 
 typedef SizeFunc = Size Function();
@@ -216,6 +227,8 @@ class FC {
     required String packageName,
     required String version,
     required String buildNumber,
+    required AppModel appInfo,
+    FSFolderNode? rootFSFolderNode,
     required CAPIBloC capiBloc,
     required Map<SnippetName, SnippetRootNode> snippetsMap,
     List<String> googleFontNames = const [
@@ -232,6 +245,8 @@ class FC {
     this.packageName = packageName;
     this.version = version;
     this.buildNumber = buildNumber;
+    this.appInfo = appInfo;
+    this.rootFSFolderNode = rootFSFolderNode;
     _capiBloc = capiBloc;
     _snippetsMap = snippetsMap;
     _googleFontNames = googleFontNames;
@@ -244,11 +259,19 @@ class FC {
   /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
   late String appName;
 
+  late AppModel appInfo;
+
+  late FSFolderNode? rootFSFolderNode;
+
   /// The package name. `bundleIdentifier` on iOS, `getPackageName` on Android.
   late String packageName;
 
   /// The package version. `CFBundleShortVersionString` on iOS, `versionName` on Android.
   late String version;
+
+  // model that was loaded from facebook when this app started up
+  late String? prevSavedModelVersion;
+  late String? nextSavedModelVersion;
 
   /// The build number. `CFBundleVersion` on iOS, `versionCode` on Android.
   /// Note, on iOS if an app has no buildNumber specified this property will return version
@@ -277,8 +300,8 @@ class FC {
   Offset calloutConfigToolbarPos(context) =>
       _calloutConfigToolbarPos ??
       Offset(
-        Useful.scrW/2-350,
-        Useful.scrH/2 - 40,
+        Useful.scrW / 2 - 350,
+        Useful.scrH / 2 - 40,
       );
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
@@ -386,5 +409,32 @@ class FC {
     if (!registeredScrollControllers.contains(sController)) {
       sController.addListener(() => Callout.refreshAll());
     }
+  }
+
+  static Future<bool> canInformUserOfNewVersion() async {
+    // decide whether new version loaded
+    String? storedVersionAndBuild =
+        await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild = '${FC().version}-${FC().buildNumber}';
+    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
+      await HydratedBloc.storage
+          .write('versionAndBuild', latestVersionAndBuild);
+      if (storedVersionAndBuild != null) return true;
+    }
+    return false;
+  }
+
+  static Future<bool> informUserOfNewVersion() async {
+    // _packageInfo = await PackageInfo.fromPlatform();
+    // decide whether new version loaded
+    String? storedVersionAndBuild =
+        await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild = '${FC().appName}-${FC().buildNumber}';
+    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
+      await HydratedBloc.storage
+          .write('versionAndBuild', latestVersionAndBuild);
+      if (storedVersionAndBuild != null) return true;
+    }
+    return false;
   }
 }

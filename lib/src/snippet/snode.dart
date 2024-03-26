@@ -10,6 +10,9 @@ import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
+import 'snodes/firebase_storage_image_node.dart';
+import 'snodes/fs_image_node.dart';
+
 part 'snode.mapper.dart';
 
 // Map<Type, List<String>> nodeTypeTagMap = {
@@ -70,9 +73,12 @@ const List<Type> childlessSubClasses = [
   TextNode,
   RichTextNode,
   AssetImageNode,
+  FSImageNode,
   IFrameNode,
   GoogleDriveIFrameNode,
   FileNode,
+  // FSFileNode,
+  FirebaseStorageImageNode,
   SnippetRefNode,
   GapNode,
   /* , NetworkImageNode*/
@@ -81,6 +87,7 @@ const List<Type> childlessSubClasses = [
   MenuItemButtonNode,
   PlaceholderNode,
   YTNode,
+  // FSBucketNode,
 ];
 
 const List<Type> singleChildSubClasses = [
@@ -104,6 +111,7 @@ const List<Type> multiChildSubClasses = [
   FlexNode,
   StackNode,
   DirectoryNode,
+  // FSDirectoryNode,
   SplitViewNode,
   MenuBarNode,
   SubmenuButtonNode,
@@ -198,8 +206,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showTappableNodeWidgetOverlay(Rect r) {
 // overlay rect with a transparent pink rect, and a 3px surround
     Rect restrictedRect = Useful.restrictRectToScreen(r);
-    debugPrint(
-        "=== showTappableNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
+    // debugPrint(
+    //     "=== showTappableNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
     const int BORDER = 3;
     double borderLeft = max(restrictedRect.left - 3, 0);
     double borderTop = max(restrictedRect.top - 3, 0);
@@ -571,12 +579,21 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   T? findNearestAncestor<T>() {
     //
-    Node? nodeParent = parent;
+    Node? node = parent;
 
-    while (nodeParent != null && nodeParent.runtimeType != T) {
-      nodeParent = nodeParent.parent;
+    while (node != null && node.runtimeType != T) {
+      if (node != node.parent) {
+        node = node.parent;
+      } else {
+        return null;
+      }
+      debugPrint(node.runtimeType.toString());
+      // if (node.runtimeType == FSBucketNode) {
+      //   print('x');
+      // }
     }
-    return nodeParent as T?;
+
+    return node as T?;
   }
 
 // check nodes are identical

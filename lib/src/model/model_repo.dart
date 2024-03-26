@@ -1,9 +1,17 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 
 abstract class IModelRepository {
-  Future<CAPIModel?> getCAPIModel({required String appName});
+  Future<AppModel?> getAppInfo({required String appName});
+  Future<CAPIModel?> getCAPIModel({
+    required String appName,
+    required BranchName branchName,
+    required VersionId modelVersion,
+  });
 
-  Future<void> createOrUpdateModel({required CAPIModel model});
+  Future<void> createOrUpdateAppInfoAndCAPIModel(
+      {required AppModel appInfo, required CAPIModel model});
 
   Future<void> saveVote({
     required String pollName,
@@ -23,4 +31,7 @@ abstract class IModelRepository {
     required String pollName,
     required List<PollOptionId> pollOptionIds,
   });
+
+  Future<FSFolderNode> createAndPopulateFolderNode({
+    required Reference ref, FSFolderNode? parentNode});
 }

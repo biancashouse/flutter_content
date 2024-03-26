@@ -8,6 +8,44 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
+class AppModel {
+  BranchName currentBranchName;
+
+  Map<BranchName, BranchModel> branches;
+
+  AppModel({
+    this.currentBranchName = 'dev',
+    this.branches = const {},
+  });
+
+  factory AppModel.fromJson(Map<String, dynamic> data) =>
+      _$AppModelFromJson(data);
+
+  Map<String, dynamic> toJson() => _$AppModelToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class BranchModel {
+  BranchName name;
+  List<VersionId> undos;  // on app startup, an undo is performed to set the current state
+  List<VersionId> redos;
+  List<VersionId> discardeds;
+
+  BranchModel({
+    required this.name,
+    this.undos = const [],
+    this.redos = const [],
+    this.discardeds = const [],
+  });
+
+  factory BranchModel.fromJson(Map<String, dynamic> data) =>
+      _$BranchModelFromJson(data);
+
+  Map<String, dynamic> toJson() => _$BranchModelToJson(this);
+}
+
+
 @JsonSerializable()
 class CAPIModel {
   String? appName;

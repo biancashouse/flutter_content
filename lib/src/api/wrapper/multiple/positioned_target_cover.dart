@@ -120,7 +120,7 @@ class TargetCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('TargetCover');
+    // debugPrint('TargetCover');
     double radius = tc.getScale(FC().capiBloc.state) * tc.radius;
     return Stack(
       children: [
@@ -163,7 +163,7 @@ class TargetPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    debugPrint('TargetPainter');
+    // debugPrint('TargetPainter');
 
     double radius = size.width / 2;
     Paint paintWhite() => Paint()

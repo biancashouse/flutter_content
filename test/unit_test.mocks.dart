@@ -3,10 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:flutter_content/flutter_content.dart' as _i4;
-import 'package:flutter_content/src/model/model_repo.dart' as _i2;
+import 'package:firebase_storage/firebase_storage.dart' as _i6;
+import 'package:flutter_content/flutter_content.dart' as _i5;
+import 'package:flutter_content/src/model/model_repo.dart' as _i3;
+import 'package:flutter_content/src/snippet/fs_folder_node.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -22,36 +24,72 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeFSFolderNode_0 extends _i1.SmartFake implements _i2.FSFolderNode {
+  _FakeFSFolderNode_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [IModelRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
+class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
   @override
-  _i3.Future<_i4.CAPIModel?> getCAPIModel({required String? appName}) =>
+  _i4.Future<_i5.AppModel?> getAppInfo({required String? appName}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAppInfo,
+          [],
+          {#appName: appName},
+        ),
+        returnValue: _i4.Future<_i5.AppModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.AppModel?>.value(),
+      ) as _i4.Future<_i5.AppModel?>);
+
+  @override
+  _i4.Future<_i5.CAPIModel?> getCAPIModel({
+    required String? appName,
+    required String? branchName,
+    required int? modelVersion,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #getCAPIModel,
           [],
-          {#appName: appName},
+          {
+            #appName: appName,
+            #branchName: branchName,
+            #modelVersion: modelVersion,
+          },
         ),
-        returnValue: _i3.Future<_i4.CAPIModel?>.value(),
-        returnValueForMissingStub: _i3.Future<_i4.CAPIModel?>.value(),
-      ) as _i3.Future<_i4.CAPIModel?>);
+        returnValue: _i4.Future<_i5.CAPIModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.CAPIModel?>.value(),
+      ) as _i4.Future<_i5.CAPIModel?>);
 
   @override
-  _i3.Future<void> createOrUpdateModel({required _i4.CAPIModel? model}) =>
+  _i4.Future<void> createOrUpdateAppInfoAndCAPIModel({
+    required _i5.AppModel? appInfo,
+    required _i5.CAPIModel? model,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #createOrUpdateModel,
+          #createOrUpdateAppInfoAndCAPIModel,
           [],
-          {#model: model},
+          {
+            #appInfo: appInfo,
+            #model: model,
+          },
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<void> saveVote({
+  _i4.Future<void> saveVote({
     required String? pollName,
     required String? voterId,
     required String? optionId,
@@ -68,12 +106,12 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #newOptionVoteCountMap: newOptionVoteCountMap,
           },
         ),
-        returnValue: _i3.Future<void>.value(),
-        returnValueForMissingStub: _i3.Future<void>.value(),
-      ) as _i3.Future<void>);
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i3.Future<
+  _i4.Future<
       ({
         Map<String, int>? optionVoteCountMap,
         String? userVotedForOptionId,
@@ -93,21 +131,21 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #pollName: pollName,
           },
         ),
-        returnValue: _i3.Future<
+        returnValue: _i4.Future<
                 ({
                   Map<String, int>? optionVoteCountMap,
                   String? userVotedForOptionId,
                   int? when
                 })>.value(
             (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-        returnValueForMissingStub: _i3.Future<
+        returnValueForMissingStub: _i4.Future<
                 ({
                   Map<String, int>? optionVoteCountMap,
                   String? userVotedForOptionId,
                   int? when
                 })>.value(
             (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-      ) as _i3.Future<
+      ) as _i4.Future<
           ({
             Map<String, int>? optionVoteCountMap,
             String? userVotedForOptionId,
@@ -115,7 +153,7 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
           })>);
 
   @override
-  _i3.Future<Map<String, List<String>>> getVotersByOption({
+  _i4.Future<Map<String, List<String>>> getVotersByOption({
     required String? appName,
     required String? pollName,
     required List<String>? pollOptionIds,
@@ -130,9 +168,48 @@ class MockModelRepository extends _i1.Mock implements _i2.IModelRepository {
             #pollOptionIds: pollOptionIds,
           },
         ),
-        returnValue: _i3.Future<Map<String, List<String>>>.value(
+        returnValue: _i4.Future<Map<String, List<String>>>.value(
             <String, List<String>>{}),
-        returnValueForMissingStub: _i3.Future<Map<String, List<String>>>.value(
+        returnValueForMissingStub: _i4.Future<Map<String, List<String>>>.value(
             <String, List<String>>{}),
-      ) as _i3.Future<Map<String, List<String>>>);
+      ) as _i4.Future<Map<String, List<String>>>);
+
+  @override
+  _i4.Future<_i2.FSFolderNode> createAndPopulateFolderNode({
+    required _i6.Reference? ref,
+    _i2.FSFolderNode? parentNode,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #createAndPopulateFolderNode,
+          [],
+          {
+            #ref: ref,
+            #parentNode: parentNode,
+          },
+        ),
+        returnValue: _i4.Future<_i2.FSFolderNode>.value(_FakeFSFolderNode_0(
+          this,
+          Invocation.method(
+            #createAndPopulateFolderNode,
+            [],
+            {
+              #ref: ref,
+              #parentNode: parentNode,
+            },
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.FSFolderNode>.value(_FakeFSFolderNode_0(
+          this,
+          Invocation.method(
+            #createAndPopulateFolderNode,
+            [],
+            {
+              #ref: ref,
+              #parentNode: parentNode,
+            },
+          ),
+        )),
+      ) as _i4.Future<_i2.FSFolderNode>);
 }

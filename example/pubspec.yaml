@@ -10,8 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: ^2.25.4
-  flutter_hooks: ^0.20.3
+#  firebase_core: ^2.25.4
+#  flutter_hooks: ^0.20.3
   flutter_content:
     path: ../
 

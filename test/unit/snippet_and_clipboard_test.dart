@@ -8,6 +8,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/undo_re
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../repo_test_suite.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
@@ -33,8 +34,8 @@ void main() {
   final ur = SnippetTreeUR();
 
   // sample data -----------
-  SnippetRootNode emptySnippetRoot =
-      SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'some-name');
+  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
+      SnippetTemplate.empty_snippet, 'some-name');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -101,7 +102,11 @@ void main() {
   setUp(() {
     return Future(() async {
       mockRepository = MockModelRepository();
-      when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+      when(mockRepository.getCAPIModel(
+        appName: appName,
+        branchName: 'testing',
+        modelVersion: TEST_VERSION_ID,
+      )).thenAnswer((_) async {
         final modelSnippetJson = modelSnippetRoot.toJson();
         CAPIModel model = CAPIModel(
             appName: appName,
@@ -115,8 +120,10 @@ void main() {
         // singleTargetMap: {},
         targetGroupMap: {},
       );
+      AppModel? appInfo = await mockRepository.getAppInfo(appName: appName);
       FC().init(
         appName: 'example',
+        appInfo: appInfo ?? AppModel(),
         packageName: 'flutter_content',
         version: '1.0',
         buildNumber: '0.0.1',
@@ -183,7 +190,11 @@ void main() {
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
     // --- repo test
     test('read the model from the repo, and find 1st TextNode', () async {
-      final model = await mockRepository.getCAPIModel(appName: appName);
+      final model = await mockRepository.getCAPIModel(
+        appName: appName,
+        branchName: 'testing',
+        modelVersion: TEST_VERSION_ID,
+      );
 
       expect(model?.appName, appName);
 

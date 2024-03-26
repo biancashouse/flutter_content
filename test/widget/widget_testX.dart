@@ -3,6 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
+import '../repo_test_suite.dart';
 import '../unit_test.mocks.dart';
 
 // class MockCAPIBloC extends MockBloc<CAPIEvent, CAPIState> implements CAPIBloC {}
@@ -10,8 +11,8 @@ import '../unit_test.mocks.dart';
 void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
-  SnippetRootNode emptySnippetRoot =
-      SnippetPanel.createSnippetFromTemplate(SnippetTemplate.empty_snippet, 'empty_snippet');
+  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
+      SnippetTemplate.empty_snippet, 'empty_snippet');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   const appName = 'flutter-content-widget-test';
@@ -24,32 +25,32 @@ void main() {
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
     child: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.black.value,
-          title: GenericSingleChildNode(
-              propertyName: 'title', child: TextNode(text: 'my title')),
-          bottom: GenericSingleChildNode(
-            propertyName: 'bottom',
-            child: TabBarNode(
-              children: [
-                TextNode(text: 'tab 1'),
-                TextNode(text: 'Tab 2'),
-              ],
-            ),
-          ),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: TabBarViewNode(
+      appBar: AppBarNode(
+        bgColorValue: Colors.black.value,
+        title: GenericSingleChildNode(
+            propertyName: 'title', child: TextNode(text: 'my title')),
+        bottom: GenericSingleChildNode(
+          propertyName: 'bottom',
+          child: TabBarNode(
             children: [
-              firstTabViewNode = PlaceholderNode(
-                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              PlaceholderNode(
-                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              TextNode(text: 'tab 1'),
+              TextNode(text: 'Tab 2'),
             ],
           ),
         ),
       ),
+      body: GenericSingleChildNode(
+        propertyName: 'body',
+        child: TabBarViewNode(
+          children: [
+            firstTabViewNode = PlaceholderNode(
+                centredLabel: 'page 1', colorValue: Colors.yellow.value),
+            PlaceholderNode(
+                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+          ],
+        ),
+      ),
+    ),
   );
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -57,7 +58,11 @@ void main() {
   // sample data -----------
   setUpAll(() {
     mockRepository = MockModelRepository();
-    when(mockRepository.getCAPIModel(appName: appName)).thenAnswer((_) async {
+    when(mockRepository.getCAPIModel(
+      appName: appName,
+      branchName: 'testing',
+      modelVersion: TEST_VERSION_ID,
+    )).thenAnswer((_) async {
       final modelSnippetJson = modelSnippetRoot.toJson();
       return CAPIModel(
           appName: appName,
