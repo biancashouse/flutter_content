@@ -78,12 +78,12 @@
 //
 // class TargetItemView extends StatelessWidget {
 //   final ImageWrapperManualState parent;
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final int index;
 //
 //   const TargetItemView(this.parent, this.tc, this.index, {super.key});
 //
-//   static Widget indexAvatar(TargetConfig tc, int index, bool isNotSelected) {
+//   static Widget indexAvatar(TargetModel tc, int index, bool isNotSelected) {
 //     Color selectedColor = tc.calloutColorValue == Colors.white.value ? Colors.grey : Colors.white;
 //     return SizedBox(
 //       width: 120,
@@ -204,13 +204,13 @@
 //     );
 //   }
 //
-//   static Future<void> clearSelection(final ImageWrapperManualState parent, {required TargetConfig tappedTc}) async {
+//   static Future<void> clearSelection(final ImageWrapperManualState parent, {required TargetModel tappedTc}) async {
 //     // Callout.removeOverlay(CAPI.ANY_TOAST.feature(), true);
 //     removeTextEditorCallout();
 //     removeStylesCallout();
 //
 //     // // for selected item, save (convert) current callout pos + transfrom matrix back to normal coords
-//     TargetConfig selectedTc = parent.bloc.state.selectedTarget(parent.widget.name)!;
+//     TargetModel selectedTc = parent.bloc.state.selectedTarget(parent.widget.name)!;
 //     //   parent.bloc.state.CC_TARGET_RADIUS(parent.widget.name),
 //     //   parent.bloc.state.CC_TARGET_RADIUS(parent.widget.name),
 //     // ));
@@ -226,7 +226,7 @@
 //
 //   double calloutH() {
 //     double h = 300;
-//     List<TargetConfig> list = parent.bloc.state.imageTargetListMap[parent.widget.name] ?? [];
+//     List<TargetModel> list = parent.bloc.state.imageTargetListMap[parent.widget.name] ?? [];
 //     h += list.length * 30;
 //     // debugPrint("h(${bloc.state.selectedTargetIndex(widget.name)}) = $h");
 //     return h;

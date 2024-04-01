@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MyGlobalObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
+    debugPrint('========================== ${event.runtimeType.toString()}');
     super.onEvent(bloc, event);
     // debugPrint('${bloc.runtimeType} $event');
-    debugPrint('========================== ${event.runtimeType.toString()}');
   }
 
   // @override

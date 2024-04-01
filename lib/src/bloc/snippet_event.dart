@@ -11,8 +11,8 @@ class SnippetEvent with _$SnippetEvent {
     required STreeNode node,
     required GlobalKey selectedWidgetGK,
     required GlobalKey selectedTreeNodeGK,
-    // TargetConfig? imageTC,
-    // TargetConfig? widgetTC,
+    // TargetModel? imageTC,
+    // TargetModel? widgetTC,
   }) = SelectNode;
 
   const factory SnippetEvent.clearNodeSelection() = ClearNodeSelection;
@@ -31,7 +31,7 @@ class SnippetEvent with _$SnippetEvent {
   //   required int nodeRootIndex,
   //   required bool showAdders,
   //   required bool showProperties,
-  //   TargetConfig? tc,
+  //   TargetModel? tc,
   // }) = ShowNodeProperties;
 
   const factory SnippetEvent.replaceSelectionWith({

@@ -186,11 +186,11 @@ class CalloutConfig {
   Rectangle cR() => Rectangle.fromRect(_calloutRect()
       .translate(contentTranslateX ?? 0.0, contentTranslateY ?? 0.0));
 
-  TargetConfig? _configurableTarget;
+  TargetModel? _configurableTarget;
 
   bool get isConfigurable => _configurableTarget != null;
 
-  TargetConfig? get tc => _configurableTarget;
+  TargetModel? get tc => _configurableTarget;
 
   CalloutConfig({
     // required this.refreshOPParent,
@@ -235,7 +235,7 @@ class CalloutConfig {
     this.frameTarget = false,
     this.scaleTarget = 1.0,
     this.noBorder = false,
-    this.elevation = 5,
+    this.elevation = 0,
     this.circleShape = false,
     // this.dragHandle,
     this.dragHandleHeight,
@@ -341,7 +341,7 @@ class CalloutConfig {
   // Widget calloutOverlayEntryAlreadyMeasured({
   //   required BuildContext context,
   //   required Widget boxContent,
-  //   TargetConfig? configurableTarget,
+  //   TargetModel? configurableTarget,
   // }) {
   //   if (!initialised || _targetRect == null || calloutSize == Size.zero) return const Icon(Icons.error, color: Colors.deepOrange);
   //
@@ -450,7 +450,7 @@ class CalloutConfig {
   //   required BuildContext context,
   //   required Widget boxContent,
   //   required GlobalKey? gk,
-  //   TargetConfig? configurableTarget,
+  //   TargetModel? configurableTarget,
   // }) {
   //   var state = Callout.of(context);
   //
@@ -569,7 +569,7 @@ class CalloutConfig {
     required Rect targetRect,
     required WidgetBuilder calloutContent,
     required VoidCallback rebuildF,
-    TargetConfig? configurableTarget,
+    TargetModel? configurableTarget,
   }) {
     // _zoomer = zoomer;
     _configurableTarget = configurableTarget;
@@ -599,7 +599,7 @@ class CalloutConfig {
   //   Rect targetRect,
   //   WidgetBuilder calloutContent,
   //   VoidCallback rebuildF,
-  //   // TargetConfig? configurableTarget,
+  //   // TargetModel? configurableTarget,
   // ) async {
   //   // measure offstage widget
   //   // await Future.delayed(const Duration(milliseconds: 500));
@@ -618,7 +618,7 @@ class CalloutConfig {
     Rect targetRect,
     WidgetBuilder calloutContent,
     VoidCallback rebuildF,
-    // TargetConfig? configurableTarget,
+    // TargetModel? configurableTarget,
   ) {
     // debugPrint('_renderCallout${targetRect.toString()}');
     _targetRect = targetRect;
@@ -1496,13 +1496,14 @@ class PositionedBoxContent extends StatelessWidget {
           child: TransparentPointer(
             transparent: cc.transparentPointer,
             child: Container(
-              decoration: cc.decorationShape.toDecoration(
+              decoration: cc.elevation == 0 ? cc.decorationShape.toDecoration(
                 fillColorValues: UpTo6ColorValues(color1Value: cc.fillColor?.value),
                 borderColorValues: UpTo6ColorValues(color1Value: cc.borderColor?.value),
                 borderRadius: cc.borderRadius,
                 thickness: cc.borderThickness,
                 starPoints: cc.starPoints,
-              ),
+              ) : null,
+
               // decoration: ShapeDecoration(
               //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
               //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
@@ -1510,7 +1511,12 @@ class PositionedBoxContent extends StatelessWidget {
               width: cc.calloutW,
               height: cc.calloutH,
               child: Material(
-                type: MaterialType.transparency,
+                type: cc.elevation > 0 ? MaterialType.canvas : MaterialType.transparency,
+                color: cc.fillColor,
+                elevation: 10,
+                shape: RoundedRectangleBorder( // Optional: customize border shape
+                  borderRadius: BorderRadius.circular(10.0),
+                ),// cc.elevation,
                 child: Stack(
                   children: <Widget>[
                     Align(

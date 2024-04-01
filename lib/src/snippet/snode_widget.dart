@@ -103,7 +103,7 @@ class NodeWidget extends StatelessWidget {
           Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
           snippetBloc.add(const SnippetEvent.clearNodeSelection());
         } else if (!snippetBloc.aNodeIsSelected || !thisWasAlreadySelected) {
-          if (FC().capiBloc.state.jsonClipboard != null) {
+          if (FC().appModel.clipboard != null) {
             Callout.unhide("floating-clipboard");
           }
           snippetBloc.add(const SnippetEvent.clearNodeSelection());

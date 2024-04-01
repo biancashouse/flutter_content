@@ -251,7 +251,11 @@ Future<void> main() async {
   runApp(MaterialSPA(
     appName: 'flutter-content-example-app',
     initialValueJsonAssetPath: "startup-scripts/example-config.json",
-    webHome: const FlutterContentPage(panelName: 'home', snippetName: 'empty-home', fromTemplate: SnippetTemplate.empty_snippet),
+    webHome: const FlutterContentPage(
+      panelName: 'home',
+      snippetName: 'empty-home',
+      fromTemplate: SnippetTemplate.scaffold_with_tabs,
+    ),
     // webHome: const ZoomerSamplePage(),
     mobileHome: const HomePageMobile(),
     materialAppThemeF: () => ThemeData(

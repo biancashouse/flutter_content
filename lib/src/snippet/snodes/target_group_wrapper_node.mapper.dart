@@ -15,6 +15,7 @@ class TargetGroupWrapperNodeMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetGroupWrapperNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      TargetModelMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -26,6 +27,12 @@ class TargetGroupWrapperNodeMapper
   static String _$name(TargetGroupWrapperNode v) => v.name;
   static const Field<TargetGroupWrapperNode, String> _f$name =
       Field('name', _$name);
+  static List<TargetModel> _$targets(TargetGroupWrapperNode v) => v.targets;
+  static const Field<TargetGroupWrapperNode, List<TargetModel>> _f$targets =
+      Field('targets', _$targets, opt: true, def: const []);
+  static List<TargetModel> _$playList(TargetGroupWrapperNode v) => v.playList;
+  static const Field<TargetGroupWrapperNode, List<TargetModel>> _f$playList =
+      Field('playList', _$playList, opt: true, def: const []);
   static STreeNode? _$child(TargetGroupWrapperNode v) => v.child;
   static const Field<TargetGroupWrapperNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
@@ -66,6 +73,8 @@ class TargetGroupWrapperNodeMapper
   @override
   final MappableFields<TargetGroupWrapperNode> fields = const {
     #name: _f$name,
+    #targets: _f$targets,
+    #playList: _f$playList,
     #child: _f$child,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -85,7 +94,10 @@ class TargetGroupWrapperNodeMapper
 
   static TargetGroupWrapperNode _instantiate(DecodingData data) {
     return TargetGroupWrapperNode(
-        name: data.dec(_f$name), child: data.dec(_f$child));
+        name: data.dec(_f$name),
+        targets: data.dec(_f$targets),
+        playList: data.dec(_f$playList),
+        child: data.dec(_f$child));
   }
 
   @override
@@ -147,10 +159,18 @@ abstract class TargetGroupWrapperNodeCopyWith<
     $R,
     $In extends TargetGroupWrapperNode,
     $Out> implements ButtonNodeCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, TargetModel,
+      TargetModelCopyWith<$R, TargetModel, TargetModel>> get targets;
+  ListCopyWith<$R, TargetModel,
+      TargetModelCopyWith<$R, TargetModel, TargetModel>> get playList;
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
-  $R call({String? name, STreeNode? child});
+  $R call(
+      {String? name,
+      List<TargetModel>? targets,
+      List<TargetModel>? playList,
+      STreeNode? child});
   TargetGroupWrapperNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -165,14 +185,35 @@ class _TargetGroupWrapperNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TargetGroupWrapperNode> $mapper =
       TargetGroupWrapperNodeMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, TargetModel,
+          TargetModelCopyWith<$R, TargetModel, TargetModel>>
+      get targets => ListCopyWith($value.targets,
+          (v, t) => v.copyWith.$chain(t), (v) => call(targets: v));
+  @override
+  ListCopyWith<$R, TargetModel,
+          TargetModelCopyWith<$R, TargetModel, TargetModel>>
+      get playList => ListCopyWith($value.playList,
+          (v, t) => v.copyWith.$chain(t), (v) => call(playList: v));
+  @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call({String? name, Object? child = $none}) => $apply(FieldCopyWithData(
-      {if (name != null) #name: name, if (child != $none) #child: child}));
+  $R call(
+          {String? name,
+          List<TargetModel>? targets,
+          List<TargetModel>? playList,
+          Object? child = $none}) =>
+      $apply(FieldCopyWithData({
+        if (name != null) #name: name,
+        if (targets != null) #targets: targets,
+        if (playList != null) #playList: playList,
+        if (child != $none) #child: child
+      }));
   @override
   TargetGroupWrapperNode $make(CopyWithData data) => TargetGroupWrapperNode(
       name: data.get(#name, or: $value.name),
+      targets: data.get(#targets, or: $value.targets),
+      playList: data.get(#playList, or: $value.playList),
       child: data.get(#child, or: $value.child));
 
   @override

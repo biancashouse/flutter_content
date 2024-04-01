@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'capi_state.freezed.dart';
@@ -19,12 +18,11 @@ class CAPIState with _$CAPIState {
   // one per page, each having its own json data file
   // can have multiple (named) target wrappers, hence the maps
   factory CAPIState({
-    required String appName,
     // required bool useFirebase,
     // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
     String?
         initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
-    required ModelUR modelUR,
+    // required ModelUR modelUR,
     @Default(false) bool hideIframes,
     @Default(false) bool hideSnippetPencilIcons,
     // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
@@ -36,22 +34,21 @@ class CAPIState with _$CAPIState {
     // @Default(600) double? snippetPropertiesCalloutW,
     // @Default(600) double? snippetPropertiesCalloutH,
 
-    @Default({}) Map<String, TargetGroupConfig> targetGroupMap,
-    @Default([]) List<TargetConfig> playList,
+    // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
+    // @Default([]) List<TargetModel> playList,
     // current selection
-    TargetConfig? hideTargetsExcept,
+    TargetModel? hideTargetsExcept,
     @Default(false) bool hideAllTargetGroups,
     @Default(false) bool hideAllTargetGroupPlayBtns,
-    TargetConfig? newestTarget,
-    TargetConfig? selectedTarget,
+    TargetModel? newestTarget,
+    TargetModel? selectedTarget,
     //
     String? selectedPanel,
     //
     // content
     @Default(false) bool trainerIsSignedn,
     // String? jsonRootDirectoryNode,
-    String? jsonClipboard,
-    String? jsonClipboardForMove,
+    // EncodedJson? jsonClipboardForMove,
     @Default(true) bool showClipboardContent,
     @Default(0) int force, // hacky way to force a transition
     //
@@ -60,45 +57,41 @@ class CAPIState with _$CAPIState {
 
   // bool aTargetIsSelected() => selectedTarget != null;
 
-  int targetIndex(TargetConfig tc) {
-    TargetGroupConfig? TargetConfig = imageConfig(tc.wName);
-    return TargetConfig != null ? TargetConfig.targets.indexOf(tc) : -1;
-  }
 
-  TargetGroupConfig? imageConfig(String tgName) => targetGroupMap[tgName];
+  // TargetGroupModel? imageConfig(String tgName) => targetGroupMap[tgName];
 
-  TargetConfig? getNewestTarget() => newestTarget;
+  TargetModel? getNewestTarget() => newestTarget;
 
-  // TargetConfig? tcByNameOrUid(TargetConfig tc) => tc.single
+  // TargetModel? tcByNameOrUid(TargetModel tc) => tc.single
   //     ? SingleTargetWrapper.singleTarget(name: tc.wName)
   //     : _targetGroup(
   //   uid: tc.uid,
   // );
 
-  TargetConfig? tcByUid(TargetConfig tc) => _targetGroup(uid: tc.uid);
+  // TargetModel? tcByUid(TargetModel tc) => _targetGroup(uid: tc.uid);
 
-  TargetConfig? _targetGroup({required int uid}) {
-    // then must be an image target
-    for (String name in targetGroupMap.keys) {
-      TargetGroupConfig? tcl = imageConfig(name);
-      TargetConfig? result;
-      try {
-        result = tcl?.targets.singleWhere((tc) => tc.uid == uid);
-        if (result != null) return result;
-      } catch (e) {
-        // ignore and return null
-      }
-    }
-    return null;
-  }
+  // TargetModel? _targetGroup({required int uid}) {
+  //   // then must be an image target
+  //   for (String name in targetGroupMap.keys) {
+  //     TargetGroupModel? tcl = imageConfig(name);
+  //     TargetModel? result;
+  //     try {
+  //       result = tcl?.targets.singleWhere((tc) => tc.uid == uid);
+  //       if (result != null) return result;
+  //     } catch (e) {
+  //       // ignore and return null
+  //     }
+  //   }
+  //   return null;
+  // }
 
-  int numTargetsOnPage() {
-    int numTCs = 0;
-    for (TargetGroupConfig list in targetGroupMap.values) {
-      numTCs += list.targets.length;
-    }
-    return numTCs;
-  }
+  // int numTargetsOnPage() {
+  //   int numTCs = 0;
+  //   for (TargetGroupModel list in targetGroupMap.values) {
+  //     numTCs += list.targets.length;
+  //   }
+  //   return numTCs;
+  // }
 
   final double CAPI_TARGET_BTN_RADIUS = 15.0;
 

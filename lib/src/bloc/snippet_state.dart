@@ -15,7 +15,7 @@ class SnippetState with _$SnippetState {
     // ---- the state gets saved between snippet tree callout instances ------------------
     required SnippetRootNode rootNode,
     required SnippetTreeController treeC,
-    required SnippetTreeUR ur,
+    // required SnippetTreeUR ur,
     STreeNode? selectedNode,
     GlobalKey? selectedWidgetGK,
     GlobalKey? selectedTreeNodeGK,
@@ -26,15 +26,15 @@ class SnippetState with _$SnippetState {
     @Default(0) int force, // hacky way to force a transition ?
   }) = _SnippetState;
 
-  void clearUR() => ur.clear();
+  // void clearUR() => ur.clear();
 
-  bool canUndo() => ur.undoQ.isNotEmpty;
+  // bool canUndo() => ur.undoQ.isNotEmpty;
 
-  bool canRedo() => ur.redoQ.isNotEmpty;
+  // bool canRedo() => ur.redoQ.isNotEmpty;
 
-  int undoCount() => ur.undoQ.length;
+  // int undoCount() => ur.undoQ.length;
 
-  int redoCount() => ur.redoQ.length;
+  // int redoCount() => ur.redoQ.length;
 
   bool get aNodeIsSelected => selectedNode != null;
 }

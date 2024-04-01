@@ -18,23 +18,23 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CAPIEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -42,63 +42,60 @@ mixin _$CAPIEvent {
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -106,8 +103,6 @@ mixin _$CAPIEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -118,23 +113,22 @@ mixin _$CAPIEvent {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -142,23 +136,22 @@ mixin _$CAPIEvent {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -166,15 +159,16 @@ mixin _$CAPIEvent {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -197,554 +191,6 @@ class _$CAPIEventCopyWithImpl<$Res, $Val extends CAPIEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-}
-
-/// @nodoc
-abstract class _$$NewTargetImplCopyWith<$Res> {
-  factory _$$NewTargetImplCopyWith(
-          _$NewTargetImpl value, $Res Function(_$NewTargetImpl) then) =
-      __$$NewTargetImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String wName, Offset newGlobalPos});
-}
-
-/// @nodoc
-class __$$NewTargetImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$NewTargetImpl>
-    implements _$$NewTargetImplCopyWith<$Res> {
-  __$$NewTargetImplCopyWithImpl(
-      _$NewTargetImpl _value, $Res Function(_$NewTargetImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? wName = null,
-    Object? newGlobalPos = null,
-  }) {
-    return _then(_$NewTargetImpl(
-      wName: null == wName
-          ? _value.wName
-          : wName // ignore: cast_nullable_to_non_nullable
-              as String,
-      newGlobalPos: null == newGlobalPos
-          ? _value.newGlobalPos
-          : newGlobalPos // ignore: cast_nullable_to_non_nullable
-              as Offset,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$NewTargetImpl with DiagnosticableTreeMixin implements NewTarget {
-  const _$NewTargetImpl({required this.wName, required this.newGlobalPos});
-
-  @override
-  final String wName;
-  @override
-  final Offset newGlobalPos;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.newTarget(wName: $wName, newGlobalPos: $newGlobalPos)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.newTarget'))
-      ..add(DiagnosticsProperty('wName', wName))
-      ..add(DiagnosticsProperty('newGlobalPos', newGlobalPos));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$NewTargetImpl &&
-            (identical(other.wName, wName) || other.wName == wName) &&
-            (identical(other.newGlobalPos, newGlobalPos) ||
-                other.newGlobalPos == newGlobalPos));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, wName, newGlobalPos);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$NewTargetImplCopyWith<_$NewTargetImpl> get copyWith =>
-      __$$NewTargetImplCopyWithImpl<_$NewTargetImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
-    required TResult Function() hideAllTargetGroupBtns,
-    required TResult Function() unhideAllTargetGroups,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
-    required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
-        updateClipboard,
-    required TResult Function() saveModel,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
-    required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
-        pushSnippetBloc,
-    required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-  }) {
-    return newTarget(wName, newGlobalPos);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult? Function()? hideAllTargetGroupBtns,
-    TResult? Function()? unhideAllTargetGroups,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-  }) {
-    return newTarget?.call(wName, newGlobalPos);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult Function()? hideAllTargetGroupBtns,
-    TResult Function()? unhideAllTargetGroups,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (newTarget != null) {
-      return newTarget(wName, newGlobalPos);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
-    required TResult Function(HideTargetGroupsExcept value)
-        hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
-    required TResult Function(HideAllTargetGroupBtns value)
-        hideAllTargetGroupBtns,
-    required TResult Function(UnhideAllTargetGroups value)
-        unhideAllTargetGroups,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
-    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
-    required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-  }) {
-    return newTarget(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-  }) {
-    return newTarget?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (newTarget != null) {
-      return newTarget(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class NewTarget implements CAPIEvent {
-  const factory NewTarget(
-      {required final String wName,
-      required final Offset newGlobalPos}) = _$NewTargetImpl;
-
-  String get wName;
-  Offset get newGlobalPos;
-  @JsonKey(ignore: true)
-  _$$NewTargetImplCopyWith<_$NewTargetImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$DeleteTargetImplCopyWith<$Res> {
-  factory _$$DeleteTargetImplCopyWith(
-          _$DeleteTargetImpl value, $Res Function(_$DeleteTargetImpl) then) =
-      __$$DeleteTargetImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({TargetConfig tc});
-}
-
-/// @nodoc
-class __$$DeleteTargetImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$DeleteTargetImpl>
-    implements _$$DeleteTargetImplCopyWith<$Res> {
-  __$$DeleteTargetImplCopyWithImpl(
-      _$DeleteTargetImpl _value, $Res Function(_$DeleteTargetImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? tc = null,
-  }) {
-    return _then(_$DeleteTargetImpl(
-      tc: null == tc
-          ? _value.tc
-          : tc // ignore: cast_nullable_to_non_nullable
-              as TargetConfig,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$DeleteTargetImpl with DiagnosticableTreeMixin implements DeleteTarget {
-  const _$DeleteTargetImpl({required this.tc});
-
-  @override
-  final TargetConfig tc;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.deleteTarget(tc: $tc)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.deleteTarget'))
-      ..add(DiagnosticsProperty('tc', tc));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$DeleteTargetImpl &&
-            (identical(other.tc, tc) || other.tc == tc));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, tc);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$DeleteTargetImplCopyWith<_$DeleteTargetImpl> get copyWith =>
-      __$$DeleteTargetImplCopyWithImpl<_$DeleteTargetImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
-    required TResult Function() hideAllTargetGroupBtns,
-    required TResult Function() unhideAllTargetGroups,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
-    required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
-        updateClipboard,
-    required TResult Function() saveModel,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
-    required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
-        pushSnippetBloc,
-    required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-  }) {
-    return deleteTarget(tc);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult? Function()? hideAllTargetGroupBtns,
-    TResult? Function()? unhideAllTargetGroups,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-  }) {
-    return deleteTarget?.call(tc);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult Function()? hideAllTargetGroupBtns,
-    TResult Function()? unhideAllTargetGroups,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (deleteTarget != null) {
-      return deleteTarget(tc);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
-    required TResult Function(HideTargetGroupsExcept value)
-        hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
-    required TResult Function(HideAllTargetGroupBtns value)
-        hideAllTargetGroupBtns,
-    required TResult Function(UnhideAllTargetGroups value)
-        unhideAllTargetGroups,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
-    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
-    required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-  }) {
-    return deleteTarget(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-  }) {
-    return deleteTarget?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (deleteTarget != null) {
-      return deleteTarget(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class DeleteTarget implements CAPIEvent {
-  const factory DeleteTarget({required final TargetConfig tc}) =
-      _$DeleteTargetImpl;
-
-  TargetConfig get tc;
-  @JsonKey(ignore: true)
-  _$$DeleteTargetImplCopyWith<_$DeleteTargetImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -820,23 +266,23 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -844,7 +290,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -854,28 +299,27 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -885,28 +329,27 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -920,8 +363,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -932,15 +373,16 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -950,8 +392,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -959,15 +399,16 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -977,8 +418,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -986,15 +425,16 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -1064,23 +504,23 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1088,7 +528,6 @@ class _$HideAllTargetGroupsImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -1098,28 +537,27 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -1129,28 +567,27 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -1164,8 +601,6 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -1176,15 +611,16 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -1194,8 +630,6 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1203,15 +637,16 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -1221,8 +656,6 @@ class _$HideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1230,15 +663,16 @@ class _$HideAllTargetGroupsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -1261,7 +695,7 @@ abstract class _$$HideTargetGroupsExceptImplCopyWith<$Res> {
           $Res Function(_$HideTargetGroupsExceptImpl) then) =
       __$$HideTargetGroupsExceptImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({TargetConfig? tc});
+  $Res call({TargetModel? tc});
 }
 
 /// @nodoc
@@ -1282,7 +716,7 @@ class __$$HideTargetGroupsExceptImplCopyWithImpl<$Res>
       tc: freezed == tc
           ? _value.tc
           : tc // ignore: cast_nullable_to_non_nullable
-              as TargetConfig?,
+              as TargetModel?,
     ));
   }
 }
@@ -1295,7 +729,7 @@ class _$HideTargetGroupsExceptImpl
   const _$HideTargetGroupsExceptImpl({this.tc});
 
   @override
-  final TargetConfig? tc;
+  final TargetModel? tc;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1331,23 +765,23 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1355,7 +789,6 @@ class _$HideTargetGroupsExceptImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -1365,28 +798,27 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -1396,28 +828,27 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -1431,8 +862,6 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -1443,15 +872,16 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -1461,8 +891,6 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1470,15 +898,16 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -1488,8 +917,6 @@ class _$HideTargetGroupsExceptImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1497,15 +924,16 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -1518,10 +946,10 @@ class _$HideTargetGroupsExceptImpl
 }
 
 abstract class HideTargetGroupsExcept implements CAPIEvent {
-  const factory HideTargetGroupsExcept({final TargetConfig? tc}) =
+  const factory HideTargetGroupsExcept({final TargetModel? tc}) =
       _$HideTargetGroupsExceptImpl;
 
-  TargetConfig? get tc;
+  TargetModel? get tc;
   @JsonKey(ignore: true)
   _$$HideTargetGroupsExceptImplCopyWith<_$HideTargetGroupsExceptImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -1533,7 +961,7 @@ abstract class _$$ShowOnlyOneTargetImplCopyWith<$Res> {
           $Res Function(_$ShowOnlyOneTargetImpl) then) =
       __$$ShowOnlyOneTargetImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({TargetConfig? tc});
+  $Res call({TargetModel? tc});
 }
 
 /// @nodoc
@@ -1553,7 +981,7 @@ class __$$ShowOnlyOneTargetImplCopyWithImpl<$Res>
       tc: freezed == tc
           ? _value.tc
           : tc // ignore: cast_nullable_to_non_nullable
-              as TargetConfig?,
+              as TargetModel?,
     ));
   }
 }
@@ -1566,7 +994,7 @@ class _$ShowOnlyOneTargetImpl
   const _$ShowOnlyOneTargetImpl({this.tc});
 
   @override
-  final TargetConfig? tc;
+  final TargetModel? tc;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -1602,23 +1030,23 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1626,7 +1054,6 @@ class _$ShowOnlyOneTargetImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -1636,28 +1063,27 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -1667,28 +1093,27 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -1702,8 +1127,6 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -1714,15 +1137,16 @@ class _$ShowOnlyOneTargetImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -1732,8 +1156,6 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1741,15 +1163,16 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -1759,8 +1182,6 @@ class _$ShowOnlyOneTargetImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1768,15 +1189,16 @@ class _$ShowOnlyOneTargetImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -1789,10 +1211,10 @@ class _$ShowOnlyOneTargetImpl
 }
 
 abstract class ShowOnlyOneTarget implements CAPIEvent {
-  const factory ShowOnlyOneTarget({final TargetConfig? tc}) =
+  const factory ShowOnlyOneTarget({final TargetModel? tc}) =
       _$ShowOnlyOneTargetImpl;
 
-  TargetConfig? get tc;
+  TargetModel? get tc;
   @JsonKey(ignore: true)
   _$$ShowOnlyOneTargetImplCopyWith<_$ShowOnlyOneTargetImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -1848,23 +1270,23 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1872,7 +1294,6 @@ class _$HideAllTargetGroupBtnsImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -1882,28 +1303,27 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -1913,28 +1333,27 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -1948,8 +1367,6 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -1960,15 +1377,16 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -1978,8 +1396,6 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -1987,15 +1403,16 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -2005,8 +1422,6 @@ class _$HideAllTargetGroupBtnsImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2014,15 +1429,16 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -2087,23 +1503,23 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2111,7 +1527,6 @@ class _$UnhideAllTargetGroupsImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -2121,28 +1536,27 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -2152,28 +1566,27 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -2187,8 +1600,6 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -2199,15 +1610,16 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -2217,8 +1629,6 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2226,15 +1636,16 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -2244,8 +1655,6 @@ class _$UnhideAllTargetGroupsImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2253,15 +1662,16 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -2371,23 +1781,23 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2395,7 +1805,6 @@ class _$OverrideTargetGKImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -2405,28 +1814,27 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -2436,28 +1844,27 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -2471,8 +1878,6 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -2483,15 +1888,16 @@ class _$OverrideTargetGKImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -2501,8 +1907,6 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2510,15 +1914,16 @@ class _$OverrideTargetGKImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -2528,8 +1933,6 @@ class _$OverrideTargetGKImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2537,15 +1940,16 @@ class _$OverrideTargetGKImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -2573,20 +1977,20 @@ abstract class OverrideTargetGK implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$TargetConfigChangedImplCopyWith<$Res> {
-  factory _$$TargetConfigChangedImplCopyWith(_$TargetConfigChangedImpl value,
-          $Res Function(_$TargetConfigChangedImpl) then) =
-      __$$TargetConfigChangedImplCopyWithImpl<$Res>;
+abstract class _$$TargetModelChangedImplCopyWith<$Res> {
+  factory _$$TargetModelChangedImplCopyWith(_$TargetModelChangedImpl value,
+          $Res Function(_$TargetModelChangedImpl) then) =
+      __$$TargetModelChangedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({TargetConfig newTC, bool keepTargetsHidden});
+  $Res call({TargetModel newTC, bool keepTargetsHidden});
 }
 
 /// @nodoc
-class __$$TargetConfigChangedImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$TargetConfigChangedImpl>
-    implements _$$TargetConfigChangedImplCopyWith<$Res> {
-  __$$TargetConfigChangedImplCopyWithImpl(_$TargetConfigChangedImpl _value,
-      $Res Function(_$TargetConfigChangedImpl) _then)
+class __$$TargetModelChangedImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$TargetModelChangedImpl>
+    implements _$$TargetModelChangedImplCopyWith<$Res> {
+  __$$TargetModelChangedImplCopyWithImpl(_$TargetModelChangedImpl _value,
+      $Res Function(_$TargetModelChangedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -2595,11 +1999,11 @@ class __$$TargetConfigChangedImplCopyWithImpl<$Res>
     Object? newTC = null,
     Object? keepTargetsHidden = null,
   }) {
-    return _then(_$TargetConfigChangedImpl(
+    return _then(_$TargetModelChangedImpl(
       newTC: null == newTC
           ? _value.newTC
           : newTC // ignore: cast_nullable_to_non_nullable
-              as TargetConfig,
+              as TargetModel,
       keepTargetsHidden: null == keepTargetsHidden
           ? _value.keepTargetsHidden
           : keepTargetsHidden // ignore: cast_nullable_to_non_nullable
@@ -2610,28 +2014,28 @@ class __$$TargetConfigChangedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TargetConfigChangedImpl
+class _$TargetModelChangedImpl
     with DiagnosticableTreeMixin
-    implements TargetConfigChanged {
-  const _$TargetConfigChangedImpl(
+    implements TargetModelChanged {
+  const _$TargetModelChangedImpl(
       {required this.newTC, this.keepTargetsHidden = false});
 
   @override
-  final TargetConfig newTC;
+  final TargetModel newTC;
   @override
   @JsonKey()
   final bool keepTargetsHidden;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.targetConfigChanged(newTC: $newTC, keepTargetsHidden: $keepTargetsHidden)';
+    return 'CAPIEvent.TargetModelChanged(newTC: $newTC, keepTargetsHidden: $keepTargetsHidden)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.targetConfigChanged'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.TargetModelChanged'))
       ..add(DiagnosticsProperty('newTC', newTC))
       ..add(DiagnosticsProperty('keepTargetsHidden', keepTargetsHidden));
   }
@@ -2640,7 +2044,7 @@ class _$TargetConfigChangedImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TargetConfigChangedImpl &&
+            other is _$TargetModelChangedImpl &&
             (identical(other.newTC, newTC) || other.newTC == newTC) &&
             (identical(other.keepTargetsHidden, keepTargetsHidden) ||
                 other.keepTargetsHidden == keepTargetsHidden));
@@ -2652,30 +2056,30 @@ class _$TargetConfigChangedImpl
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TargetConfigChangedImplCopyWith<_$TargetConfigChangedImpl> get copyWith =>
-      __$$TargetConfigChangedImplCopyWithImpl<_$TargetConfigChangedImpl>(
+  _$$TargetModelChangedImplCopyWith<_$TargetModelChangedImpl> get copyWith =>
+      __$$TargetModelChangedImplCopyWithImpl<_$TargetModelChangedImpl>(
           this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2683,75 +2087,72 @@ class _$TargetConfigChangedImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return targetConfigChanged(newTC, keepTargetsHidden);
+    return TargetModelChanged(newTC, keepTargetsHidden);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return targetConfigChanged?.call(newTC, keepTargetsHidden);
+    return TargetModelChanged?.call(newTC, keepTargetsHidden);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (targetConfigChanged != null) {
-      return targetConfigChanged(newTC, keepTargetsHidden);
+    if (TargetModelChanged != null) {
+      return TargetModelChanged(newTC, keepTargetsHidden);
     }
     return orElse();
   }
@@ -2759,8 +2160,6 @@ class _$TargetConfigChangedImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -2771,26 +2170,25 @@ class _$TargetConfigChangedImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return targetConfigChanged(this);
+    return TargetModelChanged(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2798,26 +2196,25 @@ class _$TargetConfigChangedImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return targetConfigChanged?.call(this);
+    return TargetModelChanged?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -2825,35 +2222,36 @@ class _$TargetConfigChangedImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (targetConfigChanged != null) {
-      return targetConfigChanged(this);
+    if (TargetModelChanged != null) {
+      return TargetModelChanged(this);
     }
     return orElse();
   }
 }
 
-abstract class TargetConfigChanged implements CAPIEvent {
-  const factory TargetConfigChanged(
-      {required final TargetConfig newTC,
-      final bool keepTargetsHidden}) = _$TargetConfigChangedImpl;
+abstract class TargetModelChanged implements CAPIEvent {
+  const factory TargetModelChanged(
+      {required final TargetModel newTC,
+      final bool keepTargetsHidden}) = _$TargetModelChangedImpl;
 
-  TargetConfig get newTC;
+  TargetModel get newTC;
   bool get keepTargetsHidden;
   @JsonKey(ignore: true)
-  _$$TargetConfigChangedImplCopyWith<_$TargetConfigChangedImpl> get copyWith =>
+  _$$TargetModelChangedImplCopyWith<_$TargetModelChangedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2901,23 +2299,23 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2925,7 +2323,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -2935,28 +2332,27 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -2966,28 +2362,27 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -3001,8 +2396,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -3013,15 +2406,16 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -3031,8 +2425,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3040,15 +2432,16 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -3058,8 +2451,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3067,15 +2458,16 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -3176,23 +2568,23 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3200,7 +2592,6 @@ class _$UpdateClipboardImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -3210,28 +2601,27 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -3241,28 +2631,27 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -3276,8 +2665,6 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -3288,15 +2675,16 @@ class _$UpdateClipboardImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -3306,8 +2694,6 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3315,15 +2701,16 @@ class _$UpdateClipboardImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -3333,8 +2720,6 @@ class _$UpdateClipboardImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3342,15 +2727,16 @@ class _$UpdateClipboardImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -3375,66 +2761,94 @@ abstract class UpdateClipboard implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$SaveModelImplCopyWith<$Res> {
-  factory _$$SaveModelImplCopyWith(
-          _$SaveModelImpl value, $Res Function(_$SaveModelImpl) then) =
-      __$$SaveModelImplCopyWithImpl<$Res>;
+abstract class _$$SaveImplCopyWith<$Res> {
+  factory _$$SaveImplCopyWith(
+          _$SaveImpl value, $Res Function(_$SaveImpl) then) =
+      __$$SaveImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool force});
 }
 
 /// @nodoc
-class __$$SaveModelImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$SaveModelImpl>
-    implements _$$SaveModelImplCopyWith<$Res> {
-  __$$SaveModelImplCopyWithImpl(
-      _$SaveModelImpl _value, $Res Function(_$SaveModelImpl) _then)
+class __$$SaveImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$SaveImpl>
+    implements _$$SaveImplCopyWith<$Res> {
+  __$$SaveImplCopyWithImpl(_$SaveImpl _value, $Res Function(_$SaveImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? force = null,
+  }) {
+    return _then(_$SaveImpl(
+      force: null == force
+          ? _value.force
+          : force // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
 }
 
 /// @nodoc
 
-class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
-  const _$SaveModelImpl();
+class _$SaveImpl with DiagnosticableTreeMixin implements Save {
+  const _$SaveImpl({this.force = false});
+
+  @override
+  @JsonKey()
+  final bool force;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.saveModel()';
+    return 'CAPIEvent.save(force: $force)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'CAPIEvent.saveModel'));
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.save'))
+      ..add(DiagnosticsProperty('force', force));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SaveModelImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$SaveImpl &&
+            (identical(other.force, force) || other.force == force));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, force);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
+      __$$SaveImplCopyWithImpl<_$SaveImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3442,75 +2856,72 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return saveModel();
+    return save(force);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return saveModel?.call();
+    return save?.call(force);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (saveModel != null) {
-      return saveModel();
+    if (save != null) {
+      return save(force);
     }
     return orElse();
   }
@@ -3518,8 +2929,6 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -3530,26 +2939,25 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return saveModel(this);
+    return save(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3557,26 +2965,25 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return saveModel?.call(this);
+    return save?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3584,28 +2991,558 @@ class _$SaveModelImpl with DiagnosticableTreeMixin implements SaveModel {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (saveModel != null) {
-      return saveModel(this);
+    if (save != null) {
+      return save(this);
     }
     return orElse();
   }
 }
 
-abstract class SaveModel implements CAPIEvent {
-  const factory SaveModel() = _$SaveModelImpl;
+abstract class Save implements CAPIEvent {
+  const factory Save({final bool force}) = _$SaveImpl;
+
+  bool get force;
+  @JsonKey(ignore: true)
+  _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SwitchBranchImplCopyWith<$Res> {
+  factory _$$SwitchBranchImplCopyWith(
+          _$SwitchBranchImpl value, $Res Function(_$SwitchBranchImpl) then) =
+      __$$SwitchBranchImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String newBranchName});
+}
+
+/// @nodoc
+class __$$SwitchBranchImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$SwitchBranchImpl>
+    implements _$$SwitchBranchImplCopyWith<$Res> {
+  __$$SwitchBranchImplCopyWithImpl(
+      _$SwitchBranchImpl _value, $Res Function(_$SwitchBranchImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? newBranchName = null,
+  }) {
+    return _then(_$SwitchBranchImpl(
+      newBranchName: null == newBranchName
+          ? _value.newBranchName
+          : newBranchName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
+  const _$SwitchBranchImpl({required this.newBranchName});
+
+  @override
+  final String newBranchName;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.switchBranch(newBranchName: $newBranchName)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.switchBranch'))
+      ..add(DiagnosticsProperty('newBranchName', newBranchName));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SwitchBranchImpl &&
+            (identical(other.newBranchName, newBranchName) ||
+                other.newBranchName == newBranchName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, newBranchName);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SwitchBranchImplCopyWith<_$SwitchBranchImpl> get copyWith =>
+      __$$SwitchBranchImplCopyWithImpl<_$SwitchBranchImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function() hideAllTargetGroups,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
+    required TResult Function() hideAllTargetGroupBtns,
+    required TResult Function() unhideAllTargetGroups,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
+    required TResult Function() forceRefresh,
+    required TResult Function(String? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetBloc,
+    required TResult Function(bool save) popSnippetBloc,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+  }) {
+    return switchBranch(newBranchName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function()? hideAllTargetGroups,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
+    TResult? Function()? hideAllTargetGroupBtns,
+    TResult? Function()? unhideAllTargetGroups,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
+    TResult? Function()? forceRefresh,
+    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult? Function(bool save)? popSnippetBloc,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+  }) {
+    return switchBranch?.call(newBranchName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function()? hideAllTargetGroups,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
+    TResult Function()? hideAllTargetGroupBtns,
+    TResult Function()? unhideAllTargetGroups,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
+    TResult Function()? forceRefresh,
+    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult Function(bool save)? popSnippetBloc,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (switchBranch != null) {
+      return switchBranch(newBranchName);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
+    required TResult Function(HideTargetGroupsExcept value)
+        hideTargetGroupsExcept,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
+    required TResult Function(HideAllTargetGroupBtns value)
+        hideAllTargetGroupBtns,
+    required TResult Function(UnhideAllTargetGroups value)
+        unhideAllTargetGroups,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
+    required TResult Function(PopSnippetBloc value) popSnippetBloc,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+  }) {
+    return switchBranch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
+    TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
+    TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
+    TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+  }) {
+    return switchBranch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
+    TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
+    TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
+    TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (switchBranch != null) {
+      return switchBranch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class SwitchBranch implements CAPIEvent {
+  const factory SwitchBranch({required final String newBranchName}) =
+      _$SwitchBranchImpl;
+
+  String get newBranchName;
+  @JsonKey(ignore: true)
+  _$$SwitchBranchImplCopyWith<_$SwitchBranchImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RevertImplCopyWith<$Res> {
+  factory _$$RevertImplCopyWith(
+          _$RevertImpl value, $Res Function(_$RevertImpl) then) =
+      __$$RevertImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({FSAction action});
+}
+
+/// @nodoc
+class __$$RevertImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$RevertImpl>
+    implements _$$RevertImplCopyWith<$Res> {
+  __$$RevertImplCopyWithImpl(
+      _$RevertImpl _value, $Res Function(_$RevertImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? action = null,
+  }) {
+    return _then(_$RevertImpl(
+      action: null == action
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as FSAction,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
+  const _$RevertImpl({required this.action});
+
+  @override
+  final FSAction action;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.revert(action: $action)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.revert'))
+      ..add(DiagnosticsProperty('action', action));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RevertImpl &&
+            (identical(other.action, action) || other.action == action));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, action);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RevertImplCopyWith<_$RevertImpl> get copyWith =>
+      __$$RevertImplCopyWithImpl<_$RevertImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function() hideAllTargetGroups,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
+    required TResult Function() hideAllTargetGroupBtns,
+    required TResult Function() unhideAllTargetGroups,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
+    required TResult Function() forceRefresh,
+    required TResult Function(String? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetBloc,
+    required TResult Function(bool save) popSnippetBloc,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+  }) {
+    return revert(action);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function()? hideAllTargetGroups,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
+    TResult? Function()? hideAllTargetGroupBtns,
+    TResult? Function()? unhideAllTargetGroups,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
+    TResult? Function()? forceRefresh,
+    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult? Function(bool save)? popSnippetBloc,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+  }) {
+    return revert?.call(action);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function()? hideAllTargetGroups,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
+    TResult Function()? hideAllTargetGroupBtns,
+    TResult Function()? unhideAllTargetGroups,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
+    TResult Function()? forceRefresh,
+    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult Function(bool save)? popSnippetBloc,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (revert != null) {
+      return revert(action);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
+    required TResult Function(HideTargetGroupsExcept value)
+        hideTargetGroupsExcept,
+    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
+    required TResult Function(HideAllTargetGroupBtns value)
+        hideAllTargetGroupBtns,
+    required TResult Function(UnhideAllTargetGroups value)
+        unhideAllTargetGroups,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
+    required TResult Function(PopSnippetBloc value) popSnippetBloc,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+  }) {
+    return revert(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
+    TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
+    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
+    TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
+    TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+  }) {
+    return revert?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
+    TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
+    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
+    TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
+    TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (revert != null) {
+      return revert(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class Revert implements CAPIEvent {
+  const factory Revert({required final FSAction action}) = _$RevertImpl;
+
+  FSAction get action;
+  @JsonKey(ignore: true)
+  _$$RevertImplCopyWith<_$RevertImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -3680,23 +3617,23 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3704,7 +3641,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -3714,28 +3650,27 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -3745,28 +3680,27 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -3780,8 +3714,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -3792,15 +3724,16 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -3810,8 +3743,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3819,15 +3750,16 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -3837,8 +3769,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -3846,15 +3776,16 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -3962,23 +3893,23 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3986,7 +3917,6 @@ class _$SetPanelSnippetImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -3996,28 +3926,27 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -4027,28 +3956,27 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -4062,8 +3990,6 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -4074,15 +4000,16 @@ class _$SetPanelSnippetImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -4092,8 +4019,6 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4101,15 +4026,16 @@ class _$SetPanelSnippetImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -4119,8 +4045,6 @@ class _$SetPanelSnippetImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4128,15 +4052,16 @@ class _$SetPanelSnippetImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -4248,23 +4173,23 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4272,7 +4197,6 @@ class _$PushSnippetBlocImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -4282,28 +4206,27 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -4313,28 +4236,27 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -4348,8 +4270,6 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -4360,15 +4280,16 @@ class _$PushSnippetBlocImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -4378,8 +4299,6 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4387,15 +4306,16 @@ class _$PushSnippetBlocImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -4405,8 +4325,6 @@ class _$PushSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4414,15 +4332,16 @@ class _$PushSnippetBlocImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -4522,23 +4441,23 @@ class _$PopSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4546,75 +4465,72 @@ class _$PopSnippetBlocImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return popSnippetBloc(save);
+    return popSnippetBloc(this.save);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return popSnippetBloc?.call(save);
+    return popSnippetBloc?.call(this.save);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
     if (popSnippetBloc != null) {
-      return popSnippetBloc(save);
+      return popSnippetBloc(this.save);
     }
     return orElse();
   }
@@ -4622,8 +4538,6 @@ class _$PopSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -4634,15 +4548,16 @@ class _$PopSnippetBlocImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -4652,8 +4567,6 @@ class _$PopSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4661,15 +4574,16 @@ class _$PopSnippetBlocImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -4679,8 +4593,6 @@ class _$PopSnippetBlocImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -4688,15 +4600,16 @@ class _$PopSnippetBlocImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -4714,278 +4627,6 @@ abstract class PopSnippetBloc implements CAPIEvent {
   bool get save;
   @JsonKey(ignore: true)
   _$$PopSnippetBlocImplCopyWith<_$PopSnippetBlocImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$RestoredSnippetBlocImplCopyWith<$Res> {
-  factory _$$RestoredSnippetBlocImplCopyWith(_$RestoredSnippetBlocImpl value,
-          $Res Function(_$RestoredSnippetBlocImpl) then) =
-      __$$RestoredSnippetBlocImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({SnippetBloC restoredBloc});
-}
-
-/// @nodoc
-class __$$RestoredSnippetBlocImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$RestoredSnippetBlocImpl>
-    implements _$$RestoredSnippetBlocImplCopyWith<$Res> {
-  __$$RestoredSnippetBlocImplCopyWithImpl(_$RestoredSnippetBlocImpl _value,
-      $Res Function(_$RestoredSnippetBlocImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? restoredBloc = null,
-  }) {
-    return _then(_$RestoredSnippetBlocImpl(
-      restoredBloc: null == restoredBloc
-          ? _value.restoredBloc
-          : restoredBloc // ignore: cast_nullable_to_non_nullable
-              as SnippetBloC,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$RestoredSnippetBlocImpl
-    with DiagnosticableTreeMixin
-    implements RestoredSnippetBloc {
-  const _$RestoredSnippetBlocImpl({required this.restoredBloc});
-
-  @override
-  final SnippetBloC restoredBloc;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.restoredSnippetBloc(restoredBloc: $restoredBloc)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.restoredSnippetBloc'))
-      ..add(DiagnosticsProperty('restoredBloc', restoredBloc));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RestoredSnippetBlocImpl &&
-            (identical(other.restoredBloc, restoredBloc) ||
-                other.restoredBloc == restoredBloc));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, restoredBloc);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RestoredSnippetBlocImplCopyWith<_$RestoredSnippetBlocImpl> get copyWith =>
-      __$$RestoredSnippetBlocImplCopyWithImpl<_$RestoredSnippetBlocImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
-    required TResult Function() hideAllTargetGroupBtns,
-    required TResult Function() unhideAllTargetGroups,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
-    required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
-        updateClipboard,
-    required TResult Function() saveModel,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
-    required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
-        pushSnippetBloc,
-    required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-  }) {
-    return restoredSnippetBloc(restoredBloc);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult? Function()? hideAllTargetGroupBtns,
-    TResult? Function()? unhideAllTargetGroups,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-  }) {
-    return restoredSnippetBloc?.call(restoredBloc);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
-    TResult Function()? hideAllTargetGroupBtns,
-    TResult Function()? unhideAllTargetGroups,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
-    TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (restoredSnippetBloc != null) {
-      return restoredSnippetBloc(restoredBloc);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
-    required TResult Function(HideTargetGroupsExcept value)
-        hideTargetGroupsExcept,
-    required TResult Function(ShowOnlyOneTarget value) showOnlyOneTarget,
-    required TResult Function(HideAllTargetGroupBtns value)
-        hideAllTargetGroupBtns,
-    required TResult Function(UnhideAllTargetGroups value)
-        unhideAllTargetGroups,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
-    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
-    required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-  }) {
-    return restoredSnippetBloc(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult? Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-  }) {
-    return restoredSnippetBloc?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
-    TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
-    TResult Function(ShowOnlyOneTarget value)? showOnlyOneTarget,
-    TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
-    TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (restoredSnippetBloc != null) {
-      return restoredSnippetBloc(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class RestoredSnippetBloc implements CAPIEvent {
-  const factory RestoredSnippetBloc({required final SnippetBloC restoredBloc}) =
-      _$RestoredSnippetBlocImpl;
-
-  SnippetBloC get restoredBloc;
-  @JsonKey(ignore: true)
-  _$$RestoredSnippetBlocImplCopyWith<_$RestoredSnippetBlocImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -5035,23 +4676,23 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -5059,7 +4700,6 @@ class _$ShowDirectoryTreeImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
@@ -5069,28 +4709,27 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
@@ -5100,28 +4739,27 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
@@ -5135,8 +4773,6 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -5147,15 +4783,16 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -5165,8 +4802,6 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -5174,15 +4809,16 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -5192,8 +4828,6 @@ class _$ShowDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -5201,15 +4835,16 @@ class _$ShowDirectoryTreeImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
@@ -5301,23 +4936,23 @@ class _$RemoveDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String wName, Offset newGlobalPos) newTarget,
-    required TResult Function(TargetConfig tc) deleteTarget,
     required TResult Function(String? panelName) selectPanel,
     required TResult Function() hideAllTargetGroups,
-    required TResult Function(TargetConfig? tc) hideTargetGroupsExcept,
-    required TResult Function(TargetConfig? tc) showOnlyOneTarget,
+    required TResult Function(TargetModel? tc) hideTargetGroupsExcept,
+    required TResult Function(TargetModel? tc) showOnlyOneTarget,
     required TResult Function() hideAllTargetGroupBtns,
     required TResult Function() unhideAllTargetGroups,
     required TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
-    required TResult Function(TargetConfig newTC, bool keepTargetsHidden)
-        targetConfigChanged,
+    required TResult Function(TargetModel newTC, bool keepTargetsHidden)
+        TargetModelChanged,
     required TResult Function() forceRefresh,
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function() saveModel,
+    required TResult Function(bool force) save,
+    required TResult Function(String newBranchName) switchBranch,
+    required TResult Function(FSAction action) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -5325,75 +4960,72 @@ class _$RemoveDirectoryTreeImpl
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetBloc,
     required TResult Function(bool save) popSnippetBloc,
-    required TResult Function(SnippetBloC restoredBloc) restoredSnippetBloc,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return removeDirectoryTree(save);
+    return removeDirectoryTree(this.save);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult? Function(TargetConfig tc)? deleteTarget,
     TResult? Function(String? panelName)? selectPanel,
     TResult? Function()? hideAllTargetGroups,
-    TResult? Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult? Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult? Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult? Function(TargetModel? tc)? showOnlyOneTarget,
     TResult? Function()? hideAllTargetGroupBtns,
     TResult? Function()? unhideAllTargetGroups,
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function()? saveModel,
+    TResult? Function(bool force)? save,
+    TResult? Function(String newBranchName)? switchBranch,
+    TResult? Function(FSAction action)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return removeDirectoryTree?.call(save);
+    return removeDirectoryTree?.call(this.save);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String wName, Offset newGlobalPos)? newTarget,
-    TResult Function(TargetConfig tc)? deleteTarget,
     TResult Function(String? panelName)? selectPanel,
     TResult Function()? hideAllTargetGroups,
-    TResult Function(TargetConfig? tc)? hideTargetGroupsExcept,
-    TResult Function(TargetConfig? tc)? showOnlyOneTarget,
+    TResult Function(TargetModel? tc)? hideTargetGroupsExcept,
+    TResult Function(TargetModel? tc)? showOnlyOneTarget,
     TResult Function()? hideAllTargetGroupBtns,
     TResult Function()? unhideAllTargetGroups,
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetConfig newTC, bool keepTargetsHidden)?
-        targetConfigChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
+        TargetModelChanged,
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function()? saveModel,
+    TResult Function(bool force)? save,
+    TResult Function(String newBranchName)? switchBranch,
+    TResult Function(FSAction action)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetBloc,
     TResult Function(bool save)? popSnippetBloc,
-    TResult Function(SnippetBloC restoredBloc)? restoredSnippetBloc,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
     if (removeDirectoryTree != null) {
-      return removeDirectoryTree(save);
+      return removeDirectoryTree(this.save);
     }
     return orElse();
   }
@@ -5401,8 +5033,6 @@ class _$RemoveDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(NewTarget value) newTarget,
-    required TResult Function(DeleteTarget value) deleteTarget,
     required TResult Function(SelectPanel value) selectPanel,
     required TResult Function(HideAllTargetGroups value) hideAllTargetGroups,
     required TResult Function(HideTargetGroupsExcept value)
@@ -5413,15 +5043,16 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetConfigChanged value) targetConfigChanged,
+    required TResult Function(TargetModelChanged value) TargetModelChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(SaveModel value) saveModel,
+    required TResult Function(Save value) save,
+    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
     required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(RestoredSnippetBloc value) restoredSnippetBloc,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
@@ -5431,8 +5062,6 @@ class _$RemoveDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(NewTarget value)? newTarget,
-    TResult? Function(DeleteTarget value)? deleteTarget,
     TResult? Function(SelectPanel value)? selectPanel,
     TResult? Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult? Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -5440,15 +5069,16 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult? Function(TargetModelChanged value)? TargetModelChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(SaveModel value)? saveModel,
+    TResult? Function(Save value)? save,
+    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
@@ -5458,8 +5088,6 @@ class _$RemoveDirectoryTreeImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(NewTarget value)? newTarget,
-    TResult Function(DeleteTarget value)? deleteTarget,
     TResult Function(SelectPanel value)? selectPanel,
     TResult Function(HideAllTargetGroups value)? hideAllTargetGroups,
     TResult Function(HideTargetGroupsExcept value)? hideTargetGroupsExcept,
@@ -5467,15 +5095,16 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetConfigChanged value)? targetConfigChanged,
+    TResult Function(TargetModelChanged value)? TargetModelChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(SaveModel value)? saveModel,
+    TResult Function(Save value)? save,
+    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
     TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(RestoredSnippetBloc value)? restoredSnippetBloc,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),

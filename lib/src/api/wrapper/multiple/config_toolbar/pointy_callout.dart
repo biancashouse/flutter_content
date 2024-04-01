@@ -5,7 +5,7 @@ import 'package:flutter_content/src/target_config/content/callout_snippet_conten
 
 class PointyTool extends StatefulWidget {
   final TargetsWrapperName twName;
-  final TargetConfig tc;
+  final TargetModel tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
   final bool justPlaying;
@@ -22,7 +22,7 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetsWrapperName twName, final TargetConfig tc,
+  static show(final TargetsWrapperName twName, final TargetModel tc,
       {final ScrollController? ancestorHScrollController,
       final ScrollController? ancestorVScrollController,
       required final bool justPlaying}) {
@@ -65,7 +65,7 @@ class _PointyToolState extends State<PointyTool> {
   late ArrowType _arrowType;
   late bool _animate;
 
-  TargetConfig get tc => widget.tc;
+  TargetModel get tc => widget.tc;
 
   CAPIBloC get bloc => FC().capiBloc;
 
@@ -76,10 +76,10 @@ class _PointyToolState extends State<PointyTool> {
     _animate = tc.animateArrow;
   }
 
-  void _onPressed(ArrowType t, TargetConfig tc, bool animate) {
+  void _onPressed(ArrowType t, TargetModel tc, bool animate) {
     setState(() => _arrowType = t);
     tc.calloutArrowTypeIndex = t.index;
-    // bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+    // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
     Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
     // Useful.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
@@ -90,7 +90,6 @@ class _PointyToolState extends State<PointyTool> {
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
-      twName: widget.twName,
       tc: tc,
       justPlaying: false,
       // widget.onParentBarrierTappedF,

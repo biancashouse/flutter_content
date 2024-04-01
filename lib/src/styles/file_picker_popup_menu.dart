@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class FilePickerPopupMenu extends StatefulWidget {
-  final TargetConfig tc;
+  final TargetModel tc;
   final ValueChanged<String> imagePathChangedF;
 
   final ScrollController? ancestorHScrollController;
@@ -24,7 +24,7 @@ class FilePickerPopupMenu extends StatefulWidget {
 
   static Future<void> pickImage(
     FileType fType,
-    final TargetConfig tc, {
+    final TargetModel tc, {
     bool mounted = false,
   }) async {
     // Useful.om.showCircularProgressIndicator(true, reason: 'Picking an Image');

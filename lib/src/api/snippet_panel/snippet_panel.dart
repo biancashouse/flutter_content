@@ -61,7 +61,8 @@ class SnippetPanel extends StatefulWidget {
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static SnippetRootNode createSnippetFromTemplate(SnippetTemplate template, String snippetName) {
+  static SnippetRootNode createSnippetFromTemplate(
+      SnippetTemplate template, String snippetName) {
     var rootNode = templates
         .firstWhere((root) => root.name == template.name)
         .cloneSnippet();
@@ -75,13 +76,13 @@ class SnippetPanel extends StatefulWidget {
     SnippetRootNode(
         name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
     SnippetRootNode(
-        name: SnippetTemplate.target_content_widget.name,
-        // child: SizedBoxNode(
-        //     width: 200,
-        //     height: 150,
-        //     child: ContainerNode(fillColorValues: UpTo6ColorValues(
-        //       color1Value: Colors.white.value,
-        //     ))),
+      name: SnippetTemplate.target_content_widget.name,
+      // child: SizedBoxNode(
+      //     width: 200,
+      //     height: 150,
+      //     child: ContainerNode(fillColorValues: UpTo6ColorValues(
+      //       color1Value: Colors.white.value,
+      //     ))),
     ),
     // Scaffold with a TabBar in its AppBar bottom
     SnippetRootNode(
@@ -190,7 +191,6 @@ class SnippetPanelState extends State<SnippetPanel>
   bool?
       backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
-  late SnippetRootNode snippetRoot;
 
   ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -202,8 +202,8 @@ class SnippetPanelState extends State<SnippetPanel>
         FC().rootNodeOfNamedSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
     if (snippetRootNode == null && widget.fromTemplate != null) {
-      snippetRootNode =
-          SnippetPanel.createSnippetFromTemplate(widget.fromTemplate!, widget.snippetName);
+      snippetRootNode = SnippetPanel.createSnippetFromTemplate(
+          widget.fromTemplate!, widget.snippetName);
     } else {
       snippetRootNode ??=
           SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
@@ -243,9 +243,6 @@ class SnippetPanelState extends State<SnippetPanel>
 
     // register snippet? with panel
     FC().snippetPlacementMap[widget.panelName] = widget.snippetName;
-
-    // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
-    snippetRoot = getOrCreateSnippetFromTemplate();
 
     prevTabQ = [];
 
@@ -439,6 +436,8 @@ class SnippetPanelState extends State<SnippetPanel>
         debugPrint(
             "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
         try {
+          // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
+          SnippetRootNode snippetRoot = getOrCreateSnippetFromTemplate();
           return snippetRoot.toWidget(innerContext, null);
         } catch (e) {
           debugPrint('snippetRoot.toWidget() failed!');

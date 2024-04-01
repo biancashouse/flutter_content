@@ -8,11 +8,13 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 
+import 'package:flutter/widgets.dart';
+
 part 'fs_image_node.mapper.dart';
 
 @MappableClass()
 class FSImageNode extends CL with FSImageNodeMappable {
-  String fsFullPath;
+  String? fsFullPath;
   double? width;
   double? height;
   double? scale;
@@ -20,7 +22,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
   AlignmentEnum? alignment;
 
   FSImageNode({
-    this.fsFullPath = 'gs://flutter-content-2dc30.appspot.com/missing-image.PNG',
+    this.fsFullPath,
     this.fit,
     this.alignment,
     this.width,
@@ -76,42 +78,55 @@ class FSImageNode extends CL with FSImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
     possiblyHighlightSelectedNode();
-    return fsFullPath.isNotEmpty
-        ? SizedBox(
+   return SizedBox(
             key: createNodeGK(),
             width: width,
             height: height,
-            child: StorageImage(ref: FirebaseStorage.instance.ref(fsFullPath)),
-          )
-        : Placeholder(
-            key: createNodeGK(),
-            color: Colors.purpleAccent,
-            strokeWidth: 2.0,
-            fallbackWidth: (width ?? 400) * (scale ?? 1.0),
-            fallbackHeight: (height ?? 300) * (scale ?? 1.0),
+            child: StorageImage(ref: FirebaseStorage.instance.ref(
+                fsFullPath ?? 'gs://flutter-content-2dc30.appspot.com/missing-image.PNG',
+            )),
           );
   }
-
-  // @override
-  // String toSource(BuildContext context) {
-  //   return name.length > 0
-  //       ? '''Image.asset(${name},
-  //     scale: $scale,
-  //     width: $width,
-  //     height: $height,
-  //     fit: ${fit?.toSource()},
-  //     alignment: ${alignment.toSource()},
-  //   )'''
-  //       : '''Placeholder(
-  //     color: Colors.purpleAccent,
-  //     strokeWidth: 2.0,
-  //     fallbackWidth: (width??400) * (scale ?? 1.0),
-  //     fallbackHeight: (height??300) * (scale ?? 1.0),
-  //   )''';
-  // }
 
   @override
   String toString() => FLUTTER_TYPE;
 
-  static const String FLUTTER_TYPE = "Image.asset";
+  static const String FLUTTER_TYPE = "FB Storage Image";
 }
+
+/// /// A [GridView.builder] that automatically handles paginated loading from
+/// [FirebaseStorage].
+///
+/// Example usage:
+///
+/// ```dart
+/// class MyGridView extends StatelessWidget {
+///  const MyGridView({super.key});
+///
+///  @override
+///  Widget build(BuildContext context) {
+///    return StorageGridView(
+///      ref: FirebaseStorage.instance.ref('list'),
+///      itemBuilder: (context, ref) {
+///        return Card(
+///          child: Center(
+///            child: FutureBuilder(
+///              future: ref.getData(),
+///              builder: (context, snapshot) {
+///                if (snapshot.hasError) {
+///                  return Text(snapshot.error.toString());
+///                }
+///                if (snapshot.hasData) {
+///                  return Text(utf8.decode(snapshot.data!));
+///                }
+///
+///                return const CircularProgressIndicator();
+///              },
+///            ),
+///          ),
+///        );
+///      },
+///    );
+///  }
+///}
+/// ```

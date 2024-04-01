@@ -21,14 +21,14 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     required SnippetRootNode rootNode,
     // following could be restored from CAPIState.snippetStateMap (previous snippet tree callout)
     required SnippetTreeController treeC,
-    required SnippetTreeUR treeUR,
+    // required SnippetTreeUR treeUR,
     STreeNode? selectedNode,
     GlobalKey? selectedWidgetGK,
     GlobalKey? selectedTreeNodeGK,
   }) : super(SnippetState(
           rootNode: rootNode,
           treeC: treeC,
-          ur: treeUR,
+          // ur: treeUR,
           selectedNode: selectedNode,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK,
@@ -55,8 +55,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         (event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
-    on<Undo>((event, emit) => _undo(event, emit));
-    on<Redo>((event, emit) => _redo(event, emit));
+    // on<Undo>((event, emit) => _undo(event, emit));
+    // on<Redo>((event, emit) => _redo(event, emit));
   }
 
   // @override
@@ -80,7 +80,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     //     state.snippetTreeC.collapse(event.node);
     //     // state.snippetTreeC.rebuild();
     //   }
-    //   Map<String, TargetGroupConfig> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.imageTC!.wName, event.imageTC!);
+    //   Map<String, TargetGroupModel> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.imageTC!.wName, event.imageTC!);
     //   emit(state.copyWith(
     //     multiTargetListMap: newTargetGroupListMap,
     //
@@ -145,7 +145,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
-    _createSnippetUndo();
+    //_createSnippetUndo();
     if (_possiblyRemoveFromParentButNotChildren()) {
       state.treeC.rebuild();
       // debugPrint("--------------");
@@ -311,7 +311,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // }
 
   Future<void> _cutNode(CutNode event, emit) async {
-    _createSnippetUndo();
+    //_createSnippetUndo();
     String cutJson = event.node.toJson();
     _cutIncludingAnyChildren(event.node);
     state.treeC.rebuild();
@@ -333,7 +333,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   // Future<void> _cutNode(CutNode event, emit) async {
-  //   _createSnippetUndo();
+  //   //_createSnippetUndo();
   //   STreeNode selectedNode = event.node;
   //   String cutJson = selectedNode.toJson();
   //   if (selectedNode != state.rootNode) {
@@ -527,7 +527,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         w is! InlineSpanNode) return;
 
     try {
-      _createSnippetUndo();
+      //_createSnippetUndo();
 
       w.setParent(wChild.parent);
       wChild.setParent(w);
@@ -577,7 +577,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // void _wrapWithOLD(WrapWith event, emit) {
   //   if (state.aNodeIsSelected) {
   //     STreeNode selectedNode = state.selectedNode!;
-  //     _createSnippetUndo();
+  //     //_createSnippetUndo();
   //     STreeNode newNode =
   //         event.type != null ? _typeAsATreeNode(event.type!, selectedNode, "_wrapWith() missing ${event.type.toString()}") : event.testNode!;
   //
@@ -612,7 +612,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (state.aNodeIsSelected) {
       STreeNode selectedNode = state.selectedNode!;
       if (event.type == selectedNode.runtimeType) return;
-      _createSnippetUndo();
+      //_createSnippetUndo();
       STreeNode newNode = event.type != null
           ? _typeAsATreeNode(event.type!, null,
               "_replaceWith() missing ${event.type.toString()}")
@@ -632,7 +632,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     STreeNode parent = sel.parent as STreeNode;
 
     try {
-      _createSnippetUndo();
+      //_createSnippetUndo();
 
       r.setParent(sel.parent);
 
@@ -676,7 +676,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   // void _replaceWithNewNodeOrClipboardOLD(STreeNode selectedNode, emit, STreeNode r) {
-  //   _createSnippetUndo();
+  //   //_createSnippetUndo();
   //
   //   // attach newNode to parent
   //   // if selected node is actually a root node, make newNode the new root
@@ -729,7 +729,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _addOrPasteChild(STreeNode selectedNode, emit, STreeNode newNode) {
-    _createSnippetUndo();
+    //_createSnippetUndo();
     // STreeNode? childNode;
 
     // if (selectedNode is ContainerNode) {
@@ -783,11 +783,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
-    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
+    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
-      _createSnippetUndo();
+          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+      //_createSnippetUndo();
       _replaceWithNewNodeOrClipboard(selectedNode, emit, clipboardNode);
     }
 
@@ -814,10 +814,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteChild(PasteChild event, emit) {
-    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
+    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
+          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
       _addOrPasteChild(selectedNode, emit, clipboardNode);
     }
   }
@@ -829,7 +829,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           ? _typeAsATreeNode(event.type!, null,
               "_addSiblingBefore() missing ${event.type.toString()}")
           : event.testNode!;
-      _createSnippetUndo();
+      //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =
             (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
@@ -845,11 +845,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
-    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
+    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
-      _createSnippetUndo();
+          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+      //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =
             (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
@@ -871,7 +871,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           ? _typeAsATreeNode(event.type!, null,
               "_addSiblingAfter() missing ${event.type.toString()}")
           : event.testNode!;
-      _createSnippetUndo();
+      //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =
             (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
@@ -887,11 +887,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
-    if (state.aNodeIsSelected && FC().capiBloc.state.jsonClipboard != null) {
+    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().capiBloc.state.jsonClipboard!);
-      _createSnippetUndo();
+          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+      //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =
             (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
@@ -907,7 +907,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _addSiblingAt(STreeNode newNode, emit, int i) {
-    _createSnippetUndo();
+    //_createSnippetUndo();
     STreeNode? parent = state.selectedNode?.parent as STreeNode?;
     if (parent is TabBarNode) {
       TabBarViewNode? tabBarViewNode = state.treeC
@@ -938,7 +938,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingAt(STreeNode clipboardNode, emit, int i) {
-    _createSnippetUndo();
+    //_createSnippetUndo();
     TextSpanNode? textSpanNode;
     STreeNode newNode = clipboardNode;
 
@@ -992,7 +992,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   //
 
   void _saveNodeAsSnippet(SaveNodeAsSnippet event, emit) {
-    _createSnippetUndo();
+    //_createSnippetUndo();
 
     _cutIncludingAnyChildren(event.node);
 
@@ -1020,58 +1020,58 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // }
   }
 
-  void _createSnippetUndo() {
-    state.ur.createUndo(state);
-  }
+  // void _createSnippetUndo() {
+  //   state.ur.createUndo(state);
+  // }
 
-  void _undo(Undo event, emit) {
-    if (state.canUndo()) {
-      SnippetState? result = state.ur.undo(state);
-      _restore(result, emit);
-    }
-  }
+  // void _undo(Undo event, emit) {
+  //   if (state.canUndo()) {
+  //     SnippetState? result = state.ur.undo(state);
+  //     _restore(result, emit);
+  //   }
+  // }
 
-  void _redo(Redo event, emit) {
-    if (state.canRedo()) {
-      SnippetState? result = state.ur.redo(state);
-      _restore(result, emit);
-    }
-  }
+  // void _redo(Redo event, emit) {
+  //   if (state.canRedo()) {
+  //     SnippetState? result = state.ur.redo(state);
+  //     _restore(result, emit);
+  //   }
+  // }
 
-  void _restore(SnippetState? undoOrRedoResult, emit) {
-    // replace bloc in queue with undo/redo result
-    SnippetState? prevSnippetState = undoOrRedoResult;
-    SnippetRootNode? prevRootNode = prevSnippetState?.rootNode;
-    if (prevRootNode == null) return;
-    SnippetBloC restoredSnippetBloc = SnippetBloC(
-      rootNode: prevRootNode,
-      treeC: prevSnippetState!.treeC..expand(prevRootNode),
-      treeUR: prevSnippetState.ur,
-      selectedNode: prevSnippetState.selectedNode,
-      selectedWidgetGK: prevSnippetState.selectedWidgetGK,
-      selectedTreeNodeGK: prevSnippetState.selectedTreeNodeGK,
-    );
-    FC()
-        .capiBloc
-        .add(CAPIEvent.restoredSnippetBloc(restoredBloc: restoredSnippetBloc));
-
-    if (undoOrRedoResult != null) {
-      emit(prevSnippetState);
-      Useful.afterNextBuildDo(() {
-        state.treeC.rebuild();
-        STreeNode? restoredSelectedNode = state.selectedNode;
-        if (restoredSelectedNode != null) {
-          add(
-            SelectNode(
-              node: restoredSelectedNode,
-              selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-              selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-            ),
-          );
-        }
-      });
-    }
-  }
+  // void _restore(SnippetState? undoOrRedoResult, emit) {
+  //   // replace bloc in queue with undo/redo result
+  //   SnippetState? prevSnippetState = undoOrRedoResult;
+  //   SnippetRootNode? prevRootNode = prevSnippetState?.rootNode;
+  //   if (prevRootNode == null) return;
+  //   SnippetBloC restoredSnippetBloc = SnippetBloC(
+  //     rootNode: prevRootNode,
+  //     treeC: prevSnippetState!.treeC..expand(prevRootNode),
+  //     treeUR: prevSnippetState.ur,
+  //     selectedNode: prevSnippetState.selectedNode,
+  //     selectedWidgetGK: prevSnippetState.selectedWidgetGK,
+  //     selectedTreeNodeGK: prevSnippetState.selectedTreeNodeGK,
+  //   );
+  //   FC()
+  //       .capiBloc
+  //       .add(CAPIEvent.restoredSnippetBloc(restoredBloc: restoredSnippetBloc));
+  //
+  //   if (undoOrRedoResult != null) {
+  //     emit(prevSnippetState);
+  //     Useful.afterNextBuildDo(() {
+  //       state.treeC.rebuild();
+  //       STreeNode? restoredSelectedNode = state.selectedNode;
+  //       if (restoredSelectedNode != null) {
+  //         add(
+  //           SelectNode(
+  //             node: restoredSelectedNode,
+  //             selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+  //             selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+  //           ),
+  //         );
+  //       }
+  //     });
+  //   }
+  // }
 
   bool get deleteInProgress => state.nodeBeingDeleted != null;
 

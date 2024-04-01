@@ -15,7 +15,7 @@ void main() {
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final ur = SnippetTreeUR();
+  // final ur = SnippetTreeUR();
   final textNode = TextNode(text: 'abc');
 
   // setupAll() runs once before any test in the suite

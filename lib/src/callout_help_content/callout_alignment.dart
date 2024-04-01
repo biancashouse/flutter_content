@@ -9,7 +9,7 @@
 //
 // void showAlignmentCallout(
 //   final GlobalKey btnGK,
-//   final TargetConfig tc,
+//   final TargetModel tc,
 //   final ScrollController? ancestorHScrollController,
 //   final ScrollController? ancestorVScrollController,
 // ) {
@@ -44,7 +44,7 @@
 // }
 //
 // class TextAlignmentTool extends StatelessWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //
@@ -59,7 +59,7 @@
 //   Widget build(BuildContext context) {
 //     return BlocBuilder<CAPIBloc, CAPIState>(
 //       builder: (context, state) {
-//         TargetConfig _tc = state.selectedTarget!;
+//         TargetModel _tc = state.selectedTarget!;
 //         TextAlign _textAlign = _tc.textAlign();
 //         return Padding(
 //             padding: const EdgeInsets.all(20),

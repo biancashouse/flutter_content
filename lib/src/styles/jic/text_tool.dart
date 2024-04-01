@@ -7,7 +7,7 @@
 // import 'font_size_tool.dart';
 //
 // class TextTool extends StatefulWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //

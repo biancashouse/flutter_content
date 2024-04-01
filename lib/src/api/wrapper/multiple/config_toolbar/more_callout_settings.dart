@@ -8,7 +8,7 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetsWrapperName twName;
-  final TargetConfig tc;
+  final TargetModel tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
@@ -26,7 +26,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
 
   static show(
     final TargetsWrapperName twName,
-    final TargetConfig tc, {
+    final TargetModel tc, {
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
     required final bool justPlaying,
@@ -52,7 +52,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           barrier: CalloutBarrier(
             opacity: 0.1,
             // onTappedF: () async {
-            //   // FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+            //   // FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
             //   Callout.dismiss(CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name);
             //   removeSnippetContentCallout(tc.snippetName);
             //   FC().parentTW(twName)?.zoomer?.resetTransform();
@@ -78,7 +78,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
 }
 
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
-  TargetConfig get tc => widget.tc;
+  TargetModel get tc => widget.tc;
 
   CAPIBloC get bloc => FC().capiBloc;
 
@@ -206,7 +206,6 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
-      twName: widget.twName,
       tc: tc,
       justPlaying: false,
       // widget.onParentBarrierTappedF,

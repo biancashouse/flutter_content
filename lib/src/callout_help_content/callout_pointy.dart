@@ -16,7 +16,7 @@
 // }
 //
 // showPointyToolToast(
-//   final TargetConfig selectedTC,
+//   final TargetModel selectedTC,
 //   final ScrollController? ancestorHScrollController,
 //   final ScrollController? ancestorVScrollController,
 // ) =>
@@ -38,7 +38,7 @@
 //     );
 //
 // class PointyTool extends StatefulWidget {
-//   final TargetConfig selectedTC;
+//   final TargetModel selectedTC;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //
@@ -66,7 +66,7 @@
 //
 //   @override
 //   Widget build(BuildContext context) {
-//     // TargetConfig? selectedTC = bloc.state.selectedTarget;
+//     // TargetModel? selectedTC = bloc.state.selectedTarget;
 //     return Row(
 //             mainAxisAlignment: MainAxisAlignment.spaceAround,
 //             mainAxisSize: MainAxisSize.max,

@@ -10,7 +10,7 @@
 //
 // void showColorCallout(
 //   final GlobalKey btnGK,
-//   final TargetConfig tc,
+//   final TargetModel tc,
 //   final ScrollController? ancestorHScrollController,
 //   final ScrollController? ancestorVScrollController,
 // ) {
@@ -45,7 +45,7 @@
 // }
 //
 // class ColorTool extends StatelessWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //
@@ -75,7 +75,7 @@
 //
 //     return BlocBuilder<CAPIBloc, CAPIState>(
 //       builder: (context, state) {
-//         TargetConfig _tc = state.selectedTarget!;
+//         TargetModel _tc = state.selectedTarget!;
 //         String selectedFamily = _tc.fontFamily;
 //         return Container(
 //           decoration: BoxDecoration(

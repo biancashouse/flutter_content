@@ -9,7 +9,7 @@
 //
 // void showSizingCallout(
 //   final GlobalKey btnGK,
-//   final TargetConfig tc,
+//   final TargetModel tc,
 //   final ScrollController? ancestorHScrollController,
 //   final ScrollController? ancestorVScrollController,
 // ) {
@@ -44,7 +44,7 @@
 // }
 //
 // class TextSizingTool extends StatelessWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //
@@ -59,7 +59,7 @@
 //   Widget build(BuildContext context) {
 //     return BlocBuilder<CAPIBloc, CAPIState>(
 //       builder: (context, state) {
-//         TargetConfig _tc = state.selectedTarget!;
+//         TargetModel _tc = state.selectedTarget!;
 //         double _fontSize = _tc.fontSize;
 //         double _letterSpacing = _tc.letterSpacing;
 //         double _letterHeight = _tc.letterHeight;

@@ -7,7 +7,7 @@
 // import 'option_button.dart';
 //
 // class TextToolbar extends StatefulWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //

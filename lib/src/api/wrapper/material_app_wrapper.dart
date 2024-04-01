@@ -209,8 +209,8 @@
 //   // }
 //
 //   Future<CAPIBloC> _initApp() async {
-//     Map<String, TargetConfig> singleTargetMap = {};
-//     late Map<String, TargetGroupConfig>? targetGroupMap;
+//     Map<String, TargetModel> singleTargetMap = {};
+//     late Map<String, TargetGroupModel>? targetGroupMap;
 //     late Map<String, SnippetRootNode> snippetsMap;
 //     CAPIModel? model;
 //     String? lastSavedModelJson;
@@ -273,14 +273,14 @@
 //     model ??= CAPIModel(appName: widget.appName);
 //
 //     targetGroupMap = _parseTargetGroups(model);
-//     for (TargetGroupConfig tgConfig in targetGroupMap.values) {
-//       for (TargetConfig tc in tgConfig.targets) {
+//     for (TargetGroupModel tgConfig in targetGroupMap.values) {
+//       for (TargetModel tc in tgConfig.targets) {
 //         tc.single = false;
 //       }
 //     }
-//     // imageTargetListMap.values.forEach((TargetGroupConfig? mtconfig) => mtconfig?.imageTargets.forEach((tc) => tc.single = false));
-//     singleTargetMap = model.targetConfigs;
-//     for (TargetConfig tc in singleTargetMap.values) {
+//     // imageTargetListMap.values.forEach((TargetGroupModel? mtconfig) => mtconfig?.imageTargets.forEach((tc) => tc.single = false));
+//     singleTargetMap = model.TargetModels;
+//     for (TargetModel tc in singleTargetMap.values) {
 //       tc.single = true;
 //     }
 //     // singleTargetMap.values.forEach((tc) => tc.single = true);
@@ -313,7 +313,7 @@
 //
 //   Future<(CAPIModel?, String?)> getFBModel() async {
 //     // debugPrint("getFBModel()...1");
-//     CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-models');
+//     CollectionReference modelsRef = FirebaseFirestore.instance.collection('/flutter-content-apps');
 //     // debugPrint("getFBModel()...2");
 //     DocumentReference modelDocRef = modelsRef.doc(widget.appName);
 //     DocumentSnapshot snap = await modelDocRef.get();
@@ -325,16 +325,16 @@
 //       snap = await publishedModelDoc.get();
 //       if (snap.exists) {
 //         Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-//         String? encodedModelJson;
+//         String? encodedSnippetMapJson;
 //         CAPIModel? model;
 //         try {
-//           encodedModelJson = data["encodedJson"];
-//           if (encodedModelJson != null) {
-//             Map<String, dynamic> decoded = jsonDecode(encodedModelJson);
+//           encodedSnippetMapJson = data["encodedJson"];
+//           if (encodedSnippetMapJson != null) {
+//             Map<String, dynamic> decoded = jsonDecode(encodedSnippetMapJson);
 //             model = CAPIModel.fromJson(decoded);
 //           }
 //         } catch (e) {}
-//         return (model, encodedModelJson);
+//         return (model, encodedSnippetMapJson);
 //       }
 //     }
 //     return (null, null);
@@ -418,12 +418,12 @@
 //   //           ));
 //   //     });
 //
-//   Map<String, TargetGroupConfig> _parseTargetGroups(CAPIModel model) {
-//     Map<String, TargetGroupConfig> imageTargetListMap = {};
-//     if (model.targetGroupConfigs.isNotEmpty) {
+//   Map<String, TargetGroupModel> _parseTargetGroups(CAPIModel model) {
+//     Map<String, TargetGroupModel> imageTargetListMap = {};
+//     if (model.TargetGroupModels.isNotEmpty) {
 //       try {
-//         for (String name in model.targetGroupConfigs.keys) {
-//           TargetGroupConfig? imageConfig = model.targetGroupConfigs[name];
+//         for (String name in model.TargetGroupModels.keys) {
+//           TargetGroupModel? imageConfig = model.TargetGroupModels[name];
 //           if (imageConfig != null && imageConfig.targets.isNotEmpty) {
 //             imageTargetListMap[name] = imageConfig;
 //           }
@@ -436,12 +436,12 @@
 //     return imageTargetListMap;
 //   }
 //
-// // Map<String, TargetConfig> _parseSingleTargets(CAPIModel model) {
-// // Map<String, TargetConfig> singleTargetListMap = {};
+// // Map<String, TargetModel> _parseSingleTargets(CAPIModel model) {
+// // Map<String, TargetModel> singleTargetListMap = {};
 // //   if (model.singleConfigs.isNotEmpty) {
 // //     try {
 // //       for (String wName in model.singleConfigs.keys ?? []) {
-// //         TargetConfig? tc = model.singleConfigs[wName];
+// //         TargetModel? tc = model.singleConfigs[wName];
 // //         if (tc != null) {
 // //           tc.single = true;
 // //           tcs[wName] = tc;
@@ -456,10 +456,10 @@
 // // }
 //
 // // void _initImageTargets(CAPIBloc capiBloc) {
-// //   Map<String, CAPITargetConfigList> imageTargetListMap = capiBloc.state.imageTargetListMap;
+// //   Map<String, CAPITargetModelList> imageTargetListMap = capiBloc.state.imageTargetListMap;
 // //   if (imageTargetListMap.isNotEmpty) {
 // //     try {
-// //       for (CAPITargetConfigList imageConfig in imageTargetListMap.values) {
+// //       for (CAPITargetModelList imageConfig in imageTargetListMap.values) {
 // //         if (imageConfig.imageTargets.isNotEmpty) {
 // //           for (int i = 0; i < imageConfig.imageTargets.length; i++) {
 // //             // imageConfig.imageTargets[i].init(

@@ -247,7 +247,7 @@ class Callout extends StatefulWidget {
     bool ensureLowestOverlay = false,
     int? removeAfterMs,
     final ValueNotifier<int>? targetChangedNotifier,
-    // TargetConfig? configurableTarget,
+    // TargetModel? configurableTarget,
     final ScrollController? hScrollController,
     final ScrollController? vScrollController,
     final skipWidthConstraintWarning = false,

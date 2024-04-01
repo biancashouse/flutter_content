@@ -1,25 +1,16 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_ui_storage/firebase_ui_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
-import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
-import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 // conditional import for webview ------------------
@@ -48,7 +39,7 @@ class MaterialSPA extends StatefulWidget {
 
   // final bool localTestingFilePaths;
 
-  const MaterialSPA({
+  MaterialSPA({
     required this.appName,
     this.title = '',
     // required this.pageSnippetName,
@@ -62,7 +53,6 @@ class MaterialSPA extends StatefulWidget {
     this.hideStatusBar = true,
     @visibleForTesting this.testModelRepo,
     @visibleForTesting this.testWidget,
-    super.key,
   });
 
   static GlobalKey _lockIconGK =
@@ -199,9 +189,7 @@ class MaterialSPA extends StatefulWidget {
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
 class MaterialSPAState extends State<MaterialSPA>
     with TickerProviderStateMixin {
-  FireStoreModelRepository fbModelRepo = FireStoreModelRepository();
   late Future<CAPIBloC> fInitApp;
-  bool _inited = false;
   int tapCount = 0;
   DateTime? lastTapTime;
   late FocusNode focusNode;
@@ -244,176 +232,21 @@ class MaterialSPAState extends State<MaterialSPA>
   //   super.didChangeDependencies();
   // }
 
+  // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
-    // Map<String, TargetConfig> singleTargetMap = {};
-    late Map<String, TargetGroupConfig>? targetGroupMap;
-    // late Map<String, SnippetRootNode> snippetsMap;
-    late AppModel appInfo;
-    late CAPIModel model;
-    late FSFolderNode? rootFSFolderNode;
-
-    if (widget.testModelRepo == null) {
-      if (widget.fbOptions != null) {
-        await fbModelRepo.initFireStore(options: widget.fbOptions);
-
-        // if (kReleaseMode) {
-        //   // read from json file asset
-        //   if (widget.initialValueJsonAssetPath != null) {
-        //     try {
-        //       String configFileS = await rootBundle.loadString(widget.initialValueJsonAssetPath!, cache: false);
-        //       model = CAPIModel.fromJson(json.decode(configFileS));
-        //     } catch (e) {
-        //       // failed to read json asset - ignore
-        //     }
-        //   }
-        // }
-
-        // init firebase storage
-        final storage = FirebaseStorage.instance;
-        final config = FirebaseUIStorageConfiguration(
-          storage: storage,
-        );
-        await FirebaseUIStorage.configure(config);
-        // read firebase storage folders (for creating a browser/picker)
-         var rootRef = FirebaseStorage.instance.ref(); // .child("/");
-         rootFSFolderNode = await fbModelRepo.createAndPopulateFolderNode(ref: rootRef);
-
-        // var storageRef = FirebaseStorage.instance.ref().child("/");
-        // var listResult = await storageRef.listAll();
-        // for (var prefix in listResult.prefixes) {
-        //   debugPrint(prefix.fullPath);
-        // }
-        // storageRef = FirebaseStorage.instance.ref().child("some-folder");
-        // listResult = await storageRef.listAll();
-        // for (var prefix in listResult.prefixes) {
-        //   debugPrint(prefix.fullPath);
-        // }
-        // storageRef =
-        //     FirebaseStorage.instance.ref().child("some-folder/folder-A");
-        // listResult = await storageRef.listAll();
-        // for (var prefix in listResult.prefixes) {
-        //   debugPrint(prefix.name);
-        //   debugPrint(prefix.fullPath);
-        // }
-
-        // ensure hydrated storage initialised
-        try {
-          HydratedBloc.storage;
-        } catch (e) {
-          // init local storage access
-          var dir = kIsWeb
-              ? HydratedStorage.webStorageDirectory
-              : await getTemporaryDirectory();
-          HydratedBloc.storage = await HydratedStorage.build(
-            storageDirectory: dir,
-          );
-        }
-
-        //possibly init firebase, then read model
-        // try to read model from firebase
-        // debugPrint("getFBModel()...");
-        // CAPIModel? fbModel;
-
-        if (widget.fbOptions != null) {
-          appInfo = await fbModelRepo.getAppInfo(appName: widget.appName) ??
-              AppModel();
-          BranchName branchName = appInfo.currentBranchName ?? 'dev';
-          // pop most recent undo item
-          BranchModel branch =
-              appInfo.branches[branchName] ?? BranchModel(name: branchName);
-          VersionId? versionId = branch.undos.firstOrNull;
-          if (versionId == null) {
-            model = CAPIModel(appName: widget.appName);
-          } else {
-            model = await fbModelRepo.getCAPIModel(
-                    appName: widget.appName,
-                    branchName: appInfo.currentBranchName,
-                    modelVersion: versionId) ??
-                CAPIModel(appName: widget.appName);
-          }
-        }
-
-        // // debugPrint("getFBModel() returned ${fbModel.toString()}");
-        // // if can't get model from FB, try localstorage
-        // if (fbModel == null) {
-        //   var modelJson = HydratedBloc.storage.read("flutter-content");
-        //   if (modelJson != null) {
-        //     try {
-        //       Map<String, dynamic> decoded = jsonDecode(modelJson);
-        //       model = CAPIModel.fromJson(decoded);
-        //     } catch (e) {
-        //       targetGroupMap = {};
-        //       snippetsMap = {};
-        //     }
-        //   }
-        // } else {
-        //   model = fbModel;
-        // }
-      }
-    } else {
-      // widget testing repo should  supply a model via a when(mockRepository.getCAPIModel(appName: appName...
-      model = await widget.testModelRepo?.getCAPIModel(
-            appName: widget.appName,
-            branchName: 'testing',
-            modelVersion: -1,
-          ) ??
-          CAPIModel(appName: widget.appName);
-    }
-
-    targetGroupMap = _parseTargetGroups(model);
-    // for (TargetGroupConfig tgConfig in targetGroupMap.values) {
-    //   for (TargetConfig tc in tgConfig.targets) {
-    //     tc.single = false;
-    //   }
-    // }
-    // imageTargetListMap.values.forEach((TargetGroupConfig? mtconfig) => mtconfig?.imageTargets.forEach((tc) => tc.single = false));
-    // singleTargetMap = model.targetConfigs;
-    // for (TargetConfig tc in singleTargetMap.values) {
-    //   tc.single = true;
-    // }
-    // singleTargetMap.values.forEach((tc) => tc.single = true);
-
-    // DirectoryNode rootDirectoryNode = model.jsonRootDirectoryNode != null
-    //     ? NodeMapper.fromJson(model.jsonRootDirectoryNode!) as DirectoryNode
-    //     : DirectoryNode(name: 'root', children: []);
-
-    FC().lastSavedModelJson = jsonEncode(model.toJson());
-
-    CAPIBloC capiBloc = CAPIBloC(
-      modelRepo: fbModelRepo,
-      appName: widget.appName,
-      // useFirebase: GetIt.I.isRegistered<FirebaseFirestore>(),
-      // localTestingFilePaths: widget.localTestingFilePaths,
-      targetGroupMap: targetGroupMap,
-      // singleTargetMap: singleTargetMap,
-      // jsonRootDirectoryNode: model.jsonRootDirectoryNode,
-      jsonClipboard: model.jsonClipboard,
-      // snippetsMap: snippetsMap,
-    );
-
-    var pkgInfo = await PackageInfo.fromPlatform();
-
-    // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
-    FC().init(
-      appName: pkgInfo.appName,
-      appInfo: appInfo,
-      rootFSFolderNode: rootFSFolderNode,
-      version: pkgInfo.version,
-      buildNumber: pkgInfo.buildNumber,
-      packageName: pkgInfo.packageName,
-      capiBloc: capiBloc,
-      snippetsMap: parseSnippetJsons(model),
+    CAPIBloC capiBloc = await FC().init(
+      modelName: widget.appName,
+      fbOptions: widget.fbOptions,
       namedStyles: widget.namedStyles,
     );
-
-    // ytController = YoutubePlayerController.fromVideoId(
-    //   videoId: 'zWh3CShX_do',
-    //   autoPlay: false,
-    //   params: const YoutubePlayerParams(showFullscreenButton: true),
-    // );
-
     return capiBloc;
   }
+
+  // ytController = YoutubePlayerController.fromVideoId(
+  //   videoId: 'zWh3CShX_do',
+  //   autoPlay: false,
+  //   params: const YoutubePlayerParams(showFullscreenButton: true),
+  // );
 
   @override
   Widget build(BuildContext context) => Builder(builder: (context) {
@@ -425,13 +258,12 @@ class MaterialSPAState extends State<MaterialSPA>
               // debugPrint("done (has data)");
               // create the clipboard overlay and hide
               // start the app with the main bloC
-              if (!_inited) {
+              if (!Callout.anyPresent(["floating-clipboard"])) {
                 Useful.afterNextBuildDo(() {
                   _showFloatingClipboard();
                   Callout.hide("floating-clipboard");
-                  showDevToolsButton(context);
+                  showDevToolsButton();
                 });
-                _inited = true;
               }
               return BlocProvider<CAPIBloC>(
                 create: (BuildContext context) => snapshot.data!,
@@ -536,30 +368,12 @@ class MaterialSPAState extends State<MaterialSPA>
   //           ));
   //     });
 
-  Map<String, TargetGroupConfig> _parseTargetGroups(CAPIModel model) {
-    Map<String, TargetGroupConfig> imageTargetListMap = {};
-    if (model.targetGroupConfigs.isNotEmpty) {
-      try {
-        for (String name in model.targetGroupConfigs.keys) {
-          TargetGroupConfig? imageConfig = model.targetGroupConfigs[name];
-          if (imageConfig != null && imageConfig.targets.isNotEmpty) {
-            imageTargetListMap[name] = imageConfig;
-          }
-        }
-      } catch (e) {
-        debugPrint("_parseImageTargets(): ${e.toString()}");
-        rethrow;
-      }
-    }
-    return imageTargetListMap;
-  }
-
-// Map<String, TargetConfig> _parseSingleTargets(CAPIModel model) {
-// Map<String, TargetConfig> singleTargetListMap = {};
+// Map<String, TargetModel> _parseSingleTargets(CAPIModel model) {
+// Map<String, TargetModel> singleTargetListMap = {};
 //   if (model.singleConfigs.isNotEmpty) {
 //     try {
 //       for (String wName in model.singleConfigs.keys ?? []) {
-//         TargetConfig? tc = model.singleConfigs[wName];
+//         TargetModel? tc = model.singleConfigs[wName];
 //         if (tc != null) {
 //           tc.single = true;
 //           tcs[wName] = tc;
@@ -574,10 +388,10 @@ class MaterialSPAState extends State<MaterialSPA>
 // }
 
 // void _initImageTargets(CAPIBloc capiBloc) {
-//   Map<String, CAPITargetConfigList> imageTargetListMap = capiBloc.state.imageTargetListMap;
+//   Map<String, CAPITargetModelList> imageTargetListMap = capiBloc.state.imageTargetListMap;
 //   if (imageTargetListMap.isNotEmpty) {
 //     try {
-//       for (CAPITargetConfigList imageConfig in imageTargetListMap.values) {
+//       for (CAPITargetModelList imageConfig in imageTargetListMap.values) {
 //         if (imageConfig.imageTargets.isNotEmpty) {
 //           for (int i = 0; i < imageConfig.imageTargets.length; i++) {
 //             // imageConfig.imageTargets[i].init(
@@ -596,26 +410,10 @@ class MaterialSPAState extends State<MaterialSPA>
 //   }
 // }
 
-  static Map<SnippetName, SnippetRootNode> parseSnippetJsons(CAPIModel model) {
-    Map<SnippetName, SnippetRootNode> snippetMap = {};
-    late String snippetJson;
-    try {
-      for (snippetJson in model.snippetEncodedJsons.values) {
-        SnippetRootNode rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
-        snippetMap[rootNode.name] = rootNode..validateTree();
-      }
-    } catch (e) {
-      debugPrint("parseSnippetJsons(): ${e.toString()}");
-      debugPrint("${snippetJson}");
-      // rethrow;
-    }
-    return snippetMap;
-  }
-
   /// either show edit btn fab, or lock icon fab
-  static Future<void> showDevToolsButton(BuildContext context) async {
-    // debugPrint("showDevToolsButton");
-    // Size screenSize = MediaQuery.of(context).size;
+  static Future<void> showDevToolsButton() async {
+    AppModel appModel = FC().appModel;
+    BranchModel? currentBranch = appModel.branches[appModel.currentBranchName];
     String ver = '${FC().version}-${FC().buildNumber}';
     Callout.dismiss("FAB");
     Callout.showOverlay(
@@ -623,33 +421,80 @@ class MaterialSPAState extends State<MaterialSPA>
             ? PointerInterceptor(
                 child: Tooltip(
                   message: "Edit this widget's tree (v.$ver)",
-                  child: TextButton.icon(
-                    onPressed: () async {
-                      MaterialSPAState? rootState = MaterialSPA.of(context);
-                      if (rootState != null) {
-                        enterEditMode(rootState.context);
-                      }
-                    },
-                    label: Useful.coloredText('edit...',
-                        color: Colors.white, fontSize: 24),
-                    icon: const Icon(
-                      Icons.account_tree_outlined,
-                      color: Colors.white,
-                      size: 36,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        tooltip: 'undo',
+                        // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
+                        icon: Icon(
+                          Icons.undo,
+                          color: Colors.white.withOpacity(
+                              (currentBranch?.undos.isNotEmpty ?? false)
+                                  ? 1.0
+                                  : .5),
+                        ),
+                        onPressed: () {
+                          FC().capiBloc.add(
+                              const CAPIEvent.revert(action: FSAction.undo));
+                          Useful.afterNextBuildDo(() {
+                            showDevToolsButton();
+                          });
+                        },
+                      ),
+                      const VerticalDivider(color: Colors.white),
+                      TextButton.icon(
+                        onPressed: () async {
+                          MaterialSPAState? rootState = MaterialSPA.of(context);
+                          if (rootState != null) {
+                            enterEditMode(
+                                rootState.context); //rootState.context);
+                          }
+                        },
+                        icon: Icon(Icons.edit, color: Colors.white),
+                        label: Useful.coloredText(
+                            '${FC().appModel.currentBranchName}',
+                            color: Colors.white,
+                            fontSize: 24),
+                      ),
+                      const VerticalDivider(color: Colors.white),
+                      FABMenuAnchor(),
+                      const VerticalDivider(color: Colors.white),
+                      IconButton(
+                        tooltip: 'redo',
+                        // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
+                        icon: Icon(
+                          Icons.redo,
+                          color: Colors.white.withOpacity(
+                              (currentBranch?.redos.isNotEmpty ?? false)
+                                  ? 1.0
+                                  : .5),
+                        ),
+                        onPressed: () {
+                          FC().capiBloc.add(
+                              const CAPIEvent.revert(action: FSAction.redo));
+                          Useful.afterNextBuildDo(() {
+                            showDevToolsButton();
+                          });
+                        },
+                      ),
+                    ],
                   ),
                 ),
               )
             : _lockIconButton(),
         calloutConfig: CalloutConfig(
           feature: "FAB",
-          suppliedCalloutW: 150,
+          suppliedCalloutW: FC().canEditContent ? 320 : 60,
           suppliedCalloutH: 60,
-          initialCalloutPos: FC().editModeBtnPos(context),
+          initialCalloutPos: FC().editModeBtnPos(Useful.rootContext),
           fillColor: FUCHSIA_X,
           arrowType: ArrowType.NO_CONNECTOR,
           //circleShape: true,
           borderRadius: 24,
+          elevation: 10,
           onDragEndedF: (newPos) => FC().setEditModeBtnPos(newPos),
         ));
   }
@@ -669,14 +514,14 @@ class MaterialSPAState extends State<MaterialSPA>
         ));
   }
 
-  static enterEditMode(BuildContext context) {
+  static void enterEditMode(BuildContext context) {
     Callout.dismiss("FAB");
     FC().inEditMode.value = true;
     showAllNodeWidgetOverlays(context);
     Callout.showTextToast(
       feature: 'tap-a-widget',
-      backgroundColor: Colors.white,
-      textColor: Colors.blue,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
       textScaleFactor: 2.5,
       msgText: 'Tap a widget...',
       onlyOnce: true,
@@ -686,7 +531,7 @@ class MaterialSPAState extends State<MaterialSPA>
     // FC().capiBloc.add(const CAPIEvent.forceRefresh());
   }
 
-  static exitEditMode() {
+  static void exitEditMode() {
     FC().inEditMode.value = false;
     removeAllNodeWidgetOverlays();
     String feature =
@@ -695,7 +540,7 @@ class MaterialSPAState extends State<MaterialSPA>
       Callout.dismiss(feature);
     }
     if (Useful.rootContext != null) {
-      showDevToolsButton(Useful.rootContext!);
+      showDevToolsButton();
     }
     FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
     // unhideAllSingleTargetBtns();
@@ -735,7 +580,7 @@ class MaterialSPAState extends State<MaterialSPA>
     // debugPrint('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
     FC().showingNodeOBoundaryOverlays = true;
-    bool configuringATarget = Callout.anyPresent(['config-toolbar']);
+    // bool configuringATarget = Callout.anyPresent(['config-toolbar']);
     var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el) {
       // debugPrint('traverseAndMeasure(${el.toString()})');
@@ -949,6 +794,7 @@ class MaterialSPAState extends State<MaterialSPA>
                         FC()
                             .capiBloc
                             .add(const CAPIEvent.unhideAllTargetGroups());
+                        showDevToolsButton();
                       });
                     }
                   },
@@ -990,6 +836,88 @@ class MaterialSPAState extends State<MaterialSPA>
       ),
       iconSize: 36,
       tooltip: 'editor login...',
+    );
+  }
+}
+
+class FABMenuAnchor extends StatefulWidget {
+  const FABMenuAnchor({super.key});
+
+  @override
+  State<FABMenuAnchor> createState() => _FABMenuAnchorState();
+}
+
+class _FABMenuAnchorState extends State<FABMenuAnchor> {
+  @override
+  Widget build(BuildContext context) {
+    return MenuAnchor(
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
+        return IconButton(
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          icon: const Icon(Icons.more_vert, color: Colors.white),
+          tooltip: 'Show menu',
+        );
+      },
+      menuChildren: [
+        MenuItemButton(
+          onPressed: () {
+            FC()
+                .capiBloc
+                .add(const CAPIEvent.switchBranch(newBranchName: "staging"));
+            Useful.afterNextBuildDo(() async {
+              await FC.loadAppModel();
+              await FC.loadLatestSnippetMap();
+              FC().capiBloc.add(const CAPIEvent.forceRefresh());
+              setState(() {});
+            });
+          },
+          child: Text('staging'),
+          trailingIcon: FC().appModel.currentBranchName != 'staging'
+              ? null
+              : Icon(Icons.check),
+        ),
+        MenuItemButton(
+          onPressed: () {
+            FC()
+                .capiBloc
+                .add(const CAPIEvent.switchBranch(newBranchName: "live"));
+            Useful.afterNextBuildDo(() async {
+              await FC.loadAppModel();
+              await FC.loadLatestSnippetMap();
+              FC().capiBloc.add(const CAPIEvent.forceRefresh());
+              setState(() {});
+            });
+          },
+          child: Text('live'),
+          trailingIcon: FC().appModel.currentBranchName != 'live'
+              ? null
+              : Icon(Icons.check),
+        ),
+        MenuItemButton(
+          onPressed: () => setState(() {}),
+          child: Text('copy staging -> live'),
+        ),
+        MenuItemButton(
+          onPressed: () => setState(() {}),
+          child: Text('copy live -> staging'),
+        ),
+        MenuItemButton(
+          onPressed: () => setState(
+            () async {
+              FC().setCanEdit(false);
+              FC().capiBloc.add(const CAPIEvent.forceRefresh());
+            },
+          ),
+          child: Text('sign out'),
+        ),
+      ],
     );
   }
 }

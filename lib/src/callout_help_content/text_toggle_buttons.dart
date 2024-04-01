@@ -34,7 +34,7 @@
 //
 //     return BlocBuilder<CAPIBloc, CAPIState>(
 //       builder: (context, state) {
-//         TargetConfig selectedTC = state.selectedTarget!;
+//         TargetModel selectedTC = state.selectedTarget!;
 //         bool bold = (selectedTC.fontWeightIndex ?? 0.0) >= FontWeight.bold.index;
 //         bool italic = selectedTC.italic;
 //         String textAlignment = selectedTC.textAlignment;

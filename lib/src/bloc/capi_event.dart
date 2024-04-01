@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'capi_event.freezed.dart';
@@ -9,31 +10,31 @@ part 'capi_event.freezed.dart';
 class CAPIEvent with _$CAPIEvent {
   // const factory CAPIEvent.appStarted() = AppStarted;
 
-  const factory CAPIEvent.newTarget({
-    required String wName,
-    required Offset newGlobalPos,
-  }) = NewTarget;
+  // const factory CAPIEvent.newTarget({
+  //   required String wName,
+  //   required Offset newGlobalPos,
+  // }) = NewTarget;
 
-  const factory CAPIEvent.deleteTarget({
-    required TargetConfig tc,
-  }) = DeleteTarget;
+  // const factory CAPIEvent.deleteTarget({
+  //   required TargetModel tc,
+  // }) = DeleteTarget;
 
   const factory CAPIEvent.selectPanel({
     required String? panelName,
   }) = SelectPanel;
 
   // const factory CAPIEvent.selectTarget({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   // }) = SelectTarget;
 
   const factory CAPIEvent.hideAllTargetGroups() = HideAllTargetGroups;
 
   const factory CAPIEvent.hideTargetGroupsExcept({
-    TargetConfig? tc,
+    TargetModel? tc,
   }) = HideTargetGroupsExcept;
 
   const factory CAPIEvent.showOnlyOneTarget({
-    TargetConfig? tc,
+    TargetModel? tc,
   }) = ShowOnlyOneTarget;
 
   const factory CAPIEvent.hideAllTargetGroupBtns() = HideAllTargetGroupBtns;
@@ -59,43 +60,43 @@ class CAPIEvent with _$CAPIEvent {
   //   required String wName,
   // }) = PlayNextInList;
 
-  const factory CAPIEvent.targetConfigChanged({
-    required TargetConfig newTC,
+  const factory CAPIEvent.TargetModelChanged({
+    required TargetModel newTC,
     @Default(false) bool keepTargetsHidden,
-  }) = TargetConfigChanged;
+  }) = TargetModelChanged;
 
   // const factory CAPIEvent.changedCalloutPosition({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required Offset newPos,
   // }) = ChangedCalloutPosition;
   //
   // const factory CAPIEvent.changedCalloutDuration({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required int newDurationMs,
   // }) = ChangedCalloutDuration;
   //
   // const factory CAPIEvent.changedCalloutColor({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required Color newColor,
   // }) = ChangedCalloutColor;
 
   // const factory CAPIEvent.changedCalloutTextAlign({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required TextAlign newTextAlign,
   // }) = ChangedCalloutTextAlign;
   //
   // const factory CAPIEvent.changedCalloutTextStyle({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required TextStyle newTextStyle,
   // }) = ChangedCalloutTextStyle;
 
   // const factory CAPIEvent.changedTargetRadius({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required double newRadius,
   // }) = ChangedTargetRadius;
   //
   // const factory CAPIEvent.changedTransformScale({
-  //   required TargetConfig tc,
+  //   required TargetModel tc,
   //   required double newScale,
   // }) = ChangedTransformScale;
 
@@ -121,10 +122,18 @@ class CAPIEvent with _$CAPIEvent {
   //   required String newSnippetName,
   // }) = SaveNodeAsSnippet;
 
-  const factory CAPIEvent.saveModel() = SaveModel;
+  const factory CAPIEvent.save({
+    @Default(false) bool force,
+  }) = Save;
+
+  const factory CAPIEvent.switchBranch({
+    required String newBranchName,
+}) = SwitchBranch;
+
+  const factory CAPIEvent.revert({required FSAction action}) = Revert;
 
 // const factory CAPIEvent.changedSnippetName({
-//   required TargetConfig tc,
+//   required TargetModel tc,
 //   required String newName,
 // }) = ChangedSnippetName;
 
@@ -144,9 +153,9 @@ class CAPIEvent with _$CAPIEvent {
     @Default(false) bool save,
   }) = PopSnippetBloc;
 
-  const factory CAPIEvent.restoredSnippetBloc({
-    required SnippetBloC restoredBloc,
-  }) = RestoredSnippetBloc;
+  // const factory CAPIEvent.restoredSnippetBloc({
+  //   required SnippetBloC restoredBloc,
+  // }) = RestoredSnippetBloc;
 
   const factory CAPIEvent.showDirectoryTree() = ShowDirectoryTree;
 

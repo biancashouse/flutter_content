@@ -31,8 +31,8 @@ class FSFoldersAndImagePicker extends HookWidget {
   Widget build(BuildContext context) {
     debugPrint('folder+images build');
     final msvC = useState<MultiSplitViewController>(
-        MultiSplitViewController(areas: [Area(weight: .5)]));
-    final selectedFolderRef = useState<Reference?>(null);
+        MultiSplitViewController(areas: [Area(weight: .7)]));
+    final selectedFolderRef = useState<Reference>(FC().rootFSFolderNode!.ref);
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
       child: Scaffold(
@@ -64,9 +64,14 @@ class FSFoldersAndImagePicker extends HookWidget {
                 );
               },
               children: [
-                // SNIPPET TREE
-                fsFolderPane(selectedFolderRef),
-                fsFoldersImagesPane(selectedFolderRef),
+                fsFolderPane(
+                  selectedFolderRef.value,
+                  (newRef) => selectedFolderRef.value = newRef,
+                ),
+                FolderImagesGridView(
+                  onChangeF: onChangeF,
+                  selectedFolderRef: selectedFolderRef.value,
+                ),
               ],
             ),
           ),
@@ -75,7 +80,8 @@ class FSFoldersAndImagePicker extends HookWidget {
     );
   }
 
-  Widget fsFolderPane(ValueNotifier<Reference?> selectedFolderRef) {
+  Widget fsFolderPane(
+      Reference selectedFolderRef, ValueChanged<Reference> onSelectionF) {
     if (FC().rootFSFolderNode == null) {
       return const Icon(
         Icons.warning,
@@ -100,7 +106,7 @@ class FSFoldersAndImagePicker extends HookWidget {
             onTap: () => treeC.toggleExpansion(entry.node),
             child: TreeIndentation(
               entry: entry,
-              guide: IndentGuide.connectingLines(color: Colors.white),
+              guide: const IndentGuide.connectingLines(color: Colors.white),
               child: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Row(
@@ -113,14 +119,14 @@ class FSFoldersAndImagePicker extends HookWidget {
                     ),
                     TextButton(
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
                         //backgroundColor: Colors.grey, // Background color
-                        textStyle: TextStyle(fontSize: 14), // Text style
+                        textStyle: const TextStyle(fontSize: 14), // Text style
                         shape: const ContinuousRectangleBorder(),
                         visualDensity: VisualDensity.compact,
                       ),
                       onPressed: () {
-                        selectedFolderRef.value = entry.node.ref;
+                        onSelectionF.call(entry.node.ref);
                       },
                       child: Useful.coloredText(
                           entry.node.ref.name.isEmpty
@@ -150,35 +156,134 @@ class FSFoldersAndImagePicker extends HookWidget {
           );
         });
   }
+}
 
-  Widget fsFoldersImagesPane(ValueNotifier<Reference?> selectedFolderRef) {
-    if (selectedFolderRef.value == null) {
-      return const Offstage();
-    }
+class FolderImagesGridView extends StatelessWidget {
+  const FolderImagesGridView({
+    super.key,
+    required this.onChangeF,
+    required this.selectedFolderRef,
+  });
 
-    return StorageGridView(
-      ref: selectedFolderRef.value,
-      loadingBuilder: (context) {
-        return Center(
-          child: Text('Loading...'),
-        );
-      },
-      itemBuilder: (context, ref) {
-        print('item: ref:${ref.fullPath}');
-        return InkWell(
-          onTap: () {
-            onChangeF(ref.fullPath);
-            Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-          },
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: StorageImage(ref: ref),
+  final ValueChanged<String?> onChangeF;
+  final Reference selectedFolderRef;
+
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('fsFoldersImagesPane(${selectedFolderRef.name})');
+
+    return Container(color: Colors.purple,
+      child: StorageGridView(
+        key: UniqueKey(),
+        loadingController: PaginatedLoadingController(ref: selectedFolderRef),
+        // ref: selectedFolderRef,
+        // loadingBuilder: (context) {
+        //   return const Center(
+        //     child: Text('Loading...'),
+        //   );
+        // },
+        itemBuilder: (context, ref) {
+          print('item: ref:${ref.fullPath}');
+          return InkWell(
+            onTap: () {
+              onChangeF(ref.fullPath);
+              Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+            },
+            child: AspectRatio(
+              aspectRatio: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: StorageImage(ref: ref),
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
+
+// class StorageGridView extends StatelessWidget {
+//   /// The [Reference] to list items from.
+//   /// If not provided, a [loadingController] must be created and passed.
+//   final Reference? ref;
+//
+//   final PaginatedLoadingController? loadingController;
+//
+//   /// The number of items to load per page.
+//   /// Defaults to 50.
+//   final int pageSize;
+//
+//   /// A builder that is called when an error occurs during page loading.
+//   final Widget Function(
+//       BuildContext context,
+//       Object? error,
+//       PaginatedLoadingController controller,
+//       )? errorBuilder;
+//
+//   /// A builder that is called for each item in the list.
+//   final Widget Function(BuildContext context, Reference ref) itemBuilder;
+//
+//   /// See [SliverGridDelegate].
+//   final SliverGridDelegate gridDelegate;
+//
+//   const StorageGridView({
+//     super.key,
+//     this.ref,
+//     this.loadingController,
+//     this.pageSize = 50,
+//     this.errorBuilder,
+//     this.gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+//       crossAxisCount: 3,
+//     ),
+//     required this.itemBuilder,
+//   }) : assert(
+//   ref != null || loadingController != null,
+//   'ref or loadingController must be provided',
+//   );
+//
+//   PaginatedLoadingController get ctrl => loadingController ??
+//       PaginatedLoadingController(
+//         ref: ref!,
+//         pageSize: pageSize,
+//       );
+//
+//   Widget gridBuilder(BuildContext context, List<Reference> items) {
+//     return GridView.builder(
+//       gridDelegate: gridDelegate,
+//       itemCount: items.length,
+//       itemBuilder: (context, index) {
+//         if (ctrl.shouldLoadNextPage(index)) {
+//           ctrl.load();
+//         }
+//
+//         return itemBuilder(context, items[index]);
+//       },
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return AnimatedBuilder(
+//       animation: ctrl,
+//       builder: (context, _) {
+//         return switch (ctrl.state) {
+//           InitialPageLoading() => const Center(
+//             child: CircularProgressIndicator(
+//               strokeWidth: 4,
+//               valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+//             ),
+//           ),
+//           PageLoadError(
+//           error: final error,
+//           items: final items,
+//           ) => errorBuilder != null
+//               ? errorBuilder!(context, error, ctrl)
+//               : gridBuilder(context, items ?? []),
+//           PageLoading(items: final items) => gridBuilder(context, items),
+//           PageLoadComplete(items: final items) => gridBuilder(context, items),
+//         };
+//       },
+//     );
+//   }
+// }

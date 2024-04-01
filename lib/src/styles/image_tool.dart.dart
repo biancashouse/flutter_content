@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../model/model.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class ImageTool extends StatefulWidget {
-  final TargetConfig tc;
+  final TargetModel tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
@@ -25,14 +24,14 @@ class _ImageToolState extends State<ImageTool> {
   void initState() {
     // _buttonGk = GlobalKey();
     super.initState();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.purpleAccent,
       padding: const EdgeInsets.all(18.0),
-      child: Container(color:Colors.blue[50]),
+      child: Container(color: Colors.blue[50]),
     );
   }
 
@@ -68,5 +67,4 @@ class _ImageToolState extends State<ImageTool> {
   //     icon: Icon(Icons.image_outlined, size: 36, color: Colors.blue),
   //   ),
   // );
-
 }

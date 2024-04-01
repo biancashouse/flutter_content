@@ -4,11 +4,13 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTarget extends StatelessWidget {
-  final TargetConfig tc;
-
+  // final TargetsWrapperState parentWrapperState;
+  final TargetModel tc;
+  final int index;
   const PositionedTarget(
     this.tc,
-      {super.key,
+    this.index, {
+    super.key,
   });
 
   CAPIBloC get bloc => FC().capiBloc;
@@ -55,12 +57,12 @@ class PositionedTarget extends StatelessWidget {
                 //   tc.getScale(bloc.state) * tc.radius,
                 //   tc.getScale(bloc.state) * tc.radius,
                 // ));
-                bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+                bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
 
                 // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
                 // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
                 //   if (bloC.state.aTargetIsSelected()) {
-                //     showTargetConfigToolbarCallout(
+                //     showTargetModelToolbarCallout(
                 //       bloc, tc,
                 //       ancestorHScrollController,
                 //       ancestorVScrollController,
@@ -85,7 +87,7 @@ class PositionedTarget extends StatelessWidget {
     // // }
   }
 
-  // Widget _draggableTargetNotBeingDragged(context, TargetConfig tc) {
+  // Widget _draggableTargetNotBeingDragged(context, TargetModel tc) {
   //   // debugPrint('_draggableTargetNotBeingDragged');
   //   double radius = tc.radius;
   //   return SizedBox(
@@ -102,26 +104,27 @@ class PositionedTarget extends StatelessWidget {
   //   );
   // }
 
-  Widget _draggableTarget(TargetConfig tc) {
+  Widget _draggableTarget(TargetModel tc) {
     // debugPrint('_draggableTarget');
     double radius = tc.radius;
     return SizedBox(
-      width: tc.getScale(bloc.state) * radius * 2,
-      height: tc.getScale(bloc.state) * radius * 2,
-      child: TargetCover(tc),
+      width: tc.getScale() * radius * 2,
+      height: tc.getScale() * radius * 2,
+      child: TargetCover(tc, index),
     );
   }
 }
 
 class TargetCover extends StatelessWidget {
-  final TargetConfig tc;
+  final TargetModel tc;
+  final int index;
 
-  const TargetCover(this.tc, {super.key});
+  const TargetCover(this.tc, this.index, {super.key});
 
   @override
   Widget build(BuildContext context) {
     // debugPrint('TargetCover');
-    double radius = tc.getScale(FC().capiBloc.state) * tc.radius;
+    double radius = tc.getScale() * tc.radius;
     return Stack(
       children: [
         Align(
@@ -146,7 +149,7 @@ class TargetCover extends StatelessWidget {
           alignment: Alignment.center,
           child: IntegerCircleAvatar(
             tc,
-            num: FC().capiBloc.state.targetIndex(tc) + 1,
+            num: index + 1,
             bgColor: tc.calloutColor().withOpacity(.5),
             radius: radius,
             textColor: FC().canEditContent ? Colors.white : Colors.transparent,

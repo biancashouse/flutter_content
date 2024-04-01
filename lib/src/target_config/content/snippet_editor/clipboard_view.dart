@@ -16,7 +16,7 @@ class ClipboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CAPIBloC bloc = FC().capiBloc;
-    String? clipboardJson = bloc.state.jsonClipboard;
+    EncodedJson? clipboardJson = FC().appModel.clipboard;
     if (clipboardJson == null) return const Offstage();
     var clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
     SnippetTreeController clipboardTreeC = SnippetTreeController(

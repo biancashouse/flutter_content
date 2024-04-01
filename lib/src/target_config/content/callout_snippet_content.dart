@@ -21,13 +21,11 @@ void removeSnippetContentCallout(String snippetName) {
 
 /// returning false means user tapped the x
 Future<void> showSnippetContentCallout({
-  required TargetsWrapperName twName,
-  required TargetConfig tc,
+  required TargetModel tc,
   required bool justPlaying,
 }) async {
   // possibly transform before showing callout
-  TargetsWrapperState? parentTW = FC().targetsWrappers[twName]?.currentState
-      as TargetsWrapperState?; //TargetsWrapper.of(context);
+  TargetsWrapperState? parentTW = tc.targetWrapperState;
 
   Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
       .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
@@ -42,7 +40,7 @@ Future<void> showSnippetContentCallout({
   // bool ignoreBarrierTaps = false;
   double minHeight = 0;
   // int maxLines = 5;
-  // TargetConfig? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
+  // TargetModel? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
   GlobalKey? targetGK() => FC().getMultiTargetGk(tc.uid.toString())!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
@@ -94,14 +92,14 @@ Future<void> showSnippetContentCallout({
           tc
             ..calloutWidth = newSize.width
             ..calloutHeight = newSize.height;
-          // FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+          // FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         },
         onDragEndedF: (Offset newPos) {
           if (newPos.dy / Useful.scrH != tc.calloutTopPc ||
               newPos.dx / Useful.scrW != tc.calloutLeftPc) {
             tc.calloutTopPc = newPos.dy / Useful.scrH;
             tc.calloutLeftPc = newPos.dx / Useful.scrW;
-            FC().capiBloc.add(CAPIEvent.targetConfigChanged(
+            FC().capiBloc.add(CAPIEvent.TargetModelChanged(
                 newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
@@ -136,7 +134,7 @@ Future<void> showSnippetContentCallout({
 }
 
 // void showHelpContentPlayCallout(
-//   final TargetConfig tc,
+//   final TargetModel tc,
 //   final ScrollController? ancestorHScrollController,
 //   final ScrollController? ancestorVScrollController,
 // ) {

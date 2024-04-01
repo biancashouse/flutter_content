@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_model.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -17,13 +14,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   CAPIBloC({
     required this.modelRepo,
-    required String appName,
     // bool useFirebase = false,
     // required bool localTestingFilePaths,
-    required Map<String, TargetGroupConfig> targetGroupMap,
-    // required Map<String, TargetConfig> singleTargetMap,
-    String? jsonRootDirectoryNode,
-    String? jsonClipboard,
+    // required Map<String, TargetGroupModel> targetGroupMap,
+    // required Map<String, TargetModel> singleTargetMap,
+    EncodedJson? jsonRootDirectoryNode,
     // required Map<SnippetName, SnippetRootNode> snippetsMap,
     Offset? snippetTreeCalloutInitialPos,
     double? snippetTreeCalloutW,
@@ -31,19 +26,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double? snippetPropertiesCalloutW,
     // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
-          appName: appName,
           // useFirebase: useFirebase,
           // localTestingFilePaths: localTestingFilePaths,
-          targetGroupMap: targetGroupMap,
+          // targetGroupMap: targetGroupMap,
           // jsonRootDirectoryNode: jsonRootDirectoryNode,
-          jsonClipboard: jsonClipboard,
           // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
           snippetTreeCalloutW: snippetTreeCalloutW,
           snippetTreeCalloutH: snippetTreeCalloutH,
           // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
           // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
           // snippetsMap: snippetsMap,
-          modelUR: ModelUR(),
+          // modelUR: ModelUR(),
         )) {
     // init the static map
     // for (String id in singleTargetMap.keys) {
@@ -55,27 +48,33 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
     // on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
-    on<SaveModel>((event, emit) => _saveModel(event, emit));
+    on<Save>((event, emit) => _save(event, emit));
+    on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
+    on<Revert>((event, emit) => _revert(event, emit));
     // on<InitApp>((event, emit) => _initApp(event, emit));
     // on<RecordMatrix>((event, emit) => _recordMatrix(event, emit));
     // on<TargetMoved>((event, emit) => _targetMoved(event, emit));
     // on<BtnMoved>((event, emit) => _btnMoved(event, emit));
     // on<NewTargetManual>((event, emit) => _newTargetManual(event, emit));
-    on<NewTarget>((event, emit) => _newTarget(event, emit));
+    // on<NewTarget>((event, emit) => _newTarget(event, emit));
     // on<ListViewRefreshed>((event, emit) => _listViewRefreshed(event, emit));
-    on<DeleteTarget>((event, emit) => _deleteTarget(event, emit));
+    // on<DeleteTarget>((event, emit) => _deleteTarget(event, emit));
     // on<SelectTarget>((event, emit) => _selectTarget(event, emit));
     on<HideIframes>((event, emit) => _hideIframes(event, emit));
     on<HideAllTargetGroups>((event, emit) => _hideAllTargetGroups(event, emit));
-    on<HideAllTargetGroupBtns>((event, emit) => _hideAllTargetGroupBtns(event, emit));
-    on<HideTargetGroupsExcept>((event, emit) => _hideTargetGroupsExcept(event, emit));
-    on<ShowOnlyOneTarget>((event, emit) => _showOnlyOneTargetGroup(event, emit));
-    on<UnhideAllTargetGroups>((event, emit) => _unhideAllTargetGroups(event, emit));
+    on<HideAllTargetGroupBtns>(
+        (event, emit) => _hideAllTargetGroupBtns(event, emit));
+    on<HideTargetGroupsExcept>(
+        (event, emit) => _hideTargetGroupsExcept(event, emit));
+    on<ShowOnlyOneTarget>(
+        (event, emit) => _showOnlyOneTargetGroup(event, emit));
+    on<UnhideAllTargetGroups>(
+        (event, emit) => _unhideAllTargetGroups(event, emit));
     // on<ChangedOrder>((event, emit) => _changedOrder(event, emit));
     // on<ClearSelection>((event, emit) => _clearSelection(event, emit));
     // on<StartPlayingList>((event, emit) => _startPlayingList(event, emit));
     // on<PlayNextInList>((event, emit) => _playNextInList(event, emit));
-    on<TargetConfigChanged>((event, emit) => _targetConfigChanged(event, emit));
+    on<TargetModelChanged>((event, emit) => _TargetModelChanged(event, emit));
     // on<ChangedCalloutPosition>((event, emit) => _changedCalloutPosition(event, emit));
     // on<ChangedCalloutDuration>((event, emit) => _changedCalloutDuration(event, emit));
     // on<ChangedCalloutColor>((event, emit) => _changedCalloutColor(event, emit));
@@ -89,7 +88,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<ClearUR>((event, emit) => _clearUR(event, emit));
     on<PushSnippetBloc>((event, emit) => _pushSnippetBloc(event, emit));
     on<PopSnippetBloc>((event, emit) => _popSnippetBloc(event, emit));
-    on<RestoredSnippetBloc>((event, emit) => _restoredSnippetBloc(event, emit));
+    // on<RestoredSnippetBloc>((event, emit) => _restoredSnippetBloc(event, emit));
     // on<CreatedSnippet>((event, emit) => _createdSnippet(event, emit));
     on<SetPanelSnippet>((event, emit) => _setPanelSnippet(event, emit));
     // on<DockChangeSnippetEditor>((event, emit) => _dockChangeSnippetEditor(event, emit));
@@ -157,15 +156,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   ));
   // }
 
-  Future<void> _saveModel(event, emit) async {
-    CAPIModel model = _stateToModel();
-    String jsonS = jsonEncode(model.toJson());
+  Future<void> _save(Save event, emit) async {
+    _saveSnippets(force: event.force);
+  }
+
+  Future<void> _saveSnippets({bool force = false}) async {
+    String? jsonBeforePush = FC().jsonBeforePush;
+    String currentJsonS = FC().snippetsModel.toJson();
 
     // testing
-    var testModel = jsonDecode(jsonS);
+    // var testModel = jsonDecode(jsonS);
 
     // only save if changes detected
-    if (jsonS == FC().lastSavedModelJson) return;
+    if (!force && currentJsonS == jsonBeforePush) return;
 
     final stopwatch = Stopwatch()..start();
     // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
@@ -180,7 +183,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     );
 
     // save to local storage
-    HydratedBloc.storage.write('flutter-content', jsonS);
+    HydratedBloc.storage.write('flutter-content', currentJsonS);
     // // save to clipboard
     // try {
     //   Clipboard.setData(ClipboardData(text: jsonS));
@@ -189,7 +192,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
 
     // save to firebase
-    await modelRepo.createOrUpdateAppInfoAndCAPIModel(appInfo: FC().appInfo, model: model);
+    await modelRepo.save(
+        appModel: FC().appModel, snippets: FC().snippetsModel.snippets);
 
     // }
     // } else {
@@ -202,30 +206,64 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   }
     // }
     // min 2s display of toast
-    if (stopwatch.elapsedMilliseconds < 2000) await Future.delayed(Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+    if (stopwatch.elapsedMilliseconds < 2000)
+      await Future.delayed(
+          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     Callout.dismissAll(onlyToasts: true);
     // update last value
-    FC().lastSavedModelJson = jsonS;
   }
 
-  CAPIModel _stateToModel() => CAPIModel(
-        appName: state.appName,
-        targetGroupConfigs: state.targetGroupMap,
-        // targetConfigs: SingleTargetWrapper.singleTargetMap,
-        snippetEncodedJsons: _encodeAllSnippets(),
-        jsonClipboard: state.jsonClipboard,
-      );
+  Future<void> _switchBranch(SwitchBranch event, emit) async {
+    final stopwatch = Stopwatch()..start();
+    // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+    Callout.showTextToast(
+      feature: "saving-model",
+      msgText: 'saving changes...',
+      backgroundColor: Colors.yellow,
+      width: Useful.scrW * .8,
+      height: 40,
+      gravity: Alignment.topCenter,
+      textColor: Colors.blueAccent,
+    );
 
-  Map<String, String> _encodeAllSnippets() {
-    // debugPrint('_encodeAllSnippets:');
-    List<SnippetRootNode>? rootNodes = FC().snippetsMap.values.toList();
-    Map<String, String> snippetJsons = {};
-    for (SnippetRootNode rootNode in rootNodes) {
-      // debugPrint(rootNode.name);
-      // debugPrint(rootNode.toJson());
-      snippetJsons[rootNode.name] = rootNode.toJson();
+    // save to firebase
+    await modelRepo.switchBranch(newBranchName: event.newBranchName);
+
+    // min 2s display of toast
+    if (stopwatch.elapsedMilliseconds < 2000) {
+      await Future.delayed(
+          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     }
-    return snippetJsons;
+    Callout.dismissAll(onlyToasts: true);
+    // update last value
+  }
+
+  Future<void> _revert(event, emit) async {
+    final stopwatch = Stopwatch()..start();
+    Callout.showTextToast(
+      feature: "reverting-model",
+      msgText: event.action == FSAction.undo
+          ? 'undoing changes...'
+          : 'redoing changes...',
+      backgroundColor: Colors.yellow,
+      width: Useful.scrW * .8,
+      height: 40,
+      gravity: Alignment.topCenter,
+      textColor: Colors.blueAccent,
+    );
+
+    await modelRepo.revert(action: event.action);
+
+    if (stopwatch.elapsedMilliseconds < 2000)
+      await Future.delayed(
+          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+
+    Callout.dismissAll(onlyToasts: true);
+    await FC.loadLatestSnippetMap();
+
+    emit(state.copyWith(
+      force: state.force + 1,
+    ));
   }
 
   void _forceRefresh(event, emit) {
@@ -243,7 +281,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _startPlayingList(StartPlayingList event, emit) {
-//   List<TargetConfig> newPlayList = [];
+//   List<TargetModel> newPlayList = [];
 //   if (event.playList == null) {
 //     if (state.aTargetIsSelected()) {
 //       newPlayList = [state.selectedTarget!];
@@ -255,7 +293,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //     newPlayList = event.playList == null
 //         ? []
 //         : event.playList!.map((i) {
-//             TargetConfig tc = state.imageConfig(event.name)!.imageTargets[i];
+//             TargetModel tc = state.imageConfig(event.name)!.imageTargets[i];
 //             return tc;
 //           }).toList();
 //   }
@@ -265,7 +303,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _playNextInList(PlayNextInList event, emit) {
-//   List<TargetConfig> newPlayList = [];
+//   List<TargetModel> newPlayList = [];
 //   if (state.playList.isNotEmpty) {
 //     newPlayList = state.playList.sublist(1);
 //     emit(state.copyWith(
@@ -274,27 +312,28 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   }
 // }
 
-  Future<void> _copyModelToClipboard(event, emit) async {
-    // playWhooshSound();
-    CAPIModel model = CAPIModel(targetGroupConfigs: state.targetGroupMap);
-    await Clipboard.setData(ClipboardData(text: jsonEncode(model.toJson())));
-  }
+  // Future<void> _copyModelToClipboard(event, emit) async {
+  //   // playWhooshSound();
+  //   CAPIModel model = CAPIModel(TargetGroupModels: state.targetGroupMap);
+  //   await Clipboard.setData(ClipboardData(text: jsonEncode(model.toJson())));
+  // }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
+    FC().appModel.clipboard = event.newContent;
     emit(state.copyWith(
-      jsonClipboard: event.newContent,
       force: state.force + 1,
     ));
     if (event.skipSave) return;
-    _saveModel(event, emit);
+    // TODO save just the clipboard
+    _saveSnippets();
   }
 
 // // update current scale, translate and selected target
 //   void _recordMatrix(RecordMatrix event, emit) {
 //     if (state.aTargetIsSelected()) {
-//       TargetConfig updatedTC = state.selectedTarget!;
+//       TargetModel updatedTC = state.selectedTarget!;
 //       updatedTC.setRecordedMatrix(event.newMatrix);
-//       Map<String, CAPITargetConfig> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, updatedTC);
+//       Map<String, CAPITargetModel> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, updatedTC);
 //       emit(state.copyWith(
 //         targetGroupMap: newTargetGroupListMap,
 //         force: state.force + 1,
@@ -305,12 +344,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
 // update current scale, translate and selected target
 //   void _targetMoved(TargetMoved event, emit) {
-//     TargetConfig updatedTC = event.tc;
+//     TargetModel updatedTC = event.tc;
 //     updatedTC.setTargetStackPosPc(event.newGlobalPos.translate(
 //       event.tc.getScale(state) * event.targetRadius,
 //       event.tc.getScale(state) * event.targetRadius,
 //     ));
-//     Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
+//     Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
 //     emit(state.copyWith(
 //       targetGroupMap: newTargetGroupListMap,
 //       force: state.force + 1,
@@ -319,12 +358,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
 // update current scale, translate and selected target
 //   void _btnMoved(BtnMoved event, emit) {
-//     TargetConfig updatedTC = event.tc;
+//     TargetModel updatedTC = event.tc;
 //     updatedTC.setBtnStackPosPc(event.newGlobalPos.translate(
 //       state.CAPI_TARGET_BTN_RADIUS,
 //       state.CAPI_TARGET_BTN_RADIUS,
 //     ));
-//     Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
+//     Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
 //     emit(state.copyWith(
 //       targetGroupMap: newTargetGroupListMap,
 //       force: state.force + 1,
@@ -332,7 +371,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   }
 
 // void _newTargetManual(NewTargetManual event, emit) {
-//   TargetConfig newItem = TargetConfig(
+//   TargetModel newItem = TargetModel(
 //     uid: Random().nextInt(100),
 //     twName: event.wName,
 //   );
@@ -345,7 +384,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   newItem.setTargetStackPosPc(event.newGlobalPos);
 //   newItem.btnLocalLeftPc = newItem.targetLocalPosLeftPc;
 //   newItem.btnLocalTopPc = newItem.targetLocalPosTopPc;
-//   Map<String, List<TargetConfig>> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, newItem);
+//   Map<String, List<TargetModel>> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, newItem);
 //   // select new item
 //   int index = (newTargetGroupListMap[event.wName] ?? []).indexOf(newItem);
 //   Map<String, int> newSelectionMap = Map.of(state.selectedTargetIndexMap);
@@ -359,53 +398,35 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   ));
 // }
 
-  void _newTarget(NewTarget event, emit) {
-    int newTargetUid = DateTime.now().millisecondsSinceEpoch;
-    TargetConfig newItem = TargetConfig(
-      uid: newTargetUid, //event.wName.hashCode,
-      wName: event.wName,
-      snippetName: "$newTargetUid",
-      // single: false,
-    );
-    // newItem.init(
-    //   this,
-    //   // GlobalKey(),
-    //   // FocusNode(),
-    //   // FocusNode(),
-    // );
-    newItem.setTargetStackPosPc(event.newGlobalPos);
-    bool onLeft = newItem.targetLocalPosLeftPc! < .5;
-    newItem.btnLocalTopPc = newItem.targetLocalPosTopPc;
-    newItem.btnLocalLeftPc = newItem.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
+  // void _newTarget(NewTarget event, emit) {
+  //   Map<String, TargetGroupModel> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.wName, newItem);
+  //   emit(state.copyWith(
+  //     targetGroupMap: newTargetGroupListMap,
+  //     // selectedTarget: newItem,
+  //     newestTarget: newItem,
+  //   ));
+  // }
 
-    Map<String, TargetGroupConfig> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.wName, newItem);
-    emit(state.copyWith(
-      targetGroupMap: newTargetGroupListMap,
-      // selectedTarget: newItem,
-      newestTarget: newItem,
-    ));
-  }
-
-  void _deleteTarget(DeleteTarget event, emit) {
-    TargetGroupConfig newConfig = state.imageConfig(event.tc.wName)!;
-    try {
-      TargetConfig oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == event.tc.uid);
-      int oldTcIndex = newConfig.targets.indexOf(oldTc);
-      newConfig.targets.removeAt(oldTcIndex);
-      Map<String, TargetGroupConfig> newTargetGroupListMap = Map.of(state.targetGroupMap);
-      newTargetGroupListMap[event.tc.wName] = newConfig;
-      emit(state.copyWith(
-        targetGroupMap: newTargetGroupListMap,
-        hideAllTargetGroups: false,
-        hideAllTargetGroupPlayBtns: false,
-        hideTargetsExcept: null,
-        force: state.force + 1,
-      ));
-      _saveModel(event, emit);
-    } catch (e) {
-      debugPrint("\nUnable to remove tc !\n");
-    }
-  }
+  // void _deleteTarget(DeleteTarget event, emit) {
+  //   TargetGroupModel newConfig = state.imageConfig(event.tc.wName)!;
+  //   try {
+  //     TargetModel oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == event.tc.uid);
+  //     int oldTcIndex = newConfig.targets.indexOf(oldTc);
+  //     newConfig.targets.removeAt(oldTcIndex);
+  //     Map<String, TargetGroupModel> newTargetGroupListMap = Map.of(state.targetGroupMap);
+  //     newTargetGroupListMap[event.tc.wName] = newConfig;
+  //     emit(state.copyWith(
+  //       targetGroupMap: newTargetGroupListMap,
+  //       hideAllTargetGroups: false,
+  //       hideAllTargetGroupPlayBtns: false,
+  //       hideTargetsExcept: null,
+  //       force: state.force + 1,
+  //     ));
+  //     _saveModel(event, emit);
+  //   } catch (e) {
+  //     debugPrint("\nUnable to remove tc !\n");
+  //   }
+  // }
 
 // Future<void> _selectTarget(SelectTarget event, emit) async {
 //   emit(state.copyWith(
@@ -431,7 +452,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
-  Future<void> _hideTargetGroupsExcept(HideTargetGroupsExcept event, emit) async {
+  Future<void> _hideTargetGroupsExcept(
+      HideTargetGroupsExcept event, emit) async {
     emit(state.copyWith(
       hideTargetsExcept: event.tc,
     ));
@@ -457,10 +479,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   if (event.oldIndex < newIndex) {
 //     newIndex -= 1;
 //   }
-//   List<TargetConfig> newTargetList = List.of(state.imageTargets(event.wName));
-//   final TargetConfig item = newTargetList.removeAt(event.oldIndex);
+//   List<TargetModel> newTargetList = List.of(state.imageTargets(event.wName));
+//   final TargetModel item = newTargetList.removeAt(event.oldIndex);
 //   newTargetList.insert(newIndex, item);
-//   Map<String, List<TargetConfig>> newTargetsMap = Map.of(state.targetGroupMap);
+//   Map<String, List<TargetModel>> newTargetsMap = Map.of(state.targetGroupMap);
 //   newTargetsMap[event.wName] = newTargetList;
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetsMap,
@@ -511,8 +533,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
 // void _clearSelection(ClearSelection event, emit) {
 //   if (state.aTargetIsSelected(widget.name)) {
-//     TargetConfig newTC = state.selectedTarget!.clone();
-//     Map<String, List<TargetConfig>> newTargetGroupListMap = {}..addAll(state.targetGroupMap);
+//     TargetModel newTC = state.selectedTarget!.clone();
+//     Map<String, List<TargetModel>> newTargetGroupListMap = {}..addAll(state.targetGroupMap);
 //     newTC.setTargetLocalPosPc(
 //       event.targetCalloutGlobalPos,
 //       state.childMeasuredPositionMap[state.selectedTargetWrapperName]!,
@@ -530,32 +552,35 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   emit(state.copyWith());
 // }
 
-  void _targetConfigChanged(TargetConfigChanged event, emit) {
-    state.modelUR.createUndo(_stateToModel());
+  void _TargetModelChanged(TargetModelChanged event, emit) {
+    // state.modelUR.createUndo(stateToModel());
     // if (event.newTC.single) {
-    //   Map<String, TargetConfig> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
+    //   Map<String, TargetModel> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
     //   newMap[event.newTC.wName] = event.newTC;
     //   emit(state.copyWith(
     //     force: state.force + 1,
     //   ));
     // } else {
-      Map<String, TargetGroupConfig> newMap = _addOrUpdateTargetGroupListMap(event.newTC.wName, event.newTC);
-      emit(state.copyWith(
-        targetGroupMap: newMap,
-        hideAllTargetGroups: event.keepTargetsHidden ? state.hideAllTargetGroups : false,
-        hideAllTargetGroupPlayBtns: event.keepTargetsHidden ? state.hideAllTargetGroupPlayBtns : false,
-        hideTargetsExcept: event.keepTargetsHidden ? state.hideTargetsExcept : null,
-        force: state.force + 1,
-      ));
+    //   Map<String, TargetGroupModel> newMap = _addOrUpdateTargetGroupListMap(event.newTC.wName, event.newTC);
+    emit(state.copyWith(
+      // targetGroupMap: newMap,
+      hideAllTargetGroups:
+          event.keepTargetsHidden ? state.hideAllTargetGroups : false,
+      hideAllTargetGroupPlayBtns:
+          event.keepTargetsHidden ? state.hideAllTargetGroupPlayBtns : false,
+      hideTargetsExcept:
+          event.keepTargetsHidden ? state.hideTargetsExcept : null,
+      force: state.force + 1,
+    ));
     // }
-    _saveModel(event, emit);
+    _saveSnippets();
   }
 
 // void _changedCalloutPosition(ChangedCalloutPosition event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.calloutTopPc = event.newPos.dy / Useful.scrH;
 //   tc.calloutLeftPc = event.newPos.dx / Useful.scrW;
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -564,9 +589,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedCalloutDuration(ChangedCalloutDuration event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.calloutDurationMs = event.newDurationMs;
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -575,9 +600,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedCalloutTextAlign(ChangedCalloutTextAlign event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.setTextAlign(event.newTextAlign);
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -586,9 +611,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedCalloutColor(ChangedCalloutColor event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.setCalloutColor(event.newColor);
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -597,9 +622,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedCalloutTextStyle(ChangedCalloutTextStyle event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.setTextStyle(event.newTextStyle);
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -608,9 +633,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedTargetRadius(ChangedTargetRadius event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.radius = event.newRadius;
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -619,9 +644,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedTransformScale(ChangedTransformScale event, emit) {
-//   TargetConfig tc = event.tc.clone();
+//   TargetModel tc = event.tc.clone();
 //   tc.transformScale = event.newScale;
-//   Map<String, CAPITargetConfigList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
+//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
 //   emit(state.copyWith(
 //     targetGroupMap: newTargetGroupListMap,
 //     // selectedTarget: tc,
@@ -647,25 +672,25 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   // }
 // }
 
-  Map<String, TargetGroupConfig> _addOrUpdateTargetGroupListMap(final String name, final TargetConfig tc) {
-    // replace or append tc in copy of its list
-    TargetGroupConfig newConfig = state.imageConfig(name) ?? TargetGroupConfig([]);
-    try {
-      TargetConfig oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == tc.uid);
-      int oldTcIndex = newConfig.targets.indexOf(oldTc);
-      if (oldTcIndex == -1) {
-        newConfig.targets.add(tc);
-      } else {
-        newConfig.targets[oldTcIndex] = tc;
-      }
-    } catch (e) {
-      newConfig.targets.add(tc);
-    }
-    // replace the list containing the tc
-    Map<String, TargetGroupConfig> newTargetGroupListMap = Map.of(state.targetGroupMap);
-    newTargetGroupListMap[name] = newConfig;
-    return newTargetGroupListMap;
-  }
+  // Map<String, TargetGroupModel> _addOrUpdateTargetGroupListMap(final String name, final TargetModel tc) {
+  //   // replace or append tc in copy of its list
+  //   TargetGroupModel newConfig = state.imageConfig(name) ?? TargetGroupModel([]);
+  //   try {
+  //     TargetModel oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == tc.uid);
+  //     int oldTcIndex = newConfig.targets.indexOf(oldTc);
+  //     if (oldTcIndex == -1) {
+  //       newConfig.targets.add(tc);
+  //     } else {
+  //       newConfig.targets[oldTcIndex] = tc;
+  //     }
+  //   } catch (e) {
+  //     newConfig.targets.add(tc);
+  //   }
+  //   // replace the list containing the tc
+  //   Map<String, TargetGroupModel> newTargetGroupListMap = Map.of(state.targetGroupMap);
+  //   newTargetGroupListMap[name] = newConfig;
+  //   return newTargetGroupListMap;
+  // }
 
 // void _refreshToolCallouts() {
 //   // Callout.moveToByFeature(CAPI.BUTTONS_CALLOUT.feature(), buttonsCalloutInitialPos());
@@ -676,11 +701,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   Callout.moveToByFeature(CAPI.STYLES_CALLOUT.feature(), stylesCalloutInitialPos(b ?? true));
 // }
 
-// Map<String, TargetConfig> _parseTargets(CAPIModel model) {
-//   Map<String, TargetConfig> targetMap = {};
+// Map<String, TargetModel> _parseTargets(CAPIModel model) {
+//   Map<String, TargetModel> targetMap = {};
 //   try {
 //     for (String name in model.targetMap?.keys ?? []) {
-//       TargetConfig tc = model.targetMap![name]!;
+//       TargetModel tc = model.targetMap![name]!;
 //       tc.init(
 //         this,
 //         GlobalKey(debugLabel: name),
@@ -738,7 +763,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   if (_soundpool != null && _errorSoundId != null) await _soundpool!.play(_errorSoundId!);
 // }
 
-// TargetConfig? selectedTC() => state.selectedTarget;
+// TargetModel? selectedTC() => state.selectedTarget;
 
 // static Offset m4ToTranslation(Matrix4 m) {
 //   math.Vector3 translation = math.Vector3.zero();
@@ -767,7 +792,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //     if (event.nodeParent is MultiChildNode) {
 //       state.snippetTreeC.collapse(event.node);
 //     }
-//     Map<String, CAPITargetConfig> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.tc!.wName, event.tc!);
+//     Map<String, CAPITargetModel> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.tc!.wName, event.tc!);
 //     emit(state.copyWith(
 //       targetGroupMap: newTargetGroupListMap,
 //       movedNodeId: null,
@@ -852,11 +877,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (rootNode == null) return;
 
     SnippetTreeController newTreeC() => SnippetTreeController(
-          roots: event.visibleDecendantNode != null ? [event.visibleDecendantNode!] : [rootNode],
+          roots: event.visibleDecendantNode != null
+              ? [event.visibleDecendantNode!]
+              : [rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
         );
 
-    SnippetBloC newSnippetBloc = SnippetBloC(rootNode: rootNode, treeC: newTreeC()..expandAll(), treeUR: SnippetTreeUR());
+    SnippetBloC newSnippetBloc = SnippetBloC(
+        rootNode: rootNode,
+        treeC: newTreeC()..expandAll(),
+        // treeUR: SnippetTreeUR()
+        );
     FC().pushSnippet(newSnippetBloc);
 
     // emit(state.copyWith(
@@ -880,19 +911,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
-  Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
-    SnippetBloC? beforeUndoOrRedo = FC().popSnippet();
-    FC().pushSnippet(event.restoredBloc);
-    // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
-    // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FlutterContent().snippetsMap);
-    SnippetRootNode rootNode = event.restoredBloc.rootNode;
-    FC().snippetsMap[rootNode.name] = rootNode;
-
-    emit(state.copyWith(
-      // snippetsMap: newSnippetsMap,
-      force: state.force + 1,
-    ));
-  }
+  // Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
+  //   SnippetBloC? beforeUndoOrRedo = FC().popSnippet();
+  //   FC().pushSnippet(event.restoredBloc);
+  //   // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
+  //   // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FlutterContent().snippetsMap);
+  //   SnippetRootNode rootNode = event.restoredBloc.rootNode;
+  //   FC().snippetsMap[rootNode.name] = rootNode;
+  //
+  //   emit(state.copyWith(
+  //     // snippetsMap: newSnippetsMap,
+  //     force: state.force + 1,
+  //   ));
+  // }
 
   void _setPanelSnippet(SetPanelSnippet event, emit) {
     FC().snippetPlacementMap[event.panelName] = event.snippetName;

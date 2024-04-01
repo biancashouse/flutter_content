@@ -56,17 +56,17 @@
 //   static List<Feature> singleWidgetFeatures() =>
 //       singleTargetMap.keys.map((s) => singleTargetBtnFeature(s)).toList();
 //
-//   static Map<String, TargetConfig> singleTargetMap = {};
+//   static Map<String, TargetModel> singleTargetMap = {};
 //
-//   static TargetConfig? singleTarget({required String name}) {
+//   static TargetModel? singleTarget({required String name}) {
 //     // debugPrint("singleTargetc: $name");
-//     TargetConfig? tc;
+//     TargetModel? tc;
 //     // var singleTargets = singleTargetMap;
 //     // debugPrint(singleTargets.toString());
 //     try {
 //       // var names = singleTargetMap.values.map((tc) => tc.wName).toList();
 //       // debugPrint("singleTarget keys: ${names.toString()}");
-//       // for (TargetConfig atc in singleTargetMap.values) {
+//       // for (TargetModel atc in singleTargetMap.values) {
 //       //   debugPrint("singleTarget: ${atc.toJson()}");
 //       // }
 //       tc = singleTargetMap.values.where((tc) => tc.wName == name).first;
@@ -80,7 +80,7 @@
 //
 // class SingleTargetWrapperState extends State<SingleTargetWrapper>
 //     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-//   late TargetConfig singleTC;
+//   late TargetModel singleTC;
 //   late Offset targetPos;
 //   late Size targetSize;
 //
@@ -93,7 +93,7 @@
 //     FC().setSingleTargetGk(widget.name, GlobalKey(debugLabel: widget.name));
 //
 //     // register this target wrapper - may get overwritten from initApp (i.e. if alrady stored in LS, or FB)
-//     SingleTargetWrapper.singleTargetMap[widget.name] ??= TargetConfig(
+//     SingleTargetWrapper.singleTargetMap[widget.name] ??= TargetModel(
 //       uid: widget.name.hashCode,
 //       wName: widget.name,
 //       single: true,
@@ -159,7 +159,7 @@
 //             }
 //
 //             // CAPIBloc bloc = FlutterContent().capiBlocnstance;
-//             // TargetConfig? tc = bloc.state.singleTarget(name: widget.name);
+//             // TargetModel? tc = bloc.state.singleTarget(name: widget.name);
 //             // if (tc != null) {
 //             //   Rect? wrapperRect = findGlobalRect(CAPIState.gk(parentTW.widget.name.hashCode)!);
 //             //   Rect? targetRect = findGlobalRect(CAPIState.gk(widget.name.hashCode)!);
@@ -169,12 +169,12 @@
 //             //     hideAllSingleTargetBtns();
 //             //     Alignment ta = Useful.calcTargetAlignment(wrapperRect, targetRect);
 //             //     parentTW.applyTransform(tc.transformScale, tc.transformScale, ta, afterTransformF: () {
-//             //       showTargetConfigToolbarCallout(
+//             //       showTargetModelToolbarCallout(
 //             //         tc,
 //             //         widget.ancestorHScrollController,
 //             //         widget.ancestorVScrollController,
 //             //         onCloseF: () async {
-//             //           removeTargetConfigToolbarCallout();
+//             //           removeTargetModelToolbarCallout();
 //             //           parentTW.resetTransform();
 //             //           bloc.add(const CAPIEvent.unhideAllTargetGroups());
 //             //           // unhide single widget buttons
@@ -231,7 +231,7 @@
 //   }
 //
 //   static Future<void> playSingleTarget(context,
-//       {required bool justPlaying, required TargetConfig tc}) async {
+//       {required bool justPlaying, required TargetModel tc}) async {
 //     debugPrint("Playing");
 //     CAPIBloC bloc = FC().capiBloc;
 //     // may not be wrapped inside a TransformableWrapper
@@ -301,12 +301,12 @@
 //             });
 //           }
 //           // else {
-//           // showTargetConfigToolbarCallout(
+//           // showTargetModelToolbarCallout(
 //           //   singleTC,
 //           //   widget.ancestorHScrollController,
 //           //   widget.ancestorVScrollController,
 //           //   onCloseF: () async {
-//           //     removeTargetConfigToolbarCallout();
+//           //     removeTargetModelToolbarCallout();
 //           //     parentTW!.resetTransform();
 //           //     bloc.add(const CAPIEvent.unhideAllTargetGroups());
 //           //     unhideAllSingleTargetBtns();

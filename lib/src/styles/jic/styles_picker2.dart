@@ -29,7 +29,7 @@
 // /// You can pass your text style or alignment to the widget
 // /// and then get the edited text style
 // class StylesPicker2 extends StatefulWidget {
-//   final TargetConfig tc;
+//   final TargetModel tc;
 //   final ScrollController? ancestorHScrollController;
 //   final ScrollController? ancestorVScrollController;
 //
@@ -98,7 +98,7 @@
 //
 // Offset stylesCalloutInitialPos() => Offset(Useful.scrW - MAXIMISED_STYLE_CALLOUT_W, Useful.scrH - MAXIMISED_STYLE_CALLOUT_H);
 //
-// void showStylesCallout(final TargetConfig tc, final ScrollController? ancestorHScrollC, final ScrollController? ancestorVScrollC) {
+// void showStylesCallout(final TargetModel tc, final ScrollController? ancestorHScrollC, final ScrollController? ancestorVScrollC) {
 //   Callout(
 //     feature: CAPI.STYLES_CALLOUT.feature(),
 //     color: Colors.transparent,

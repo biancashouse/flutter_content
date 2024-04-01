@@ -58,16 +58,14 @@ void main() {
   // sample data -----------
   setUpAll(() {
     mockRepository = MockModelRepository();
-    when(mockRepository.getCAPIModel(
-      appName: appName,
-      branchName: 'testing',
-      modelVersion: TEST_VERSION_ID,
-    )).thenAnswer((_) async {
-      final modelSnippetJson = modelSnippetRoot.toJson();
-      return CAPIModel(
-          appName: appName,
-          snippetEncodedJsons: {snippetName: modelSnippetJson});
-    });
+    // when(mockRepository.getCAPIModel(
+    //   branchName: 'testing',
+    //   modelVersion: TEST_VERSION_ID,
+    // )).thenAnswer((_) async {
+    //   final modelSnippetJson = modelSnippetRoot.toJson();
+    //   return CAPIModel(
+    //       snippetEncodedJsons: {snippetName: modelSnippetJson});
+    // });
     // snippetState = snippetBloc.state;
     // FC().init(capiBloc: mockCapiBloc, snippetsMap: {snippetName: modelSnippetRoot}, namedStyles: {});
     // GetIt.I.registerSingleton<CAPIBloC>(mockCapiBloc);

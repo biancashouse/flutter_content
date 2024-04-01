@@ -39,7 +39,7 @@ void main() {
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final ur = SnippetTreeUR();
+  // final ur = SnippetTreeUR();
 
   const snippetName = 'scaffold-with-tabs';
   final modelSnippetRoot = SnippetRootNode(
@@ -130,35 +130,26 @@ void main() {
       mockRepository = MockModelRepository();
       const appName = 'flutter-content-test-app';
       when(mockRepository.getCAPIModel(
-        appName: appName,
         branchName: 'testing',
         modelVersion: TEST_VERSION_ID,
       )).thenAnswer((_) async {
         final modelSnippetJson = modelSnippetRoot.toJson();
         CAPIModel model = CAPIModel(
-            appName: appName,
             snippetEncodedJsons: {snippetName: modelSnippetJson});
-        // String encodedModelJsonS = model.toJson().toString();
+        // String encodedSnippetMapJsonS = model.toJson().toString();
         return model;
       });
-      when(mockRepository.getAppInfo(appName: appName)).thenAnswer((_) async {
+      when(mockRepository.getAppModel()).thenAnswer((_) async {
         return AppModel();
       });
       capiBloc = CAPIBloC(
-        appName: appName,
         modelRepo: mockRepository,
         // singleTargetMap: {},
         targetGroupMap: {},
       );
-      AppModel? appInfo = await mockRepository.getAppInfo(appName: appName);
+      AppModel? appInfo = await mockRepository.getAppModel();
       FC().init(
-        appName: 'example',
-        appInfo: appInfo ?? AppModel(),
-        packageName: 'flutter_content',
-        version: '1.0',
-        buildNumber: '0.0.1',
-        capiBloc: capiBloc,
-        snippetsMap: {},
+        modelName: 'testing',
         namedStyles: {},
       );
     });

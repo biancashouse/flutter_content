@@ -6,7 +6,7 @@ import 'package:flutter_content/src/target_config/content/callout_snippet_conten
 
 class ColourTool extends StatefulWidget {
   final TargetsWrapperName twName;
-  final TargetConfig tc;
+  final TargetModel tc;
   final VoidCallback onParentBarrierTappedF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
@@ -27,7 +27,7 @@ class ColourTool extends StatefulWidget {
 
   static show(
     final TargetsWrapperName twName,
-    final TargetConfig tc, {
+    final TargetModel tc, {
     required VoidCallback onBarrierTappedF,
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
@@ -71,7 +71,7 @@ class _ColourToolState extends State<ColourTool> {
   // late ArrowType _arrowType;
   // late bool _animate;
 
-  TargetConfig get tc => widget.tc;
+  TargetModel get tc => widget.tc;
 
   CAPIBloC get bloc => FC().capiBloc;
 
@@ -94,7 +94,7 @@ class _ColourToolState extends State<ColourTool> {
             onChanged: (color) {
               tc.setCalloutColor(color);
               // Callout.refreshOverlay(tc.snippetName);
-              // // bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+              // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
               Callout.dismiss(CAPI.COLOUR_CALLOUT.name);
               // Useful.afterNextBuildDo(() {
               //   widget.onParentBarrierTappedF.call();
@@ -105,7 +105,6 @@ class _ColourToolState extends State<ColourTool> {
                   ?.zoomer
                   ?.zoomImmediately(tc.transformScale, tc.transformScale);
               showSnippetContentCallout(
-                twName: widget.twName,
                 tc: tc,
                 justPlaying: false,
                 // widget.onParentBarrierTappedF,

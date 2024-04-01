@@ -344,9 +344,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // removeNodePropertiesCallout();
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
-            if (snippetBeingEdited.state.canUndo()) {
-              FC().capiBloc.add(const CAPIEvent.saveModel());
-            }
+            FC().capiBloc.add(const CAPIEvent.save());
           },
         );
 
@@ -381,7 +379,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void refreshWithUpdate(VoidCallback assignF) {
     SnippetBloC? snippetBloc = FC().snippetBeingEdited;
     SnippetState? snippetBlocState = snippetBloc?.state;
-    snippetBlocState?.ur.createUndo(snippetBlocState);
+    // snippetBlocState?.ur.createUndo(snippetBlocState);
     assignF.call();
     capiBloc.add(const CAPIEvent.forceRefresh());
     Useful.afterNextBuildDo(() {

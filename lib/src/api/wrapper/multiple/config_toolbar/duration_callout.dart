@@ -15,7 +15,7 @@ void removeTargetDurationCallout() {
 }
 
 Future<void> showTargetDurationCallout(
-  final TargetConfig tc, {
+  final TargetModel tc, {
   final ScrollController? ancestorHScrollController,
   final ScrollController? ancestorVScrollController,
 }) async {

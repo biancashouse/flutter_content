@@ -612,7 +612,7 @@ MenuItemButton? _pasteMI(
   STreeNode selectedNode,
   NodeAction action,
 ) {
-  if (FC().capiBloc.state.jsonClipboard != null &&
+  if (FC().appModel.clipboard != null &&
       action != NodeAction.wrapWith) {
     return MenuItemButton(
       onPressed: () {

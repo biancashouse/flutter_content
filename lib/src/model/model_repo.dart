@@ -2,16 +2,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 
+enum FSAction { undo, redo }
+
 abstract class IModelRepository {
-  Future<AppModel?> getAppInfo({required String appName});
-  Future<CAPIModel?> getCAPIModel({
-    required String appName,
+  Future<AppModel?> getAppModel();
+
+  Future<SnippetMapModel?> getVersionedSnippetMap({
     required BranchName branchName,
     required VersionId modelVersion,
   });
 
-  Future<void> createOrUpdateAppInfoAndCAPIModel(
-      {required AppModel appInfo, required CAPIModel model});
+  Future<void> switchBranch({required String newBranchName});
+
+  Future<void> save({required AppModel appModel, required SnippetMap snippets});
+
+  Future<void> revert({required FSAction action});
 
   Future<void> saveVote({
     required String pollName,
@@ -22,16 +27,17 @@ abstract class IModelRepository {
 
   Future<OptionCountsAndVoterRecord> getPollResultsForUser({
     required VoterId voterId,
-    required String appName,
     required String pollName,
   });
 
   Future<Map<PollOptionId, List<EmailAddress>>> getVotersByOption({
-    required String appName,
+    required String modelName,
     required String pollName,
     required List<PollOptionId> pollOptionIds,
   });
 
-  Future<FSFolderNode> createAndPopulateFolderNode({
-    required Reference ref, FSFolderNode? parentNode});
+  // Future<void> createAndPopulateRootFSStorageNode();
+
+  Future<FSFolderNode> createAndPopulateFolderNode(
+      {required Reference ref, FSFolderNode? parentNode});
 }

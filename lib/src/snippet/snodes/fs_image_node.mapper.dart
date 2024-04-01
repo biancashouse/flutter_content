@@ -23,11 +23,9 @@ class FSImageNodeMapper extends SubClassMapperBase<FSImageNode> {
   @override
   final String id = 'FSImageNode';
 
-  static String _$fsFullPath(FSImageNode v) => v.fsFullPath;
-  static const Field<FSImageNode, String> _f$fsFullPath = Field(
-      'fsFullPath', _$fsFullPath,
-      opt: true,
-      def: 'gs://flutter-content-2dc30.appspot.com/missing-image.PNG');
+  static String? _$fsFullPath(FSImageNode v) => v.fsFullPath;
+  static const Field<FSImageNode, String> _f$fsFullPath =
+      Field('fsFullPath', _$fsFullPath, opt: true);
   static BoxFitEnum? _$fit(FSImageNode v) => v.fit;
   static const Field<FSImageNode, BoxFitEnum> _f$fit =
       Field('fit', _$fit, opt: true);
@@ -161,14 +159,14 @@ class _FSImageNodeCopyWithImpl<$R, $Out>
       FSImageNodeMapper.ensureInitialized();
   @override
   $R call(
-          {String? fsFullPath,
+          {Object? fsFullPath = $none,
           Object? fit = $none,
           Object? alignment = $none,
           Object? width = $none,
           Object? height = $none,
           Object? scale = $none}) =>
       $apply(FieldCopyWithData({
-        if (fsFullPath != null) #fsFullPath: fsFullPath,
+        if (fsFullPath != $none) #fsFullPath: fsFullPath,
         if (fit != $none) #fit: fit,
         if (alignment != $none) #alignment: alignment,
         if (width != $none) #width: width,

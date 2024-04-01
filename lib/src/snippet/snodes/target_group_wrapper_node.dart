@@ -7,11 +7,17 @@ import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.d
 part 'target_group_wrapper_node.mapper.dart';
 
 @MappableClass()
-class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappable {
+class TargetGroupWrapperNode extends ButtonNode
+    with TargetGroupWrapperNodeMappable {
   SnippetName name;
+
+  List<TargetModel> targets;
+  List<TargetModel> playList;
 
   TargetGroupWrapperNode({
     required this.name,
+    this.targets = const [],
+    this.playList = const [],
     super.child,
   });
 
@@ -21,7 +27,8 @@ class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappa
           snode: this,
           name: 'wrapper name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 80),
           calloutSize: const Size(280, 80),
         ),
@@ -43,21 +50,21 @@ class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappa
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     return name != 'name?'
-    ? TargetsWrapper(
-      key: createNodeGK(),
-      name: name,
-      child: super.child?.toWidget(context, this) ??
-          const Icon(
-            Icons.question_mark,
-            color: Colors.orangeAccent,
-          ),
-    )
-    : const Row(
-      children: [
-        Text('wrapper must be assigned a name'),
-        Icon(Icons.error, color: Colors.redAccent),
-      ],
-    );
+        ? TargetsWrapper(
+            parentNode: this,
+            key: createNodeGK(),
+            child: super.child?.toWidget(context, this) ??
+                const Icon(
+                  Icons.question_mark,
+                  color: Colors.orangeAccent,
+                ),
+          )
+        : const Row(
+            children: [
+              Text('wrapper must be assigned a name'),
+              Icon(Icons.error, color: Colors.redAccent),
+            ],
+          );
     return child?.toWidget(context, this) ??
         const Icon(
           Icons.warning,
@@ -68,7 +75,8 @@ class TargetGroupWrapperNode extends ButtonNode with TargetGroupWrapperNodeMappa
 
   @override
   String toSource(BuildContext context) {
-    return child?.toSource(context) ?? 'Icon(Icons.warning, color: Colors.red, size: 24,)';
+    return child?.toSource(context) ??
+        'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
   @override

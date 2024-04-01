@@ -18,7 +18,7 @@ void main() {
   late SnippetTreeController treeC;
   late SnippetBloC snippetBloc;
   late SnippetState selectedState;
-  late Map<String, dynamic> encodedModelJson;
+  late Map<String, dynamic> encodedSnippetMapJson;
   late SnippetState snippetState;
   const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
@@ -31,7 +31,7 @@ void main() {
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final ur = SnippetTreeUR();
+  // final ur = SnippetTreeUR();
 
   // sample data -----------
   SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
@@ -86,7 +86,9 @@ void main() {
       ..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC,
+        // treeUR: ur
+    );
     selectedState = snippetBloc.state;
     if (select != null) {
       selectedState = snippetBloc.state.copyWith(
@@ -103,32 +105,23 @@ void main() {
     return Future(() async {
       mockRepository = MockModelRepository();
       when(mockRepository.getCAPIModel(
-        appName: appName,
         branchName: 'testing',
         modelVersion: TEST_VERSION_ID,
       )).thenAnswer((_) async {
         final modelSnippetJson = modelSnippetRoot.toJson();
         CAPIModel model = CAPIModel(
-            appName: appName,
             snippetEncodedJsons: {snippetName: modelSnippetJson});
-        String encodedModelJsonS = model.toJson().toString();
+        String encodedSnippetMapJsonS = model.toJson().toString();
         return model;
       });
       capiBloc = CAPIBloC(
-        appName: appName,
         modelRepo: mockRepository,
         // singleTargetMap: {},
         targetGroupMap: {},
       );
-      AppModel? appInfo = await mockRepository.getAppInfo(appName: appName);
+      AppModel? appInfo = await mockRepository.getAppModel();
       FC().init(
-        appName: 'example',
-        appInfo: appInfo ?? AppModel(),
-        packageName: 'flutter_content',
-        version: '1.0',
-        buildNumber: '0.0.1',
-        capiBloc: capiBloc,
-        snippetsMap: {},
+        modelName: 'testing',
         namedStyles: {},
       );
       scaffoldAnd2TabsAndStepper = ScaffoldNode(
@@ -191,15 +184,12 @@ void main() {
     // --- repo test
     test('read the model from the repo, and find 1st TextNode', () async {
       final model = await mockRepository.getCAPIModel(
-        appName: appName,
         branchName: 'testing',
         modelVersion: TEST_VERSION_ID,
       );
 
-      expect(model?.appName, appName);
-
       Map<String, SnippetRootNode> snippetMap =
-          MaterialSPAState.parseSnippetJsons(model!);
+          FC.parseSnippetJsons(model!);
 
       SnippetRootNode rootNode = snippetMap.values.first;
       expect(rootNode.name, snippetName);
@@ -218,7 +208,8 @@ void main() {
       build: () => snippetBloc = SnippetBloC(
           rootNode: modelSnippetRoot,
           treeC: newTreeC(modelSnippetRoot),
-          treeUR: SnippetTreeUR()),
+          // treeUR: SnippetTreeUR()
+      ),
       act: (bloc) => bloc.add(SnippetEvent.selectNode(
         node: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,
@@ -239,7 +230,8 @@ void main() {
       build: () => SnippetBloC(
           rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
-          treeUR: SnippetTreeUR()),
+          // treeUR: SnippetTreeUR()
+      ),
       act: (bloc) {
         bloc.add(
           SnippetEvent.selectNode(
@@ -266,7 +258,8 @@ void main() {
       build: () => SnippetBloC(
           rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
-          treeUR: SnippetTreeUR()),
+          // treeUR: SnippetTreeUR()
+      ),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,
@@ -304,7 +297,8 @@ void main() {
       build: () => SnippetBloC(
           rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
-          treeUR: SnippetTreeUR()),
+          // treeUR: SnippetTreeUR()
+      ),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
         selectedWidgetGK: selectedWidgetGK,

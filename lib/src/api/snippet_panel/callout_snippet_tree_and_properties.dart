@@ -104,7 +104,7 @@ void showSnippetTreeAndPropertiesCallout({
   // to check for any change
   // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
   EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  String? originalClipboardJson = FC().capiBloc.state.jsonClipboard;
+  // String? originalClipboardJson = FC().capiBloc.state.jsonClipboard;
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
   CalloutConfig cc = snippetTreeCalloutConfig(snippetBloc, onDismissedF);

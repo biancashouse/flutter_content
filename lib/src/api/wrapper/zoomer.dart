@@ -30,7 +30,7 @@ class ZoomerState extends State<Zoomer>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   BuildContext? updatedContext;
 
-  late MaterialSPAState? parentAppState;
+  // late MaterialSPAState? parentAppState;
   late Animation<Matrix4> _matrix4Animation;
   late AnimationController _aController;
   late Alignment _transformAlignment;
@@ -91,8 +91,8 @@ class ZoomerState extends State<Zoomer>
 
     // debugPrint('*** Zoomer() ***');
 
-    parentAppState =
-        MaterialSPA.of(context.mounted ? context : updatedContext!);
+    // parentAppState =
+    //     MaterialSPA.of(context.mounted ? context : updatedContext!);
 
     if (widget.ancestorHScrollController != null) {
       FC().registerScrollController(widget.ancestorHScrollController!);

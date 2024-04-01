@@ -18,7 +18,7 @@ Timer? _debounce;
 
 class CalloutConfigToolbar extends StatefulWidget {
   final TargetsWrapperName twName;
-  final TargetConfig tc;
+  final TargetModel tc;
   final VoidCallback onCloseF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
@@ -32,9 +32,9 @@ class CalloutConfigToolbar extends StatefulWidget {
     super.key,
   });
 
-  static double CALLOUT_CONFIG_TOOLBAR_W(TargetConfig tc) => 700;
+  static double CALLOUT_CONFIG_TOOLBAR_W(TargetModel tc) => 700;
 
-  static double CALLOUT_CONFIG_TOOLBAR_H(TargetConfig tc) => 60.0;
+  static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
   @override
   State<CalloutConfigToolbar> createState() => _CalloutConfigToolbarState();
@@ -46,8 +46,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // @override
   @override
   Widget build(BuildContext context) {
-    TargetConfig tc = widget.tc;
-    Size ivSize = TargetsWrapper.iwSize(tc.wName);
+    TargetModel tc = widget.tc;
+    Size ivSize = tc.targetWrapperState!.wrapperSize;
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),
@@ -66,7 +66,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   color: Colors.white,
                   onDragStartF: () => Callout.dismiss(tc.snippetName),
                   onDragEndF: () => showSnippetContentCallout(
-                        twName: widget.twName,
                         tc: tc,
                         // parentTW.widget.ancestorHScrollController,
                         // parentTW.widget.ancestorVScrollController,
@@ -100,7 +99,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     // Set up a new debounce timer
                     _debounce = Timer(const Duration(milliseconds: 100), () {
                       tc.radiusPc = value / ivSize.width;
-                      FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+                      FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                     });
                   },
                   min: 16.0,
@@ -133,7 +132,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 justPlaying: false,
               );
 
-              // hideTargetConfigToolbarCallout();
+              // hideTargetModelToolbarCallout();
               // // ensure snippet exists
               // SnippetNode? sNode = bloc.state.snippet(tc.snippetName);
               // if (sNode == null) {
@@ -191,12 +190,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     ?.zoomer
                     ?.zoomImmediately(tc.transformScale, tc.transformScale);
                 showSnippetContentCallout(
-                  twName: widget.twName,
                   tc: tc,
                   justPlaying: false,
                   // widget.onParentBarrierTappedF,
                 );
-                // FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+                // FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // Useful.afterNextBuildDo(() {
                 //   removeSnippetContentCallout(tc.snippetName);
                 //   showSnippetContentCallout(
@@ -235,7 +233,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               color: Colors.orangeAccent,
             ),
             onPressed: () {
-              FC().capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
+              //TODO FC().capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
+              tc.targetWrapperState!.widget.parentNode.targets.remove(tc);
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               FC().parentTW(widget.twName)?.zoomer?.resetTransform();
@@ -253,7 +252,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               FC().parentTW(widget.twName)?.zoomer?.resetTransform();
-              FC().capiBloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+              FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
               FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
             },
           ),
@@ -269,7 +268,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     super.didChangeDependencies();
   }
 
-  // Offset _topLeft(TargetConfig tc) {
+  // Offset _topLeft(TargetModel tc) {
   //   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
   //       widget.parent.calloutW!, widget.parent.calloutH!);
   //   if (widget.side == Side.TOP) {

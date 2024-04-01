@@ -8,12 +8,14 @@ import 'config_toolbar/callout_config_toolbar.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetPlayBtn extends StatelessWidget {
-  final TargetsWrapperName twName;
-  final TargetConfig initialTC;
+  final TargetModel initialTC;
+  final TargetsWrapperState parentWrapperState;
+  final int index;
 
   const PositionedTargetPlayBtn({
-    required this.twName,
     required this.initialTC,
+    required this.parentWrapperState,
+    required this.index,
     super.key,
   });
 
@@ -21,25 +23,20 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TargetConfig? tc = bloc.state.tcByUid(initialTC);
-    return tc != null
-        ? Positioned(
-            top: tc.btnStackPos().dy - bloc.state.CAPI_TARGET_BTN_RADIUS,
-            left: tc.btnStackPos().dx - bloc.state.CAPI_TARGET_BTN_RADIUS,
-            child: _draggableSelectTargetBtn(context, tc),
-          )
-        : const Icon(
-            Icons.warning,
-            color: Colors.red,
-          );
+    TargetModel? tc = initialTC; //bloc.state.tcByUid(initialTC);
+    return Positioned(
+      top: tc.btnStackPos().dy - bloc.state.CAPI_TARGET_BTN_RADIUS,
+      left: tc.btnStackPos().dx - bloc.state.CAPI_TARGET_BTN_RADIUS,
+      child: _draggableSelectTargetBtn(context, tc),
+    );
   }
 
-  Widget _draggableSelectTargetBtn(BuildContext context, TargetConfig tc) {
+  Widget _draggableSelectTargetBtn(BuildContext context, TargetModel tc) {
     return Draggable(
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
         tc,
-        num: bloc.state.targetIndex(tc) + 1,
+        num: index + 1,
         bgColor: tc.calloutColor(),
         radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
         textColor: Color(Colors.white.value),
@@ -47,37 +44,39 @@ class PositionedTargetPlayBtn extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
+          parentWrapperState.widget.parentNode.playList.add(tc);
           playTarget(context, tc);
         },
-        onLongPress: (){
-          tc.setTargetStackPosPc(tc.btnStackPos());
-          bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+        onLongPress: () {
+          tc.setTargetStackPosPc(
+            tc.btnStackPos(),
+          );
+          bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         },
         onDoubleTap: () async {
           if (!FC().canEditContent) return;
           Alignment? ta =
-              TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(
-                  twName, tc);
+              TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
           if (ta == null) return;
 
           // hideAllSingleTargetBtns();
           bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
 
           // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-          FC().parentTW(twName)?.zoomer?.applyTransform(
+          parentWrapperState.zoomer?.applyTransform(
               tc.transformScale, tc.transformScale, ta, afterTransformF: () {
             showSnippetContentCallout(
               tc: tc,
-              twName: twName,
               justPlaying: false,
             );
             // show config toolbar in a toast
-            showConfigToolbar(tc, twName, context);
+            showConfigToolbar(
+                tc, parentWrapperState.widget.parentNode.name, context);
           });
         },
         child: IntegerCircleAvatar(
           tc,
-          num: bloc.state.targetIndex(tc) + 1,
+          num: index + 1,
           bgColor: tc.calloutColor(),
           radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
           textColor: Colors.white,
@@ -116,68 +115,59 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               bloc.state.CAPI_TARGET_BTN_RADIUS,
             )
             .translate(
-              FC()
-                      .parentTW(twName)
-                      ?.zoomer
-                      ?.widget
-                      .ancestorHScrollController
-                      ?.offset ??
+              parentWrapperState
+                      .zoomer?.widget.ancestorHScrollController?.offset ??
                   0.0,
-              FC()
-                      .parentTW(twName)
-                      ?.zoomer
-                      ?.widget
-                      .ancestorVScrollController
-                      ?.offset ??
+              parentWrapperState
+                      .zoomer?.widget.ancestorVScrollController?.offset ??
                   0.0,
-            ));
-        bloc.add(CAPIEvent.targetConfigChanged(newTC: tc));
+            ),
+        );
+        bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
       },
     );
   }
 
-  void playTarget(context, TargetConfig tc) {
-    Alignment? ta =
-        TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(twName, tc);
+  void playTarget(context, TargetModel tc) {
+    Alignment? ta = TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
     if (ta == null) return;
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-    FC().parentTW(twName)?.zoomer?.applyTransform(
+    parentWrapperState.zoomer?.applyTransform(
         tc.transformScale, tc.transformScale, ta, afterTransformF: () {
       bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
       bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
       // hideAllSingleTargetBtns();
       Useful.afterMsDelayDo(tc.calloutDurationMs, () {
-        FC().parentTW(twName)?.zoomer?.resetTransform();
+        parentWrapperState.zoomer?.resetTransform();
         FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
       });
 
-      showSnippetContentCallout(twName: twName, tc: tc, justPlaying: true);
+      showSnippetContentCallout(tc: tc, justPlaying: true);
     });
   }
 
   static void showConfigToolbar(
-    TargetConfig tc,
+    TargetModel tc,
     TargetsWrapperName twName,
-      BuildContext context,
+    BuildContext context,
   ) {
     Callout.dismiss('config-toolbar');
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
-        feature: 'config-toolbar',
-        fillColor: Colors.purpleAccent,
-        suppliedCalloutW: 800,
-        suppliedCalloutH: 60,
-        decorationShape: DecorationShapeEnum.rounded_rectangle,
-        borderRadius: 20,
-        animate: false,
-        arrowType: ArrowType.NO_CONNECTOR,
-        initialCalloutPos: FC().calloutConfigToolbarPos(context),
-        onDragEndedF: (newPos) {
-          FC().setCalloutConfigToolbarPos(newPos);
-        }
-      ),
+          feature: 'config-toolbar',
+          fillColor: Colors.purpleAccent,
+          suppliedCalloutW: 800,
+          suppliedCalloutH: 60,
+          decorationShape: DecorationShapeEnum.rounded_rectangle,
+          borderRadius: 20,
+          animate: false,
+          arrowType: ArrowType.NO_CONNECTOR,
+          initialCalloutPos: FC().calloutConfigToolbarPos(context),
+          onDragEndedF: (newPos) {
+            FC().setCalloutConfigToolbarPos(newPos);
+          }),
       boxContentF: (ctx) => CalloutConfigToolbar(
         twName: twName,
         tc: tc,

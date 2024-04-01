@@ -39,50 +39,70 @@ class _FakeFSFolderNode_0 extends _i1.SmartFake implements _i2.FSFolderNode {
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
   @override
-  _i4.Future<_i5.AppModel?> getAppInfo({required String? appName}) =>
-      (super.noSuchMethod(
+  _i4.Future<_i5.AppModel?> getAppModel() => (super.noSuchMethod(
         Invocation.method(
-          #getAppInfo,
+          #getAppModel,
           [],
-          {#appName: appName},
         ),
         returnValue: _i4.Future<_i5.AppModel?>.value(),
         returnValueForMissingStub: _i4.Future<_i5.AppModel?>.value(),
       ) as _i4.Future<_i5.AppModel?>);
 
   @override
-  _i4.Future<_i5.CAPIModel?> getCAPIModel({
-    required String? appName,
+  _i4.Future<_i5.SnippetMapModel?> getVersionedSnippetMap({
     required String? branchName,
     required int? modelVersion,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getCAPIModel,
+          #getVersionedSnippetMap,
           [],
           {
-            #appName: appName,
             #branchName: branchName,
             #modelVersion: modelVersion,
           },
         ),
-        returnValue: _i4.Future<_i5.CAPIModel?>.value(),
-        returnValueForMissingStub: _i4.Future<_i5.CAPIModel?>.value(),
-      ) as _i4.Future<_i5.CAPIModel?>);
+        returnValue: _i4.Future<_i5.SnippetMapModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.SnippetMapModel?>.value(),
+      ) as _i4.Future<_i5.SnippetMapModel?>);
 
   @override
-  _i4.Future<void> createOrUpdateAppInfoAndCAPIModel({
-    required _i5.AppModel? appInfo,
-    required _i5.CAPIModel? model,
+  _i4.Future<void> switchBranch({required String? newBranchName}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #switchBranch,
+          [],
+          {#newBranchName: newBranchName},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> save({
+    required _i5.AppModel? appModel,
+    required Map<String, _i5.SnippetRootNode>? snippets,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #createOrUpdateAppInfoAndCAPIModel,
+          #save,
           [],
           {
-            #appInfo: appInfo,
-            #model: model,
+            #appModel: appModel,
+            #snippets: snippets,
           },
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> revert({required _i3.FSAction? action}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #revert,
+          [],
+          {#action: action},
         ),
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
@@ -118,7 +138,6 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
         int? when
       })> getPollResultsForUser({
     required String? voterId,
-    required String? appName,
     required String? pollName,
   }) =>
       (super.noSuchMethod(
@@ -127,7 +146,6 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           [],
           {
             #voterId: voterId,
-            #appName: appName,
             #pollName: pollName,
           },
         ),
@@ -154,7 +172,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
 
   @override
   _i4.Future<Map<String, List<String>>> getVotersByOption({
-    required String? appName,
+    required String? modelName,
     required String? pollName,
     required List<String>? pollOptionIds,
   }) =>
@@ -163,7 +181,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           #getVotersByOption,
           [],
           {
-            #appName: appName,
+            #modelName: modelName,
             #pollName: pollName,
             #pollOptionIds: pollOptionIds,
           },

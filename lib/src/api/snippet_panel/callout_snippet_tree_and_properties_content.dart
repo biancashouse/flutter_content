@@ -104,7 +104,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
               //     child: Useful.coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
               //   ),
               // ),
-              actions: [
+              // actions: [
                 // if (snippetBloc.state.selectedNode is! SnippetRefNode)
                 // IconButton(
                 //   onPressed: () {
@@ -156,43 +156,6 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                 //           Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
                 //   tooltip: 'Remove',
                 // ),
-                IconButton(
-                  // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
-                  icon: Icon(
-                    Icons.undo,
-                    color: Colors.white
-                        .withOpacity(snippetBloc.state.canUndo() ? 1.0 : .25),
-                  ),
-                  onPressed: () {
-                    if (snippetBloc.state.canUndo()) {
-                      snippetBloc.add(
-                          SnippetEvent.undo(name: snippetBloc.snippetName));
-                    }
-                    Useful.afterNextBuildDo(() {
-                      snippetBloc.state.treeC
-                          .expandCascading([snippetBloc.rootNode]);
-                    });
-                  },
-                ),
-                IconButton(
-                  // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
-                  icon: Icon(
-                    Icons.redo,
-                    color: Colors.white
-                        .withOpacity(snippetBloc.state.canRedo() ? 1.0 : .25),
-                  ),
-                  onPressed: () {
-                    if (snippetBloc.state.canRedo()) {
-                      snippetBloc.add(
-                          SnippetEvent.redo(name: snippetBloc.snippetName));
-                    }
-                    Useful.afterNextBuildDo(() {
-                      snippetBloc.state.treeC
-                          .expandCascading([snippetBloc.rootNode]);
-                    });
-                  },
-                ),
-                hspacer(16),
                 // IconButton(
                 //   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white24)),
                 //   icon: const Icon(
@@ -215,7 +178,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                 //   },
                 // ),
                 // hspacer(16),
-              ],
+              // ],
             ),
             body: Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -337,7 +300,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         node: snippetBloc.state.selectedNode!,
                         capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
-                      if (FC().capiBloc.state.jsonClipboard != null) {
+                      if (FC().appModel.clipboard != null) {
                         Callout.unhide("floating-clipboard");
                       }
                     });
@@ -363,7 +326,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                       snippetBloc.add(SnippetEvent.copyNode(
                           node: snippetBloc.state.selectedNode!));
                       Useful.afterNextBuildDo(() {
-                        if (FC().capiBloc.state.jsonClipboard != null) {
+                        if (FC().appModel.clipboard != null) {
                           Callout.unhide("floating-clipboard");
                         }
                       });

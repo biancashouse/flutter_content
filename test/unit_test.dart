@@ -20,14 +20,18 @@ void main() {
 
   setUp(() {
     mockRepository = MockModelRepository();
-    when(mockRepository.getAppInfo(appName: appName)).thenAnswer((_) async {
-      return AppModel();
+    when(mockRepository.getAppModel()).thenAnswer((_) async {
+      BranchModel branch = BranchModel(
+        name: 'staging',
+        latestVersionId: TEST_VERSION_ID,
+        undos: [INITIAL_VERSION],
+      );
+      AppModel appInfo = AppModel(branches: {'staging': branch});
+      return appInfo;
     });
-    when(mockRepository.getCAPIModel(
-      appName: appName,
-      branchName: 'testing',
-      modelVersion: TEST_VERSION_ID,
-    )).thenAnswer((_) async {
+    when(mockRepository.getVersionedSnippetMap(
+            branchName: 'staging', modelVersion: TEST_VERSION_ID))
+        .thenAnswer((_) async {
       final scaffoldWithTabs = SnippetRootNode(
         name: snippetName,
         child: ScaffoldNode(
@@ -59,28 +63,28 @@ void main() {
           ),
         ),
       )..validateTree();
-      final snippetJson = scaffoldWithTabs.toJson();
-      return CAPIModel(
-          appName: appName, snippetEncodedJsons: {snippetName: snippetJson});
+      SnippetMapModel snippetsModel =
+          SnippetMapModel({snippetName: scaffoldWithTabs});
+      return snippetsModel;
     });
-    SnippetPanel(panelName: "test-panel", snippetName: snippetName);
   });
 
-  test('read the model from the repo', () async {
-    final model = await mockRepository.getCAPIModel(
-      appName: appName,
-      branchName: 'testing',
-      modelVersion: TEST_VERSION_ID,
+  test('read the appInfo from the repo', () async {
+    final model = await mockRepository.getAppModel();
+    expect(model, isNotNull);
+    expect(model!.branches, isNotEmpty);
+    expect(model.branches['staging'], isNotNull);
+    expect(model.branches['staging']!.latestVersionId, isNotNull);
+
+    var snippetsModel = await mockRepository.getVersionedSnippetMap(
+      branchName: model.currentBranchName,
+      modelVersion: model.branches['staging']!.latestVersionId,
     );
 
-    expect(model!.appName, appName);
-
-    Map<String, SnippetRootNode> snippetMap =
-        MaterialSPAState.parseSnippetJsons(model);
-
-    expect(snippetMap.values.first.name, snippetName);
-
-    // expect(snippetPanel != null, isTrue);
+    expect(snippetsModel, isNotNull);
+    expect(snippetsModel!.snippets, isNotEmpty);
+    expect(snippetsModel.snippets[TEST_VERSION_ID], isNotNull);
+    expect(snippetsModel.snippets[TEST_VERSION_ID]!.name, snippetName);
   });
 
   test('STreeNode.findNearestAncestor<ScaffoldNode>', () async {

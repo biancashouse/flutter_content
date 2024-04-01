@@ -211,7 +211,6 @@ class FlutterPollState extends State<FlutterPoll> {
       // firestore
       OptionCountsAndVoterRecord result = await FC().capiBloc.modelRepo.getPollResultsForUser(
         voterId: voterId!,
-        appName: FC().capiBloc.state.appName,
         pollName: widget.pollName,
       );
       pollBloc = PollBloC(
