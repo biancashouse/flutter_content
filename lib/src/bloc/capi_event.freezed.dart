@@ -33,8 +33,8 @@ mixin _$CAPIEvent {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -62,8 +62,8 @@ mixin _$CAPIEvent {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -89,8 +89,8 @@ mixin _$CAPIEvent {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -117,7 +117,7 @@ mixin _$CAPIEvent {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -140,7 +140,7 @@ mixin _$CAPIEvent {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -163,7 +163,7 @@ mixin _$CAPIEvent {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -281,8 +281,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -313,8 +313,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -343,8 +343,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -377,7 +377,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -403,7 +403,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -429,7 +429,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -519,8 +519,8 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -551,8 +551,8 @@ class _$HideAllTargetGroupsImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -581,8 +581,8 @@ class _$HideAllTargetGroupsImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -615,7 +615,7 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -641,7 +641,7 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -667,7 +667,7 @@ class _$HideAllTargetGroupsImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -780,8 +780,8 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -812,8 +812,8 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -842,8 +842,8 @@ class _$HideTargetGroupsExceptImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -876,7 +876,7 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -902,7 +902,7 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -928,7 +928,7 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1045,8 +1045,8 @@ class _$ShowOnlyOneTargetImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1077,8 +1077,8 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1107,8 +1107,8 @@ class _$ShowOnlyOneTargetImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1141,7 +1141,7 @@ class _$ShowOnlyOneTargetImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -1167,7 +1167,7 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1193,7 +1193,7 @@ class _$ShowOnlyOneTargetImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1285,8 +1285,8 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1317,8 +1317,8 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1347,8 +1347,8 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1381,7 +1381,7 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -1407,7 +1407,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1433,7 +1433,7 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1518,8 +1518,8 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1550,8 +1550,8 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1580,8 +1580,8 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1614,7 +1614,7 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -1640,7 +1640,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1666,7 +1666,7 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1796,8 +1796,8 @@ class _$OverrideTargetGKImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1828,8 +1828,8 @@ class _$OverrideTargetGKImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1858,8 +1858,8 @@ class _$OverrideTargetGKImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1892,7 +1892,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -1918,7 +1918,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -1944,7 +1944,7 @@ class _$OverrideTargetGKImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2078,8 +2078,8 @@ class _$TargetModelChangedImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2110,8 +2110,8 @@ class _$TargetModelChangedImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2140,8 +2140,8 @@ class _$TargetModelChangedImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2174,7 +2174,7 @@ class _$TargetModelChangedImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -2200,7 +2200,7 @@ class _$TargetModelChangedImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2226,7 +2226,7 @@ class _$TargetModelChangedImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2314,8 +2314,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2346,8 +2346,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2376,8 +2376,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2410,7 +2410,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -2436,7 +2436,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2462,7 +2462,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2583,8 +2583,8 @@ class _$UpdateClipboardImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2615,8 +2615,8 @@ class _$UpdateClipboardImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2645,8 +2645,8 @@ class _$UpdateClipboardImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2679,7 +2679,7 @@ class _$UpdateClipboardImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -2705,7 +2705,7 @@ class _$UpdateClipboardImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2731,7 +2731,7 @@ class _$UpdateClipboardImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2847,8 +2847,8 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2879,8 +2879,8 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2909,8 +2909,8 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2943,7 +2943,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -2969,7 +2969,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -2995,7 +2995,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3022,31 +3022,31 @@ abstract class Save implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$SwitchBranchImplCopyWith<$Res> {
-  factory _$$SwitchBranchImplCopyWith(
-          _$SwitchBranchImpl value, $Res Function(_$SwitchBranchImpl) then) =
-      __$$SwitchBranchImplCopyWithImpl<$Res>;
+abstract class _$$PublishImplCopyWith<$Res> {
+  factory _$$PublishImplCopyWith(
+          _$PublishImpl value, $Res Function(_$PublishImpl) then) =
+      __$$PublishImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String newBranchName});
+  $Res call({String versionId});
 }
 
 /// @nodoc
-class __$$SwitchBranchImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$SwitchBranchImpl>
-    implements _$$SwitchBranchImplCopyWith<$Res> {
-  __$$SwitchBranchImplCopyWithImpl(
-      _$SwitchBranchImpl _value, $Res Function(_$SwitchBranchImpl) _then)
+class __$$PublishImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$PublishImpl>
+    implements _$$PublishImplCopyWith<$Res> {
+  __$$PublishImplCopyWithImpl(
+      _$PublishImpl _value, $Res Function(_$PublishImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? newBranchName = null,
+    Object? versionId = null,
   }) {
-    return _then(_$SwitchBranchImpl(
-      newBranchName: null == newBranchName
-          ? _value.newBranchName
-          : newBranchName // ignore: cast_nullable_to_non_nullable
+    return _then(_$PublishImpl(
+      versionId: null == versionId
+          ? _value.versionId
+          : versionId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -3054,42 +3054,42 @@ class __$$SwitchBranchImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
-  const _$SwitchBranchImpl({required this.newBranchName});
+class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
+  const _$PublishImpl({required this.versionId});
 
   @override
-  final String newBranchName;
+  final String versionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.switchBranch(newBranchName: $newBranchName)';
+    return 'CAPIEvent.publish(versionId: $versionId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.switchBranch'))
-      ..add(DiagnosticsProperty('newBranchName', newBranchName));
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.publish'))
+      ..add(DiagnosticsProperty('versionId', versionId));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SwitchBranchImpl &&
-            (identical(other.newBranchName, newBranchName) ||
-                other.newBranchName == newBranchName));
+            other is _$PublishImpl &&
+            (identical(other.versionId, versionId) ||
+                other.versionId == versionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, newBranchName);
+  int get hashCode => Object.hash(runtimeType, versionId);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SwitchBranchImplCopyWith<_$SwitchBranchImpl> get copyWith =>
-      __$$SwitchBranchImplCopyWithImpl<_$SwitchBranchImpl>(this, _$identity);
+  _$$PublishImplCopyWith<_$PublishImpl> get copyWith =>
+      __$$PublishImplCopyWithImpl<_$PublishImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3109,8 +3109,8 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3121,7 +3121,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return switchBranch(newBranchName);
+    return publish(versionId);
   }
 
   @override
@@ -3141,8 +3141,8 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3151,7 +3151,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return switchBranch?.call(newBranchName);
+    return publish?.call(versionId);
   }
 
   @override
@@ -3171,8 +3171,8 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3182,8 +3182,8 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (switchBranch != null) {
-      return switchBranch(newBranchName);
+    if (publish != null) {
+      return publish(versionId);
     }
     return orElse();
   }
@@ -3205,7 +3205,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -3214,7 +3214,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return switchBranch(this);
+    return publish(this);
   }
 
   @override
@@ -3231,7 +3231,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3240,7 +3240,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return switchBranch?.call(this);
+    return publish?.call(this);
   }
 
   @override
@@ -3257,7 +3257,7 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3267,20 +3267,19 @@ class _$SwitchBranchImpl with DiagnosticableTreeMixin implements SwitchBranch {
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (switchBranch != null) {
-      return switchBranch(this);
+    if (publish != null) {
+      return publish(this);
     }
     return orElse();
   }
 }
 
-abstract class SwitchBranch implements CAPIEvent {
-  const factory SwitchBranch({required final String newBranchName}) =
-      _$SwitchBranchImpl;
+abstract class Publish implements CAPIEvent {
+  const factory Publish({required final String versionId}) = _$PublishImpl;
 
-  String get newBranchName;
+  String get versionId;
   @JsonKey(ignore: true)
-  _$$SwitchBranchImplCopyWith<_$SwitchBranchImpl> get copyWith =>
+  _$$PublishImplCopyWith<_$PublishImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -3290,7 +3289,7 @@ abstract class _$$RevertImplCopyWith<$Res> {
           _$RevertImpl value, $Res Function(_$RevertImpl) then) =
       __$$RevertImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({FSAction action});
+  $Res call({String versionId});
 }
 
 /// @nodoc
@@ -3304,13 +3303,13 @@ class __$$RevertImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? action = null,
+    Object? versionId = null,
   }) {
     return _then(_$RevertImpl(
-      action: null == action
-          ? _value.action
-          : action // ignore: cast_nullable_to_non_nullable
-              as FSAction,
+      versionId: null == versionId
+          ? _value.versionId
+          : versionId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -3318,14 +3317,14 @@ class __$$RevertImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
-  const _$RevertImpl({required this.action});
+  const _$RevertImpl({required this.versionId});
 
   @override
-  final FSAction action;
+  final String versionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.revert(action: $action)';
+    return 'CAPIEvent.revert(versionId: $versionId)';
   }
 
   @override
@@ -3333,7 +3332,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.revert'))
-      ..add(DiagnosticsProperty('action', action));
+      ..add(DiagnosticsProperty('versionId', versionId));
   }
 
   @override
@@ -3341,11 +3340,12 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RevertImpl &&
-            (identical(other.action, action) || other.action == action));
+            (identical(other.versionId, versionId) ||
+                other.versionId == versionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, action);
+  int get hashCode => Object.hash(runtimeType, versionId);
 
   @JsonKey(ignore: true)
   @override
@@ -3371,8 +3371,8 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3383,7 +3383,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return revert(action);
+    return revert(versionId);
   }
 
   @override
@@ -3403,8 +3403,8 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3413,7 +3413,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return revert?.call(action);
+    return revert?.call(versionId);
   }
 
   @override
@@ -3433,8 +3433,8 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3445,7 +3445,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult orElse(),
   }) {
     if (revert != null) {
-      return revert(action);
+      return revert(versionId);
     }
     return orElse();
   }
@@ -3467,7 +3467,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -3493,7 +3493,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3519,7 +3519,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3537,9 +3537,9 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
 }
 
 abstract class Revert implements CAPIEvent {
-  const factory Revert({required final FSAction action}) = _$RevertImpl;
+  const factory Revert({required final String versionId}) = _$RevertImpl;
 
-  FSAction get action;
+  String get versionId;
   @JsonKey(ignore: true)
   _$$RevertImplCopyWith<_$RevertImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -3632,8 +3632,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3664,8 +3664,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3694,8 +3694,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3728,7 +3728,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -3754,7 +3754,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3780,7 +3780,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -3908,8 +3908,8 @@ class _$SetPanelSnippetImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3940,8 +3940,8 @@ class _$SetPanelSnippetImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3970,8 +3970,8 @@ class _$SetPanelSnippetImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4004,7 +4004,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -4030,7 +4030,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4056,7 +4056,7 @@ class _$SetPanelSnippetImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4188,8 +4188,8 @@ class _$PushSnippetBlocImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4220,8 +4220,8 @@ class _$PushSnippetBlocImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4250,8 +4250,8 @@ class _$PushSnippetBlocImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4284,7 +4284,7 @@ class _$PushSnippetBlocImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -4310,7 +4310,7 @@ class _$PushSnippetBlocImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4336,7 +4336,7 @@ class _$PushSnippetBlocImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4456,8 +4456,8 @@ class _$PopSnippetBlocImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4488,8 +4488,8 @@ class _$PopSnippetBlocImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4518,8 +4518,8 @@ class _$PopSnippetBlocImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4552,7 +4552,7 @@ class _$PopSnippetBlocImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -4578,7 +4578,7 @@ class _$PopSnippetBlocImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4604,7 +4604,7 @@ class _$PopSnippetBlocImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4691,8 +4691,8 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4723,8 +4723,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4753,8 +4753,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4787,7 +4787,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -4813,7 +4813,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4839,7 +4839,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
@@ -4951,8 +4951,8 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(String? newContent, dynamic skipSave)
         updateClipboard,
     required TResult Function(bool force) save,
-    required TResult Function(String newBranchName) switchBranch,
-    required TResult Function(FSAction action) revert,
+    required TResult Function(String versionId) publish,
+    required TResult Function(String versionId) revert,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4983,8 +4983,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function()? forceRefresh,
     TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(bool force)? save,
-    TResult? Function(String newBranchName)? switchBranch,
-    TResult? Function(FSAction action)? revert,
+    TResult? Function(String versionId)? publish,
+    TResult? Function(String versionId)? revert,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -5013,8 +5013,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function()? forceRefresh,
     TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(bool force)? save,
-    TResult Function(String newBranchName)? switchBranch,
-    TResult Function(FSAction action)? revert,
+    TResult Function(String versionId)? publish,
+    TResult Function(String versionId)? revert,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -5047,7 +5047,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(Save value) save,
-    required TResult Function(SwitchBranch value) switchBranch,
+    required TResult Function(Publish value) publish,
     required TResult Function(Revert value) revert,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
@@ -5073,7 +5073,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(Save value)? save,
-    TResult? Function(SwitchBranch value)? switchBranch,
+    TResult? Function(Publish value)? publish,
     TResult? Function(Revert value)? revert,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
@@ -5099,7 +5099,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(Save value)? save,
-    TResult Function(SwitchBranch value)? switchBranch,
+    TResult Function(Publish value)? publish,
     TResult Function(Revert value)? revert,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,

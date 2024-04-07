@@ -11,74 +11,83 @@ import 'package:mockito/mockito.dart';
 import 'repo_test_suite.dart';
 import 'unit_test.mocks.dart';
 
+MockModelRepository setupMockRepo() {
+  MockModelRepository mockRepository = MockModelRepository();
+  // AppInfo
+  when(mockRepository.getAppInfo()).thenAnswer((_) async {
+    AppInfoModel appInfo = AppInfoModel(
+      publishedVersionId: TEST_VERSION_ID,
+      versionIds: [TEST_VERSION_ID],
+    );
+    return appInfo;
+  });
+  return mockRepository;
+}
+
+CAPIBloC getMockCAPIBloC(MockModelRepository repo) => CAPIBloC(modelRepo: repo);
+
 void main() {
-  late MockModelRepository mockRepository;
-  const appName = 'flutter-content-test-app';
+  MockModelRepository mockRepository = MockModelRepository();
+  // AppInfo
+  when(mockRepository.getAppInfo()).thenAnswer((_) async {
+    AppInfoModel appInfo = AppInfoModel(
+      publishedVersionId: TEST_VERSION_ID,
+      versionIds: [TEST_VERSION_ID],
+    );
+    return appInfo;
+  });  const appName = 'flutter-content-test-app';
   const snippetName = 'scaffold-with-tabs';
 
   late STreeNode firstTabNode;
 
   setUp(() {
-    mockRepository = MockModelRepository();
-    when(mockRepository.getAppModel()).thenAnswer((_) async {
-      BranchModel branch = BranchModel(
-        name: 'staging',
-        latestVersionId: TEST_VERSION_ID,
-        undos: [INITIAL_VERSION],
-      );
-      AppModel appInfo = AppModel(branches: {'staging': branch});
-      return appInfo;
-    });
-    when(mockRepository.getVersionedSnippetMap(
-            branchName: 'staging', modelVersion: TEST_VERSION_ID))
+    mockRepository = setupMockRepo();
+    // snippets
+    when(mockRepository.getVersionedSnippetMap(versionId: TEST_VERSION_ID))
         .thenAnswer((_) async {
-      final scaffoldWithTabs = SnippetRootNode(
-        name: snippetName,
-        child: ScaffoldNode(
-          appBar: AppBarNode(
-            bgColorValue: Colors.black.value,
-            title: GenericSingleChildNode(
-                propertyName: 'title', child: TextNode(text: 'my title')),
-            bottom: GenericSingleChildNode(
-              propertyName: 'bottom',
-              child: TabBarNode(
+      SnippetMapModel snippetMap = SnippetMapModel({
+        'scaffoldWithTabs': SnippetRootNode(
+          name: snippetName,
+          child: ScaffoldNode(
+            appBar: AppBarNode(
+              bgColorValue: Colors.black.value,
+              title: GenericSingleChildNode(
+                  propertyName: 'title', child: TextNode(text: 'my title')),
+              bottom: GenericSingleChildNode(
+                propertyName: 'bottom',
+                child: TabBarNode(
+                  children: [
+                    firstTabNode = TextNode(text: 'tab 1'),
+                    TextNode(text: 'Tab 2'),
+                  ],
+                ),
+              ),
+            ),
+            body: GenericSingleChildNode(
+              propertyName: 'body',
+              child: TabBarViewNode(
                 children: [
-                  firstTabNode = TextNode(text: 'tab 1'),
-                  TextNode(text: 'Tab 2'),
+                  PlaceholderNode(
+                      centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                  PlaceholderNode(
+                      centredLabel: 'page 2',
+                      colorValue: Colors.blueAccent.value),
                 ],
               ),
             ),
           ),
-          body: GenericSingleChildNode(
-            propertyName: 'body',
-            child: TabBarViewNode(
-              children: [
-                PlaceholderNode(
-                    centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                PlaceholderNode(
-                    centredLabel: 'page 2',
-                    colorValue: Colors.blueAccent.value),
-              ],
-            ),
-          ),
-        ),
-      )..validateTree();
-      SnippetMapModel snippetsModel =
-          SnippetMapModel({snippetName: scaffoldWithTabs});
-      return snippetsModel;
+        )..validateTree(),
+      });
+      return snippetMap;
     });
   });
 
   test('read the appInfo from the repo', () async {
-    final model = await mockRepository.getAppModel();
+    final model = await mockRepository.getAppInfo();
     expect(model, isNotNull);
-    expect(model!.branches, isNotEmpty);
-    expect(model.branches['staging'], isNotNull);
-    expect(model.branches['staging']!.latestVersionId, isNotNull);
 
     var snippetsModel = await mockRepository.getVersionedSnippetMap(
-      branchName: model.currentBranchName,
-      modelVersion: model.branches['staging']!.latestVersionId,
+      versionId: TEST_VERSION_ID,
     );
 
     expect(snippetsModel, isNotNull);

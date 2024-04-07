@@ -27,15 +27,25 @@ mixin _$SnippetEvent {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -65,13 +75,17 @@ mixin _$SnippetEvent {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -100,13 +114,17 @@ mixin _$SnippetEvent {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -331,15 +349,25 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -372,13 +400,17 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -410,13 +442,17 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -602,15 +638,25 @@ class _$ClearNodeSelectionImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -643,13 +689,17 @@ class _$ClearNodeSelectionImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -681,13 +731,17 @@ class _$ClearNodeSelectionImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -901,15 +955,25 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -942,13 +1006,17 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -980,13 +1048,17 @@ class _$SaveNodeAsSnippetImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1196,15 +1268,25 @@ class _$HighlightNodeImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -1237,13 +1319,17 @@ class _$HighlightNodeImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1275,13 +1361,17 @@ class _$HighlightNodeImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1412,7 +1502,7 @@ abstract class _$$ReplaceSelectionWithImplCopyWith<$Res> {
           $Res Function(_$ReplaceSelectionWithImpl) then) =
       __$$ReplaceSelectionWithImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Type? type, STreeNode? testNode});
+  $Res call({Type? type, String? snippetName, STreeNode? testNode});
 }
 
 /// @nodoc
@@ -1427,6 +1517,7 @@ class __$$ReplaceSelectionWithImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? type = freezed,
+    Object? snippetName = freezed,
     Object? testNode = freezed,
   }) {
     return _then(_$ReplaceSelectionWithImpl(
@@ -1434,6 +1525,10 @@ class __$$ReplaceSelectionWithImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type?,
+      snippetName: freezed == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String?,
       testNode: freezed == testNode
           ? _value.testNode
           : testNode // ignore: cast_nullable_to_non_nullable
@@ -1447,16 +1542,20 @@ class __$$ReplaceSelectionWithImplCopyWithImpl<$Res>
 class _$ReplaceSelectionWithImpl
     with DiagnosticableTreeMixin
     implements ReplaceSelectionWith {
-  const _$ReplaceSelectionWithImpl({this.type, this.testNode});
+  const _$ReplaceSelectionWithImpl(
+      {this.type, this.snippetName, this.testNode});
 
   @override
   final Type? type;
+  @override
+  final String? snippetName;
+// only used when type is SnippetRefNode
   @override
   final STreeNode? testNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.replaceSelectionWith(type: $type, testNode: $testNode)';
+    return 'SnippetEvent.replaceSelectionWith(type: $type, snippetName: $snippetName, testNode: $testNode)';
   }
 
   @override
@@ -1465,6 +1564,7 @@ class _$ReplaceSelectionWithImpl
     properties
       ..add(DiagnosticsProperty('type', 'SnippetEvent.replaceSelectionWith'))
       ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('testNode', testNode));
   }
 
@@ -1474,12 +1574,14 @@ class _$ReplaceSelectionWithImpl
         (other.runtimeType == runtimeType &&
             other is _$ReplaceSelectionWithImpl &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.testNode, testNode) ||
                 other.testNode == testNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, testNode);
+  int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
   @JsonKey(ignore: true)
   @override
@@ -1501,15 +1603,25 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -1528,7 +1640,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return replaceSelectionWith(type, testNode);
+    return replaceSelectionWith(type, snippetName, testNode);
   }
 
   @override
@@ -1542,13 +1654,17 @@ class _$ReplaceSelectionWithImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1566,7 +1682,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return replaceSelectionWith?.call(type, testNode);
+    return replaceSelectionWith?.call(type, snippetName, testNode);
   }
 
   @override
@@ -1580,13 +1696,17 @@ class _$ReplaceSelectionWithImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1606,7 +1726,7 @@ class _$ReplaceSelectionWithImpl
     required TResult orElse(),
   }) {
     if (replaceSelectionWith != null) {
-      return replaceSelectionWith(type, testNode);
+      return replaceSelectionWith(type, snippetName, testNode);
     }
     return orElse();
   }
@@ -1704,9 +1824,11 @@ class _$ReplaceSelectionWithImpl
 abstract class ReplaceSelectionWith implements SnippetEvent {
   const factory ReplaceSelectionWith(
       {final Type? type,
+      final String? snippetName,
       final STreeNode? testNode}) = _$ReplaceSelectionWithImpl;
 
   Type? get type;
+  String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
   @JsonKey(ignore: true)
   _$$ReplaceSelectionWithImplCopyWith<_$ReplaceSelectionWithImpl>
@@ -1719,7 +1841,7 @@ abstract class _$$WrapSelectionWithImplCopyWith<$Res> {
           $Res Function(_$WrapSelectionWithImpl) then) =
       __$$WrapSelectionWithImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Type? type, STreeNode? testNode});
+  $Res call({Type? type, String? snippetName, STreeNode? testNode});
 }
 
 /// @nodoc
@@ -1734,6 +1856,7 @@ class __$$WrapSelectionWithImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? type = freezed,
+    Object? snippetName = freezed,
     Object? testNode = freezed,
   }) {
     return _then(_$WrapSelectionWithImpl(
@@ -1741,6 +1864,10 @@ class __$$WrapSelectionWithImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type?,
+      snippetName: freezed == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String?,
       testNode: freezed == testNode
           ? _value.testNode
           : testNode // ignore: cast_nullable_to_non_nullable
@@ -1754,16 +1881,19 @@ class __$$WrapSelectionWithImplCopyWithImpl<$Res>
 class _$WrapSelectionWithImpl
     with DiagnosticableTreeMixin
     implements WrapSelectionWith {
-  const _$WrapSelectionWithImpl({this.type, this.testNode});
+  const _$WrapSelectionWithImpl({this.type, this.snippetName, this.testNode});
 
   @override
   final Type? type;
+  @override
+  final String? snippetName;
+// only used when type is SnippetRefNode
   @override
   final STreeNode? testNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.wrapSelectionWith(type: $type, testNode: $testNode)';
+    return 'SnippetEvent.wrapSelectionWith(type: $type, snippetName: $snippetName, testNode: $testNode)';
   }
 
   @override
@@ -1772,6 +1902,7 @@ class _$WrapSelectionWithImpl
     properties
       ..add(DiagnosticsProperty('type', 'SnippetEvent.wrapSelectionWith'))
       ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('testNode', testNode));
   }
 
@@ -1781,12 +1912,14 @@ class _$WrapSelectionWithImpl
         (other.runtimeType == runtimeType &&
             other is _$WrapSelectionWithImpl &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.testNode, testNode) ||
                 other.testNode == testNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, testNode);
+  int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
   @JsonKey(ignore: true)
   @override
@@ -1807,15 +1940,25 @@ class _$WrapSelectionWithImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -1834,7 +1977,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return wrapSelectionWith(type, testNode);
+    return wrapSelectionWith(type, snippetName, testNode);
   }
 
   @override
@@ -1848,13 +1991,17 @@ class _$WrapSelectionWithImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1872,7 +2019,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return wrapSelectionWith?.call(type, testNode);
+    return wrapSelectionWith?.call(type, snippetName, testNode);
   }
 
   @override
@@ -1886,13 +2033,17 @@ class _$WrapSelectionWithImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -1912,7 +2063,7 @@ class _$WrapSelectionWithImpl
     required TResult orElse(),
   }) {
     if (wrapSelectionWith != null) {
-      return wrapSelectionWith(type, testNode);
+      return wrapSelectionWith(type, snippetName, testNode);
     }
     return orElse();
   }
@@ -2009,9 +2160,12 @@ class _$WrapSelectionWithImpl
 
 abstract class WrapSelectionWith implements SnippetEvent {
   const factory WrapSelectionWith(
-      {final Type? type, final STreeNode? testNode}) = _$WrapSelectionWithImpl;
+      {final Type? type,
+      final String? snippetName,
+      final STreeNode? testNode}) = _$WrapSelectionWithImpl;
 
   Type? get type;
+  String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
   @JsonKey(ignore: true)
   _$$WrapSelectionWithImplCopyWith<_$WrapSelectionWithImpl> get copyWith =>
@@ -2027,6 +2181,7 @@ abstract class _$$AppendChildImplCopyWith<$Res> {
   $Res call(
       {Type? type,
       STreeNode? testNode,
+      String? snippetName,
       Type? widgetSpanChildType,
       STreeNode? testWidgetSpanChildNode});
 }
@@ -2044,6 +2199,7 @@ class __$$AppendChildImplCopyWithImpl<$Res>
   $Res call({
     Object? type = freezed,
     Object? testNode = freezed,
+    Object? snippetName = freezed,
     Object? widgetSpanChildType = freezed,
     Object? testWidgetSpanChildNode = freezed,
   }) {
@@ -2056,6 +2212,10 @@ class __$$AppendChildImplCopyWithImpl<$Res>
           ? _value.testNode
           : testNode // ignore: cast_nullable_to_non_nullable
               as STreeNode?,
+      snippetName: freezed == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String?,
       widgetSpanChildType: freezed == widgetSpanChildType
           ? _value.widgetSpanChildType
           : widgetSpanChildType // ignore: cast_nullable_to_non_nullable
@@ -2074,6 +2234,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   const _$AppendChildImpl(
       {this.type,
       this.testNode,
+      this.snippetName,
       this.widgetSpanChildType,
       this.testWidgetSpanChildNode});
 
@@ -2082,13 +2243,16 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   @override
   final STreeNode? testNode;
   @override
+  final String? snippetName;
+// only used when type is SnippetRefNode
+  @override
   final Type? widgetSpanChildType;
   @override
   final STreeNode? testWidgetSpanChildNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.appendChild(type: $type, testNode: $testNode, widgetSpanChildType: $widgetSpanChildType, testWidgetSpanChildNode: $testWidgetSpanChildNode)';
+    return 'SnippetEvent.appendChild(type: $type, testNode: $testNode, snippetName: $snippetName, widgetSpanChildType: $widgetSpanChildType, testWidgetSpanChildNode: $testWidgetSpanChildNode)';
   }
 
   @override
@@ -2098,6 +2262,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
       ..add(DiagnosticsProperty('type', 'SnippetEvent.appendChild'))
       ..add(DiagnosticsProperty('type', type))
       ..add(DiagnosticsProperty('testNode', testNode))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('widgetSpanChildType', widgetSpanChildType))
       ..add(DiagnosticsProperty(
           'testWidgetSpanChildNode', testWidgetSpanChildNode));
@@ -2111,6 +2276,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
             (identical(other.type, type) || other.type == type) &&
             (identical(other.testNode, testNode) ||
                 other.testNode == testNode) &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.widgetSpanChildType, widgetSpanChildType) ||
                 other.widgetSpanChildType == widgetSpanChildType) &&
             (identical(
@@ -2119,7 +2286,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, testNode,
+  int get hashCode => Object.hash(runtimeType, type, testNode, snippetName,
       widgetSpanChildType, testWidgetSpanChildNode);
 
   @JsonKey(ignore: true)
@@ -2140,15 +2307,25 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -2167,8 +2344,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return appendChild(
-        type, testNode, widgetSpanChildType, testWidgetSpanChildNode);
+    return appendChild(type, testNode, snippetName, widgetSpanChildType,
+        testWidgetSpanChildNode);
   }
 
   @override
@@ -2182,13 +2359,17 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2206,8 +2387,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return appendChild?.call(
-        type, testNode, widgetSpanChildType, testWidgetSpanChildNode);
+    return appendChild?.call(type, testNode, snippetName, widgetSpanChildType,
+        testWidgetSpanChildNode);
   }
 
   @override
@@ -2221,13 +2402,17 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2247,8 +2432,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult orElse(),
   }) {
     if (appendChild != null) {
-      return appendChild(
-          type, testNode, widgetSpanChildType, testWidgetSpanChildNode);
+      return appendChild(type, testNode, snippetName, widgetSpanChildType,
+          testWidgetSpanChildNode);
     }
     return orElse();
   }
@@ -2347,11 +2532,13 @@ abstract class AppendChild implements SnippetEvent {
   const factory AppendChild(
       {final Type? type,
       final STreeNode? testNode,
+      final String? snippetName,
       final Type? widgetSpanChildType,
       final STreeNode? testWidgetSpanChildNode}) = _$AppendChildImpl;
 
   Type? get type;
   STreeNode? get testNode;
+  String? get snippetName; // only used when type is SnippetRefNode
   Type? get widgetSpanChildType;
   STreeNode? get testWidgetSpanChildNode;
   @JsonKey(ignore: true)
@@ -2365,7 +2552,7 @@ abstract class _$$AddSiblingBeforeImplCopyWith<$Res> {
           $Res Function(_$AddSiblingBeforeImpl) then) =
       __$$AddSiblingBeforeImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Type? type, STreeNode? testNode});
+  $Res call({Type? type, String? snippetName, STreeNode? testNode});
 }
 
 /// @nodoc
@@ -2380,6 +2567,7 @@ class __$$AddSiblingBeforeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? type = freezed,
+    Object? snippetName = freezed,
     Object? testNode = freezed,
   }) {
     return _then(_$AddSiblingBeforeImpl(
@@ -2387,6 +2575,10 @@ class __$$AddSiblingBeforeImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type?,
+      snippetName: freezed == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String?,
       testNode: freezed == testNode
           ? _value.testNode
           : testNode // ignore: cast_nullable_to_non_nullable
@@ -2400,16 +2592,19 @@ class __$$AddSiblingBeforeImplCopyWithImpl<$Res>
 class _$AddSiblingBeforeImpl
     with DiagnosticableTreeMixin
     implements AddSiblingBefore {
-  const _$AddSiblingBeforeImpl({this.type, this.testNode});
+  const _$AddSiblingBeforeImpl({this.type, this.snippetName, this.testNode});
 
   @override
   final Type? type;
+  @override
+  final String? snippetName;
+// only used when type is SnippetRefNode
   @override
   final STreeNode? testNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.addSiblingBefore(type: $type, testNode: $testNode)';
+    return 'SnippetEvent.addSiblingBefore(type: $type, snippetName: $snippetName, testNode: $testNode)';
   }
 
   @override
@@ -2418,6 +2613,7 @@ class _$AddSiblingBeforeImpl
     properties
       ..add(DiagnosticsProperty('type', 'SnippetEvent.addSiblingBefore'))
       ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('testNode', testNode));
   }
 
@@ -2427,12 +2623,14 @@ class _$AddSiblingBeforeImpl
         (other.runtimeType == runtimeType &&
             other is _$AddSiblingBeforeImpl &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.testNode, testNode) ||
                 other.testNode == testNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, testNode);
+  int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
   @JsonKey(ignore: true)
   @override
@@ -2453,15 +2651,25 @@ class _$AddSiblingBeforeImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -2480,7 +2688,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return addSiblingBefore(type, testNode);
+    return addSiblingBefore(type, snippetName, testNode);
   }
 
   @override
@@ -2494,13 +2702,17 @@ class _$AddSiblingBeforeImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2518,7 +2730,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return addSiblingBefore?.call(type, testNode);
+    return addSiblingBefore?.call(type, snippetName, testNode);
   }
 
   @override
@@ -2532,13 +2744,17 @@ class _$AddSiblingBeforeImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2558,7 +2774,7 @@ class _$AddSiblingBeforeImpl
     required TResult orElse(),
   }) {
     if (addSiblingBefore != null) {
-      return addSiblingBefore(type, testNode);
+      return addSiblingBefore(type, snippetName, testNode);
     }
     return orElse();
   }
@@ -2655,9 +2871,12 @@ class _$AddSiblingBeforeImpl
 
 abstract class AddSiblingBefore implements SnippetEvent {
   const factory AddSiblingBefore(
-      {final Type? type, final STreeNode? testNode}) = _$AddSiblingBeforeImpl;
+      {final Type? type,
+      final String? snippetName,
+      final STreeNode? testNode}) = _$AddSiblingBeforeImpl;
 
   Type? get type;
+  String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
   @JsonKey(ignore: true)
   _$$AddSiblingBeforeImplCopyWith<_$AddSiblingBeforeImpl> get copyWith =>
@@ -2670,7 +2889,7 @@ abstract class _$$AddSiblingAfterImplCopyWith<$Res> {
           $Res Function(_$AddSiblingAfterImpl) then) =
       __$$AddSiblingAfterImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Type? type, STreeNode? testNode});
+  $Res call({Type? type, String? snippetName, STreeNode? testNode});
 }
 
 /// @nodoc
@@ -2685,6 +2904,7 @@ class __$$AddSiblingAfterImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? type = freezed,
+    Object? snippetName = freezed,
     Object? testNode = freezed,
   }) {
     return _then(_$AddSiblingAfterImpl(
@@ -2692,6 +2912,10 @@ class __$$AddSiblingAfterImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as Type?,
+      snippetName: freezed == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String?,
       testNode: freezed == testNode
           ? _value.testNode
           : testNode // ignore: cast_nullable_to_non_nullable
@@ -2705,16 +2929,19 @@ class __$$AddSiblingAfterImplCopyWithImpl<$Res>
 class _$AddSiblingAfterImpl
     with DiagnosticableTreeMixin
     implements AddSiblingAfter {
-  const _$AddSiblingAfterImpl({this.type, this.testNode});
+  const _$AddSiblingAfterImpl({this.type, this.snippetName, this.testNode});
 
   @override
   final Type? type;
+  @override
+  final String? snippetName;
+// only used when type is SnippetRefNode
   @override
   final STreeNode? testNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.addSiblingAfter(type: $type, testNode: $testNode)';
+    return 'SnippetEvent.addSiblingAfter(type: $type, snippetName: $snippetName, testNode: $testNode)';
   }
 
   @override
@@ -2723,6 +2950,7 @@ class _$AddSiblingAfterImpl
     properties
       ..add(DiagnosticsProperty('type', 'SnippetEvent.addSiblingAfter'))
       ..add(DiagnosticsProperty('type', type))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('testNode', testNode));
   }
 
@@ -2732,12 +2960,14 @@ class _$AddSiblingAfterImpl
         (other.runtimeType == runtimeType &&
             other is _$AddSiblingAfterImpl &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.testNode, testNode) ||
                 other.testNode == testNode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, testNode);
+  int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
   @JsonKey(ignore: true)
   @override
@@ -2758,15 +2988,25 @@ class _$AddSiblingAfterImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -2785,7 +3025,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return addSiblingAfter(type, testNode);
+    return addSiblingAfter(type, snippetName, testNode);
   }
 
   @override
@@ -2799,13 +3039,17 @@ class _$AddSiblingAfterImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2823,7 +3067,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return addSiblingAfter?.call(type, testNode);
+    return addSiblingAfter?.call(type, snippetName, testNode);
   }
 
   @override
@@ -2837,13 +3081,17 @@ class _$AddSiblingAfterImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -2863,7 +3111,7 @@ class _$AddSiblingAfterImpl
     required TResult orElse(),
   }) {
     if (addSiblingAfter != null) {
-      return addSiblingAfter(type, testNode);
+      return addSiblingAfter(type, snippetName, testNode);
     }
     return orElse();
   }
@@ -2959,10 +3207,13 @@ class _$AddSiblingAfterImpl
 }
 
 abstract class AddSiblingAfter implements SnippetEvent {
-  const factory AddSiblingAfter({final Type? type, final STreeNode? testNode}) =
-      _$AddSiblingAfterImpl;
+  const factory AddSiblingAfter(
+      {final Type? type,
+      final String? snippetName,
+      final STreeNode? testNode}) = _$AddSiblingAfterImpl;
 
   Type? get type;
+  String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
   @JsonKey(ignore: true)
   _$$AddSiblingAfterImplCopyWith<_$AddSiblingAfterImpl> get copyWith =>
@@ -3055,15 +3306,25 @@ class _$PasteReplacementImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -3096,13 +3357,17 @@ class _$PasteReplacementImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3134,13 +3399,17 @@ class _$PasteReplacementImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3363,15 +3632,25 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -3404,13 +3683,17 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3442,13 +3725,17 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3632,15 +3919,25 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -3673,13 +3970,17 @@ class _$PasteSiblingBeforeImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3711,13 +4012,17 @@ class _$PasteSiblingBeforeImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3892,15 +4197,25 @@ class _$PasteSiblingAfterImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -3933,13 +4248,17 @@ class _$PasteSiblingAfterImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -3971,13 +4290,17 @@ class _$PasteSiblingAfterImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4152,15 +4475,25 @@ class _$DeleteNodeTappedImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -4193,13 +4526,17 @@ class _$DeleteNodeTappedImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4231,13 +4568,17 @@ class _$DeleteNodeTappedImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4412,15 +4753,25 @@ class _$CompleteDeletionImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -4453,13 +4804,17 @@ class _$CompleteDeletionImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4491,13 +4846,17 @@ class _$CompleteDeletionImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4705,15 +5064,25 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -4746,13 +5115,17 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -4784,13 +5157,17 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5016,15 +5393,25 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -5057,13 +5444,17 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5095,13 +5486,17 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5328,15 +5723,25 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -5369,13 +5774,17 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5407,13 +5816,17 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5631,15 +6044,25 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -5672,13 +6095,17 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5710,13 +6137,17 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -5922,15 +6353,25 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -5963,13 +6404,17 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -6001,13 +6446,17 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -6188,15 +6637,25 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode)
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
         wrapSelectionWith,
-    required TResult Function(Type? type, STreeNode? testNode,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
         appendChild,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingBefore,
-    required TResult Function(Type? type, STreeNode? testNode) addSiblingAfter,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
     required TResult Function(Type? widgetSpanChildType) pasteReplacement,
     required TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
@@ -6229,13 +6688,17 @@ class _$ForceSnippetRefreshImpl
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult? Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult? Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
@@ -6267,13 +6730,17 @@ class _$ForceSnippetRefreshImpl
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, STreeNode? testNode)? replaceSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode)? wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)?
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
         appendChild,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingBefore,
-    TResult Function(Type? type, STreeNode? testNode)? addSiblingAfter,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
     TResult Function(Type? widgetSpanChildType)? pasteReplacement,
     TResult Function(
             Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?

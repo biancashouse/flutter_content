@@ -29,121 +29,59 @@ class FireStoreModelRepository implements IModelRepository {
   /// createOrUpdateAppModelAndCAPIModel
   @override
   Future<void> save({
-    required AppModel appModel,
+    required AppInfoModel appInfo,
     required SnippetMap snippets,
   }) async {
-    // write app model
-    BranchName currentBranchName = appModel.currentBranchName;
-    DateTime dttNow = DateTime.now();
-    int now = dttNow.millisecondsSinceEpoch;
+    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // create an undo for this version
-    Map<BranchName, BranchModel> branches = appModel.branches;
-    late BranchModel branch;
-    if (!branches.containsKey(currentBranchName)) {
-      appModel.branches = Map.from(branches)
-        ..[currentBranchName] = branch = BranchModel(name: currentBranchName);
-    } else {
-      branch = branches[appModel.currentBranchName]!;
-    }
-    branch.undos = [branch.latestVersionId ?? INITIAL_VERSION, ...branch.undos];
-    branch.latestVersionId = now;
-    branch.redos = [];
-
-    CollectionReference appsRef =
-        FirebaseFirestore.instance.collection('/flutter-content-apps');
-    DocumentReference appDocRef = appsRef.doc(FC().modelName);
-
-    // String encodedAppModelJson = jsonEncode(appModel.toJson());
+    var currList = List<VersionId>.of(FC().appInfo.versionIds);
+    var newAppInfo = FC().appInfo;
+    newAppInfo.versionIds = currList..insert(0, newVersionId);
+    newAppInfo.editingVersionId = newVersionId;
+    var map = newAppInfo.toMap();
     await appDocRef.set(
-      appModel.toMap(),
+      newAppInfo.toMap(),
     );
-    CollectionReference branchesRef = appDocRef.collection('branches');
-    DocumentReference branchDocRef =
-        branchesRef.doc(appModel.currentBranchName);
-    CollectionReference branchVersionsRef = branchDocRef.collection('versions');
-    DocumentReference newVersionDocRef = branchVersionsRef.doc("$now");
-    // var snippetsJson = FC().snippetsModel.toJson();
-    // var latestVersionSize = snippetsJson.length;
-    // if (latestVersionSize < 1024) {
-    //   debugPrint("save() - ${latestVersionSize} bytes");
-    // } else {
-    //   debugPrint(
-    //       "save() - ${(latestVersionSize / 1024).toStringAsFixed(2)} Kb");
-    // }
-    await newVersionDocRef.set(
-      FC().snippetsModel.toMap());
-    // FC().jsonBeforePush = FC().snippetsModel.toJson();
+    // now create the actual version doc
+    CollectionReference versionsRef = appDocRef.collection('versions');
+    DocumentReference newVersionDocRef = versionsRef.doc(newVersionId);
+    await newVersionDocRef.set(FC().snippetsModel.toMap());
   }
 
   @override
-  Future<void> switchBranch({required String newBranchName}) async {
-    CollectionReference appsRef =
-    FirebaseFirestore.instance.collection('/flutter-content-apps');
-    DocumentReference appDocRef = appsRef.doc(FC().modelName);
+  Future<void> publish({required VersionId versionId}) async {
+    FC().appInfo.publishedVersionId = versionId;
 
-    // String encodedAppModelJson = jsonEncode(appModel.toJson());
-    FC().appModel.currentBranchName = newBranchName;
-    await appDocRef.set(
-      FC().appModel.toMap(),
-    );
-  }
-
-  @override
-  Future<void> revert({required FSAction action}) async {
-    DateTime dttNow = DateTime.now();
-    int now = dttNow.millisecondsSinceEpoch;
-    String encodedSnippetMapJson = FC().snippetsModel.toJson();
-    // create an undo for this version
-    Map<BranchName, BranchModel> branches = FC().appModel.branches;
-    late BranchModel branch;
-    int? newLatestVersionId;
-    // can't revert until a save has been made
-    if (branches.containsKey(FC().appModel.currentBranchName)) {
-      branch = FC().appModel.branches[FC().appModel.currentBranchName]!;
-      if (branch.latestVersionId != null) {
-        if (action == FSAction.undo && branch.undos.isNotEmpty) {
-          branch.redos = [branch.latestVersionId!, ...branch.redos];
-          branch.latestVersionId = branch.undos.removeAt(0);
-          newLatestVersionId = branch.latestVersionId!;
-        } else if (action == FSAction.redo && branch.redos.isNotEmpty) {
-          branch.undos = [branch.latestVersionId!, ...branch.undos];
-          branch.latestVersionId = branch.redos.removeAt(0);
-          newLatestVersionId = branch.latestVersionId!;
-        }
-      }
+    // modify the versionIds to show published versions with ' <-' appended
+    List<VersionId> newVersionIds = [];
+    for (VersionId v in FC().appInfo.versionIds/*.sublist(0, 10)*/) {
+      VersionId versionId = (v == FC().appInfo.publishedVersionId)
+          ? '$v <-'
+          : v;
+      newVersionIds.add(versionId);
     }
-    if (newLatestVersionId != null) {
-      CollectionReference appsRef =
-          FirebaseFirestore.instance.collection('/flutter-content-apps');
-      DocumentReference appDocRef = appsRef.doc(FC().modelName);
+    FC().appInfo.versionIds = newVersionIds;
+
       await appDocRef.set(
-        FC().appModel.toMap(),
-      );
-
-      // only updated the appInfo. Can reload latest version now to complete the undo or redo
-
-      // CollectionReference branchesRef = appDocRef.collection('branches');
-      // DocumentReference branchDocRef = branchesRef.doc(
-      //     FC().appModel.currentBranchName);
-      // CollectionReference branchVersionsRef = branchDocRef.collection(
-      //     'versions');
-      // DocumentReference newVersionDocRef = branchVersionsRef.doc(newLatestVersionId);
-      // await newVersionDocRef.set({
-      //   "snippets": FC().snippetsModel.toMap(),
-      // });
-    }
+      FC().appInfo.toMap(),
+    );
   }
 
   @override
-  Future<AppModel?> getAppModel() async {
-    DocumentReference appDocRef = FirebaseFirestore.instance
-        .doc('/flutter-content-apps/${FC().modelName}');
+  Future<void> revert({required VersionId versionId}) async {
+    FC().appInfo.editingVersionId = versionId;
+    await appDocRef.set(
+      FC().appInfo.toMap(),
+    );
+  }
+
+  @override
+  Future<AppInfoModel?> getAppInfo() async {
     DocumentSnapshot snap = await appDocRef.get();
     if (snap.exists) {
       Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
       // var appInfo = data["appInfo"];
-      var appInfo = AppModelMapper.fromMap(data);
+      var appInfo = AppInfoModelMapper.fromMap(data);
       return appInfo;
     } else {
       // initialise model in firestore
@@ -152,16 +90,10 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<SnippetMapModel?> getVersionedSnippetMap({
-    required BranchName branchName,
-    required VersionId modelVersion,
-  }) async {
-    DocumentReference appDocRef = FirebaseFirestore.instance
-        .doc('/flutter-content-apps/${FC().modelName}');
-    CollectionReference branchesRef = appDocRef.collection('branches');
-    DocumentReference branchDocRef = branchesRef.doc(branchName);
-    CollectionReference branchVersionsRef = branchDocRef.collection('versions');
-    DocumentReference versionDocRef = branchVersionsRef.doc("$modelVersion");
+  Future<SnippetMapModel?> getVersionedSnippetMap(
+      {required VersionId versionId}) async {
+    CollectionReference versionsRef = appDocRef.collection('versions');
+    DocumentReference versionDocRef = versionsRef.doc(versionId);
     var snap = await versionDocRef.get();
     if (snap.exists) {
       Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
@@ -171,6 +103,7 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
+
   /// returns a Record containing: totalVotes for each Option, optionUserVotedFor (or null if not voted yet)
   /// Does 2 firestore reads:
   /// 1. poll record in the /polls collection, which could have a vote count for each option (map)
@@ -312,11 +245,11 @@ class FireStoreModelRepository implements IModelRepository {
     }
   }
 
-  // @override
-  // Future<FSFolderNode> createAndPopulateRootFSStorageNode() async {
-  //   var rootRef = fbStorage.ref(); // .child("/");
-  //   return await createAndPopulateFolderNode(ref: rootRef);
-  // }
+// @override
+// Future<FSFolderNode> createAndPopulateRootFSStorageNode() async {
+//   var rootRef = fbStorage.ref(); // .child("/");
+//   return await createAndPopulateFolderNode(ref: rootRef);
+// }
 
   @override
   Future<FSFolderNode> createAndPopulateFolderNode(
@@ -334,4 +267,9 @@ class FireStoreModelRepository implements IModelRepository {
     }
     return result;
   }
+
+  DocumentReference get appDocRef => FirebaseFirestore.instance
+      .collection('/flutter-content-apps')
+      .doc(FC().appName);
+
 }

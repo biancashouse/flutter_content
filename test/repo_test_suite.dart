@@ -1,15 +1,11 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/bloc/snippet_state.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'unit_test.mocks.dart';
 
-const TEST_VERSION_ID = 1700000000000;
+const VersionId TEST_VERSION_ID = '1700000000000';
 
 void main() {
   const appName = 'flutter-content-test-app';
@@ -38,53 +34,54 @@ void main() {
   setUp(() async {
     // print('Setting up resources for a test...\n\n');
     mockRepo = MockModelRepository();
-    when(mockRepo.getAppModel()).thenAnswer((_) async {
-      BranchModel branch = BranchModel(
-        name: 'staging',
-        latestVersionId: TEST_VERSION_ID,
-        undos: [INITIAL_VERSION],
-      );
-      AppModel appInfo = AppModel(branches: {'staging': branch});
-      return appInfo;
-    });
-    // when(mockRepo.getVersionedSnippetMap(
-    //     branchName: 'staging', modelVersion: TEST_VERSION_ID))
-    //     .thenAnswer((_) async {
-    //   final scaffoldWithTabs = SnippetRootNode(
-    //     name: snippetName,
-    //     child: ScaffoldNode(
-    //       appBar: AppBarNode(
-    //         bgColorValue: Colors.black.value,
-    //         title: GenericSingleChildNode(
-    //             propertyName: 'title', child: TextNode(text: 'my title')),
-    //         bottom: GenericSingleChildNode(
-    //           propertyName: 'bottom',
-    //           child: TabBarNode(
-    //             children: [
-    //               firstTabNode = TextNode(text: 'tab 1'),
-    //               TextNode(text: 'Tab 2'),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //       body: GenericSingleChildNode(
-    //         propertyName: 'body',
-    //         child: TabBarViewNode(
-    //           children: [
-    //             PlaceholderNode(
-    //                 centredLabel: 'page 1', colorValue: Colors.yellow.value),
-    //             PlaceholderNode(
-    //                 centredLabel: 'page 2',
-    //                 colorValue: Colors.blueAccent.value),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   )..validateTree();
-    //   SnippetMapModel snippetsModel =
-    //   SnippetMapModel({snippetName: scaffoldWithTabs});
-    //   return snippetsModel;
+
+    // when(mockRepo.getVersionsInfo()).thenAnswer((_) async {
+    //   BranchModel branch = BranchModel(
+    //     name: 'staging',
+    //     latestVersionId: TEST_VERSION_ID,
+    //     undos: [INITIAL_VERSION],
+    //   );
+    //   AppModel appInfo = AppModel(branches: {'staging': branch});
+    //   return appInfo;
     // });
+
+    when(mockRepo.getVersionedSnippetMap(versionId: TEST_VERSION_ID))
+        .thenAnswer((_) async {
+      SnippetMapModel snippetMap = SnippetMapModel({
+        'scaffoldWithTabs': SnippetRootNode(
+          name: scaffoldWithTabs,
+          child: ScaffoldNode(
+            appBar: AppBarNode(
+              bgColorValue: Colors.black.value,
+              title: GenericSingleChildNode(
+                  propertyName: 'title', child: TextNode(text: 'my title')),
+              bottom: GenericSingleChildNode(
+                propertyName: 'bottom',
+                child: TabBarNode(
+                  children: [
+                     TextNode(text: 'tab 1'),
+                    TextNode(text: 'Tab 2'),
+                  ],
+                ),
+              ),
+            ),
+            body: GenericSingleChildNode(
+              propertyName: 'body',
+              child: TabBarViewNode(
+                children: [
+                  PlaceholderNode(
+                      centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                  PlaceholderNode(
+                      centredLabel: 'page 2',
+                      colorValue: Colors.blueAccent.value),
+                ],
+              ),
+            ),
+          ),
+        )..validateTree(),
+      });
+      return snippetMap;
+    });
 
     emptyTreeC = SnippetTreeController(
         roots: [emptySnippet],

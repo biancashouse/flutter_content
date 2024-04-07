@@ -253,8 +253,8 @@ Future<void> main() async {
     initialValueJsonAssetPath: "startup-scripts/example-config.json",
     webHome: const FlutterContentPage(
       panelName: 'home',
-      snippetName: 'empty-home',
-      fromTemplate: SnippetTemplate.scaffold_with_tabs,
+      snippetName: 'example-home',
+      fromTemplate: SnippetTemplate.empty_snippet,
     ),
     // webHome: const ZoomerSamplePage(),
     mobileHome: const HomePageMobile(),

@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "public": "build/web",
+    "target": "staging-deploy",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

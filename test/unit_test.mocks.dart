@@ -39,40 +39,34 @@ class _FakeFSFolderNode_0 extends _i1.SmartFake implements _i2.FSFolderNode {
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
   @override
-  _i4.Future<_i5.AppModel?> getAppModel() => (super.noSuchMethod(
+  _i4.Future<_i5.AppInfoModel?> getAppInfo() => (super.noSuchMethod(
         Invocation.method(
-          #getAppModel,
+          #getAppInfo,
           [],
         ),
-        returnValue: _i4.Future<_i5.AppModel?>.value(),
-        returnValueForMissingStub: _i4.Future<_i5.AppModel?>.value(),
-      ) as _i4.Future<_i5.AppModel?>);
+        returnValue: _i4.Future<_i5.AppInfoModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.AppInfoModel?>.value(),
+      ) as _i4.Future<_i5.AppInfoModel?>);
 
   @override
-  _i4.Future<_i5.SnippetMapModel?> getVersionedSnippetMap({
-    required String? branchName,
-    required int? modelVersion,
-  }) =>
+  _i4.Future<_i5.SnippetMapModel?> getVersionedSnippetMap(
+          {required String? versionId}) =>
       (super.noSuchMethod(
         Invocation.method(
           #getVersionedSnippetMap,
           [],
-          {
-            #branchName: branchName,
-            #modelVersion: modelVersion,
-          },
+          {#versionId: versionId},
         ),
         returnValue: _i4.Future<_i5.SnippetMapModel?>.value(),
         returnValueForMissingStub: _i4.Future<_i5.SnippetMapModel?>.value(),
       ) as _i4.Future<_i5.SnippetMapModel?>);
 
   @override
-  _i4.Future<void> switchBranch({required String? newBranchName}) =>
-      (super.noSuchMethod(
+  _i4.Future<void> publish({required String? versionId}) => (super.noSuchMethod(
         Invocation.method(
-          #switchBranch,
+          #publish,
           [],
-          {#newBranchName: newBranchName},
+          {#versionId: versionId},
         ),
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
@@ -80,7 +74,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
 
   @override
   _i4.Future<void> save({
-    required _i5.AppModel? appModel,
+    required _i5.AppInfoModel? appInfo,
     required Map<String, _i5.SnippetRootNode>? snippets,
   }) =>
       (super.noSuchMethod(
@@ -88,7 +82,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           #save,
           [],
           {
-            #appModel: appModel,
+            #appInfo: appInfo,
             #snippets: snippets,
           },
         ),
@@ -97,12 +91,11 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<void> revert({required _i3.FSAction? action}) =>
-      (super.noSuchMethod(
+  _i4.Future<void> revert({required String? versionId}) => (super.noSuchMethod(
         Invocation.method(
           #revert,
           [],
-          {#action: action},
+          {#versionId: versionId},
         ),
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),

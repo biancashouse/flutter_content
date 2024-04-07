@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'target_model.dart';
@@ -99,6 +99,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$animateArrow(TargetModel v) => v.animateArrow;
   static const Field<TargetModel, bool> _f$animateArrow =
       Field('animateArrow', _$animateArrow, opt: true, def: false);
+  static bool _$autoPlay(TargetModel v) => v.autoPlay;
+  static const Field<TargetModel, bool> _f$autoPlay =
+      Field('autoPlay', _$autoPlay, opt: true, def: false);
   static GlobalKey<State<StatefulWidget>>? _$targetsWrapperGK(TargetModel v) =>
       v.targetsWrapperGK;
   static const Field<TargetModel, GlobalKey<State<StatefulWidget>>>
@@ -143,6 +146,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutArrowTypeIndex: _f$calloutArrowTypeIndex,
     #calloutArrowColorValue: _f$calloutArrowColorValue,
     #animateArrow: _f$animateArrow,
+    #autoPlay: _f$autoPlay,
     #targetsWrapperGK: _f$targetsWrapperGK,
     #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
     #targetLocalPosTopPc: _f$targetLocalPosTopPc,
@@ -174,7 +178,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         snippetName: data.dec(_f$snippetName),
         calloutArrowTypeIndex: data.dec(_f$calloutArrowTypeIndex),
         calloutArrowColorValue: data.dec(_f$calloutArrowColorValue),
-        animateArrow: data.dec(_f$animateArrow));
+        animateArrow: data.dec(_f$animateArrow),
+        autoPlay: data.dec(_f$autoPlay));
   }
 
   @override
@@ -210,10 +215,8 @@ mixin TargetModelMappable {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        (runtimeType == other.runtimeType &&
-            TargetModelMapper.ensureInitialized()
-                .isValueEqual(this as TargetModel, other));
+    return TargetModelMapper.ensureInitialized()
+        .equalsValue(this as TargetModel, other);
   }
 
   @override
@@ -254,7 +257,8 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       String? snippetName,
       int? calloutArrowTypeIndex,
       int? calloutArrowColorValue,
-      bool? animateArrow});
+      bool? animateArrow,
+      bool? autoPlay});
   TargetModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -291,7 +295,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
           String? snippetName,
           Object? calloutArrowTypeIndex = $none,
           Object? calloutArrowColorValue = $none,
-          bool? animateArrow}) =>
+          bool? animateArrow,
+          bool? autoPlay}) =>
       $apply(FieldCopyWithData({
         if (uid != null) #uid: uid,
         if (wName != null) #wName: wName,
@@ -323,7 +328,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
           #calloutArrowTypeIndex: calloutArrowTypeIndex,
         if (calloutArrowColorValue != $none)
           #calloutArrowColorValue: calloutArrowColorValue,
-        if (animateArrow != null) #animateArrow: animateArrow
+        if (animateArrow != null) #animateArrow: animateArrow,
+        if (autoPlay != null) #autoPlay: autoPlay
       }));
   @override
   TargetModel $make(CopyWithData data) => TargetModel(
@@ -358,7 +364,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
           data.get(#calloutArrowTypeIndex, or: $value.calloutArrowTypeIndex),
       calloutArrowColorValue:
           data.get(#calloutArrowColorValue, or: $value.calloutArrowColorValue),
-      animateArrow: data.get(#animateArrow, or: $value.animateArrow));
+      animateArrow: data.get(#animateArrow, or: $value.animateArrow),
+      autoPlay: data.get(#autoPlay, or: $value.autoPlay));
 
   @override
   TargetModelCopyWith<$R2, TargetModel, $Out2> $chain<$R2, $Out2>(

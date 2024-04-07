@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
@@ -441,8 +442,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (SingleChildScrollViewNode) =>
           SingleChildScrollViewNode(child: childNode),
         const (SizedBoxNode) => SizedBoxNode(child: childNode),
-        const (SnippetRootNode) =>
-          SnippetRootNode(name: 'name?', child: childNode),
+        const (SnippetRefNode) =>
+          SnippetRefNode(snippetName: 'name?'),
         const (SplitViewNode) =>
           SplitViewNode(children: childNode != null ? [childNode] : []),
         const (StackNode) =>
@@ -783,10 +784,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
-    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
+    if (state.aNodeIsSelected && FC().appInfo.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+          STreeNodeMapper.fromJson(FC().appInfo.clipboard!);
       //_createSnippetUndo();
       _replaceWithNewNodeOrClipboard(selectedNode, emit, clipboardNode);
     }
@@ -814,10 +815,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteChild(PasteChild event, emit) {
-    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
+    if (state.aNodeIsSelected && FC().appInfo.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+          STreeNodeMapper.fromJson(FC().appInfo.clipboard!);
       _addOrPasteChild(selectedNode, emit, clipboardNode);
     }
   }
@@ -845,10 +846,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
-    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
+    if (state.aNodeIsSelected && FC().appInfo.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+          STreeNodeMapper.fromJson(FC().appInfo.clipboard!);
       //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =
@@ -887,10 +888,10 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
-    if (state.aNodeIsSelected && FC().appModel.clipboard != null) {
+    if (state.aNodeIsSelected && FC().appInfo.clipboard != null) {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode =
-          STreeNodeMapper.fromJson(FC().appModel.clipboard!);
+          STreeNodeMapper.fromJson(FC().appInfo.clipboard!);
       //_createSnippetUndo();
       if (state.selectedNode?.parent is MC) {
         int i =

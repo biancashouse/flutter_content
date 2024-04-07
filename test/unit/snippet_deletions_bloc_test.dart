@@ -10,10 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import '../repo_test_suite.dart';
+import '../unit_test.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
-  late MockModelRepository mockRepository;
+  late MockModelRepository mockRepo;
   late CAPIBloC capiBloc;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
@@ -80,6 +81,11 @@ void main() {
 
   setUp(() {
     return Future(() async {
+      mockRepo = setupMockRepo();
+      FC().init(
+        modelName: 'flutter-content-test-app',
+        testModelRepo: mockRepo,
+      );
       cl1 = TextNode(text: 'cl1');
       cl2 = TextNode(text: 'cl2');
       sc1 = CenterNode();
@@ -127,31 +133,6 @@ void main() {
           ),
         ),
       );
-      mockRepository = MockModelRepository();
-      const appName = 'flutter-content-test-app';
-      when(mockRepository.getCAPIModel(
-        branchName: 'testing',
-        modelVersion: TEST_VERSION_ID,
-      )).thenAnswer((_) async {
-        final modelSnippetJson = modelSnippetRoot.toJson();
-        CAPIModel model = CAPIModel(
-            snippetEncodedJsons: {snippetName: modelSnippetJson});
-        // String encodedSnippetMapJsonS = model.toJson().toString();
-        return model;
-      });
-      when(mockRepository.getAppModel()).thenAnswer((_) async {
-        return AppModel();
-      });
-      capiBloc = CAPIBloC(
-        modelRepo: mockRepository,
-        // singleTargetMap: {},
-        targetGroupMap: {},
-      );
-      AppModel? appInfo = await mockRepository.getAppModel();
-      FC().init(
-        modelName: 'testing',
-        namedStyles: {},
-      );
     });
   });
 
@@ -160,7 +141,7 @@ void main() {
       ..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC);
   }
 
   /// reusable expected states

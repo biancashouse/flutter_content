@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
-
 part 'upto6color_values.mapper.dart';
 
 @MappableClass()

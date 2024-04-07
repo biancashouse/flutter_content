@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
-
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';

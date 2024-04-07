@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 
-
 part 'edgeinsets_node_value.mapper.dart';
 
 @MappableClass()

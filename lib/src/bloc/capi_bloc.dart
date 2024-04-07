@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'capi_event.dart';
@@ -49,7 +48,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
     // on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<Save>((event, emit) => _save(event, emit));
-    on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
+    // on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
+    on<Publish>((event, emit) => _publish(event, emit));
     on<Revert>((event, emit) => _revert(event, emit));
     // on<InitApp>((event, emit) => _initApp(event, emit));
     // on<RecordMatrix>((event, emit) => _recordMatrix(event, emit));
@@ -193,7 +193,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // save to firebase
     await modelRepo.save(
-        appModel: FC().appModel, snippets: FC().snippetsModel.snippets);
+        appInfo: FC().appInfo, snippets: FC().snippetsModel.snippets);
 
     // }
     // } else {
@@ -213,38 +213,36 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // update last value
   }
 
-  Future<void> _switchBranch(SwitchBranch event, emit) async {
-    final stopwatch = Stopwatch()..start();
-    // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-    Callout.showTextToast(
-      feature: "saving-model",
-      msgText: 'saving changes...',
-      backgroundColor: Colors.yellow,
-      width: Useful.scrW * .8,
-      height: 40,
-      gravity: Alignment.topCenter,
-      textColor: Colors.blueAccent,
-    );
+  // Future<void> _switchBranch(SwitchBranch event, emit) async {
+  //   final stopwatch = Stopwatch()..start();
+  //   // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+  //   Callout.showTextToast(
+  //     feature: "saving-model",
+  //     msgText: 'saving changes...',
+  //     backgroundColor: Colors.yellow,
+  //     width: Useful.scrW * .8,
+  //     height: 40,
+  //     gravity: Alignment.topCenter,
+  //     textColor: Colors.blueAccent,
+  //   );
+  //
+  //   // save to firebase
+  //   await modelRepo.switchBranch(newBranchName: event.newBranchName);
+  //
+  //   // min 2s display of toast
+  //   if (stopwatch.elapsedMilliseconds < 2000) {
+  //     await Future.delayed(
+  //         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+  //   }
+  //   Callout.dismissAll(onlyToasts: true);
+  //   // update last value
+  // }
 
-    // save to firebase
-    await modelRepo.switchBranch(newBranchName: event.newBranchName);
-
-    // min 2s display of toast
-    if (stopwatch.elapsedMilliseconds < 2000) {
-      await Future.delayed(
-          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
-    }
-    Callout.dismissAll(onlyToasts: true);
-    // update last value
-  }
-
-  Future<void> _revert(event, emit) async {
+  Future<void> _revert(Revert event, emit) async {
     final stopwatch = Stopwatch()..start();
     Callout.showTextToast(
       feature: "reverting-model",
-      msgText: event.action == FSAction.undo
-          ? 'undoing changes...'
-          : 'redoing changes...',
+      msgText: 'reverting staged version...',
       backgroundColor: Colors.yellow,
       width: Useful.scrW * .8,
       height: 40,
@@ -252,7 +250,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       textColor: Colors.blueAccent,
     );
 
-    await modelRepo.revert(action: event.action);
+    await modelRepo.revert(versionId: event.versionId);
 
     if (stopwatch.elapsedMilliseconds < 2000)
       await Future.delayed(
@@ -264,6 +262,32 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(
       force: state.force + 1,
     ));
+  }
+
+  Future<void> _publish(Publish event, emit) async {
+    final stopwatch = Stopwatch()..start();
+    Callout.showTextToast(
+      feature: "reverting-model",
+      msgText: 'publishing version...',
+      backgroundColor: Colors.yellow,
+      width: Useful.scrW * .8,
+      height: 40,
+      gravity: Alignment.topCenter,
+      textColor: Colors.blueAccent,
+    );
+
+    await modelRepo.publish(versionId: event.versionId);
+
+    if (stopwatch.elapsedMilliseconds < 2000)
+      await Future.delayed(
+          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+
+    Callout.dismissAll(onlyToasts: true);
+    // await FC.loadLatestSnippetMap();
+    //
+    // emit(state.copyWith(
+    //   force: state.force + 1,
+    // ));
   }
 
   void _forceRefresh(event, emit) {
@@ -319,7 +343,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
-    FC().appModel.clipboard = event.newContent;
+    FC().appInfo.clipboard = event.newContent;
     emit(state.copyWith(
       force: state.force + 1,
     ));
@@ -884,10 +908,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         );
 
     SnippetBloC newSnippetBloc = SnippetBloC(
-        rootNode: rootNode,
-        treeC: newTreeC()..expandAll(),
-        // treeUR: SnippetTreeUR()
-        );
+      rootNode: rootNode,
+      treeC: newTreeC()..expandAll(),
+      // treeUR: SnippetTreeUR()
+    );
     FC().pushSnippet(newSnippetBloc);
 
     // emit(state.copyWith(

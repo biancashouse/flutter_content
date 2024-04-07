@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -19,7 +18,6 @@ void main() {
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final ur = SnippetTreeUR();
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -62,7 +60,7 @@ void main() {
     snippet = snippetWithScaffoldAnd2Tabs..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC);
   }
 
   blocTest<SnippetBloC, SnippetState>(

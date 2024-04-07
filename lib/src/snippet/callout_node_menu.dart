@@ -329,8 +329,8 @@ List<Widget> menuAnchorWidgets(
         if (selectedNode.parent is CarouselNode) ...[
           _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
               AssetImageNode, action),
-          _menuItemButton("SubMenuButton", snippetBloc, selectedNode,
-              FSImageNode, action),
+          _menuItemButton(
+              "SubMenuButton", snippetBloc, selectedNode, FSImageNode, action),
         ],
       ],
       SubmenuButton(
@@ -396,8 +396,8 @@ List<Widget> menuAnchorWidgets(
         menuChildren: [
           _menuItemButton(
               "Asset Image", snippetBloc, selectedNode, AssetImageNode, action),
-          _menuItemButton(
-              "Firebase Storage Image", snippetBloc, selectedNode, FSImageNode, action),
+          _menuItemButton("Firebase Storage Image", snippetBloc, selectedNode,
+              FSImageNode, action),
           _menuItemButton(
               "Carousel", snippetBloc, selectedNode, CarouselNode, action),
         ],
@@ -511,29 +511,37 @@ SubmenuButton _addSnippetsSubmenu(
   NodeAction action,
 ) {
   List<MenuItemButton> snippetMIs = [];
-  List<String> snippetNames = FC().snippetsMap.keys.toList()..sort();
-  for (String key in snippetNames) {
+  List<SnippetName> snippetNames = FC().snippetsMap.keys.toList()..sort();
+  for (String SnippetName in snippetNames) {
     snippetMIs.add(
       MenuItemButton(
         onPressed: () {
           if (action == NodeAction.replace) {
-            snippetBloc.add(
-                const SnippetEvent.replaceSelectionWith(type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.replaceSelectionWith(
+              type: SnippetRefNode,
+              snippetName: SnippetName,
+            ));
           } else if (action == NodeAction.addSiblingBefore) {
-            snippetBloc.add(
-                const SnippetEvent.addSiblingBefore(type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.addSiblingBefore(
+              type: SnippetRefNode,
+              snippetName: SnippetName,
+            ));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addSiblingAfter) {
-            snippetBloc
-                .add(const SnippetEvent.addSiblingAfter(type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.addSiblingAfter(
+              type: SnippetRefNode,
+              snippetName: SnippetName,
+            ));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addChild) {
-            snippetBloc
-                .add(const SnippetEvent.appendChild(type: SnippetRootNode));
+            snippetBloc.add(SnippetEvent.appendChild(
+              type: SnippetRefNode,
+              snippetName: SnippetName,
+            ));
             // removeNodePropertiesCallout();
           }
         },
-        child: Text(key),
+        child: Text(SnippetName),
       ),
     );
   }
@@ -612,8 +620,7 @@ MenuItemButton? _pasteMI(
   STreeNode selectedNode,
   NodeAction action,
 ) {
-  if (FC().appModel.clipboard != null &&
-      action != NodeAction.wrapWith) {
+  if (FC().appInfo.clipboard != null && action != NodeAction.wrapWith) {
     return MenuItemButton(
       onPressed: () {
         // CAPIBloC bloc = FC().capiBloc;

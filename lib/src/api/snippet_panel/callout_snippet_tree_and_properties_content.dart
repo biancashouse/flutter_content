@@ -300,7 +300,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         node: snippetBloc.state.selectedNode!,
                         capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
-                      if (FC().appModel.clipboard != null) {
+                      if (FC().appInfo.clipboard != null) {
                         Callout.unhide("floating-clipboard");
                       }
                     });
@@ -326,7 +326,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                       snippetBloc.add(SnippetEvent.copyNode(
                           node: snippetBloc.state.selectedNode!));
                       Useful.afterNextBuildDo(() {
-                        if (FC().appModel.clipboard != null) {
+                        if (FC().appInfo.clipboard != null) {
                           Callout.unhide("floating-clipboard");
                         }
                       });

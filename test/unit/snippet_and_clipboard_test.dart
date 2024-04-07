@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
-import '../repo_test_suite.dart';
+import '../unit_test.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
@@ -35,7 +33,9 @@ void main() {
 
   // sample data -----------
   SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
-      SnippetTemplate.empty_snippet, 'some-name');
+    SnippetTemplate.empty_snippet,
+    'some-name',
+  );
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -43,6 +43,7 @@ void main() {
   STreeNode? secondTextNode = TextNode();
   STreeNode? firstSizedBoxNode = SizedBoxNode();
   STreeNode? secondSizedBoxNode = SizedBoxNode();
+
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
     child: ScaffoldNode(
@@ -86,8 +87,9 @@ void main() {
       ..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC,
-        // treeUR: ur
+    snippetBloc = SnippetBloC(
+      rootNode: snippet, treeC: treeC,
+      // treeUR: ur
     );
     selectedState = snippetBloc.state;
     if (select != null) {
@@ -103,27 +105,6 @@ void main() {
 
   setUp(() {
     return Future(() async {
-      mockRepository = MockModelRepository();
-      when(mockRepository.getCAPIModel(
-        branchName: 'testing',
-        modelVersion: TEST_VERSION_ID,
-      )).thenAnswer((_) async {
-        final modelSnippetJson = modelSnippetRoot.toJson();
-        CAPIModel model = CAPIModel(
-            snippetEncodedJsons: {snippetName: modelSnippetJson});
-        String encodedSnippetMapJsonS = model.toJson().toString();
-        return model;
-      });
-      capiBloc = CAPIBloC(
-        modelRepo: mockRepository,
-        // singleTargetMap: {},
-        targetGroupMap: {},
-      );
-      AppModel? appInfo = await mockRepository.getAppModel();
-      FC().init(
-        modelName: 'testing',
-        namedStyles: {},
-      );
       scaffoldAnd2TabsAndStepper = ScaffoldNode(
         appBar: AppBarNode(
           title: GenericSingleChildNode(
@@ -183,15 +164,8 @@ void main() {
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
     // --- repo test
     test('read the model from the repo, and find 1st TextNode', () async {
-      final model = await mockRepository.getCAPIModel(
-        branchName: 'testing',
-        modelVersion: TEST_VERSION_ID,
-      );
 
-      Map<String, SnippetRootNode> snippetMap =
-          FC.parseSnippetJsons(model!);
-
-      SnippetRootNode rootNode = snippetMap.values.first;
+      SnippetRootNode rootNode = modelSnippetRoot;
       expect(rootNode.name, snippetName);
 
       SnippetTreeController treeC = newTreeC(rootNode);
@@ -206,9 +180,9 @@ void main() {
     blocTest<SnippetBloC, SnippetState>(
       'select a node',
       build: () => snippetBloc = SnippetBloC(
-          rootNode: modelSnippetRoot,
-          treeC: newTreeC(modelSnippetRoot),
-          // treeUR: SnippetTreeUR()
+        rootNode: modelSnippetRoot,
+        treeC: newTreeC(modelSnippetRoot),
+        // treeUR: SnippetTreeUR()
       ),
       act: (bloc) => bloc.add(SnippetEvent.selectNode(
         node: firstTabViewNode,
@@ -228,9 +202,9 @@ void main() {
     blocTest<SnippetBloC, SnippetState>(
       'append a child ColumnNode to a TabViewNode',
       build: () => SnippetBloC(
-          rootNode: emptySnippetRoot,
-          treeC: newTreeC(emptySnippetRoot),
-          // treeUR: SnippetTreeUR()
+        rootNode: emptySnippetRoot,
+        treeC: newTreeC(emptySnippetRoot),
+        // treeUR: SnippetTreeUR()
       ),
       act: (bloc) {
         bloc.add(
@@ -256,9 +230,9 @@ void main() {
     blocTest<SnippetBloC, SnippetState>(
       'append a TextNode to columnNode',
       build: () => SnippetBloC(
-          rootNode: emptySnippetRoot,
-          treeC: newTreeC(emptySnippetRoot),
-          // treeUR: SnippetTreeUR()
+        rootNode: emptySnippetRoot,
+        treeC: newTreeC(emptySnippetRoot),
+        // treeUR: SnippetTreeUR()
       ),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
@@ -295,9 +269,9 @@ void main() {
     blocTest<SnippetBloC, SnippetState>(
       'append a TextNode to columnNode',
       build: () => SnippetBloC(
-          rootNode: emptySnippetRoot,
-          treeC: newTreeC(emptySnippetRoot),
-          // treeUR: SnippetTreeUR()
+        rootNode: emptySnippetRoot,
+        treeC: newTreeC(emptySnippetRoot),
+        // treeUR: SnippetTreeUR()
       ),
       seed: () => snippetBloc.state.copyWith(
         selectedNode: firstTabViewNode,
@@ -335,7 +309,7 @@ void main() {
       act: (bloc) {
         bloc.add(SnippetEvent.cutNode(
           node: step3,
-          capiBloc: capiBloc,
+          capiBloc: getMockCAPIBloC(repo),
           skipSave: true,
         ));
         bloc.add(SnippetEvent.selectNode(

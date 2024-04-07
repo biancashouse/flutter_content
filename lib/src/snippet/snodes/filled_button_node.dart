@@ -7,7 +7,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 
-
 part 'filled_button_node.mapper.dart';
 
 @MappableClass()

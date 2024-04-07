@@ -39,12 +39,13 @@ export 'src/bloc/snippet_bloc.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
 export 'src/gotits/gotits_helper_string.dart';
+export 'src/gsi/sign_in_button.dart';
 export 'src/home_page_provider/flutter_content_page.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
-export 'src/model/app_model.dart';
-export 'src/model/branch_model.dart';
+export 'src/model/app_info_model.dart';
+// export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
 export 'src/model/snippet_map_model.dart';
 export 'src/model/target_group_model.dart';
@@ -160,8 +161,7 @@ typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
 typedef TargetModelId = int;
-typedef VersionId = int;
-const INITIAL_VERSION = -1;
+typedef VersionId = String;
 typedef EncodedJson = String;
 typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
 typedef EncodedSnippetJson = String;
@@ -235,7 +235,7 @@ class FC {
     required String modelName,
     FirebaseOptions? fbOptions,
     final IModelRepository?
-    testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
+        testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
     List<String> googleFontNames = const [
       'Roboto',
@@ -245,15 +245,19 @@ class FC {
     ],
     Map<String, NamedTextStyle> namedStyles = const {},
     bool skipAssetPkgName =
-    false, // would only use true when pkg dir is actually inside current project
+        false, // would only use true when pkg dir is actually inside current project
   }) async {
-    _modelName = modelName;
+    _appName = modelName;
     _googleFontNames = googleFontNames;
     _namedStyles = namedStyles;
     _skipAssetPkgName = skipAssetPkgName;
     Bloc.observer = MyGlobalObserver();
 
-    pkgInfo = await PackageInfo.fromPlatform();
+    try {
+      pkgInfo = await PackageInfo.fromPlatform();
+    } catch(e) {
+      // ignore - perhaps testing
+    }
 
     try {
       HydratedBloc.storage;
@@ -269,10 +273,12 @@ class FC {
 
     if (fbOptions != null) {
       fbModelRepo = FireStoreModelRepository(fbOptions);
-      await (fbModelRepo as FireStoreModelRepository).possiblyInitFireStoreRelatedAPIs();
+      await (fbModelRepo as FireStoreModelRepository)
+          .possiblyInitFireStoreRelatedAPIs();
       // fetch model
-      await loadAppModel();
+      await loadAppInfo();
       await loadLatestSnippetMap();
+      await loadFirebaseStorageFolders();
     }
 
     // FutureBuilder requires this return
@@ -283,20 +289,20 @@ class FC {
   late PackageInfo pkgInfo;
 
   // set by .init()
-  String get modelName => _modelName;
+  String get appName => _appName;
 
   /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
-  String get appName => pkgInfo.appName;
+  String get yamlAppName => pkgInfo.appName;
 
-  String get buildNumber => pkgInfo.buildNumber;
+  String get yamlBuildNumber => pkgInfo.buildNumber;
 
-  String get packageName => pkgInfo.packageName;
+  String get yamlPackageName => pkgInfo.packageName;
 
-  String get version => pkgInfo.version;
+  String get yamlVersion => pkgInfo.version;
 
-  late String _modelName;
+  late String _appName;
 
-  late AppModel appModel;
+  late AppInfoModel appInfo;
 
   late FSFolderNode? rootFSFolderNode;
 
@@ -314,14 +320,14 @@ class FC {
   late SnippetMapModel snippetsModel;
   Map<TargetsWrapperName, GlobalKey> targetsWrappers = {};
   late bool
-  _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
+      _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
   String? jsonBeforePush;
-  Offset? _editModeBtnPos;
+  Offset? _devToolsFABPos;
   Offset? _calloutConfigToolbarPos;
   bool skipEditModeEscape =
-  false; // property editors can set this to prevent exit from EditMode
+      false; // property editors can set this to prevent exit from EditMode
 
   final inEditMode = ValueNotifier<bool>(false);
 
@@ -332,21 +338,18 @@ class FC {
 
   Offset calloutConfigToolbarPos(context) =>
       _calloutConfigToolbarPos ??
-          Offset(
-            Useful.scrW / 2 - 350,
-            Useful.scrH / 2 - 40,
-          );
+      Offset(
+        Useful.scrW / 2 - 350,
+        Useful.scrH / 2 - 40,
+      );
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
 
-  Offset editModeBtnPos(context) =>
-      _editModeBtnPos ?? Offset(40, MediaQuery
-          .of(context)
-          .size
-          .height - 100);
+  Offset devToolsFABPos(context) =>
+      _devToolsFABPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
 
-  void setEditModeBtnPos(Offset newPos) => _editModeBtnPos = newPos;
+  void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
   bool? showingNodeOBoundaryOverlays;
 
@@ -358,7 +361,7 @@ class FC {
 
   // each snippet panel has a gk, a last selected node, and a ur
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
-  {}; // every node's toWidget() creates a GK
+      {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -453,8 +456,9 @@ class FC {
   static Future<bool> canInformUserOfNewVersion() async {
     // decide whether new version loaded
     String? storedVersionAndBuild =
-    await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '${FC().version}-${FC().buildNumber}';
+        await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild =
+        '${FC().yamlVersion}-${FC().yamlBuildNumber}';
     if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
       await HydratedBloc.storage
           .write('versionAndBuild', latestVersionAndBuild);
@@ -467,8 +471,8 @@ class FC {
     // _packageInfo = await PackageInfo.fromPlatform();
     // decide whether new version loaded
     String? storedVersionAndBuild =
-    await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '${FC().appName}-${FC().buildNumber}';
+        await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild = '${FC().appName}-${FC().yamlBuildNumber}';
     if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
       await HydratedBloc.storage
           .write('versionAndBuild', latestVersionAndBuild);
@@ -495,28 +499,26 @@ class FC {
   //   return imageTargetListMap;
   // }
 
-
-  static Future<void> loadAppModel() async =>
+  static Future<void> loadAppInfo() async =>
       // fetch appInfo from FB
-  FC().appModel = await FC().fbModelRepo.getAppModel() ?? AppModel();
-
+      FC().appInfo = await FC().fbModelRepo.getAppInfo() ?? AppInfoModel();
 
   static Future<void> loadLatestSnippetMap() async {
-    BranchName branchName = FC().appModel.currentBranchName;
-    // pop most recent undo item
-    BranchModel branch = FC().appModel.branches[branchName] ??
-        BranchModel(name: branchName);
-    VersionId? versionId = branch.latestVersionId;
-    FC().snippetsModel = versionId == null
+    var versionToLoad = FC().canEditContent
+        ? FC().appInfo.editingVersionId
+        : FC().appInfo.publishedVersionId;
+    FC().snippetsModel = (versionToLoad == null)
         ? SnippetMapModel({})
-        : await FC().fbModelRepo.getVersionedSnippetMap(
-        branchName: FC().appModel.currentBranchName,
-        modelVersion: versionId) ?? SnippetMapModel({}
-    );
+        : await FC()
+                .fbModelRepo
+                .getVersionedSnippetMap(versionId: versionToLoad) ??
+            SnippetMapModel({});
+  }
 
+  static Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");
     FC().rootFSFolderNode =
-    await FC().fbModelRepo.createAndPopulateFolderNode(ref: rootRef);
+        await FC().fbModelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 }
 

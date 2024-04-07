@@ -2,21 +2,20 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 
-enum FSAction { undo, redo }
+// enum FSAction { undo, redo }
 
 abstract class IModelRepository {
-  Future<AppModel?> getAppModel();
+  Future<AppInfoModel?> getAppInfo();
 
-  Future<SnippetMapModel?> getVersionedSnippetMap({
-    required BranchName branchName,
-    required VersionId modelVersion,
-  });
+  Future<SnippetMapModel?> getVersionedSnippetMap({required VersionId versionId});
 
-  Future<void> switchBranch({required String newBranchName});
+  // Future<void> switchBranch({required BranchName newBranchName});
 
-  Future<void> save({required AppModel appModel, required SnippetMap snippets});
+  Future<void> publish({required VersionId versionId});
 
-  Future<void> revert({required FSAction action});
+  Future<void> save({required AppInfoModel appInfo, required SnippetMap snippets});
+
+  Future<void> revert({required VersionId versionId});
 
   Future<void> saveVote({
     required String pollName,

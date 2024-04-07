@@ -126,11 +126,15 @@ class CAPIEvent with _$CAPIEvent {
     @Default(false) bool force,
   }) = Save;
 
-  const factory CAPIEvent.switchBranch({
-    required String newBranchName,
-}) = SwitchBranch;
+  const factory CAPIEvent.publish({
+    required VersionId versionId,
+  }) = Publish;
 
-  const factory CAPIEvent.revert({required FSAction action}) = Revert;
+  // const factory CAPIEvent.switchBranch({
+  //   required BranchName newBranchName,
+  // }) = SwitchBranch;
+
+  const factory CAPIEvent.revert({required VersionId versionId}) = Revert;
 
 // const factory CAPIEvent.changedSnippetName({
 //   required TargetModel tc,

@@ -383,7 +383,8 @@ class Useful {
     return (renderObject as RenderBox).localToGlobal(Offset.zero);
   }
 
-  static formattedDate(int ms) => DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(ms));
+  // static formattedDate(int ms) => DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(ms));
+  static formattedDate(int ms) => DateFormat('H:mm, d.MMM').format(DateTime.fromMillisecondsSinceEpoch(ms));
 
   static Text coloredText(
     String s, {
@@ -494,6 +495,10 @@ class Useful {
 
     return Rect.fromLTWH(left, top, width, height);
   }
+
+  static String removeNonNumeric(s) =>
+      s.replaceAll(new RegExp(r"\D"), "");
+
 
 // static (double, double) ensureOnScreenOLD(Rect calloutRect) {
   //   double startingCalloutLeft = calloutRect.left;

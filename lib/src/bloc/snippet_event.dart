@@ -36,28 +36,33 @@ class SnippetEvent with _$SnippetEvent {
 
   const factory SnippetEvent.replaceSelectionWith({
     Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
     STreeNode? testNode,
   }) = ReplaceSelectionWith;
 
   const factory SnippetEvent.wrapSelectionWith({
     Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
     STreeNode? testNode,
   }) = WrapSelectionWith;
 
   const factory SnippetEvent.appendChild({
     Type? type,
     STreeNode? testNode,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
     Type? widgetSpanChildType,
     STreeNode? testWidgetSpanChildNode,
   }) = AppendChild;
 
   const factory SnippetEvent.addSiblingBefore({
     Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
     STreeNode? testNode,
   }) = AddSiblingBefore;
 
   const factory SnippetEvent.addSiblingAfter({
     Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
     STreeNode? testNode,
   }) = AddSiblingAfter;
 

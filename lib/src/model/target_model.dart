@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
@@ -47,6 +46,8 @@ class TargetModel with TargetModelMappable {
 
   bool animateArrow;
 
+  bool autoPlay;
+
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool visible = true;
 
@@ -78,6 +79,7 @@ class TargetModel with TargetModelMappable {
     this.calloutArrowTypeIndex = 1, // ArrowType.POINTY.index,
     this.calloutArrowColorValue,
     this.animateArrow = false,
+    this.autoPlay = false,
   }) {
     // textColorValue ??= Colors.blue[900]!.value;
     calloutFillColorValue ??= Colors.grey.value;

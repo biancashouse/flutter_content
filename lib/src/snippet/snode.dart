@@ -345,6 +345,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
             FC().capiBloc.add(const CAPIEvent.save());
+            Useful.afterNextBuildDo(() {
+              MaterialSPAState.showDevToolsFAB();
+            });
           },
         );
 
