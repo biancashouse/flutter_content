@@ -455,63 +455,63 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
   }
 }
 
-class CalloutConfigPropertyGroup extends PropertyGroup {
-  CalloutConfigGroup? ccGroup;
-  final ValueChanged<CalloutConfigGroup> onGroupChange;
-
-  CalloutConfigPropertyGroup({
-    required super.name,
-    required this.ccGroup,
-    required this.onGroupChange,
-    required super.snode,
-    super.children = const [],
-  }) {
-    super.children = [
-      StringPropertyValueNode(
-        snode: super.snode,
-        name: 'name',
-        stringValue: name,
-        options: FC().snippetsMap.keys.toList(),
-        onStringChange: (newValue) {},
-        calloutButtonSize: const Size(280, 20),
-        calloutSize: const Size(280, 48),
-      ),
-      SnippetNamePropertyValueNode(
-        stringValue: ccGroup?.contentSnippetName,
-        onStringChange: (newValue) {
-          ccGroup ??= CalloutConfigGroup();
-          ccGroup!.contentSnippetName = newValue;
-          onGroupChange.call(ccGroup!);
-        },
-        calloutButtonSize: const Size(280, 20),
-        calloutSize: const Size(280, 48),
-        snode: super.snode,
-        name: name,
-      ),
-      EnumPropertyValueNode<AlignmentEnum?>(
-        snode: super.snode,
-        name: 'target alignment',
-        valueIndex: ccGroup?.targetAlignment?.index,
-        onIndexChange: (newValue) {
-          ccGroup ??= CalloutConfigGroup();
-          ccGroup!.targetAlignment = AlignmentEnum.of(newValue);
-          onGroupChange.call(ccGroup!);
-        },
-      ),
-      OffsetPropertyValueNode(
-        topValue: ccGroup?.calloutPos?.dy,
-        leftValue: ccGroup?.calloutPos?.dx,
-        onOffsetChange: (newValue) {
-          ccGroup ??= CalloutConfigGroup();
-          ccGroup!.calloutPos = Offset(newValue.$1!, newValue.$2!);
-          onGroupChange.call(ccGroup!);
-        },
-        name: 'calloutPos',
-        snode: snode,
-      ),
-    ];
-  }
-}
+// class CalloutConfigPropertyGroup extends PropertyGroup {
+//   CalloutConfigGroup? ccGroup;
+//   final ValueChanged<CalloutConfigGroup> onGroupChange;
+//
+//   CalloutConfigPropertyGroup({
+//     required super.name,
+//     required this.ccGroup,
+//     required this.onGroupChange,
+//     required super.snode,
+//     super.children = const [],
+//   }) {
+//     super.children = [
+//       StringPropertyValueNode(
+//         snode: super.snode,
+//         name: 'name',
+//         stringValue: name,
+//         options: FC().snippetsMap.keys.toList(),
+//         onStringChange: (newValue) {},
+//         calloutButtonSize: const Size(280, 20),
+//         calloutSize: const Size(280, 48),
+//       ),
+//       SnippetNamePropertyValueNode(
+//         stringValue: ccGroup?.contentSnippetName,
+//         onStringChange: (newValue) {
+//           ccGroup ??= CalloutConfigGroup();
+//           ccGroup!.contentSnippetName = newValue;
+//           onGroupChange.call(ccGroup!);
+//         },
+//         calloutButtonSize: const Size(280, 20),
+//         calloutSize: const Size(280, 48),
+//         snode: super.snode,
+//         name: name,
+//       ),
+//       EnumPropertyValueNode<AlignmentEnum?>(
+//         snode: super.snode,
+//         name: 'target alignment',
+//         valueIndex: ccGroup?.targetAlignment?.index,
+//         onIndexChange: (newValue) {
+//           ccGroup ??= CalloutConfigGroup();
+//           ccGroup!.targetAlignment = AlignmentEnum.of(newValue);
+//           onGroupChange.call(ccGroup!);
+//         },
+//       ),
+//       OffsetPropertyValueNode(
+//         topValue: ccGroup?.calloutPos?.dy,
+//         leftValue: ccGroup?.calloutPos?.dx,
+//         onOffsetChange: (newValue) {
+//           ccGroup ??= CalloutConfigGroup();
+//           ccGroup!.calloutPos = Offset(newValue.$1!, newValue.$2!);
+//           onGroupChange.call(ccGroup!);
+//         },
+//         name: 'calloutPos',
+//         snode: snode,
+//       ),
+//     ];
+//   }
+// }
 
 class BorderSidePropertyGroup extends PropertyGroup {
   BorderSideGroup? borderSideGroup;

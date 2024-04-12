@@ -7,12 +7,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class FlutterContentPage extends HookWidget {
   final PanelName panelName;
   final SnippetName snippetName;
-  final SnippetTemplate? fromTemplate;
+  final SnippetTemplate fromTemplate;
 
   const FlutterContentPage(
       {required this.panelName,
       required this.snippetName,
-      this.fromTemplate,
+      this.fromTemplate = SnippetTemplate.empty_snippet,
       super.key});
 
   // https://github.com/flutter/flutter/issues/25827

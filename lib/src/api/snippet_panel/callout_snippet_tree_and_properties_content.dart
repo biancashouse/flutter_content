@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/snippet/callout_node_menu.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
@@ -65,7 +66,9 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
           Useful.afterNextBuildDo(() {
             if (selectedNode?.propertiesPaneScrollPos !=
                 selectedNode?.propertiesPaneSC().offset) {
-              selectedNode?.propertiesPaneSC().jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
+              selectedNode
+                  ?.propertiesPaneSC()
+                  .jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
             }
           });
         }
@@ -104,7 +107,14 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
               //     child: Useful.coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
               //   ),
               // ),
-              // actions: [
+              actions: [
+                IconButton(
+                  hoverColor: Colors.white30,
+                  onPressed: () async {},
+                  icon:
+                      VersionsMenuAnchor(snippetName: snippetBloc.snippetName),
+                  tooltip: 'version...',
+                ),
                 // if (snippetBloc.state.selectedNode is! SnippetRefNode)
                 // IconButton(
                 //   onPressed: () {
@@ -178,7 +188,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                 //   },
                 // ),
                 // hspacer(16),
-              // ],
+              ],
             ),
             body: Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -221,8 +231,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                             children: [
                               // icon buttons
                               ExpansionTile(
-                                title: Useful.coloredText('...',
-                                    color: Colors.white),
+                                title: Useful.coloredText('properties',
+                                    color: Colors.white54, fontSize: 14),
                                 backgroundColor: Colors.black,
                                 collapsedBackgroundColor: Colors.black,
                                 onExpansionChanged: (bool isExpanded) =>
@@ -300,7 +310,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         node: snippetBloc.state.selectedNode!,
                         capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
-                      if (FC().appInfo.clipboard != null) {
+                      if (FC().clipboard != null) {
                         Callout.unhide("floating-clipboard");
                       }
                     });
@@ -326,7 +336,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                       snippetBloc.add(SnippetEvent.copyNode(
                           node: snippetBloc.state.selectedNode!));
                       Useful.afterNextBuildDo(() {
-                        if (FC().appInfo.clipboard != null) {
+                        if (FC().clipboard != null) {
                           Callout.unhide("floating-clipboard");
                         }
                       });
@@ -397,6 +407,38 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     ),
                     tooltip: 'Save a a new Snippet...',
                   ),
+                IconButton(
+                  hoverColor: Colors.white30,
+                  onPressed: () async {
+                    // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
+                    // some properties cannot be deleted
+                    if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
+                    Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                    snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+                    Useful.afterNextBuildDo(() async {
+                      await Future.delayed(const Duration(milliseconds: 1000));
+                      snippetBloc.add(const SnippetEvent.completeDeletion());
+                      Useful.afterNextBuildDo(() {
+                        // if was tab or tabview, reset the tab Q and controller
+                        SnippetPanelState? spState = SnippetPanel.of(context);
+                        spState?.resetTabQandC;
+                      });
+                    });
+                    Callout.dismiss("TreeNodeMenu");
+                  },
+                  icon: Icon(Icons.delete,
+                      color: Colors.red.withOpacity(
+                          !snippetBloc.state.aNodeIsSelected ||
+                                  snippetBloc.state.selectedNode
+                                      is SnippetRefNode ||
+                                  (gc is GenericSingleChildNode? &&
+                                      gc?.parent is StepNode &&
+                                      (gc?.propertyName == 'title' ||
+                                          gc?.propertyName == 'content'))
+                              ? .5
+                              : 1.0)),
+                  tooltip: 'Remove',
+                ),
               ],
             ),
           // tree structure icon buttons
@@ -750,4 +792,96 @@ class PropertiesTreeView extends StatelessWidget {
           );
         },
       );
+}
+
+class VersionsMenuAnchor extends StatefulWidget {
+  final SnippetName snippetName;
+  const VersionsMenuAnchor({required this.snippetName, super.key});
+
+  @override
+  State<VersionsMenuAnchor> createState() => _VersionsMenuAnchorState();
+}
+
+class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
+  @override
+  Widget build(BuildContext context) {
+    VersionId currentVersionId = FC().editingVersionIds[widget.snippetName]!;
+    VersionId? publishedVersionId =
+        FC().publishedVersionIds[widget.snippetName];
+
+    // REVERT menu items
+    List<MenuItemButton> revertMIs = [];
+    for (VersionId versionId
+        in FC().versionIds[widget.snippetName] ?? [] /*.sublist(0, 10)*/) {
+      bool thisIsBeingEdited =
+          Useful.removeNonNumeric(versionId) == currentVersionId;
+      bool thisIsCurrentlyPublished =
+          Useful.removeNonNumeric(versionId) == publishedVersionId;
+      Color itemTextColor = Colors.black;
+      if (thisIsCurrentlyPublished) itemTextColor = Colors.blue;
+      revertMIs.add(MenuItemButton(
+        onPressed: () async {
+          if (versionId == currentVersionId) {
+            Callout.showTextToast(
+                feature: 'cannot-revert-to-current-version',
+                msgText: 'Cannot revert to Current version - ignored');
+          } else {
+            FC().capiBloc.add(
+                  CAPIEvent.revertSnippet(
+                    snippetName: widget.snippetName,
+                    versionId: Useful.removeNonNumeric(versionId),
+                  ),
+                );
+            Useful.afterNextBuildDo(() {
+              debugPrint('reverted.');
+            });
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
+              width: thisIsBeingEdited ? 4 : 0,
+              style: BorderStyle.solid,
+            ),
+          ),
+          padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
+          child: Useful.coloredText(
+              '$versionId ' +
+                  Useful.formattedDate(
+                      int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0),
+              color: itemTextColor),
+        ),
+      ));
+    }
+    return MenuAnchor(
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
+        return IconButton(
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          icon: const Icon(Icons.more_vert, color: Colors.white),
+          tooltip: 'Show menu',
+        );
+      },
+      menuChildren: [
+        SubmenuButton(
+            menuChildren: revertMIs, child: Text('revert staging...')),
+        if (currentVersionId != publishedVersionId)
+          MenuItemButton(
+            onPressed: () {
+              FC().capiBloc.add(CAPIEvent.publishSnippet(
+                  snippetName: widget.snippetName,
+                  versionId: currentVersionId));
+            },
+            child: Text('publish'),
+          ),
+      ],
+    );
+  }
 }

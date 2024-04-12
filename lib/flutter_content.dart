@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,7 +48,7 @@ export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
 // export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
-export 'src/model/snippet_map_model.dart';
+export 'src/model/snippet_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
 export 'src/overlays/callouts/callout.dart';
@@ -162,6 +163,9 @@ typedef BranchName = String;
 typedef PanelName = String;
 typedef TargetModelId = int;
 typedef VersionId = String;
+// typedef VersionIdHistory = List<VersionId>;
+typedef SnippetVersions = Map<VersionId, SnippetRootNode>;
+typedef VersionedSnippet = (VersionId, SnippetRootNode);
 typedef EncodedJson = String;
 typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
 typedef EncodedSnippetJson = String;
@@ -216,7 +220,7 @@ typedef SetStateF = void Function(VoidCallback f);
 
 // typedef Adder<Node> = void Function({Node? parentNode, required Node selectedNode, required Node newNode});
 
-/// this is a global container for the app, accessible via GetIt
+/// this is a global container
 class FC {
   FC._();
 
@@ -255,7 +259,7 @@ class FC {
 
     try {
       pkgInfo = await PackageInfo.fromPlatform();
-    } catch(e) {
+    } catch (e) {
       // ignore - perhaps testing
     }
 
@@ -275,9 +279,12 @@ class FC {
       fbModelRepo = FireStoreModelRepository(fbOptions);
       await (fbModelRepo as FireStoreModelRepository)
           .possiblyInitFireStoreRelatedAPIs();
+
       // fetch model
-      await loadAppInfo();
-      await loadLatestSnippetMap();
+      AppInfoModel? fbAppInfo = await FC().fbModelRepo.getAppInfo();
+      _appInfo = fbAppInfo ?? AppInfoModel();
+
+      // await loadLatestSnippetMap();
       await loadFirebaseStorageFolders();
     }
 
@@ -302,7 +309,73 @@ class FC {
 
   late String _appName;
 
-  late AppInfoModel appInfo;
+  late AppInfoModel _appInfo; // must be instantiated in init()
+  Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
+  void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
+  Map<SnippetName, VersionId> get publishedVersionIds =>
+      _appInfo.publishedVersionIds;
+  Map<SnippetName, VersionId> get editingVersionIds =>
+      _appInfo.editingVersionIds;
+  Map<SnippetName, List<VersionId>> get versionIds => _appInfo.versionIds;
+
+  void addVersionId(SnippetName snippetName, VersionId versionId) {
+    final newVersionIds = Map<SnippetName, List<VersionId>>.of(versionIds);
+    if (versionIds.containsKey(snippetName)) {
+      newVersionIds[snippetName]!.insert(0, versionId);
+    } else {
+      newVersionIds[snippetName] = [versionId];
+    }
+    _appInfo.versionIds = newVersionIds;
+  }
+
+  STreeNode? get clipboard => _appInfo.clipboard;
+  void setClipboard(STreeNode? newClipboard) =>
+      _appInfo.clipboard = newClipboard;
+
+  Map<SnippetName, Map<VersionId, SnippetRootNode>> snippetCache =
+      {}; // must be instantiated in init()
+
+  void addToSnippetCache({
+    required SnippetName snippetName,
+    required SnippetRootNode rootNode,
+    required VersionId initialVersionId,
+    required bool editing,
+  }) {
+    debugPrint('addToSnippetCache($snippetName)');
+    snippetCache.addAll({
+      snippetName: {initialVersionId: rootNode}
+    });
+    updateEditingVersionId(
+        snippetName: snippetName, newVersionId: initialVersionId);
+  }
+
+  void updateEditingVersionId({
+    required SnippetName snippetName,
+    required VersionId newVersionId,
+  }) {
+    final newEditingVersionIds =
+    Map<SnippetName, VersionId>.of(editingVersionIds);
+    if (newEditingVersionIds.containsKey(snippetName)) {
+      newEditingVersionIds[snippetName] = newVersionId;
+    } else {
+      newEditingVersionIds.addAll({snippetName: newVersionId});
+    }
+    _appInfo.editingVersionIds = newEditingVersionIds;
+  }
+
+  void updatePublishedVersionId({
+    required SnippetName snippetName,
+    required VersionId versionId,
+  }) {
+    final newPublishedVersionIds =
+    Map<SnippetName, VersionId>.of(publishedVersionIds);
+    if (newPublishedVersionIds.containsKey(snippetName)) {
+      newPublishedVersionIds[snippetName] = versionId;
+    } else {
+      newPublishedVersionIds.addAll({snippetName: versionId});
+    }
+    _appInfo.publishedVersionIds = newPublishedVersionIds;
+  }
 
   late FSFolderNode? rootFSFolderNode;
 
@@ -317,7 +390,6 @@ class FC {
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   late CAPIBloC capiBloc;
-  late SnippetMapModel snippetsModel;
   Map<TargetsWrapperName, GlobalKey> targetsWrappers = {};
   late bool
       _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
@@ -388,7 +460,6 @@ class FC {
   bool get areAnySnippetsBeingEdited => _snippetsBeingEdited.isNotEmpty;
 
   void pushSnippet(SnippetBloC snippetBloc) {
-    FC().jsonBeforePush = FC().snippetsModel.toJson();
     _snippetsBeingEdited.addFirst(snippetBloc);
   }
 
@@ -439,10 +510,28 @@ class FC {
 
   bool get aNodeIsSelected => selectedNode != null;
 
-  SnippetRootNode? rootNodeOfNamedSnippet(SnippetName name) =>
-      snippetsModel.snippets[name];
+  SnippetRootNode? rootNodeOfPublishedSnippet(SnippetName snippetName) {
+    VersionId? publishedVersionId = publishedVersionIds[snippetName];
+    if (publishedVersionId != null) {
+      var versions = FC().snippetCache[snippetName];
+      var version = versions ?? {}[publishedVersionId];
+      return version;
+    }
+    return null;
+  }
 
-  Map<SnippetName, SnippetRootNode> get snippetsMap => snippetsModel.snippets;
+  // snippet expected to be definitely present in appInfo and snippetCache
+  SnippetRootNode? rootNodeOfEditingSnippet(SnippetName snippetName) {
+    VersionId? editingVersionId = editingVersionIds[snippetName];
+    if (editingVersionId != null) {
+      var versions = FC().snippetCache[snippetName];
+      var version = (versions ?? {})[editingVersionId];
+      return version;
+    }
+    return null;
+  }
+
+  Map<SnippetName, SnippetVersions> versions = {};
 
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 
@@ -499,21 +588,17 @@ class FC {
   //   return imageTargetListMap;
   // }
 
-  static Future<void> loadAppInfo() async =>
-      // fetch appInfo from FB
-      FC().appInfo = await FC().fbModelRepo.getAppInfo() ?? AppInfoModel();
-
-  static Future<void> loadLatestSnippetMap() async {
-    var versionToLoad = FC().canEditContent
-        ? FC().appInfo.editingVersionId
-        : FC().appInfo.publishedVersionId;
-    FC().snippetsModel = (versionToLoad == null)
-        ? SnippetMapModel({})
-        : await FC()
-                .fbModelRepo
-                .getVersionedSnippetMap(versionId: versionToLoad) ??
-            SnippetMapModel({});
-  }
+  // static Future<void> loadLatestSnippetMap() async {
+  //   var versionToLoad = FC().canEditContent
+  //       ? FC().appInfo.editingVersionId
+  //       : FC().appInfo.publishedVersionId;
+  //   FC().snippets = (versionToLoad == null)
+  //       ? SnippetMapModel({})
+  //       : await FC()
+  //               .fbModelRepo
+  //               .getVersionedSnippetMap(versionId: versionToLoad) ??
+  //           SnippetMapModel({});
+  // }
 
   static Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");

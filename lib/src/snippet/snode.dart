@@ -344,7 +344,18 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // removeNodePropertiesCallout();
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
-            FC().capiBloc.add(const CAPIEvent.save());
+            VersionId newVersionId =
+                DateTime.now().millisecondsSinceEpoch.toString();
+            FC().addToSnippetCache(
+              snippetName: snippetName,
+              rootNode: snippetBeingEdited!.rootNode,
+              initialVersionId: newVersionId,
+              editing: true,
+            );
+            FC().updateEditingVersionId(snippetName: snippetName, newVersionId: newVersionId);
+            FC().capiBloc.add(CAPIEvent.saveSnippet(
+                snippetRootNode: snippetBeingEdited!.rootNode,
+                newVersionId: newVersionId));
             Useful.afterNextBuildDo(() {
               MaterialSPAState.showDevToolsFAB();
             });
@@ -380,15 +391,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   void refreshWithUpdate(VoidCallback assignF) {
-    SnippetBloC? snippetBloc = FC().snippetBeingEdited;
-    SnippetState? snippetBlocState = snippetBloc?.state;
-    // snippetBlocState?.ur.createUndo(snippetBlocState);
     assignF.call();
     capiBloc.add(const CAPIEvent.forceRefresh());
     Useful.afterNextBuildDo(() {
+      SnippetBloC? snippetBloc = FC().snippetBeingEdited;
+      SnippetState? snippetBlocState = snippetBloc?.state;
       if (snippetBlocState?.selectedNode != null) {
-        MaterialSPAState.showNodeWidgetOverlay(
-            (snippetBlocState?.selectedNode)!);
+        MaterialSPAState.showNodeWidgetOverlay((snippetBlocState?.selectedNode)!);
       }
     });
   }

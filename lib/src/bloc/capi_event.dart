@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'capi_event.freezed.dart';
@@ -60,10 +59,10 @@ class CAPIEvent with _$CAPIEvent {
   //   required String wName,
   // }) = PlayNextInList;
 
-  const factory CAPIEvent.TargetModelChanged({
+  const factory CAPIEvent.TargetChanged({
     required TargetModel newTC,
     @Default(false) bool keepTargetsHidden,
-  }) = TargetModelChanged;
+  }) = TargetChanged;
 
   // const factory CAPIEvent.changedCalloutPosition({
   //   required TargetModel tc,
@@ -108,7 +107,7 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.forceRefresh() = ForceRefresh;
 
   const factory CAPIEvent.updateClipboard({
-    required String? newContent,
+    required STreeNode? newContent,
     @Default(false) skipSave,
   }) = UpdateClipboard;
 
@@ -122,19 +121,25 @@ class CAPIEvent with _$CAPIEvent {
   //   required String newSnippetName,
   // }) = SaveNodeAsSnippet;
 
-  const factory CAPIEvent.save({
+  const factory CAPIEvent.saveSnippet({
+    required SnippetRootNode snippetRootNode,
+    required VersionId newVersionId,
     @Default(false) bool force,
-  }) = Save;
+  }) = SaveSnippet;
 
-  const factory CAPIEvent.publish({
+  const factory CAPIEvent.publishSnippet({
+    required SnippetName snippetName,
     required VersionId versionId,
-  }) = Publish;
+  }) = PublishSnippet;
 
   // const factory CAPIEvent.switchBranch({
   //   required BranchName newBranchName,
   // }) = SwitchBranch;
 
-  const factory CAPIEvent.revert({required VersionId versionId}) = Revert;
+  const factory CAPIEvent.revertSnippet({
+    required SnippetName snippetName,
+    required VersionId versionId,
+  }) = RevertSnippet;
 
 // const factory CAPIEvent.changedSnippetName({
 //   required TargetModel tc,

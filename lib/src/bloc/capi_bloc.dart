@@ -47,10 +47,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
     // on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
-    on<Save>((event, emit) => _save(event, emit));
+    on<SaveSnippet>((event, emit) => _saveSnippet(event, emit));
     // on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
-    on<Publish>((event, emit) => _publish(event, emit));
-    on<Revert>((event, emit) => _revert(event, emit));
+    on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
+    on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
     // on<InitApp>((event, emit) => _initApp(event, emit));
     // on<RecordMatrix>((event, emit) => _recordMatrix(event, emit));
     // on<TargetMoved>((event, emit) => _targetMoved(event, emit));
@@ -74,7 +74,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<ClearSelection>((event, emit) => _clearSelection(event, emit));
     // on<StartPlayingList>((event, emit) => _startPlayingList(event, emit));
     // on<PlayNextInList>((event, emit) => _playNextInList(event, emit));
-    on<TargetModelChanged>((event, emit) => _TargetModelChanged(event, emit));
+    on<TargetChanged>((event, emit) => _targetChanged(event, emit));
     // on<ChangedCalloutPosition>((event, emit) => _changedCalloutPosition(event, emit));
     // on<ChangedCalloutDuration>((event, emit) => _changedCalloutDuration(event, emit));
     // on<ChangedCalloutColor>((event, emit) => _changedCalloutColor(event, emit));
@@ -156,19 +156,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   ));
   // }
 
-  Future<void> _save(Save event, emit) async {
-    _saveSnippets(force: event.force);
-  }
-
-  Future<void> _saveSnippets({bool force = false}) async {
+  Future<void> _saveSnippet(SaveSnippet event, emit) async {
     String? jsonBeforePush = FC().jsonBeforePush;
-    String currentJsonS = FC().snippetsModel.toJson();
+    String currentJsonS = event.snippetRootNode.toJson();
 
     // testing
     // var testModel = jsonDecode(jsonS);
 
     // only save if changes detected
-    if (!force && currentJsonS == jsonBeforePush) return;
+    if (!event.force && currentJsonS == jsonBeforePush) return;
 
     final stopwatch = Stopwatch()..start();
     // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
@@ -192,8 +188,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
 
     // save to firebase
-    await modelRepo.save(
-        appInfo: FC().appInfo, snippets: FC().snippetsModel.snippets);
+    await modelRepo.saveSnippet(snippetName: event.snippetRootNode.name, newVersionId: event.newVersionId);
 
     // }
     // } else {
@@ -206,9 +201,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   }
     // }
     // min 2s display of toast
-    if (stopwatch.elapsedMilliseconds < 2000)
+    if (stopwatch.elapsedMilliseconds < 2000) {
       await Future.delayed(
           Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+    }
     Callout.dismissAll(onlyToasts: true);
     // update last value
   }
@@ -238,7 +234,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   // update last value
   // }
 
-  Future<void> _revert(Revert event, emit) async {
+  Future<void> _revertSnippet(RevertSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
     Callout.showTextToast(
       feature: "reverting-model",
@@ -250,21 +246,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       textColor: Colors.blueAccent,
     );
 
-    await modelRepo.revert(versionId: event.versionId);
+    modelRepo.revertSnippet(snippetName: event.snippetName, toVersionId: event.versionId);
 
-    if (stopwatch.elapsedMilliseconds < 2000)
-      await Future.delayed(
+    if (stopwatch.elapsedMilliseconds < 2000) {
+      Future.delayed(
           Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+    }
 
     Callout.dismissAll(onlyToasts: true);
-    await FC.loadLatestSnippetMap();
 
     emit(state.copyWith(
       force: state.force + 1,
     ));
   }
 
-  Future<void> _publish(Publish event, emit) async {
+  Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
     Callout.showTextToast(
       feature: "reverting-model",
@@ -276,11 +272,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       textColor: Colors.blueAccent,
     );
 
-    await modelRepo.publish(versionId: event.versionId);
+    await modelRepo.publishSnippet(snippetName: event.snippetName, versionId: event.versionId);
 
-    if (stopwatch.elapsedMilliseconds < 2000)
+    if (stopwatch.elapsedMilliseconds < 2000) {
       await Future.delayed(
           Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+    }
 
     Callout.dismissAll(onlyToasts: true);
     // await FC.loadLatestSnippetMap();
@@ -343,13 +340,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
-    FC().appInfo.clipboard = event.newContent;
+    FC().setClipboard(event.newContent);
     emit(state.copyWith(
       force: state.force + 1,
     ));
     if (event.skipSave) return;
-    // TODO save just the clipboard
-    _saveSnippets();
+    FC().fbModelRepo.saveAppInfo();
   }
 
 // // update current scale, translate and selected target
@@ -576,16 +572,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   emit(state.copyWith());
 // }
 
-  void _TargetModelChanged(TargetModelChanged event, emit) {
-    // state.modelUR.createUndo(stateToModel());
-    // if (event.newTC.single) {
-    //   Map<String, TargetModel> newMap = Map.of(SingleTargetWrapper.singleTargetMap);
-    //   newMap[event.newTC.wName] = event.newTC;
-    //   emit(state.copyWith(
-    //     force: state.force + 1,
-    //   ));
-    // } else {
-    //   Map<String, TargetGroupModel> newMap = _addOrUpdateTargetGroupListMap(event.newTC.wName, event.newTC);
+  void _targetChanged(TargetChanged event, emit) {
     emit(state.copyWith(
       // targetGroupMap: newMap,
       hideAllTargetGroups:
@@ -596,8 +583,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           event.keepTargetsHidden ? state.hideTargetsExcept : null,
       force: state.force + 1,
     ));
-    // }
-    _saveSnippets();
   }
 
 // void _changedCalloutPosition(ChangedCalloutPosition event, emit) {
@@ -897,7 +882,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetBloc(PushSnippetBloc event, emit) {
-    SnippetRootNode? rootNode = FC().rootNodeOfNamedSnippet(event.snippetName);
+    FC fc = FC();
+    SnippetRootNode? rootNode =
+        fc.rootNodeOfEditingSnippet(event.snippetName);
     if (rootNode == null) return;
 
     SnippetTreeController newTreeC() => SnippetTreeController(
@@ -912,7 +899,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       treeC: newTreeC()..expandAll(),
       // treeUR: SnippetTreeUR()
     );
-    FC().pushSnippet(newSnippetBloc);
+    fc.jsonBeforePush = rootNode.toJson();
+    fc.pushSnippet(newSnippetBloc);
 
     // emit(state.copyWith(
     //   hideAllTargetGroupPlayBtns: true,

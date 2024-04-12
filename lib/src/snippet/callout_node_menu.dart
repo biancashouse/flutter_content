@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/snippet/snodes/firebase_storage_image_node.dart';
 
 import 'snodes/fs_image_node.dart';
 
@@ -511,7 +510,7 @@ SubmenuButton _addSnippetsSubmenu(
   NodeAction action,
 ) {
   List<MenuItemButton> snippetMIs = [];
-  List<SnippetName> snippetNames = FC().snippetsMap.keys.toList()..sort();
+  List<SnippetName> snippetNames = FC().snippetCache.keys.toList()..sort();
   for (String SnippetName in snippetNames) {
     snippetMIs.add(
       MenuItemButton(
@@ -620,7 +619,7 @@ MenuItemButton? _pasteMI(
   STreeNode selectedNode,
   NodeAction action,
 ) {
-  if (FC().appInfo.clipboard != null && action != NodeAction.wrapWith) {
+  if (FC().clipboard != null && action != NodeAction.wrapWith) {
     return MenuItemButton(
       onPressed: () {
         // CAPIBloC bloc = FC().capiBloc;

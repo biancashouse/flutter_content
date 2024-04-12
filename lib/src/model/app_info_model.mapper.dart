@@ -13,6 +13,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static AppInfoModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AppInfoModelMapper._());
+      STreeNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -20,31 +21,34 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   @override
   final String id = 'AppInfoModel';
 
-  static String? _$publishedVersionId(AppInfoModel v) => v.publishedVersionId;
-  static const Field<AppInfoModel, String> _f$publishedVersionId =
-      Field('publishedVersionId', _$publishedVersionId, opt: true);
-  static String? _$editingVersionId(AppInfoModel v) => v.editingVersionId;
-  static const Field<AppInfoModel, String> _f$editingVersionId =
-      Field('editingVersionId', _$editingVersionId, opt: true);
-  static List<String> _$versionIds(AppInfoModel v) => v.versionIds;
-  static const Field<AppInfoModel, List<String>> _f$versionIds =
-      Field('versionIds', _$versionIds, opt: true, def: const []);
-  static String? _$clipboard(AppInfoModel v) => v.clipboard;
-  static const Field<AppInfoModel, String> _f$clipboard =
+  static Map<String, String> _$publishedVersionIds(AppInfoModel v) =>
+      v.publishedVersionIds;
+  static const Field<AppInfoModel, Map<String, String>> _f$publishedVersionIds =
+      Field('publishedVersionIds', _$publishedVersionIds,
+          opt: true, def: const {});
+  static Map<String, String> _$editingVersionIds(AppInfoModel v) =>
+      v.editingVersionIds;
+  static const Field<AppInfoModel, Map<String, String>> _f$editingVersionIds =
+      Field('editingVersionIds', _$editingVersionIds, opt: true, def: const {});
+  static Map<String, List<String>> _$versionIds(AppInfoModel v) => v.versionIds;
+  static const Field<AppInfoModel, Map<String, List<String>>> _f$versionIds =
+      Field('versionIds', _$versionIds, opt: true, def: const {});
+  static STreeNode? _$clipboard(AppInfoModel v) => v.clipboard;
+  static const Field<AppInfoModel, STreeNode> _f$clipboard =
       Field('clipboard', _$clipboard, opt: true);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
-    #publishedVersionId: _f$publishedVersionId,
-    #editingVersionId: _f$editingVersionId,
+    #publishedVersionIds: _f$publishedVersionIds,
+    #editingVersionIds: _f$editingVersionIds,
     #versionIds: _f$versionIds,
     #clipboard: _f$clipboard,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
     return AppInfoModel(
-        publishedVersionId: data.dec(_f$publishedVersionId),
-        editingVersionId: data.dec(_f$editingVersionId),
+        publishedVersionIds: data.dec(_f$publishedVersionIds),
+        editingVersionIds: data.dec(_f$editingVersionIds),
         versionIds: data.dec(_f$versionIds),
         clipboard: data.dec(_f$clipboard));
   }
@@ -101,12 +105,18 @@ extension AppInfoModelValueCopy<$R, $Out>
 
 abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get versionIds;
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get publishedVersionIds;
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get editingVersionIds;
+  MapCopyWith<$R, String, List<String>,
+      ObjectCopyWith<$R, List<String>, List<String>>> get versionIds;
+  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard;
   $R call(
-      {String? publishedVersionId,
-      String? editingVersionId,
-      List<String>? versionIds,
-      String? clipboard});
+      {Map<String, String>? publishedVersionIds,
+      Map<String, String>? editingVersionIds,
+      Map<String, List<String>>? versionIds,
+      STreeNode? clipboard});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -119,28 +129,46 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AppInfoModel> $mapper =
       AppInfoModelMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get versionIds =>
-      ListCopyWith($value.versionIds, (v, t) => ObjectCopyWith(v, $identity, t),
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get publishedVersionIds => MapCopyWith(
+          $value.publishedVersionIds,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(publishedVersionIds: v));
+  @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get editingVersionIds => MapCopyWith(
+          $value.editingVersionIds,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(editingVersionIds: v));
+  @override
+  MapCopyWith<$R, String, List<String>,
+          ObjectCopyWith<$R, List<String>, List<String>>>
+      get versionIds => MapCopyWith(
+          $value.versionIds,
+          (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(versionIds: v));
   @override
+  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard =>
+      $value.clipboard?.copyWith.$chain((v) => call(clipboard: v));
+  @override
   $R call(
-          {Object? publishedVersionId = $none,
-          Object? editingVersionId = $none,
-          List<String>? versionIds,
+          {Map<String, String>? publishedVersionIds,
+          Map<String, String>? editingVersionIds,
+          Map<String, List<String>>? versionIds,
           Object? clipboard = $none}) =>
       $apply(FieldCopyWithData({
-        if (publishedVersionId != $none)
-          #publishedVersionId: publishedVersionId,
-        if (editingVersionId != $none) #editingVersionId: editingVersionId,
+        if (publishedVersionIds != null)
+          #publishedVersionIds: publishedVersionIds,
+        if (editingVersionIds != null) #editingVersionIds: editingVersionIds,
         if (versionIds != null) #versionIds: versionIds,
         if (clipboard != $none) #clipboard: clipboard
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
-      publishedVersionId:
-          data.get(#publishedVersionId, or: $value.publishedVersionId),
-      editingVersionId:
-          data.get(#editingVersionId, or: $value.editingVersionId),
+      publishedVersionIds:
+          data.get(#publishedVersionIds, or: $value.publishedVersionIds),
+      editingVersionIds:
+          data.get(#editingVersionIds, or: $value.editingVersionIds),
       versionIds: data.get(#versionIds, or: $value.versionIds),
       clipboard: data.get(#clipboard, or: $value.clipboard));
 

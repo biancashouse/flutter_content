@@ -28,13 +28,17 @@ mixin _$CAPIEvent {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -57,13 +61,14 @@ mixin _$CAPIEvent {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -84,13 +89,14 @@ mixin _$CAPIEvent {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -113,12 +119,12 @@ mixin _$CAPIEvent {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -136,12 +142,12 @@ mixin _$CAPIEvent {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -159,12 +165,12 @@ mixin _$CAPIEvent {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -276,13 +282,17 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -308,13 +318,14 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -338,13 +349,14 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -373,12 +385,12 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -399,12 +411,12 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -425,12 +437,12 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -514,13 +526,17 @@ class _$HideAllTargetGroupsImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -546,13 +562,14 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -576,13 +593,14 @@ class _$HideAllTargetGroupsImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -611,12 +629,12 @@ class _$HideAllTargetGroupsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -637,12 +655,12 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -663,12 +681,12 @@ class _$HideAllTargetGroupsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -775,13 +793,17 @@ class _$HideTargetGroupsExceptImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -807,13 +829,14 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -837,13 +860,14 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -872,12 +896,12 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -898,12 +922,12 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -924,12 +948,12 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1040,13 +1064,17 @@ class _$ShowOnlyOneTargetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1072,13 +1100,14 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1102,13 +1131,14 @@ class _$ShowOnlyOneTargetImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1137,12 +1167,12 @@ class _$ShowOnlyOneTargetImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1163,12 +1193,12 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1189,12 +1219,12 @@ class _$ShowOnlyOneTargetImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1280,13 +1310,17 @@ class _$HideAllTargetGroupBtnsImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1312,13 +1346,14 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1342,13 +1377,14 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1377,12 +1413,12 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1403,12 +1439,12 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1429,12 +1465,12 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1513,13 +1549,17 @@ class _$UnhideAllTargetGroupsImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1545,13 +1585,14 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1575,13 +1616,14 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1610,12 +1652,12 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1636,12 +1678,12 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1662,12 +1704,12 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1791,13 +1833,17 @@ class _$OverrideTargetGKImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1823,13 +1869,14 @@ class _$OverrideTargetGKImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1853,13 +1900,14 @@ class _$OverrideTargetGKImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1888,12 +1936,12 @@ class _$OverrideTargetGKImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1914,12 +1962,12 @@ class _$OverrideTargetGKImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1940,12 +1988,12 @@ class _$OverrideTargetGKImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1977,20 +2025,20 @@ abstract class OverrideTargetGK implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$TargetModelChangedImplCopyWith<$Res> {
-  factory _$$TargetModelChangedImplCopyWith(_$TargetModelChangedImpl value,
-          $Res Function(_$TargetModelChangedImpl) then) =
-      __$$TargetModelChangedImplCopyWithImpl<$Res>;
+abstract class _$$TargetChangedImplCopyWith<$Res> {
+  factory _$$TargetChangedImplCopyWith(
+          _$TargetChangedImpl value, $Res Function(_$TargetChangedImpl) then) =
+      __$$TargetChangedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({TargetModel newTC, bool keepTargetsHidden});
 }
 
 /// @nodoc
-class __$$TargetModelChangedImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$TargetModelChangedImpl>
-    implements _$$TargetModelChangedImplCopyWith<$Res> {
-  __$$TargetModelChangedImplCopyWithImpl(_$TargetModelChangedImpl _value,
-      $Res Function(_$TargetModelChangedImpl) _then)
+class __$$TargetChangedImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$TargetChangedImpl>
+    implements _$$TargetChangedImplCopyWith<$Res> {
+  __$$TargetChangedImplCopyWithImpl(
+      _$TargetChangedImpl _value, $Res Function(_$TargetChangedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -1999,7 +2047,7 @@ class __$$TargetModelChangedImplCopyWithImpl<$Res>
     Object? newTC = null,
     Object? keepTargetsHidden = null,
   }) {
-    return _then(_$TargetModelChangedImpl(
+    return _then(_$TargetChangedImpl(
       newTC: null == newTC
           ? _value.newTC
           : newTC // ignore: cast_nullable_to_non_nullable
@@ -2014,10 +2062,10 @@ class __$$TargetModelChangedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TargetModelChangedImpl
+class _$TargetChangedImpl
     with DiagnosticableTreeMixin
-    implements TargetModelChanged {
-  const _$TargetModelChangedImpl(
+    implements TargetChanged {
+  const _$TargetChangedImpl(
       {required this.newTC, this.keepTargetsHidden = false});
 
   @override
@@ -2028,14 +2076,14 @@ class _$TargetModelChangedImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.TargetModelChanged(newTC: $newTC, keepTargetsHidden: $keepTargetsHidden)';
+    return 'CAPIEvent.TargetChanged(newTC: $newTC, keepTargetsHidden: $keepTargetsHidden)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.TargetModelChanged'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.TargetChanged'))
       ..add(DiagnosticsProperty('newTC', newTC))
       ..add(DiagnosticsProperty('keepTargetsHidden', keepTargetsHidden));
   }
@@ -2044,7 +2092,7 @@ class _$TargetModelChangedImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TargetModelChangedImpl &&
+            other is _$TargetChangedImpl &&
             (identical(other.newTC, newTC) || other.newTC == newTC) &&
             (identical(other.keepTargetsHidden, keepTargetsHidden) ||
                 other.keepTargetsHidden == keepTargetsHidden));
@@ -2056,9 +2104,8 @@ class _$TargetModelChangedImpl
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TargetModelChangedImplCopyWith<_$TargetModelChangedImpl> get copyWith =>
-      __$$TargetModelChangedImplCopyWithImpl<_$TargetModelChangedImpl>(
-          this, _$identity);
+  _$$TargetChangedImplCopyWith<_$TargetChangedImpl> get copyWith =>
+      __$$TargetChangedImplCopyWithImpl<_$TargetChangedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2073,13 +2120,17 @@ class _$TargetModelChangedImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2090,7 +2141,7 @@ class _$TargetModelChangedImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return TargetModelChanged(newTC, keepTargetsHidden);
+    return TargetChanged(newTC, keepTargetsHidden);
   }
 
   @override
@@ -2105,13 +2156,14 @@ class _$TargetModelChangedImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2120,7 +2172,7 @@ class _$TargetModelChangedImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return TargetModelChanged?.call(newTC, keepTargetsHidden);
+    return TargetChanged?.call(newTC, keepTargetsHidden);
   }
 
   @override
@@ -2135,13 +2187,14 @@ class _$TargetModelChangedImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2151,8 +2204,8 @@ class _$TargetModelChangedImpl
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (TargetModelChanged != null) {
-      return TargetModelChanged(newTC, keepTargetsHidden);
+    if (TargetChanged != null) {
+      return TargetChanged(newTC, keepTargetsHidden);
     }
     return orElse();
   }
@@ -2170,12 +2223,12 @@ class _$TargetModelChangedImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2183,7 +2236,7 @@ class _$TargetModelChangedImpl
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return TargetModelChanged(this);
+    return TargetChanged(this);
   }
 
   @override
@@ -2196,12 +2249,12 @@ class _$TargetModelChangedImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2209,7 +2262,7 @@ class _$TargetModelChangedImpl
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return TargetModelChanged?.call(this);
+    return TargetChanged?.call(this);
   }
 
   @override
@@ -2222,12 +2275,12 @@ class _$TargetModelChangedImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2236,22 +2289,22 @@ class _$TargetModelChangedImpl
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (TargetModelChanged != null) {
-      return TargetModelChanged(this);
+    if (TargetChanged != null) {
+      return TargetChanged(this);
     }
     return orElse();
   }
 }
 
-abstract class TargetModelChanged implements CAPIEvent {
-  const factory TargetModelChanged(
+abstract class TargetChanged implements CAPIEvent {
+  const factory TargetChanged(
       {required final TargetModel newTC,
-      final bool keepTargetsHidden}) = _$TargetModelChangedImpl;
+      final bool keepTargetsHidden}) = _$TargetChangedImpl;
 
   TargetModel get newTC;
   bool get keepTargetsHidden;
   @JsonKey(ignore: true)
-  _$$TargetModelChangedImplCopyWith<_$TargetModelChangedImpl> get copyWith =>
+  _$$TargetChangedImplCopyWith<_$TargetChangedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2309,13 +2362,17 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2341,13 +2398,14 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2371,13 +2429,14 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2406,12 +2465,12 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2432,12 +2491,12 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2458,12 +2517,12 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2489,7 +2548,7 @@ abstract class _$$UpdateClipboardImplCopyWith<$Res> {
           $Res Function(_$UpdateClipboardImpl) then) =
       __$$UpdateClipboardImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? newContent, dynamic skipSave});
+  $Res call({STreeNode? newContent, dynamic skipSave});
 }
 
 /// @nodoc
@@ -2510,7 +2569,7 @@ class __$$UpdateClipboardImplCopyWithImpl<$Res>
       newContent: freezed == newContent
           ? _value.newContent
           : newContent // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as STreeNode?,
       skipSave: freezed == skipSave ? _value.skipSave! : skipSave,
     ));
   }
@@ -2525,7 +2584,7 @@ class _$UpdateClipboardImpl
       {required this.newContent, this.skipSave = false});
 
   @override
-  final String? newContent;
+  final STreeNode? newContent;
   @override
   @JsonKey()
   final dynamic skipSave;
@@ -2578,13 +2637,17 @@ class _$UpdateClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2610,13 +2673,14 @@ class _$UpdateClipboardImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2640,13 +2704,14 @@ class _$UpdateClipboardImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2675,12 +2740,12 @@ class _$UpdateClipboardImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2701,12 +2766,12 @@ class _$UpdateClipboardImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2727,12 +2792,12 @@ class _$UpdateClipboardImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2750,10 +2815,10 @@ class _$UpdateClipboardImpl
 
 abstract class UpdateClipboard implements CAPIEvent {
   const factory UpdateClipboard(
-      {required final String? newContent,
+      {required final STreeNode? newContent,
       final dynamic skipSave}) = _$UpdateClipboardImpl;
 
-  String? get newContent;
+  STreeNode? get newContent;
   dynamic get skipSave;
   @JsonKey(ignore: true)
   _$$UpdateClipboardImplCopyWith<_$UpdateClipboardImpl> get copyWith =>
@@ -2761,27 +2826,38 @@ abstract class UpdateClipboard implements CAPIEvent {
 }
 
 /// @nodoc
-abstract class _$$SaveImplCopyWith<$Res> {
-  factory _$$SaveImplCopyWith(
-          _$SaveImpl value, $Res Function(_$SaveImpl) then) =
-      __$$SaveImplCopyWithImpl<$Res>;
+abstract class _$$SaveSnippetImplCopyWith<$Res> {
+  factory _$$SaveSnippetImplCopyWith(
+          _$SaveSnippetImpl value, $Res Function(_$SaveSnippetImpl) then) =
+      __$$SaveSnippetImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({bool force});
+  $Res call({SnippetRootNode snippetRootNode, String newVersionId, bool force});
 }
 
 /// @nodoc
-class __$$SaveImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$SaveImpl>
-    implements _$$SaveImplCopyWith<$Res> {
-  __$$SaveImplCopyWithImpl(_$SaveImpl _value, $Res Function(_$SaveImpl) _then)
+class __$$SaveSnippetImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$SaveSnippetImpl>
+    implements _$$SaveSnippetImplCopyWith<$Res> {
+  __$$SaveSnippetImplCopyWithImpl(
+      _$SaveSnippetImpl _value, $Res Function(_$SaveSnippetImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? snippetRootNode = null,
+    Object? newVersionId = null,
     Object? force = null,
   }) {
-    return _then(_$SaveImpl(
+    return _then(_$SaveSnippetImpl(
+      snippetRootNode: null == snippetRootNode
+          ? _value.snippetRootNode
+          : snippetRootNode // ignore: cast_nullable_to_non_nullable
+              as SnippetRootNode,
+      newVersionId: null == newVersionId
+          ? _value.newVersionId
+          : newVersionId // ignore: cast_nullable_to_non_nullable
+              as String,
       force: null == force
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
@@ -2792,23 +2868,32 @@ class __$$SaveImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SaveImpl with DiagnosticableTreeMixin implements Save {
-  const _$SaveImpl({this.force = false});
+class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
+  const _$SaveSnippetImpl(
+      {required this.snippetRootNode,
+      required this.newVersionId,
+      this.force = false});
 
+  @override
+  final SnippetRootNode snippetRootNode;
+  @override
+  final String newVersionId;
   @override
   @JsonKey()
   final bool force;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.save(force: $force)';
+    return 'CAPIEvent.saveSnippet(snippetRootNode: $snippetRootNode, newVersionId: $newVersionId, force: $force)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.save'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.saveSnippet'))
+      ..add(DiagnosticsProperty('snippetRootNode', snippetRootNode))
+      ..add(DiagnosticsProperty('newVersionId', newVersionId))
       ..add(DiagnosticsProperty('force', force));
   }
 
@@ -2816,18 +2901,23 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SaveImpl &&
+            other is _$SaveSnippetImpl &&
+            (identical(other.snippetRootNode, snippetRootNode) ||
+                other.snippetRootNode == snippetRootNode) &&
+            (identical(other.newVersionId, newVersionId) ||
+                other.newVersionId == newVersionId) &&
             (identical(other.force, force) || other.force == force));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, force);
+  int get hashCode =>
+      Object.hash(runtimeType, snippetRootNode, newVersionId, force);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
-      __$$SaveImplCopyWithImpl<_$SaveImpl>(this, _$identity);
+  _$$SaveSnippetImplCopyWith<_$SaveSnippetImpl> get copyWith =>
+      __$$SaveSnippetImplCopyWithImpl<_$SaveSnippetImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -2842,13 +2932,17 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2859,7 +2953,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return save(force);
+    return saveSnippet(snippetRootNode, newVersionId, force);
   }
 
   @override
@@ -2874,13 +2968,14 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2889,7 +2984,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return save?.call(force);
+    return saveSnippet?.call(snippetRootNode, newVersionId, force);
   }
 
   @override
@@ -2904,13 +2999,14 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2920,8 +3016,8 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (save != null) {
-      return save(force);
+    if (saveSnippet != null) {
+      return saveSnippet(snippetRootNode, newVersionId, force);
     }
     return orElse();
   }
@@ -2939,12 +3035,12 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2952,7 +3048,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return save(this);
+    return saveSnippet(this);
   }
 
   @override
@@ -2965,12 +3061,12 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2978,7 +3074,7 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return save?.call(this);
+    return saveSnippet?.call(this);
   }
 
   @override
@@ -2991,12 +3087,12 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3005,45 +3101,55 @@ class _$SaveImpl with DiagnosticableTreeMixin implements Save {
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (save != null) {
-      return save(this);
+    if (saveSnippet != null) {
+      return saveSnippet(this);
     }
     return orElse();
   }
 }
 
-abstract class Save implements CAPIEvent {
-  const factory Save({final bool force}) = _$SaveImpl;
+abstract class SaveSnippet implements CAPIEvent {
+  const factory SaveSnippet(
+      {required final SnippetRootNode snippetRootNode,
+      required final String newVersionId,
+      final bool force}) = _$SaveSnippetImpl;
 
+  SnippetRootNode get snippetRootNode;
+  String get newVersionId;
   bool get force;
   @JsonKey(ignore: true)
-  _$$SaveImplCopyWith<_$SaveImpl> get copyWith =>
+  _$$SaveSnippetImplCopyWith<_$SaveSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$PublishImplCopyWith<$Res> {
-  factory _$$PublishImplCopyWith(
-          _$PublishImpl value, $Res Function(_$PublishImpl) then) =
-      __$$PublishImplCopyWithImpl<$Res>;
+abstract class _$$PublishSnippetImplCopyWith<$Res> {
+  factory _$$PublishSnippetImplCopyWith(_$PublishSnippetImpl value,
+          $Res Function(_$PublishSnippetImpl) then) =
+      __$$PublishSnippetImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String versionId});
+  $Res call({String snippetName, String versionId});
 }
 
 /// @nodoc
-class __$$PublishImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$PublishImpl>
-    implements _$$PublishImplCopyWith<$Res> {
-  __$$PublishImplCopyWithImpl(
-      _$PublishImpl _value, $Res Function(_$PublishImpl) _then)
+class __$$PublishSnippetImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$PublishSnippetImpl>
+    implements _$$PublishSnippetImplCopyWith<$Res> {
+  __$$PublishSnippetImplCopyWithImpl(
+      _$PublishSnippetImpl _value, $Res Function(_$PublishSnippetImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? snippetName = null,
     Object? versionId = null,
   }) {
-    return _then(_$PublishImpl(
+    return _then(_$PublishSnippetImpl(
+      snippetName: null == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String,
       versionId: null == versionId
           ? _value.versionId
           : versionId // ignore: cast_nullable_to_non_nullable
@@ -3054,22 +3160,28 @@ class __$$PublishImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
-  const _$PublishImpl({required this.versionId});
+class _$PublishSnippetImpl
+    with DiagnosticableTreeMixin
+    implements PublishSnippet {
+  const _$PublishSnippetImpl(
+      {required this.snippetName, required this.versionId});
 
+  @override
+  final String snippetName;
   @override
   final String versionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.publish(versionId: $versionId)';
+    return 'CAPIEvent.publishSnippet(snippetName: $snippetName, versionId: $versionId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.publish'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.publishSnippet'))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('versionId', versionId));
   }
 
@@ -3077,19 +3189,22 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PublishImpl &&
+            other is _$PublishSnippetImpl &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.versionId, versionId) ||
                 other.versionId == versionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, versionId);
+  int get hashCode => Object.hash(runtimeType, snippetName, versionId);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PublishImplCopyWith<_$PublishImpl> get copyWith =>
-      __$$PublishImplCopyWithImpl<_$PublishImpl>(this, _$identity);
+  _$$PublishSnippetImplCopyWith<_$PublishSnippetImpl> get copyWith =>
+      __$$PublishSnippetImplCopyWithImpl<_$PublishSnippetImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3104,13 +3219,17 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3121,7 +3240,7 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return publish(versionId);
+    return publishSnippet(snippetName, versionId);
   }
 
   @override
@@ -3136,13 +3255,14 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3151,7 +3271,7 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return publish?.call(versionId);
+    return publishSnippet?.call(snippetName, versionId);
   }
 
   @override
@@ -3166,13 +3286,14 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3182,8 +3303,8 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (publish != null) {
-      return publish(versionId);
+    if (publishSnippet != null) {
+      return publishSnippet(snippetName, versionId);
     }
     return orElse();
   }
@@ -3201,12 +3322,12 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3214,7 +3335,7 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return publish(this);
+    return publishSnippet(this);
   }
 
   @override
@@ -3227,12 +3348,12 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3240,7 +3361,7 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return publish?.call(this);
+    return publishSnippet?.call(this);
   }
 
   @override
@@ -3253,12 +3374,12 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3267,45 +3388,53 @@ class _$PublishImpl with DiagnosticableTreeMixin implements Publish {
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (publish != null) {
-      return publish(this);
+    if (publishSnippet != null) {
+      return publishSnippet(this);
     }
     return orElse();
   }
 }
 
-abstract class Publish implements CAPIEvent {
-  const factory Publish({required final String versionId}) = _$PublishImpl;
+abstract class PublishSnippet implements CAPIEvent {
+  const factory PublishSnippet(
+      {required final String snippetName,
+      required final String versionId}) = _$PublishSnippetImpl;
 
+  String get snippetName;
   String get versionId;
   @JsonKey(ignore: true)
-  _$$PublishImplCopyWith<_$PublishImpl> get copyWith =>
+  _$$PublishSnippetImplCopyWith<_$PublishSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RevertImplCopyWith<$Res> {
-  factory _$$RevertImplCopyWith(
-          _$RevertImpl value, $Res Function(_$RevertImpl) then) =
-      __$$RevertImplCopyWithImpl<$Res>;
+abstract class _$$RevertSnippetImplCopyWith<$Res> {
+  factory _$$RevertSnippetImplCopyWith(
+          _$RevertSnippetImpl value, $Res Function(_$RevertSnippetImpl) then) =
+      __$$RevertSnippetImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String versionId});
+  $Res call({String snippetName, String versionId});
 }
 
 /// @nodoc
-class __$$RevertImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$RevertImpl>
-    implements _$$RevertImplCopyWith<$Res> {
-  __$$RevertImplCopyWithImpl(
-      _$RevertImpl _value, $Res Function(_$RevertImpl) _then)
+class __$$RevertSnippetImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$RevertSnippetImpl>
+    implements _$$RevertSnippetImplCopyWith<$Res> {
+  __$$RevertSnippetImplCopyWithImpl(
+      _$RevertSnippetImpl _value, $Res Function(_$RevertSnippetImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? snippetName = null,
     Object? versionId = null,
   }) {
-    return _then(_$RevertImpl(
+    return _then(_$RevertSnippetImpl(
+      snippetName: null == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String,
       versionId: null == versionId
           ? _value.versionId
           : versionId // ignore: cast_nullable_to_non_nullable
@@ -3316,22 +3445,28 @@ class __$$RevertImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
-  const _$RevertImpl({required this.versionId});
+class _$RevertSnippetImpl
+    with DiagnosticableTreeMixin
+    implements RevertSnippet {
+  const _$RevertSnippetImpl(
+      {required this.snippetName, required this.versionId});
 
+  @override
+  final String snippetName;
   @override
   final String versionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.revert(versionId: $versionId)';
+    return 'CAPIEvent.revertSnippet(snippetName: $snippetName, versionId: $versionId)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.revert'))
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.revertSnippet'))
+      ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('versionId', versionId));
   }
 
@@ -3339,19 +3474,21 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$RevertImpl &&
+            other is _$RevertSnippetImpl &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName) &&
             (identical(other.versionId, versionId) ||
                 other.versionId == versionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, versionId);
+  int get hashCode => Object.hash(runtimeType, snippetName, versionId);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$RevertImplCopyWith<_$RevertImpl> get copyWith =>
-      __$$RevertImplCopyWithImpl<_$RevertImpl>(this, _$identity);
+  _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
+      __$$RevertSnippetImplCopyWithImpl<_$RevertSnippetImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -3366,13 +3503,17 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3383,7 +3524,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return revert(versionId);
+    return revertSnippet(snippetName, versionId);
   }
 
   @override
@@ -3398,13 +3539,14 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3413,7 +3555,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return revert?.call(versionId);
+    return revertSnippet?.call(snippetName, versionId);
   }
 
   @override
@@ -3428,13 +3570,14 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3444,8 +3587,8 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function(bool save)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (revert != null) {
-      return revert(versionId);
+    if (revertSnippet != null) {
+      return revertSnippet(snippetName, versionId);
     }
     return orElse();
   }
@@ -3463,12 +3606,12 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3476,7 +3619,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
   }) {
-    return revert(this);
+    return revertSnippet(this);
   }
 
   @override
@@ -3489,12 +3632,12 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3502,7 +3645,7 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
   }) {
-    return revert?.call(this);
+    return revertSnippet?.call(this);
   }
 
   @override
@@ -3515,12 +3658,12 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3529,19 +3672,22 @@ class _$RevertImpl with DiagnosticableTreeMixin implements Revert {
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     required TResult orElse(),
   }) {
-    if (revert != null) {
-      return revert(this);
+    if (revertSnippet != null) {
+      return revertSnippet(this);
     }
     return orElse();
   }
 }
 
-abstract class Revert implements CAPIEvent {
-  const factory Revert({required final String versionId}) = _$RevertImpl;
+abstract class RevertSnippet implements CAPIEvent {
+  const factory RevertSnippet(
+      {required final String snippetName,
+      required final String versionId}) = _$RevertSnippetImpl;
 
+  String get snippetName;
   String get versionId;
   @JsonKey(ignore: true)
-  _$$RevertImplCopyWith<_$RevertImpl> get copyWith =>
+  _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -3627,13 +3773,17 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3659,13 +3809,14 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3689,13 +3840,14 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3724,12 +3876,12 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3750,12 +3902,12 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3776,12 +3928,12 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3903,13 +4055,17 @@ class _$SetPanelSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3935,13 +4091,14 @@ class _$SetPanelSnippetImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3965,13 +4122,14 @@ class _$SetPanelSnippetImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4000,12 +4158,12 @@ class _$SetPanelSnippetImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -4026,12 +4184,12 @@ class _$SetPanelSnippetImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4052,12 +4210,12 @@ class _$SetPanelSnippetImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4183,13 +4341,17 @@ class _$PushSnippetBlocImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4215,13 +4377,14 @@ class _$PushSnippetBlocImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4245,13 +4408,14 @@ class _$PushSnippetBlocImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4280,12 +4444,12 @@ class _$PushSnippetBlocImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -4306,12 +4470,12 @@ class _$PushSnippetBlocImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4332,12 +4496,12 @@ class _$PushSnippetBlocImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4451,13 +4615,17 @@ class _$PopSnippetBlocImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4468,7 +4636,7 @@ class _$PopSnippetBlocImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return popSnippetBloc(this.save);
+    return popSnippetBloc(save);
   }
 
   @override
@@ -4483,13 +4651,14 @@ class _$PopSnippetBlocImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4498,7 +4667,7 @@ class _$PopSnippetBlocImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return popSnippetBloc?.call(this.save);
+    return popSnippetBloc?.call(save);
   }
 
   @override
@@ -4513,13 +4682,14 @@ class _$PopSnippetBlocImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4530,7 +4700,7 @@ class _$PopSnippetBlocImpl
     required TResult orElse(),
   }) {
     if (popSnippetBloc != null) {
-      return popSnippetBloc(this.save);
+      return popSnippetBloc(save);
     }
     return orElse();
   }
@@ -4548,12 +4718,12 @@ class _$PopSnippetBlocImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -4574,12 +4744,12 @@ class _$PopSnippetBlocImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4600,12 +4770,12 @@ class _$PopSnippetBlocImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4686,13 +4856,17 @@ class _$ShowDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4718,13 +4892,14 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4748,13 +4923,14 @@ class _$ShowDirectoryTreeImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4783,12 +4959,12 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -4809,12 +4985,12 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4835,12 +5011,12 @@ class _$ShowDirectoryTreeImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -4946,13 +5122,17 @@ class _$RemoveDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(TargetModel newTC, bool keepTargetsHidden)
-        TargetModelChanged,
+        TargetChanged,
     required TResult Function() forceRefresh,
-    required TResult Function(String? newContent, dynamic skipSave)
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(bool force) save,
-    required TResult Function(String versionId) publish,
-    required TResult Function(String versionId) revert,
+    required TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+        saveSnippet,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -4963,7 +5143,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return removeDirectoryTree(this.save);
+    return removeDirectoryTree(save);
   }
 
   @override
@@ -4978,13 +5158,14 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult? Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
-    TResult? Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(bool force)? save,
-    TResult? Function(String versionId)? publish,
-    TResult? Function(String versionId)? revert,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -4993,7 +5174,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return removeDirectoryTree?.call(this.save);
+    return removeDirectoryTree?.call(save);
   }
 
   @override
@@ -5008,13 +5189,14 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
-    TResult Function(TargetModel newTC, bool keepTargetsHidden)?
-        TargetModelChanged,
+    TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
-    TResult Function(String? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(bool force)? save,
-    TResult Function(String versionId)? publish,
-    TResult Function(String versionId)? revert,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(
+            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+        saveSnippet,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -5025,7 +5207,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult orElse(),
   }) {
     if (removeDirectoryTree != null) {
-      return removeDirectoryTree(this.save);
+      return removeDirectoryTree(save);
     }
     return orElse();
   }
@@ -5043,12 +5225,12 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(UnhideAllTargetGroups value)
         unhideAllTargetGroups,
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(TargetModelChanged value) TargetModelChanged,
+    required TResult Function(TargetChanged value) TargetChanged,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(Save value) save,
-    required TResult Function(Publish value) publish,
-    required TResult Function(Revert value) revert,
+    required TResult Function(SaveSnippet value) saveSnippet,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -5069,12 +5251,12 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult? Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(TargetModelChanged value)? TargetModelChanged,
+    TResult? Function(TargetChanged value)? TargetChanged,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(Save value)? save,
-    TResult? Function(Publish value)? publish,
-    TResult? Function(Revert value)? revert,
+    TResult? Function(SaveSnippet value)? saveSnippet,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -5095,12 +5277,12 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(HideAllTargetGroupBtns value)? hideAllTargetGroupBtns,
     TResult Function(UnhideAllTargetGroups value)? unhideAllTargetGroups,
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(TargetModelChanged value)? TargetModelChanged,
+    TResult Function(TargetChanged value)? TargetChanged,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(Save value)? save,
-    TResult Function(Publish value)? publish,
-    TResult Function(Revert value)? revert,
+    TResult Function(SaveSnippet value)? saveSnippet,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,

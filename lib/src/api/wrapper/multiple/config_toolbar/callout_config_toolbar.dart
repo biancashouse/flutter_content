@@ -99,7 +99,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     // Set up a new debounce timer
                     _debounce = Timer(const Duration(milliseconds: 100), () {
                       tc.radiusPc = value / ivSize.width;
-                      FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                      FC().capiBloc.add(CAPIEvent.TargetChanged(newTC: tc));
                     });
                   },
                   min: 16.0,
@@ -252,7 +252,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               FC().parentTW(widget.twName)?.zoomer?.resetTransform();
-              FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+              FC().capiBloc.add(CAPIEvent.TargetChanged(newTC: tc));
               FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
             },
           ),

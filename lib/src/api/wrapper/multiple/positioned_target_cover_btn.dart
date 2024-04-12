@@ -51,7 +51,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           tc.setTargetStackPosPc(
             tc.btnStackPos(),
           );
-          bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+          bloc.add(CAPIEvent.TargetChanged(newTC: tc));
         },
         onDoubleTap: () async {
           if (!FC().canEditContent) return;
@@ -123,7 +123,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
                   0.0,
             ),
         );
-        bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+        bloc.add(CAPIEvent.TargetChanged(newTC: tc));
         // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
       },
     );

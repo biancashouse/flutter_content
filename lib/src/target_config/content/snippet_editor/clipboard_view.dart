@@ -16,14 +16,13 @@ class ClipboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CAPIBloC bloc = FC().capiBloc;
-    EncodedJson? clipboardJson = FC().appInfo.clipboard;
-    if (clipboardJson == null) return const Offstage();
-    var clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
+    STreeNode? clipboard = FC().clipboard;
+    if (clipboard == null) return const Offstage();
     SnippetTreeController clipboardTreeC = SnippetTreeController(
-      roots: [clipboardNode],
+      roots: [clipboard],
       childrenProvider: Node.snippetTreeChildrenProvider,
     );
-    clipboardTreeC.expandCascading([clipboardNode]);
+    clipboardTreeC.expandCascading([clipboard]);
 
     return SizedBox(
       width: CLIPBOARD_TAB_W,

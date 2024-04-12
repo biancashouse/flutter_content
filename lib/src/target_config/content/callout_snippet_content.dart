@@ -46,10 +46,21 @@ Future<void> showSnippetContentCallout({
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.snippetName;
   FC().targetSnippetBeingConfigured =
-      FC().rootNodeOfNamedSnippet(tc.snippetName);
-  FC().targetSnippetBeingConfigured ??= (FC().snippetsMap[tc.snippetName] =
-      SnippetPanel.createSnippetFromTemplate(
-          SnippetTemplate.target_content_widget, tc.snippetName));
+      await FC().rootNodeOfEditingSnippet(tc.snippetName);
+  if (FC().targetSnippetBeingConfigured == null) {
+    SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplate(
+        SnippetTemplate.target_content_widget, tc.snippetName);
+    VersionId initialVersionId =
+        DateTime.now().millisecondsSinceEpoch.toString();
+    FC().addToSnippetCache(
+      snippetName: tc.snippetName,
+      rootNode: newSnippet,
+      initialVersionId: initialVersionId,
+      editing: true,
+    );
+    FC().targetSnippetBeingConfigured = newSnippet;
+  }
+  // snipper may not exist yet
   //  by now should definitely have created the target's snippet
   if (FC().targetSnippetBeingConfigured != null) {
     Callout.showOverlay(
@@ -75,7 +86,8 @@ Future<void> showSnippetContentCallout({
         borderRadius: tc.calloutBorderRadius,
         arrowColor: tc.calloutColor(),
         arrowType: tc.getArrowType(),
-        fromDelta: tc.calloutDecorationShape == DecorationShapeEnum.star ? 60 : null,
+        fromDelta:
+            tc.calloutDecorationShape == DecorationShapeEnum.star ? 60 : null,
         animate: tc.animateArrow,
         initialCalloutPos: tc.getCalloutPos(),
         // initialCalloutAlignment: Alignment.bottomCenter,
@@ -99,8 +111,8 @@ Future<void> showSnippetContentCallout({
               newPos.dx / Useful.scrW != tc.calloutLeftPc) {
             tc.calloutTopPc = newPos.dy / Useful.scrH;
             tc.calloutLeftPc = newPos.dx / Useful.scrW;
-            FC().capiBloc.add(CAPIEvent.TargetModelChanged(
-                newTC: tc, keepTargetsHidden: true));
+            FC().capiBloc.add(
+                CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
           }

@@ -5,17 +5,23 @@ import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
+  Future<void> getSnippetFromCacheOrFB(
+      {required SnippetName snippetName, required VersionId versionId});
+
   Future<AppInfoModel?> getAppInfo();
 
-  Future<SnippetMapModel?> getVersionedSnippetMap({required VersionId versionId});
+  Future<void> saveAppInfo();
 
-  // Future<void> switchBranch({required BranchName newBranchName});
+  Future<void> publishSnippet(
+      {required SnippetName snippetName, required VersionId versionId});
 
-  Future<void> publish({required VersionId versionId});
+  Future<VersionId?> saveSnippet({
+    required SnippetName snippetName,
+    required VersionId newVersionId,
+  });
 
-  Future<void> save({required AppInfoModel appInfo, required SnippetMap snippets});
-
-  Future<void> revert({required VersionId versionId});
+  Future<void> revertSnippet(
+      {required SnippetName snippetName, required VersionId toVersionId});
 
   Future<void> saveVote({
     required String pollName,

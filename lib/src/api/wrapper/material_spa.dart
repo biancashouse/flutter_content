@@ -3,7 +3,6 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +12,6 @@ import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart'
@@ -189,8 +187,7 @@ class MaterialSPA extends StatefulWidget {
 }
 
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
-class MaterialSPAState extends State<MaterialSPA>
-    with TickerProviderStateMixin {
+class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin {
   late Future<CAPIBloC> fInitApp;
   int tapCount = 0;
   DateTime? lastTapTime;
@@ -414,90 +411,43 @@ class MaterialSPAState extends State<MaterialSPA>
 
   /// either show edit btn fab, or lock icon fab
   static Future<void> showDevToolsFAB() async {
-    // AppModel appModel = FC().appInfo;
-    // BranchModel? currentBranch = appModel.branches[appModel.editingBranchName];
-    String buildInfo = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
-    int ver = int.tryParse(FC().appInfo.editingVersionId ?? '0') ?? 0;
-    // String verTimestamp = ver > 0 ? Useful.formattedDate(ver) : 'not yet';
-    String verTimeago =
-        timeago.format(DateTime.fromMillisecondsSinceEpoch(ver));
-    String verTimeDate = Useful.formattedDate(ver);
+    // // AppModel appModel = FC().appInfo;
+    // // BranchModel? currentBranch = appModel.branches[appModel.editingBranchName];
+    // String buildInfo = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
+    // int ver = int.tryParse(FC().appInfo.editingVersionIds ?? '0') ?? 0;
+    // // String verTimestamp = ver > 0 ? Useful.formattedDate(ver) : 'not yet';
+    // String verTimeago =
+    //     timeago.format(DateTime.fromMillisecondsSinceEpoch(ver));
+    // String verTimeDate = Useful.formattedDate(ver);
     Callout.dismiss("FAB");
     Callout.showOverlay(
         boxContentF: (context) => FC().canEditContent
             ? PointerInterceptor(
-                child: Tooltip(
-                  message: "Edit this widget's tree (v.$buildInfo)",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      if (ver != 0)
-                        TextButton(
-                            onPressed: () async {
-                              MaterialSPAState? rootState =
-                                  MaterialSPA.of(context);
-                              if (rootState != null) {
-                                enterEditMode(
-                                    rootState.context); //rootState.context);
-                              }
-                            },
-                            child: SizedBox(
-                              width: 100,
-                              child: Tooltip(
-                                message: 'saved: $verTimeDate',
-                                child: FittedBox(
-                                  child: Useful.coloredText(verTimeago,
-                                      color: Colors.white, fontSize: 24),
-                                ),
-                              ),
-                            )),
-                      if (ver != 0) const VerticalDivider(color: Colors.white),
-                      IconButton(
-                        onPressed: () async {
-                          MaterialSPAState? rootState = MaterialSPA.of(context);
-                          if (rootState != null) {
-                            enterEditMode(
-                                rootState.context); //rootState.context);
-                          }
-                        },
-                        icon: Icon(Icons.search
-                            , color: Colors.white),
-                      ),
-                      const VerticalDivider(color: Colors.white),
-                      FABMenuAnchor(),
-                      // const VerticalDivider(color: Colors.white),
-                      // IconButton(
-                      //   tooltip: 'redo',
-                      //   // style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white)),
-                      //   icon: Icon(
-                      //     Icons.redo,
-                      //     color: Colors.white.withOpacity(
-                      //         (currentBranch?.redos.isNotEmpty ?? false)
-                      //             ? 1.0
-                      //             : .5),
-                      //   ),
-                      //   onPressed: () {
-                      //     FC().capiBloc.add(
-                      //         const CAPIEvent.revert(action: FSAction.redo));
-                      //     Useful.afterNextBuildDo(() {
-                      //       showDevToolsButton();
-                      //     });
-                      //   },
-                      // ),
-                    ],
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        MaterialSPAState? rootState = MaterialSPA.of(context);
+                        if (rootState != null) {
+                          enterEditMode(rootState.context); //rootState.context);
+                        }
+                      },
+                      icon: const Icon(Icons.search, color: Colors.white),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        _signOut();
+                      },
+                      icon: const Icon(Icons.close, color: Colors.white, size: 12,),
+                    ),
+                  ],
                 ),
               )
             : _lockIconButton(),
         calloutConfig: CalloutConfig(
           feature: "FAB",
-          suppliedCalloutW: !FC().canEditContent
-              ? 60
-              : ver != 0
-                  ? 375
-                  : 120,
+          suppliedCalloutW: 100,
           suppliedCalloutH: 60,
           initialCalloutPos: FC().devToolsFABPos(Useful.rootContext),
           fillColor: FUCHSIA_X,
@@ -800,7 +750,7 @@ class MaterialSPAState extends State<MaterialSPA>
                     if (s == "lakebeachocean") {
                       Callout.dismiss("EditorPassword");
                       FC().setCanEdit(true);
-                      await FC.loadLatestSnippetMap();
+                      // await FC.loadLatestSnippetMap();
                       FC().capiBloc.add(const CAPIEvent.hideAllTargetGroups());
                       Useful.afterNextBuildDo(() {
                         FC()
@@ -852,154 +802,166 @@ class MaterialSPAState extends State<MaterialSPA>
   }
 }
 
-class FABMenuAnchor extends StatefulWidget {
-  const FABMenuAnchor({super.key});
-
-  @override
-  State<FABMenuAnchor> createState() => _FABMenuAnchorState();
-}
-
-class _FABMenuAnchorState extends State<FABMenuAnchor> {
-  @override
-  Widget build(BuildContext context) {
-    // PUBLISH menu items
-    List<MenuItemButton> publishMIs = [];
-    for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
-      bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
-      bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
-      Color itemTextColor = Colors.black;
-      if (thisIsCurrentlyPublished) itemTextColor = Colors.lightBlue;
-      publishMIs.add(MenuItemButton(
-        onPressed: () async {
-          FC().capiBloc.add(
-              CAPIEvent.publish(versionId: Useful.removeNonNumeric(versionId)));
-          Useful.afterNextBuildDo(() async {
-            await _signOut();
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
-              width: thisIsBeingEdited ? 4 : 0,
-              style: BorderStyle.solid,
-            ),
-          ),
-          padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
-          child: Useful.coloredText(
-            Useful.formattedDate(int.tryParse(Useful.removeNonNumeric(versionId))??0), color: itemTextColor,
-          ),
-        ),
-      ));
-    }
-    List<MenuItemButton> purgeMIs = [];
-    for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
-      bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
-      bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
-      Color itemTextColor = Colors.black;
-      if (thisIsCurrentlyPublished) itemTextColor = Colors.lightBlue;
-      publishMIs.add(MenuItemButton(
-        onPressed: () async {
-          FC().capiBloc.add(
-              CAPIEvent.publish(versionId: Useful.removeNonNumeric(versionId)));
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
-              width: thisIsBeingEdited ? 4 : 0,
-              style: BorderStyle.solid,
-            ),
-          ),
-          padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
-          child: Useful.coloredText(
-            Useful.formattedDate(int.tryParse(Useful.removeNonNumeric(versionId))??0), color: itemTextColor,
-          ),
-        ),
-      ));
-    }
-    // REVERT menu items
-    List<MenuItemButton> revertMIs = [];
-    for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
-      bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
-      bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
-      Color itemTextColor = Colors.black;
-      if (thisIsCurrentlyPublished) itemTextColor = Colors.blue;
-      revertMIs.add(MenuItemButton(
-        onPressed: () async {
-          FC().capiBloc.add(
-              CAPIEvent.revert(versionId: Useful.removeNonNumeric(versionId)));
-          Useful.afterNextBuildDo(() {
-            MaterialSPAState.showDevToolsFAB();
-          });
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
-              width: thisIsBeingEdited ? 4 : 0,
-              style: BorderStyle.solid,
-            ),
-          ),
-          padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
-          child: Useful.coloredText(
-              Useful.formattedDate(int.tryParse(Useful.removeNonNumeric(versionId))??0), color: itemTextColor
-          ),
-        ),
-      ));
-    }
-    return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-        return IconButton(
-          onPressed: () {
-            if (controller.isOpen) {
-              controller.close();
-            } else {
-              controller.open();
-            }
-          },
-          icon: const Icon(Icons.more_vert, color: Colors.white),
-          tooltip: 'Show menu',
-        );
-      },
-      menuChildren: [
-        SubmenuButton(menuChildren: revertMIs, child: Text('revert staging...')),
-        SubmenuButton(menuChildren: publishMIs, child: Text('publish...')),
-        SubmenuButton(menuChildren: purgeMIs, child: Text('purge...')),
-        _snippetsMenu(),
-        MenuItemButton(
-          onPressed: () => setState(
-            () async {
-              await _signOut();
-            },
-          ),
-          child: Text('sign out'),
-        ),
-      ],
-    );
-  }
-
+// class FABMenuAnchor extends StatefulWidget {
+//   const FABMenuAnchor({super.key});
+//
+//   @override
+//   State<FABMenuAnchor> createState() => _FABMenuAnchorState();
+// }
+//
+// class _FABMenuAnchorState extends State<FABMenuAnchor> {
+//   @override
+//   Widget build(BuildContext context) {
+//     // PUBLISH menu items
+//     List<MenuItemButton> publishMIs = [];
+//     for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
+//       bool thisIsBeingEdited =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
+//       bool thisIsCurrentlyPublished =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
+//       Color itemTextColor = Colors.black;
+//       if (thisIsCurrentlyPublished) itemTextColor = Colors.lightBlue;
+//       publishMIs.add(MenuItemButton(
+//         onPressed: () async {
+//           FC().capiBloc.add(
+//               CAPIEvent.publish(versionId: Useful.removeNonNumeric(versionId)));
+//           Useful.afterNextBuildDo(() async {
+//             await _signOut();
+//           });
+//         },
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border.all(
+//               color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
+//               width: thisIsBeingEdited ? 4 : 0,
+//               style: BorderStyle.solid,
+//             ),
+//           ),
+//           padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
+//           child: Useful.coloredText(
+//             Useful.formattedDate(
+//                 int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0),
+//             color: itemTextColor,
+//           ),
+//         ),
+//       ));
+//     }
+//     List<MenuItemButton> purgeMIs = [];
+//     for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
+//       bool thisIsBeingEdited =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
+//       bool thisIsCurrentlyPublished =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
+//       Color itemTextColor = Colors.black;
+//       if (thisIsCurrentlyPublished) itemTextColor = Colors.lightBlue;
+//       publishMIs.add(MenuItemButton(
+//         onPressed: () async {
+//           FC().capiBloc.add(
+//               CAPIEvent.publish(versionId: Useful.removeNonNumeric(versionId)));
+//         },
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border.all(
+//               color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
+//               width: thisIsBeingEdited ? 4 : 0,
+//               style: BorderStyle.solid,
+//             ),
+//           ),
+//           padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
+//           child: Useful.coloredText(
+//             Useful.formattedDate(
+//                 int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0),
+//             color: itemTextColor,
+//           ),
+//         ),
+//       ));
+//     }
+//     // REVERT menu items
+//     List<MenuItemButton> revertMIs = [];
+//     for (VersionId versionId in FC().appInfo.versionIds /*.sublist(0, 10)*/) {
+//       bool thisIsBeingEdited =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.editingVersionId;
+//       bool thisIsCurrentlyPublished =
+//           Useful.removeNonNumeric(versionId) == FC().appInfo.publishedVersionId;
+//       Color itemTextColor = Colors.black;
+//       if (thisIsCurrentlyPublished) itemTextColor = Colors.blue;
+//       revertMIs.add(MenuItemButton(
+//         onPressed: () async {
+//           FC().capiBloc.add(
+//               CAPIEvent.revert(versionId: Useful.removeNonNumeric(versionId)));
+//           Useful.afterNextBuildDo(() {
+//             MaterialSPAState.showDevToolsFAB();
+//           });
+//         },
+//         child: Container(
+//           decoration: BoxDecoration(
+//             border: Border.all(
+//               color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
+//               width: thisIsBeingEdited ? 4 : 0,
+//               style: BorderStyle.solid,
+//             ),
+//           ),
+//           padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
+//           child: Useful.coloredText(
+//               Useful.formattedDate(
+//                   int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0),
+//               color: itemTextColor),
+//         ),
+//       ));
+//     }
+//     return MenuAnchor(
+//       builder:
+//           (BuildContext context, MenuController controller, Widget? child) {
+//         return IconButton(
+//           onPressed: () {
+//             if (controller.isOpen) {
+//               controller.close();
+//             } else {
+//               controller.open();
+//             }
+//           },
+//           icon: const Icon(Icons.more_vert, color: Colors.white),
+//           tooltip: 'Show menu',
+//         );
+//       },
+//       menuChildren: [
+//         SubmenuButton(
+//             menuChildren: revertMIs, child: Text('revert staging...')),
+//         SubmenuButton(menuChildren: publishMIs, child: Text('publish...')),
+//         SubmenuButton(menuChildren: purgeMIs, child: Text('purge...')),
+//         _snippetsMenu(),
+//         MenuItemButton(
+//           onPressed: () => setState(
+//             () async {
+//               await _signOut();
+//             },
+//           ),
+//           child: Text('sign out'),
+//         ),
+//       ],
+//     );
+//   }
+//
   Future<void> _signOut() async {
     FC().setCanEdit(false);
-    await FC.loadLatestSnippetMap();
     FC().capiBloc.add(const CAPIEvent.forceRefresh());
     Useful.afterNextBuildDo(() {
       MaterialSPAState.showDevToolsFAB();
     });
   }
-
-  SubmenuButton _snippetsMenu() {
-    List<MenuItemButton> snippetMIs = [];
-    List<SnippetName> snippetNames = FC().snippetsMap.keys.toList()..sort();
-    for (SnippetName snippetName in snippetNames) {
-      snippetMIs.add(
-        MenuItemButton(
-          onPressed: () {},
-          child: Text(snippetName),
-        ),
-      );
-    }
-    return SubmenuButton(menuChildren: snippetMIs, child:  Text('Snippet Library...'));
-    }
-}
+//
+//   SubmenuButton _snippetsMenu() {
+//     List<MenuItemButton> snippetMIs = [];
+//     List<SnippetName> snippetNames = FC().snippetsMap.keys.toList()..sort();
+//     for (SnippetName snippetName in snippetNames) {
+//       snippetMIs.add(
+//         MenuItemButton(
+//           onPressed: () {},
+//           child: Text(snippetName),
+//         ),
+//       );
+//     }
+//     return SubmenuButton(
+//         menuChildren: snippetMIs, child: Text('Snippet Library...'));
+//   }
+// }

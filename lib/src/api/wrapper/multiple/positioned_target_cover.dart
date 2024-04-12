@@ -57,7 +57,7 @@ class PositionedTarget extends StatelessWidget {
                 //   tc.getScale(bloc.state) * tc.radius,
                 //   tc.getScale(bloc.state) * tc.radius,
                 // ));
-                bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                bloc.add(CAPIEvent.TargetChanged(newTC: tc));
 
                 // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
                 // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {

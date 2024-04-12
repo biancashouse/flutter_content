@@ -419,7 +419,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             bloc.add(const CAPIEvent.unhideAllTargetGroups());
             Useful.afterNextBuildDo(() {
               // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
-              bloc.add(const CAPIEvent.save());
+              VersionId newVersionId =
+                  DateTime.now().millisecondsSinceEpoch.toString();
+              bloc.add(CAPIEvent.saveSnippet(
+                  snippetRootNode: widget.parentNode.rootNodeOfSnippet()!,
+                  newVersionId: newVersionId));
             });
           });
         },

@@ -45,44 +45,6 @@ void main() {
     //   return appInfo;
     // });
 
-    when(mockRepo.getVersionedSnippetMap(versionId: TEST_VERSION_ID))
-        .thenAnswer((_) async {
-      SnippetMapModel snippetMap = SnippetMapModel({
-        'scaffoldWithTabs': SnippetRootNode(
-          name: scaffoldWithTabs,
-          child: ScaffoldNode(
-            appBar: AppBarNode(
-              bgColorValue: Colors.black.value,
-              title: GenericSingleChildNode(
-                  propertyName: 'title', child: TextNode(text: 'my title')),
-              bottom: GenericSingleChildNode(
-                propertyName: 'bottom',
-                child: TabBarNode(
-                  children: [
-                     TextNode(text: 'tab 1'),
-                    TextNode(text: 'Tab 2'),
-                  ],
-                ),
-              ),
-            ),
-            body: GenericSingleChildNode(
-              propertyName: 'body',
-              child: TabBarViewNode(
-                children: [
-                  PlaceholderNode(
-                      centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                  PlaceholderNode(
-                      centredLabel: 'page 2',
-                      colorValue: Colors.blueAccent.value),
-                ],
-              ),
-            ),
-          ),
-        )..validateTree(),
-      });
-      return snippetMap;
-    });
-
     emptyTreeC = SnippetTreeController(
         roots: [emptySnippet],
         childrenProvider: Node.snippetTreeChildrenProvider);

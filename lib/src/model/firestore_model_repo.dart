@@ -26,81 +26,145 @@ class FireStoreModelRepository implements IModelRepository {
     return fbApp;
   }
 
-  /// createOrUpdateAppModelAndCAPIModel
+  // Future<SnippetVersions?> fetchAllSnippetVersionsFromFB(
+  //     SnippetName snippetName, List<VersionId> versionIds) async {
+  //   appDocRef
+  //       .collection('snippets/$snippetName')
+  //       /*.where("capital", isEqualTo: true)*/ .get()
+  //       .then(
+  //     (querySnapshot) {
+  //       print("Successfully completed");
+  //       for (var docSnapshot in querySnapshot.docs) {
+  //         print('${docSnapshot.id} => ${docSnapshot.data()}');
+  //         Map<String, dynamic> data =
+  //             docSnapshot.data() as Map<String, dynamic>;
+  //         return SnippetRootNodeMapper.fromMap(data);
+  //       }
+  //     },
+  //     onError: (e) => print("Error completing: $e"),
+  //   );
+  //   DocumentReference versionedSnippetDocRef = versionsRef.doc(versionId);
+  //   var snap = await versionedSnippetDocRef.get();
+  //   if (snap.exists) {
+  //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+  //     return SnippetRootNodeMapper.fromMap(data);
+  //   }
+  //   return null;
+  // }
+
   @override
-  Future<void> save({
-    required AppInfoModel appInfo,
-    required SnippetMap snippets,
-  }) async {
-    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+  // if not in cache, gets from FB and adds to cache
+  Future<void> getSnippetFromCacheOrFB({required SnippetName snippetName, required VersionId versionId}) async {
+    // try to fetch from cache, otherwise fetch from FB
+    var versions = FC().snippetCache[snippetName];
+    var version = (versions ?? {})[versionId];
+    if (version != null) return;
 
-    var currList = List<VersionId>.of(FC().appInfo.versionIds);
-    var newAppInfo = FC().appInfo;
-    newAppInfo.versionIds = currList..insert(0, newVersionId);
-    newAppInfo.editingVersionId = newVersionId;
-    var map = newAppInfo.toMap();
-    await appDocRef.set(
-      newAppInfo.toMap(),
-    );
-    // now create the actual version doc
-    CollectionReference versionsRef = appDocRef.collection('versions');
-    DocumentReference newVersionDocRef = versionsRef.doc(newVersionId);
-    await newVersionDocRef.set(FC().snippetsModel.toMap());
-  }
-
-  @override
-  Future<void> publish({required VersionId versionId}) async {
-    FC().appInfo.publishedVersionId = versionId;
-
-    // modify the versionIds to show published versions with ' <-' appended
-    List<VersionId> newVersionIds = [];
-    for (VersionId v in FC().appInfo.versionIds/*.sublist(0, 10)*/) {
-      VersionId versionId = (v == FC().appInfo.publishedVersionId)
-          ? '$v <-'
-          : v;
-      newVersionIds.add(versionId);
+    DocumentReference versionedSnippetDocRef = appDocRef.collection('snippets/$snippetName/versions').doc(versionId);
+    DocumentSnapshot doc = await versionedSnippetDocRef.get();
+    if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
+      SnippetRootNode snippet = SnippetRootNodeMapper.fromMap(data);
+      // cache it
+      FC().snippetCache[snippetName] ??= {};
+      FC().snippetCache[snippetName]!.addAll({versionId: snippet});
+    } else {
+      debugPrint("getSnippet failed.");
     }
-    FC().appInfo.versionIds = newVersionIds;
-
-      await appDocRef.set(
-      FC().appInfo.toMap(),
-    );
-  }
-
-  @override
-  Future<void> revert({required VersionId versionId}) async {
-    FC().appInfo.editingVersionId = versionId;
-    await appDocRef.set(
-      FC().appInfo.toMap(),
-    );
   }
 
   @override
   Future<AppInfoModel?> getAppInfo() async {
-    DocumentSnapshot snap = await appDocRef.get();
-    if (snap.exists) {
-      Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-      // var appInfo = data["appInfo"];
-      var appInfo = AppInfoModelMapper.fromMap(data);
-      return appInfo;
+    DocumentSnapshot doc = await appDocRef.get();
+    if (doc.exists) {
+      final data = doc.data() as Map<String, dynamic>;
+      return AppInfoModelMapper.fromMap(data);
     } else {
-      // initialise model in firestore
+      debugPrint("getAppInfo doc does not exist.");
+      return AppInfoModel();
+    }
+
+    return null;
+  }
+
+  @override
+  Future<void> saveAppInfo() async {
+    var map = FC().appInfoAsMap;
+    await appDocRef.set(
+      map,
+    );
+  }
+
+  /// createOrUpdateAppModelAndCAPIModel
+  @override
+  Future<VersionId?> saveSnippet({
+    required SnippetName snippetName,
+    required VersionId newVersionId,
+  }) async {
+    SnippetRootNode? snippetNode = FC().rootNodeOfEditingSnippet(snippetName);
+    if (snippetNode != null) {
+      // snippet saved under new versionId, and editingSnippet now set to this new version
+      FC().addVersionId(snippetName, newVersionId);
+      // var newAppInfo = FC().appInfo;
+      // newAppInfo.versionIds[snippetName]?.insert(0, newVersionId);
+      // newAppInfo.editingVersionIds.addAll({snippetName: newVersionId});
+      // FC().appInfo = newAppInfo;
+      await saveAppInfo();
+
+      // now create the actual version doc
+      DocumentReference newVersionedSnippetDocRef = appDocRef
+          .collection('snippets/$snippetName/versions')
+          .doc(newVersionId);
+      await newVersionedSnippetDocRef.set(snippetNode.toMap());
+      return newVersionId;
     }
     return null;
   }
 
   @override
-  Future<SnippetMapModel?> getVersionedSnippetMap(
-      {required VersionId versionId}) async {
-    CollectionReference versionsRef = appDocRef.collection('versions');
-    DocumentReference versionDocRef = versionsRef.doc(versionId);
-    var snap = await versionDocRef.get();
-    if (snap.exists) {
-      Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-      return SnippetMapModelMapper.fromMap(data);
+  Future<void> publishSnippet(
+      {required SnippetName snippetName, required VersionId versionId}) async {
+    FC().publishedVersionIds[snippetName] = versionId;
+
+    List<VersionId> newVersionIds = [];
+    // modify the versionIds to show published versions with ' <-' appended
+    if (FC().versionIds.containsKey(snippetName)) {
+      for (VersionId v in FC().versionIds[snippetName]! /*.sublist(0, 10)*/) {
+        VersionId versionId =
+            (v == FC().publishedVersionIds[snippetName]) ? '$v <-' : v;
+        newVersionIds.add(versionId);
+      }
+      FC().versionIds[snippetName] = newVersionIds;
+
+      await appDocRef.set(
+        FC().appInfoAsMap,
+      );
     }
-    return null;
   }
+
+  @override
+  Future<void> revertSnippet(
+      {required SnippetName snippetName,
+      required VersionId toVersionId}) async {
+    FC().editingVersionIds[snippetName] = toVersionId;
+    await appDocRef.set(
+      FC().appInfoAsMap,
+    );
+  }
+
+  // @override
+  // Future<SnippetRootNode?> getVersionedSnippet(
+  //     {required SnippetName snippetName, required VersionId versionId}) async {
+  //   CollectionReference versionsRef =
+  //       appDocRef.collection('snippets/$snippetName');
+  //   DocumentReference versionedSnippetDocRef = versionsRef.doc(versionId);
+  //   var snap = await versionedSnippetDocRef.get();
+  //   if (snap.exists) {
+  //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+  //     return SnippetRootNodeMapper.fromMap(data);
+  //   }
+  //   return null;
+  // }
 
   @override
 
@@ -271,5 +335,4 @@ class FireStoreModelRepository implements IModelRepository {
   DocumentReference get appDocRef => FirebaseFirestore.instance
       .collection('/flutter-content-apps')
       .doc(FC().appName);
-
 }

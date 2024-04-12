@@ -41,7 +41,7 @@ class SnippetRefNode extends CL with SnippetRefNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     try {
-      var rootNode = FC().rootNodeOfNamedSnippet(snippetName);
+      var rootNode = FC().rootNodeOfEditingSnippet(snippetName);
       if (rootNode == null) return const Icon(Icons.error, color: Colors.red);
       return rootNode.toWidget(context, this);
     } catch (e) {

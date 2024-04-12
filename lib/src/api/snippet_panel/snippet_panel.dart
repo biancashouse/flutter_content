@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -20,7 +20,7 @@ enum SnippetTemplate {
 class SnippetPanel extends StatefulWidget {
   final String panelName;
   final String snippetName;
-  final SnippetTemplate? fromTemplate;
+  final SnippetTemplate fromTemplate;
   final Map<String, void Function(BuildContext)>? handlers;
   final bool allowButtonCallouts;
   final bool justPlaying;
@@ -36,7 +36,7 @@ class SnippetPanel extends StatefulWidget {
   SnippetPanel({
     required this.panelName,
     required this.snippetName,
-    this.fromTemplate,
+    this.fromTemplate = SnippetTemplate.empty_snippet,
     this.handlers,
     this.allowButtonCallouts = true,
     this.justPlaying = true,
@@ -192,29 +192,99 @@ class SnippetPanelState extends State<SnippetPanel>
       backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
 
-  ZoomerState? get parentTSState => Zoomer.of(context);
+  // ZoomerState? get parentTSState => Zoomer.of(context);
 
   // if root already exists, return it.
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
-  SnippetRootNode getOrCreateSnippetFromTemplate() {
+  Future<SnippetRootNode> getOrCreateSnippetFromTemplate() async {
+    // if exists, ensure cached first
+    VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
+    if (editingVersionId != null) {
+      await FC().fbModelRepo.getSnippetFromCacheOrFB(
+          snippetName: widget.snippetName, versionId: editingVersionId);
+    }
     SnippetRootNode? snippetRootNode =
-        FC().rootNodeOfNamedSnippet(widget.snippetName);
+        FC().rootNodeOfEditingSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
     if (snippetRootNode == null && widget.fromTemplate != null) {
       snippetRootNode = SnippetPanel.createSnippetFromTemplate(
           widget.fromTemplate!, widget.snippetName);
-    } else {
-      snippetRootNode ??=
+      VersionId initialVersionId =
+          DateTime.now().millisecondsSinceEpoch.toString();
+      FC().addToSnippetCache(
+        snippetName: widget.snippetName,
+        rootNode: snippetRootNode,
+        initialVersionId: initialVersionId,
+        editing: true,
+      );
+      FC().capiBloc.add(CAPIEvent.saveSnippet(
+            snippetRootNode: snippetRootNode,
+            newVersionId: initialVersionId,
+          ));
+    } else if (snippetRootNode == null) {
+      snippetRootNode =
           SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
               .cloneSnippet();
+      VersionId initialVersionId =
+          DateTime.now().millisecondsSinceEpoch.toString();
+      FC().addToSnippetCache(
+        snippetName: widget.snippetName,
+        rootNode: snippetRootNode,
+        initialVersionId: initialVersionId,
+        editing: true,
+      );
+      FC().capiBloc.add(CAPIEvent.saveSnippet(
+            snippetRootNode: snippetRootNode,
+            newVersionId: initialVersionId,
+          ));
     }
     snippetRootNode.name = widget.snippetName;
-    FC().snippetsMap[widget.snippetName] = snippetRootNode;
-    // FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(newSnippetNode: rootNode));
-
     return snippetRootNode;
   }
+
+  // assumption: snippet definitely not in Cache (nor FB),
+  // but is in AppInfo
+  // SnippetRootNode? createSnippetFromTemplate(VersionId initialVersionId) async {
+  //   // if exists, ensure cached first
+  //   VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
+  //   SnippetRootNode? snippetRootNode = FC().rootNodeOfEditingSnippet(widget.snippetName);
+  //   // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
+  //   if (snippetRootNode == null && widget.fromTemplate != null) {
+  //     snippetRootNode = SnippetPanel.createSnippetFromTemplate(
+  //         widget.fromTemplate!, widget.snippetName);
+  //     VersionId initialVersionId =
+  //     DateTime.now().millisecondsSinceEpoch.toString();
+  //     FC().addToSnippetCache(
+  //       snippetName: widget.snippetName,
+  //       rootNode: snippetRootNode,
+  //       initialVersionId: initialVersionId,
+  //       editing: true,
+  //     );
+  //     FC().capiBloc.add(CAPIEvent.saveSnippet(
+  //       snippetRootNode: snippetRootNode,
+  //       newVersionId: initialVersionId,
+  //     ));
+  //   } else if (snippetRootNode == null) {
+  //     snippetRootNode =
+  //         SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
+  //             .cloneSnippet();
+  //     VersionId initialVersionId =
+  //     DateTime.now().millisecondsSinceEpoch.toString();
+  //     FC().addToSnippetCache(
+  //       snippetName: widget.snippetName,
+  //       rootNode: snippetRootNode,
+  //       initialVersionId: initialVersionId,
+  //       editing: true,
+  //     );
+  //     FC().capiBloc.add(CAPIEvent.saveSnippet(
+  //       snippetRootNode: snippetRootNode,
+  //       newVersionId: initialVersionId,
+  //     ));
+  //   }
+  //   snippetRootNode.name = widget.snippetName;
+  //   return snippetRootNode;
+  // }
 
   // int countTabs() {
   //   SnippetRootNode? rootNode = FlutterContent().capiBloc.state.rootNode("root");
@@ -271,6 +341,40 @@ class SnippetPanelState extends State<SnippetPanel>
         });
       }
     });
+  }
+
+  Future<SnippetRootNode?> _ensureSnippetInCache() async {
+    SnippetRootNode? rootNode;
+    VersionId? editingOrPublishedVersionId = FC().canEditContent
+        ? FC().editingVersionIds[widget.snippetName]
+        : FC().publishedVersionIds[widget.snippetName];
+    if (editingOrPublishedVersionId != null) {
+      // exists in AppInfo, so make sure it has been fetched from FB
+      await FC().fbModelRepo.getSnippetFromCacheOrFB(
+          snippetName: widget.snippetName,
+          versionId: editingOrPublishedVersionId);
+      rootNode =
+          FC().snippetCache[widget.snippetName]?[editingOrPublishedVersionId];
+    } else {
+      // snippet does not yet exist in FB, hence not in AppInfo
+      VersionId initialVersionId =
+          DateTime.now().millisecondsSinceEpoch.toString();
+      rootNode = SnippetPanel.createSnippetFromTemplate(
+          widget.fromTemplate, widget.snippetName);
+      FC().addToSnippetCache(
+        snippetName: widget.snippetName,
+        rootNode: rootNode,
+        initialVersionId: initialVersionId,
+        editing: true,
+      );
+      FC().updatePublishedVersionId(
+          snippetName: widget.snippetName, versionId: initialVersionId);
+      FC().capiBloc.add(CAPIEvent.saveSnippet(
+            snippetRootNode: rootNode,
+            newVersionId: initialVersionId,
+          ));
+    }
+    return rootNode;
   }
 
   void resetTabQandC() {
@@ -425,38 +529,54 @@ class SnippetPanelState extends State<SnippetPanel>
     //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     // }
 
-    debugPrint("build snippet ${widget.panelName}");
+    debugPrint("build SnippetPanel ${widget.panelName}");
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
-      key: FC().panelGkMap[widget.panelName] =
-          GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-      // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
-      builder: (innerContext, state) {
-        debugPrint(
-            "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
-        try {
-          // in case no entry found in panel map nor a snippet name supplied, use/create a default snippet for this panel.
-          SnippetRootNode snippetRoot = getOrCreateSnippetFromTemplate();
-          return snippetRoot.toWidget(innerContext, null);
-        } catch (e) {
-          debugPrint('snippetRoot.toWidget() failed!');
-          return Material(
-            textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const Icon(Icons.error, color: Colors.redAccent),
-                  hspacer(10),
-                  Useful.coloredText(e.toString()),
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
+        key: FC().panelGkMap[widget.panelName] =
+            GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+        // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
+        builder: (innerContext, state) {
+          return FutureBuilder<SnippetRootNode?>(
+              future: _ensureSnippetInCache(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  debugPrint(
+                      "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
+                  VersionId? editingVersionId =
+                      FC().editingVersionIds[widget.snippetName];
+                  debugPrint("editing version $editingVersionId");
+                  try {
+                    // in case did a revert, ignore snapshot data and use the AppInfo instead
+                    SnippetRootNode? snippetRoot = snapshot.data;
+                    var cache = FC().snippetCache[widget.snippetName];
+                    // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                    return snippetRoot == null
+                        ? const Icon(Icons.error, color: Colors.redAccent)
+                        : snippetRoot.toWidget(innerContext, null);
+                  } catch (e) {
+                    debugPrint('snippetRoot.toWidget() failed!');
+                    return Material(
+                      textStyle: const TextStyle(
+                          fontFamily: 'monospace', fontSize: 12),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            const Icon(Icons.error, color: Colors.redAccent),
+                            hspacer(10),
+                            Useful.coloredText(e.toString()),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                } else {
+                  return const Icon(Icons.error, color: Colors.redAccent);
+                }
+              });
+        });
   }
 }
 
