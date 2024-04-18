@@ -231,7 +231,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                             children: [
                               // icon buttons
                               ExpansionTile(
-                                title: Useful.coloredText('properties',
+                                title: Useful.coloredText('widget actions',
                                     color: Colors.white54, fontSize: 14),
                                 backgroundColor: Colors.black,
                                 collapsedBackgroundColor: Colors.black,
@@ -242,7 +242,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                               ),
                               // NODE PROPERTIES TREE
                               if (selectedNode.pTreeC(context).roots.isEmpty)
-                                Useful.coloredText(' (no properties)',
+                                Useful.coloredText(' (no widget properties)',
                                     color: Colors.white),
                               Material(
                                   color: Colors.black,
@@ -359,6 +359,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
                     // some properties cannot be deleted
                     if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
+                    STreeNode node = snippetBloc.state.selectedNode;
                     bool wasShowingAsRoot = snippetBloc.state.selectedNode == snippetBloc.treeC.roots.first;
                     STreeNode? parentNode = snippetBloc.state.selectedNode.parent as STreeNode?;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
@@ -379,6 +380,9 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         }
                       });
                     });
+                    if (node is TargetGroupWrapperNode) {
+                      node.targets.clear();
+                    }
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,

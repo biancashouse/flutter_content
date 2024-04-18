@@ -216,6 +216,13 @@ class TargetModel with TargetModelMappable {
 
     btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
+
+    btnLocalTopPc = max(0, btnLocalTopPc!);
+    btnLocalTopPc = min(btnLocalTopPc!, 1);
+    btnLocalLeftPc = max(0, btnLocalLeftPc!);
+    btnLocalLeftPc = min(btnLocalLeftPc!, 1);
+
+    // debugPrint("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
   Offset getCalloutPos() => Offset(

@@ -32,8 +32,8 @@ mixin _$CAPIEvent {
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -64,8 +64,8 @@ mixin _$CAPIEvent {
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -92,8 +92,8 @@ mixin _$CAPIEvent {
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -286,8 +286,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -321,8 +321,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -352,8 +352,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -530,8 +530,8 @@ class _$HideAllTargetGroupsImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -565,8 +565,8 @@ class _$HideAllTargetGroupsImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -596,8 +596,8 @@ class _$HideAllTargetGroupsImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -797,8 +797,8 @@ class _$HideTargetGroupsExceptImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -832,8 +832,8 @@ class _$HideTargetGroupsExceptImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -863,8 +863,8 @@ class _$HideTargetGroupsExceptImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -1068,8 +1068,8 @@ class _$ShowOnlyOneTargetImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1103,8 +1103,8 @@ class _$ShowOnlyOneTargetImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -1134,8 +1134,8 @@ class _$ShowOnlyOneTargetImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -1314,8 +1314,8 @@ class _$HideAllTargetGroupBtnsImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1349,8 +1349,8 @@ class _$HideAllTargetGroupBtnsImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -1380,8 +1380,8 @@ class _$HideAllTargetGroupBtnsImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -1553,8 +1553,8 @@ class _$UnhideAllTargetGroupsImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1588,8 +1588,8 @@ class _$UnhideAllTargetGroupsImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -1619,8 +1619,8 @@ class _$UnhideAllTargetGroupsImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -1837,8 +1837,8 @@ class _$OverrideTargetGKImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1872,8 +1872,8 @@ class _$OverrideTargetGKImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -1903,8 +1903,8 @@ class _$OverrideTargetGKImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -2124,8 +2124,8 @@ class _$TargetChangedImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2159,8 +2159,8 @@ class _$TargetChangedImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -2190,8 +2190,8 @@ class _$TargetChangedImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -2366,8 +2366,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2401,8 +2401,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -2432,8 +2432,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -2641,8 +2641,8 @@ class _$UpdateClipboardImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2676,8 +2676,8 @@ class _$UpdateClipboardImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -2707,8 +2707,8 @@ class _$UpdateClipboardImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -2831,7 +2831,11 @@ abstract class _$$SaveSnippetImplCopyWith<$Res> {
           _$SaveSnippetImpl value, $Res Function(_$SaveSnippetImpl) then) =
       __$$SaveSnippetImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({SnippetRootNode snippetRootNode, String newVersionId, bool force});
+  $Res call(
+      {SnippetRootNode snippetRootNode,
+      String newVersionId,
+      bool force,
+      bool andRefresh});
 }
 
 /// @nodoc
@@ -2848,6 +2852,7 @@ class __$$SaveSnippetImplCopyWithImpl<$Res>
     Object? snippetRootNode = null,
     Object? newVersionId = null,
     Object? force = null,
+    Object? andRefresh = null,
   }) {
     return _then(_$SaveSnippetImpl(
       snippetRootNode: null == snippetRootNode
@@ -2862,6 +2867,10 @@ class __$$SaveSnippetImplCopyWithImpl<$Res>
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
               as bool,
+      andRefresh: null == andRefresh
+          ? _value.andRefresh
+          : andRefresh // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -2872,7 +2881,8 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
   const _$SaveSnippetImpl(
       {required this.snippetRootNode,
       required this.newVersionId,
-      this.force = false});
+      this.force = false,
+      this.andRefresh = false});
 
   @override
   final SnippetRootNode snippetRootNode;
@@ -2881,10 +2891,13 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
   @override
   @JsonKey()
   final bool force;
+  @override
+  @JsonKey()
+  final bool andRefresh;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.saveSnippet(snippetRootNode: $snippetRootNode, newVersionId: $newVersionId, force: $force)';
+    return 'CAPIEvent.saveSnippet(snippetRootNode: $snippetRootNode, newVersionId: $newVersionId, force: $force, andRefresh: $andRefresh)';
   }
 
   @override
@@ -2894,7 +2907,8 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
       ..add(DiagnosticsProperty('type', 'CAPIEvent.saveSnippet'))
       ..add(DiagnosticsProperty('snippetRootNode', snippetRootNode))
       ..add(DiagnosticsProperty('newVersionId', newVersionId))
-      ..add(DiagnosticsProperty('force', force));
+      ..add(DiagnosticsProperty('force', force))
+      ..add(DiagnosticsProperty('andRefresh', andRefresh));
   }
 
   @override
@@ -2906,12 +2920,14 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
                 other.snippetRootNode == snippetRootNode) &&
             (identical(other.newVersionId, newVersionId) ||
                 other.newVersionId == newVersionId) &&
-            (identical(other.force, force) || other.force == force));
+            (identical(other.force, force) || other.force == force) &&
+            (identical(other.andRefresh, andRefresh) ||
+                other.andRefresh == andRefresh));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, snippetRootNode, newVersionId, force);
+  int get hashCode => Object.hash(
+      runtimeType, snippetRootNode, newVersionId, force, andRefresh);
 
   @JsonKey(ignore: true)
   @override
@@ -2936,8 +2952,8 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2953,7 +2969,7 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
   }) {
-    return saveSnippet(snippetRootNode, newVersionId, force);
+    return saveSnippet(snippetRootNode, newVersionId, force, andRefresh);
   }
 
   @override
@@ -2971,8 +2987,8 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -2984,7 +3000,7 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
   }) {
-    return saveSnippet?.call(snippetRootNode, newVersionId, force);
+    return saveSnippet?.call(snippetRootNode, newVersionId, force, andRefresh);
   }
 
   @override
@@ -3002,8 +3018,8 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -3017,7 +3033,7 @@ class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
     required TResult orElse(),
   }) {
     if (saveSnippet != null) {
-      return saveSnippet(snippetRootNode, newVersionId, force);
+      return saveSnippet(snippetRootNode, newVersionId, force, andRefresh);
     }
     return orElse();
   }
@@ -3112,11 +3128,13 @@ abstract class SaveSnippet implements CAPIEvent {
   const factory SaveSnippet(
       {required final SnippetRootNode snippetRootNode,
       required final String newVersionId,
-      final bool force}) = _$SaveSnippetImpl;
+      final bool force,
+      final bool andRefresh}) = _$SaveSnippetImpl;
 
   SnippetRootNode get snippetRootNode;
   String get newVersionId;
   bool get force;
+  bool get andRefresh;
   @JsonKey(ignore: true)
   _$$SaveSnippetImplCopyWith<_$SaveSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -3223,8 +3241,8 @@ class _$PublishSnippetImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3258,8 +3276,8 @@ class _$PublishSnippetImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -3289,8 +3307,8 @@ class _$PublishSnippetImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -3507,8 +3525,8 @@ class _$RevertSnippetImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3542,8 +3560,8 @@ class _$RevertSnippetImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -3573,8 +3591,8 @@ class _$RevertSnippetImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -3777,8 +3795,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3812,8 +3830,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -3843,8 +3861,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -4059,8 +4077,8 @@ class _$SetPanelSnippetImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4094,8 +4112,8 @@ class _$SetPanelSnippetImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -4125,8 +4143,8 @@ class _$SetPanelSnippetImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -4345,8 +4363,8 @@ class _$PushSnippetBlocImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4380,8 +4398,8 @@ class _$PushSnippetBlocImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -4411,8 +4429,8 @@ class _$PushSnippetBlocImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -4619,8 +4637,8 @@ class _$PopSnippetBlocImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4654,8 +4672,8 @@ class _$PopSnippetBlocImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -4685,8 +4703,8 @@ class _$PopSnippetBlocImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -4860,8 +4878,8 @@ class _$ShowDirectoryTreeImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4895,8 +4913,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -4926,8 +4944,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
@@ -5126,8 +5144,8 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function() forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)
+    required TResult Function(SnippetRootNode snippetRootNode,
+            String newVersionId, bool force, bool andRefresh)
         saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -5161,8 +5179,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult? Function()? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
@@ -5192,8 +5210,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(TargetModel newTC, bool keepTargetsHidden)? TargetChanged,
     TResult Function()? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(
-            SnippetRootNode snippetRootNode, String newVersionId, bool force)?
+    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
+            bool force, bool andRefresh)?
         saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,

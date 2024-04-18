@@ -25,52 +25,55 @@ class PositionedTarget extends StatelessWidget {
       top: stackPos.dy - radius,
       left: stackPos.dx - radius,
       child: FC().canEditContent
-          ? Draggable(
+          ? Draggable<(TargetModel,bool)>(
               key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),
+              data: (tc,false),
               feedback: _draggableTarget(tc),
               childWhenDragging: const Offstage(),
-              dragAnchorStrategy: (Draggable<Object> draggable,
-                  BuildContext context, Offset position) {
-                return Offset(radius, radius);
-              },
-              onDragUpdate: (DragUpdateDetails details) {
-                Offset newLocalPos = details.localPosition;
-                debugPrint(newLocalPos.toString());
-                Offset newGlobalPos = details.globalPosition
-                    //   .translate(
-                    // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-                    // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-                    // )
-                    ;
-                tc.setTargetStackPosPc(newGlobalPos);
-              },
-              onDragStarted: () {
-                debugPrint("drag started");
-                //removeSnippetContentCallout(widget.initialTC.snippetName);
-              },
-              onDragEnd: (DraggableDetails details) {
-                // Offset newGlobalPos = details.offset.translate(
-                //   parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-                //   parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-                // );
-                // // tc.setTargetStackPosPc(newGlobalPos);
-                // tc.setTargetStackPosPc(newGlobalPos.translate(
-                //   tc.getScale(bloc.state) * tc.radius,
-                //   tc.getScale(bloc.state) * tc.radius,
-                // ));
-                bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+              // onDragUpdate: (DragUpdateDetails details) {
+              //   // Offset newLocalPos = details.localPosition;
+              //   // debugPrint(newLocalPos.toString());
+              //   Offset newGlobalPos = details.globalPosition
+              //       //   .translate(
+              //       // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
+              //       // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
+              //       // )
+              //       ;
+              //   tc.setTargetStackPosPc(newGlobalPos);
+              //   // debugPrint("${tc.targetLocalPosLeftPc}, ${tc.targetLocalPosTopPc}");
+              // },
+              // onDragStarted: () {
+              //   debugPrint("drag started");
+              //   // bloc.add(const CAPIEvent.unhideAllTargetGroups());
+              //   //removeSnippetContentCallout(widget.initialTC.snippetName);
+              // },
 
-                // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
-                // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
-                //   if (bloC.state.aTargetIsSelected()) {
-                //     showTargetModelToolbarCallout(
-                //       bloc, tc,
-                //       ancestorHScrollController,
-                //       ancestorVScrollController,
-                //     );
-                //   }
-                // });
-              },
+              // onDragEnd: (DraggableDetails details) {
+              //   // Offset newGlobalPos = details.offset.translate(
+              //   //   parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
+              //   //   parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
+              //   // );
+              //   // // tc.setTargetStackPosPc(newGlobalPos);
+              //   // tc.setTargetStackPosPc(newGlobalPos.translate(
+              //   //   tc.getScale(bloc.state) * tc.radius,
+              //   //   tc.getScale(bloc.state) * tc.radius,
+              //   // ));
+              //   // bloc.add(const CAPIEvent.unhideAllTargetGroups());
+              //   // Useful.afterNextBuildDo(() {
+              //   // bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+              //   // });
+              //
+              //   // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
+              //   // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
+              //   //   if (bloC.state.aTargetIsSelected()) {
+              //   //     showTargetModelToolbarCallout(
+              //   //       bloc, tc,
+              //   //       ancestorHScrollController,
+              //   //       ancestorVScrollController,
+              //   //     );
+              //   //   }
+              //   // });
+              // },
               child: _draggableTarget(tc),
             )
           : CircleAvatar(

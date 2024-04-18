@@ -20,7 +20,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   CAPIBloC get bloc => FC().capiBloc;
 
   TargetsWrapperState? get parentWrapperState {
-    var state = initialTC.targetsWrapperGK!.currentState as TargetsWrapperState?;
+    var state =
+        initialTC.targetsWrapperGK!.currentState as TargetsWrapperState?;
     return state;
   }
 
@@ -35,7 +36,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
-    return Draggable(
+    return Draggable<(TargetModel,bool)>(
+      data: (tc, true),
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
         tc,
@@ -45,6 +47,53 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         textColor: Color(Colors.white.value),
         fontSize: 14,
       ),
+      // onDragUpdate: (DragUpdateDetails details) {
+      //   debugPrint("${details.globalPosition}");
+      //   Offset newGlobalPos =
+      //       details.globalPosition; //.translate(iwPos.dx, iwPos.dy);
+      //   tc.setBtnStackPosPc(
+      //     newGlobalPos
+      //         // .translate(
+      //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         // )
+      //         // .translate(
+      //         //   parentWrapperState!
+      //         //           .zoomer?.widget.ancestorHScrollController?.offset ??
+      //         //       0.0,
+      //         //   parentWrapperState!
+      //         //           .zoomer?.widget.ancestorVScrollController?.offset ??
+      //         //       0.0,
+      //         // ),
+      //   );
+      //   debugPrint("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
+      // },
+      // onDragStarted: () {
+      //   debugPrint("drag started");
+      //   //bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
+      // },
+      // onDraggableCanceled: (_, offset) {
+      //   debugPrint("drag ended");
+      //   Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
+      //   tc.setBtnStackPosPc(
+      //     newGlobalPos
+      //         .translate(
+      //           bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //           bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         )
+      //         .translate(
+      //           parentWrapperState!
+      //                   .zoomer?.widget.ancestorHScrollController?.offset ??
+      //               0.0,
+      //           parentWrapperState!
+      //                   .zoomer?.widget.ancestorVScrollController?.offset ??
+      //               0.0,
+      //         ),
+      //   );
+      //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+      //
+      //   // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
+      // },
       child: GestureDetector(
         onTap: () {
           if (parentWrapperState == null) return;
@@ -93,51 +142,6 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           fontSize: 14,
         ),
       ),
-      // onDragUpdate: (DragUpdateDetails details) {
-      //   Offset newGlobalPos = details.globalPosition.translate(
-      //     widget.parent.widget.ancestorHScrollController?.offset ?? 0.0,
-      //     widget.parent.widget.ancestorVScrollController?.offset ?? 0.0,
-      //   );
-      //   // tc.setBtnStackPosPc(newGlobalPos);
-      // },
-      onDragStarted: () {
-        debugPrint("drag started");
-        bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
-      },
-      onDraggableCanceled: (velocity, offset) {
-        debugPrint("drag ended");
-        // Offset iwPos = CAPIState.iwPos(name);
-        // iwPos = iwPos.translate(
-        //   parentTW.widget.ancestorHScrollController?.offset ?? 0.0,
-        //   parentTW.widget.ancestorVScrollController?.offset ?? 0.0,
-        // );
-        // Offset localPos = offset.translate(
-        //   iwPos.dx,
-        //   iwPos.dy,
-        // );
-        // double scale = tc.getScale(bloc.state);
-        // localPos = localPos * scale;
-        Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
-        // tc.setBtnStackPosPc(newGlobalPos);
-        tc.setBtnStackPosPc(
-          newGlobalPos
-              .translate(
-                bloc.state.CAPI_TARGET_BTN_RADIUS,
-                bloc.state.CAPI_TARGET_BTN_RADIUS,
-              )
-              .translate(
-                parentWrapperState!
-                        .zoomer?.widget.ancestorHScrollController?.offset ??
-                    0.0,
-                parentWrapperState!
-                        .zoomer?.widget.ancestorVScrollController?.offset ??
-                    0.0,
-              ),
-        );
-        bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-
-        // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
-      },
     );
   }
 
@@ -150,11 +154,11 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = parentWrapperState!.zoomer;
     var savedKey = tc.targetsWrapperGK;
-    zoomer?.applyTransform(
-        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
-          if (savedKey == tc.targetsWrapperGK) {
-            debugPrint('doh!');
-          }
+    zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
+        afterTransformF: () {
+      if (savedKey == tc.targetsWrapperGK) {
+        debugPrint('doh!');
+      }
       bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
       bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
       // hideAllSingleTargetBtns();

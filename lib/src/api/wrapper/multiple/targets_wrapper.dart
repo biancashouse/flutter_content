@@ -62,10 +62,11 @@ class TargetsWrapper extends StatefulWidget {
 class TargetsWrapperState extends State<TargetsWrapper> {
   // Rect? _selectedTargetRect;
 
-  bool _needToMeasure = true;
-  late Offset wrapperPos;
-  late Size _wrapperSize;
-  Size get wrapperSize => _wrapperSize;
+  bool _needToMeasureSize = true;
+  bool _needToMeasurePos = true;
+  Offset wrapperPos = const Offset(0, 0);
+  Size? _wrapperSize;
+  Size get wrapperSize => _wrapperSize ?? MediaQuery.of(context).size;
   set wrapperSize(Size newSize) => _wrapperSize = newSize;
 
   Offset? savedChildLocalPosPc;
@@ -108,23 +109,21 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         //   FC().registerScrollController(zoomer!.widget.ancestorVScrollController!);
         // }
 
-        setState(() {
-          measureIWPosAndSize();
-          // measure child size
-          var childGK = widget.child?.key as GlobalKey?;
-          final renderObject = childGK?.currentContext?.findRenderObject();
-          final translation =
-              renderObject?.getTransformTo(null).getTranslation();
-          Rect? paintBounds;
-          try {
-            paintBounds = renderObject?.paintBounds;
-          } catch (e) {
-            debugPrint(
-                'paintBounds = renderObject?.paintBounds - ${e.toString()}');
-          }
-          wrapperSize = paintBounds?.size ?? MediaQuery.of(context).size;
-          debugPrint('TargetsWrapper.child size: ${wrapperSize.toString()}');
-        });
+        setState(() {});
+        measureIWPosAndSize();
+        // measure child size
+        var childGK = widget.child?.key as GlobalKey?;
+        final renderObject = childGK?.currentContext?.findRenderObject();
+        final translation = renderObject?.getTransformTo(null).getTranslation();
+        Rect? paintBounds;
+        try {
+          paintBounds = renderObject?.paintBounds;
+        } catch (e) {
+          debugPrint(
+              'paintBounds = renderObject?.paintBounds - ${e.toString()}');
+        }
+        // wrapperSize = paintBounds?.size ?? MediaQuery.of(context).size;
+        // debugPrint('TargetsWrapper.child size: ${wrapperSize.toString()}');
         // if (widget.key != null) {
         //   Measuring.findGlobalRect(widget.key! as GlobalKey);
         //   // Size size = CAPIState.iwSize(widget.name);
@@ -137,6 +136,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         //   widget.ancestorVScrollController,
         //   1000,
         // );
+        // bloc.add(const CAPIEvent.unhideAllTargetGroups());
       },
     );
   }
@@ -169,10 +169,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
         // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         wrapperPos = globalPos;
-        wrapperSize = newPosAndSize.$2!;
+        // wrapperSize = newPosAndSize.$2!;
         //debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
       }
-      _needToMeasure = false;
+      _needToMeasurePos = false;
     } catch (e) {
       // ignore but then don't update pos
       debugPrint('measureIWPosAndSize! ${e.toString()}');
@@ -294,11 +294,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    if (_needToMeasure) {
-      // setState(() {});
-      return const Offstage();
-    }
-
     // CAPIBloC bloc = FC().capiBloc;
     return _stack(bloc);
 
@@ -414,9 +409,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     //   },
     //     child: Container(color: Colors.red, width: 500, height: 500,));
     return GestureDetector(
-      // onTap: () {
-      //   debugPrint('_no_selection_long_pressable_barrier_build ontap');
-      // },
+      onTap: () {
+        debugPrint(
+            '***  _no_selection_long_pressable_barrier_build ontap   ***');
+      },
       // onTapDown: (_) {
       //   debugPrint("_no_selection_long_pressable_barrier_build tapped.");
       //   TargetModel? selectedTC = bloc.state.hideTargetsExcept;
@@ -428,12 +424,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       //     Callout.removeOverlay(snippetCalloutFeature(bloc.state.selectedTarget!.snippetName));
       //   }
       // },
-      //long press creates a new target for this TargetWrapper
       onLongPressStart: (LongPressStartDetails details) {
         if (!FC().canEditContent) return;
         SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
         if (snippetName == null) return;
+
         bloc.add(const CAPIEvent.hideAllTargetGroups());
+
         TargetModelId newTargetId = DateTime.now().millisecondsSinceEpoch;
         TargetModel newTC = TargetModel(
           uid: newTargetId, //event.wName.hashCode,
@@ -453,38 +450,58 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
 
         widget.parentNode.targets.add(newTC);
-        bloc.add(const CAPIEvent.forceRefresh());
+        // bloc.add(const CAPIEvent.forceRefresh());
 
         Useful.afterNextBuildDo(() {
+          // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
+          VersionId newVersionId =
+              DateTime.now().millisecondsSinceEpoch.toString();
+          FC().updateEditingVersionId(
+              snippetName: snippetName, newVersionId: newVersionId);
           bloc.add(const CAPIEvent.unhideAllTargetGroups());
           Useful.afterNextBuildDo(() {
-            // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
-            VersionId newVersionId =
-                DateTime.now().millisecondsSinceEpoch.toString();
-            FC().updateEditingVersionId(
-                snippetName: snippetName, newVersionId: newVersionId);
-            bloc.add(CAPIEvent.saveSnippet(
+            bloc.add(
+              CAPIEvent.saveSnippet(
                 snippetRootNode: widget.parentNode.rootNodeOfSnippet()!,
-                newVersionId: newVersionId));
-            Useful.afterNextBuildDo(() {
-              bloc.add(const CAPIEvent.forceRefresh());
-            });
+                newVersionId: newVersionId,
+                andRefresh: true,
+              ),
+            );
           });
+          // Useful.afterNextBuildDo(() {
+          //   bloc.add(const CAPIEvent.forceRefresh());
+          // });
         });
       },
-      child: SizedBox.fromSize(
-        size: Size.infinite,
-        child: Container(
-          color: Colors.lime,
-          width: double.infinity,
-          height: double.infinity,
-        ),
-        // child: ModalBarrier(
-        //   color: !widget.parentNode.playList.isNotEmpty
-        //       ? Colors.purple.withOpacity(.25)
-        //       : null,
-        //   dismissible: false,
-        // ),
+      child: DragTarget<(TargetModel, bool)>(
+        builder: (_, __, ___) {
+          return SizedBox.fromSize(
+            size: _needToMeasureSize ? Size.infinite : _wrapperSize,
+            child: Container(
+              color: _needToMeasureSize ? Colors.red : Colors.lime,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          );
+        },
+        onAcceptWithDetails: (DragTargetDetails<Object> details) {
+          var data = details.data as (TargetModel, bool);
+          TargetModel tc = data.$1;
+          // true means target btn rather than target cover
+          if (data.$2) {
+            tc.setBtnStackPosPc(details.offset.translate(
+              bloc.state.CAPI_TARGET_BTN_RADIUS,
+              bloc.state.CAPI_TARGET_BTN_RADIUS,
+            ));
+            bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+          } else {
+            tc.setTargetStackPosPc(details.offset.translate(
+              tc.radius,
+              tc.radius,
+            ));
+            bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+          }
+        },
       ),
     );
   }
@@ -516,6 +533,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             child: MeasureSizeBox(
               // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
               onSizedCallback: (Size size) {
+                _needToMeasureSize = false;
                 wrapperSize = size;
                 // debugPrint("MeasureSizeBox => ${size.toString()}");
               },
@@ -525,6 +543,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         : MeasureSizeBox(
             // key: CAPIState.wGKMap[widget.name] = GlobalKey(),
             onSizedCallback: (Size size) {
+              _needToMeasureSize = false;
               wrapperSize = size;
               // debugPrint("MeasureSizeBox => ${size.toString()}");
               // force a rebuild with the measured size

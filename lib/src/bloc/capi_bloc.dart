@@ -209,6 +209,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     Callout.dismissAll(onlyToasts: true);
     // update last value
+    if (event.andRefresh) {
+      emit(state.copyWith(
+        force: state.force + 1,
+      ));
+    }
   }
 
   // Future<void> _switchBranch(SwitchBranch event, emit) async {

@@ -125,6 +125,7 @@ class CAPIEvent with _$CAPIEvent {
     required SnippetRootNode snippetRootNode,
     required VersionId newVersionId,
     @Default(false) bool force,
+    @Default(false) bool andRefresh,
   }) = SaveSnippet;
 
   const factory CAPIEvent.publishSnippet({
