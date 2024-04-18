@@ -248,7 +248,8 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // );
 
   @override
-  Widget build(BuildContext context) => Builder(builder: (context) {
+  Widget build(BuildContext context) => Builder(
+      builder: (context) {
         return FutureBuilder<CAPIBloC>(
           future: fInitApp,
           builder: (context, snapshot) {
@@ -259,8 +260,8 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
               // start the app with the main bloC
               if (!Callout.anyPresent(["floating-clipboard"])) {
                 Useful.afterNextBuildDo(() {
-                  _showFloatingClipboard();
-                  Callout.hide("floating-clipboard");
+                  // _showFloatingClipboard();
+                  // Callout.hide("floating-clipboard");
                   showDevToolsFAB();
                 });
               }
@@ -542,14 +543,13 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     // if currently configuring a target, only show for the current target's snippet
     FC().showingNodeOBoundaryOverlays = true;
     // bool configuringATarget = Callout.anyPresent(['config-toolbar']);
-    var gkSTreeNodeMap = FC().gkSTreeNodeMap;
     void traverseAndMeasure(BuildContext el) {
       // debugPrint('traverseAndMeasure(${el.toString()})');
 
-      if ((gkSTreeNodeMap.containsKey(el.widget.key))) {
+      if ((FC().gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = gkSTreeNodeMap[gk];
+        STreeNode? node = FC().gkSTreeNodeMap[gk];
         if (node != null) {
           if (node.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured) {
             debugPrint("targetSnippetBeingConfigured: ${node.toString()}");

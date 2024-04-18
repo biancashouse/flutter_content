@@ -188,7 +188,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
 
     // save to firebase
-    await modelRepo.saveSnippet(snippetName: event.snippetRootNode.name, newVersionId: event.newVersionId);
+    await modelRepo.saveSnippet(
+        snippetRootNode: event.snippetRootNode,
+        newVersionId: event.newVersionId);
 
     // }
     // } else {
@@ -246,7 +248,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       textColor: Colors.blueAccent,
     );
 
-    modelRepo.revertSnippet(snippetName: event.snippetName, toVersionId: event.versionId);
+    modelRepo.revertSnippet(
+        snippetName: event.snippetName, toVersionId: event.versionId);
 
     if (stopwatch.elapsedMilliseconds < 2000) {
       Future.delayed(
@@ -272,7 +275,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       textColor: Colors.blueAccent,
     );
 
-    await modelRepo.publishSnippet(snippetName: event.snippetName, versionId: event.versionId);
+    await modelRepo.publishSnippet(
+        snippetName: event.snippetName, versionId: event.versionId);
 
     if (stopwatch.elapsedMilliseconds < 2000) {
       await Future.delayed(
@@ -291,6 +295,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // debugPrint("forceRefresh");
     emit(state.copyWith(
       force: state.force + 1,
+      skipSnippetPanelRebuild: false,
     ));
   }
 
@@ -572,7 +577,36 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   emit(state.copyWith());
 // }
 
-  void _targetChanged(TargetChanged event, emit) {
+  Future<void> _targetChanged(TargetChanged event, emit) async {
+    SnippetRootNode? rootNode =
+        event.newTC.targetsWrapperNode?.rootNodeOfSnippet();
+    if (rootNode != null) {
+      VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+      FC().addToSnippetCache(
+          snippetName: event.newTC.snippetName,
+          rootNode: rootNode,
+          versionId: newVersionId);
+      FC().updateEditingVersionId(
+          snippetName: event.newTC.snippetName, newVersionId: newVersionId);
+      // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+      var appInfoMap = FC().appInfoAsMap;
+      await modelRepo.saveSnippet(
+          snippetRootNode: rootNode, newVersionId: newVersionId);
+      appInfoMap = FC().appInfoAsMap;
+      Callout.dismissAll(onlyToasts: true);
+      HydratedBloc.storage.write('flutter-content', rootNode.toJson());
+      Callout.showTextToast(
+        feature: "saving-model",
+        msgText: 'saving changes...',
+        backgroundColor: Colors.yellow,
+        width: Useful.scrW * .8,
+        height: 40,
+        gravity: Alignment.topCenter,
+        textColor: Colors.blueAccent,
+        removeAfterMs: 500,
+      );
+    }
+
     emit(state.copyWith(
       // targetGroupMap: newMap,
       hideAllTargetGroups:
@@ -882,9 +916,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetBloc(PushSnippetBloc event, emit) {
-    FC fc = FC();
     SnippetRootNode? rootNode =
-        fc.rootNodeOfEditingSnippet(event.snippetName);
+        FC().rootNodeOfEditingSnippet(event.snippetName);
     if (rootNode == null) return;
 
     SnippetTreeController newTreeC() => SnippetTreeController(
@@ -899,14 +932,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       treeC: newTreeC()..expandAll(),
       // treeUR: SnippetTreeUR()
     );
-    fc.jsonBeforePush = rootNode.toJson();
-    fc.pushSnippet(newSnippetBloc);
+    FC()
+      ..jsonBeforePush = rootNode.toJson()
+      ..pushSnippet(newSnippetBloc);
 
-    // emit(state.copyWith(
-    //   hideAllTargetGroupPlayBtns: true,
-    //   hideTargetsExcept: null,
-    //   hideSnippetPencilIcons: true,
-    // ));
+    emit(state.copyWith(
+      hideAllTargetGroupPlayBtns: true,
+      hideTargetsExcept: null,
+      hideSnippetPencilIcons: true,
+      skipSnippetPanelRebuild: true,
+    ));
   }
 
   Future<void> _popSnippetBloc(PopSnippetBloc event, emit) async {

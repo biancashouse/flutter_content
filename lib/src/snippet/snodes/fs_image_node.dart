@@ -31,60 +31,70 @@ class FSImageNode extends CL with FSImageNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) => [
-    FSImagePathPropertyValueNode(
+        FSImagePathPropertyValueNode(
           snode: this,
           name: 'fullPath',
           stringValue: fsFullPath,
-          onPathChange: (newValue) => refreshWithUpdate(() => fsFullPath = newValue ?? 'gs://flutter-content-2dc30.appspot.com/missing-image.PNG'),
+          onPathChange: (newValue) => refreshWithUpdate(() => fsFullPath =
+              newValue ??
+                  'gs://flutter-content-2dc30.appspot.com/missing-image.PNG'),
           calloutButtonSize: const Size(280, 70),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'width',
           decimalValue: width,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'height',
           decimalValue: height,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'scale',
           decimalValue: scale,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => scale = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => scale = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         EnumPropertyValueNode<BoxFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
         ),
         EnumPropertyValueNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
         ),
       ];
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
+    setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
-   return SizedBox(
-            key: createNodeGK(),
-            width: width,
-            height: height,
-            child: StorageImage(ref: FirebaseStorage.instance.ref(
-                fsFullPath ?? 'gs://flutter-content-2dc30.appspot.com/missing-image.PNG',
-            )),
-          );
+    return StorageImage(
+      fit: fit?.flutterValue,
+      width: width,
+      height: height,
+      scale: scale??1.0,
+      alignment: alignment?.flutterValue ?? Alignment.center,
+      ref: FirebaseStorage.instance.ref(
+        fsFullPath ??
+            'gs://flutter-content-2dc30.appspot.com/missing-image.PNG',
+      ),
+    );
   }
 
   @override

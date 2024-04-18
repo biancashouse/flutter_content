@@ -4,6 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/snodes/target_group_wrapper_node.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'target_model.mapper.dart';
@@ -14,10 +15,10 @@ class TargetModel with TargetModelMappable {
   double transformScale;
   // double transformTranslateX;
   // double transformTranslateY;
-  TargetsWrapperName wName;
   //
+  // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
-  GlobalKey? targetsWrapperGK;
+  TargetGroupWrapperNode? targetsWrapperNode;
 
   // bool single;
   double? targetLocalPosLeftPc;
@@ -53,7 +54,6 @@ class TargetModel with TargetModelMappable {
 
   TargetModel({
     required this.uid,
-    required this.wName,
     // this.single = true,
     this.transformScale = 1.0,
     // this.transformTranslateX = 0.0,
@@ -66,6 +66,8 @@ class TargetModel with TargetModelMappable {
     this.calloutLeftPc,
     this.btnLocalTopPc, // initially shown directly over target
     this.btnLocalLeftPc,
+    this.targetLocalPosLeftPc,
+    this.targetLocalPosTopPc,
     this.showBtn = true,
     this.canResizeH = true,
     this.canResizeV = true,
@@ -86,7 +88,8 @@ class TargetModel with TargetModelMappable {
     // fontWeightIndex = FontWeight.normal.index;
   }
 
-  TargetsWrapperState? get targetWrapperState => targetsWrapperGK?.currentState as TargetsWrapperState;
+  GlobalKey? get targetsWrapperGK => targetsWrapperNode?.nodeWidgetGK;
+  TargetsWrapperState? get targetsWrapperState => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState;
 
   /// https://gist.github.com/pskink/aa0b0c80af9a986619845625c0e87a67
   Matrix4 composeMatrix({
@@ -113,7 +116,7 @@ class TargetModel with TargetModelMappable {
     return Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1);
   }
 
-  bool playingOrSelected() => targetWrapperState?.widget.parentNode.playList.isNotEmpty??false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
+  bool playingOrSelected() => targetsWrapperState?.widget.parentNode.playList.isNotEmpty??false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
   double getScale({bool testing = false}) => playingOrSelected() || testing ? transformScale : 1.0;
 
@@ -125,7 +128,7 @@ class TargetModel with TargetModelMappable {
   // }
 
   double get radius {
-    Size ivSize = targetWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState!.wrapperSize;
     return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
   }
 
@@ -172,7 +175,7 @@ class TargetModel with TargetModelMappable {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = targetWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState!.wrapperSize;
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -181,7 +184,7 @@ class TargetModel with TargetModelMappable {
   }
 
   Offset targetStackPos() {
-    Size ivSize = targetWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState!.wrapperSize;
 
     double stackPosX = (targetLocalPosLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (targetLocalPosTopPc ?? 0.0) * ivSize.height;
@@ -191,8 +194,8 @@ class TargetModel with TargetModelMappable {
 
   void setTargetStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = targetWrapperState!.wrapperPos;
-    Size ivSize = targetWrapperState!.wrapperSize;
+    Offset ivTopLeft = targetsWrapperState!.wrapperPos;
+    Size ivSize = targetsWrapperState!.wrapperSize;
 
     double targetLocalPosTop = globalPos.dy - ivTopLeft.dy;
     double targetLocalPosLeft = globalPos.dx - ivTopLeft.dx;
@@ -208,8 +211,8 @@ class TargetModel with TargetModelMappable {
 
   void setBtnStackPosPc(Offset globalPos) {
     // iv rect should always be measured
-    Offset ivTopLeft = targetWrapperState!.wrapperPos;
-    Size ivSize = targetWrapperState!.wrapperSize;
+    Offset ivTopLeft = targetsWrapperState!.wrapperPos;
+    Size ivSize = targetsWrapperState!.wrapperSize;
 
     btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);

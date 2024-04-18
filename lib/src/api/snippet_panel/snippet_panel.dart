@@ -201,13 +201,14 @@ class SnippetPanelState extends State<SnippetPanel>
     // if exists, ensure cached first
     VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
     if (editingVersionId != null) {
+      // ensure snippet is in the cache
       await FC().fbModelRepo.getSnippetFromCacheOrFB(
           snippetName: widget.snippetName, versionId: editingVersionId);
     }
     SnippetRootNode? snippetRootNode =
         FC().rootNodeOfEditingSnippet(widget.snippetName);
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
-    if (snippetRootNode == null && widget.fromTemplate != null) {
+    if (snippetRootNode == null) {
       snippetRootNode = SnippetPanel.createSnippetFromTemplate(
           widget.fromTemplate!, widget.snippetName);
       VersionId initialVersionId =
@@ -215,25 +216,10 @@ class SnippetPanelState extends State<SnippetPanel>
       FC().addToSnippetCache(
         snippetName: widget.snippetName,
         rootNode: snippetRootNode,
-        initialVersionId: initialVersionId,
-        editing: true,
+        versionId: initialVersionId,
+        // editing: true,
       );
-      FC().capiBloc.add(CAPIEvent.saveSnippet(
-            snippetRootNode: snippetRootNode,
-            newVersionId: initialVersionId,
-          ));
-    } else if (snippetRootNode == null) {
-      snippetRootNode =
-          SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
-              .cloneSnippet();
-      VersionId initialVersionId =
-          DateTime.now().millisecondsSinceEpoch.toString();
-      FC().addToSnippetCache(
-        snippetName: widget.snippetName,
-        rootNode: snippetRootNode,
-        initialVersionId: initialVersionId,
-        editing: true,
-      );
+      FC().updateEditingVersionId(snippetName: widget.snippetName, newVersionId: initialVersionId,);
       FC().capiBloc.add(CAPIEvent.saveSnippet(
             snippetRootNode: snippetRootNode,
             newVersionId: initialVersionId,
@@ -364,11 +350,11 @@ class SnippetPanelState extends State<SnippetPanel>
       FC().addToSnippetCache(
         snippetName: widget.snippetName,
         rootNode: rootNode,
-        initialVersionId: initialVersionId,
-        editing: true,
+        versionId: initialVersionId,
+        // editing: true,
       );
-      FC().updatePublishedVersionId(
-          snippetName: widget.snippetName, versionId: initialVersionId);
+      FC().updatePublishedVersionId(snippetName: widget.snippetName, versionId: initialVersionId);
+      FC().updateEditingVersionId(snippetName: widget.snippetName, newVersionId: initialVersionId);
       FC().capiBloc.add(CAPIEvent.saveSnippet(
             snippetRootNode: rootNode,
             newVersionId: initialVersionId,
@@ -529,14 +515,13 @@ class SnippetPanelState extends State<SnippetPanel>
     //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     // }
 
-    debugPrint("build SnippetPanel ${widget.panelName}");
-
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
         key: FC().panelGkMap[widget.panelName] =
             GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-        // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
+        buildWhen: (previous, current) => !current.skipSnippetPanelRebuild,
         builder: (innerContext, state) {
+          debugPrint("build SnippetPanel / BlocBuilder ${widget.panelName}");
           return FutureBuilder<SnippetRootNode?>(
               future: _ensureSnippetInCache(),
               builder: (context, snapshot) {

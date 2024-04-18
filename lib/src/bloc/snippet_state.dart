@@ -2,7 +2,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'snippet_state.freezed.dart';
@@ -17,10 +16,10 @@ class SnippetState with _$SnippetState {
     required SnippetTreeController treeC,
     // required SnippetTreeUR ur,
     STreeNode? selectedNode,
-    GlobalKey? selectedWidgetGK,
+    // GlobalKey? selectedWidgetGK,
     GlobalKey? selectedTreeNodeGK,
     // ---- the state gets saved between snippet tree callout instances ------------------
-    STreeNode? highlightedNode,
+    // STreeNode? highlightedNode,
     @Default(false) bool showProperties,
     STreeNode? nodeBeingDeleted,
     @Default(0) int force, // hacky way to force a transition ?

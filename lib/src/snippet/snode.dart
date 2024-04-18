@@ -228,23 +228,23 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     Callout.showOverlay(
       ensureLowestOverlay: false,
       boxContentF: (context) => PointerInterceptor(
+        intercepting: true,
         child: InkWell(
           onTap: () {
             // debugPrint("tapped");
             SnippetName? snippetName = rootNodeOfSnippet()?.name;
             if (snippetName == null) return;
-            var cc = nodeWidgetGK?.currentContext;
+            // var cc = nodeWidgetGK?.currentContext;
 // edit the root snippet
 //             hideAllSingleTargetBtns();
 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
             MaterialSPAState.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
-            cc = nodeWidgetGK?.currentContext;
+            var b = nodeWidgetGK?.currentContext?.mounted;
             pushThenShowNamedSnippetWithNodeSelected(
                 snippetName, this, this, context);
             // Useful.afterNextBuildDo(() {
-            showNodeWidgetOverlay();
             // });
           },
           child: Container(
@@ -324,23 +324,30 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     } else {
       highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
     }
-    var cc = startingAtNode.nodeWidgetGK?.currentContext;
+    var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
+
+    // set bloc state skipSnippetPanelBuild true
     FC().capiBloc.add(CAPIEvent.pushSnippetBloc(
         snippetName: snippetName, visibleDecendantNode: highestNode));
+    // Useful.afterNextBuildDo(() {
+    // });
+    // return;
     Useful.afterNextBuildDo(() {
-      var cc = startingAtNode.nodeWidgetGK?.currentContext;
-      SnippetBloC? snippetBeingEdited = FC().snippetBeingEdited;
-      if (FC().snippetBeingEdited != null) {
+      debugPrint('after pushSnippetBloc');
+      var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
+      var gk = startingAtNode.nodeWidgetGK;
+      var ctx = gk?.currentContext;
+      if (FC().snippetBeingEdited != null && ctx != null) {
         // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
         showSnippetTreeAndPropertiesCallout(
-          snippetBloc: snippetBeingEdited!,
-          targetGKF: () => startingAtNode.nodeWidgetGK,
+          snippetBloc: FC().snippetBeingEdited!,
+          targetGKF: () => gk,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
             Callout.dismiss('selected-panel-border-overlay');
-            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
             FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
+            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
 // removeNodePropertiesCallout();
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
@@ -348,22 +355,25 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 DateTime.now().millisecondsSinceEpoch.toString();
             FC().addToSnippetCache(
               snippetName: snippetName,
-              rootNode: snippetBeingEdited!.rootNode,
-              initialVersionId: newVersionId,
-              editing: true,
+              rootNode: FC().snippetBeingEdited!.rootNode,
+              versionId: newVersionId,
+              // editing: true,
             );
-            FC().updateEditingVersionId(snippetName: snippetName, newVersionId: newVersionId);
+            FC().updateEditingVersionId(
+                snippetName: snippetName, newVersionId: newVersionId);
             FC().capiBloc.add(CAPIEvent.saveSnippet(
-                snippetRootNode: snippetBeingEdited!.rootNode,
+                snippetRootNode: FC().snippetBeingEdited!.rootNode,
                 newVersionId: newVersionId));
             Useful.afterNextBuildDo(() {
               MaterialSPAState.showDevToolsFAB();
             });
           },
+          startingAtNode: startingAtNode,
+          selectedNode: selectedNode,
+          tappedNode: this,
         );
 
         // set the properties tree
-        STreeNode sel = selectedNode ?? startingAtNode;
         // final List<PTreeNode> propertyNodes = sel.properties(context);
         // // get a new treeController only when snippet selected
         // sel.pTreeC ??= PTreeNodeTreeController(
@@ -378,12 +388,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         //   });
 
 // select node
-        snippetBeingEdited.add(SnippetEvent.selectNode(
-          node: sel,
-          selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-          selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-// imageTC: tc,
-        ));
+        // TODO move to callout .onReady
+        //capiBloc.add(const CAPIEvent.forceRefresh());
 // var nodeCtx = node.nodeWidgetGK?.currentContext;
 // Scrollable.ensureVisible(context);
       }
@@ -397,7 +403,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       SnippetBloC? snippetBloc = FC().snippetBeingEdited;
       SnippetState? snippetBlocState = snippetBloc?.state;
       if (snippetBlocState?.selectedNode != null) {
-        MaterialSPAState.showNodeWidgetOverlay((snippetBlocState?.selectedNode)!);
+        MaterialSPAState.showNodeWidgetOverlay(
+            (snippetBlocState?.selectedNode)!);
       }
     });
   }
@@ -500,8 +507,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   List<String> sensibleParents() => const [];
 
   GlobalKey createNodeGK() {
-    nodeWidgetGK = GlobalKey();
-    FC().gkSTreeNodeMap[nodeWidgetGK!] = this;
+    debugPrint('--- createNodeGK --- ${toString()}');
+    if (nodeWidgetGK == null) {
+      nodeWidgetGK = GlobalKey();
+      FC().gkSTreeNodeMap[nodeWidgetGK!] = this;
+    }
     return nodeWidgetGK!;
   }
 
@@ -645,72 +655,114 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   Future<void> possiblyHighlightSelectedNode() async {
     if (FC().selectedNode == this) {
-      if (true || FC().highlightedNode != FC().selectedNode) {
-        Useful.afterNextBuildDo(() {
-// if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
-          unhighlightSelectedNode();
-// }
-          SnippetBloC? snippetBloc = FC().snippetBeingEdited;
-          var gk = snippetBloc?.state.selectedWidgetGK;
-          Rect? r = gk?.globalPaintBounds();
-          if (r != null) {
-            double thickness = 4;
-            double w = r.width + thickness * 2;
-            double h = r.height + thickness * 2;
-            Offset translate = Offset(-thickness, -thickness);
-// if (r.top < thickness || r.left < thickness || r.bottom < thickness || r.right < thickness) {
-//   w = r.width;
-//   h = r.height;
-//   thickness = 10;
-//   translate = Offset.zero;
-// }
-            debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
-            Callout.showOverlay(
-              ensureLowestOverlay: true,
-              calloutConfig: CalloutConfig(
-                feature: SELECTED_NODE_BORDER_CALLOUT,
-                initialCalloutPos:
-                    r.topLeft.translate(translate.dx, translate.dy),
-                suppliedCalloutW: w,
-                suppliedCalloutH: h,
-                fillColor: Colors.transparent,
-                arrowType: ArrowType.NO_CONNECTOR,
-                draggable: false,
-                transparentPointer: true,
+      unhighlightSelectedNode();
+      SnippetBloC? snippetBloc = FC().snippetBeingEdited;
+      var gk = nodeWidgetGK;
+      Rect? r = gk?.globalPaintBounds();
+      if (r != null) {
+        double thickness = 4;
+        double w = r.width + thickness * 2;
+        double h = r.height + thickness * 2;
+        Offset translate = Offset(-thickness, -thickness);
+        debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
+        Callout.showOverlay(
+          ensureLowestOverlay: true,
+          calloutConfig: CalloutConfig(
+            feature: SELECTED_NODE_BORDER_CALLOUT,
+            initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
+            suppliedCalloutW: w,
+            suppliedCalloutH: h,
+            fillColor: Colors.transparent,
+            arrowType: ArrowType.NO_CONNECTOR,
+            draggable: false,
+            transparentPointer: true,
+          ),
+          boxContentF: (context) => InkWell(
+            child: Container(
+              width: w,
+              height: h,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                border: Border.all(
+                    color: Colors.purpleAccent.withOpacity(.5),
+                    width: thickness),
               ),
-              boxContentF: (context) => InkWell(
-// onTap: () {
-//   // removeNodeMenuCallout();
-//   showNodePropertiesCallout(
-//     context: context,
-//     selectedNode: this,
-//     targetGKF: () => Node.selectionGK, //nodeGK,
-//   );
-// },
-                child: Container(
-                  width: w,
-                  height: h,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(
-                        color: Colors.purpleAccent.withOpacity(.5),
-                        width: thickness),
-                  ),
-                ),
-              ),
-              targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
-            );
-            FC()
-                .snippetBeingEdited
-                ?.add(SnippetEvent.highlightNode(node: this));
-// Useful.afterMsDelayDo(1000, () {
-//   Useful.om.moveToTop("TreeNodeMenu".hashCode);
-// });
-          }
-        });
+            ),
+          ),
+        );
+        // FC().snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
       }
     }
   }
+
+//   Future<void> possiblyHighlightSelectedNode() async {
+//     if (FC().selectedNode == this) {
+//       if (true || FC().highlightedNode != FC().selectedNode) {
+//         Useful.afterNextBuildDo(() {
+// // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
+//           unhighlightSelectedNode();
+// // }
+//           SnippetBloC? snippetBloc = FC().snippetBeingEdited;
+//           var gk = snippetBloc?.state.selectedWidgetGK;
+//           Rect? r = gk?.globalPaintBounds();
+//           if (r != null) {
+//             double thickness = 4;
+//             double w = r.width + thickness * 2;
+//             double h = r.height + thickness * 2;
+//             Offset translate = Offset(-thickness, -thickness);
+// // if (r.top < thickness || r.left < thickness || r.bottom < thickness || r.right < thickness) {
+// //   w = r.width;
+// //   h = r.height;
+// //   thickness = 10;
+// //   translate = Offset.zero;
+// // }
+//             debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
+//             Callout.showOverlay(
+//               ensureLowestOverlay: true,
+//               calloutConfig: CalloutConfig(
+//                 feature: SELECTED_NODE_BORDER_CALLOUT,
+//                 initialCalloutPos:
+//                     r.topLeft.translate(translate.dx, translate.dy),
+//                 suppliedCalloutW: w,
+//                 suppliedCalloutH: h,
+//                 fillColor: Colors.transparent,
+//                 arrowType: ArrowType.NO_CONNECTOR,
+//                 draggable: false,
+//                 transparentPointer: true,
+//               ),
+//               boxContentF: (context) => InkWell(
+// // onTap: () {
+// //   // removeNodeMenuCallout();
+// //   showNodePropertiesCallout(
+// //     context: context,
+// //     selectedNode: this,
+// //     targetGKF: () => Node.selectionGK, //nodeGK,
+// //   );
+// // },
+//                 child: Container(
+//                   width: w,
+//                   height: h,
+//                   decoration: BoxDecoration(
+//                     color: Colors.transparent,
+//                     border: Border.all(
+//                         color: Colors.purpleAccent.withOpacity(.5),
+//                         width: thickness),
+//                   ),
+//                 ),
+//               ),
+//               // targetGkF: () => snippetBloc?.state.selectedWidgetGK!,
+//             );
+//             FC()
+//                 .snippetBeingEdited
+//                 ?.add(SnippetEvent.highlightNode(node: this));
+// // Useful.afterMsDelayDo(1000, () {
+// //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
+// // });
+//           }
+//         });
+//       }
+//     }
+//   }
 
 // can be a MenuItemButton (default) or a SubmenuButton (override)
 // List<Widget> toMenuItems(BuildContext context, {

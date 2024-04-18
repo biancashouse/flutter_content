@@ -172,7 +172,6 @@ typedef EncodedSnippetJson = String;
 typedef JsonMap = Map<String, dynamic>;
 typedef SizeFunc = Size Function();
 typedef PosFunc = Offset Function();
-typedef TargetsWrapperName = String;
 
 typedef DoubleFunc = double Function();
 
@@ -338,15 +337,17 @@ class FC {
   void addToSnippetCache({
     required SnippetName snippetName,
     required SnippetRootNode rootNode,
-    required VersionId initialVersionId,
-    required bool editing,
+    required VersionId versionId,
+    // required bool editing,
   }) {
     debugPrint('addToSnippetCache($snippetName)');
-    snippetCache.addAll({
-      snippetName: {initialVersionId: rootNode}
-    });
-    updateEditingVersionId(
-        snippetName: snippetName, newVersionId: initialVersionId);
+    if (snippetCache.containsKey(snippetName)) {
+      snippetCache[snippetName]![versionId] = rootNode;
+    } else {
+      snippetCache.addAll({
+        snippetName: {versionId: rootNode}
+      });
+    }
   }
 
   void updateEditingVersionId({
@@ -390,7 +391,6 @@ class FC {
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   late CAPIBloC capiBloc;
-  Map<TargetsWrapperName, GlobalKey> targetsWrappers = {};
   late bool
       _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
@@ -403,12 +403,12 @@ class FC {
 
   final inEditMode = ValueNotifier<bool>(false);
 
-  bool get canEditContent =>
-      HydratedBloc.storage.read("canEditContent") ?? false;
+  bool get canEditContent => true;
+      // HydratedBloc.storage.read("canEditContent") ?? false;
 
   void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
 
-  Offset calloutConfigToolbarPos(context) =>
+  Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
       Offset(
         Useful.scrW / 2 - 350,
@@ -432,8 +432,7 @@ class FC {
       _handlers[name];
 
   // each snippet panel has a gk, a last selected node, and a ur
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
-      {}; // every node's toWidget() creates a GK
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -454,13 +453,16 @@ class FC {
   // Snippet Stack
   final Queue<SnippetBloC> _snippetsBeingEdited = Queue<SnippetBloC>();
 
-  SnippetBloC? get snippetBeingEdited =>
-      areAnySnippetsBeingEdited ? _snippetsBeingEdited.first : null;
+  SnippetBloC? get snippetBeingEdited {
+    return _snippetsBeingEdited.isNotEmpty ? _snippetsBeingEdited.first : null;
+  }
 
   bool get areAnySnippetsBeingEdited => _snippetsBeingEdited.isNotEmpty;
 
   void pushSnippet(SnippetBloC snippetBloc) {
     _snippetsBeingEdited.addFirst(snippetBloc);
+    debugPrint("snippetBeingEdited is $snippetBeingEdited");
+    return;
   }
 
   SnippetBloC? popSnippet() =>
@@ -493,8 +495,8 @@ class FC {
     return gk;
   }
 
-  TargetsWrapperState? parentTW(String twName) =>
-      FC().targetsWrappers[twName]?.currentState as TargetsWrapperState?;
+  // TargetsWrapperState? parentTW(String twName) =>
+  //     FC().targetsWrappers[twName]?.currentState as TargetsWrapperState?;
 
   // final FeatureList _singleTargetBtnFeatures = [];
 
@@ -504,7 +506,7 @@ class FC {
 
   STreeNode? get selectedNode => snippetBeingEdited?.state.selectedNode;
 
-  STreeNode? get highlightedNode => snippetBeingEdited?.state.highlightedNode;
+  // STreeNode? get highlightedNode => snippetBeingEdited?.state.highlightedNode;
 
   SnippetTreeController? get currentTreeC => snippetBeingEdited?.state.treeC;
 

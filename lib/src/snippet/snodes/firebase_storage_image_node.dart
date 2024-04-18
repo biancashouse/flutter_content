@@ -41,7 +41,7 @@ class FirebaseStorageImageNode extends CL
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutSize: const Size(400, 120),
         ),
         StringPropertyValueNode(
           snode: this,

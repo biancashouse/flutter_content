@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
+import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // void removeSnippetTreeCallout(String snippetName) => Callout.removeOverlay(snippetName);
@@ -14,8 +15,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 //
 // void refreshSnippetTreeCallout(String snippetName) => Callout.refreshOverlay(snippetName);
 
-CalloutConfig
-snippetTreeCalloutConfig(SnippetBloC snippetBloc, VoidCallback onDismissedF) {
+CalloutConfig snippetTreeCalloutConfig(
+    SnippetBloC snippetBloc, VoidCallback onDismissedF) {
   double width() {
     double? w = HydratedBloc.storage.read("snippet-tree-callout-width");
     if (w != null) return w.abs();
@@ -96,6 +97,9 @@ void showSnippetTreeAndPropertiesCallout({
   ScrollController? ancestorHScrollController,
   ScrollController? ancestorVScrollController,
   required VoidCallback onDismissedF,
+  required STreeNode startingAtNode,
+  required STreeNode? selectedNode,
+  required STreeNode tappedNode,
   bool allowButtonCallouts = false,
 }) async {
   STreeNode rootNode = snippetBloc.state.rootNode;
@@ -123,6 +127,16 @@ void showSnippetTreeAndPropertiesCallout({
     },
     targetGkF: targetGKF,
   );
+  // imm select a node
+  STreeNode sel = selectedNode ?? startingAtNode;
+  snippetBloc.add(SnippetEvent.selectNode(
+    node: sel,
+    selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+// imageTC: tc,
+  ));
+  Useful.afterNextBuildDo(() {
+    tappedNode.showNodeWidgetOverlay();
+  });
 }
 
 // void _clearSelection() {

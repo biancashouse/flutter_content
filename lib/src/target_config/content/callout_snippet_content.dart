@@ -25,7 +25,7 @@ Future<void> showSnippetContentCallout({
   required bool justPlaying,
 }) async {
   // possibly transform before showing callout
-  TargetsWrapperState? parentTW = tc.targetWrapperState;
+  TargetsWrapperState? parentTW = tc.targetsWrapperState;
 
   Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
       .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
@@ -55,8 +55,8 @@ Future<void> showSnippetContentCallout({
     FC().addToSnippetCache(
       snippetName: tc.snippetName,
       rootNode: newSnippet,
-      initialVersionId: initialVersionId,
-      editing: true,
+      versionId: initialVersionId,
+      // editing: true,
     );
     FC().targetSnippetBeingConfigured = newSnippet;
   }
@@ -69,7 +69,7 @@ Future<void> showSnippetContentCallout({
       boxContentF: (boxCtx) => PointerInterceptor(
         child: BlocBuilder<CAPIBloC, CAPIState>(
           builder: (context, state) {
-            return FC().targetSnippetBeingConfigured!.toWidget(boxCtx, null);
+            return FC().targetSnippetBeingConfigured!.toWidget(context, null);
           },
         ),
       ),

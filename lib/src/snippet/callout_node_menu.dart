@@ -496,8 +496,16 @@ MenuItemButton _menuItemButton(
           snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
         if (action == NodeAction.addSiblingAfter)
           snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
-        if (action == NodeAction.wrapWith)
+        if (action == NodeAction.wrapWith) {
           snippetBloc.add(SnippetEvent.wrapSelectionWith(type: childType));
+          // in case need to show more of the tree (higher up)
+          Useful.afterNextBuildDo(() {
+            snippetBloc.add(SnippetEvent.selectNode(
+              node: selectedNode.parent as STreeNode,
+              selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+            ));
+          });
+        }
         Callout.dismiss(TREENODE_MENU_CALLOUT);
         FC().capiBloc.add(const CAPIEvent.forceRefresh());
       },

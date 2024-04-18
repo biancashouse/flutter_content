@@ -48,6 +48,8 @@ mixin _$CAPIState {
   bool get showClipboardContent => throw _privateConstructorUsedError;
   int get force =>
       throw _privateConstructorUsedError; // hacky way to force a transition
+  bool get skipSnippetPanelRebuild =>
+      throw _privateConstructorUsedError; // hacky way to force a transition
 //
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
 
@@ -79,6 +81,7 @@ abstract class $CAPIStateCopyWith<$Res> {
       bool trainerIsSignedn,
       bool showClipboardContent,
       int force,
+      bool skipSnippetPanelRebuild,
       bool ONLY_TESTING});
 }
 
@@ -112,6 +115,7 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
     Object? force = null,
+    Object? skipSnippetPanelRebuild = null,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_value.copyWith(
@@ -183,6 +187,10 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
               as int,
+      skipSnippetPanelRebuild: null == skipSnippetPanelRebuild
+          ? _value.skipSnippetPanelRebuild
+          : skipSnippetPanelRebuild // ignore: cast_nullable_to_non_nullable
+              as bool,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
           : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
@@ -217,6 +225,7 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
       bool trainerIsSignedn,
       bool showClipboardContent,
       int force,
+      bool skipSnippetPanelRebuild,
       bool ONLY_TESTING});
 }
 
@@ -248,6 +257,7 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
     Object? force = null,
+    Object? skipSnippetPanelRebuild = null,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_$CAPIStateImpl(
@@ -319,6 +329,10 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
               as int,
+      skipSnippetPanelRebuild: null == skipSnippetPanelRebuild
+          ? _value.skipSnippetPanelRebuild
+          : skipSnippetPanelRebuild // ignore: cast_nullable_to_non_nullable
+              as bool,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
           : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
@@ -348,6 +362,7 @@ class _$CAPIStateImpl extends _CAPIState {
       this.trainerIsSignedn = false,
       this.showClipboardContent = true,
       this.force = 0,
+      this.skipSnippetPanelRebuild = false,
       this.ONLY_TESTING = true})
       : super._();
 
@@ -413,6 +428,10 @@ class _$CAPIStateImpl extends _CAPIState {
   @JsonKey()
   final int force;
 // hacky way to force a transition
+  @override
+  @JsonKey()
+  final bool skipSnippetPanelRebuild;
+// hacky way to force a transition
 //
   @override
   @JsonKey()
@@ -420,7 +439,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, hideTargetsExcept: $hideTargetsExcept, hideAllTargetGroups: $hideAllTargetGroups, hideAllTargetGroupPlayBtns: $hideAllTargetGroupPlayBtns, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, hideTargetsExcept: $hideTargetsExcept, hideAllTargetGroups: $hideAllTargetGroups, hideAllTargetGroupPlayBtns: $hideAllTargetGroupPlayBtns, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, skipSnippetPanelRebuild: $skipSnippetPanelRebuild, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -428,8 +447,7 @@ class _$CAPIStateImpl extends _CAPIState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CAPIStateImpl &&
-            (identical(other.initialValueJsonAssetPath,
-                    initialValueJsonAssetPath) ||
+            (identical(other.initialValueJsonAssetPath, initialValueJsonAssetPath) ||
                 other.initialValueJsonAssetPath == initialValueJsonAssetPath) &&
             (identical(other.hideIframes, hideIframes) ||
                 other.hideIframes == hideIframes) &&
@@ -466,31 +484,36 @@ class _$CAPIStateImpl extends _CAPIState {
             (identical(other.showClipboardContent, showClipboardContent) ||
                 other.showClipboardContent == showClipboardContent) &&
             (identical(other.force, force) || other.force == force) &&
+            (identical(
+                    other.skipSnippetPanelRebuild, skipSnippetPanelRebuild) ||
+                other.skipSnippetPanelRebuild == skipSnippetPanelRebuild) &&
             (identical(other.ONLY_TESTING, ONLY_TESTING) ||
                 other.ONLY_TESTING == ONLY_TESTING));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      initialValueJsonAssetPath,
-      hideIframes,
-      hideSnippetPencilIcons,
-      snippetTreeCalloutW,
-      snippetTreeCalloutH,
-      directoryTreeCalloutInitialPos,
-      directoryTreeCalloutW,
-      directoryTreeCalloutH,
-      hideTargetsExcept,
-      hideAllTargetGroups,
-      hideAllTargetGroupPlayBtns,
-      newestTarget,
-      selectedTarget,
-      selectedPanel,
-      trainerIsSignedn,
-      showClipboardContent,
-      force,
-      ONLY_TESTING);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        initialValueJsonAssetPath,
+        hideIframes,
+        hideSnippetPencilIcons,
+        snippetTreeCalloutW,
+        snippetTreeCalloutH,
+        directoryTreeCalloutInitialPos,
+        directoryTreeCalloutW,
+        directoryTreeCalloutH,
+        hideTargetsExcept,
+        hideAllTargetGroups,
+        hideAllTargetGroupPlayBtns,
+        newestTarget,
+        selectedTarget,
+        selectedPanel,
+        trainerIsSignedn,
+        showClipboardContent,
+        force,
+        skipSnippetPanelRebuild,
+        ONLY_TESTING
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -518,6 +541,7 @@ abstract class _CAPIState extends CAPIState {
       final bool trainerIsSignedn,
       final bool showClipboardContent,
       final int force,
+      final bool skipSnippetPanelRebuild,
       final bool ONLY_TESTING}) = _$CAPIStateImpl;
   _CAPIState._() : super._();
 
@@ -563,6 +587,8 @@ abstract class _CAPIState extends CAPIState {
   bool get showClipboardContent;
   @override
   int get force;
+  @override // hacky way to force a transition
+  bool get skipSnippetPanelRebuild;
   @override // hacky way to force a transition
 //
   bool get ONLY_TESTING;

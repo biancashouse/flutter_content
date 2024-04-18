@@ -16,7 +16,7 @@ abstract class IModelRepository {
       {required SnippetName snippetName, required VersionId versionId});
 
   Future<VersionId?> saveSnippet({
-    required SnippetName snippetName,
+    required SnippetRootNode snippetRootNode,
     required VersionId newVersionId,
   });
 

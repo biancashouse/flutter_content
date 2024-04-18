@@ -9,13 +9,13 @@ part 'target_group_wrapper_node.mapper.dart';
 @MappableClass()
 class TargetGroupWrapperNode extends ButtonNode
     with TargetGroupWrapperNodeMappable {
-  SnippetName name;
+  // SnippetName name;
 
   List<TargetModel> targets;
   List<TargetModel> playList;
 
   TargetGroupWrapperNode({
-    required this.name,
+    // required this.name,
     this.targets = const [],
     this.playList = const [],
     super.child,
@@ -23,15 +23,15 @@ class TargetGroupWrapperNode extends ButtonNode
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) => [
-        StringPropertyValueNode(
-          snode: this,
-          name: 'wrapper name',
-          stringValue: name,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
-          calloutButtonSize: const Size(280, 80),
-          calloutSize: const Size(280, 80),
-        ),
+        // StringPropertyValueNode(
+        //   snode: this,
+        //   name: 'wrapper name',
+        //   stringValue: name,
+        //   onStringChange: (newValue) =>
+        //       refreshWithUpdate(() => name = newValue),
+        //   calloutButtonSize: const Size(280, 80),
+        //   calloutSize: const Size(280, 80),
+        // ),
       ];
 
   // @override
@@ -49,7 +49,7 @@ class TargetGroupWrapperNode extends ButtonNode
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    return name != 'name?'
+    return child != null
         ? TargetsWrapper(
             parentNode: this,
             key: createNodeGK(),
@@ -59,18 +59,10 @@ class TargetGroupWrapperNode extends ButtonNode
                   color: Colors.orangeAccent,
                 ),
           )
-        : const Row(
-            children: [
-              Text('wrapper must be assigned a name'),
-              Icon(Icons.error, color: Colors.redAccent),
-            ],
-          );
-    return child?.toWidget(context, this) ??
-        const Icon(
-          Icons.warning,
-          color: Colors.red,
-          size: 24,
-        );
+        : TargetsWrapper(
+            parentNode: this,
+            key: createNodeGK(),
+            );
   }
 
   @override

@@ -20,9 +20,10 @@ class PositionedTarget extends StatelessWidget {
     // in case initialTC replaced by a build ? huh!
     // if (tc != null) {
     double radius = tc.radius;
+    var stackPos = tc.targetStackPos();
     return Positioned(
-      top: tc.targetStackPos().dy - radius,
-      left: tc.targetStackPos().dx - radius,
+      top: stackPos.dy - radius,
+      left: stackPos.dx - radius,
       child: FC().canEditContent
           ? Draggable(
               key: FC().setMultiTargetGk(tc.uid.toString(), GlobalKey()),

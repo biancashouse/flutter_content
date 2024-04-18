@@ -1,7 +1,5 @@
 // ignore_for_file: camel_case_types
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
@@ -12,12 +10,12 @@ import 'positioned_target_cover_btn.dart';
 
 class TargetsWrapper extends StatefulWidget {
   final TargetGroupWrapperNode parentNode;
-  final Widget child;
+  final Widget? child;
   final bool hardEdge;
 
   const TargetsWrapper(
       {required this.parentNode,
-      required this.child,
+      this.child,
       this.hardEdge = true,
       required super.key});
 
@@ -64,12 +62,15 @@ class TargetsWrapper extends StatefulWidget {
 class TargetsWrapperState extends State<TargetsWrapper> {
   // Rect? _selectedTargetRect;
 
+  bool _needToMeasure = true;
   late Offset wrapperPos;
-  late Size wrapperSize;
+  late Size _wrapperSize;
+  Size get wrapperSize => _wrapperSize;
+  set wrapperSize(Size newSize) => _wrapperSize = newSize;
 
   Offset? savedChildLocalPosPc;
 
-  Timer? _sizeChangedTimer;
+  // Timer? _sizeChangedTimer;
   // bool playing = false;
 
   double? scrollOffset;
@@ -80,27 +81,50 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   late TargetModel tcToPlay;
 
-  ZoomerState? get zoomer => Zoomer.of(context)!;
+  ZoomerState? get zoomer {
+    if (context.mounted) {
+      return Zoomer.of(context)!;
+    } else {
+      print('zoomer context');
+    }
+    return null;
+  }
 
   @override
   void initState() {
+    debugPrint('TargetsWrapperState initState');
     super.initState();
 
     for (TargetModel tc in widget.parentNode.targets) {
-      tc.targetsWrapperGK = widget.key as GlobalKey;
-    }
-
-    if (zoomer?.widget.ancestorHScrollController != null) {
-      FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
-    }
-    if (zoomer?.widget.ancestorVScrollController != null) {
-      FC().registerScrollController(zoomer!.widget.ancestorVScrollController!);
+      tc.targetsWrapperNode = widget.parentNode;
     }
 
     Useful.afterNextBuildDo(
       () {
-        // register ww with AppWrapper
-        measureIWPosAndSize();
+        // if (zoomer?.widget.ancestorHScrollController != null) {
+        //   FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
+        // }
+        // if (zoomer?.widget.ancestorVScrollController != null) {
+        //   FC().registerScrollController(zoomer!.widget.ancestorVScrollController!);
+        // }
+
+        setState(() {
+          measureIWPosAndSize();
+          // measure child size
+          var childGK = widget.child?.key as GlobalKey?;
+          final renderObject = childGK?.currentContext?.findRenderObject();
+          final translation =
+              renderObject?.getTransformTo(null).getTranslation();
+          Rect? paintBounds;
+          try {
+            paintBounds = renderObject?.paintBounds;
+          } catch (e) {
+            debugPrint(
+                'paintBounds = renderObject?.paintBounds - ${e.toString()}');
+          }
+          wrapperSize = paintBounds?.size ?? MediaQuery.of(context).size;
+          debugPrint('TargetsWrapper.child size: ${wrapperSize.toString()}');
+        });
         // if (widget.key != null) {
         //   Measuring.findGlobalRect(widget.key! as GlobalKey);
         //   // Size size = CAPIState.iwSize(widget.name);
@@ -117,12 +141,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     );
   }
 
-  Rect wwRect(String wName) => Rect.fromLTWH(
-        wrapperPos.dx,
-        wrapperPos.dy,
-        wrapperSize.width,
-        wrapperSize.height,
-      );
+  // Rect wwRect(String wName) => Rect.fromLTWH(
+  //       wrapperPos?.dx ?? 0,
+  //       wrapperPos?.dy ?? 0,
+  //       wrapperSize?.width ?? Useful.scrW,
+  //       wrapperSize?.height ?? Useful.scrH,
+  //     );
 
   // @override
   // void didChangeDependencies() {
@@ -131,6 +155,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // }
 
   void measureIWPosAndSize() {
+    debugPrint('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
 
     Offset? globalPos;
@@ -140,14 +165,17 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
       );
       if (globalPos != null) {
+        debugPrint('globalPos != null');
         // debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
         // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         wrapperPos = globalPos;
         wrapperSize = newPosAndSize.$2!;
+        //debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
       }
+      _needToMeasure = false;
     } catch (e) {
       // ignore but then don't update pos
-      debugPrint('measureIWPosAndSizze! ${e.toString()}');
+      debugPrint('measureIWPosAndSize! ${e.toString()}');
     }
   }
   // @override
@@ -266,65 +294,71 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    CAPIBloC bloc = FC().capiBloc;
+    if (_needToMeasure) {
+      // setState(() {});
+      return const Offstage();
+    }
+
+    // CAPIBloC bloc = FC().capiBloc;
     return _stack(bloc);
+
     // debugPrint("TargetGroupWrapperState.build");
-    return NotificationListener<SizeChangedLayoutNotification>(
-      onNotification: (SizeChangedLayoutNotification notification) {
-        // debugPrint("CAPIWidgetWrapperState on Size Change Notification - ${widget.name}");
-        // removeDottedBorderCallout();
-        // update size at end of resize
-        _sizeChangedTimer?.cancel();
-        _sizeChangedTimer = Timer(const Duration(milliseconds: 500), () {
-          bloc.add(const CAPIEvent.forceRefresh());
-          Useful.afterNextBuildDo(() {
-            debugPrint('SizeChangedLayoutNotification: measureIWPos...');
-            measureIWPosAndSize();
-          });
-        });
-        return true;
-      },
-      child: SizeChangedLayoutNotifier(
-        child: SizedBox(
-          child: _stack(bloc),
-        ),
-      ),
-    );
+    // return NotificationListener<SizeChangedLayoutNotification>(
+    //   onNotification: (SizeChangedLayoutNotification notification) {
+    //     // debugPrint("CAPIWidgetWrapperState on Size Change Notification - ${widget.name}");
+    //     // removeDottedBorderCallout();
+    //     // update size at end of resize
+    //     _sizeChangedTimer?.cancel();
+    //     _sizeChangedTimer = Timer(const Duration(milliseconds: 500), () {
+    //       bloc.add(const CAPIEvent.forceRefresh());
+    //       Useful.afterNextBuildDo(() {
+    //         debugPrint('SizeChangedLayoutNotification: measureIWPos...');
+    //         measureIWPosAndSize();
+    //       });
+    //     });
+    //     return true;
+    //   },
+    //   child: SizeChangedLayoutNotifier(
+    //     child: SizedBox(
+    //       child: _stack(bloc),
+    //     ),
+    //   ),
+    // );
   }
 
-  Stack _stack(CAPIBloC bloc) {
+  Widget _stack(CAPIBloC bloc) {
     // TargetGroupModel? config = state.imageConfig(widget.name);
     List<TargetModel> tcs = widget.parentNode.targets;
-    return Stack(
-      clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
-      children: [
-        // if (!state.aTargetIsSelected())
-        // RESUMED NO SELECTION - LONG-PRESSABLE BARRIER
-        _no_selection_long_pressable_barrier_build(bloc),
-        _image_child_build(bloc.state),
-        // PLAYING BUILD
-        for (TargetModel tc in tcs)
-          if (!bloc.state.hideAllTargetGroups &&
-              (bloc.state.hideTargetsExcept == null ||
-                  bloc.state.hideTargetsExcept == tc))
-            // if (!state.aTargetIsSelected() || state.selectedTarget!.uid == tc.uid )
-            PositionedTarget(
-              tc,
-              _targetIndex(tc),
-            ),
-        // if (!state.aTargetIsSelected() && transformableWidgetWrapperState != null)
-        if (zoomer != null)
-          for (var tc in tcs.where((el) => el.showBtn))
-            // if (state.hideTargetsExcept == null && tc.visible)
-            if (!bloc.state.hideAllTargetGroupPlayBtns)
-              PositionedTargetPlayBtn(
-                  initialTC: tc,
-                  parentWrapperState: this,
-                  index: _targetIndex(tc)),
-        // if (!state.isSuspended(widget.name) && (state.aTargetIsSelected(widget.name)))
-        //   buildPositionedDraggableTarget(state.selectedTarget(widget.name)!),
-        // if (bloc.state.playList.isNotEmpty) buildPositionedTargetForPlay(tcToPlay),
-      ],
+    return SizedBox.fromSize(
+      size: wrapperSize,
+      child: Stack(
+        clipBehavior: widget.hardEdge ? Clip.hardEdge : Clip.none,
+        children: [
+          // if (!state.aTargetIsSelected())
+          // RESUMED NO SELECTION - LONG-PRESSABLE BARRIER
+          _no_selection_long_pressable_barrier_build(bloc),
+          _childBuild(bloc.state),
+          // PLAYING BUILD
+          for (TargetModel tc in tcs)
+            if (!bloc.state.hideAllTargetGroups &&
+                (bloc.state.hideTargetsExcept == null ||
+                    bloc.state.hideTargetsExcept == tc))
+              // if (!state.aTargetIsSelected() || state.selectedTarget!.uid == tc.uid )
+              PositionedTarget(
+                tc,
+                _targetIndex(tc),
+              ),
+          // if (!state.aTargetIsSelected() && transformableWidgetWrapperState != null)
+          if (zoomer != null)
+            for (var tc in tcs.where((el) => el.showBtn))
+              // if (state.hideTargetsExcept == null && tc.visible)
+              if (!bloc.state.hideAllTargetGroupPlayBtns)
+                PositionedTargetPlayBtn(initialTC: tc, index: _targetIndex(tc)),
+          // if (!state.isSuspended(widget.name) && (state.aTargetIsSelected(widget.name)))
+          //   buildPositionedDraggableTarget(state.selectedTarget(widget.name)!),
+          // if (bloc.state.playList.isNotEmpty) buildPositionedTargetForPlay(tcToPlay),
+        ],
+      ),
     );
   }
 
@@ -373,76 +407,109 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   //           : widget.imageF.call(),
   //     );
 
-  Widget _no_selection_long_pressable_barrier_build(CAPIBloC bloc) =>
-      GestureDetector(
-        // onTapDown: (_) {
-        //   debugPrint("_no_selection_long_pressable_barrier_build tapped.");
-        //   TargetModel? selectedTC = bloc.state.hideTargetsExcept;
-        //   if (Callout.anyPresent([snippetCalloutFeature(selectedTC?.snippetName ?? '')])) {
-        //     parentTW?.resetTransform();
-        //     removeSnippetContentCallout(selectedTC!.snippetName);
-        //     bloc.add(const CAPIEvent.unhideAllTargetGroups());
-        //     unhideAllSingleTargetBtns();
-        //     Callout.removeOverlay(snippetCalloutFeature(bloc.state.selectedTarget!.snippetName));
-        //   }
-        // },
-        // long press creates a new target for this TargetWrapper
-        onLongPressStart: (LongPressStartDetails details) {
-          if (!FC().canEditContent) return;
-          SnippetName? snippetName =
-              widget.parentNode.rootNodeOfSnippet()?.name;
-          if (snippetName == null) return;
-          bloc.add(const CAPIEvent.hideAllTargetGroups());
-          TargetModelId newTargetId = DateTime.now().millisecondsSinceEpoch;
-          TargetModel newTC = TargetModel(
-            uid: newTargetId, //event.wName.hashCode,
-            wName: widget.parentNode.name,
-            snippetName: snippetName,
-            // single: false,
-          );
-          Offset newGlobalPos = details.globalPosition.translate(
-            zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,
-            zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
-          );
-          newTC.setTargetStackPosPc(
-            newGlobalPos,
-          );
-          bool onLeft = newTC.targetLocalPosLeftPc! < .5;
-          newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
-          newTC.btnLocalLeftPc =
-              newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
+  Widget _no_selection_long_pressable_barrier_build(CAPIBloC bloc) {
+    // return GestureDetector(
+    //   onTap: (){
+    //     debugPrint('HOORAY!');
+    //   },
+    //     child: Container(color: Colors.red, width: 500, height: 500,));
+    return GestureDetector(
+      // onTap: () {
+      //   debugPrint('_no_selection_long_pressable_barrier_build ontap');
+      // },
+      // onTapDown: (_) {
+      //   debugPrint("_no_selection_long_pressable_barrier_build tapped.");
+      //   TargetModel? selectedTC = bloc.state.hideTargetsExcept;
+      //   if (Callout.anyPresent([snippetCalloutFeature(selectedTC?.snippetName ?? '')])) {
+      //     parentTW?.resetTransform();
+      //     removeSnippetContentCallout(selectedTC!.snippetName);
+      //     bloc.add(const CAPIEvent.unhideAllTargetGroups());
+      //     unhideAllSingleTargetBtns();
+      //     Callout.removeOverlay(snippetCalloutFeature(bloc.state.selectedTarget!.snippetName));
+      //   }
+      // },
+      //long press creates a new target for this TargetWrapper
+      onLongPressStart: (LongPressStartDetails details) {
+        if (!FC().canEditContent) return;
+        SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
+        if (snippetName == null) return;
+        bloc.add(const CAPIEvent.hideAllTargetGroups());
+        TargetModelId newTargetId = DateTime.now().millisecondsSinceEpoch;
+        TargetModel newTC = TargetModel(
+          uid: newTargetId, //event.wName.hashCode,
+          snippetName: snippetName,
+          // single: false,
+        )..targetsWrapperNode = widget.parentNode;
+        Offset newGlobalPos = details.globalPosition.translate(
+          zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,
+          zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
+        );
+        newTC.setTargetStackPosPc(
+          newGlobalPos,
+        );
+        bool onLeft = newTC.targetLocalPosLeftPc! < .5;
+        newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
+        newTC.btnLocalLeftPc =
+            newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
 
-          widget.parentNode.targets.add(newTC);
-          bloc.add(CAPIEvent.forceRefresh());
+        widget.parentNode.targets.add(newTC);
+        bloc.add(const CAPIEvent.forceRefresh());
 
+        Useful.afterNextBuildDo(() {
+          bloc.add(const CAPIEvent.unhideAllTargetGroups());
           Useful.afterNextBuildDo(() {
-            bloc.add(const CAPIEvent.unhideAllTargetGroups());
+            // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
+            VersionId newVersionId =
+                DateTime.now().millisecondsSinceEpoch.toString();
+            FC().updateEditingVersionId(
+                snippetName: snippetName, newVersionId: newVersionId);
+            bloc.add(CAPIEvent.saveSnippet(
+                snippetRootNode: widget.parentNode.rootNodeOfSnippet()!,
+                newVersionId: newVersionId));
             Useful.afterNextBuildDo(() {
-              // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
-              VersionId newVersionId =
-                  DateTime.now().millisecondsSinceEpoch.toString();
-              bloc.add(CAPIEvent.saveSnippet(
-                  snippetRootNode: widget.parentNode.rootNodeOfSnippet()!,
-                  newVersionId: newVersionId));
+              bloc.add(const CAPIEvent.forceRefresh());
             });
           });
-        },
-        child: SizedBox.fromSize(
-          size: wrapperSize,
-          child: ModalBarrier(
-            color: !widget.parentNode.playList.isNotEmpty
-                ? Colors.purple.withOpacity(.25)
-                : null,
-            dismissible: false,
-          ),
+        });
+      },
+      child: SizedBox.fromSize(
+        size: Size.infinite,
+        child: Container(
+          color: Colors.lime,
+          width: double.infinity,
+          height: double.infinity,
         ),
-      );
+        // child: ModalBarrier(
+        //   color: !widget.parentNode.playList.isNotEmpty
+        //       ? Colors.purple.withOpacity(.25)
+        //       : null,
+        //   dismissible: false,
+        // ),
+      ),
+    );
+  }
 
-  Widget _image_child_build(final CAPIState state) {
+  Widget _childBuild(final CAPIState state) {
+    // return IgnorePointer(
+    //   child: GestureDetector(
+    //     onTap: (){
+    //       debugPrint('xxxxxx');
+    //     },
+    //       child: Container(color: Colors.blue, width: 300, height: 300,)),
+    // );
     // var sizeMap = CAPIState.iwSizeMap;
     //debugPrint("sizeMap: ${sizeMap.toString()}");
     // var gkMap = CAPIState.gkMap;
     // debugPrint("gkMap: ${gkMap.toString()}");
+    Widget child = widget.child ??
+        const Material(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+                'Add a Child to the Targets Wrapper; \ne.g. an image over which \nyou will place callout targets'),
+          ),
+        );
+
     return wrapperSize != Size.zero
         ? IgnorePointer(
             ignoring: true, //!state.aTargetIsSelected(),
@@ -452,7 +519,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 wrapperSize = size;
                 // debugPrint("MeasureSizeBox => ${size.toString()}");
               },
-              child: widget.child,
+              child: child,
             ),
           )
         : MeasureSizeBox(
@@ -465,7 +532,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 setState(() {});
               });
             },
-            child: widget.child,
+            child: child,
           );
   }
 }

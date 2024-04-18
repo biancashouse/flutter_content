@@ -23,8 +23,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
 
   static int _$uid(TargetModel v) => v.uid;
   static const Field<TargetModel, int> _f$uid = Field('uid', _$uid);
-  static String _$wName(TargetModel v) => v.wName;
-  static const Field<TargetModel, String> _f$wName = Field('wName', _$wName);
   static double _$transformScale(TargetModel v) => v.transformScale;
   static const Field<TargetModel, double> _f$transformScale =
       Field('transformScale', _$transformScale, opt: true, def: 1.0);
@@ -52,6 +50,13 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static double? _$btnLocalLeftPc(TargetModel v) => v.btnLocalLeftPc;
   static const Field<TargetModel, double> _f$btnLocalLeftPc =
       Field('btnLocalLeftPc', _$btnLocalLeftPc, opt: true);
+  static double? _$targetLocalPosLeftPc(TargetModel v) =>
+      v.targetLocalPosLeftPc;
+  static const Field<TargetModel, double> _f$targetLocalPosLeftPc =
+      Field('targetLocalPosLeftPc', _$targetLocalPosLeftPc, opt: true);
+  static double? _$targetLocalPosTopPc(TargetModel v) => v.targetLocalPosTopPc;
+  static const Field<TargetModel, double> _f$targetLocalPosTopPc =
+      Field('targetLocalPosTopPc', _$targetLocalPosTopPc, opt: true);
   static bool _$showBtn(TargetModel v) => v.showBtn;
   static const Field<TargetModel, bool> _f$showBtn =
       Field('showBtn', _$showBtn, opt: true, def: true);
@@ -102,20 +107,11 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$autoPlay(TargetModel v) => v.autoPlay;
   static const Field<TargetModel, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
-  static GlobalKey<State<StatefulWidget>>? _$targetsWrapperGK(TargetModel v) =>
-      v.targetsWrapperGK;
-  static const Field<TargetModel, GlobalKey<State<StatefulWidget>>>
-      _f$targetsWrapperGK =
-      Field('targetsWrapperGK', _$targetsWrapperGK, mode: FieldMode.member);
-  static double? _$targetLocalPosLeftPc(TargetModel v) =>
-      v.targetLocalPosLeftPc;
-  static const Field<TargetModel, double> _f$targetLocalPosLeftPc = Field(
-      'targetLocalPosLeftPc', _$targetLocalPosLeftPc,
-      mode: FieldMode.member);
-  static double? _$targetLocalPosTopPc(TargetModel v) => v.targetLocalPosTopPc;
-  static const Field<TargetModel, double> _f$targetLocalPosTopPc = Field(
-      'targetLocalPosTopPc', _$targetLocalPosTopPc,
-      mode: FieldMode.member);
+  static TargetGroupWrapperNode? _$targetsWrapperNode(TargetModel v) =>
+      v.targetsWrapperNode;
+  static const Field<TargetModel, TargetGroupWrapperNode>
+      _f$targetsWrapperNode =
+      Field('targetsWrapperNode', _$targetsWrapperNode, mode: FieldMode.member);
   static bool _$visible(TargetModel v) => v.visible;
   static const Field<TargetModel, bool> _f$visible =
       Field('visible', _$visible, mode: FieldMode.member);
@@ -123,7 +119,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   @override
   final MappableFields<TargetModel> fields = const {
     #uid: _f$uid,
-    #wName: _f$wName,
     #transformScale: _f$transformScale,
     #radiusPc: _f$radiusPc,
     #calloutDurationMs: _f$calloutDurationMs,
@@ -133,6 +128,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutLeftPc: _f$calloutLeftPc,
     #btnLocalTopPc: _f$btnLocalTopPc,
     #btnLocalLeftPc: _f$btnLocalLeftPc,
+    #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
+    #targetLocalPosTopPc: _f$targetLocalPosTopPc,
     #showBtn: _f$showBtn,
     #canResizeH: _f$canResizeH,
     #canResizeV: _f$canResizeV,
@@ -147,16 +144,13 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutArrowColorValue: _f$calloutArrowColorValue,
     #animateArrow: _f$animateArrow,
     #autoPlay: _f$autoPlay,
-    #targetsWrapperGK: _f$targetsWrapperGK,
-    #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
-    #targetLocalPosTopPc: _f$targetLocalPosTopPc,
+    #targetsWrapperNode: _f$targetsWrapperNode,
     #visible: _f$visible,
   };
 
   static TargetModel _instantiate(DecodingData data) {
     return TargetModel(
         uid: data.dec(_f$uid),
-        wName: data.dec(_f$wName),
         transformScale: data.dec(_f$transformScale),
         radiusPc: data.dec(_f$radiusPc),
         calloutDurationMs: data.dec(_f$calloutDurationMs),
@@ -166,6 +160,8 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         calloutLeftPc: data.dec(_f$calloutLeftPc),
         btnLocalTopPc: data.dec(_f$btnLocalTopPc),
         btnLocalLeftPc: data.dec(_f$btnLocalLeftPc),
+        targetLocalPosLeftPc: data.dec(_f$targetLocalPosLeftPc),
+        targetLocalPosTopPc: data.dec(_f$targetLocalPosTopPc),
         showBtn: data.dec(_f$showBtn),
         canResizeH: data.dec(_f$canResizeH),
         canResizeV: data.dec(_f$canResizeV),
@@ -235,7 +231,6 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
       {int? uid,
-      String? wName,
       double? transformScale,
       double? radiusPc,
       int? calloutDurationMs,
@@ -245,6 +240,8 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       double? calloutLeftPc,
       double? btnLocalTopPc,
       double? btnLocalLeftPc,
+      double? targetLocalPosLeftPc,
+      double? targetLocalPosTopPc,
       bool? showBtn,
       bool? canResizeH,
       bool? canResizeV,
@@ -273,7 +270,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
   @override
   $R call(
           {int? uid,
-          String? wName,
           double? transformScale,
           Object? radiusPc = $none,
           int? calloutDurationMs,
@@ -283,6 +279,8 @@ class _TargetModelCopyWithImpl<$R, $Out>
           Object? calloutLeftPc = $none,
           Object? btnLocalTopPc = $none,
           Object? btnLocalLeftPc = $none,
+          Object? targetLocalPosLeftPc = $none,
+          Object? targetLocalPosTopPc = $none,
           bool? showBtn,
           bool? canResizeH,
           bool? canResizeV,
@@ -299,7 +297,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
           bool? autoPlay}) =>
       $apply(FieldCopyWithData({
         if (uid != null) #uid: uid,
-        if (wName != null) #wName: wName,
         if (transformScale != null) #transformScale: transformScale,
         if (radiusPc != $none) #radiusPc: radiusPc,
         if (calloutDurationMs != null) #calloutDurationMs: calloutDurationMs,
@@ -309,6 +306,10 @@ class _TargetModelCopyWithImpl<$R, $Out>
         if (calloutLeftPc != $none) #calloutLeftPc: calloutLeftPc,
         if (btnLocalTopPc != $none) #btnLocalTopPc: btnLocalTopPc,
         if (btnLocalLeftPc != $none) #btnLocalLeftPc: btnLocalLeftPc,
+        if (targetLocalPosLeftPc != $none)
+          #targetLocalPosLeftPc: targetLocalPosLeftPc,
+        if (targetLocalPosTopPc != $none)
+          #targetLocalPosTopPc: targetLocalPosTopPc,
         if (showBtn != null) #showBtn: showBtn,
         if (canResizeH != null) #canResizeH: canResizeH,
         if (canResizeV != null) #canResizeV: canResizeV,
@@ -334,7 +335,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
   @override
   TargetModel $make(CopyWithData data) => TargetModel(
       uid: data.get(#uid, or: $value.uid),
-      wName: data.get(#wName, or: $value.wName),
       transformScale: data.get(#transformScale, or: $value.transformScale),
       radiusPc: data.get(#radiusPc, or: $value.radiusPc),
       calloutDurationMs:
@@ -345,6 +345,10 @@ class _TargetModelCopyWithImpl<$R, $Out>
       calloutLeftPc: data.get(#calloutLeftPc, or: $value.calloutLeftPc),
       btnLocalTopPc: data.get(#btnLocalTopPc, or: $value.btnLocalTopPc),
       btnLocalLeftPc: data.get(#btnLocalLeftPc, or: $value.btnLocalLeftPc),
+      targetLocalPosLeftPc:
+          data.get(#targetLocalPosLeftPc, or: $value.targetLocalPosLeftPc),
+      targetLocalPosTopPc:
+          data.get(#targetLocalPosTopPc, or: $value.targetLocalPosTopPc),
       showBtn: data.get(#showBtn, or: $value.showBtn),
       canResizeH: data.get(#canResizeH, or: $value.canResizeH),
       canResizeV: data.get(#canResizeV, or: $value.canResizeV),

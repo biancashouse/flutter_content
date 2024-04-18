@@ -78,11 +78,14 @@ class ZoomerState extends State<Zoomer>
     }
   }
 
-  void resetTransform() {
+  void resetTransform({required VoidCallback afterTransformF}) {
     Duration? savedDuration = _aController.duration;
     _aController
       ..duration = const Duration(milliseconds: 200)
-      ..reverse().then((value) => {_aController.duration = savedDuration});
+      ..reverse().then((value) {
+        _aController.duration = savedDuration;
+        afterTransformF.call();
+      });
   }
 
   @override

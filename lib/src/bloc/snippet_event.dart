@@ -9,7 +9,7 @@ part 'snippet_event.freezed.dart';
 class SnippetEvent with _$SnippetEvent {
   const factory SnippetEvent.selectNode({
     required STreeNode node,
-    required GlobalKey selectedWidgetGK,
+    // required GlobalKey selectedWidgetGK,
     required GlobalKey selectedTreeNodeGK,
     // TargetModel? imageTC,
     // TargetModel? widgetTC,
@@ -22,9 +22,9 @@ class SnippetEvent with _$SnippetEvent {
     required String newSnippetName,
   }) = SaveNodeAsSnippet;
 
-  const factory SnippetEvent.highlightNode({
-    required STreeNode? node,
-  }) = HighlightNode;
+  // const factory SnippetEvent.highlightNode({
+  //   required STreeNode? node,
+  // }) = HighlightNode;
 
   // const factory SnippetEvent.showNodeProperties({
   //   required Node node,

@@ -7,13 +7,11 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_number.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
-  final TargetsWrapperName twName;
   final TargetModel tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
   const MoreCalloutConfigSettings(
-    this.twName,
     this.tc, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
@@ -25,7 +23,6 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static show(
-    final TargetsWrapperName twName,
     final TargetModel tc, {
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
@@ -40,7 +37,6 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     Callout.showOverlay(
         targetGkF: () => targetGK,
         boxContentF: (_) => MoreCalloutConfigSettings(
-              twName,
               tc,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
@@ -201,8 +197,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   void _refreshContentCallout() {
     Callout.dismiss(CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name);
     removeSnippetContentCallout(tc.snippetName);
-    FC()
-        .parentTW(widget.twName)
+    tc.targetsWrapperState
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(

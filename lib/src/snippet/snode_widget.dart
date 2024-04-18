@@ -123,7 +123,7 @@ class NodeWidget extends StatelessWidget {
             snippetBloc.add(SnippetEvent.selectNode(
               node: entry.node,
               // imageTC: tc,
-              selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+              // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             Useful.afterNextBuildDo(() {

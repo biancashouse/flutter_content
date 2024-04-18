@@ -17,14 +17,12 @@ import 'resize_slider.dart';
 Timer? _debounce;
 
 class CalloutConfigToolbar extends StatefulWidget {
-  final TargetsWrapperName twName;
   final TargetModel tc;
   final VoidCallback onCloseF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
   const CalloutConfigToolbar({
-    required this.twName,
     required this.tc,
     required this.onCloseF,
     this.ancestorHScrollController,
@@ -47,7 +45,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   @override
   Widget build(BuildContext context) {
     TargetModel tc = widget.tc;
-    Size ivSize = tc.targetWrapperState!.wrapperSize;
+    Size ivSize = tc.targetsWrapperState?.wrapperSize ?? MediaQuery.of(context).size;
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),
@@ -73,9 +71,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       ),
                   onChangeF: (value) {
                     tc.transformScale = value;
-                    FC()
-                        .parentTW(widget.twName)
-                        ?.zoomer
+                    TargetsWrapperState? state = tc.targetsWrapperState;
+                    state?.zoomer
                         ?.zoomImmediately(value, value);
                   },
                   min: 1.0,
@@ -126,7 +123,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               ColourTool.show(
-                widget.twName,
                 tc,
                 onBarrierTappedF: widget.onCloseF,
                 justPlaying: false,
@@ -159,7 +155,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               PointyTool.show(
-                widget.twName,
                 tc,
                 // onBarrierTappedF: onParentBarrierTappedF,
                 ancestorHScrollController: widget.ancestorHScrollController,
@@ -185,8 +180,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 tc.calloutBorderColorValue = Colors.grey.value;
                 tc.calloutBorderThickness = 2;
                 removeSnippetContentCallout(tc.snippetName);
-                FC()
-                    .parentTW(widget.twName)
+                tc.targetsWrapperState
                     ?.zoomer
                     ?.zoomImmediately(tc.transformScale, tc.transformScale);
                 showSnippetContentCallout(
@@ -217,7 +211,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               MoreCalloutConfigSettings.show(
-                widget.twName,
                 widget.tc,
                 ancestorHScrollController: widget.ancestorHScrollController,
                 ancestorVScrollController: widget.ancestorVScrollController,
@@ -234,11 +227,12 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               //TODO FC().capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
-              tc.targetWrapperState!.widget.parentNode.targets.remove(tc);
+              tc.targetsWrapperState?.widget.parentNode.targets.remove(tc);
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
-              FC().parentTW(widget.twName)?.zoomer?.resetTransform();
-              FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+              tc.targetsWrapperState?.zoomer?.resetTransform(
+                afterTransformF: ()=> FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups())
+              );
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
@@ -251,9 +245,12 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             onPressed: () {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
-              FC().parentTW(widget.twName)?.zoomer?.resetTransform();
-              FC().capiBloc.add(CAPIEvent.TargetChanged(newTC: tc));
-              FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+              tc.targetsWrapperState?.zoomer?.resetTransform(
+                afterTransformF: () {
+                  FC().capiBloc.add(CAPIEvent.TargetChanged(newTC: tc));
+                  FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+                }
+              );
             },
           ),
         ],

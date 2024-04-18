@@ -96,7 +96,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
 
   @override
   _i4.Future<String?> saveSnippet({
-    required String? snippetName,
+    required _i5.SnippetRootNode? snippetRootNode,
     required String? newVersionId,
   }) =>
       (super.noSuchMethod(
@@ -104,7 +104,7 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           #saveSnippet,
           [],
           {
-            #snippetName: snippetName,
+            #snippetRootNode: snippetRootNode,
             #newVersionId: newVersionId,
           },
         ),

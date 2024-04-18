@@ -9,17 +9,20 @@ import 'config_toolbar/callout_config_toolbar.dart';
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
-  final TargetsWrapperState parentWrapperState;
   final int index;
 
   const PositionedTargetPlayBtn({
     required this.initialTC,
-    required this.parentWrapperState,
     required this.index,
     super.key,
   });
 
   CAPIBloC get bloc => FC().capiBloc;
+
+  TargetsWrapperState? get parentWrapperState {
+    var state = initialTC.targetsWrapperGK!.currentState as TargetsWrapperState?;
+    return state;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +30,11 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     return Positioned(
       top: tc.btnStackPos().dy - bloc.state.CAPI_TARGET_BTN_RADIUS,
       left: tc.btnStackPos().dx - bloc.state.CAPI_TARGET_BTN_RADIUS,
-      child: _draggableSelectTargetBtn(context, tc),
+      child: _draggableSelectTargetBtn(tc),
     );
   }
 
-  Widget _draggableSelectTargetBtn(BuildContext context, TargetModel tc) {
+  Widget _draggableSelectTargetBtn(TargetModel tc) {
     return Draggable(
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
@@ -44,17 +47,22 @@ class PositionedTargetPlayBtn extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          parentWrapperState.widget.parentNode.playList.add(tc);
-          playTarget(context, tc);
+          if (parentWrapperState == null) return;
+
+          parentWrapperState!.widget.parentNode.playList.add(tc);
+          playTarget(tc);
         },
-        onLongPress: () {
-          tc.setTargetStackPosPc(
-            tc.btnStackPos(),
-          );
-          bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-        },
+        // onLongPress: () {
+        //   tc.setTargetStackPosPc(
+        //     tc.btnStackPos(),
+        //   );
+        //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+        // },
         onDoubleTap: () async {
           if (!FC().canEditContent) return;
+
+          if (parentWrapperState == null) return;
+
           Alignment? ta =
               TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
           if (ta == null) return;
@@ -62,17 +70,19 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           // hideAllSingleTargetBtns();
           bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
 
-          // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-          parentWrapperState.zoomer?.applyTransform(
-              tc.transformScale, tc.transformScale, ta, afterTransformF: () {
-            showSnippetContentCallout(
-              tc: tc,
-              justPlaying: false,
-            );
-            // show config toolbar in a toast
-            showConfigToolbar(
-                tc, parentWrapperState.widget.parentNode.name, context);
+          Useful.afterNextBuildDo(() {
+            parentWrapperState?.zoomer?.applyTransform(
+                tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+              showSnippetContentCallout(
+                tc: tc,
+                justPlaying: false,
+              );
+              // show config toolbar in a toast
+              showConfigToolbar(tc);
+            });
           });
+
+          // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
         },
         child: IntegerCircleAvatar(
           tc,
@@ -109,50 +119,55 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         // localPos = localPos * scale;
         Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
         // tc.setBtnStackPosPc(newGlobalPos);
-        tc.setBtnStackPosPc(newGlobalPos
-            .translate(
-              bloc.state.CAPI_TARGET_BTN_RADIUS,
-              bloc.state.CAPI_TARGET_BTN_RADIUS,
-            )
-            .translate(
-              parentWrapperState
-                      .zoomer?.widget.ancestorHScrollController?.offset ??
-                  0.0,
-              parentWrapperState
-                      .zoomer?.widget.ancestorVScrollController?.offset ??
-                  0.0,
-            ),
+        tc.setBtnStackPosPc(
+          newGlobalPos
+              .translate(
+                bloc.state.CAPI_TARGET_BTN_RADIUS,
+                bloc.state.CAPI_TARGET_BTN_RADIUS,
+              )
+              .translate(
+                parentWrapperState!
+                        .zoomer?.widget.ancestorHScrollController?.offset ??
+                    0.0,
+                parentWrapperState!
+                        .zoomer?.widget.ancestorVScrollController?.offset ??
+                    0.0,
+              ),
         );
         bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+
         // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
       },
     );
   }
 
-  void playTarget(context, TargetModel tc) {
+  void playTarget(TargetModel tc) {
+    if (parentWrapperState == null) return;
+
     Alignment? ta = TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
     if (ta == null) return;
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-    parentWrapperState.zoomer?.applyTransform(
+    var zoomer = parentWrapperState!.zoomer;
+    var savedKey = tc.targetsWrapperGK;
+    zoomer?.applyTransform(
         tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+          if (savedKey == tc.targetsWrapperGK) {
+            debugPrint('doh!');
+          }
       bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
       bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
       // hideAllSingleTargetBtns();
-      Useful.afterMsDelayDo(tc.calloutDurationMs, () {
-        parentWrapperState.zoomer?.resetTransform();
-        FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-      });
-
       showSnippetContentCallout(tc: tc, justPlaying: true);
+      Useful.afterMsDelayDo(tc.calloutDurationMs, () {
+        parentWrapperState!.zoomer?.resetTransform(
+            afterTransformF: () =>
+                FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups()));
+      });
     });
   }
 
-  static void showConfigToolbar(
-    TargetModel tc,
-    TargetsWrapperName twName,
-    BuildContext context,
-  ) {
+  static void showConfigToolbar(TargetModel tc) {
     Callout.dismiss('config-toolbar');
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
@@ -164,12 +179,11 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           borderRadius: 20,
           animate: false,
           arrowType: ArrowType.NO_CONNECTOR,
-          initialCalloutPos: FC().calloutConfigToolbarPos(context),
+          initialCalloutPos: FC().calloutConfigToolbarPos(),
           onDragEndedF: (newPos) {
             FC().setCalloutConfigToolbarPos(newPos);
           }),
       boxContentF: (ctx) => CalloutConfigToolbar(
-        twName: twName,
         tc: tc,
         onCloseF: () {
           Callout.dismiss(tc.snippetName);

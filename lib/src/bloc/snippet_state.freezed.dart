@@ -20,12 +20,11 @@ mixin _$SnippetState {
   SnippetRootNode get rootNode => throw _privateConstructorUsedError;
   SnippetTreeController get treeC =>
       throw _privateConstructorUsedError; // required SnippetTreeUR ur,
-  STreeNode? get selectedNode => throw _privateConstructorUsedError;
-  GlobalKey<State<StatefulWidget>>? get selectedWidgetGK =>
-      throw _privateConstructorUsedError;
+  STreeNode? get selectedNode =>
+      throw _privateConstructorUsedError; // GlobalKey? selectedWidgetGK,
   GlobalKey<State<StatefulWidget>>? get selectedTreeNodeGK =>
       throw _privateConstructorUsedError; // ---- the state gets saved between snippet tree callout instances ------------------
-  STreeNode? get highlightedNode => throw _privateConstructorUsedError;
+// STreeNode? highlightedNode,
   bool get showProperties => throw _privateConstructorUsedError;
   STreeNode? get nodeBeingDeleted => throw _privateConstructorUsedError;
   int get force => throw _privateConstructorUsedError;
@@ -45,9 +44,7 @@ abstract class $SnippetStateCopyWith<$Res> {
       {SnippetRootNode rootNode,
       SnippetTreeController treeC,
       STreeNode? selectedNode,
-      GlobalKey<State<StatefulWidget>>? selectedWidgetGK,
       GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
-      STreeNode? highlightedNode,
       bool showProperties,
       STreeNode? nodeBeingDeleted,
       int force});
@@ -69,9 +66,7 @@ class _$SnippetStateCopyWithImpl<$Res, $Val extends SnippetState>
     Object? rootNode = null,
     Object? treeC = null,
     Object? selectedNode = freezed,
-    Object? selectedWidgetGK = freezed,
     Object? selectedTreeNodeGK = freezed,
-    Object? highlightedNode = freezed,
     Object? showProperties = null,
     Object? nodeBeingDeleted = freezed,
     Object? force = null,
@@ -89,18 +84,10 @@ class _$SnippetStateCopyWithImpl<$Res, $Val extends SnippetState>
           ? _value.selectedNode
           : selectedNode // ignore: cast_nullable_to_non_nullable
               as STreeNode?,
-      selectedWidgetGK: freezed == selectedWidgetGK
-          ? _value.selectedWidgetGK
-          : selectedWidgetGK // ignore: cast_nullable_to_non_nullable
-              as GlobalKey<State<StatefulWidget>>?,
       selectedTreeNodeGK: freezed == selectedTreeNodeGK
           ? _value.selectedTreeNodeGK
           : selectedTreeNodeGK // ignore: cast_nullable_to_non_nullable
               as GlobalKey<State<StatefulWidget>>?,
-      highlightedNode: freezed == highlightedNode
-          ? _value.highlightedNode
-          : highlightedNode // ignore: cast_nullable_to_non_nullable
-              as STreeNode?,
       showProperties: null == showProperties
           ? _value.showProperties
           : showProperties // ignore: cast_nullable_to_non_nullable
@@ -129,9 +116,7 @@ abstract class _$$SnippetStateImplCopyWith<$Res>
       {SnippetRootNode rootNode,
       SnippetTreeController treeC,
       STreeNode? selectedNode,
-      GlobalKey<State<StatefulWidget>>? selectedWidgetGK,
       GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
-      STreeNode? highlightedNode,
       bool showProperties,
       STreeNode? nodeBeingDeleted,
       int force});
@@ -151,9 +136,7 @@ class __$$SnippetStateImplCopyWithImpl<$Res>
     Object? rootNode = null,
     Object? treeC = null,
     Object? selectedNode = freezed,
-    Object? selectedWidgetGK = freezed,
     Object? selectedTreeNodeGK = freezed,
-    Object? highlightedNode = freezed,
     Object? showProperties = null,
     Object? nodeBeingDeleted = freezed,
     Object? force = null,
@@ -171,18 +154,10 @@ class __$$SnippetStateImplCopyWithImpl<$Res>
           ? _value.selectedNode
           : selectedNode // ignore: cast_nullable_to_non_nullable
               as STreeNode?,
-      selectedWidgetGK: freezed == selectedWidgetGK
-          ? _value.selectedWidgetGK
-          : selectedWidgetGK // ignore: cast_nullable_to_non_nullable
-              as GlobalKey<State<StatefulWidget>>?,
       selectedTreeNodeGK: freezed == selectedTreeNodeGK
           ? _value.selectedTreeNodeGK
           : selectedTreeNodeGK // ignore: cast_nullable_to_non_nullable
               as GlobalKey<State<StatefulWidget>>?,
-      highlightedNode: freezed == highlightedNode
-          ? _value.highlightedNode
-          : highlightedNode // ignore: cast_nullable_to_non_nullable
-              as STreeNode?,
       showProperties: null == showProperties
           ? _value.showProperties
           : showProperties // ignore: cast_nullable_to_non_nullable
@@ -206,9 +181,7 @@ class _$SnippetStateImpl extends _SnippetState {
       {required this.rootNode,
       required this.treeC,
       this.selectedNode,
-      this.selectedWidgetGK,
       this.selectedTreeNodeGK,
-      this.highlightedNode,
       this.showProperties = false,
       this.nodeBeingDeleted,
       this.force = 0})
@@ -222,13 +195,11 @@ class _$SnippetStateImpl extends _SnippetState {
 // required SnippetTreeUR ur,
   @override
   final STreeNode? selectedNode;
-  @override
-  final GlobalKey<State<StatefulWidget>>? selectedWidgetGK;
+// GlobalKey? selectedWidgetGK,
   @override
   final GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK;
 // ---- the state gets saved between snippet tree callout instances ------------------
-  @override
-  final STreeNode? highlightedNode;
+// STreeNode? highlightedNode,
   @override
   @JsonKey()
   final bool showProperties;
@@ -240,7 +211,7 @@ class _$SnippetStateImpl extends _SnippetState {
 
   @override
   String toString() {
-    return 'SnippetState(rootNode: $rootNode, treeC: $treeC, selectedNode: $selectedNode, selectedWidgetGK: $selectedWidgetGK, selectedTreeNodeGK: $selectedTreeNodeGK, highlightedNode: $highlightedNode, showProperties: $showProperties, nodeBeingDeleted: $nodeBeingDeleted, force: $force)';
+    return 'SnippetState(rootNode: $rootNode, treeC: $treeC, selectedNode: $selectedNode, selectedTreeNodeGK: $selectedTreeNodeGK, showProperties: $showProperties, nodeBeingDeleted: $nodeBeingDeleted, force: $force)';
   }
 
   @override
@@ -253,12 +224,8 @@ class _$SnippetStateImpl extends _SnippetState {
             (identical(other.treeC, treeC) || other.treeC == treeC) &&
             (identical(other.selectedNode, selectedNode) ||
                 other.selectedNode == selectedNode) &&
-            (identical(other.selectedWidgetGK, selectedWidgetGK) ||
-                other.selectedWidgetGK == selectedWidgetGK) &&
             (identical(other.selectedTreeNodeGK, selectedTreeNodeGK) ||
                 other.selectedTreeNodeGK == selectedTreeNodeGK) &&
-            (identical(other.highlightedNode, highlightedNode) ||
-                other.highlightedNode == highlightedNode) &&
             (identical(other.showProperties, showProperties) ||
                 other.showProperties == showProperties) &&
             (identical(other.nodeBeingDeleted, nodeBeingDeleted) ||
@@ -267,17 +234,8 @@ class _$SnippetStateImpl extends _SnippetState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      rootNode,
-      treeC,
-      selectedNode,
-      selectedWidgetGK,
-      selectedTreeNodeGK,
-      highlightedNode,
-      showProperties,
-      nodeBeingDeleted,
-      force);
+  int get hashCode => Object.hash(runtimeType, rootNode, treeC, selectedNode,
+      selectedTreeNodeGK, showProperties, nodeBeingDeleted, force);
 
   @JsonKey(ignore: true)
   @override
@@ -291,9 +249,7 @@ abstract class _SnippetState extends SnippetState {
       {required final SnippetRootNode rootNode,
       required final SnippetTreeController treeC,
       final STreeNode? selectedNode,
-      final GlobalKey<State<StatefulWidget>>? selectedWidgetGK,
       final GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
-      final STreeNode? highlightedNode,
       final bool showProperties,
       final STreeNode? nodeBeingDeleted,
       final int force}) = _$SnippetStateImpl;
@@ -305,13 +261,10 @@ abstract class _SnippetState extends SnippetState {
   SnippetTreeController get treeC;
   @override // required SnippetTreeUR ur,
   STreeNode? get selectedNode;
-  @override
-  GlobalKey<State<StatefulWidget>>? get selectedWidgetGK;
-  @override
+  @override // GlobalKey? selectedWidgetGK,
   GlobalKey<State<StatefulWidget>>? get selectedTreeNodeGK;
   @override // ---- the state gets saved between snippet tree callout instances ------------------
-  STreeNode? get highlightedNode;
-  @override
+// STreeNode? highlightedNode,
   bool get showProperties;
   @override
   STreeNode? get nodeBeingDeleted;

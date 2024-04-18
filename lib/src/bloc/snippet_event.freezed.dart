@@ -19,14 +19,11 @@ mixin _$SnippetEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -67,14 +64,11 @@ mixin _$SnippetEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -106,14 +100,11 @@ mixin _$SnippetEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -149,7 +140,6 @@ mixin _$SnippetEvent {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -175,7 +165,6 @@ mixin _$SnippetEvent {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -200,7 +189,6 @@ mixin _$SnippetEvent {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -248,9 +236,7 @@ abstract class _$$SelectNodeImplCopyWith<$Res> {
       __$$SelectNodeImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
-      {STreeNode node,
-      GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-      GlobalKey<State<StatefulWidget>> selectedTreeNodeGK});
+      {STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK});
 }
 
 /// @nodoc
@@ -265,7 +251,6 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? node = null,
-    Object? selectedWidgetGK = null,
     Object? selectedTreeNodeGK = null,
   }) {
     return _then(_$SelectNodeImpl(
@@ -273,10 +258,6 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
           ? _value.node
           : node // ignore: cast_nullable_to_non_nullable
               as STreeNode,
-      selectedWidgetGK: null == selectedWidgetGK
-          ? _value.selectedWidgetGK
-          : selectedWidgetGK // ignore: cast_nullable_to_non_nullable
-              as GlobalKey<State<StatefulWidget>>,
       selectedTreeNodeGK: null == selectedTreeNodeGK
           ? _value.selectedTreeNodeGK
           : selectedTreeNodeGK // ignore: cast_nullable_to_non_nullable
@@ -289,20 +270,17 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
 
 class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
   const _$SelectNodeImpl(
-      {required this.node,
-      required this.selectedWidgetGK,
-      required this.selectedTreeNodeGK});
+      {required this.node, required this.selectedTreeNodeGK});
 
   @override
   final STreeNode node;
-  @override
-  final GlobalKey<State<StatefulWidget>> selectedWidgetGK;
+// required GlobalKey selectedWidgetGK,
   @override
   final GlobalKey<State<StatefulWidget>> selectedTreeNodeGK;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.selectNode(node: $node, selectedWidgetGK: $selectedWidgetGK, selectedTreeNodeGK: $selectedTreeNodeGK)';
+    return 'SnippetEvent.selectNode(node: $node, selectedTreeNodeGK: $selectedTreeNodeGK)';
   }
 
   @override
@@ -311,7 +289,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     properties
       ..add(DiagnosticsProperty('type', 'SnippetEvent.selectNode'))
       ..add(DiagnosticsProperty('node', node))
-      ..add(DiagnosticsProperty('selectedWidgetGK', selectedWidgetGK))
       ..add(DiagnosticsProperty('selectedTreeNodeGK', selectedTreeNodeGK));
   }
 
@@ -321,15 +298,12 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         (other.runtimeType == runtimeType &&
             other is _$SelectNodeImpl &&
             (identical(other.node, node) || other.node == node) &&
-            (identical(other.selectedWidgetGK, selectedWidgetGK) ||
-                other.selectedWidgetGK == selectedWidgetGK) &&
             (identical(other.selectedTreeNodeGK, selectedTreeNodeGK) ||
                 other.selectedTreeNodeGK == selectedTreeNodeGK));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, node, selectedWidgetGK, selectedTreeNodeGK);
+  int get hashCode => Object.hash(runtimeType, node, selectedTreeNodeGK);
 
   @JsonKey(ignore: true)
   @override
@@ -341,14 +315,11 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -386,20 +357,17 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return selectNode(node, selectedWidgetGK, selectedTreeNodeGK);
+    return selectNode(node, selectedTreeNodeGK);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -428,20 +396,17 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return selectNode?.call(node, selectedWidgetGK, selectedTreeNodeGK);
+    return selectNode?.call(node, selectedTreeNodeGK);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -472,7 +437,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult orElse(),
   }) {
     if (selectNode != null) {
-      return selectNode(node, selectedWidgetGK, selectedTreeNodeGK);
+      return selectNode(node, selectedTreeNodeGK);
     }
     return orElse();
   }
@@ -483,7 +448,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -512,7 +476,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -540,7 +503,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -570,12 +532,10 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
 abstract class SelectNode implements SnippetEvent {
   const factory SelectNode(
           {required final STreeNode node,
-          required final GlobalKey<State<StatefulWidget>> selectedWidgetGK,
           required final GlobalKey<State<StatefulWidget>> selectedTreeNodeGK}) =
       _$SelectNodeImpl;
 
-  STreeNode get node;
-  GlobalKey<State<StatefulWidget>> get selectedWidgetGK;
+  STreeNode get node; // required GlobalKey selectedWidgetGK,
   GlobalKey<State<StatefulWidget>> get selectedTreeNodeGK;
   @JsonKey(ignore: true)
   _$$SelectNodeImplCopyWith<_$SelectNodeImpl> get copyWith =>
@@ -630,14 +590,11 @@ class _$ClearNodeSelectionImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -681,14 +638,11 @@ class _$ClearNodeSelectionImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -723,14 +677,11 @@ class _$ClearNodeSelectionImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -772,7 +723,6 @@ class _$ClearNodeSelectionImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -801,7 +751,6 @@ class _$ClearNodeSelectionImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -829,7 +778,6 @@ class _$ClearNodeSelectionImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -947,14 +895,11 @@ class _$SaveNodeAsSnippetImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -998,14 +943,11 @@ class _$SaveNodeAsSnippetImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1040,14 +982,11 @@ class _$SaveNodeAsSnippetImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1089,7 +1028,6 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -1118,7 +1056,6 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -1146,7 +1083,6 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -1182,317 +1118,6 @@ abstract class SaveNodeAsSnippet implements SnippetEvent {
   String get newSnippetName;
   @JsonKey(ignore: true)
   _$$SaveNodeAsSnippetImplCopyWith<_$SaveNodeAsSnippetImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$HighlightNodeImplCopyWith<$Res> {
-  factory _$$HighlightNodeImplCopyWith(
-          _$HighlightNodeImpl value, $Res Function(_$HighlightNodeImpl) then) =
-      __$$HighlightNodeImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({STreeNode? node});
-}
-
-/// @nodoc
-class __$$HighlightNodeImplCopyWithImpl<$Res>
-    extends _$SnippetEventCopyWithImpl<$Res, _$HighlightNodeImpl>
-    implements _$$HighlightNodeImplCopyWith<$Res> {
-  __$$HighlightNodeImplCopyWithImpl(
-      _$HighlightNodeImpl _value, $Res Function(_$HighlightNodeImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? node = freezed,
-  }) {
-    return _then(_$HighlightNodeImpl(
-      node: freezed == node
-          ? _value.node
-          : node // ignore: cast_nullable_to_non_nullable
-              as STreeNode?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$HighlightNodeImpl
-    with DiagnosticableTreeMixin
-    implements HighlightNode {
-  const _$HighlightNodeImpl({required this.node});
-
-  @override
-  final STreeNode? node;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnippetEvent.highlightNode(node: $node)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'SnippetEvent.highlightNode'))
-      ..add(DiagnosticsProperty('node', node));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HighlightNodeImpl &&
-            (identical(other.node, node) || other.node == node));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, node);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HighlightNodeImplCopyWith<_$HighlightNodeImpl> get copyWith =>
-      __$$HighlightNodeImplCopyWithImpl<_$HighlightNodeImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
-    required TResult Function() clearNodeSelection,
-    required TResult Function(STreeNode node, String newSnippetName)
-        saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
-    required TResult Function(
-            Type? type, String? snippetName, STreeNode? testNode)
-        replaceSelectionWith,
-    required TResult Function(
-            Type? type, String? snippetName, STreeNode? testNode)
-        wrapSelectionWith,
-    required TResult Function(
-            Type? type,
-            STreeNode? testNode,
-            String? snippetName,
-            Type? widgetSpanChildType,
-            STreeNode? testWidgetSpanChildNode)
-        appendChild,
-    required TResult Function(
-            Type? type, String? snippetName, STreeNode? testNode)
-        addSiblingBefore,
-    required TResult Function(
-            Type? type, String? snippetName, STreeNode? testNode)
-        addSiblingAfter,
-    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
-    required TResult Function(
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
-        pasteChild,
-    required TResult Function() pasteSiblingBefore,
-    required TResult Function() pasteSiblingAfter,
-    required TResult Function() deleteNodeTapped,
-    required TResult Function() completeDeletion,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(
-            CAPIBloC capiBloc, STreeNode node, dynamic skipSave)
-        cutNode,
-    required TResult Function(String snippetName, STreeNode? selectedNode)
-        selectedDirectoryOrNode,
-    required TResult Function(String name, bool skipRedo) undo,
-    required TResult Function(String name) redo,
-    required TResult Function() forceSnippetRefresh,
-  }) {
-    return highlightNode(node);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
-    TResult? Function()? clearNodeSelection,
-    TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
-    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
-        replaceSelectionWith,
-    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
-        wrapSelectionWith,
-    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
-        appendChild,
-    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
-        addSiblingBefore,
-    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
-        addSiblingAfter,
-    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
-    TResult? Function(
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
-        pasteChild,
-    TResult? Function()? pasteSiblingBefore,
-    TResult? Function()? pasteSiblingAfter,
-    TResult? Function()? deleteNodeTapped,
-    TResult? Function()? completeDeletion,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(CAPIBloC capiBloc, STreeNode node, dynamic skipSave)?
-        cutNode,
-    TResult? Function(String snippetName, STreeNode? selectedNode)?
-        selectedDirectoryOrNode,
-    TResult? Function(String name, bool skipRedo)? undo,
-    TResult? Function(String name)? redo,
-    TResult? Function()? forceSnippetRefresh,
-  }) {
-    return highlightNode?.call(node);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
-    TResult Function()? clearNodeSelection,
-    TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
-    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
-        replaceSelectionWith,
-    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
-        wrapSelectionWith,
-    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
-        appendChild,
-    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
-        addSiblingBefore,
-    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
-        addSiblingAfter,
-    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
-    TResult Function(
-            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
-        pasteChild,
-    TResult Function()? pasteSiblingBefore,
-    TResult Function()? pasteSiblingAfter,
-    TResult Function()? deleteNodeTapped,
-    TResult Function()? completeDeletion,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(CAPIBloC capiBloc, STreeNode node, dynamic skipSave)?
-        cutNode,
-    TResult Function(String snippetName, STreeNode? selectedNode)?
-        selectedDirectoryOrNode,
-    TResult Function(String name, bool skipRedo)? undo,
-    TResult Function(String name)? redo,
-    TResult Function()? forceSnippetRefresh,
-    required TResult orElse(),
-  }) {
-    if (highlightNode != null) {
-      return highlightNode(node);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SelectNode value) selectNode,
-    required TResult Function(ClearNodeSelection value) clearNodeSelection,
-    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
-    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
-    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
-    required TResult Function(AppendChild value) appendChild,
-    required TResult Function(AddSiblingBefore value) addSiblingBefore,
-    required TResult Function(AddSiblingAfter value) addSiblingAfter,
-    required TResult Function(PasteReplacement value) pasteReplacement,
-    required TResult Function(PasteChild value) pasteChild,
-    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
-    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
-    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
-    required TResult Function(CompleteDeletion value) completeDeletion,
-    required TResult Function(CopyNode value) copyNode,
-    required TResult Function(CutNode value) cutNode,
-    required TResult Function(SelectedDirectoryOrNode value)
-        selectedDirectoryOrNode,
-    required TResult Function(Undo value) undo,
-    required TResult Function(Redo value) redo,
-    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
-  }) {
-    return highlightNode(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SelectNode value)? selectNode,
-    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
-    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
-    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
-    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
-    TResult? Function(AppendChild value)? appendChild,
-    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
-    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
-    TResult? Function(PasteReplacement value)? pasteReplacement,
-    TResult? Function(PasteChild value)? pasteChild,
-    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
-    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
-    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
-    TResult? Function(CompleteDeletion value)? completeDeletion,
-    TResult? Function(CopyNode value)? copyNode,
-    TResult? Function(CutNode value)? cutNode,
-    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
-    TResult? Function(Undo value)? undo,
-    TResult? Function(Redo value)? redo,
-    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
-  }) {
-    return highlightNode?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SelectNode value)? selectNode,
-    TResult Function(ClearNodeSelection value)? clearNodeSelection,
-    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
-    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
-    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
-    TResult Function(AppendChild value)? appendChild,
-    TResult Function(AddSiblingBefore value)? addSiblingBefore,
-    TResult Function(AddSiblingAfter value)? addSiblingAfter,
-    TResult Function(PasteReplacement value)? pasteReplacement,
-    TResult Function(PasteChild value)? pasteChild,
-    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
-    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
-    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
-    TResult Function(CompleteDeletion value)? completeDeletion,
-    TResult Function(CopyNode value)? copyNode,
-    TResult Function(CutNode value)? cutNode,
-    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
-    TResult Function(Undo value)? undo,
-    TResult Function(Redo value)? redo,
-    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
-    required TResult orElse(),
-  }) {
-    if (highlightNode != null) {
-      return highlightNode(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class HighlightNode implements SnippetEvent {
-  const factory HighlightNode({required final STreeNode? node}) =
-      _$HighlightNodeImpl;
-
-  STreeNode? get node;
-  @JsonKey(ignore: true)
-  _$$HighlightNodeImplCopyWith<_$HighlightNodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1595,14 +1220,11 @@ class _$ReplaceSelectionWithImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -1646,14 +1268,11 @@ class _$ReplaceSelectionWithImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1688,14 +1307,11 @@ class _$ReplaceSelectionWithImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1737,7 +1353,6 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -1766,7 +1381,6 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -1794,7 +1408,6 @@ class _$ReplaceSelectionWithImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -1932,14 +1545,11 @@ class _$WrapSelectionWithImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -1983,14 +1593,11 @@ class _$WrapSelectionWithImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2025,14 +1632,11 @@ class _$WrapSelectionWithImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2074,7 +1678,6 @@ class _$WrapSelectionWithImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -2103,7 +1706,6 @@ class _$WrapSelectionWithImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -2131,7 +1733,6 @@ class _$WrapSelectionWithImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -2299,14 +1900,11 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -2351,14 +1949,11 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2394,14 +1989,11 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2444,7 +2036,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -2473,7 +2064,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -2501,7 +2091,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -2643,14 +2232,11 @@ class _$AddSiblingBeforeImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -2694,14 +2280,11 @@ class _$AddSiblingBeforeImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2736,14 +2319,11 @@ class _$AddSiblingBeforeImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2785,7 +2365,6 @@ class _$AddSiblingBeforeImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -2814,7 +2393,6 @@ class _$AddSiblingBeforeImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -2842,7 +2420,6 @@ class _$AddSiblingBeforeImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -2980,14 +2557,11 @@ class _$AddSiblingAfterImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -3031,14 +2605,11 @@ class _$AddSiblingAfterImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3073,14 +2644,11 @@ class _$AddSiblingAfterImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3122,7 +2690,6 @@ class _$AddSiblingAfterImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -3151,7 +2718,6 @@ class _$AddSiblingAfterImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -3179,7 +2745,6 @@ class _$AddSiblingAfterImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -3298,14 +2863,11 @@ class _$PasteReplacementImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -3349,14 +2911,11 @@ class _$PasteReplacementImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3391,14 +2950,11 @@ class _$PasteReplacementImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3440,7 +2996,6 @@ class _$PasteReplacementImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -3469,7 +3024,6 @@ class _$PasteReplacementImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -3497,7 +3051,6 @@ class _$PasteReplacementImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -3624,14 +3177,11 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -3675,14 +3225,11 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3717,14 +3264,11 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3766,7 +3310,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -3795,7 +3338,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -3823,7 +3365,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -3911,14 +3452,11 @@ class _$PasteSiblingBeforeImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -3962,14 +3500,11 @@ class _$PasteSiblingBeforeImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4004,14 +3539,11 @@ class _$PasteSiblingBeforeImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4053,7 +3585,6 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -4082,7 +3613,6 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -4110,7 +3640,6 @@ class _$PasteSiblingBeforeImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -4189,14 +3718,11 @@ class _$PasteSiblingAfterImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -4240,14 +3766,11 @@ class _$PasteSiblingAfterImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4282,14 +3805,11 @@ class _$PasteSiblingAfterImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4331,7 +3851,6 @@ class _$PasteSiblingAfterImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -4360,7 +3879,6 @@ class _$PasteSiblingAfterImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -4388,7 +3906,6 @@ class _$PasteSiblingAfterImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -4467,14 +3984,11 @@ class _$DeleteNodeTappedImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -4518,14 +4032,11 @@ class _$DeleteNodeTappedImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4560,14 +4071,11 @@ class _$DeleteNodeTappedImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4609,7 +4117,6 @@ class _$DeleteNodeTappedImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -4638,7 +4145,6 @@ class _$DeleteNodeTappedImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -4666,7 +4172,6 @@ class _$DeleteNodeTappedImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -4745,14 +4250,11 @@ class _$CompleteDeletionImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -4796,14 +4298,11 @@ class _$CompleteDeletionImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4838,14 +4337,11 @@ class _$CompleteDeletionImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4887,7 +4383,6 @@ class _$CompleteDeletionImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -4916,7 +4411,6 @@ class _$CompleteDeletionImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -4944,7 +4438,6 @@ class _$CompleteDeletionImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -5056,14 +4549,11 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -5107,14 +4597,11 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5149,14 +4636,11 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5198,7 +4682,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -5227,7 +4710,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -5255,7 +4737,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -5385,14 +4866,11 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -5436,14 +4914,11 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5478,14 +4953,11 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5527,7 +4999,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -5556,7 +5027,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -5584,7 +5054,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -5715,14 +5184,11 @@ class _$SelectedDirectoryOrNodeImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -5766,14 +5232,11 @@ class _$SelectedDirectoryOrNodeImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5808,14 +5271,11 @@ class _$SelectedDirectoryOrNodeImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5857,7 +5317,6 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -5886,7 +5345,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -5914,7 +5372,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -6036,14 +5493,11 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -6087,14 +5541,11 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6129,14 +5580,11 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6178,7 +5626,6 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -6207,7 +5654,6 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -6235,7 +5681,6 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -6345,14 +5790,11 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -6396,14 +5838,11 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6438,14 +5877,11 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6487,7 +5923,6 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -6516,7 +5951,6 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -6544,7 +5978,6 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,
@@ -6629,14 +6062,11 @@ class _$ForceSnippetRefreshImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
+            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
         selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
-    required TResult Function(STreeNode? node) highlightNode,
     required TResult Function(
             Type? type, String? snippetName, STreeNode? testNode)
         replaceSelectionWith,
@@ -6680,14 +6110,11 @@ class _$ForceSnippetRefreshImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult? Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(STreeNode? node)? highlightNode,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6722,14 +6149,11 @@ class _$ForceSnippetRefreshImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(
-            STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedWidgetGK,
+    TResult Function(STreeNode node,
             GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
         selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(STreeNode? node)? highlightNode,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6771,7 +6195,6 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(SelectNode value) selectNode,
     required TResult Function(ClearNodeSelection value) clearNodeSelection,
     required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(HighlightNode value) highlightNode,
     required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
     required TResult Function(WrapSelectionWith value) wrapSelectionWith,
     required TResult Function(AppendChild value) appendChild,
@@ -6800,7 +6223,6 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(SelectNode value)? selectNode,
     TResult? Function(ClearNodeSelection value)? clearNodeSelection,
     TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(HighlightNode value)? highlightNode,
     TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult? Function(AppendChild value)? appendChild,
@@ -6828,7 +6250,6 @@ class _$ForceSnippetRefreshImpl
     TResult Function(SelectNode value)? selectNode,
     TResult Function(ClearNodeSelection value)? clearNodeSelection,
     TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(HighlightNode value)? highlightNode,
     TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
     TResult Function(WrapSelectionWith value)? wrapSelectionWith,
     TResult Function(AppendChild value)? appendChild,

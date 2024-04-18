@@ -51,6 +51,7 @@ class CAPIState with _$CAPIState {
     // EncodedJson? jsonClipboardForMove,
     @Default(true) bool showClipboardContent,
     @Default(0) int force, // hacky way to force a transition
+    @Default(false) bool skipSnippetPanelRebuild, // hacky way to force a transition
     //
     @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;

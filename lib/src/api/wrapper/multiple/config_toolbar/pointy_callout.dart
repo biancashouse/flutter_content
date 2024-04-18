@@ -4,14 +4,12 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class PointyTool extends StatefulWidget {
-  final TargetsWrapperName twName;
   final TargetModel tc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
   final bool justPlaying;
 
   const PointyTool(
-    this.twName,
     this.tc, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
@@ -22,7 +20,7 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetsWrapperName twName, final TargetModel tc,
+  static show(final TargetModel tc,
       {final ScrollController? ancestorHScrollController,
       final ScrollController? ancestorVScrollController,
       required final bool justPlaying}) {
@@ -35,7 +33,6 @@ class PointyTool extends StatefulWidget {
     Callout.showOverlay(
         targetGkF: () => targetGK,
         boxContentF: (_) => PointyTool(
-              twName,
               tc,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
@@ -85,8 +82,7 @@ class _PointyToolState extends State<PointyTool> {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
     removeSnippetContentCallout(tc.snippetName);
-    FC()
-        .parentTW(widget.twName)
+    tc.targetsWrapperState
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(

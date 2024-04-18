@@ -133,6 +133,16 @@ class SnippetTreeController extends TreeController<STreeNode> {
     return foundNode;
   }
 
+ bool nodeIsADescendantOf(STreeNode startingNode, STreeNode nodeToFind) {
+    STreeNode? foundNode;
+    foundNode = breadthFirstSearch(
+      startingNodes: [startingNode],
+      descendCondition: (_) => true,
+      returnCondition: (node) => node == nodeToFind,
+    );
+    return foundNode != null;
+  }
+
   STreeNode rootNode(TreeEntry<STreeNode> theEntry) {
     TreeEntry<STreeNode> entry = theEntry;
     while (entry.parent != null) {

@@ -24,9 +24,6 @@ class TargetGroupWrapperNodeMapper
   @override
   final String id = 'TargetGroupWrapperNode';
 
-  static String _$name(TargetGroupWrapperNode v) => v.name;
-  static const Field<TargetGroupWrapperNode, String> _f$name =
-      Field('name', _$name);
   static List<TargetModel> _$targets(TargetGroupWrapperNode v) => v.targets;
   static const Field<TargetGroupWrapperNode, List<TargetModel>> _f$targets =
       Field('targets', _$targets, opt: true, def: const []);
@@ -72,7 +69,6 @@ class TargetGroupWrapperNodeMapper
 
   @override
   final MappableFields<TargetGroupWrapperNode> fields = const {
-    #name: _f$name,
     #targets: _f$targets,
     #playList: _f$playList,
     #child: _f$child,
@@ -94,7 +90,6 @@ class TargetGroupWrapperNodeMapper
 
   static TargetGroupWrapperNode _instantiate(DecodingData data) {
     return TargetGroupWrapperNode(
-        name: data.dec(_f$name),
         targets: data.dec(_f$targets),
         playList: data.dec(_f$playList),
         child: data.dec(_f$child));
@@ -165,8 +160,7 @@ abstract class TargetGroupWrapperNodeCopyWith<
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {String? name,
-      List<TargetModel>? targets,
+      {List<TargetModel>? targets,
       List<TargetModel>? playList,
       STreeNode? child});
   TargetGroupWrapperNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -197,19 +191,16 @@ class _TargetGroupWrapperNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {String? name,
-          List<TargetModel>? targets,
+          {List<TargetModel>? targets,
           List<TargetModel>? playList,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
-        if (name != null) #name: name,
         if (targets != null) #targets: targets,
         if (playList != null) #playList: playList,
         if (child != $none) #child: child
       }));
   @override
   TargetGroupWrapperNode $make(CopyWithData data) => TargetGroupWrapperNode(
-      name: data.get(#name, or: $value.name),
       targets: data.get(#targets, or: $value.targets),
       playList: data.get(#playList, or: $value.playList),
       child: data.get(#child, or: $value.child));

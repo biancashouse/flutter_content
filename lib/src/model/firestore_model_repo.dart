@@ -54,13 +54,15 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   // if not in cache, gets from FB and adds to cache
-  Future<void> getSnippetFromCacheOrFB({required SnippetName snippetName, required VersionId versionId}) async {
+  Future<void> getSnippetFromCacheOrFB(
+      {required SnippetName snippetName, required VersionId versionId}) async {
     // try to fetch from cache, otherwise fetch from FB
     var versions = FC().snippetCache[snippetName];
     var version = (versions ?? {})[versionId];
     if (version != null) return;
 
-    DocumentReference versionedSnippetDocRef = appDocRef.collection('snippets/$snippetName/versions').doc(versionId);
+    DocumentReference versionedSnippetDocRef =
+        appDocRef.collection('snippets/$snippetName/versions').doc(versionId);
     DocumentSnapshot doc = await versionedSnippetDocRef.get();
     if (doc.exists) {
       final data = doc.data() as Map<String, dynamic>;
@@ -98,27 +100,27 @@ class FireStoreModelRepository implements IModelRepository {
   /// createOrUpdateAppModelAndCAPIModel
   @override
   Future<VersionId?> saveSnippet({
-    required SnippetName snippetName,
+    required SnippetRootNode snippetRootNode,
     required VersionId newVersionId,
   }) async {
-    SnippetRootNode? snippetNode = FC().rootNodeOfEditingSnippet(snippetName);
-    if (snippetNode != null) {
-      // snippet saved under new versionId, and editingSnippet now set to this new version
-      FC().addVersionId(snippetName, newVersionId);
-      // var newAppInfo = FC().appInfo;
-      // newAppInfo.versionIds[snippetName]?.insert(0, newVersionId);
-      // newAppInfo.editingVersionIds.addAll({snippetName: newVersionId});
-      // FC().appInfo = newAppInfo;
-      await saveAppInfo();
+    var fc = FC();
+    // snippet saved under new versionId, and editingSnippet now set to this new version
+    FC().addVersionId(snippetRootNode.name, newVersionId);
+    // var newAppInfo = FC().appInfo;
+    // newAppInfo.versionIds[snippetName]?.insert(0, newVersionId);
+    // newAppInfo.editingVersionIds.addAll({snippetName: newVersionId});
+    // FC().appInfo = newAppInfo;
 
-      // now create the actual version doc
-      DocumentReference newVersionedSnippetDocRef = appDocRef
-          .collection('snippets/$snippetName/versions')
-          .doc(newVersionId);
-      await newVersionedSnippetDocRef.set(snippetNode.toMap());
-      return newVersionId;
-    }
-    return null;
+    // now create the actual version doc
+    DocumentReference newVersionedSnippetDocRef = appDocRef
+        .collection('snippets/${snippetRootNode.name}/versions')
+        .doc(newVersionId);
+    var map = snippetRootNode.toMap();
+    await newVersionedSnippetDocRef.set(map);
+
+    await saveAppInfo();
+
+    return newVersionId;
   }
 
   @override

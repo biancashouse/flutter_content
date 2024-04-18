@@ -5,7 +5,6 @@ import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dar
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class ColourTool extends StatefulWidget {
-  final TargetsWrapperName twName;
   final TargetModel tc;
   final VoidCallback onParentBarrierTappedF;
   final ScrollController? ancestorHScrollController;
@@ -13,7 +12,6 @@ class ColourTool extends StatefulWidget {
   final bool justPlaying;
 
   const ColourTool(
-    this.twName,
     this.tc,
     this.onParentBarrierTappedF, {
     this.ancestorHScrollController,
@@ -26,7 +24,6 @@ class ColourTool extends StatefulWidget {
   State<ColourTool> createState() => _ColourToolState();
 
   static show(
-    final TargetsWrapperName twName,
     final TargetModel tc, {
     required VoidCallback onBarrierTappedF,
     final ScrollController? ancestorHScrollController,
@@ -54,7 +51,6 @@ class ColourTool extends StatefulWidget {
         notUsingHydratedStorage: true,
       ),
       boxContentF: (_) => ColourTool(
-        twName,
         tc,
         onBarrierTappedF,
         ancestorHScrollController: ancestorHScrollController,
@@ -100,9 +96,7 @@ class _ColourToolState extends State<ColourTool> {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});
               removeSnippetContentCallout(tc.snippetName);
-              FC()
-                  .parentTW(widget.twName)
-                  ?.zoomer
+              tc.targetsWrapperState?.zoomer
                   ?.zoomImmediately(tc.transformScale, tc.transformScale);
               showSnippetContentCallout(
                 tc: tc,

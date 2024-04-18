@@ -7,7 +7,6 @@ import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart'
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'capi_event.dart';
@@ -28,14 +27,14 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
           treeC: treeC,
           // ur: treeUR,
           selectedNode: selectedNode,
-          selectedWidgetGK: selectedWidgetGK,
+          // selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK,
         )) {
     // debugPrint("\n\nCreating SnippetBloC ${node.name}\n\n");
     // events
     on<SelectNode>((event, emit) => _selectNode(event, emit));
     on<ClearNodeSelection>((event, emit) => _clearNodeSelection(event, emit));
-    on<HighlightNode>((event, emit) => _highlightNode(event, emit));
+    // on<HighlightNode>((event, emit) => _highlightNode(event, emit));
     on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<ForceSnippetRefresh>((event, emit) => _forceSnippetRefresh(event, emit));
     on<WrapSelectionWith>((event, emit) => _wrapWith(event, emit));
@@ -96,10 +95,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // STreeNodeBloc newBloc = STreeNodeBloc(node: snode);
 
     // if new selection is a node above this tree root, reset the tree's root to it
-    TreeSearchResult<STreeNode> result =
-        state.treeC.search((snode) => snode == event.node);
+    bool resetTree =
+        !state.treeC.nodeIsADescendantOf(state.treeC.roots.first, event.node);
+    // TreeSearchResult<STreeNode> result =
+    //     state.treeC.search((snode) => snode == event.node);
     SnippetTreeController possiblyNewTreeC = state.treeC;
-    if (result.matches.isEmpty) {
+    if (resetTree) {
       possiblyNewTreeC = SnippetTreeController(
         roots: [event.node],
         childrenProvider: Node.snippetTreeChildrenProvider,
@@ -111,8 +112,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       // selectedNodePropertiesTreeExpandedNodes: {},
       // selectedNodePropertiesPaneScrollPos: 0,
       // selectedNodeBloc: newBloc,
-      highlightedNode: null,
-      selectedWidgetGK: event.selectedWidgetGK,
+      // highlightedNode: null,
+      // selectedWidgetGK: event.selectedWidgetGK,
       selectedTreeNodeGK: event.selectedTreeNodeGK,
       showProperties: true,
       nodeBeingDeleted: null,
@@ -121,12 +122,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // }
   }
 
-  void _highlightNode(HighlightNode event, emit) {
-    emit(state.copyWith(
-      highlightedNode: event.node,
-    ));
-    // }
-  }
+  // void _highlightNode(HighlightNode event, emit) {
+  //   emit(state.copyWith(
+  //     highlightedNode: event.node,
+  //   ));
+  //   // }
+  // }
 
   void _clearNodeSelection(event, emit) {
     emit(state.copyWith(
@@ -313,7 +314,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     _cutIncludingAnyChildren(event.node);
     state.treeC.rebuild();
     // bool well = state.rootNode.anyMissingParents();
-    event.capiBloc.add(CAPIEvent.updateClipboard(newContent: event.node, skipSave: event.skipSave));
+    event.capiBloc.add(CAPIEvent.updateClipboard(
+        newContent: event.node, skipSave: event.skipSave));
   }
 
   _cutIncludingAnyChildren(STreeNode node) {
@@ -366,7 +368,8 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   // }
 
   Future<void> _copyNode(CopyNode event, emit) async {
-    FC().capiBloc.add(CAPIEvent.updateClipboard(newContent: event.node, skipSave: event.skipSave));
+    FC().capiBloc.add(CAPIEvent.updateClipboard(
+        newContent: event.node, skipSave: event.skipSave));
   }
 
   STreeNode _typeAsATreeNode(
@@ -436,8 +439,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (SingleChildScrollViewNode) =>
           SingleChildScrollViewNode(child: childNode),
         const (SizedBoxNode) => SizedBoxNode(child: childNode),
-        const (SnippetRefNode) =>
-          SnippetRefNode(snippetName: 'name?'),
+        const (SnippetRefNode) => SnippetRefNode(snippetName: 'name?'),
         const (SplitViewNode) =>
           SplitViewNode(children: childNode != null ? [childNode] : []),
         const (StackNode) =>
@@ -486,7 +488,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         // const (TargetButtonNode) =>
         //   TargetButtonNode(name: 'no name!', child: childNode),
         const (TargetGroupWrapperNode) =>
-          TargetGroupWrapperNode(name: 'name?', child: childNode),
+          TargetGroupWrapperNode(child: childNode),
         const (TextButtonNode) => TextButtonNode(),
         const (TextNode) => TextNode(text: 'abc'),
         const (TextSpanNode) => TextSpanNode(children: []),
@@ -560,6 +562,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
       state.treeC.expand(w);
       state.treeC.rebuild();
+
       emit(state.copyWith(
         selectedNode: w,
       ));
@@ -988,9 +991,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     _cutIncludingAnyChildren(event.node);
 
     // create new snippet
-    SnippetRootNode newRootNode = SnippetRootNode(name: event.newSnippetName, child: event.node);
+    SnippetRootNode newRootNode =
+        SnippetRootNode(name: event.newSnippetName, child: event.node);
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-    await FC().fbModelRepo.saveSnippet(snippetName: event.newSnippetName, newVersionId: newVersionId);
+    await FC()
+        .fbModelRepo
+        .saveSnippet(snippetRootNode: newRootNode, newVersionId: newVersionId);
 
     FC().snippetCache[event.newSnippetName] = {};
     // FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(newSnippetNode: newRootNode));

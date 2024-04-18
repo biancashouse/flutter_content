@@ -359,6 +359,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
                     // some properties cannot be deleted
                     if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
+                    bool wasShowingAsRoot = snippetBloc.state.selectedNode == snippetBloc.treeC.roots.first;
+                    STreeNode? parentNode = snippetBloc.state.selectedNode.parent as STreeNode?;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     snippetBloc.add(const SnippetEvent.deleteNodeTapped());
                     Useful.afterNextBuildDo(() async {
@@ -368,6 +370,13 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         // if was tab or tabview, reset the tab Q and controller
                         SnippetPanelState? spState = SnippetPanel.of(context);
                         spState?.resetTabQandC;
+                        // redraw tree if deleted node was root
+                        if (wasShowingAsRoot && parentNode != null) {
+                          snippetBloc.add(SnippetEvent.selectNode(
+                            node: parentNode,
+                            selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+                          ));
+                        }
                       });
                     });
                     Callout.dismiss("TreeNodeMenu");
@@ -407,38 +416,38 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     ),
                     tooltip: 'Save a a new Snippet...',
                   ),
-                IconButton(
-                  hoverColor: Colors.white30,
-                  onPressed: () async {
-                    // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
-                    // some properties cannot be deleted
-                    if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
-                    Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                    snippetBloc.add(const SnippetEvent.deleteNodeTapped());
-                    Useful.afterNextBuildDo(() async {
-                      await Future.delayed(const Duration(milliseconds: 1000));
-                      snippetBloc.add(const SnippetEvent.completeDeletion());
-                      Useful.afterNextBuildDo(() {
-                        // if was tab or tabview, reset the tab Q and controller
-                        SnippetPanelState? spState = SnippetPanel.of(context);
-                        spState?.resetTabQandC;
-                      });
-                    });
-                    Callout.dismiss("TreeNodeMenu");
-                  },
-                  icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity(
-                          !snippetBloc.state.aNodeIsSelected ||
-                                  snippetBloc.state.selectedNode
-                                      is SnippetRefNode ||
-                                  (gc is GenericSingleChildNode? &&
-                                      gc?.parent is StepNode &&
-                                      (gc?.propertyName == 'title' ||
-                                          gc?.propertyName == 'content'))
-                              ? .5
-                              : 1.0)),
-                  tooltip: 'Remove',
-                ),
+                // IconButton(
+                //   hoverColor: Colors.white30,
+                //   onPressed: () async {
+                //     // some properties cannot be deleted!snippetBloc.state.selectedNode.canBeDeleted()
+                //     // some properties cannot be deleted
+                //     if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
+                //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                //     snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+                //     Useful.afterNextBuildDo(() async {
+                //       await Future.delayed(const Duration(milliseconds: 1000));
+                //       snippetBloc.add(const SnippetEvent.completeDeletion());
+                //       Useful.afterNextBuildDo(() {
+                //         // if was tab or tabview, reset the tab Q and controller
+                //         SnippetPanelState? spState = SnippetPanel.of(context);
+                //         spState?.resetTabQandC;
+                //       });
+                //     });
+                //     Callout.dismiss("TreeNodeMenu");
+                //   },
+                //   icon: Icon(Icons.delete,
+                //       color: Colors.red.withOpacity(
+                //           !snippetBloc.state.aNodeIsSelected ||
+                //                   snippetBloc.state.selectedNode
+                //                       is SnippetRefNode ||
+                //                   (gc is GenericSingleChildNode? &&
+                //                       gc?.parent is StepNode &&
+                //                       (gc?.propertyName == 'title' ||
+                //                           gc?.propertyName == 'content'))
+                //               ? .5
+                //               : 1.0)),
+                //   tooltip: 'Remove',
+                // ),
               ],
             ),
           // tree structure icon buttons
@@ -646,7 +655,8 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      navigateUpTreeButton(context),
+                      if (snippetBloc.treeC.roots.first.parent is! SnippetRootNode)
+                        navigateUpTreeButton(context),
                       Expanded(
                           child: SnippetTreeView(snippetBloc: snippetBloc)),
                     ],
@@ -675,7 +685,7 @@ class SnippetTreePane extends StatelessWidget {
               snippetBloc.add(SnippetEvent.selectNode(
                 node: parent!,
                 // imageTC: tc,
-                selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+                // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
                 selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
               ));
               Useful.afterNextBuildDo(() {
