@@ -57,9 +57,12 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static double? _$targetLocalPosTopPc(TargetModel v) => v.targetLocalPosTopPc;
   static const Field<TargetModel, double> _f$targetLocalPosTopPc =
       Field('targetLocalPosTopPc', _$targetLocalPosTopPc, opt: true);
+  static bool _$showCover(TargetModel v) => v.showCover;
+  static const Field<TargetModel, bool> _f$showCover =
+      Field('showCover', _$showCover, opt: true, def: false);
   static bool _$showBtn(TargetModel v) => v.showBtn;
   static const Field<TargetModel, bool> _f$showBtn =
-      Field('showBtn', _$showBtn, opt: true, def: true);
+      Field('showBtn', _$showBtn, opt: true, def: false);
   static bool _$canResizeH(TargetModel v) => v.canResizeH;
   static const Field<TargetModel, bool> _f$canResizeH =
       Field('canResizeH', _$canResizeH, opt: true, def: true);
@@ -130,6 +133,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #btnLocalLeftPc: _f$btnLocalLeftPc,
     #targetLocalPosLeftPc: _f$targetLocalPosLeftPc,
     #targetLocalPosTopPc: _f$targetLocalPosTopPc,
+    #showCover: _f$showCover,
     #showBtn: _f$showBtn,
     #canResizeH: _f$canResizeH,
     #canResizeV: _f$canResizeV,
@@ -162,6 +166,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         btnLocalLeftPc: data.dec(_f$btnLocalLeftPc),
         targetLocalPosLeftPc: data.dec(_f$targetLocalPosLeftPc),
         targetLocalPosTopPc: data.dec(_f$targetLocalPosTopPc),
+        showCover: data.dec(_f$showCover),
         showBtn: data.dec(_f$showBtn),
         canResizeH: data.dec(_f$canResizeH),
         canResizeV: data.dec(_f$canResizeV),
@@ -242,6 +247,7 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       double? btnLocalLeftPc,
       double? targetLocalPosLeftPc,
       double? targetLocalPosTopPc,
+      bool? showCover,
       bool? showBtn,
       bool? canResizeH,
       bool? canResizeV,
@@ -281,6 +287,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
           Object? btnLocalLeftPc = $none,
           Object? targetLocalPosLeftPc = $none,
           Object? targetLocalPosTopPc = $none,
+          bool? showCover,
           bool? showBtn,
           bool? canResizeH,
           bool? canResizeV,
@@ -310,6 +317,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
           #targetLocalPosLeftPc: targetLocalPosLeftPc,
         if (targetLocalPosTopPc != $none)
           #targetLocalPosTopPc: targetLocalPosTopPc,
+        if (showCover != null) #showCover: showCover,
         if (showBtn != null) #showBtn: showBtn,
         if (canResizeH != null) #canResizeH: canResizeH,
         if (canResizeV != null) #canResizeV: canResizeV,
@@ -349,6 +357,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
           data.get(#targetLocalPosLeftPc, or: $value.targetLocalPosLeftPc),
       targetLocalPosTopPc:
           data.get(#targetLocalPosTopPc, or: $value.targetLocalPosTopPc),
+      showCover: data.get(#showCover, or: $value.showCover),
       showBtn: data.get(#showBtn, or: $value.showBtn),
       canResizeH: data.get(#canResizeH, or: $value.canResizeH),
       canResizeV: data.get(#canResizeV, or: $value.canResizeV),

@@ -37,9 +37,12 @@ class CAPIState with _$CAPIState {
     // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
     // @Default([]) List<TargetModel> playList,
     // current selection
-    TargetModel? hideTargetsExcept,
-    @Default(false) bool hideAllTargetGroups,
-    @Default(false) bool hideAllTargetGroupPlayBtns,
+    // List<TargetModel> targetCovers
+    // TargetModel? hideTargetCoversExcept,
+    // TargetModel? hideTargetBtnsExcept,
+    // @Default(false) bool hideAllTargetCovers,
+    // @Default(false) bool hideAllTargetBtns,
+    //
     TargetModel? newestTarget,
     TargetModel? selectedTarget,
     //
@@ -51,7 +54,7 @@ class CAPIState with _$CAPIState {
     // EncodedJson? jsonClipboardForMove,
     @Default(true) bool showClipboardContent,
     @Default(0) int force, // hacky way to force a transition
-    @Default(false) bool skipSnippetPanelRebuild, // hacky way to force a transition
+    @Default(false) bool onlyTargetsWrappers, // hacky way to force a transition
     //
     @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;

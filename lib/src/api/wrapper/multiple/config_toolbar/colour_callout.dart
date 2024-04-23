@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class ColourTool extends StatefulWidget {
   final TargetModel tc;
+  final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
   final bool justPlaying;
 
   const ColourTool(
-    this.tc,
+    this.tc, this.wrapperRect,
     this.onParentBarrierTappedF, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
@@ -24,7 +24,7 @@ class ColourTool extends StatefulWidget {
   State<ColourTool> createState() => _ColourToolState();
 
   static show(
-    final TargetModel tc, {
+    final TargetModel tc, final Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
@@ -34,7 +34,7 @@ class ColourTool extends StatefulWidget {
         // tc.single
         // ? FC().getSingleTargetGk(tc.wName)
         // :
-        FC().getMultiTargetGk(tc.uid.toString());
+        FC().getTargetGk(tc.uid);
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -51,7 +51,7 @@ class ColourTool extends StatefulWidget {
         notUsingHydratedStorage: true,
       ),
       boxContentF: (_) => ColourTool(
-        tc,
+        tc, wrapperRect,
         onBarrierTappedF,
         ancestorHScrollController: ancestorHScrollController,
         ancestorVScrollController: ancestorVScrollController,
@@ -96,10 +96,10 @@ class _ColourToolState extends State<ColourTool> {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});
               removeSnippetContentCallout(tc.snippetName);
-              tc.targetsWrapperState?.zoomer
+              tc.targetsWrapperState()?.zoomer
                   ?.zoomImmediately(tc.transformScale, tc.transformScale);
               showSnippetContentCallout(
-                tc: tc,
+                tc: tc, wrapperRect: widget.wrapperRect,
                 justPlaying: false,
                 // widget.onParentBarrierTappedF,
               );

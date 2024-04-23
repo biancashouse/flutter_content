@@ -5,12 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
-import 'snodes/firebase_storage_image_node.dart';
 import 'snodes/fs_image_node.dart';
 
 part 'snode.mapper.dart';
@@ -243,7 +241,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // actually push node parent, then select node - more user-friendly
             var b = nodeWidgetGK?.currentContext?.mounted;
             pushThenShowNamedSnippetWithNodeSelected(
-                snippetName, this, this, context);
+                snippetName, this, this);
             // Useful.afterNextBuildDo(() {
             // });
           },
@@ -316,13 +314,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     SnippetName snippetName,
     STreeNode startingAtNode,
     STreeNode? selectedNode,
-    BuildContext context,
   ) {
     STreeNode? highestNode;
     if (startingAtNode is ScaffoldNode) {
       highestNode = startingAtNode;
     } else {
-      highestNode = (startingAtNode.parent ?? startingAtNode) as STreeNode;
+      highestNode = (startingAtNode.getParent() ?? startingAtNode) as STreeNode;
     }
     var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
@@ -337,7 +334,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
       var gk = startingAtNode.nodeWidgetGK;
       var ctx = gk?.currentContext;
-      if (FC().snippetBeingEdited != null && ctx != null) {
+      if (FC().snippetBeingEdited != null /*&& ctx != null*/) {
         // currCtx = startingAtNode.nodeWidgetGK?.currentContext;
         showSnippetTreeAndPropertiesCallout(
           snippetBloc: FC().snippetBeingEdited!,
@@ -346,8 +343,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
             Callout.dismiss('selected-panel-border-overlay');
+            showAllTargetBtns();
+            showAllTargetCovers();
             FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
-            FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
 // removeNodePropertiesCallout();
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             MaterialSPAState.exitEditMode();
@@ -398,7 +396,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   void refreshWithUpdate(VoidCallback assignF) {
     assignF.call();
-    capiBloc.add(const CAPIEvent.forceRefresh());
+    FC.forceRefresh();
     Useful.afterNextBuildDo(() {
       SnippetBloC? snippetBloc = FC().snippetBeingEdited;
       SnippetState? snippetBlocState = snippetBloc?.state;
@@ -507,9 +505,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   List<String> sensibleParents() => const [];
 
   GlobalKey createNodeGK() {
-    debugPrint('--- createNodeGK --- ${toString()}');
+    // debugPrint('--- createNodeGK --- ${toString()}');
     if (nodeWidgetGK == null) {
-      nodeWidgetGK = GlobalKey();
+      nodeWidgetGK = GlobalKey(debugLabel: toString());
       FC().gkSTreeNodeMap[nodeWidgetGK!] = this;
     }
     return nodeWidgetGK!;
@@ -520,7 +518,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     //ensure no tabs have empty text
     if (this is TextNode &&
         (this as TextNode).text.isEmpty &&
-        parent is TabBarNode) {
+        getParent() is TabBarNode) {
       (this as TextNode).text = 'new tab';
     }
     // ensure No. tabs matches No. tab views
@@ -552,7 +550,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     var children = Node.snippetTreeChildrenProvider(this);
     for (STreeNode child in children) {
       bool foundAMissingParent =
-          child.parent != this || child.anyMissingParents();
+          child.getParent() != this || child.anyMissingParents();
       if (foundAMissingParent) {
         return true;
       }
@@ -561,24 +559,25 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   bool isAScaffoldTabWidget() {
-    return parent is TabBarNode &&
-        parent?.parent is GenericSingleChildNode &&
-        (parent?.parent as GenericSingleChildNode?)?.propertyName == 'bottom';
+    return getParent() is TabBarNode &&
+        getParent()?.getParent() is GenericSingleChildNode &&
+        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'bottom';
   }
 
   bool isAScaffoldTabViewWidget() =>
-      parent is TabBarViewNode &&
-      parent?.parent is GenericSingleChildNode &&
-      (parent?.parent as GenericSingleChildNode?)?.propertyName == 'body';
+      getParent() is TabBarViewNode &&
+          getParent()?.getParent() is GenericSingleChildNode &&
+      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'body';
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
-    var node = parent?.parent;
+    var node = getParent()?.getParent();
     return node is StepNode && (node.title == this || node.content == this);
   }
 
   STreeNode? findDescendant(Type type) {
     //
     STreeNode? foundChild;
+
     void findMatchingChild(STreeNode parent) {
       bool keepSearching = true;
       for (STreeNode child in Node.snippetTreeChildrenProvider(parent)) {
@@ -597,13 +596,32 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return foundChild;
   }
 
+  List<STreeNode> findDescendantsOfType(Type type) {
+    //
+    List<STreeNode> foundNodes = [];
+
+    void findMatchingDescendants(STreeNode node) {
+      for (STreeNode child in Node.snippetTreeChildrenProvider(node)) {
+        if (child.runtimeType == type) {
+          foundNodes.add(child);
+        } else {
+          findMatchingDescendants(child);
+        }
+      }
+    }
+
+    //
+    findMatchingDescendants(this);
+    return foundNodes;
+  }
+
   T? findNearestAncestor<T>() {
     //
-    Node? node = parent;
+    Node? node = getParent();
 
     while (node != null && node.runtimeType != T) {
-      if (node != node.parent) {
-        node = node.parent;
+      if (node != node.getParent()) {
+        node = node.getParent();
       } else {
         return null;
       }
@@ -614,6 +632,57 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
 
     return node as T?;
+  }
+
+  static void hideAllTargetCovers({TargetModel? except}) {
+    for (TargetModel tc in allTargets()) {
+      tc.showCover = false;
+      if (tc == except) {
+        tc.showCover = true;
+      }
+    }
+  }
+
+  static void hideAllTargetBtns({TargetModel? except}) {
+    for (TargetModel tc in allTargets()) {
+      tc.showBtn = false;
+      if (tc == except) {
+        tc.showBtn = true;
+      }
+    }
+  }
+
+  static void showAllTargetCovers() {
+    for (TargetModel tc in allTargets()) {
+      tc.showCover = true;
+    }
+  }
+
+  static void showAllTargetBtns() {
+    for (TargetModel tc in allTargets()) {
+      tc.showBtn = true;
+    }
+  }
+
+  static List<TargetModel> allTargets() {
+    List<TargetModel> foundTargets = [];
+    for (SnippetName snippetName in FC().snippetCache.keys) {
+      // get published or editing version
+      VersionId? versionId = FC().canEditContent
+          ? FC().editingVersionIds[snippetName]
+          : FC().publishedVersionIds[snippetName];
+      if (versionId != null) {
+        SnippetRootNode? snippet = FC().snippetCache[snippetName]![versionId];
+        if (snippet != null) {
+          List<STreeNode> tws =
+              snippet.findDescendantsOfType(TargetGroupWrapperNode);
+          for (STreeNode tw in tws) {
+            foundTargets.addAll((tw as TargetGroupWrapperNode).targets);
+          }
+        }
+      }
+    }
+    return foundTargets;
   }
 
 // check nodes are identical

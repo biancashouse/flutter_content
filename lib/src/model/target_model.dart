@@ -4,14 +4,14 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
-import 'package:flutter_content/src/snippet/snodes/target_group_wrapper_node.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'target_model.mapper.dart';
 
 @MappableClass()
 class TargetModel with TargetModelMappable {
-  TargetModelId uid;
+  TargetId uid;
   double transformScale;
   // double transformTranslateX;
   // double transformTranslateY;
@@ -19,6 +19,8 @@ class TargetModel with TargetModelMappable {
   // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
   TargetGroupWrapperNode? targetsWrapperNode;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
 
   // bool single;
   double? targetLocalPosLeftPc;
@@ -28,6 +30,7 @@ class TargetModel with TargetModelMappable {
   double? btnLocalLeftPc;
   double? calloutTopPc;
   double? calloutLeftPc;
+  bool showCover;
   bool showBtn;
   bool canResizeH;
   bool canResizeV;
@@ -68,7 +71,8 @@ class TargetModel with TargetModelMappable {
     this.btnLocalLeftPc,
     this.targetLocalPosLeftPc,
     this.targetLocalPosTopPc,
-    this.showBtn = true,
+    this.showCover = false,
+    this.showBtn = false,
     this.canResizeH = true,
     this.canResizeV = true,
     this.calloutFillColorValue,
@@ -89,7 +93,7 @@ class TargetModel with TargetModelMappable {
   }
 
   GlobalKey? get targetsWrapperGK => targetsWrapperNode?.nodeWidgetGK;
-  TargetsWrapperState? get targetsWrapperState => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState;
+  TargetsWrapperState? targetsWrapperState() => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState;
 
   /// https://gist.github.com/pskink/aa0b0c80af9a986619845625c0e87a67
   Matrix4 composeMatrix({
@@ -116,7 +120,7 @@ class TargetModel with TargetModelMappable {
     return Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1);
   }
 
-  bool playingOrSelected() => targetsWrapperState?.widget.parentNode.playList.isNotEmpty??false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
+  bool playingOrSelected() => targetsWrapperState()?.widget.parentNode.playList.isNotEmpty??false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
   double getScale({bool testing = false}) => playingOrSelected() || testing ? transformScale : 1.0;
 
@@ -128,7 +132,7 @@ class TargetModel with TargetModelMappable {
   // }
 
   double get radius {
-    Size ivSize = targetsWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState()!.wrapperRect.size;
     return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
   }
 
@@ -175,7 +179,7 @@ class TargetModel with TargetModelMappable {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = targetsWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? Useful.scrSize;
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -184,7 +188,7 @@ class TargetModel with TargetModelMappable {
   }
 
   Offset targetStackPos() {
-    Size ivSize = targetsWrapperState!.wrapperSize;
+    Size ivSize = targetsWrapperState()!.wrapperRect.size;
 
     double stackPosX = (targetLocalPosLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (targetLocalPosTopPc ?? 0.0) * ivSize.height;
@@ -193,9 +197,11 @@ class TargetModel with TargetModelMappable {
   }
 
   void setTargetStackPosPc(Offset globalPos) {
+    if (targetsWrapperState() == null) return;
+
     // iv rect should always be measured
-    Offset ivTopLeft = targetsWrapperState!.wrapperPos;
-    Size ivSize = targetsWrapperState!.wrapperSize;
+    Offset ivTopLeft = targetsWrapperState()!.wrapperRect.topLeft;
+    Size ivSize = targetsWrapperState()!.wrapperRect.size;
 
     double targetLocalPosTop = globalPos.dy - ivTopLeft.dy;
     double targetLocalPosLeft = globalPos.dx - ivTopLeft.dx;
@@ -210,9 +216,11 @@ class TargetModel with TargetModelMappable {
   }
 
   void setBtnStackPosPc(Offset globalPos) {
+    if (targetsWrapperState() == null) return;
+
     // iv rect should always be measured
-    Offset ivTopLeft = targetsWrapperState!.wrapperPos;
-    Size ivSize = targetsWrapperState!.wrapperSize;
+    Offset ivTopLeft = targetsWrapperState()!.wrapperRect.topLeft;
+    Size ivSize = targetsWrapperState()!.wrapperRect.size;
 
     btnLocalTopPc = (globalPos.dy - ivTopLeft.dy) / (ivSize.height);
     btnLocalLeftPc = (globalPos.dx - ivTopLeft.dx) / (ivSize.width);
@@ -252,6 +260,47 @@ class TargetModel with TargetModelMappable {
 
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
+  Future<void> onChange() async {
+    SnippetRootNode? rootNode =
+    targetsWrapperNode?.rootNodeOfSnippet();
+    if (rootNode != null) {
+      VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+      FC().addToSnippetCache(
+          snippetName: snippetName,
+          rootNode: rootNode,
+          versionId: newVersionId);
+      FC().updateEditingVersionId(
+          snippetName: snippetName, newVersionId: newVersionId);
+      // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+      // var appInfoMap = FC().appInfoAsMap;
+      await FC().modelRepo.saveSnippet(
+          snippetRootNode: rootNode, newVersionId: newVersionId);
+      // appInfoMap = FC().appInfoAsMap;
+      Callout.dismissAll(onlyToasts: true);
+      HydratedBloc.storage.write('flutter-content', rootNode.toJson());
+      Callout.showTextToast(
+        feature: "saving-model",
+        msgText: 'saving changes...',
+        backgroundColor: Colors.yellow,
+        width: Useful.scrW * .8,
+        height: 40,
+        gravity: Alignment.topCenter,
+        textColor: Colors.blueAccent,
+        removeAfterMs: 500,
+      );
+    }
+
+    // emit(state.copyWith(
+    //   // targetGroupMap: newMap,
+    //   // hideAllTargetGroups:
+    //   //     event.keepTargetsHidden ? state.hideAllTargetGroups : false,
+    //   // hideAllTargetGroupPlayBtns:
+    //   //     event.keepTargetsHidden ? state.hideAllTargetGroupPlayBtns : false,
+    //   // hideTargetsExcept:
+    //   //     event.keepTargetsHidden ? state.hideTargetsExcept : null,
+    //   force: state.force + 1,
+    // ));
+  }
 
   @override
   bool operator ==(Object other) => other is TargetModel && other.uid == uid;

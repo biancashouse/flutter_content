@@ -287,7 +287,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
   }
 
   Widget nodeButtons(snippetBloc, context) {
-    var gc = snippetBloc.state.selectedNode.parent;
+    var gc = snippetBloc.state.selectedNode.getParent();
     return Container(
       color: Colors.black,
       child: Column(
@@ -303,7 +303,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   onPressed: () {
                     // some properties cannot be deleted
                     if (gc is GenericSingleChildNode? &&
-                        gc?.parent is StepNode &&
+                        gc?.getParent() is StepNode &&
                         (gc?.propertyName == 'title' ||
                             gc?.propertyName == 'content')) return;
                     snippetBloc.add(SnippetEvent.cutNode(
@@ -321,7 +321,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                           !snippetBloc.state.aNodeIsSelected ||
                                   snippetBloc.state.selectedNode
                                       is SnippetRefNode ||
-                                  (gc?.parent is StepNode &&
+                                  (gc?.getParent() is StepNode &&
                                       (gc?.propertyName == 'title' ||
                                           gc?.propertyName == 'content'))
                               ? .5
@@ -361,7 +361,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
                     STreeNode node = snippetBloc.state.selectedNode;
                     bool wasShowingAsRoot = snippetBloc.state.selectedNode == snippetBloc.treeC.roots.first;
-                    STreeNode? parentNode = snippetBloc.state.selectedNode.parent as STreeNode?;
+                    STreeNode? parentNode = snippetBloc.state.selectedNode.getParent() as STreeNode?;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     snippetBloc.add(const SnippetEvent.deleteNodeTapped());
                     Useful.afterNextBuildDo(() async {
@@ -391,7 +391,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                                   snippetBloc.state.selectedNode
                                       is SnippetRefNode ||
                                   (gc is GenericSingleChildNode? &&
-                                      gc?.parent is StepNode &&
+                                      gc?.getParent() is StepNode &&
                                       (gc?.propertyName == 'title' ||
                                           gc?.propertyName == 'content'))
                               ? .5
@@ -521,7 +521,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     ),
                   ),
                   if (snippetBloc.state.selectedNode is! RowNode &&
-                      _canAddSiblng(snippetBloc.state.selectedNode.parent))
+                      _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -568,7 +568,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
             ),
           ),
           if (snippetBloc.state.selectedNode is RowNode &&
-              _canAddSiblng(snippetBloc.state.selectedNode.parent))
+              _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -659,7 +659,7 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (snippetBloc.treeC.roots.first.parent is! SnippetRootNode)
+                      if (snippetBloc.treeC.roots.first.getParent() is! SnippetRootNode)
                         navigateUpTreeButton(context),
                       Expanded(
                           child: SnippetTreeView(snippetBloc: snippetBloc)),
@@ -679,9 +679,9 @@ class SnippetTreePane extends StatelessWidget {
         onPressed: () {
           // change tree root to parent
           STreeNode treeRootNode = snippetBloc.treeC.roots.first;
-          STreeNode? parent = treeRootNode.parent as STreeNode?;
+          STreeNode? parent = treeRootNode.getParent() as STreeNode?;
           if (parent is GenericSingleChildNode) {
-            parent = parent.parent as STreeNode?;
+            parent = parent.getParent() as STreeNode?;
           }
           if (parent != null) {
             snippetBloc.add(const SnippetEvent.clearNodeSelection());

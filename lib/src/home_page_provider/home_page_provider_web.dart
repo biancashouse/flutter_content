@@ -11,7 +11,7 @@ class WebHomePageProvider implements HomePageProvider {
   @override
   Widget getWebOrMobileHomePage(Widget webHomePage, Widget mobileHomePage) =>
       BlocBuilder<CAPIBloC, CAPIState>(
-          // buildWhen: (previous, current) => current.snippetBeingEdited?.snippetName == widget.sName,
+          buildWhen: (previous, current) => current.force != previous.force && !current.onlyTargetsWrappers,
           builder: (innerContext, state) {
         return webHomePage;
       });

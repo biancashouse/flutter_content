@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/home_page_provider/home_page_provider.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/clipboard_view.dart';
@@ -187,7 +188,8 @@ class MaterialSPA extends StatefulWidget {
 }
 
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
-class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin {
+class MaterialSPAState extends State<MaterialSPA>
+    with TickerProviderStateMixin {
   late Future<CAPIBloC> fInitApp;
   int tapCount = 0;
   DateTime? lastTapTime;
@@ -223,7 +225,8 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   //     MaterialSPAState.removeAllNodeWidgetOverlays();
   //     MaterialSPAState.exitEditMode();
   //     Useful.afterMsDelayDo(1000, () {
-  //       FC().capiBloc.add(const CAPIEvent.forceRefresh());
+  //               FC.forceRefresh();
+
   //       FC().snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
   //       // MaterialSPAState.showAllNodeWidgetOverlays(context);
   //     });
@@ -238,6 +241,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       fbOptions: widget.fbOptions,
       namedStyles: widget.namedStyles,
     );
+    STreeNode.hideAllTargetCovers();
     return capiBloc;
   }
 
@@ -248,82 +252,79 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // );
 
   @override
-  Widget build(BuildContext context) => Builder(
-      builder: (context) {
-        return FutureBuilder<CAPIBloC>(
-          future: fInitApp,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.hasData) {
-              // debugPrint("done (has data)");
-              // create the clipboard overlay and hide
-              // start the app with the main bloC
-              if (!Callout.anyPresent(["floating-clipboard"])) {
-                Useful.afterNextBuildDo(() {
-                  // _showFloatingClipboard();
-                  // Callout.hide("floating-clipboard");
-                  showDevToolsFAB();
-                });
-              }
-              return BlocProvider<CAPIBloC>(
-                create: (BuildContext context) => snapshot.data!,
-                child: MaterialApp(
-                  theme: widget.materialAppThemeF(),
-                  debugShowCheckedModeBanner: false,
-                  title: widget.title,
-                  scrollBehavior: const ConstantScrollBehavior(),
-                  home: NotificationListener<SizeChangedLayoutNotification>(
-                    onNotification:
-                        (SizeChangedLayoutNotification notification) {
-                      debugPrint("MaterialSPA SizeChangedLayoutNotification}");
-                      Callout.dismissAll(exceptFeatures: ["FAB"]);
-                      Useful.afterMsDelayDo(300, () {
-                        Useful.refreshMQ(context);
-                        if (FC().showingNodeOBoundaryOverlays ?? false) {
-                          MaterialSPAState.removeAllNodeWidgetOverlays();
-                          MaterialSPAState.showAllNodeWidgetOverlays(context);
+  Widget build(context) {
+    return FutureBuilder<CAPIBloC>(
+        future: fInitApp,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            // debugPrint("done (has data)");
+            // create the clipboard overlay and hide
+            // start the app with the main bloC
+            if (!Callout.anyPresent(["floating-clipboard"])) {
+              Useful.afterNextBuildDo(() {
+                // _showFloatingClipboard();
+                // Callout.hide("floating-clipboard");
+                showDevToolsFAB();
+              });
+            }
+            return BlocProvider<CAPIBloC>(
+              create: (BuildContext context) => snapshot.data!,
+              child: MaterialApp(
+                theme: widget.materialAppThemeF(),
+                debugShowCheckedModeBanner: false,
+                title: widget.title,
+                scrollBehavior: const ConstantScrollBehavior(),
+                home: NotificationListener<SizeChangedLayoutNotification>(
+                  onNotification: (SizeChangedLayoutNotification notification) {
+                    debugPrint("MaterialSPA SizeChangedLayoutNotification}");
+                    Callout.dismissAll(exceptFeatures: ["FAB"]);
+                    Useful.afterMsDelayDo(300, () {
+                      Useful.refreshMQ(context);
+                      if (FC().showingNodeOBoundaryOverlays ?? false) {
+                        MaterialSPAState.removeAllNodeWidgetOverlays();
+                        MaterialSPAState.showAllNodeWidgetOverlays(context);
+                      }
+                    });
+                    return true;
+                  },
+                  child: SizeChangedLayoutNotifier(
+                    child: KeyboardListener(
+                      autofocus: true,
+                      focusNode: focusNode, // <-- more magic
+                      onKeyEvent: (KeyEvent event) {
+                        bool isEsc =
+                            event.logicalKey == LogicalKeyboardKey.escape;
+                        if (FC().inEditMode.value && isEsc) {
+                          exitEditMode();
                         }
-                      });
-                      return true;
-                    },
-                    child: SizeChangedLayoutNotifier(
-                      child: KeyboardListener(
-                        autofocus: true,
-                        focusNode: focusNode, // <-- more magic
-                        onKeyEvent: (KeyEvent event) {
-                          bool isEsc =
-                              event.logicalKey == LogicalKeyboardKey.escape;
-                          if (FC().inEditMode.value && isEsc) {
-                            exitEditMode();
-                          }
-                          // _enterOrExitEditMode(event, lastTapTime, tapCount);
-                        },
-                        child: Builder(builder: (context) {
-                          Useful.instance.initWithContext(context);
-                          return widget.testWidget != null
-                              ? widget.testWidget!
-                              : widget.webHome != null &&
-                                      widget.mobileHome != null
-                                  ? HomePageProvider().getWebOrMobileHomePage(
-                                      widget.webHome!, widget.mobileHome!)
-                                  : const Icon(
-                                      Icons.error_outlined,
-                                      color: Colors.red,
-                                      size: 40,
-                                    );
-                        }),
-                      ),
+                        // _enterOrExitEditMode(event, lastTapTime, tapCount);
+                      },
+                      child: Builder(builder: (context) {
+                        Useful.instance.initWithContext(context);
+                        return widget.testWidget != null
+                            ? widget.testWidget!
+                            : widget.webHome != null &&
+                                    widget.mobileHome != null
+                                ? HomePageProvider().getWebOrMobileHomePage(
+                                    widget.webHome!, widget.mobileHome!)
+                                : const Icon(
+                                    Icons.error_outlined,
+                                    color: Colors.red,
+                                    size: 40,
+                                  );
+                      }),
                     ),
                   ),
                 ),
-              );
-            } else {
-              return const Offstage();
-            }
-          },
-        );
-        // TESTING ONLY
-      });
+              ),
+            );
+          } else {
+            return const Offstage();
+          }
+          // TESTING ONLY
+        });
+  }
 
   // @override
   // Widget build2(BuildContext context) => Builder(builder: (context) {
@@ -412,6 +413,18 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   /// either show edit btn fab, or lock icon fab
   static Future<void> showDevToolsFAB() async {
+
+    // var appInfo = FC().appInfoAsMap;
+    // var cache = FC().snippetCache;
+    // // allow some time for snippet to be fetched into snippetCache
+    // if (FC().canEditContent) {
+    //   STreeNode.showAllTargetCovers();
+    // } else {
+    //   STreeNode.hideAllTargetCovers();
+    // }
+    // STreeNode.showAllTargetBtns();
+    // FC.forceRefresh();
+    Callout.dismiss("FAB");
     // // AppModel appModel = FC().appInfo;
     // // BranchModel? currentBranch = appModel.branches[appModel.editingBranchName];
     // String buildInfo = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
@@ -420,7 +433,6 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     // String verTimeago =
     //     timeago.format(DateTime.fromMillisecondsSinceEpoch(ver));
     // String verTimeDate = Useful.formattedDate(ver);
-    Callout.dismiss("FAB");
     Callout.showOverlay(
         boxContentF: (context) => FC().canEditContent
             ? PointerInterceptor(
@@ -431,7 +443,8 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                       onPressed: () async {
                         MaterialSPAState? rootState = MaterialSPA.of(context);
                         if (rootState != null) {
-                          enterEditMode(rootState.context); //rootState.context);
+                          enterEditMode(
+                              rootState.context); //rootState.context);
                         }
                       },
                       icon: const Icon(Icons.search, color: Colors.white),
@@ -439,8 +452,13 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                     IconButton(
                       onPressed: () async {
                         _signOut();
+                        FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                       },
-                      icon: const Icon(Icons.close, color: Colors.white, size: 12,),
+                      icon: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 12,
+                      ),
                     ),
                   ],
                 ),
@@ -448,7 +466,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             : _lockIconButton(),
         calloutConfig: CalloutConfig(
           feature: "FAB",
-          suppliedCalloutW: 100,
+          suppliedCalloutW: FC().canEditContent ? 120 : 60,
           suppliedCalloutH: 60,
           initialCalloutPos: FC().devToolsFABPos(Useful.rootContext),
           fillColor: FUCHSIA_X,
@@ -490,7 +508,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     );
     // FC.loadLatestSnippetMap();
     // hideAllSingleTargetBtns();
-    // FC().capiBloc.add(const CAPIEvent.forceRefresh());
+    //         FC.forceRefresh();
   }
 
   static void exitEditMode() {
@@ -506,7 +524,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     }
     FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
     // unhideAllSingleTargetBtns();
-    // FC().capiBloc.add(const CAPIEvent.forceRefresh());
+    //         FC.forceRefresh();
   }
 
   // _enterOrExitEditMode(KeyEvent event, DateTime? lastTapTime, int tapCount) {
@@ -747,17 +765,20 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
                   prompt: 'password',
                   originalS: '',
                   onTextChangedF: (s) async {
-                    if (s == "lakebeachocean") {
+                    if (s == " ") {
                       Callout.dismiss("EditorPassword");
                       FC().setCanEdit(true);
                       // await FC.loadLatestSnippetMap();
-                      FC().capiBloc.add(const CAPIEvent.hideAllTargetGroups());
-                      Useful.afterNextBuildDo(() {
-                        FC()
-                            .capiBloc
-                            .add(const CAPIEvent.unhideAllTargetGroups());
-                        showDevToolsFAB();
-                      });
+                      // FC().capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+                      // Useful.afterNextBuildDo(() {
+                      //   FC()
+                      //       .capiBloc
+                      //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
+                      //   showDevToolsFAB();
+                      // });
+                      Callout.dismiss("EditorPassword");
+                      FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                      showDevToolsFAB();
                     }
                   },
                   dontAutoFocus: false,
@@ -942,13 +963,14 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 //     );
 //   }
 //
-  Future<void> _signOut() async {
-    FC().setCanEdit(false);
-    FC().capiBloc.add(const CAPIEvent.forceRefresh());
-    Useful.afterNextBuildDo(() {
-      MaterialSPAState.showDevToolsFAB();
-    });
-  }
+Future<void> _signOut() async {
+  FC().setCanEdit(false);
+  MaterialSPAState.showDevToolsFAB();
+
+  FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  // Useful.afterNextBuildDo(() {
+  // });
+}
 //
 //   SubmenuButton _snippetsMenu() {
 //     List<MenuItemButton> snippetMIs = [];

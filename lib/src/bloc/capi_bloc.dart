@@ -47,6 +47,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
     // on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
+    on<EnsureSnippetPresent>(
+        (event, emit) => _ensureSnippetPresent(event, emit));
     on<SaveSnippet>((event, emit) => _saveSnippet(event, emit));
     // on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
@@ -60,21 +62,24 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // on<ListViewRefreshed>((event, emit) => _listViewRefreshed(event, emit));
     // on<DeleteTarget>((event, emit) => _deleteTarget(event, emit));
     // on<SelectTarget>((event, emit) => _selectTarget(event, emit));
-    on<HideIframes>((event, emit) => _hideIframes(event, emit));
-    on<HideAllTargetGroups>((event, emit) => _hideAllTargetGroups(event, emit));
-    on<HideAllTargetGroupBtns>(
-        (event, emit) => _hideAllTargetGroupBtns(event, emit));
-    on<HideTargetGroupsExcept>(
-        (event, emit) => _hideTargetGroupsExcept(event, emit));
-    on<ShowOnlyOneTarget>(
-        (event, emit) => _showOnlyOneTargetGroup(event, emit));
-    on<UnhideAllTargetGroups>(
-        (event, emit) => _unhideAllTargetGroups(event, emit));
+    // on<HideIframes>((event, emit) => _hideIframes(event, emit));
+    // on<HideTargetBtn>((event, emit) => _hideTargetBtn(event, emit));
+    // on<UnhideTargetBtn>((event, emit) => _unhideTargetBtn(event, emit));
+    // on<HideAllTargetCoversAndBtns>((event, emit) => _hideAllTargetCoversAndBtns(event, emit));
+    // on<HideAllTargetBtns>(
+    //     (event, emit) => _hideAllTargetBtns(event, emit));
+    // on<HideTargetCoversExcept>(
+    //     (event, emit) => _hideTargetGroupsExcept(event, emit));
+    // on<ShowOnlyOneTarget>(
+    //     (event, emit) => _showOnlyOneTargetGroup(event, emit));
+    // on<UnhideAllTargetGroupsAndBtns>(
+    //         (event, emit) => _unhideAllTargetGroupsAndBtns(event, emit));
+    // on<UnhideAllTargetBtns>((event, emit) => _unhideAllTargetBtns(event, emit));
     // on<ChangedOrder>((event, emit) => _changedOrder(event, emit));
     // on<ClearSelection>((event, emit) => _clearSelection(event, emit));
     // on<StartPlayingList>((event, emit) => _startPlayingList(event, emit));
     // on<PlayNextInList>((event, emit) => _playNextInList(event, emit));
-    on<TargetChanged>((event, emit) => _targetChanged(event, emit));
+    // on<TargetChanged>((event, emit) => _targetChanged(event, emit));
     // on<ChangedCalloutPosition>((event, emit) => _changedCalloutPosition(event, emit));
     // on<ChangedCalloutDuration>((event, emit) => _changedCalloutDuration(event, emit));
     // on<ChangedCalloutColor>((event, emit) => _changedCalloutColor(event, emit));
@@ -156,6 +161,71 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   ));
   // }
 
+  // ensure both published and editing versions are present
+  Future<void> _ensureSnippetPresent(EnsureSnippetPresent event, emit) async {
+    await _getOrCreateSnippet(
+      event.snippetName,
+      true,
+      event.fromTemplate,
+      event.onlyTargetsWrappers,
+      emit,
+    );
+    await _getOrCreateSnippet(
+      event.snippetName,
+      false,
+      event.fromTemplate,
+      event.onlyTargetsWrappers,
+      emit,
+    );
+    // var fc = FC();
+    emit(state.copyWith(
+      force: state.force + 1,
+      onlyTargetsWrappers: !event.onlyTargetsWrappers,
+    ));
+  }
+
+  Future<void> _getOrCreateSnippet(
+    SnippetName snippetName,
+    bool canEdit,
+    SnippetTemplate fromTemplate,
+    bool onlyTargetsWrappers,
+    emit,
+  ) async {
+    SnippetRootNode? rootNode;
+    VersionId? editingOrPublishedVersionId = canEdit
+        ? FC().editingVersionIds[snippetName]
+        : FC().publishedVersionIds[snippetName];
+    if (editingOrPublishedVersionId != null) {
+      // exists in AppInfo, so make sure it has been fetched from FB
+      await FC().modelRepo.getSnippetFromCacheOrFB(
+          snippetName: snippetName, versionId: editingOrPublishedVersionId);
+      // var test = FC().snippetCache[snippetName]?[editingOrPublishedVersionId];
+      rootNode = FC().snippetCache[snippetName]?[editingOrPublishedVersionId];
+    } else {
+      // snippet does not yet exist in FB, hence not in AppInfo
+      VersionId initialVersionId =
+          DateTime.now().millisecondsSinceEpoch.toString();
+      rootNode =
+          SnippetPanel.createSnippetFromTemplate(fromTemplate, snippetName);
+      FC().addToSnippetCache(
+        snippetName: snippetName,
+        rootNode: rootNode,
+        versionId: initialVersionId,
+        // editing: true,
+      );
+      FC().updatePublishedVersionId(
+          snippetName: snippetName, versionId: initialVersionId);
+      FC().updateEditingVersionId(
+          snippetName: snippetName, newVersionId: initialVersionId);
+      SaveSnippet ssEvent = SaveSnippet(
+        snippetRootNode: rootNode,
+        newVersionId: initialVersionId,
+        onlyTargetsWrappers: true,
+      );
+      _saveSnippet(ssEvent, emit);
+    }
+  }
+
   Future<void> _saveSnippet(SaveSnippet event, emit) async {
     String? jsonBeforePush = FC().jsonBeforePush;
     String currentJsonS = event.snippetRootNode.toJson();
@@ -188,7 +258,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
 
     // save to firebase
-    await modelRepo.saveSnippet(
+    modelRepo.saveSnippet(
         snippetRootNode: event.snippetRootNode,
         newVersionId: event.newVersionId);
 
@@ -209,9 +279,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     Callout.dismissAll(onlyToasts: true);
     // update last value
-    if (event.andRefresh) {
+    if (!event.dontEmit) {
       emit(state.copyWith(
         force: state.force + 1,
+        onlyTargetsWrappers: event.onlyTargetsWrappers,
       ));
     }
   }
@@ -296,12 +367,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // ));
   }
 
-  void _forceRefresh(event, emit) {
-    // debugPrint("forceRefresh");
+  void _forceRefresh(ForceRefresh event, emit) {
+    debugPrint("forceRefresh --------------------------------------------------------");
     emit(state.copyWith(
       force: state.force + 1,
-      skipSnippetPanelRebuild: false,
+      onlyTargetsWrappers: event.onlyTargetsWrappers,
     ));
+    // if ForceRefresh was set, emit again to reset it in the bloc state
+    if (event.onlyTargetsWrappers) {
+      emit(state.copyWith(
+        force: state.force,
+        onlyTargetsWrappers: false,
+      ));
+    }
   }
 
 // void _trainerSignedIn(event, emit) {
@@ -355,7 +433,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       force: state.force + 1,
     ));
     if (event.skipSave) return;
-    FC().fbModelRepo.saveAppInfo();
+    FC().modelRepo.saveAppInfo();
   }
 
 // // update current scale, translate and selected target
@@ -464,45 +542,60 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   ));
 // }
 
-  Future<void> _hideIframes(HideIframes event, emit) async {
-    emit(state.copyWith(
-      hideIframes: event.hide,
-    ));
-  }
+  // Future<void> _hideIframes(HideIframes event, emit) async {
+  //   emit(state.copyWith(
+  //     hideIframes: event.hide,
+  //   ));
+  // }
 
-  Future<void> _hideAllTargetGroups(event, emit) async {
-    emit(state.copyWith(
-      hideAllTargetGroups: true,
-    ));
-  }
-
-  Future<void> _hideAllTargetGroupBtns(event, emit) async {
-    emit(state.copyWith(
-      hideAllTargetGroupPlayBtns: true,
-    ));
-  }
-
-  Future<void> _hideTargetGroupsExcept(
-      HideTargetGroupsExcept event, emit) async {
-    emit(state.copyWith(
-      hideTargetsExcept: event.tc,
-    ));
-  }
-
-  Future<void> _showOnlyOneTargetGroup(ShowOnlyOneTarget event, emit) async {
-    emit(state.copyWith(
-      hideTargetsExcept: event.tc,
-      hideAllTargetGroupPlayBtns: true,
-    ));
-  }
-
-  Future<void> _unhideAllTargetGroups(event, emit) async {
-    emit(state.copyWith(
-      hideAllTargetGroups: false,
-      hideAllTargetGroupPlayBtns: false,
-      hideTargetsExcept: null,
-    ));
-  }
+  // // Target Btns
+  // Future<void> _hideAllTargetBtns(event, emit) async {
+  //   emit(state.copyWith(
+  //     hideAllTargetBtns: true,
+  //   ));
+  // }
+  //
+  // Future<void> _unhideTargetBtn(HideTargetBtn event, emit) async {
+  //   emit(state.copyWith(
+  //     hideTargetBtnsExcept: event.tc,
+  //   ));
+  // }
+  //
+  // Future<void> _hideAllTargetCovers(event, emit) async {
+  //   emit(state.copyWith(
+  //     hideAllTargetCovers: true,
+  //   ));
+  // }
+  //
+  //
+  //
+  // Future<void> _unhideTargetCovers(HideTargetCoversExcept event, emit) async {
+  //   emit(state.copyWith(
+  //     hideTargetCoversExcept: event.tc,
+  //   ));
+  // }
+  //
+  // Future<void> _showOnlyOneTargetGroup(ShowOnlyOneTarget event, emit) async {
+  //   emit(state.copyWith(
+  //     hideTargetsExcept: event.tc,
+  //     hideAllTargetGroupPlayBtns: true,
+  //   ));
+  // }
+  //
+  // Future<void> _unhideAllTargetGroupsAndBtns(event, emit) async {
+  //   emit(state.copyWith(
+  //     hideAllTargetGroups: false,
+  //     hideAllTargetGroupPlayBtns: false,
+  //     hideTargetsExcept: null,
+  //     force: state.force + 1,
+  //   ));
+  // }
+  // Future<void> _unhideAllTargetBtns(event, emit) async {
+  //   emit(state.copyWith(
+  //     hideAllTargetGroupPlayBtns: false,
+  //     force: state.force + 1,
+  //   ));
+  // }
 
 // void _changedOrder(ChangedOrder event, emit) {
 //   int newIndex = event.newIndex;
@@ -581,48 +674,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // void _playSelection(event, emit) {
 //   emit(state.copyWith());
 // }
-
-  Future<void> _targetChanged(TargetChanged event, emit) async {
-    SnippetRootNode? rootNode =
-        event.newTC.targetsWrapperNode?.rootNodeOfSnippet();
-    if (rootNode != null) {
-      VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-      FC().addToSnippetCache(
-          snippetName: event.newTC.snippetName,
-          rootNode: rootNode,
-          versionId: newVersionId);
-      FC().updateEditingVersionId(
-          snippetName: event.newTC.snippetName, newVersionId: newVersionId);
-      // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-      var appInfoMap = FC().appInfoAsMap;
-      await modelRepo.saveSnippet(
-          snippetRootNode: rootNode, newVersionId: newVersionId);
-      appInfoMap = FC().appInfoAsMap;
-      Callout.dismissAll(onlyToasts: true);
-      HydratedBloc.storage.write('flutter-content', rootNode.toJson());
-      Callout.showTextToast(
-        feature: "saving-model",
-        msgText: 'saving changes...',
-        backgroundColor: Colors.yellow,
-        width: Useful.scrW * .8,
-        height: 40,
-        gravity: Alignment.topCenter,
-        textColor: Colors.blueAccent,
-        removeAfterMs: 500,
-      );
-    }
-
-    emit(state.copyWith(
-      // targetGroupMap: newMap,
-      hideAllTargetGroups:
-          event.keepTargetsHidden ? state.hideAllTargetGroups : false,
-      hideAllTargetGroupPlayBtns:
-          event.keepTargetsHidden ? state.hideAllTargetGroupPlayBtns : false,
-      hideTargetsExcept:
-          event.keepTargetsHidden ? state.hideTargetsExcept : null,
-      force: state.force + 1,
-    ));
-  }
 
 // void _changedCalloutPosition(ChangedCalloutPosition event, emit) {
 //   TargetModel tc = event.tc.clone();
@@ -942,10 +993,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..pushSnippet(newSnippetBloc);
 
     emit(state.copyWith(
-      hideAllTargetGroupPlayBtns: true,
-      hideTargetsExcept: null,
+      // hideAllTargetGroupPlayBtns: true,
+      // hideTargetsExcept: null,
       hideSnippetPencilIcons: true,
-      skipSnippetPanelRebuild: true,
+      onlyTargetsWrappers: true,
+    ));
+    emit(state.copyWith(
+      onlyTargetsWrappers: false,
     ));
   }
 
@@ -954,9 +1008,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (snippetPopped != null) {
       // CAPIState.snippetStateMap[snippetBeingPopped.snippetName] = snippetBeingPopped.state.copyWith();
       emit(state.copyWith(
-        hideAllTargetGroups: false,
-        hideAllTargetGroupPlayBtns: false,
-        hideTargetsExcept: null,
+        // hideAllTargetGroups: false,
+        // hideAllTargetGroupPlayBtns: false,
+        // hideTargetsExcept: null,
         hideIframes: false,
         hideSnippetPencilIcons: false,
       ));

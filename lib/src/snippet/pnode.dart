@@ -125,7 +125,7 @@ class TextStylePropertyGroup extends PropertyGroup {
         onFontFamilyChange: (newValue) {
           textStyleGroup ??= TextStyleGroup();
           textStyleGroup!.fontFamily = newValue;
-          snode.capiBloc.add(const CAPIEvent.forceRefresh());
+          FC.forceRefresh();
           onGroupChange.call(textStyleGroup!);
         },
       ),

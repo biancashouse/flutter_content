@@ -235,17 +235,17 @@ List<Widget> menuAnchorWidgets(
               "Column", snippetBloc, selectedNode, ColumnNode, action),
           _menuItemButton("Row", snippetBloc, selectedNode, RowNode, action),
         ],
-        if (selectedNode.parent is FlexNode)
+        if (selectedNode.getParent() is FlexNode)
           _menuItemButton(
               "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
-        if (selectedNode.parent is FlexNode)
+        if (selectedNode.getParent() is FlexNode)
           _menuItemButton(
               "Flexible", snippetBloc, selectedNode, FlexibleNode, action),
         if (selectedNode is WidgetSpanNode)
           _menuItemButton(
               "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
         if (selectedNode is TextSpanNode) ...[
-          if (selectedNode.parent is! RichTextNode)
+          if (selectedNode.getParent() is! RichTextNode)
             _menuItemButton(
                 "RichText", snippetBloc, selectedNode, TextSpanNode, action),
           _menuItemButton(
@@ -286,7 +286,7 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("SubMenuButton", snippetBloc, selectedNode,
               SubmenuButtonNode, action),
         ],
-        if (selectedNode.parent is RichTextNode ||
+        if (selectedNode.getParent() is RichTextNode ||
             selectedNode is TextSpanNode) ...[
           _menuItemButton(
               "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
@@ -299,13 +299,13 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
       ] else ...[
-        if (selectedNode.parent is FlexNode) ...[
+        if (selectedNode.getParent() is FlexNode) ...[
           _menuItemButton(
               "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
           _menuItemButton(
               "Flexible", snippetBloc, selectedNode, FlexibleNode, action),
         ],
-        if (selectedNode.parent is StackNode)
+        if (selectedNode.getParent() is StackNode)
           _menuItemButton(
               "Positioned", snippetBloc, selectedNode, PositionedNode, action),
         if (selectedNode is DirectoryNode) ...[
@@ -318,14 +318,14 @@ List<Widget> menuAnchorWidgets(
               "Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
         if (selectedNode is StepperNode)
           _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
-        if (selectedNode.parent is MenuBarNode ||
-            selectedNode.parent is SubmenuButtonNode) ...[
+        if (selectedNode.getParent() is MenuBarNode ||
+            selectedNode.getParent() is SubmenuButtonNode) ...[
           _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
               MenuItemButtonNode, action),
           _menuItemButton("SubMenuButton", snippetBloc, selectedNode,
               SubmenuButtonNode, action),
         ],
-        if (selectedNode.parent is CarouselNode) ...[
+        if (selectedNode.getParent() is CarouselNode) ...[
           _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
               AssetImageNode, action),
           _menuItemButton(
@@ -501,13 +501,14 @@ MenuItemButton _menuItemButton(
           // in case need to show more of the tree (higher up)
           Useful.afterNextBuildDo(() {
             snippetBloc.add(SnippetEvent.selectNode(
-              node: selectedNode.parent as STreeNode,
+              node: selectedNode.getParent() as STreeNode,
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
           });
         }
         Callout.dismiss(TREENODE_MENU_CALLOUT);
-        FC().capiBloc.add(const CAPIEvent.forceRefresh());
+                FC.forceRefresh();
+
       },
       child: Useful.coloredText(label, fontWeight: FontWeight.bold),
     );

@@ -54,14 +54,14 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     SnippetPanelState? spState = SnippetPanel.of(context);
     Widget leadingWidget() {
       if (spState != null) {
-        if (spState.prevTabQ.isNotEmpty) {
+        if (spState.prevTabQ?.isNotEmpty??false) {
           return IconButton(
             onPressed: () {
-              if (spState.prevTabQ.isNotEmpty) {
-                int prev = spState.prevTabQ.removeLast();
+              if (spState.prevTabQ!.isNotEmpty) {
+                int prev = spState.prevTabQ!.removeLast();
                 spState.backBtnPressed = true;
                 spState.tabC?.index = prev;
-                spState.prevTabQSize.value = spState.prevTabQ.length;
+                spState.prevTabQSize.value = spState.prevTabQ!.length;
                 debugPrint("back to tab: $prev,  ${spState.prevTabQ.toString()}");
               }
             },

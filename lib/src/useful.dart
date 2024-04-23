@@ -160,6 +160,7 @@ class Useful {
   static double get scrW => instance._mqd.size.width;
 
   static double get scrH => instance._mqd.size.height;
+  static Size get scrSize => instance._mqd.size;
 
   // static double get keyboardHeight => instance._mqd.viewInsets.bottom;
 

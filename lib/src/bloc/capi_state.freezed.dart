@@ -35,9 +35,12 @@ mixin _$CAPIState {
 // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
 // @Default([]) List<TargetModel> playList,
 // current selection
-  TargetModel? get hideTargetsExcept => throw _privateConstructorUsedError;
-  bool get hideAllTargetGroups => throw _privateConstructorUsedError;
-  bool get hideAllTargetGroupPlayBtns => throw _privateConstructorUsedError;
+// List<TargetModel> targetCovers
+// TargetModel? hideTargetCoversExcept,
+// TargetModel? hideTargetBtnsExcept,
+// @Default(false) bool hideAllTargetCovers,
+// @Default(false) bool hideAllTargetBtns,
+//
   TargetModel? get newestTarget => throw _privateConstructorUsedError;
   TargetModel? get selectedTarget => throw _privateConstructorUsedError; //
   String? get selectedPanel => throw _privateConstructorUsedError; //
@@ -48,7 +51,7 @@ mixin _$CAPIState {
   bool get showClipboardContent => throw _privateConstructorUsedError;
   int get force =>
       throw _privateConstructorUsedError; // hacky way to force a transition
-  bool get skipSnippetPanelRebuild =>
+  bool get onlyTargetsWrappers =>
       throw _privateConstructorUsedError; // hacky way to force a transition
 //
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
@@ -72,16 +75,13 @@ abstract class $CAPIStateCopyWith<$Res> {
       Offset? directoryTreeCalloutInitialPos,
       double? directoryTreeCalloutW,
       double? directoryTreeCalloutH,
-      TargetModel? hideTargetsExcept,
-      bool hideAllTargetGroups,
-      bool hideAllTargetGroupPlayBtns,
       TargetModel? newestTarget,
       TargetModel? selectedTarget,
       String? selectedPanel,
       bool trainerIsSignedn,
       bool showClipboardContent,
       int force,
-      bool skipSnippetPanelRebuild,
+      bool onlyTargetsWrappers,
       bool ONLY_TESTING});
 }
 
@@ -106,16 +106,13 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? directoryTreeCalloutInitialPos = freezed,
     Object? directoryTreeCalloutW = freezed,
     Object? directoryTreeCalloutH = freezed,
-    Object? hideTargetsExcept = freezed,
-    Object? hideAllTargetGroups = null,
-    Object? hideAllTargetGroupPlayBtns = null,
     Object? newestTarget = freezed,
     Object? selectedTarget = freezed,
     Object? selectedPanel = freezed,
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
     Object? force = null,
-    Object? skipSnippetPanelRebuild = null,
+    Object? onlyTargetsWrappers = null,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_value.copyWith(
@@ -151,18 +148,6 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.directoryTreeCalloutH
           : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
               as double?,
-      hideTargetsExcept: freezed == hideTargetsExcept
-          ? _value.hideTargetsExcept
-          : hideTargetsExcept // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      hideAllTargetGroups: null == hideAllTargetGroups
-          ? _value.hideAllTargetGroups
-          : hideAllTargetGroups // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hideAllTargetGroupPlayBtns: null == hideAllTargetGroupPlayBtns
-          ? _value.hideAllTargetGroupPlayBtns
-          : hideAllTargetGroupPlayBtns // ignore: cast_nullable_to_non_nullable
-              as bool,
       newestTarget: freezed == newestTarget
           ? _value.newestTarget
           : newestTarget // ignore: cast_nullable_to_non_nullable
@@ -187,9 +172,9 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
               as int,
-      skipSnippetPanelRebuild: null == skipSnippetPanelRebuild
-          ? _value.skipSnippetPanelRebuild
-          : skipSnippetPanelRebuild // ignore: cast_nullable_to_non_nullable
+      onlyTargetsWrappers: null == onlyTargetsWrappers
+          ? _value.onlyTargetsWrappers
+          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
               as bool,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
@@ -216,16 +201,13 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
       Offset? directoryTreeCalloutInitialPos,
       double? directoryTreeCalloutW,
       double? directoryTreeCalloutH,
-      TargetModel? hideTargetsExcept,
-      bool hideAllTargetGroups,
-      bool hideAllTargetGroupPlayBtns,
       TargetModel? newestTarget,
       TargetModel? selectedTarget,
       String? selectedPanel,
       bool trainerIsSignedn,
       bool showClipboardContent,
       int force,
-      bool skipSnippetPanelRebuild,
+      bool onlyTargetsWrappers,
       bool ONLY_TESTING});
 }
 
@@ -248,16 +230,13 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? directoryTreeCalloutInitialPos = freezed,
     Object? directoryTreeCalloutW = freezed,
     Object? directoryTreeCalloutH = freezed,
-    Object? hideTargetsExcept = freezed,
-    Object? hideAllTargetGroups = null,
-    Object? hideAllTargetGroupPlayBtns = null,
     Object? newestTarget = freezed,
     Object? selectedTarget = freezed,
     Object? selectedPanel = freezed,
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
     Object? force = null,
-    Object? skipSnippetPanelRebuild = null,
+    Object? onlyTargetsWrappers = null,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_$CAPIStateImpl(
@@ -293,18 +272,6 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.directoryTreeCalloutH
           : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
               as double?,
-      hideTargetsExcept: freezed == hideTargetsExcept
-          ? _value.hideTargetsExcept
-          : hideTargetsExcept // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      hideAllTargetGroups: null == hideAllTargetGroups
-          ? _value.hideAllTargetGroups
-          : hideAllTargetGroups // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hideAllTargetGroupPlayBtns: null == hideAllTargetGroupPlayBtns
-          ? _value.hideAllTargetGroupPlayBtns
-          : hideAllTargetGroupPlayBtns // ignore: cast_nullable_to_non_nullable
-              as bool,
       newestTarget: freezed == newestTarget
           ? _value.newestTarget
           : newestTarget // ignore: cast_nullable_to_non_nullable
@@ -329,9 +296,9 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
               as int,
-      skipSnippetPanelRebuild: null == skipSnippetPanelRebuild
-          ? _value.skipSnippetPanelRebuild
-          : skipSnippetPanelRebuild // ignore: cast_nullable_to_non_nullable
+      onlyTargetsWrappers: null == onlyTargetsWrappers
+          ? _value.onlyTargetsWrappers
+          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
               as bool,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
@@ -353,16 +320,13 @@ class _$CAPIStateImpl extends _CAPIState {
       this.directoryTreeCalloutInitialPos = Offset.zero,
       this.directoryTreeCalloutW = 400,
       this.directoryTreeCalloutH = 600,
-      this.hideTargetsExcept,
-      this.hideAllTargetGroups = false,
-      this.hideAllTargetGroupPlayBtns = false,
       this.newestTarget,
       this.selectedTarget,
       this.selectedPanel,
       this.trainerIsSignedn = false,
       this.showClipboardContent = true,
       this.force = 0,
-      this.skipSnippetPanelRebuild = false,
+      this.onlyTargetsWrappers = false,
       this.ONLY_TESTING = true})
       : super._();
 
@@ -399,14 +363,12 @@ class _$CAPIStateImpl extends _CAPIState {
 // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
 // @Default([]) List<TargetModel> playList,
 // current selection
-  @override
-  final TargetModel? hideTargetsExcept;
-  @override
-  @JsonKey()
-  final bool hideAllTargetGroups;
-  @override
-  @JsonKey()
-  final bool hideAllTargetGroupPlayBtns;
+// List<TargetModel> targetCovers
+// TargetModel? hideTargetCoversExcept,
+// TargetModel? hideTargetBtnsExcept,
+// @Default(false) bool hideAllTargetCovers,
+// @Default(false) bool hideAllTargetBtns,
+//
   @override
   final TargetModel? newestTarget;
   @override
@@ -430,7 +392,7 @@ class _$CAPIStateImpl extends _CAPIState {
 // hacky way to force a transition
   @override
   @JsonKey()
-  final bool skipSnippetPanelRebuild;
+  final bool onlyTargetsWrappers;
 // hacky way to force a transition
 //
   @override
@@ -439,7 +401,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, hideTargetsExcept: $hideTargetsExcept, hideAllTargetGroups: $hideAllTargetGroups, hideAllTargetGroupPlayBtns: $hideAllTargetGroupPlayBtns, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, skipSnippetPanelRebuild: $skipSnippetPanelRebuild, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -447,7 +409,8 @@ class _$CAPIStateImpl extends _CAPIState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CAPIStateImpl &&
-            (identical(other.initialValueJsonAssetPath, initialValueJsonAssetPath) ||
+            (identical(other.initialValueJsonAssetPath,
+                    initialValueJsonAssetPath) ||
                 other.initialValueJsonAssetPath == initialValueJsonAssetPath) &&
             (identical(other.hideIframes, hideIframes) ||
                 other.hideIframes == hideIframes) &&
@@ -465,14 +428,6 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.directoryTreeCalloutW == directoryTreeCalloutW) &&
             (identical(other.directoryTreeCalloutH, directoryTreeCalloutH) ||
                 other.directoryTreeCalloutH == directoryTreeCalloutH) &&
-            (identical(other.hideTargetsExcept, hideTargetsExcept) ||
-                other.hideTargetsExcept == hideTargetsExcept) &&
-            (identical(other.hideAllTargetGroups, hideAllTargetGroups) ||
-                other.hideAllTargetGroups == hideAllTargetGroups) &&
-            (identical(other.hideAllTargetGroupPlayBtns,
-                    hideAllTargetGroupPlayBtns) ||
-                other.hideAllTargetGroupPlayBtns ==
-                    hideAllTargetGroupPlayBtns) &&
             (identical(other.newestTarget, newestTarget) ||
                 other.newestTarget == newestTarget) &&
             (identical(other.selectedTarget, selectedTarget) ||
@@ -484,36 +439,31 @@ class _$CAPIStateImpl extends _CAPIState {
             (identical(other.showClipboardContent, showClipboardContent) ||
                 other.showClipboardContent == showClipboardContent) &&
             (identical(other.force, force) || other.force == force) &&
-            (identical(
-                    other.skipSnippetPanelRebuild, skipSnippetPanelRebuild) ||
-                other.skipSnippetPanelRebuild == skipSnippetPanelRebuild) &&
+            (identical(other.onlyTargetsWrappers, onlyTargetsWrappers) ||
+                other.onlyTargetsWrappers == onlyTargetsWrappers) &&
             (identical(other.ONLY_TESTING, ONLY_TESTING) ||
                 other.ONLY_TESTING == ONLY_TESTING));
   }
 
   @override
-  int get hashCode => Object.hashAll([
-        runtimeType,
-        initialValueJsonAssetPath,
-        hideIframes,
-        hideSnippetPencilIcons,
-        snippetTreeCalloutW,
-        snippetTreeCalloutH,
-        directoryTreeCalloutInitialPos,
-        directoryTreeCalloutW,
-        directoryTreeCalloutH,
-        hideTargetsExcept,
-        hideAllTargetGroups,
-        hideAllTargetGroupPlayBtns,
-        newestTarget,
-        selectedTarget,
-        selectedPanel,
-        trainerIsSignedn,
-        showClipboardContent,
-        force,
-        skipSnippetPanelRebuild,
-        ONLY_TESTING
-      ]);
+  int get hashCode => Object.hash(
+      runtimeType,
+      initialValueJsonAssetPath,
+      hideIframes,
+      hideSnippetPencilIcons,
+      snippetTreeCalloutW,
+      snippetTreeCalloutH,
+      directoryTreeCalloutInitialPos,
+      directoryTreeCalloutW,
+      directoryTreeCalloutH,
+      newestTarget,
+      selectedTarget,
+      selectedPanel,
+      trainerIsSignedn,
+      showClipboardContent,
+      force,
+      onlyTargetsWrappers,
+      ONLY_TESTING);
 
   @JsonKey(ignore: true)
   @override
@@ -532,16 +482,13 @@ abstract class _CAPIState extends CAPIState {
       final Offset? directoryTreeCalloutInitialPos,
       final double? directoryTreeCalloutW,
       final double? directoryTreeCalloutH,
-      final TargetModel? hideTargetsExcept,
-      final bool hideAllTargetGroups,
-      final bool hideAllTargetGroupPlayBtns,
       final TargetModel? newestTarget,
       final TargetModel? selectedTarget,
       final String? selectedPanel,
       final bool trainerIsSignedn,
       final bool showClipboardContent,
       final int force,
-      final bool skipSnippetPanelRebuild,
+      final bool onlyTargetsWrappers,
       final bool ONLY_TESTING}) = _$CAPIStateImpl;
   _CAPIState._() : super._();
 
@@ -568,12 +515,12 @@ abstract class _CAPIState extends CAPIState {
 // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
 // @Default([]) List<TargetModel> playList,
 // current selection
-  TargetModel? get hideTargetsExcept;
-  @override
-  bool get hideAllTargetGroups;
-  @override
-  bool get hideAllTargetGroupPlayBtns;
-  @override
+// List<TargetModel> targetCovers
+// TargetModel? hideTargetCoversExcept,
+// TargetModel? hideTargetBtnsExcept,
+// @Default(false) bool hideAllTargetCovers,
+// @Default(false) bool hideAllTargetBtns,
+//
   TargetModel? get newestTarget;
   @override
   TargetModel? get selectedTarget;
@@ -588,7 +535,7 @@ abstract class _CAPIState extends CAPIState {
   @override
   int get force;
   @override // hacky way to force a transition
-  bool get skipSnippetPanelRebuild;
+  bool get onlyTargetsWrappers;
   @override // hacky way to force a transition
 //
   bool get ONLY_TESTING;

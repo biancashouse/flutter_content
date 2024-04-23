@@ -71,6 +71,10 @@ class TargetGroupWrapperNode extends ButtonNode
         'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
+  TargetModel? findTarget(TargetId uid) {
+    return targets.where((tc) => tc.uid == uid).firstOrNull;
+  }
+
   @override
   String toString() => FLUTTER_TYPE;
 

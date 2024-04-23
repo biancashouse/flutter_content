@@ -54,8 +54,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   // if not in cache, gets from FB and adds to cache
-  Future<void> getSnippetFromCacheOrFB(
-      {required SnippetName snippetName, required VersionId versionId}) async {
+  Future<void> getSnippetFromCacheOrFB({required SnippetName snippetName, required VersionId versionId}) async {
     // try to fetch from cache, otherwise fetch from FB
     var versions = FC().snippetCache[snippetName];
     var version = (versions ?? {})[versionId];
@@ -70,6 +69,14 @@ class FireStoreModelRepository implements IModelRepository {
       // cache it
       FC().snippetCache[snippetName] ??= {};
       FC().snippetCache[snippetName]!.addAll({versionId: snippet});
+      // when fetching a snippet, show all target covers and btns
+      // if (FC().canEditContent) {
+      //   STreeNode.showAllTargetCovers();
+      // } else {
+      //   STreeNode.hideAllTargetCovers();
+      // }
+      // STreeNode.showAllTargetBtns();
+      debugPrint('loaded $versionId');
     } else {
       debugPrint("getSnippet failed.");
     }

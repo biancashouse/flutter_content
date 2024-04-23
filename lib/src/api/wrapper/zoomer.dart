@@ -1,7 +1,6 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 
@@ -13,14 +12,23 @@ class Zoomer extends StatefulWidget {
   static const Duration ZOOM_TRANSITION_DURATION_MS = ms500;
   static const Duration ZOOM_IMMEDIATELY = immediate;
 
-  Zoomer({
+  const Zoomer({
     required this.child,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
-  }) : super(key: GlobalKey(debugLabel: "Zoomer"));
+    super.key,
+  }); // : super(key: GlobalKey(debugLabel: "Zoomer"));
 
-  static ZoomerState? of(BuildContext context) =>
-      context.findAncestorStateOfType<ZoomerState>();
+  static ZoomerState? of(BuildContext context) {
+    if (!context.mounted) {
+      debugPrint('context not mounted!');
+    }
+    var result = context.findAncestorStateOfType<ZoomerState>();
+    if (result == null) {
+      debugPrint('Zoomer not found!');
+    }
+    return result;
+  }
 
   @override
   State<Zoomer> createState() => ZoomerState();
@@ -165,8 +173,9 @@ class ZoomerState extends State<Zoomer>
           return Transform(
             transform: _matrix4Animation.value,
             alignment: _transformAlignment,
-            child: BlocBuilder<CAPIBloC, CAPIState>(
-                builder: (context, state) => widget.child),
+            child: widget.child,
+            // child: BlocBuilder<CAPIBloC, CAPIState>(
+            //     builder: (context, state) => widget.child),
           );
         });
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -23,17 +22,15 @@ void removeSnippetContentCallout(String snippetName) {
 Future<void> showSnippetContentCallout({
   required TargetModel tc,
   required bool justPlaying,
+  required Rect wrapperRect,
 }) async {
   // possibly transform before showing callout
-  TargetsWrapperState? parentTW = tc.targetsWrapperState;
 
-  Rect? wrapperRect = (parentTW?.widget.key as GlobalKey)
-      .globalPaintBounds(); //Measuring.findGlobalRect(parentIW?.widget.key as GlobalKey);
   Rect? targetRect = FC()
-      .getMultiTargetGk(tc.uid.toString())!
-      .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid.toString()]!);
+      .getTargetGk(tc.uid)!
+      .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
 
-  if (wrapperRect == null || targetRect == null) return;
+  if (targetRect == null) return;
 
   // CAPIBloc bloc = FlutterContent().capiBloc;
   // GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
@@ -41,7 +38,7 @@ Future<void> showSnippetContentCallout({
   double minHeight = 0;
   // int maxLines = 5;
   // TargetModel? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
-  GlobalKey? targetGK() => FC().getMultiTargetGk(tc.uid.toString())!;
+  GlobalKey? targetGK() => FC().getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.snippetName;
@@ -69,6 +66,7 @@ Future<void> showSnippetContentCallout({
       boxContentF: (boxCtx) => PointerInterceptor(
         child: BlocBuilder<CAPIBloC, CAPIState>(
           builder: (context, state) {
+            return const CircularProgressIndicator();
             return FC().targetSnippetBeingConfigured!.toWidget(context, null);
           },
         ),
@@ -111,8 +109,9 @@ Future<void> showSnippetContentCallout({
               newPos.dx / Useful.scrW != tc.calloutLeftPc) {
             tc.calloutTopPc = newPos.dy / Useful.scrH;
             tc.calloutLeftPc = newPos.dx / Useful.scrW;
-            FC().capiBloc.add(
-                CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
+            tc.onChange();
+            // FC().capiBloc.add(
+            //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
           }

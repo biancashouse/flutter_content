@@ -8,11 +8,12 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;
+  final Rect wrapperRect;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
   const MoreCalloutConfigSettings(
-    this.tc, {
+    this.tc, this.wrapperRect, {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     super.key,
@@ -23,7 +24,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static show(
-    final TargetModel tc, {
+    final TargetModel tc, final Rect wrapperRect, {
     final ScrollController? ancestorHScrollController,
     final ScrollController? ancestorVScrollController,
     required final bool justPlaying,
@@ -32,12 +33,12 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         // tc.single
         //     ? FC().getSingleTargetGk(tc.wName)
         //     :
-        FC().getMultiTargetGk(tc.uid.toString());
+        FC().getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
         boxContentF: (_) => MoreCalloutConfigSettings(
-              tc,
+              tc, wrapperRect,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
             ),
@@ -197,11 +198,11 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   void _refreshContentCallout() {
     Callout.dismiss(CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name);
     removeSnippetContentCallout(tc.snippetName);
-    tc.targetsWrapperState
+    tc.targetsWrapperState()
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
-      tc: tc,
+      tc: tc, wrapperRect: widget.wrapperRect,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
     );

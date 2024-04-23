@@ -93,7 +93,7 @@ class FSFoldersAndImagePicker extends HookWidget {
     TreeController<FSFolderNode> treeC = TreeController<FSFolderNode>(
       roots: [rootNode],
       childrenProvider: (FSFolderNode node) => node.children,
-      parentProvider: (FSFolderNode node) => node.parent as FSFolderNode?,
+      parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
     );
     treeC.expandCascading([rootNode]);
     // setParent(parentNode);

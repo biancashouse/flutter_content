@@ -202,7 +202,7 @@ class SnippetPanelState extends State<SnippetPanel>
     VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
     if (editingVersionId != null) {
       // ensure snippet is in the cache
-      await FC().fbModelRepo.getSnippetFromCacheOrFB(
+      await FC().modelRepo.getSnippetFromCacheOrFB(
           snippetName: widget.snippetName, versionId: editingVersionId);
     }
     SnippetRootNode? snippetRootNode =
@@ -210,7 +210,7 @@ class SnippetPanelState extends State<SnippetPanel>
     // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
     if (snippetRootNode == null) {
       snippetRootNode = SnippetPanel.createSnippetFromTemplate(
-          widget.fromTemplate!, widget.snippetName);
+          widget.fromTemplate, widget.snippetName);
       VersionId initialVersionId =
           DateTime.now().millisecondsSinceEpoch.toString();
       FC().addToSnippetCache(
@@ -219,10 +219,14 @@ class SnippetPanelState extends State<SnippetPanel>
         versionId: initialVersionId,
         // editing: true,
       );
-      FC().updateEditingVersionId(snippetName: widget.snippetName, newVersionId: initialVersionId,);
+      FC().updateEditingVersionId(
+        snippetName: widget.snippetName,
+        newVersionId: initialVersionId,
+      );
       FC().capiBloc.add(CAPIEvent.saveSnippet(
             snippetRootNode: snippetRootNode,
             newVersionId: initialVersionId,
+            onlyTargetsWrappers: false,
           ));
     }
     snippetRootNode.name = widget.snippetName;
@@ -329,14 +333,14 @@ class SnippetPanelState extends State<SnippetPanel>
     });
   }
 
-  Future<SnippetRootNode?> _ensureSnippetInCache() async {
+  Future<void> _ensureSnippetInCache() async {
     SnippetRootNode? rootNode;
     VersionId? editingOrPublishedVersionId = FC().canEditContent
         ? FC().editingVersionIds[widget.snippetName]
         : FC().publishedVersionIds[widget.snippetName];
     if (editingOrPublishedVersionId != null) {
       // exists in AppInfo, so make sure it has been fetched from FB
-      await FC().fbModelRepo.getSnippetFromCacheOrFB(
+      await FC().modelRepo.getSnippetFromCacheOrFB(
           snippetName: widget.snippetName,
           versionId: editingOrPublishedVersionId);
       rootNode =
@@ -353,14 +357,15 @@ class SnippetPanelState extends State<SnippetPanel>
         versionId: initialVersionId,
         // editing: true,
       );
-      FC().updatePublishedVersionId(snippetName: widget.snippetName, versionId: initialVersionId);
-      FC().updateEditingVersionId(snippetName: widget.snippetName, newVersionId: initialVersionId);
+      FC().updatePublishedVersionId(
+          snippetName: widget.snippetName, versionId: initialVersionId);
+      FC().updateEditingVersionId(
+          snippetName: widget.snippetName, newVersionId: initialVersionId);
       FC().capiBloc.add(CAPIEvent.saveSnippet(
-            snippetRootNode: rootNode,
-            newVersionId: initialVersionId,
-          ));
+          snippetRootNode: rootNode,
+          newVersionId: initialVersionId,
+          dontEmit: true));
     }
-    return rootNode;
   }
 
   void resetTabQandC() {
@@ -517,51 +522,48 @@ class SnippetPanelState extends State<SnippetPanel>
 
     // TODO no BloC when user not able to edit ?
     return BlocBuilder<CAPIBloC, CAPIState>(
-        key: FC().panelGkMap[widget.panelName] =
-            GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-        buildWhen: (previous, current) => !current.skipSnippetPanelRebuild,
-        builder: (innerContext, state) {
-          debugPrint("build SnippetPanel / BlocBuilder ${widget.panelName}");
-          return FutureBuilder<SnippetRootNode?>(
-              future: _ensureSnippetInCache(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
-                  debugPrint(
-                      "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
-                  VersionId? editingVersionId =
-                      FC().editingVersionIds[widget.snippetName];
-                  debugPrint("editing version $editingVersionId");
-                  try {
-                    // in case did a revert, ignore snapshot data and use the AppInfo instead
-                    SnippetRootNode? snippetRoot = snapshot.data;
-                    var cache = FC().snippetCache[widget.snippetName];
-                    // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-                    return snippetRoot == null
-                        ? const Icon(Icons.error, color: Colors.redAccent)
-                        : snippetRoot.toWidget(innerContext, null);
-                  } catch (e) {
-                    debugPrint('snippetRoot.toWidget() failed!');
-                    return Material(
-                      textStyle: const TextStyle(
-                          fontFamily: 'monospace', fontSize: 12),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.error, color: Colors.redAccent),
-                            hspacer(10),
-                            Useful.coloredText(e.toString()),
-                          ],
-                        ),
+      key: FC().panelGkMap[widget.panelName] =
+          GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+      buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+      builder: (innerContext, state) {
+        debugPrint("build SnippetPanel / BlocBuilder ${widget.panelName}");
+        return FutureBuilder<void>(
+            future: _ensureSnippetInCache(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                debugPrint(
+                    "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
+                try {
+                  // in case did a revert, ignore snapshot data and use the AppInfo instead
+                  SnippetRootNode? snippetRoot =
+                      FC().rootNodeOfSnippet(widget.snippetName);
+                  // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                  return snippetRoot == null
+                      ? const CircularProgressIndicator() //Icon(Icons.error, color: Colors.redAccent)
+                      : snippetRoot.toWidget(innerContext, null);
+                } catch (e) {
+                  debugPrint('snippetRoot.toWidget() failed!');
+                  return Material(
+                    textStyle:
+                        const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.error, color: Colors.redAccent),
+                          hspacer(10),
+                          Useful.coloredText(e.toString()),
+                        ],
                       ),
-                    );
-                  }
-                } else {
-                  return const Icon(Icons.error, color: Colors.redAccent);
+                    ),
+                  );
                 }
-              });
-        });
+              } else {
+                return const Icon(Icons.error, color: Colors.redAccent);
+              }
+            });
+      },
+    );
   }
 }
 

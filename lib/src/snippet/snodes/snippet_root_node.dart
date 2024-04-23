@@ -4,7 +4,11 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
+@MappableClass(discriminatorKey: 'sr', includeSubClasses: [
+  TitleSnippetRootNode,
+  SubtitleSnippetRootNode,
+  ContentSnippetRootNode
+])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   bool isEmbedded;
@@ -23,7 +27,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutSize: const Size(280, 140),
         ),
@@ -31,7 +36,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           snode: this,
           name: 'isEmbedded',
           boolValue: isEmbedded,
-          onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => isEmbedded = newValue ?? false),
         ),
         StringPropertyValueNode(
           snode: this,
@@ -54,7 +60,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   String toSource(BuildContext context) {
-    return child?.toSource(context) ?? 'Icon(Icons.warning, color: Colors.red, size: 24,)';
+    return child?.toSource(context) ??
+        'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
   SnippetRootNode cloneSnippet() {

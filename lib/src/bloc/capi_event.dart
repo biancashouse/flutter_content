@@ -26,19 +26,19 @@ class CAPIEvent with _$CAPIEvent {
   //   required TargetModel tc,
   // }) = SelectTarget;
 
-  const factory CAPIEvent.hideAllTargetGroups() = HideAllTargetGroups;
-
-  const factory CAPIEvent.hideTargetGroupsExcept({
-    TargetModel? tc,
-  }) = HideTargetGroupsExcept;
-
-  const factory CAPIEvent.showOnlyOneTarget({
-    TargetModel? tc,
-  }) = ShowOnlyOneTarget;
-
-  const factory CAPIEvent.hideAllTargetGroupBtns() = HideAllTargetGroupBtns;
-
-  const factory CAPIEvent.unhideAllTargetGroups() = UnhideAllTargetGroups;
+  // const factory CAPIEvent.hideAllTargetCoversAndBtns() = HideAllTargetCoversAndBtns;
+  // const factory CAPIEvent.hideTargetCoversExcept({TargetModel? tc}) = HideTargetCoversExcept;
+  // const factory CAPIEvent.hideAllTargetBtns() = HideAllTargetBtns;
+  // const factory CAPIEvent.hideTargetBtn({TargetModel? tc}) = HideTargetBtn;
+  // const factory CAPIEvent.unhideTargetBtn({TargetModel? tc}) = UnhideTargetBtn;
+  //
+  // const factory CAPIEvent.showOnlyOneTarget({
+  //   TargetModel? tc,
+  // }) = ShowOnlyOneTarget;
+  //
+  // const factory CAPIEvent.unhideAllTargetGroupsAndBtns() =
+  //     UnhideAllTargetGroupsAndBtns;
+  // const factory CAPIEvent.unhideAllTargetBtns() = UnhideAllTargetBtns;
 
   // const factory CAPIEvent.clearSelection({
   //   required String wName,
@@ -59,10 +59,10 @@ class CAPIEvent with _$CAPIEvent {
   //   required String wName,
   // }) = PlayNextInList;
 
-  const factory CAPIEvent.TargetChanged({
-    required TargetModel newTC,
-    @Default(false) bool keepTargetsHidden,
-  }) = TargetChanged;
+  // const factory CAPIEvent.TargetChanged({
+  //   required TargetModel newTC,
+  //   @Default(false) bool keepTargetsHidden,
+  // }) = TargetChanged;
 
   // const factory CAPIEvent.changedCalloutPosition({
   //   required TargetModel tc,
@@ -104,7 +104,9 @@ class CAPIEvent with _$CAPIEvent {
 //
 //   const factory CAPIEvent.clearUR() = ClearUR;
 
-  const factory CAPIEvent.forceRefresh() = ForceRefresh;
+  const factory CAPIEvent.forceRefresh({
+    @Default(false) bool onlyTargetsWrappers,
+}) = ForceRefresh;
 
   const factory CAPIEvent.updateClipboard({
     required STreeNode? newContent,
@@ -121,11 +123,18 @@ class CAPIEvent with _$CAPIEvent {
   //   required String newSnippetName,
   // }) = SaveNodeAsSnippet;
 
+  const factory CAPIEvent.ensureSnippetPresent({
+    required String snippetName,
+    required SnippetTemplate fromTemplate,
+    @Default(false) bool onlyTargetsWrappers,
+  }) = EnsureSnippetPresent;
+
   const factory CAPIEvent.saveSnippet({
     required SnippetRootNode snippetRootNode,
     required VersionId newVersionId,
     @Default(false) bool force,
-    @Default(false) bool andRefresh,
+    @Default(false) bool dontEmit,
+    @Default(false) bool onlyTargetsWrappers,
   }) = SaveSnippet;
 
   const factory CAPIEvent.publishSnippet({

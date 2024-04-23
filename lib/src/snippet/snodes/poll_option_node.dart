@@ -35,7 +35,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    return parent is PollNode
+    return getParent() is PollNode
         ? FlutterPollOption(
             key: createNodeGK(),
             optionId: optionId,

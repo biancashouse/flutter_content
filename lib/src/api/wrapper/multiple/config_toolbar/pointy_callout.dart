@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
 class PointyTool extends StatefulWidget {
   final TargetModel tc;
+  final Rect wrapperRect;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
   final bool justPlaying;
 
   const PointyTool(
     this.tc, {
+      required this.wrapperRect,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     required this.justPlaying,
@@ -20,7 +21,7 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetModel tc,
+  static show(final TargetModel tc, final Rect wrapperRect,
       {final ScrollController? ancestorHScrollController,
       final ScrollController? ancestorVScrollController,
       required final bool justPlaying}) {
@@ -28,12 +29,13 @@ class PointyTool extends StatefulWidget {
         // tc.single
         //     ? FC().getSingleTargetGk(tc.wName)
         //     :
-        FC().getMultiTargetGk(tc.uid.toString());
+        FC().getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
         boxContentF: (_) => PointyTool(
               tc,
+              wrapperRect: wrapperRect,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
               justPlaying: justPlaying,
@@ -82,13 +84,14 @@ class _PointyToolState extends State<PointyTool> {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
     removeSnippetContentCallout(tc.snippetName);
-    tc.targetsWrapperState
+    tc.targetsWrapperState()
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
       tc: tc,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
+      wrapperRect: widget.wrapperRect,
     );
     // Useful.afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);

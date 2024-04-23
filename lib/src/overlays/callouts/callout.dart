@@ -261,11 +261,11 @@ class Callout extends StatefulWidget {
       // var cs = gk?.currentState;
       // var cw = gk?.currentWidget;
       var cc = gk?.currentContext;
-      if (cc == null) {
-        debugPrint(
-            '${calloutConfig.feature} missing target gk - overlay not shown');
-        return;
-      }
+      // if (cc == null) {
+      //   debugPrint(
+      //       '${calloutConfig.feature} missing target gk - overlay not shown');
+      //   return;
+      // }
     }
 
     // target's GlobalKey supplied

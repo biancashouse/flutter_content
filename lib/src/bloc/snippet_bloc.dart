@@ -118,7 +118,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       showProperties: true,
       nodeBeingDeleted: null,
     ));
-    // FlutterContent().capiBloc.add(const ForceRefresh());
+    // FC.forceRefresh();
     // }
   }
 
@@ -156,7 +156,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         showProperties: false,
         // ur: state.ur,
       ));
-      FC().capiBloc.add(const ForceRefresh());
+      FC.forceRefresh();
     }
   }
 
@@ -164,69 +164,69 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (!state.aNodeIsSelected) return false;
     try {
       STreeNode sel = state.selectedNode!;
-      STreeNode parent = sel.parent as STreeNode;
+      STreeNode selParent = sel.getParent() as STreeNode;
       // tab-related
       if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
-        int index = (parent as TabBarNode).children.indexOf(sel);
-        parent.children.remove(sel);
-        ScaffoldNode? scaffold = parent.parent?.parent?.parent as ScaffoldNode?;
+        int index = (selParent as TabBarNode).children.indexOf(sel);
+        selParent.children.remove(sel);
+        ScaffoldNode? scaffold = selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
         if (scaffold?.body.child is TabBarViewNode?) {
           (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
         }
         // tabView-related
       } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
-        int index = (parent as TabBarViewNode).children.indexOf(sel);
-        parent.children.remove(sel);
-        ScaffoldNode? scaffold = parent.parent?.parent as ScaffoldNode?;
+        int index = (selParent as TabBarViewNode).children.indexOf(sel);
+        selParent.children.remove(sel);
+        ScaffoldNode? scaffold = selParent.getParent()?.getParent() as ScaffoldNode?;
         if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
           (scaffold?.appBar!.bottom!.child as TabBarNode)
               .children
               .removeAt(index);
         }
-      } else if (parent is SC && sel is CL) {
-        parent.child = null;
-      } else if (parent is SC && sel is SC) {
-        parent.child = sel.child?..setParent(parent);
-      } else if (parent is SC && sel is MC && sel.children.isEmpty) {
-        parent.child = null;
-      } else if (parent is SC && sel is MC && sel.children.length < 2) {
-        parent.child = sel.children.first..setParent(parent);
-      } else if (parent is MC && sel is CL) {
-        parent.children.remove(sel);
-      } else if (parent is MC && sel is SC && sel.child != null) {
-        int index = parent.children.indexOf(sel);
-        parent.children[index] = sel.child!..setParent(parent);
-      } else if (parent is MC && sel is MC && sel.children.length == 1) {
-        int index = parent.children.indexOf(sel);
-        parent.children[index] = sel.children.first..setParent(parent);
-      } else if (parent is MC &&
+      } else if (selParent is SC && sel is CL) {
+        selParent.child = null;
+      } else if (selParent is SC && sel is SC) {
+        selParent.child = sel.child?..setParent(selParent);
+      } else if (selParent is SC && sel is MC && sel.children.isEmpty) {
+        selParent.child = null;
+      } else if (selParent is SC && sel is MC && sel.children.length < 2) {
+        selParent.child = sel.children.first..setParent(selParent);
+      } else if (selParent is MC && sel is CL) {
+        selParent.children.remove(sel);
+      } else if (selParent is MC && sel is SC && sel.child != null) {
+        int index = selParent.children.indexOf(sel);
+        selParent.children[index] = sel.child!..setParent(selParent);
+      } else if (selParent is MC && sel is MC && sel.children.length == 1) {
+        int index = selParent.children.indexOf(sel);
+        selParent.children[index] = sel.children.first..setParent(selParent);
+      } else if (selParent is MC &&
           ((sel is SC && sel.child == null) ||
               (sel is MC && sel.children.isEmpty))) {
-        parent.children.remove(sel);
-      } else if (parent is RichTextNode &&
+        selParent.children.remove(sel);
+      } else if (selParent is RichTextNode &&
           sel is TextSpanNode &&
           sel.children?.length == 1) {
-        parent.text = sel.children!.first..setParent(parent);
-      } else if (parent is RichTextNode &&
+        selParent.text = sel.children!.first..setParent(selParent);
+      } else if (selParent is RichTextNode &&
           (sel is WidgetSpanNode ||
               sel is TextSpanNode && sel.children?.length != 1)) {
-        parent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)
-          ..setParent(parent);
-      } else if (parent is TextSpanNode) {
-        parent.children!.remove(sel);
+        selParent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)
+          ..setParent(selParent);
+      } else if (selParent is TextSpanNode) {
+        selParent.children!.remove(sel);
       }
       // certain nodes must have a child
-      if (parent is SnippetRootNode && parent.child == null) {
-        parent.child = PlaceholderNode()..setParent(parent);
+      if (selParent is SnippetRootNode && selParent.child == null) {
+        selParent.child = PlaceholderNode()..setParent(selParent);
       }
-      if (parent is GenericSingleChildNode && parent.propertyName == 'title') {
-        parent.child = TextNode(text: 'must have a title widget!')
-          ..setParent(parent);
+      if (selParent is GenericSingleChildNode && selParent.propertyName == 'title') {
+        selParent.child = TextNode(text: 'must have a title widget!')
+          ..setParent(selParent);
       }
-      if (parent is GenericSingleChildNode &&
-          parent.propertyName == 'content') {
-        parent.child = TextNode(text: 'must have a content widget!')
-          ..setParent(parent);
+      if (selParent is GenericSingleChildNode &&
+          selParent.propertyName == 'content') {
+        selParent.child = TextNode(text: 'must have a content widget!')
+          ..setParent(selParent);
       }
     } catch (e) {
       debugPrint(
@@ -321,7 +321,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   _cutIncludingAnyChildren(STreeNode node) {
     if (node != state.rootNode) {
       // was: if (state.selectedNode?.parent != null) {
-      STreeNode parentNode = node.parent as STreeNode;
+      STreeNode parentNode = node.getParent() as STreeNode;
       if (parentNode is SC) {
         parentNode.child = null;
       } else if (parentNode is MC) {
@@ -387,7 +387,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (ColumnNode) => ColumnNode(
             mainAxisSize: MainAxisSizeEnum.max,
             children: childNode != null ? [childNode] : []),
-        const (ContainerNode) => state.selectedNode?.parent is ContainerNode
+        const (ContainerNode) => state.selectedNode?.getParent() is ContainerNode
             ? ContainerNode(child: childNode, alignment: AlignmentEnum.center)
             : ContainerNode(child: childNode),
         const (ContentSnippetRootNode) =>
@@ -501,7 +501,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (!state.aNodeIsSelected) return;
 
     STreeNode wChild = state.selectedNode!;
-    STreeNode parent = wChild.parent as STreeNode;
+    STreeNode parent = wChild.getParent() as STreeNode;
     STreeNode w = event.type != null
         ? _typeAsATreeNode(
             event.type!, wChild, "_wrapWith() missing ${event.type.toString()}")
@@ -517,16 +517,16 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
     if (wChild is InlineSpanNode &&
-        wChild.parent is RichTextNode &&
+        wChild.getParent() is RichTextNode &&
         w is RichTextNode) return;
     if (wChild is InlineSpanNode &&
-        wChild.parent is! RichTextNode &&
+        wChild.getParent() is! RichTextNode &&
         w is! InlineSpanNode) return;
 
     try {
       //_createSnippetUndo();
 
-      w.setParent(wChild.parent);
+      w.setParent(wChild.getParent());
       wChild.setParent(w);
 
       if (w is SC) {
@@ -536,7 +536,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       } else if (w is PollNode) {
         w.children = [wChild as PollOptionNode];
         // wrap poll in a border
-        final Node? pollParent = w.parent;
+        final Node? pollParent = w.getParent();
         w = ContainerNode(
             decoration: DecorationShapeEnum.rounded_rectangle_dotted,
             borderColorValues:
@@ -627,12 +627,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (sel is PollOptionNode && r is! PollOptionNode) return;
     if (sel is StepNode && r is! StepNode) return;
 
-    STreeNode parent = sel.parent as STreeNode;
+    STreeNode parent = sel.getParent() as STreeNode;
 
     try {
       //_createSnippetUndo();
 
-      r.setParent(sel.parent);
+      r.setParent(sel.getParent());
 
       if (parent is SC) {
         parent.child = r;
@@ -826,13 +826,13 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
               "_addSiblingBefore() missing ${event.type.toString()}")
           : event.testNode!;
       //_createSnippetUndo();
-      if (state.selectedNode?.parent is MC) {
+      if (state.selectedNode?.getParent() is MC) {
         int i =
-            (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
+            (state.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
         _addSiblingAt(newNode, emit, i);
       }
-      if (state.selectedNode?.parent is TextSpanNode) {
-        int i = (state.selectedNode?.parent as TextSpanNode)
+      if (state.selectedNode?.getParent() is TextSpanNode) {
+        int i = (state.selectedNode?.getParent() as TextSpanNode)
             .children!
             .indexOf(selectedNode as InlineSpanNode);
         _addSiblingAt(newNode, emit, i);
@@ -845,13 +845,13 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode = FC().clipboard!;
       //_createSnippetUndo();
-      if (state.selectedNode?.parent is MC) {
+      if (state.selectedNode?.getParent() is MC) {
         int i =
-            (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
+            (state.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
         _pasteSiblingAt(clipboardNode, emit, i);
       }
-      if (state.selectedNode?.parent is TextSpanNode) {
-        int i = (state.selectedNode?.parent as TextSpanNode)
+      if (state.selectedNode?.getParent() is TextSpanNode) {
+        int i = (state.selectedNode?.getParent() as TextSpanNode)
             .children!
             .indexOf(selectedNode as InlineSpanNode);
         _pasteSiblingAt(clipboardNode, emit, i);
@@ -867,13 +867,13 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
               "_addSiblingAfter() missing ${event.type.toString()}")
           : event.testNode!;
       //_createSnippetUndo();
-      if (state.selectedNode?.parent is MC) {
+      if (state.selectedNode?.getParent() is MC) {
         int i =
-            (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
+            (state.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
         _addSiblingAt(newNode, emit, i + 1);
       }
-      if (state.selectedNode?.parent is TextSpanNode) {
-        int i = (state.selectedNode?.parent as TextSpanNode)
+      if (state.selectedNode?.getParent() is TextSpanNode) {
+        int i = (state.selectedNode?.getParent() as TextSpanNode)
             .children!
             .indexOf(selectedNode as InlineSpanNode);
         _addSiblingAt(newNode, emit, i + 1);
@@ -886,13 +886,13 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       STreeNode selectedNode = state.selectedNode!;
       STreeNode clipboardNode = FC().clipboard!;
       //_createSnippetUndo();
-      if (state.selectedNode?.parent is MC) {
+      if (state.selectedNode?.getParent() is MC) {
         int i =
-            (state.selectedNode?.parent as MC).children.indexOf(selectedNode);
+            (state.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
         _pasteSiblingAt(clipboardNode, emit, i + 1);
       }
-      if (state.selectedNode?.parent is TextSpanNode) {
-        int i = (state.selectedNode?.parent as TextSpanNode)
+      if (state.selectedNode?.getParent() is TextSpanNode) {
+        int i = (state.selectedNode?.getParent() as TextSpanNode)
             .children!
             .indexOf(selectedNode as InlineSpanNode);
         _pasteSiblingAt(clipboardNode, emit, i + 1);
@@ -902,7 +902,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
   void _addSiblingAt(STreeNode newNode, emit, int i) {
     //_createSnippetUndo();
-    STreeNode? parent = state.selectedNode?.parent as STreeNode?;
+    STreeNode? parent = state.selectedNode?.getParent() as STreeNode?;
     if (parent is TabBarNode) {
       TabBarViewNode? tabBarViewNode = state.treeC
           .findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
@@ -915,11 +915,11 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       tabBarNode?.children
           .insert(i, TextNode(text: 'new tab')..setParent(tabBarNode));
       parent.children.insert(i, newNode..setParent(parent));
-    } else if (state.selectedNode?.parent is MC) {
-      (state.selectedNode?.parent as MC).children.insert(i, newNode);
+    } else if (state.selectedNode?.getParent() is MC) {
+      (state.selectedNode?.getParent() as MC).children.insert(i, newNode);
     }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      (state.selectedNode?.parent as TextSpanNode)
+    if (state.selectedNode?.getParent() is TextSpanNode) {
+      (state.selectedNode?.getParent() as TextSpanNode)
           .children
           ?.insert(i, newNode as InlineSpanNode);
     }
@@ -936,15 +936,15 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     TextSpanNode? textSpanNode;
     STreeNode newNode = clipboardNode;
 
-    if (state.selectedNode?.parent is MC) {
-      (state.selectedNode?.parent as MC).children.insert(i, newNode);
-      newNode.setParent(state.selectedNode?.parent);
+    if (state.selectedNode?.getParent() is MC) {
+      (state.selectedNode?.getParent() as MC).children.insert(i, newNode);
+      newNode.setParent(state.selectedNode?.getParent());
     }
-    if (state.selectedNode?.parent is TextSpanNode) {
-      (state.selectedNode?.parent as TextSpanNode)
+    if (state.selectedNode?.getParent() is TextSpanNode) {
+      (state.selectedNode?.getParent() as TextSpanNode)
           .children
           ?.insert(i, newNode as InlineSpanNode);
-      newNode.setParent(state.selectedNode?.parent);
+      newNode.setParent(state.selectedNode?.getParent());
     }
 
     state.rootNode.validateTree();
@@ -995,7 +995,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         SnippetRootNode(name: event.newSnippetName, child: event.node);
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
     await FC()
-        .fbModelRepo
+        .modelRepo
         .saveSnippet(snippetRootNode: newRootNode, newVersionId: newVersionId);
 
     FC().snippetCache[event.newSnippetName] = {};
@@ -1003,12 +1003,12 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // create a snippet ref node
     SnippetRefNode refNode = SnippetRefNode(snippetName: event.newSnippetName);
     // attach to parent
-    if (state.selectedNode?.parent is SC) {
-      (state.selectedNode?.parent as SC).child = refNode;
-    } else if (state.selectedNode?.parent is MC) {
-      (state.selectedNode?.parent as MC).children.add(refNode);
-    } else if (state.selectedNode?.parent is WidgetSpanNode) {
-      (state.selectedNode?.parent as WidgetSpanNode).child = refNode;
+    if (state.selectedNode?.getParent() is SC) {
+      (state.selectedNode?.getParent() as SC).child = refNode;
+    } else if (state.selectedNode?.getParent() is MC) {
+      (state.selectedNode?.getParent() as MC).children.add(refNode);
+    } else if (state.selectedNode?.getParent() is WidgetSpanNode) {
+      (state.selectedNode?.getParent() as WidgetSpanNode).child = refNode;
     }
     state.treeC.expand(newRootNode);
     state.treeC.rebuild();

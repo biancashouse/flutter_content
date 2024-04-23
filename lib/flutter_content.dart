@@ -16,6 +16,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'src/bloc/bloc_observer.dart';
+import 'src/bloc/capi_event.dart';
 import 'src/feature_discovery/discovery_controller.dart';
 import 'src/feature_discovery/featured_widget.dart';
 import 'src/model/model_repo.dart';
@@ -161,7 +162,7 @@ typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
-typedef TargetModelId = int;
+typedef TargetId = int;
 typedef VersionId = String;
 // typedef VersionIdHistory = List<VersionId>;
 typedef SnippetVersions = Map<VersionId, SnippetRootNode>;
@@ -189,7 +190,8 @@ typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();
 typedef CAPIBlocFunc = CAPIBloC Function();
 
-typedef GKMap = Map<Feature, GlobalKey>;
+typedef GksByFeature = Map<Feature, GlobalKey>;
+typedef GksByTargetId = Map<TargetId, GlobalKey>;
 typedef FeatureList = List<Feature>;
 
 typedef FeaturedWidgetHelpContentBuilder = Widget Function(
@@ -275,12 +277,12 @@ class FC {
     }
 
     if (fbOptions != null) {
-      fbModelRepo = FireStoreModelRepository(fbOptions);
-      await (fbModelRepo as FireStoreModelRepository)
+      modelRepo = FireStoreModelRepository(fbOptions);
+      await (modelRepo as FireStoreModelRepository)
           .possiblyInitFireStoreRelatedAPIs();
 
       // fetch model
-      AppInfoModel? fbAppInfo = await FC().fbModelRepo.getAppInfo();
+      AppInfoModel? fbAppInfo = await FC().modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
 
       // await loadLatestSnippetMap();
@@ -288,10 +290,10 @@ class FC {
     }
 
     // FutureBuilder requires this return
-    return capiBloc = CAPIBloC(modelRepo: fbModelRepo);
+    return capiBloc = CAPIBloC(modelRepo: modelRepo);
   }
 
-  late IModelRepository fbModelRepo;
+  late IModelRepository modelRepo;
   late PackageInfo pkgInfo;
 
   // set by .init()
@@ -355,7 +357,7 @@ class FC {
     required VersionId newVersionId,
   }) {
     final newEditingVersionIds =
-    Map<SnippetName, VersionId>.of(editingVersionIds);
+        Map<SnippetName, VersionId>.of(editingVersionIds);
     if (newEditingVersionIds.containsKey(snippetName)) {
       newEditingVersionIds[snippetName] = newVersionId;
     } else {
@@ -369,7 +371,7 @@ class FC {
     required VersionId versionId,
   }) {
     final newPublishedVersionIds =
-    Map<SnippetName, VersionId>.of(publishedVersionIds);
+        Map<SnippetName, VersionId>.of(publishedVersionIds);
     if (newPublishedVersionIds.containsKey(snippetName)) {
       newPublishedVersionIds[snippetName] = versionId;
     } else {
@@ -403,8 +405,11 @@ class FC {
 
   final inEditMode = ValueNotifier<bool>(false);
 
-  bool get canEditContent => true;
-      // HydratedBloc.storage.read("canEditContent") ?? false;
+  bool get canEditContent =>
+      HydratedBloc.storage.read("canEditContent") ?? false;
+
+  static void forceRefresh() =>
+      _instance!.capiBloc.add(const CAPIEvent.forceRefresh());
 
   void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
 
@@ -432,7 +437,8 @@ class FC {
       _handlers[name];
 
   // each snippet panel has a gk, a last selected node, and a ur
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
+      {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -468,7 +474,7 @@ class FC {
   SnippetBloC? popSnippet() =>
       areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
 
-  final GKMap _calloutGkMap = {};
+  final GksByFeature _calloutGkMap = {};
 
   GlobalKey? getCalloutGk(feature) => _calloutGkMap[feature];
 
@@ -486,12 +492,15 @@ class FC {
   //   return gk;
   // }
 
-  final GKMap _multiTargetGkMap = {};
+  final GksByTargetId _targetGK = {};
 
-  GlobalKey? getMultiTargetGk(feature) => _multiTargetGkMap[feature];
+  GlobalKey? getTargetGk(TargetId targetId) => _targetGK[targetId];
 
-  GlobalKey setMultiTargetGk(Feature feature, GlobalKey gk) {
-    _multiTargetGkMap[feature] = gk;
+  GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
+    if (_targetGK.containsKey(targetId) && _targetGK != gk) {
+      debugPrint('target changed.');
+    }
+    _targetGK[targetId] = gk;
     return gk;
   }
 
@@ -516,7 +525,7 @@ class FC {
     VersionId? publishedVersionId = publishedVersionIds[snippetName];
     if (publishedVersionId != null) {
       var versions = FC().snippetCache[snippetName];
-      var version = versions ?? {}[publishedVersionId];
+      var version = (versions ?? {})[publishedVersionId];
       return version;
     }
     return null;
@@ -532,6 +541,10 @@ class FC {
     }
     return null;
   }
+
+  SnippetRootNode? rootNodeOfSnippet(SnippetName snippetName) => canEditContent
+      ? rootNodeOfEditingSnippet(snippetName)
+      : rootNodeOfPublishedSnippet(snippetName);
 
   Map<SnippetName, SnippetVersions> versions = {};
 
@@ -605,7 +618,7 @@ class FC {
   static Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");
     FC().rootFSFolderNode =
-        await FC().fbModelRepo.createAndPopulateFolderNode(ref: rootRef);
+        await FC().modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 }
 

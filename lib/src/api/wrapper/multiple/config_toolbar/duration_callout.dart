@@ -23,7 +23,7 @@ Future<void> showTargetDurationCallout(
   // tc.single
   //     ? FC().getSingleTargetGk(tc.wName)
   //     :
-  FC().getMultiTargetGk(tc.uid.toString());
+  FC().getTargetGk(tc.uid);
 
   Callout.showOverlay(
       targetGkF: () => targetGK,

@@ -49,7 +49,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
         // unexpected
         return [];
       },
-      parentProvider: (STreeNode node) => node.parent as STreeNode?,
+      parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
     );
     int nodeCount = treeC.countNodesInTree(this);
     // treeC.expand(this);

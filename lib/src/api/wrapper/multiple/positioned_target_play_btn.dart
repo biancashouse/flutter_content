@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/target_config/content/callout_snippet_content.dart';
 
@@ -10,20 +9,16 @@ import 'config_toolbar/callout_config_toolbar.dart';
 class PositionedTargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
+  final Rect wrapperRect;
 
   const PositionedTargetPlayBtn({
     required this.initialTC,
     required this.index,
+    required this.wrapperRect,
     super.key,
   });
 
   CAPIBloC get bloc => FC().capiBloc;
-
-  TargetsWrapperState? get parentWrapperState {
-    var state =
-        initialTC.targetsWrapperGK!.currentState as TargetsWrapperState?;
-    return state;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +31,25 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
-    return Draggable<(TargetModel,bool)>(
-      data: (tc, true),
+    return !FC().canEditContent
+    ? GestureDetector(
+      onTap: () {
+        if (tc.targetsWrapperState() == null) return;
+
+        tc.targetsWrapperState()!.widget.parentNode.playList.add(tc);
+        playTarget(tc);
+      },
+      child: IntegerCircleAvatar(
+        tc,
+        num: index + 1,
+        bgColor: tc.calloutColor(),
+        radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
+        textColor: Colors.white,
+        fontSize: 14,
+      ),
+    )
+    : Draggable<(TargetId, bool)>(
+      data: (tc.uid, true),
       childWhenDragging: const Offstage(),
       feedback: IntegerCircleAvatar(
         tc,
@@ -96,9 +108,9 @@ class PositionedTargetPlayBtn extends StatelessWidget {
       // },
       child: GestureDetector(
         onTap: () {
-          if (parentWrapperState == null) return;
+          if (tc.targetsWrapperState() == null) return;
 
-          parentWrapperState!.widget.parentNode.playList.add(tc);
+          tc.targetsWrapperState()!.widget.parentNode.playList.add(tc);
           playTarget(tc);
         },
         // onLongPress: () {
@@ -110,24 +122,39 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         onDoubleTap: () async {
           if (!FC().canEditContent) return;
 
-          if (parentWrapperState == null) return;
+          if (tc.targetsWrapperState() == null) return;
 
-          Alignment? ta =
-              TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
-          if (ta == null) return;
-
-          // hideAllSingleTargetBtns();
-          bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
+          FC.forceRefresh();
 
           Useful.afterNextBuildDo(() {
-            parentWrapperState?.zoomer?.applyTransform(
+            // save for use after the refresh
+            // var wrapperPos = parentWrapperState?.wrapperPos;
+            // var wrapperSize = parentWrapperState?.wrapperSize;
+            // Rect? wrapperRect = tc.targetsWrapperGK?.globalPaintBounds();
+
+            // if (wrapperRect == null) return;
+
+            var coverGK = FC().getTargetGk(tc.uid);
+            Rect? targetRect = coverGK!.globalPaintBounds();
+            if (targetRect == null) return;
+
+            // STreeNode.hideAllTargetCovers(except: tc);
+            // STreeNode.hideAllTargetBtns(except: tc);
+            // FC.forceRefresh();
+            //
+            // Useful.afterNextBuildDo(() {
+            Alignment? ta = Useful.calcTargetAlignmentWithinWrapper(
+                wrapperRect, targetRect);
+
+            tc.targetsWrapperState()?.zoomer?.applyTransform(
                 tc.transformScale, tc.transformScale, ta, afterTransformF: () {
               showSnippetContentCallout(
                 tc: tc,
                 justPlaying: false,
+                wrapperRect: wrapperRect,
               );
               // show config toolbar in a toast
-              showConfigToolbar(tc);
+              showConfigToolbar(tc, wrapperRect);
             });
           });
 
@@ -146,32 +173,71 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   void playTarget(TargetModel tc) {
-    if (parentWrapperState == null) return;
+    if (tc.targetsWrapperState() == null) return;
 
-    Alignment? ta = TargetsWrapper.calcTargetAlignmentWithinTargetsWrapper(tc);
-    if (ta == null) return;
+    // save for use after the refresh
+    // var wrapperPos = parentWrapperState?.wrapperPos;
+    // var wrapperSize = parentWrapperState?.wrapperSize;
+    // Rect? wrapperRect = tc.targetsWrapperGK?.globalPaintBounds();
+    // if (wrapperRect == null) return;
+
+    // STreeNode.hideAllTargetBtns();
+    // STreeNode.hideAllTargetCovers(except: tc);
+    // debugPrint('forcing refresh...');
+    // FC.forceRefresh();
+    //
+    // Useful.afterNextBuildDo(() {
+
+    // cover will now have been rendered with its gk
+    var coverGK = FC().getTargetGk(tc.uid);
+    // debugPrint('getTargetGK: $coverGK');
+    if (coverGK == null) return;
+    // var cc = coverGK?.currentContext;
+    // bool mounted = cc?.mounted??false;
+    Rect? targetRect = coverGK.globalPaintBounds();
+    if (targetRect == null) return;
+
+    Alignment? ta =
+        Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
-    var zoomer = parentWrapperState!.zoomer;
-    var savedKey = tc.targetsWrapperGK;
+    var zoomer = tc.targetsWrapperState()!.zoomer;
+    // var savedKey = tc.targetsWrapperGK;
+
+    tc.targetsWrapperState()!.playingTc = tc;
+
+    // TEST
+    tc.transformScale = 2.0;
     zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
         afterTransformF: () {
-      if (savedKey == tc.targetsWrapperGK) {
-        debugPrint('doh!');
-      }
-      bloc.add(CAPIEvent.hideTargetGroupsExcept(tc: tc));
-      bloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-      // hideAllSingleTargetBtns();
-      showSnippetContentCallout(tc: tc, justPlaying: true);
+      // if (savedKey != tc.targetsWrapperGK) {
+      //   debugPrint('doh!');
+      // }
+      //
+      showSnippetContentCallout(
+        tc: tc,
+        justPlaying: true,
+        wrapperRect: wrapperRect,
+      );
       Useful.afterMsDelayDo(tc.calloutDurationMs, () {
-        parentWrapperState!.zoomer?.resetTransform(
-            afterTransformF: () =>
-                FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups()));
+        tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
+          tc.targetsWrapperState()!.playingTc = null;
+          // if (FC().canEditContent) {
+          //   STreeNode.showAllTargetCovers();
+          //   STreeNode.showAllTargetBtns();
+          // } else {
+          //   STreeNode.hideAllTargetCovers();
+          //   STreeNode.showAllTargetBtns();
+          // }
+          //FC.forceRefresh();
+        });
       });
     });
+    // });
+    // });
   }
 
-  static void showConfigToolbar(TargetModel tc) {
+  static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
     Callout.dismiss('config-toolbar');
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
@@ -188,7 +254,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
             FC().setCalloutConfigToolbarPos(newPos);
           }),
       boxContentF: (ctx) => CalloutConfigToolbar(
-        tc: tc,
+        tc: tc, wrapperRect: wrapperRect,
         onCloseF: () {
           Callout.dismiss(tc.snippetName);
           // Callout.dismiss('config-toolbar');
