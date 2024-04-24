@@ -54,6 +54,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          const Icon(
+              Icons.drag_handle,
+              color: Colors.white70,
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
           Tooltip(
             message: 'edit the zoom...',
             child: SizedBox(

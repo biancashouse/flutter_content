@@ -22,88 +22,20 @@ class TargetCover extends StatelessWidget {
             data: (tc.uid,false),
             feedback: _draggableTarget(tc),
             childWhenDragging: const Offstage(),
-            // onDragUpdate: (DragUpdateDetails details) {
-            //   // Offset newLocalPos = details.localPosition;
-            //   // debugPrint(newLocalPos.toString());
-            //   Offset newGlobalPos = details.globalPosition
-            //       //   .translate(
-            //       // parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-            //       // parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-            //       // )
-            //       ;
-            //   tc.setTargetStackPosPc(newGlobalPos);
-            //   // debugPrint("${tc.targetLocalPosLeftPc}, ${tc.targetLocalPosTopPc}");
-            // },
-            // onDragStarted: () {
-            //   debugPrint("drag started");
-            //   // bloc.add(const CAPIEvent.unhideAllTargetGroups());
-            //   //removeSnippetContentCallout(widget.initialTC.snippetName);
-            // },
-
-            // onDragEnd: (DraggableDetails details) {
-            //   // Offset newGlobalPos = details.offset.translate(
-            //   //   parentTW?.widget.ancestorHScrollController?.offset ?? 0.0,
-            //   //   parentTW?.widget.ancestorVScrollController?.offset ?? 0.0,
-            //   // );
-            //   // // tc.setTargetStackPosPc(newGlobalPos);
-            //   // tc.setTargetStackPosPc(newGlobalPos.translate(
-            //   //   tc.getScale(bloc.state) * tc.radius,
-            //   //   tc.getScale(bloc.state) * tc.radius,
-            //   // ));
-            //   // bloc.add(const CAPIEvent.unhideAllTargetGroups());
-            //   // Useful.afterNextBuildDo(() {
-            //   // bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-            //   // });
-            //
-            //   // bloc.add(CAPIEvent.targetMoved(tc: tc, targetRadius: radius, newGlobalPos: newGlobalPos));
-            //   // Useful.afterNextBuildPassBlocAndDo(bloc, (bloC) {
-            //   //   if (bloC.state.aTargetIsSelected()) {
-            //   //     showTargetModelToolbarCallout(
-            //   //       bloc, tc,
-            //   //       ancestorHScrollController,
-            //   //       ancestorVScrollController,
-            //   //     );
-            //   //   }
-            //   // });
-            // },
-            child: _draggableTarget(tc),
+               child: _draggableTarget(tc),
           )
         : CircleAvatar(
             backgroundColor: const Color.fromRGBO(255, 0, 0, .1),
             // backgroundColor: Colors.red,
             radius: tc.radius + 2,
           );
-    // } else {
-    //   return const Icon(
-    //     Icons.warning,
-    //     color: Colors.red,
-    //   );
-    // // }
   }
-
-  // Widget _draggableTargetNotBeingDragged(context, TargetModel tc) {
-  //   // debugPrint('_draggableTargetNotBeingDragged');
-  //   double radius = tc.radius;
-  //   return SizedBox(
-  //     width: radius * 2,
-  //     height: radius * 2,
-  //     child: IntegerCircleAvatar(
-  //       tc,
-  //       num: bloc.state.targetIndex(tc) + 1,
-  //       bgColor: tc.calloutColor().withOpacity(.5),
-  //       radius: radius,
-  //       textColor: FC().canEditContent ? Colors.white : Colors.transparent,
-  //       fontSize: 14,
-  //     ),
-  //   );
-  // }
 
   Widget _draggableTarget(TargetModel tc) {
     // debugPrint('_draggableTarget');
-    double radius = tc.radius;
     return SizedBox(
-      width: tc.getScale() * radius * 2,
-      height: tc.getScale() * radius * 2,
+      width: tc.radius * 2,
+      height: tc.radius * 2,
       child: _TargetCover(tc, index),
     );
   }

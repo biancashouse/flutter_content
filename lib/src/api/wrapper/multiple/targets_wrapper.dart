@@ -71,9 +71,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // Offset? savedChildLocalPosPc;
 
   // Timer? _sizeChangedTimer;
-  TargetModel? _playingTc; // gets set / reset by btn widgets
-  set playingTc(newtC) => _playingTc = newtC;
-  get playingTc => _playingTc;
+  TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
+  void setPlayingOrEditingTc(newtC) => setState(() {
+    _playingOrEditingTc = newtC;
+  });
+  get playingTc => _playingOrEditingTc;
 
   double? scrollOffset;
 
@@ -110,48 +112,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
         setState(() {});
         measureIWPosAndSize();
-        // measure child size
-        // var childGK = widget.child?.key as GlobalKey?;
-        // final renderObject = childGK?.currentContext?.findRenderObject();
-        // final translation = renderObject?.getTransformTo(null).getTranslation();
-        // Rect? paintBounds;
-        // try {
-        //   paintBounds = renderObject?.paintBounds;
-        // } catch (e) {
-        //   debugPrint(
-        //       'paintBounds = renderObject?.paintBounds - ${e.toString()}');
-        // }
-        // wrapperSize = paintBounds?.size ?? MediaQuery.of(context).size;
-        // debugPrint('TargetsWrapper.child size: ${wrapperSize.toString()}');
-        // if (widget.key != null) {
-        //   Measuring.findGlobalRect(widget.key! as GlobalKey);
-        //   // Size size = CAPIState.iwSize(widget.name);
-        //   // debugPrint("${widget.name} size: ${size.toString()}");
-        // }
-        // ImageWrapperAuto.showAllTargets(bloc: bloc, name: widget.name);
-        // showDottedBorderCallout(
-        //   widget.name,
-        //   widget.ancestorHScrollController,
-        //   widget.ancestorVScrollController,
-        //   1000,
-        // );
-        // bloc.add(const CAPIEvent.unhideAllTargetGroups());
       },
     );
   }
-
-  // Rect wwRect(String wName) => Rect.fromLTWH(
-  //       wrapperPos?.dx ?? 0,
-  //       wrapperPos?.dy ?? 0,
-  //       wrapperSize?.width ?? Useful.scrW,
-  //       wrapperSize?.height ?? Useful.scrH,
-  //     );
-
-  // @override
-  // void didChangeDependencies() {
-  //   Useful.latestContext = context;
-  //   super.didChangeDependencies();
-  // }
 
   void measureIWPosAndSize() {
     // debugPrint('measureIWPosAndSize');
@@ -298,7 +261,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
             // TARGET BUTTONS
             for (TargetModel tc in tcs)
-              if (playingTc == null)
+              if (playingTc == null )
                 PositionedTargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),
@@ -306,7 +269,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 ),
           ],
         ));
-
   }
 
   int _targetIndex(TargetModel tc) => widget.parentNode.targets.indexOf(tc);

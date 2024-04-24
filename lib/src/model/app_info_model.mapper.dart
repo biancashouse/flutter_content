@@ -36,6 +36,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static STreeNode? _$clipboard(AppInfoModel v) => v.clipboard;
   static const Field<AppInfoModel, STreeNode> _f$clipboard =
       Field('clipboard', _$clipboard, opt: true);
+  static bool _$autoPublish(AppInfoModel v) => v.autoPublish;
+  static const Field<AppInfoModel, bool> _f$autoPublish =
+      Field('autoPublish', _$autoPublish, opt: true, def: true);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -43,6 +46,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #editingVersionIds: _f$editingVersionIds,
     #versionIds: _f$versionIds,
     #clipboard: _f$clipboard,
+    #autoPublish: _f$autoPublish,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -50,7 +54,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         publishedVersionIds: data.dec(_f$publishedVersionIds),
         editingVersionIds: data.dec(_f$editingVersionIds),
         versionIds: data.dec(_f$versionIds),
-        clipboard: data.dec(_f$clipboard));
+        clipboard: data.dec(_f$clipboard),
+        autoPublish: data.dec(_f$autoPublish));
   }
 
   @override
@@ -116,7 +121,8 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       {Map<String, String>? publishedVersionIds,
       Map<String, String>? editingVersionIds,
       Map<String, List<String>>? versionIds,
-      STreeNode? clipboard});
+      STreeNode? clipboard,
+      bool? autoPublish});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -155,13 +161,15 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           {Map<String, String>? publishedVersionIds,
           Map<String, String>? editingVersionIds,
           Map<String, List<String>>? versionIds,
-          Object? clipboard = $none}) =>
+          Object? clipboard = $none,
+          bool? autoPublish}) =>
       $apply(FieldCopyWithData({
         if (publishedVersionIds != null)
           #publishedVersionIds: publishedVersionIds,
         if (editingVersionIds != null) #editingVersionIds: editingVersionIds,
         if (versionIds != null) #versionIds: versionIds,
-        if (clipboard != $none) #clipboard: clipboard
+        if (clipboard != $none) #clipboard: clipboard,
+        if (autoPublish != null) #autoPublish: autoPublish
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
@@ -170,7 +178,8 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       editingVersionIds:
           data.get(#editingVersionIds, or: $value.editingVersionIds),
       versionIds: data.get(#versionIds, or: $value.versionIds),
-      clipboard: data.get(#clipboard, or: $value.clipboard));
+      clipboard: data.get(#clipboard, or: $value.clipboard),
+      autoPublish: data.get(#autoPublish, or: $value.autoPublish));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

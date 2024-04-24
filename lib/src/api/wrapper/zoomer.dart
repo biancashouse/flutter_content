@@ -137,6 +137,7 @@ class ZoomerState extends State<Zoomer>
 
     // zoomImmediately(2.0, 2.0);
 
+
     // Future.delayed(const Duration(seconds: 2), (){
     //   resetTransform();
     // });

@@ -885,7 +885,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
       },
       menuChildren: [
         SubmenuButton(
-            menuChildren: revertMIs, child: Text('revert staging...')),
+            menuChildren: revertMIs, child: const Text('revert staging...')),
         if (currentVersionId != publishedVersionId)
           MenuItemButton(
             onPressed: () {
@@ -893,8 +893,21 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
                   snippetName: widget.snippetName,
                   versionId: currentVersionId));
             },
-            child: Text('publish'),
+            child: const Text('publish'),
           ),
+        MenuItemButton(
+          onPressed: () {
+            // FC().capiBloc.add(CAPIEvent.publishSnippet(
+            //     snippetName: widget.snippetName,
+            //     versionId: currentVersionId));
+            FC().setAutoPublishing();
+          },
+          child: FC().isAutoPublishing()
+          ? const Tooltip(message: "don't auto-push changes.",
+              child: Text('stop auto-publishing'))
+          : const Tooltip(message: 'auto push changes as they occur',
+              child: Text('auto-publish')),
+        ),
       ],
     );
   }

@@ -25,7 +25,6 @@ import 'src/snippet/pnodes/enums/enum_arrow_type.dart';
 
 export 'src/api/panel/files_or_file_panel.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
-export 'src/api/wrapper/material_app_wrapper.dart';
 export 'src/api/wrapper/material_spa.dart';
 export 'src/api/wrapper/multiple/targets_wrapper.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
@@ -313,6 +312,8 @@ class FC {
   late AppInfoModel _appInfo; // must be instantiated in init()
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
+  bool isAutoPublishing() => _appInfo.autoPublish;
+  void setAutoPublishing() => _appInfo.autoPublish = ! _appInfo.autoPublish;
   Map<SnippetName, VersionId> get publishedVersionIds =>
       _appInfo.publishedVersionIds;
   Map<SnippetName, VersionId> get editingVersionIds =>
@@ -497,9 +498,9 @@ class FC {
   GlobalKey? getTargetGk(TargetId targetId) => _targetGK[targetId];
 
   GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
-    if (_targetGK.containsKey(targetId) && _targetGK != gk) {
-      debugPrint('target changed.');
-    }
+    // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
+    //   debugPrint('target changed.');
+    // }
     _targetGK[targetId] = gk;
     return gk;
   }
