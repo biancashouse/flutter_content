@@ -11,14 +11,14 @@ class AppInfoModel with AppInfoModelMappable {
   Map<SnippetName, List<VersionId>> versionIds;
   STreeNode? clipboard;
 
-  bool autoPublish;
+  bool? autoPublish;
 
   AppInfoModel({
     this.publishedVersionIds = const {},
     this.editingVersionIds = const {},
     this.versionIds = const {},
     this.clipboard,
-    this.autoPublish = true,
+    this.autoPublish,
   });
 
   factory AppInfoModel.fromFB(JsonMap data) => AppInfoModelMapper.fromMap(data);

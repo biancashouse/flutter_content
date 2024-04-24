@@ -312,8 +312,8 @@ class FC {
   late AppInfoModel _appInfo; // must be instantiated in init()
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
-  bool isAutoPublishing() => _appInfo.autoPublish;
-  void setAutoPublishing() => _appInfo.autoPublish = ! _appInfo.autoPublish;
+  bool isAutoPublishing() => _appInfo.autoPublish ?? true;
+  void setAutoPublishing() => _appInfo.autoPublish = ! isAutoPublishing();
   Map<SnippetName, VersionId> get publishedVersionIds =>
       _appInfo.publishedVersionIds;
   Map<SnippetName, VersionId> get editingVersionIds =>

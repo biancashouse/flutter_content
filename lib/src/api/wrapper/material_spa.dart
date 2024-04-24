@@ -423,6 +423,9 @@ class MaterialSPAState extends State<MaterialSPA>
     // STreeNode.showAllTargetBtns();
     // FC.forceRefresh();
     Callout.dismiss("FAB");
+    if (FC().canEditContent) {
+      Callout.showTextToast(feature: 'show-auto-publish-status', msgText: 'auto-publishing of changes is ${FC().isAutoPublishing() ? "ON" : "OFF"}');
+    }
     // // AppModel appModel = FC().appInfo;
     // // BranchModel? currentBranch = appModel.branches[appModel.editingBranchName];
     // String buildInfo = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
@@ -450,7 +453,6 @@ class MaterialSPAState extends State<MaterialSPA>
                     IconButton(
                       onPressed: () async {
                         _signOut();
-                        FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                       },
                       icon: const Icon(
                         Icons.close,
