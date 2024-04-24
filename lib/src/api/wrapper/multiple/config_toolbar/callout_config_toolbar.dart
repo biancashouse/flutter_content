@@ -59,57 +59,67 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               color: Colors.white70,
           ),
           const VerticalDivider(color: Colors.white, width: 2),
-          Tooltip(
-            message: 'edit the zoom...',
-            child: SizedBox(
-              width: 200,
-              child: ResizeSlider(
-                  value: tc.transformScale,
-                  icon: Icons.zoom_in,
-                  iconSize: 30,
-                  color: Colors.white,
-                  onDragStartF: () => Callout.dismiss(tc.snippetName),
-                  onDragEndF: () => showSnippetContentCallout(
-                        tc: tc,
-                        // parentTW.widget.ancestorHScrollController,
-                        // parentTW.widget.ancestorVScrollController,
-                        justPlaying: false,
-                    wrapperRect: widget.wrapperRect,
-                      ),
-                  onChangeF: (value) {
-                    tc.transformScale = value;
-                    TargetsWrapperState? state = tc.targetsWrapperState();
-                    state?.zoomer
-                        ?.zoomImmediately(value, value);
-                  },
-                  min: 1.0,
-                  max: 3.0),
-            ),
+          Column(
+            children: [
+              Useful.coloredText('zoom', color: Colors.white70),
+              Tooltip(
+                message: 'edit the zoom...',
+                child: SizedBox(
+                  width: 200,
+                  child: ResizeSlider(
+                      value: tc.transformScale,
+                      //icon: Icons.zoom_in,
+                      iconSize: 30,
+                      color: Colors.white,
+                      onDragStartF: () => Callout.dismiss(tc.snippetName),
+                      onDragEndF: () => showSnippetContentCallout(
+                            tc: tc,
+                            // parentTW.widget.ancestorHScrollController,
+                            // parentTW.widget.ancestorVScrollController,
+                            justPlaying: false,
+                        wrapperRect: widget.wrapperRect,
+                          ),
+                      onChangeF: (value) {
+                        tc.transformScale = value;
+                        TargetsWrapperState? state = tc.targetsWrapperState();
+                        state?.zoomer
+                            ?.zoomImmediately(value, value);
+                      },
+                      min: 1.0,
+                      max: 3.0),
+                ),
+              ),
+            ],
           ),
           const VerticalDivider(color: Colors.white, width: 2),
-          Tooltip(
-            message: 'resize the circular target radius...',
-            child: SizedBox(
-              width: 200,
-              child: ResizeSlider(
-                  value: tc.radiusPc != null
-                      ? max(16, tc.radiusPc! * ivSize.width)
-                      : 30,
-                  icon: Icons.circle_rounded,
-                  color: Colors.white70,
-                  onChangeF: (value) {
-                    // Cancel previous debounce timer, if any
-                    if (_debounce?.isActive ?? false) _debounce?.cancel();
-                    // Set up a new debounce timer
-                    _debounce = Timer(const Duration(milliseconds: 100), () {
-                      tc.radiusPc = value / ivSize.width;
-                      tc.onChange();
-                      FC.forceRefresh();
-                    });
-                  },
-                  min: 16.0,
-                  max: 100.0),
-            ),
+          Column(
+            children: [
+              Useful.coloredText('target size', color: Colors.white70),
+              Tooltip(
+                message: 'resize the circular target radius...',
+                child: SizedBox(
+                  width: 200,
+                  child: ResizeSlider(
+                      value: tc.radiusPc != null
+                          ? max(16, tc.radiusPc! * ivSize.width)
+                          : 30,
+                      // icon: Icons.circle_rounded,
+                      color: Colors.white70,
+                      onChangeF: (value) {
+                        // Cancel previous debounce timer, if any
+                        if (_debounce?.isActive ?? false) _debounce?.cancel();
+                        // Set up a new debounce timer
+                        _debounce = Timer(const Duration(milliseconds: 100), () {
+                          tc.radiusPc = value / ivSize.width;
+                          tc.onChange();
+                          FC.forceRefresh();
+                        });
+                      },
+                      min: 16.0,
+                      max: 100.0),
+                ),
+              ),
+            ],
           ),
           const VerticalDivider(color: Colors.white, width: 2),
           IconButton(
@@ -266,6 +276,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 }
               );
             },
+          ),
+          const VerticalDivider(color: Colors.white, width: 2),
+          const Icon(
+            Icons.drag_handle,
+            color: Colors.white70,
           ),
         ],
       ),

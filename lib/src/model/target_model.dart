@@ -93,7 +93,7 @@ class TargetModel with TargetModelMappable {
   }
 
   GlobalKey? get targetsWrapperGK => targetsWrapperNode?.nodeWidgetGK;
-  TargetsWrapperState? targetsWrapperState() => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState;
+  TargetsWrapperState? targetsWrapperState() => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState?;
 
   /// https://gist.github.com/pskink/aa0b0c80af9a986619845625c0e87a67
   Matrix4 composeMatrix({
@@ -271,6 +271,10 @@ class TargetModel with TargetModelMappable {
           versionId: newVersionId);
       FC().updateEditingVersionId(
           snippetName: snippetName, newVersionId: newVersionId);
+      if (FC().isAutoPublishing()) {
+        FC().updatePublishedVersionId(
+            snippetName: snippetName, versionId: newVersionId);
+      }
       // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
       // var appInfoMap = FC().appInfoAsMap;
       await FC().modelRepo.saveSnippet(

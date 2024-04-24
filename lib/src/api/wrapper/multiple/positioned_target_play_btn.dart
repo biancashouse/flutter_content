@@ -179,7 +179,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
   void playTarget(TargetModel tc) {
     if (tc.targetsWrapperState() == null) return;
-    
+
     // cover will now have been rendered with its gk
     var coverGK = FC().getTargetGk(tc.uid);
     // debugPrint('getTargetGK: $coverGK');
@@ -226,9 +226,9 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         feature: 'config-toolbar',
         fillColor: Colors.purpleAccent,
         suppliedCalloutW: 800,
-        suppliedCalloutH: 60,
+        suppliedCalloutH: 80,
         decorationShape: DecorationShapeEnum.rounded_rectangle,
-        borderRadius: 20,
+        borderRadius: 16,
         animate: false,
         arrowType: ArrowType.NO_CONNECTOR,
         initialCalloutPos: FC().calloutConfigToolbarPos(),

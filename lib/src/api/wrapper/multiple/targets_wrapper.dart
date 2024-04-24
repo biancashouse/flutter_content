@@ -165,15 +165,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           FC().capiBloc.state.CAPI_TARGET_BTN_RADIUS,
         ));
         foundTc.onChange();
-        FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
       } else if (foundTc != null) {
         foundTc.setTargetStackPosPc(details.offset.translate(
           foundTc.radius,
           foundTc.radius,
         ));
         foundTc.onChange();
-        FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
       }
+      FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     }
 
     //
