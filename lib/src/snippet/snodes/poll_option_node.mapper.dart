@@ -26,6 +26,9 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
       Field('optionId', _$optionId);
   static String _$text(PollOptionNode v) => v.text;
   static const Field<PollOptionNode, String> _f$text = Field('text', _$text);
+  static String _$uid(PollOptionNode v) => v.uid;
+  static const Field<PollOptionNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(PollOptionNode v) => v.isExpanded;
   static const Field<PollOptionNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -44,6 +47,7 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   final MappableFields<PollOptionNode> fields = const {
     #optionId: _f$optionId,
     #text: _f$text,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -36,6 +36,9 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
   static double _$iframeHeight(YTNode v) => v.iframeHeight;
   static const Field<YTNode, double> _f$iframeHeight =
       Field('iframeHeight', _$iframeHeight, opt: true, def: 316);
+  static String _$uid(YTNode v) => v.uid;
+  static const Field<YTNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(YTNode v) => v.isExpanded;
   static const Field<YTNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -56,6 +59,7 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
     #endAtSecs: _f$endAtSecs,
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

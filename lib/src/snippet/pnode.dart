@@ -576,68 +576,69 @@ class BoolPropertyValueNode extends PTreeNode {
       );
 }
 
-class SnippetRefPropertyValueNode extends PTreeNode {
-  String? snippetName;
-  final ValueChanged<String> onNameChange;
-  final bool expands; // false means just a single line
-  final nameOnSeparateLine;
-  final Size calloutButtonSize;
-  final Size calloutSize;
-
-  SnippetRefPropertyValueNode({
-    required this.snippetName,
-    required this.onNameChange,
-    this.expands = true,
-    this.nameOnSeparateLine = false,
-    required this.calloutButtonSize,
-    required this.calloutSize,
-    required super.snode,
-    required super.name,
-  });
-
-  @override
-  void revertToOriginalValue() {
-    onNameChange(snippetName = '');
-  }
-
-  // TODO no onChange etc yet
-  @override
-  Widget toPropertyNodeContents(BuildContext context) {
-    String displayedName = snippetName?.isNotEmpty ?? false
-        ? nameOnSeparateLine
-            ? '$name: \n$snippetName'
-            : '$name: $snippetName'
-        : '$name...';
-    // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
-    // TODO use pushSnippet...
-    return NodePropertyCalloutButton(
-      notifier: ValueNotifier<int>(0),
-      labelWidget: Text(
-        displayedName,
-        style: const TextStyle(color: Colors.white),
-        softWrap: true,
-        maxLines: null,
-        // overflow: TextOverflow.ellipsis,
-      ),
-      calloutButtonSize: const Size(190, 40),
-      calloutContents: (ctx) {
-        return Container(); // TODO return a Snippet Tree
-      },
-      initialTargetAlignment: Alignment.topLeft,
-      initialCalloutAlignment: Alignment.topLeft,
-      draggable: false,
-      calloutSize: calloutSize,
-    );
-  }
-// NodePropertyButtonText(
-//   name: stringValue?.isNotEmpty ?? false ? '$name: $stringValue' : '$name...',
-//   text: stringValue,
-//   calloutSize: const Size(200, 100),
-//   onChangeF: (s) {
-//     onChange?.call(s);
-//   },
-// );
-}
+// class SnippetRefPropertyValueNode extends PTreeNode {
+//   String? snippetName;
+//   final ValueChanged<String> onNameChange;
+//   final bool expands; // false means just a single line
+//   final nameOnSeparateLine;
+//   final Size calloutButtonSize;
+//   final Size calloutSize;
+//
+//   SnippetRefPropertyValueNode({
+//     required this.snippetName,
+//     required this.onNameChange,
+//     this.expands = true,
+//     this.nameOnSeparateLine = false,
+//     required this.calloutButtonSize,
+//     required this.calloutSize,
+//     required super.snode,
+//     required super.name,
+//   });
+//
+//   @override
+//   void revertToOriginalValue() {
+//     onNameChange(snippetName = '');
+//   }
+//
+//   // TODO no onChange etc yet
+//   @override
+//   Widget toPropertyNodeContents(BuildContext context) {
+//     String displayedName = snippetName?.isNotEmpty ?? false
+//         ? nameOnSeparateLine
+//             ? '$name: \n$snippetName'
+//             : '$name: $snippetName'
+//         : '$name...';
+//     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
+//     // TODO use pushSnippet...
+//     return NodePropertyCalloutButton(
+//       feature: ,
+//       notifier: ValueNotifier<int>(0),
+//       labelWidget: Text(
+//         displayedName,
+//         style: const TextStyle(color: Colors.white),
+//         softWrap: true,
+//         maxLines: null,
+//         // overflow: TextOverflow.ellipsis,
+//       ),
+//       calloutButtonSize: const Size(190, 40),
+//       calloutContents: (ctx) {
+//         return Container(); // TODO return a Snippet Tree
+//       },
+//       initialTargetAlignment: Alignment.topLeft,
+//       initialCalloutAlignment: Alignment.topLeft,
+//       draggable: false,
+//       calloutSize: calloutSize,
+//     );
+//   }
+// // NodePropertyButtonText(
+// //   name: stringValue?.isNotEmpty ?? false ? '$name: $stringValue' : '$name...',
+// //   text: stringValue,
+// //   calloutSize: const Size(200, 100),
+// //   onChangeF: (s) {
+// //     onChange?.call(s);
+// //   },
+// // );
+// }
 
 // class StringPropertyValueNode extends PTreeNode {
 //   String? stringValue;
@@ -1241,6 +1242,7 @@ class ColorPropertyValueNode extends PTreeNode {
   @override
   Widget toPropertyNodeContents(BuildContext context) =>
       NodePropertyButtonColor(
+        feature: 'color',
         label: name,
         tooltip: tooltip,
         originalColor: colorValue != null ? Color(colorValue!) : null,
@@ -1282,6 +1284,7 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                 return NodePropertyButtonColor(
+                  feature: 'color1',
                   key: GlobalKey(),
                   label: '',
                   originalColor: colorValues?.color1Value != null
@@ -1307,13 +1310,14 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return NodePropertyButtonColor(
+                    feature: 'color2',
                     label: '',
                     originalColor: colorValues?.color2Value != null
                         ? Color(colorValues!.color2Value!)
                         : null,
                     onChangeF: (Color? newColor) {
                       if (newColor != null) {
-                        onColorChange.call(
+                        setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: newColor.value,
@@ -1322,8 +1326,8 @@ class GradientPropertyValueNode extends PTreeNode {
                             color5Value: colorValues?.color5Value,
                             color6Value: colorValues?.color6Value,
                           ),
-                        );
-                      }
+                        ));
+                    }
                     },
                     calloutButtonSize: const Size(24, 24),
                   );
@@ -1332,13 +1336,14 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return NodePropertyButtonColor(
+                    feature: 'color3',
                     label: '',
                     originalColor: colorValues?.color3Value != null
                         ? Color(colorValues!.color3Value!)
                         : null,
                     onChangeF: (Color? newColor) {
                       if (newColor != null) {
-                        onColorChange.call(
+                        setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1347,8 +1352,8 @@ class GradientPropertyValueNode extends PTreeNode {
                             color5Value: colorValues?.color5Value,
                             color6Value: colorValues?.color6Value,
                           ),
-                        );
-                      }
+                        ));
+                    }
                     },
                     calloutButtonSize: const Size(24, 24),
                   );
@@ -1357,13 +1362,14 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return NodePropertyButtonColor(
+                    feature: 'color4',
                     label: '',
                     originalColor: colorValues?.color4Value != null
                         ? Color(colorValues!.color4Value!)
                         : null,
                     onChangeF: (Color? newColor) {
                       if (newColor != null) {
-                        onColorChange.call(
+                        setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1372,8 +1378,8 @@ class GradientPropertyValueNode extends PTreeNode {
                             color5Value: colorValues?.color5Value,
                             color6Value: colorValues?.color6Value,
                           ),
-                        );
-                      }
+                        ));
+                    }
                     },
                     calloutButtonSize: const Size(24, 24),
                   );
@@ -1382,13 +1388,14 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return NodePropertyButtonColor(
+                    feature: 'color5',
                     label: '',
                     originalColor: colorValues?.color5Value != null
                         ? Color(colorValues!.color5Value!)
                         : null,
                     onChangeF: (Color? newColor) {
                       if (newColor != null) {
-                        onColorChange.call(
+                        setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1397,8 +1404,8 @@ class GradientPropertyValueNode extends PTreeNode {
                             color5Value: newColor.value,
                             color6Value: colorValues?.color6Value,
                           ),
-                        );
-                      }
+                        ));
+                    }
                     },
                     calloutButtonSize: const Size(24, 24),
                   );
@@ -1407,6 +1414,7 @@ class GradientPropertyValueNode extends PTreeNode {
               StatefulBuilder(
                 builder: (BuildContext context, StateSetter setState) {
                   return NodePropertyButtonColor(
+                    feature: 'color6',
                     label: '',
                     originalColor: colorValues?.color6Value != null
                         ? Color(colorValues!.color6Value!)

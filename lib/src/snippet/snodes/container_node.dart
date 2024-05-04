@@ -69,6 +69,9 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) {
+    String paddingLabel = padding == null ? 'padding' : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
+    String marginLabel = margin == null ? 'margin' : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
+
     return [
       SizePropertyValueNode(
         snode: this,
@@ -86,50 +89,33 @@ class ContainerNode extends SC with ContainerNodeMappable {
       ),
       PropertyGroup(
         snode: this,
-        name: 'margin',
+        name: marginLabel,
         children: [
           EdgeInsetsPropertyValueNode(
             snode: this,
             name: 'margin',
             eiValue: margin,
-            onEIChangedF: (newValue) =>
-                refreshWithUpdate(() => margin = newValue),
+            onEIChangedF: (newValue) => refreshWithUpdate(() => margin = newValue),
           ),
         ],
       ),
       PropertyGroup(
         snode: this,
-        name: 'padding',
+        name: paddingLabel,
         children: [
           EdgeInsetsPropertyValueNode(
             snode: this,
             name: 'padding',
             eiValue: padding,
-            onEIChangedF: (newValue) =>
-                refreshWithUpdate(() => padding = newValue),
+            onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
           ),
         ],
-      ),
-      EnumPropertyValueNode<AlignmentEnum?>(
-        snode: this,
-        name: 'alignment',
-        valueIndex: alignment?.index,
-        onIndexChange: (newValue) =>
-            refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
       ),
       PropertyGroup(
         snode: this,
         name: 'decoration',
         children: [
           // SHAPE
-          EnumPropertyValueNode<DecorationShapeEnum?>(
-            snode: this,
-            name: 'shape',
-            valueIndex: decoration.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration =
-                DecorationShapeEnum.of(newValue) ??
-                    DecorationShapeEnum.rectangle),
-          ),
           // FILL COLOR(s)
           GradientPropertyValueNode(
             snode: this,
@@ -137,6 +123,12 @@ class ContainerNode extends SC with ContainerNodeMappable {
             colorValues: fillColorValues,
             onColorChange: (newValues) => refreshWithUpdate(() {
               fillColorValues = newValues;
+              // var oes = Callout.OEs;
+              // for (var oe in oes) {
+              //   debugPrint(oe.calloutConfig.feature);
+              // }
+              // Callout.hide('easy-color-picker');
+              // Callout.hideOP('easy-color-picker');
             }),
           ),
           // FILL COLOR(s)
@@ -146,25 +138,38 @@ class ContainerNode extends SC with ContainerNodeMappable {
             colorValues: borderColorValues,
             onColorChange: (newValues) => refreshWithUpdate(() {
               borderColorValues = newValues;
+              // var oes = Callout.OEs;
+              // Callout.hide('easy-color-picker');
+              // Callout.hideOP('easy-color-picker');
             }),
+          ),
+          EnumPropertyValueNode<DecorationShapeEnum?>(
+            snode: this,
+            name: 'shape',
+            valueIndex: decoration.index,
+            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue) ?? DecorationShapeEnum.rectangle),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'thickness',
             decimalValue: borderThickness,
-            onDoubleChange: (newValue) =>
-                refreshWithUpdate(() => borderThickness = newValue),
+            onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'radius',
             decimalValue: borderRadius,
-            onDoubleChange: (newValue) =>
-                refreshWithUpdate(() => borderRadius = newValue),
+            onDoubleChange: (newValue) => refreshWithUpdate(() => borderRadius = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
         ],
+      ),
+      EnumPropertyValueNode<AlignmentEnum?>(
+        snode: this,
+        name: 'alignment',
+        valueIndex: alignment?.index,
+        onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
       ),
       // PropertyGroup(
       //   snode: this,
@@ -217,9 +222,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //     radius: borderRadius,
       //   );
       // }
-      if (true ||
-          outlinedBorderGroup?.outlinedBorderType != null &&
-              outlinedBorderGroup?.side != null) {
+      if (true || outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
         return Container(
           key: createNodeGK(),
           decoration: decoration.toDecoration(

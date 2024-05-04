@@ -29,6 +29,7 @@ class _NodePropertyButtonTextDirectionState extends State<NodePropertyButtonText
         ? Text('textDirection: ${widget.textDirection!.name}', style: const TextStyle(color: Colors.white))
         : const Text('textDirection...', style: TextStyle(color: Colors.white));
     return NodePropertyCalloutButton(
+      feature: 'text-direction',
       notifier: ValueNotifier<int>(0),
       labelWidget: textDirectionLabel,
       calloutButtonSize: const Size(72, 36),

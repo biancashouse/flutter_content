@@ -23,6 +23,7 @@ class NodePropertyButtonDecimal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => NodePropertyCalloutButton(
+        feature: 'decimal-editor',
         label: label,
         labelWidget: labelWidget,
         calloutButtonSize: const Size(72, 36),
@@ -46,6 +47,6 @@ class NodePropertyButtonDecimal extends StatelessWidget {
           );
         },
         calloutSize: calloutSize,
-    notifier: ValueNotifier<int>(0),
+        notifier: ValueNotifier<int>(0),
       );
 }

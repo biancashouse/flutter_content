@@ -38,6 +38,9 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   static STreeNode? _$child(TextButtonNode v) => v.child;
   static const Field<TextButtonNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(TextButtonNode v) => v.uid;
+  static const Field<TextButtonNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(TextButtonNode v) => v.isExpanded;
   static const Field<TextButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -61,6 +64,7 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

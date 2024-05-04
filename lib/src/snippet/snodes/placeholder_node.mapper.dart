@@ -36,6 +36,9 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static double? _$height(PlaceholderNode v) => v.height;
   static const Field<PlaceholderNode, double> _f$height =
       Field('height', _$height, opt: true);
+  static String _$uid(PlaceholderNode v) => v.uid;
+  static const Field<PlaceholderNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(PlaceholderNode v) => v.isExpanded;
   static const Field<PlaceholderNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -57,6 +60,7 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
     #colorValue: _f$colorValue,
     #width: _f$width,
     #height: _f$height,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

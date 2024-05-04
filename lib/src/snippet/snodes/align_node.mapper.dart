@@ -29,6 +29,9 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   static STreeNode? _$child(AlignNode v) => v.child;
   static const Field<AlignNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(AlignNode v) => v.uid;
+  static const Field<AlignNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(AlignNode v) => v.isExpanded;
   static const Field<AlignNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -47,6 +50,7 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   final MappableFields<AlignNode> fields = const {
     #alignment: _f$alignment,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

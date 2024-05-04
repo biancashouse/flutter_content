@@ -41,6 +41,9 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   static GenericMultiChildNode? _$actions(AppBarNode v) => v.actions;
   static const Field<AppBarNode, GenericMultiChildNode> _f$actions =
       Field('actions', _$actions, opt: true);
+  static String _$uid(AppBarNode v) => v.uid;
+  static const Field<AppBarNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(AppBarNode v) => v.isExpanded;
   static const Field<AppBarNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -63,6 +66,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #title: _f$title,
     #bottom: _f$bottom,
     #actions: _f$actions,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

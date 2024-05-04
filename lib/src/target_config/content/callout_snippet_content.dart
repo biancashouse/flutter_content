@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/snippet_templates.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -42,19 +43,14 @@ Future<void> showSnippetContentCallout({
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.snippetName;
-  FC().targetSnippetBeingConfigured =
-      await FC().rootNodeOfEditingSnippet(tc.snippetName);
+  var snippet = FC().snippetInfoCache[tc.snippetName];
+  FC().targetSnippetBeingConfigured = FC().currentSnippet(tc.snippetName);
   if (FC().targetSnippetBeingConfigured == null) {
     SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplate(
         SnippetTemplate.target_content_widget, tc.snippetName);
-    VersionId initialVersionId =
-        DateTime.now().millisecondsSinceEpoch.toString();
-    FC().addToSnippetCache(
-      snippetName: tc.snippetName,
-      rootNode: newSnippet,
-      versionId: initialVersionId,
-      // editing: true,
-    );
+    FC().possiblyCacheAndSaveANewSnippetVersion(
+        snippetName: tc.snippetName,
+        rootNode: newSnippet);
     FC().targetSnippetBeingConfigured = newSnippet;
   }
   // snipper may not exist yet

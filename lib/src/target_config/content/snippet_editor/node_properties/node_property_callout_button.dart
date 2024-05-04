@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class NodePropertyCalloutButton extends StatelessWidget {
+  final Feature feature;
   final Alignment alignment;
   final String? label;
   final String? tooltip;
@@ -16,6 +17,7 @@ class NodePropertyCalloutButton extends StatelessWidget {
   final ValueNotifier<int> notifier;
 
   const NodePropertyCalloutButton({
+    required this.feature,
     this.alignment = Alignment.centerLeft,
     this.label,
     this.tooltip,
@@ -34,7 +36,7 @@ class NodePropertyCalloutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CalloutConfig config = CalloutConfig(
-      feature: NODE_PROPERTY_CALLOUT_BUTTON,
+      feature: feature,
       suppliedCalloutW: calloutSize.width,
       suppliedCalloutH: calloutSize.height,
       arrowType: ArrowType.NO_CONNECTOR,
@@ -55,7 +57,7 @@ class NodePropertyCalloutButton extends StatelessWidget {
         opacity: .1,
         onTappedF: () async {
           // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-          // Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+          Callout.dismiss(feature);
         },
       ),
       containsTextField: true,
@@ -71,7 +73,7 @@ class NodePropertyCalloutButton extends StatelessWidget {
         onTap: (){
           Callout.unhideParentCallout(ctx, animateSeparation: false);
         },
-        child: Tooltip(message: tooltip??'',
+        child: Tooltip(message: feature,
           child: Container(
             // key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),

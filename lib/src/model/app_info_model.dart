@@ -6,20 +6,13 @@ part 'app_info_model.mapper.dart';
 
 @MappableClass()
 class AppInfoModel with AppInfoModelMappable {
-  Map<SnippetName, VersionId> publishedVersionIds;
-  Map<SnippetName, VersionId> editingVersionIds;
-  Map<SnippetName, List<VersionId>> versionIds;
+  bool autoPublishDefault;
   STreeNode? clipboard;
-
-  bool? autoPublish;
+  List<SnippetName> snippetNames;
 
   AppInfoModel({
-    this.publishedVersionIds = const {},
-    this.editingVersionIds = const {},
-    this.versionIds = const {},
     this.clipboard,
-    this.autoPublish,
+    this.autoPublishDefault = false,
+    this.snippetNames = const [],
   });
-
-  factory AppInfoModel.fromFB(JsonMap data) => AppInfoModelMapper.fromMap(data);
 }

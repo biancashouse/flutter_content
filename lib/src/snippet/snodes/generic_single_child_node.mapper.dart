@@ -29,6 +29,9 @@ class GenericSingleChildNodeMapper
   static STreeNode? _$child(GenericSingleChildNode v) => v.child;
   static const Field<GenericSingleChildNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(GenericSingleChildNode v) => v.uid;
+  static const Field<GenericSingleChildNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(GenericSingleChildNode v) => v.isExpanded;
   static const Field<GenericSingleChildNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -49,6 +52,7 @@ class GenericSingleChildNodeMapper
   final MappableFields<GenericSingleChildNode> fields = const {
     #propertyName: _f$propertyName,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

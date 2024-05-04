@@ -41,6 +41,9 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static double? _$scale(AssetImageNode v) => v.scale;
   static const Field<AssetImageNode, double> _f$scale =
       Field('scale', _$scale, opt: true);
+  static String _$uid(AssetImageNode v) => v.uid;
+  static const Field<AssetImageNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(AssetImageNode v) => v.isExpanded;
   static const Field<AssetImageNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -63,6 +66,7 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
     #width: _f$width,
     #height: _f$height,
     #scale: _f$scale,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

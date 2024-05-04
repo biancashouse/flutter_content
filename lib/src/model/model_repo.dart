@@ -5,23 +5,24 @@ import 'package:flutter_content/src/snippet/fs_folder_node.dart';
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
-  Future<void> getSnippetFromCacheOrFB(
-      {required SnippetName snippetName, required VersionId versionId});
+  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB({required SnippetName snippetName});
+
+  Future<void> possiblyLoadSnippetIntoCache({required SnippetName snippetName, required VersionId versionId});
 
   Future<AppInfoModel?> getAppInfo();
 
   Future<void> saveAppInfo();
 
-  Future<void> publishSnippet(
-      {required SnippetName snippetName, required VersionId versionId});
-
-  Future<VersionId?> saveSnippet({
-    required SnippetRootNode snippetRootNode,
-    required VersionId newVersionId,
+  Future<void> updateSnippetProps({
+    required SnippetName snippetName,
+    VersionId? editingVersionId,
+    VersionId? publishingVersionId,
+    bool? autoPublish,
   });
 
-  Future<void> revertSnippet(
-      {required SnippetName snippetName, required VersionId toVersionId});
+  Future<VersionId?> saveLatestSnippetVersion({
+    required SnippetName snippetName,
+  });
 
   Future<void> saveVote({
     required String pollName,
@@ -43,6 +44,5 @@ abstract class IModelRepository {
 
   // Future<void> createAndPopulateRootFSStorageNode();
 
-  Future<FSFolderNode> createAndPopulateFolderNode(
-      {required Reference ref, FSFolderNode? parentNode});
+  Future<FSFolderNode> createAndPopulateFolderNode({required Reference ref, FSFolderNode? parentNode});
 }

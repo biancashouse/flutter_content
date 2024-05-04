@@ -30,8 +30,8 @@ class FSFoldersAndImagePicker extends HookWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('folder+images build');
-    final msvC = useState<MultiSplitViewController>(
-        MultiSplitViewController(areas: [Area(weight: .7)]));
+    // final msvC = useState<MultiSplitViewController>(
+    //     MultiSplitViewController(areas: [Area(flex: 7)]));
     final selectedFolderRef = useState<Reference>(FC().rootFSFolderNode!.ref);
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
@@ -49,7 +49,7 @@ class FSFoldersAndImagePicker extends HookWidget {
             data: MultiSplitViewThemeData(dividerThickness: 24),
             child: MultiSplitView(
               axis: Axis.horizontal,
-              controller: msvC.value,
+              // controller: msvC.value,
               // onWeightChange: () => setState(() {}),
               dividerBuilder:
                   (axis, index, resizable, dragging, highlighted, themeData) {
@@ -63,14 +63,18 @@ class FSFoldersAndImagePicker extends HookWidget {
                   ),
                 );
               },
-              children: [
-                fsFolderPane(
-                  selectedFolderRef.value,
-                  (newRef) => selectedFolderRef.value = newRef,
+              initialAreas: [
+                Area(
+                  widget: fsFolderPane(
+                    selectedFolderRef.value,
+                    (newRef) => selectedFolderRef.value = newRef,
+                  ),
                 ),
-                FolderImagesGridView(
-                  onChangeF: onChangeF,
-                  selectedFolderRef: selectedFolderRef.value,
+                Area(
+                  widget: FolderImagesGridView(
+                    onChangeF: onChangeF,
+                    selectedFolderRef: selectedFolderRef.value,
+                  ),
                 ),
               ],
             ),

@@ -38,6 +38,9 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static List<InlineSpanNode>? _$children(TextSpanNode v) => v.children;
   static const Field<TextSpanNode, List<InlineSpanNode>> _f$children =
       Field('children', _$children, opt: true);
+  static String _$uid(TextSpanNode v) => v.uid;
+  static const Field<TextSpanNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(TextSpanNode v) => v.isExpanded;
   static const Field<TextSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -59,6 +62,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
     #textStyleGroup: _f$textStyleGroup,
     #namedTextStyle: _f$namedTextStyle,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

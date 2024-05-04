@@ -39,13 +39,26 @@ class _FakeFSFolderNode_0 extends _i1.SmartFake implements _i2.FSFolderNode {
 /// See the documentation for Mockito's code generation for more information.
 class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
   @override
-  _i4.Future<void> getSnippetFromCacheOrFB({
+  _i4.Future<_i5.SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
+          {required String? snippetName}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getSnippetInfoFromCacheOrFB,
+          [],
+          {#snippetName: snippetName},
+        ),
+        returnValue: _i4.Future<_i5.SnippetInfoModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.SnippetInfoModel?>.value(),
+      ) as _i4.Future<_i5.SnippetInfoModel?>);
+
+  @override
+  _i4.Future<void> possiblyLoadSnippetIntoCache({
     required String? snippetName,
     required String? versionId,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getSnippetFromCacheOrFB,
+          #possiblyLoadSnippetIntoCache,
           [],
           {
             #snippetName: snippetName,
@@ -77,17 +90,21 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<void> publishSnippet({
+  _i4.Future<void> updateSnippetProps({
     required String? snippetName,
-    required String? versionId,
+    String? editingVersionId,
+    String? publishingVersionId,
+    bool? autoPublish,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #publishSnippet,
+          #updateSnippetProps,
           [],
           {
             #snippetName: snippetName,
-            #versionId: versionId,
+            #editingVersionId: editingVersionId,
+            #publishingVersionId: publishingVersionId,
+            #autoPublish: autoPublish,
           },
         ),
         returnValue: _i4.Future<void>.value(),
@@ -95,40 +112,17 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<String?> saveSnippet({
-    required _i5.SnippetRootNode? snippetRootNode,
-    required String? newVersionId,
-  }) =>
+  _i4.Future<String?> saveLatestSnippetVersion(
+          {required String? snippetName}) =>
       (super.noSuchMethod(
         Invocation.method(
-          #saveSnippet,
+          #saveLatestSnippetVersion,
           [],
-          {
-            #snippetRootNode: snippetRootNode,
-            #newVersionId: newVersionId,
-          },
+          {#snippetName: snippetName},
         ),
         returnValue: _i4.Future<String?>.value(),
         returnValueForMissingStub: _i4.Future<String?>.value(),
       ) as _i4.Future<String?>);
-
-  @override
-  _i4.Future<void> revertSnippet({
-    required String? snippetName,
-    required String? toVersionId,
-  }) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #revertSnippet,
-          [],
-          {
-            #snippetName: snippetName,
-            #toVersionId: toVersionId,
-          },
-        ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
 
   @override
   _i4.Future<void> saveVote({

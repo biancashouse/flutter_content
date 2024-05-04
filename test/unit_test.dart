@@ -27,7 +27,7 @@ MockModelRepository setupMockRepo() {
     return appInfo;
   });
   when(
-    mockRepository.getSnippetFromCacheOrFB(
+    mockRepository.possiblyLoadSnippetIntoCache(
         snippetName: 'scaffoldWithTabs', versionId: TEST_VERSION_ID),
   ).thenAnswer((_) async {
     SnippetRootNode rootNode = SnippetRootNode(
@@ -60,7 +60,7 @@ MockModelRepository setupMockRepo() {
         ),
       ),
     )..validateTree();
-    FC().snippetCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
+    FC().snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
   });
   return mockRepository;
 }
@@ -85,12 +85,12 @@ void main() {
     final appInfo = await mockRepository.getAppInfo();
     expect(appInfo, isNotNull);
 
-    await mockRepository.getSnippetFromCacheOrFB(
+    await mockRepository.possiblyLoadSnippetIntoCache(
       snippetName: 'scaffoldWithTabs',
       versionId: TEST_VERSION_ID,
     );
 
-    var snippet = FC().snippetCache['scaffoldWithTabs']?[TEST_VERSION_ID];
+    var snippet = FC().snippetInfoCache['scaffoldWithTabs']?[TEST_VERSION_ID];
 
     expect(snippet, isNotNull);
   });

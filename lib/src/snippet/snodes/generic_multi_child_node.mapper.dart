@@ -29,6 +29,9 @@ class GenericMultiChildNodeMapper
   static List<STreeNode> _$children(GenericMultiChildNode v) => v.children;
   static const Field<GenericMultiChildNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(GenericMultiChildNode v) => v.uid;
+  static const Field<GenericMultiChildNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(GenericMultiChildNode v) => v.isExpanded;
   static const Field<GenericMultiChildNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -49,6 +52,7 @@ class GenericMultiChildNodeMapper
   final MappableFields<GenericMultiChildNode> fields = const {
     #propertyName: _f$propertyName,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -28,6 +28,9 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static List<STreeNode> _$menuChildren(SubmenuButtonNode v) => v.menuChildren;
   static const Field<SubmenuButtonNode, List<STreeNode>> _f$menuChildren =
       Field('menuChildren', _$menuChildren);
+  static String _$uid(SubmenuButtonNode v) => v.uid;
+  static const Field<SubmenuButtonNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(SubmenuButtonNode v) => v.isExpanded;
   static const Field<SubmenuButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -50,6 +53,7 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   final MappableFields<SubmenuButtonNode> fields = const {
     #itemLabel: _f$itemLabel,
     #menuChildren: _f$menuChildren,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

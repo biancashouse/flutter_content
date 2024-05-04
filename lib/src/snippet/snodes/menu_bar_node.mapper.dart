@@ -25,6 +25,9 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   static List<STreeNode> _$children(MenuBarNode v) => v.children;
   static const Field<MenuBarNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(MenuBarNode v) => v.uid;
+  static const Field<MenuBarNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(MenuBarNode v) => v.isExpanded;
   static const Field<MenuBarNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -42,6 +45,7 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   @override
   final MappableFields<MenuBarNode> fields = const {
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

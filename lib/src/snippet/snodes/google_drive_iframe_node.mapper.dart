@@ -37,6 +37,9 @@ class GoogleDriveIFrameNodeMapper
   static double? _$iframeHeight(GoogleDriveIFrameNode v) => v.iframeHeight;
   static const Field<GoogleDriveIFrameNode, double> _f$iframeHeight =
       Field('iframeHeight', _$iframeHeight, opt: true);
+  static String _$uid(GoogleDriveIFrameNode v) => v.uid;
+  static const Field<GoogleDriveIFrameNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(GoogleDriveIFrameNode v) => v.isExpanded;
   static const Field<GoogleDriveIFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -63,6 +66,7 @@ class GoogleDriveIFrameNodeMapper
     #resourceKey: _f$resourceKey,
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

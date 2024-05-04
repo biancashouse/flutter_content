@@ -18,7 +18,7 @@ class TargetModel with TargetModelMappable {
   //
   // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
-  TargetGroupWrapperNode? targetsWrapperNode;
+  HotspotsNode? targetsWrapperNode;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
 
@@ -261,24 +261,9 @@ class TargetModel with TargetModelMappable {
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
   Future<void> onChange() async {
-    SnippetRootNode? rootNode =
-    targetsWrapperNode?.rootNodeOfSnippet();
+    SnippetRootNode? rootNode = targetsWrapperNode?.rootNodeOfSnippet();
     if (rootNode != null) {
-      VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-      FC().addToSnippetCache(
-          snippetName: snippetName,
-          rootNode: rootNode,
-          versionId: newVersionId);
-      FC().updateEditingVersionId(
-          snippetName: snippetName, newVersionId: newVersionId);
-      if (FC().isAutoPublishing()) {
-        FC().updatePublishedVersionId(
-            snippetName: snippetName, versionId: newVersionId);
-      }
-      // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-      // var appInfoMap = FC().appInfoAsMap;
-      await FC().modelRepo.saveSnippet(
-          snippetRootNode: rootNode, newVersionId: newVersionId);
+      FC().possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
       // appInfoMap = FC().appInfoAsMap;
       Callout.dismissAll(onlyToasts: true);
       HydratedBloc.storage.write('flutter-content', rootNode.toJson());

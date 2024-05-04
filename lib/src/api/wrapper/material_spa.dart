@@ -411,7 +411,6 @@ class MaterialSPAState extends State<MaterialSPA>
 
   /// either show edit btn fab, or lock icon fab
   static Future<void> showDevToolsFAB() async {
-
     // var appInfo = FC().appInfoAsMap;
     // var cache = FC().snippetCache;
     // // allow some time for snippet to be fetched into snippetCache
@@ -424,7 +423,11 @@ class MaterialSPAState extends State<MaterialSPA>
     // FC.forceRefresh();
     Callout.dismiss("FAB");
     if (FC().canEditContent) {
-      Callout.showTextToast(feature: 'show-auto-publish-status', msgText: 'auto-publishing of changes is ${FC().isAutoPublishing() ? "ON" : "OFF"}');
+      Callout.showTextToast(
+        feature: 'show-auto-publish-status',
+        msgText:
+            'auto-publishing of new snippets is ${FC().appInfo.autoPublishDefault ? "ON" : "OFF"}',
+      );
     }
     // // AppModel appModel = FC().appInfo;
     // // BranchModel? currentBranch = appModel.branches[appModel.editingBranchName];
@@ -626,7 +629,8 @@ class MaterialSPAState extends State<MaterialSPA>
                       //   showDevToolsFAB();
                       // });
                       Callout.dismiss("EditorPassword");
-                      FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                      FC().capiBloc.add(
+                          CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                       showDevToolsFAB();
                     }
                   },
@@ -675,6 +679,11 @@ class MaterialSPAState extends State<MaterialSPA>
 Future<void> _signOut() async {
   FC().setCanEdit(false);
   MaterialSPAState.showDevToolsFAB();
+
+  // // if auto-publishing, make sure publishing version == editing version
+  // if (FC().isAutoPublishing()) {
+  //   FC().appInfo.publishedVersionIds[]
+  // }
 
   FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
   // Useful.afterNextBuildDo(() {

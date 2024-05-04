@@ -16,9 +16,8 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   List<PTreeNode> createPropertiesList(BuildContext context) => const [];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode parentNode) => Useful.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+  Widget toWidget(BuildContext context, STreeNode? parentNode) => Useful.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
-  @override
   Widget? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();

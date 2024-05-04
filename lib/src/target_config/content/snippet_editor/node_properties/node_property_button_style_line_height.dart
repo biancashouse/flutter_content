@@ -29,6 +29,7 @@ class _NodePropertyButtonStyleLineHeightState extends State<NodePropertyButtonSt
         ? Text('style.lineHeight: ${widget.lineHeight}', style: const TextStyle(color: Colors.white))
         : const Text('style.lineHeight...', style: TextStyle(color: Colors.white));
     return NodePropertyCalloutButton(
+      feature: 'line-height',
       notifier: ValueNotifier<int>(0),
       labelWidget: lineHeightLabel,
       calloutButtonSize: const Size(72, 36),

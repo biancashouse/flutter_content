@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
+import 'package:flutter_content/src/bloc/snippet_state.dart';
 import 'package:flutter_content/src/snippet/callout_node_menu.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/input_snippet_name.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
-class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
+class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
@@ -38,251 +38,243 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('tree build');
-    final msvC = useState<MultiSplitViewController>(
-        MultiSplitViewController(areas: [Area(size: 220)]));
-    final snippetBloc = context.watch<SnippetBloC>();
-    final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-    return StatefulBuilder(
-      // buildWhen: (prev, curr) => prev.selectedNode == curr.selectedNode,
-      builder: (BuildContext context, StateSetter setState) {
-        // get parent callout config
-        PositionedBoxContent? parent = PositionedBoxContent.of(context);
-        var cc = parent?.calloutConfig;
-        // CAPIState state = FlutterContent().capiBloc.state;
-        // pTreeC?.expandedNodes = CAPIState.expandedNodes[state.selectedNode!] ?? {};
-        // pTreeC?.rebuild();
-        // pTreeC?.addListener(() {
-        //   // may have toggled an expansion
-        //   CAPIState.expandedNodes[state.selectedNode!] = pTreeC.expandedNodes;
-        //   debugPrint('expanded: ${CAPIState.expandedNodes.length}');
-        // });
-        // GlobalKey snippetNodeAddChildBtnGK = GlobalKey();
-        final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-        // debugPrint("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
-        // debugPrint('${FlutterContent().capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
-        // restore scrollPos
-        if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
-          Useful.afterNextBuildDo(() {
-            if (selectedNode?.propertiesPaneScrollPos !=
-                selectedNode?.propertiesPaneSC().offset) {
-              selectedNode
-                  ?.propertiesPaneSC()
-                  .jumpTo(selectedNode.propertiesPaneScrollPos() ?? 0.0);
-            }
-          });
-        }
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
-          child: Scaffold(
-            backgroundColor: Colors.purpleAccent.shade100,
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              title: Tooltip(
-                message: 'snippet name',
-                child: Useful.coloredText(snippetBloc.snippetName,
-                    fontSize: 16.0, color: Colors.white),
-              ),
-              // title: GestureDetector(
-              //   onTap: () {
-              //     snippetBloc.add(const SnippetEvent.clearNodeSelection());
-              //     Callout.hide("floating-clipboard");
-              //     Useful.afterNextBuildDo(() {
-              //       snippetBloc.add(SnippetEvent.selectNode(
-              //         node: snippetBloc.state.rootNode!,
-              //         nodeParent: null,
-              //         showProperties: true,
-              //         // imageTC: tc,
-              //       ));
-              //     });
-              //   },
-              //   child: Container(
-              //     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       border: Border.all(color: Colors.grey, width: 1),
-              //       borderRadius: const BorderRadius.all(Radius.circular(30)),
-              //     ),
-              //     child: Useful.coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
-              //   ),
-              // ),
-              actions: [
-                IconButton(
-                  hoverColor: Colors.white30,
-                  onPressed: () async {},
-                  icon:
-                      VersionsMenuAnchor(snippetName: snippetBloc.snippetName),
-                  tooltip: 'version...',
+    debugPrint('SnippetTreeAndPropertiesCalloutContents tree build');
+    // final snippetBloc = context.watch<SnippetBloC>();
+    // final STreeNode? selectedNode = snippetBloc.state.selectedNode;
+    // get parent callout config
+    // PositionedBoxContent? parent = PositionedBoxContent.of(context);
+    // var cc = parent?.calloutConfig;
+    // CAPIState state = FlutterContent().capiBloc.state;
+    // pTreeC?.expandedNodes = CAPIState.expandedNodes[state.selectedNode!] ?? {};
+    // pTreeC?.rebuild();
+    // pTreeC?.addListener(() {
+    //   // may have toggled an expansion
+    //   CAPIState.expandedNodes[state.selectedNode!] = pTreeC.expandedNodes;
+    //   debugPrint('expanded: ${CAPIState.expandedNodes.length}');
+    // });
+    // GlobalKey snippetNodeAddChildBtnGK = GlobalKey();
+    // debugPrint("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
+    // debugPrint('${FlutterContent().capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
+    // restore scrollPos
+    // STreeNode? selectedNode = ;
+    // if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
+    //   Useful.afterNextBuildDo(() {
+    //     if (selectedNode?.propertiesPaneScrollPos != selectedNode?.propertiesPaneSC().offset) {
+    //       selectedNode?.propertiesPaneSC().jumpTo(selectedNode.propertiesPaneScrollPos());
+    //     }
+    //   });
+    // }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
+      child: Scaffold(
+        backgroundColor: Colors.purpleAccent.shade100,
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Tooltip(
+            message: 'snippet name',
+            child: Useful.coloredText(FC().snippetBeingEdited!.snippetName, fontSize: 16.0, color: Colors.white),
+          ),
+          // title: GestureDetector(
+          //   onTap: () {
+          //     snippetBloc.add(const SnippetEvent.clearNodeSelection());
+          //     Callout.hide("floating-clipboard");
+          //     Useful.afterNextBuildDo(() {
+          //       snippetBloc.add(SnippetEvent.selectNode(
+          //         node: snippetBloc.state.rootNode!,
+          //         nodeParent: null,
+          //         showProperties: true,
+          //         // imageTC: tc,
+          //       ));
+          //     });
+          //   },
+          //   child: Container(
+          //     padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4),
+          //     decoration: BoxDecoration(
+          //       color: Colors.white,
+          //       border: Border.all(color: Colors.grey, width: 1),
+          //       borderRadius: const BorderRadius.all(Radius.circular(30)),
+          //     ),
+          //     child: Useful.coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
+          //   ),
+          // ),
+          actions: [
+            IconButton(
+              hoverColor: Colors.white30,
+              onPressed: () async {},
+              icon: VersionsMenuAnchor(snippetName: FC().snippetBeingEdited!.snippetName),
+              tooltip: 'version...',
+            ),
+            // if (snippetBloc.state.selectedNode is! SnippetRefNode)
+            // IconButton(
+            //   onPressed: () {
+            //     snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
+            //     Useful.afterNextBuildDo(() {
+            //       if (FlutterContent().capiBloc.state.jsonClipboard != null) {
+            //         Callout.unhide("floating-clipboard");
+            //       }
+            //     });
+            //     Callout.hide("TreeNodeMenu");
+            //   },
+            //   icon: Icon(
+            //     Icons.cut,
+            //     color:
+            //         Colors.orange.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
+            //   ),
+            //   tooltip: 'Cut',
+            // ),
+            // // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
+            // IconButton(
+            //   onPressed: () {
+            //     Useful.afterNextBuildDo(() {
+            //       snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
+            //       Useful.afterNextBuildDo(() {
+            //         if (FlutterContent().capiBloc.state.jsonClipboard != null) {
+            //           Callout.unhide("floating-clipboard");
+            //         }
+            //       });
+            //     });
+            //     Callout.hide("TreeNodeMenu");
+            //   },
+            //   icon: Icon(
+            //     Icons.copy,
+            //     color:
+            //         Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
+            //   ),
+            //   tooltip: 'Copy',
+            // ),
+            // IconButton(
+            //   onPressed: () {
+            //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+            //     if (snippetBloc.state.selectedNode is! RichTextNode) {
+            //       snippetBloc.add(const SnippetEvent.deleteNodeTapped());
+            //     }
+            //     Callout.dismiss("TreeNodeMenu");
+            //   },
+            //   icon: Icon(Icons.delete,
+            //       color:
+            //           Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
+            //   tooltip: 'Remove',
+            // ),
+            // IconButton(
+            //   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white24)),
+            //   icon: const Icon(
+            //     Icons.close,
+            //     color: Colors.black,
+            //   ),
+            //   onPressed: () {
+            //     unhideAllSingleTargetBtns();
+            //     STreeNode.unhighlightSelectedNode();
+            //     FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+            //     FlutterContent().capiBloc.add(const CAPIEvent.popSnippetTree());
+            //
+            //     //removeSnippetTreeCallout(snippetBloc.snippetName);
+            //     CalloutState? state = Callout.of(context);
+            //     state?.toggle();
+            //
+            //     // removeNodePropertiesCallout();
+            //     Callout.removeOverlay(TREENODE_MENU_CALLOUT);
+            //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
+            //   },
+            // ),
+            // hspacer(16),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: MultiSplitViewTheme(
+            data: MultiSplitViewThemeData(dividerThickness: 24),
+            child: MultiSplitView(
+              axis: Axis.horizontal,
+              // onWeightChange: () => setState(() {}),
+              dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+                return Container(
+                  color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
+                  child: Icon(
+                    Icons.drag_indicator,
+                    color: highlighted ? Colors.blueAccent : Colors.white,
+                  ),
+                );
+              },
+              initialAreas: [
+                // SNIPPET TREE
+                Area(
+                  widget: GestureDetector(
+                    onTap: () {
+                      FC().snippetBeingEdited!.add(const SnippetEvent.clearNodeSelection());
+                      Callout.hide("floating-clipboard");
+                    },
+                    child: BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
+                      return SnippetTreePane(snippetBloc: FC().snippetBeingEdited!);
+                    }),
+                  ),
+                  flex: 1,
                 ),
-                // if (snippetBloc.state.selectedNode is! SnippetRefNode)
-                // IconButton(
-                //   onPressed: () {
-                //     snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!));
-                //     Useful.afterNextBuildDo(() {
-                //       if (FlutterContent().capiBloc.state.jsonClipboard != null) {
-                //         Callout.unhide("floating-clipboard");
-                //       }
-                //     });
-                //     Callout.hide("TreeNodeMenu");
-                //   },
-                //   icon: Icon(
-                //     Icons.cut,
-                //     color:
-                //         Colors.orange.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
-                //   ),
-                //   tooltip: 'Cut',
-                // ),
-                // // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
-                // IconButton(
-                //   onPressed: () {
-                //     Useful.afterNextBuildDo(() {
-                //       snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
-                //       Useful.afterNextBuildDo(() {
-                //         if (FlutterContent().capiBloc.state.jsonClipboard != null) {
-                //           Callout.unhide("floating-clipboard");
-                //         }
-                //       });
-                //     });
-                //     Callout.hide("TreeNodeMenu");
-                //   },
-                //   icon: Icon(
-                //     Icons.copy,
-                //     color:
-                //         Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25),
-                //   ),
-                //   tooltip: 'Copy',
-                // ),
-                // IconButton(
-                //   onPressed: () {
-                //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                //     if (snippetBloc.state.selectedNode is! RichTextNode) {
-                //       snippetBloc.add(const SnippetEvent.deleteNodeTapped());
-                //     }
-                //     Callout.dismiss("TreeNodeMenu");
-                //   },
-                //   icon: Icon(Icons.delete,
-                //       color:
-                //           Colors.red.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode ? 1.0 : .25)),
-                //   tooltip: 'Remove',
-                // ),
-                // IconButton(
-                //   style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.white24)),
-                //   icon: const Icon(
-                //     Icons.close,
-                //     color: Colors.black,
-                //   ),
-                //   onPressed: () {
-                //     unhideAllSingleTargetBtns();
-                //     STreeNode.unhighlightSelectedNode();
-                //     FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-                //     FlutterContent().capiBloc.add(const CAPIEvent.popSnippetTree());
-                //
-                //     //removeSnippetTreeCallout(snippetBloc.snippetName);
-                //     CalloutState? state = Callout.of(context);
-                //     state?.toggle();
-                //
-                //     // removeNodePropertiesCallout();
-                //     Callout.removeOverlay(TREENODE_MENU_CALLOUT);
-                //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
-                //   },
-                // ),
-                // hspacer(16),
+                // NODE PROPERTIES
+                if (FC().snippetBeingEdited!.state.selectedNode?.pTreeC != null)
+                  Area(
+                    widget: BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
+                      return !FC().snippetBeingEdited!.state.aNodeIsSelected
+                          ? const Offstage()
+                          : Container(
+                              color: Colors.purpleAccent[100],
+                              child: Center(
+                                child: ListView(
+                                  controller: FC().snippetBeingEdited!.state.selectedNode!.propertiesPaneSC(),
+                                  shrinkWrap: true,
+                                  children: [
+                                    // icon buttons
+                                    ExpansionTile(
+                                      title: Useful.coloredText('widget actions', color: Colors.white54, fontSize: 14),
+                                      backgroundColor: Colors.black,
+                                      collapsedBackgroundColor: Colors.black,
+                                      onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
+                                      initiallyExpanded: FC().showingNodeButtons,
+                                      children: [nodeButtons(FC().snippetBeingEdited!, context)],
+                                    ),
+                                    // NODE PROPERTIES TREE
+                                    if (FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context).roots.isEmpty)
+                                      Useful.coloredText(' (no widget properties)', color: Colors.white),
+                                    Material(
+                                        color: Colors.black,
+                                        child: PropertiesTreeView(
+                                          treeC: FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context),
+                                        )),
+                                    // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+                                  ],
+                                ),
+                              ),
+                            );
+                    }),
+                    flex: 1,
+                  ),
               ],
             ),
-            body: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: MultiSplitViewTheme(
-                data: MultiSplitViewThemeData(dividerThickness: 24),
-                child: MultiSplitView(
-                  axis: Axis.horizontal,
-                  controller: msvC.value,
-                  // onWeightChange: () => setState(() {}),
-                  dividerBuilder: (axis, index, resizable, dragging,
-                      highlighted, themeData) {
-                    return Container(
-                      color: dragging
-                          ? Colors.purpleAccent[200]
-                          : Colors.purpleAccent[100],
-                      child: Icon(
-                        Icons.drag_indicator,
-                        color: highlighted ? Colors.blueAccent : Colors.white,
-                      ),
-                    );
-                  },
-                  children: [
-                    // SNIPPET TREE
-                    GestureDetector(
-                      onTap: () {
-                        snippetBloc
-                            .add(const SnippetEvent.clearNodeSelection());
-                        Callout.hide("floating-clipboard");
-                      },
-                      child: SnippetTreePane(snippetBloc: snippetBloc),
-                    ),
-                    // NODE PROPERTIES
-                    if (selectedNode?.pTreeC != null)
-                      Container(
-                        color: Colors.purpleAccent[100],
-                        child: Center(
-                          child: ListView(
-                            controller: selectedNode!.propertiesPaneSC(),
-                            shrinkWrap: true,
-                            children: [
-                              // icon buttons
-                              ExpansionTile(
-                                title: Useful.coloredText('widget actions',
-                                    color: Colors.white54, fontSize: 14),
-                                backgroundColor: Colors.black,
-                                collapsedBackgroundColor: Colors.black,
-                                onExpansionChanged: (bool isExpanded) =>
-                                    FC().showingNodeButtons = isExpanded,
-                                initiallyExpanded: FC().showingNodeButtons,
-                                children: [nodeButtons(snippetBloc, context)],
-                              ),
-                              // NODE PROPERTIES TREE
-                              if (selectedNode.pTreeC(context).roots.isEmpty)
-                                Useful.coloredText(' (no widget properties)',
-                                    color: Colors.white),
-                              Material(
-                                  color: Colors.black,
-                                  child: PropertiesTreeView(
-                                    treeC: selectedNode.pTreeC(context),
-                                  )),
-                              // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-                            ],
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            // endDrawer: Drawer(
-            //         backgroundColor: Colors.black,
-            //         child: Center(
-            //           child: ListView(
-            //             controller: selectedNode?.propertiesPaneSC,
-            //             shrinkWrap: true,
-            //             children: [
-            //               // icon buttons
-            //               // nodeIconButtons(snippetBloc),
-            //               // // NODE PROPERTIES TREE
-            //               // if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
-            //               // if (propertyNodes.isNotEmpty && selectedNode != null && selectedNode.pTreeC != null && !(selectedNode.hidePropertiesWhileDragging ?? false))
-            //               //   Material(
-            //               //       color: Colors.black,
-            //               //       child: PropertiesTreeView(
-            //               //         treeC: selectedNode.pTreeC!,
-            //               //       )),
-            //               // // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
           ),
-        );
-      },
+        ),
+        // endDrawer: Drawer(
+        //         backgroundColor: Colors.black,
+        //         child: Center(
+        //           child: ListView(
+        //             controller: selectedNode?.propertiesPaneSC,
+        //             shrinkWrap: true,
+        //             children: [
+        //               // icon buttons
+        //               // nodeIconButtons(snippetBloc),
+        //               // // NODE PROPERTIES TREE
+        //               // if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
+        //               // if (propertyNodes.isNotEmpty && selectedNode != null && selectedNode.pTreeC != null && !(selectedNode.hidePropertiesWhileDragging ?? false))
+        //               //   Material(
+        //               //       color: Colors.black,
+        //               //       child: PropertiesTreeView(
+        //               //         treeC: selectedNode.pTreeC!,
+        //               //       )),
+        //               // // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+      ),
     );
   }
 
@@ -292,8 +284,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
       color: Colors.black,
       child: Column(
         children: [
-          if (snippetBloc.state.selectedNode is! GenericSingleChildNode &&
-              snippetBloc.state.selectedNode is! GenericMultiChildNode)
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && snippetBloc.state.selectedNode is! GenericMultiChildNode)
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -302,13 +293,8 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     // some properties cannot be deleted
-                    if (gc is GenericSingleChildNode? &&
-                        gc?.getParent() is StepNode &&
-                        (gc?.propertyName == 'title' ||
-                            gc?.propertyName == 'content')) return;
-                    snippetBloc.add(SnippetEvent.cutNode(
-                        node: snippetBloc.state.selectedNode!,
-                        capiBloc: FC().capiBloc));
+                    if (gc is GenericSingleChildNode? && gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
+                    snippetBloc.add(SnippetEvent.cutNode(node: snippetBloc.state.selectedNode!, capiBloc: FC().capiBloc));
                     Useful.afterNextBuildDo(() {
                       if (FC().clipboard != null) {
                         Callout.unhide("floating-clipboard");
@@ -317,15 +303,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     Callout.hide("TreeNodeMenu");
                   },
                   icon: Icon(Icons.cut,
-                      color: Colors.orange.withOpacity(
-                          !snippetBloc.state.aNodeIsSelected ||
-                                  snippetBloc.state.selectedNode
-                                      is SnippetRefNode ||
-                                  (gc?.getParent() is StepNode &&
-                                      (gc?.propertyName == 'title' ||
-                                          gc?.propertyName == 'content'))
-                              ? .5
-                              : 1.0)),
+                      color: Colors.orange.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                              snippetBloc.state.selectedNode is SnippetRootNode ||
+                              (gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
+                          ? .5
+                          : 1.0)),
                   tooltip: 'Cut',
                 ),
                 // if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRefNode)
@@ -333,8 +315,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     Useful.afterNextBuildDo(() {
-                      snippetBloc.add(SnippetEvent.copyNode(
-                          node: snippetBloc.state.selectedNode!));
+                      snippetBloc.add(SnippetEvent.copyNode(node: snippetBloc.state.selectedNode!));
                       Useful.afterNextBuildDo(() {
                         if (FC().clipboard != null) {
                           Callout.unhide("floating-clipboard");
@@ -345,11 +326,7 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   },
                   icon: Icon(
                     Icons.copy,
-                    color: Colors.green.withOpacity(snippetBloc
-                                .state.aNodeIsSelected &&
-                            snippetBloc.state.selectedNode is! SnippetRefNode
-                        ? 1.0
-                        : .25),
+                    color: Colors.green.withOpacity(snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode is! SnippetRootNode ? 1.0 : .25),
                   ),
                   tooltip: 'Copy',
                 ),
@@ -380,29 +357,23 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                         }
                       });
                     });
-                    if (node is TargetGroupWrapperNode) {
+                    if (node is HotspotsNode) {
                       node.targets.clear();
                     }
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity(
-                          !snippetBloc.state.aNodeIsSelected ||
-                                  snippetBloc.state.selectedNode
-                                      is SnippetRefNode ||
-                                  (gc is GenericSingleChildNode? &&
-                                      gc?.getParent() is StepNode &&
-                                      (gc?.propertyName == 'title' ||
-                                          gc?.propertyName == 'content'))
-                              ? .5
-                              : 1.0)),
+                      color: Colors.red.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                              (snippetBloc.state.selectedNode is SnippetRootNode && snippetBloc.state.selectedNode.getParent() == null) ||
+                              (gc is GenericSingleChildNode? && gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
+                          ? .5
+                          : 1.0)),
                   tooltip: 'Remove',
                 ),
                 if (snippetBloc.state.selectedNode is! SnippetRootNode)
                   IconButton(
                     hoverColor: Colors.white30,
                     onPressed: () {
-                      // TODO save as new snippet and replace with snippet ref node
                       showSaveAsCallout(
                           selectedNode: snippetBloc.state.selectedNode,
                           //targetGKF: () => targetGK,
@@ -411,8 +382,10 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                               node: snippetBloc.state.selectedNode!,
                               newSnippetName: s,
                             ));
+                            Useful.afterNextBuildDo(() {
+                              Callout.dismiss(TREENODE_MENU_CALLOUT);
+                            });
                           });
-                      Callout.dismiss(TREENODE_MENU_CALLOUT);
                     },
                     icon: const Icon(
                       Icons.link,
@@ -456,15 +429,11 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
             ),
           // tree structure icon buttons
           // replace button
-          if (snippetBloc.state.selectedNode is! GenericSingleChildNode &&
-              _canReplace(snippetBloc.state.selectedNode!))
+          if (snippetBloc.state.selectedNode is! GenericSingleChildNode && _canReplace(snippetBloc.state.selectedNode!))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: insertItemMenuAnchor(
-                  snippetBloc, snippetBloc.state.selectedNode!,
-                  action: NodeAction.replace,
-                  label: 'Replace with...',
-                  bgColor: Colors.lightBlueAccent),
+              child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                  action: NodeAction.replace, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
             ),
           editTreeStructureIconButtons(snippetBloc),
           vspacer(10),
@@ -473,22 +442,20 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
     );
   }
 
-  bool _canReplace(STreeNode? selectNodeParent) => true;
+  bool _canReplace(STreeNode? selectNode) => selectNode?.getParent() != null;
 
-  bool _canAddSiblng(STreeNode? selectNodeParent) =>
-      (selectNodeParent is MC || selectNodeParent is TextSpanNode);
+  bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC || selectNodeParent is TextSpanNode);
 
-  bool _canWrap(STreeNode selectedNode) =>
-      (selectedNode is! GenericSingleChildNode &&
-          selectedNode is! GenericMultiChildNode &&
-          selectedNode is! InlineSpanNode &&
-          selectedNode is! SnippetRootNode &&
-          selectedNode is! FileNode &&
-          selectedNode is! PollOptionNode &&
-          selectedNode is! StepNode);
+  bool _canWrap(STreeNode selectedNode) => (selectedNode is! GenericSingleChildNode &&
+      selectedNode is! GenericMultiChildNode &&
+      selectedNode is! InlineSpanNode &&
+      (selectedNode is! SnippetRootNode || selectedNode.getParent() != null) &&
+      selectedNode is! FileNode &&
+      selectedNode is! PollOptionNode &&
+      selectedNode is! StepNode);
 
   bool _canAddChld(STreeNode selectedNode) =>
-      selectedNode is! SnippetRefNode &&
+      selectedNode is! SnippetRootNode &&
       ((selectedNode is SnippetRootNode && selectedNode.child == null) ||
           // || (selectedNode is! ChildlessNode && !entry.hasChildren))
           // (selectedNode is RichTextNode && selectedNode.text == null) ||
@@ -513,33 +480,25 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(30)),
+                        borderRadius: const BorderRadius.all(Radius.circular(30)),
                       ),
                       alignment: Alignment.center,
                       child: Text(snippetBloc.state.selectedNode.toString()),
                     ),
                   ),
-                  if (snippetBloc.state.selectedNode is! RowNode &&
-                      _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
+                  if (snippetBloc.state.selectedNode is! RowNode && _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          insertItemMenuAnchor(
-                              snippetBloc, snippetBloc.state.selectedNode!,
-                              action: NodeAction.addSiblingBefore,
-                              tooltip: 'Insert sibling before...',
-                              bgColor: Colors.blue),
+                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                              action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
                           vspacer(12),
                           // snippetBloc.state.selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
-                          insertItemMenuAnchor(
-                              snippetBloc, snippetBloc.state.selectedNode!,
-                              action: NodeAction.addSiblingAfter,
-                              tooltip: 'Insert sibling after...',
-                              bgColor: Colors.blue),
+                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                              action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                         ],
                       ),
                     ),
@@ -547,28 +506,21 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                     Positioned(
                       top: 10,
                       left: 10,
-                      child: insertItemMenuAnchor(
-                          snippetBloc, snippetBloc.state.selectedNode!,
-                          action: NodeAction.wrapWith,
-                          tooltip: 'Wrap with...',
-                          bgColor: Colors.blue),
+                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                          action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
                     ),
                   if (_canAddChld(snippetBloc.state.selectedNode!))
                     Positioned(
                       bottom: 10,
                       right: 10,
-                      child: insertItemMenuAnchor(
-                          snippetBloc, snippetBloc.state.selectedNode!,
-                          action: NodeAction.addChild,
-                          tooltip: 'Add child...',
-                          bgColor: Colors.blue),
+                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                          action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
                     ),
                 ],
               ),
             ),
           ),
-          if (snippetBloc.state.selectedNode is RowNode &&
-              _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
+          if (snippetBloc.state.selectedNode is RowNode && _canAddSiblng(snippetBloc.state.selectedNode.getParent()))
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -579,16 +531,10 @@ class SnippetTreeAndPropertiesCalloutContents extends HookWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    insertItemMenuAnchor(
-                        snippetBloc, snippetBloc.state.selectedNode!,
-                        action: NodeAction.addSiblingBefore,
-                        tooltip: 'Insert sibling before...',
-                        bgColor: Colors.blue),
-                    insertItemMenuAnchor(
-                        snippetBloc, snippetBloc.state.selectedNode!,
-                        action: NodeAction.addSiblingAfter,
-                        tooltip: 'Insert sibling after...',
-                        bgColor: Colors.blue),
+                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                        action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
+                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                        action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                   ],
                 ),
               ),
@@ -615,8 +561,7 @@ class SnippetTreePane extends StatelessWidget {
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
         menuChildren: menuChildren,
-        builder:
-            (BuildContext context, MenuController controller, Widget? child) {
+        builder: (BuildContext context, MenuController controller, Widget? child) {
           return Center(
               child: TextButton.icon(
             key: key,
@@ -630,8 +575,7 @@ class SnippetTreePane extends StatelessWidget {
             icon: const Icon(Icons.add),
             label: const Text('add root widget'),
             style: ButtonStyle(
-              backgroundColor:
-                  MaterialStatePropertyAll(Colors.white.withOpacity(.9)),
+              backgroundColor: MaterialStatePropertyAll(Colors.white.withOpacity(.9)),
               //padding: MaterialStatePropertyAll(EdgeInsets.zero),
             ),
           ));
@@ -651,18 +595,19 @@ class SnippetTreePane extends StatelessWidget {
               width: 700,
               height: 1200,
               child: Builder(builder: (context) {
-                final STreeNode? selectedNode = snippetBloc.state.selectedNode;
-                if (snippetBloc.rootNode != snippetBloc.treeC.roots.first &&
-                    snippetBloc.treeC.roots.first is! ScaffoldNode) {
+                // final STreeNode? selectedNode = snippetBloc.state.selectedNode;
+                bool canShowNavigateUpBtn = true;
+                if (snippetBloc.treeC.roots.first.getParent() == null) canShowNavigateUpBtn = false;
+                if (snippetBloc.treeC.roots.first.getParent() is SnippetRootNode && snippetBloc.treeC.roots.first.getParent()?.getParent() == null)
+                  canShowNavigateUpBtn = false;
+                if (snippetBloc.rootNode != snippetBloc.treeC.roots.first && snippetBloc.treeC.roots.first is! ScaffoldNode) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (snippetBloc.treeC.roots.first.getParent() is! SnippetRootNode)
-                        navigateUpTreeButton(context),
-                      Expanded(
-                          child: SnippetTreeView(snippetBloc: snippetBloc)),
+                      if (canShowNavigateUpBtn) navigateUpTreeButton(context),
+                      Expanded(child: SnippetTreeView(snippetBloc: snippetBloc)),
                     ],
                   );
                 }
@@ -677,40 +622,38 @@ class SnippetTreePane extends StatelessWidget {
 
   Widget navigateUpTreeButton(context) => FilledButton(
         onPressed: () {
-          // change tree root to parent
-          STreeNode treeRootNode = snippetBloc.treeC.roots.first;
-          STreeNode? parent = treeRootNode.getParent() as STreeNode?;
-          if (parent is GenericSingleChildNode) {
-            parent = parent.getParent() as STreeNode?;
-          }
-          if (parent != null) {
-            snippetBloc.add(const SnippetEvent.clearNodeSelection());
-            Useful.afterNextBuildDo(() {
-              snippetBloc.add(SnippetEvent.selectNode(
-                node: parent!,
-                // imageTC: tc,
-                // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-                selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-              ));
-              Useful.afterNextBuildDo(() {
-                parent?.showNodeWidgetOverlay();
-                // create selected node's properties tree
-                // final List<PTreeNode> propertyNodes =
-                //     parent.properties(context);
-                // // get a new treeController only when snippet selected
-                // parent.pTreeC ??= PTreeNodeTreeController(
-                //   roots: propertyNodes,
-                //   childrenProvider: Node.propertyTreeChildrenProvider,
-                // );
-                snippetBloc.treeC.expand(parent!);
-                // parent.propertiesPaneSC ??= ScrollController()
-                //   ..addListener(() {
-                //     parent!.propertiesPaneScrollPos =
-                //         parent.propertiesPaneSC?.offset ?? 0.0;
-                //   });
-              });
-            });
-          }
+          SnippetTreePane.navigateUpTree();
+          return;
+
+          // TBD ----------------
+          // if (parent != null) {
+          //   snippetBloc.add(const SnippetEvent.clearNodeSelection());
+          //   Useful.afterNextBuildDo(() {
+          //     snippetBloc.add(SnippetEvent.selectNode(
+          //       node: parent!,
+          //       // imageTC: tc,
+          //       // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+          //       selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+          //     ));
+          //     Useful.afterNextBuildDo(() {
+          //       parent?.showNodeWidgetOverlay();
+          //       // create selected node's properties tree
+          //       // final List<PTreeNode> propertyNodes =
+          //       //     parent.properties(context);
+          //       // // get a new treeController only when snippet selected
+          //       // parent.pTreeC ??= PTreeNodeTreeController(
+          //       //   roots: propertyNodes,
+          //       //   childrenProvider: Node.propertyTreeChildrenProvider,
+          //       // );
+          //       snippetBloc.treeC.expand(parent!);
+          //       // parent.propertiesPaneSC ??= ScrollController()
+          //       //   ..addListener(() {
+          //       //     parent!.propertiesPaneScrollPos =
+          //       //         parent.propertiesPaneSC?.offset ?? 0.0;
+          //       //   });
+          //     });
+          //   });
+          // }
           // Callout.dismiss(snippetBloc.snippetName);
           // if (parent != null) {
           //   Useful.afterNextBuildDo(() {
@@ -728,9 +671,30 @@ class SnippetTreePane extends StatelessWidget {
         ),
         child: Useful.coloredText("...", color: Colors.white, fontSize: 24),
       );
+
+  static void navigateUpTree() {
+    // change tree root to parent
+    STreeNode? treeRootNode = FC().snippetBeingEdited?.treeC.roots.first;
+    if (treeRootNode == null) return;
+    STreeNode? parent = treeRootNode.getParent() as STreeNode?;
+    if (parent is GenericSingleChildNode) {
+      parent = parent.getParent() as STreeNode?;
+    } else if (parent is SnippetRootNode) {
+      parent = parent.getParent() as STreeNode?;
+    }
+
+    if (parent != null) {
+      Callout.dismissAll();
+      STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+        parent.rootNodeOfSnippet()!.name,
+        parent,
+        parent,
+      );
+    }
+  }
 }
 
-class SnippetTreeView extends HookWidget {
+class SnippetTreeView extends StatelessWidget {
   final SnippetBloC snippetBloc;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
@@ -758,11 +722,13 @@ class SnippetTreeView extends HookWidget {
       nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
         // if (bloc.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // debugPrint("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
-        return TreeIndentation(
+        var fc = FC();
+        if (entry.node == fc.selectedNode) debugPrint('SnippetTreeView - selected node: ${fc.selectedNode.toString()}');
+        // never show the tree root node
+        return true//entry.node is! SnippetRootNode && entry.node != snippetBloc.treeC.roots.firstOrNull
+        ? TreeIndentation(
           guide: IndentGuide.connectingLines(
-            color: FC().aNodeIsSelected && entry.node == FC().selectedNode
-                ? Colors.green
-                : Colors.white,
+            color: FC().aNodeIsSelected && entry.node == FC().selectedNode ? Colors.green : Colors.white,
             indent: 40.0,
           ),
           entry: entry,
@@ -772,7 +738,8 @@ class SnippetTreeView extends HookWidget {
             entry: entry,
             allowButtonCallouts: allowButtonCallouts,
           ),
-        );
+        )
+        : const Offstage();
       },
     );
   }
@@ -810,6 +777,7 @@ class PropertiesTreeView extends StatelessWidget {
 
 class VersionsMenuAnchor extends StatefulWidget {
   final SnippetName snippetName;
+
   const VersionsMenuAnchor({required this.snippetName, super.key});
 
   @override
@@ -819,26 +787,20 @@ class VersionsMenuAnchor extends StatefulWidget {
 class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
   @override
   Widget build(BuildContext context) {
-    VersionId currentVersionId = FC().editingVersionIds[widget.snippetName]!;
-    VersionId? publishedVersionId =
-        FC().publishedVersionIds[widget.snippetName];
+    VersionId? currentVersionId = FC().snippetInfoCache[widget.snippetName]?.editingVersionId;
+    VersionId? publishedVersionId = FC().snippetInfoCache[widget.snippetName]?.publishedVersionId;
 
     // REVERT menu items
     List<MenuItemButton> revertMIs = [];
-    for (VersionId versionId
-        in FC().versionIds[widget.snippetName] ?? [] /*.sublist(0, 10)*/) {
-      bool thisIsBeingEdited =
-          Useful.removeNonNumeric(versionId) == currentVersionId;
-      bool thisIsCurrentlyPublished =
-          Useful.removeNonNumeric(versionId) == publishedVersionId;
+    for (VersionId versionId in FC().versionIdCache[widget.snippetName] ?? [] /*.sublist(0, 10)*/) {
+      bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == currentVersionId;
+      bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == publishedVersionId;
       Color itemTextColor = Colors.black;
       if (thisIsCurrentlyPublished) itemTextColor = Colors.blue;
       revertMIs.add(MenuItemButton(
         onPressed: () async {
           if (versionId == currentVersionId) {
-            Callout.showTextToast(
-                feature: 'cannot-revert-to-current-version',
-                msgText: 'Cannot revert to Current version - ignored');
+            Callout.showTextToast(feature: 'cannot-revert-to-current-version', msgText: 'Cannot revert to Current version - ignored');
           } else {
             FC().capiBloc.add(
                   CAPIEvent.revertSnippet(
@@ -860,17 +822,12 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
             ),
           ),
           padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
-          child: Useful.coloredText(
-              '$versionId ' +
-                  Useful.formattedDate(
-                      int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0),
-              color: itemTextColor),
+          child: Useful.coloredText('$versionId ' + Useful.formattedDate(int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0), color: itemTextColor),
         ),
       ));
     }
     return MenuAnchor(
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
+      builder: (BuildContext context, MenuController controller, Widget? child) {
         return IconButton(
           onPressed: () {
             if (controller.isOpen) {
@@ -884,29 +841,23 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
         );
       },
       menuChildren: [
-        SubmenuButton(
-            menuChildren: revertMIs, child: const Text('revert staging...')),
+        SubmenuButton(menuChildren: revertMIs, child: const Text('revert staging...')),
         if (currentVersionId != publishedVersionId)
           MenuItemButton(
             onPressed: () {
-              FC().capiBloc.add(CAPIEvent.publishSnippet(
-                  snippetName: widget.snippetName,
-                  versionId: currentVersionId));
+              if (currentVersionId != null) {
+                FC().capiBloc.add(CAPIEvent.publishSnippet(snippetName: widget.snippetName, versionId: currentVersionId));
+              }
             },
             child: const Text('publish'),
           ),
         MenuItemButton(
           onPressed: () {
-            // FC().capiBloc.add(CAPIEvent.publishSnippet(
-            //     snippetName: widget.snippetName,
-            //     versionId: currentVersionId));
-            FC().setAutoPublishing();
+            FC().capiBloc.add(CAPIEvent.toggleAutoPublishingOfSnippet(snippetName: widget.snippetName));
           },
-          child: FC().isAutoPublishing()
-          ? const Tooltip(message: "don't auto-push changes.",
-              child: Text('stop auto-publishing'))
-          : const Tooltip(message: 'auto push changes as they occur',
-              child: Text('auto-publish')),
+          child: FC().snippetInfoCache[widget.snippetName]!.autoPublish ?? false
+              ? const Tooltip(message: "don't auto-push changes.", child: Text('stop auto-publishing changes to this snippet'))
+              : const Tooltip(message: 'auto push changes as they occur', child: Text('auto-publish changes to this snippet')),
         ),
       ],
     );

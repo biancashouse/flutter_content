@@ -29,6 +29,9 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
   static STreeNode? _$child(PaddingNode v) => v.child;
   static const Field<PaddingNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(PaddingNode v) => v.uid;
+  static const Field<PaddingNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(PaddingNode v) => v.isExpanded;
   static const Field<PaddingNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -47,6 +50,7 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
   final MappableFields<PaddingNode> fields = const {
     #padding: _f$padding,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

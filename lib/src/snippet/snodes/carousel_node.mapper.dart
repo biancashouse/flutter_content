@@ -44,6 +44,9 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   static List<STreeNode> _$children(CarouselNode v) => v.children;
   static const Field<CarouselNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(CarouselNode v) => v.uid;
+  static const Field<CarouselNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(CarouselNode v) => v.isExpanded;
   static const Field<CarouselNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -67,6 +70,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #height: _f$height,
     #axis: _f$axis,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

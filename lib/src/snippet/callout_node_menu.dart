@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 
 import 'snodes/fs_image_node.dart';
@@ -227,189 +227,117 @@ List<Widget> menuAnchorWidgets(
       _pasteMI(selectedNode, action) ?? const Offstage(),
 
       if (action == NodeAction.wrapWith) ...[
-        if (selectedNode is PositionedNode)
-          _menuItemButton(
-              "Stack", snippetBloc, selectedNode, StackNode, action),
+        if (selectedNode is PositionedNode) _menuItemButton("Stack", snippetBloc, selectedNode, StackNode, action),
         if (selectedNode is ExpandedNode || selectedNode is FlexibleNode) ...[
-          _menuItemButton(
-              "Column", snippetBloc, selectedNode, ColumnNode, action),
+          _menuItemButton("Column", snippetBloc, selectedNode, ColumnNode, action),
           _menuItemButton("Row", snippetBloc, selectedNode, RowNode, action),
         ],
-        if (selectedNode.getParent() is FlexNode)
-          _menuItemButton(
-              "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
-        if (selectedNode.getParent() is FlexNode)
-          _menuItemButton(
-              "Flexible", snippetBloc, selectedNode, FlexibleNode, action),
-        if (selectedNode is WidgetSpanNode)
-          _menuItemButton(
-              "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
+        if (selectedNode.getParent() is FlexNode) _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
+        if (selectedNode.getParent() is FlexNode) _menuItemButton("Flexible", snippetBloc, selectedNode, FlexibleNode, action),
+        if (selectedNode is WidgetSpanNode) _menuItemButton("TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
         if (selectedNode is TextSpanNode) ...[
-          if (selectedNode.getParent() is! RichTextNode)
-            _menuItemButton(
-                "RichText", snippetBloc, selectedNode, TextSpanNode, action),
-          _menuItemButton(
-              "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
+          if (selectedNode.getParent() is! RichTextNode) _menuItemButton("RichText", snippetBloc, selectedNode, TextSpanNode, action),
+          _menuItemButton("TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
         ],
-        if (selectedNode is FileNode)
-          _menuItemButton(
-              "Directory", snippetBloc, selectedNode, DirectoryNode, action),
+        if (selectedNode is FileNode) _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
         if (selectedNode is DirectoryNode) ...[
-          _menuItemButton(
-              "Directory", snippetBloc, selectedNode, DirectoryNode, action),
+          _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
-        if (selectedNode is PollOptionNode)
-          _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
-        if (selectedNode is StepNode)
-          _menuItemButton(
-              "Stepper", snippetBloc, selectedNode, StepperNode, action),
+        if (selectedNode is PollOptionNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
+        if (selectedNode is StepNode) _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
       ] else if (action == NodeAction.addChild) ...[
-        if (selectedNode is StackNode)
-          _menuItemButton(
-              "Positioned", snippetBloc, selectedNode, PositionedNode, action),
-        if (selectedNode is FlexNode)
-          _menuItemButton(
-              "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
-        if (selectedNode is FlexNode)
-          _menuItemButton(
-              "Flexible", snippetBloc, selectedNode, FlexibleNode, action),
-        if (selectedNode is PollNode)
-          _menuItemButton(
-              "PollOption", snippetBloc, selectedNode, PollOptionNode, action),
-        if (selectedNode is StepperNode)
-          _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
-        if (selectedNode is MenuBarNode ||
-            selectedNode is SubmenuButtonNode) ...[
-          _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
-              MenuItemButtonNode, action),
-          _menuItemButton("SubMenuButton", snippetBloc, selectedNode,
-              SubmenuButtonNode, action),
+        if (selectedNode is StackNode) _menuItemButton("Positioned", snippetBloc, selectedNode, PositionedNode, action),
+        if (selectedNode is FlexNode) _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
+        if (selectedNode is FlexNode) _menuItemButton("Flexible", snippetBloc, selectedNode, FlexibleNode, action),
+        if (selectedNode is PollNode) _menuItemButton("PollOption", snippetBloc, selectedNode, PollOptionNode, action),
+        if (selectedNode is StepperNode) _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
+        if (selectedNode is MenuBarNode || selectedNode is SubmenuButtonNode) ...[
+          _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
+          _menuItemButton("SubMenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
         ],
-        if (selectedNode.getParent() is RichTextNode ||
-            selectedNode is TextSpanNode) ...[
-          _menuItemButton(
-              "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
-          _menuItemButton(
-              "WidgetSpan", snippetBloc, selectedNode, WidgetSpanNode, action),
+        if (selectedNode.getParent() is RichTextNode || selectedNode is TextSpanNode) ...[
+          _menuItemButton("TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
+          _menuItemButton("WidgetSpan", snippetBloc, selectedNode, WidgetSpanNode, action),
         ],
         if (selectedNode is DirectoryNode) ...[
-          _menuItemButton(
-              "Directory", snippetBloc, selectedNode, DirectoryNode, action),
+          _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
       ] else ...[
         if (selectedNode.getParent() is FlexNode) ...[
-          _menuItemButton(
-              "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
-          _menuItemButton(
-              "Flexible", snippetBloc, selectedNode, FlexibleNode, action),
+          _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
+          _menuItemButton("Flexible", snippetBloc, selectedNode, FlexibleNode, action),
         ],
-        if (selectedNode.getParent() is StackNode)
-          _menuItemButton(
-              "Positioned", snippetBloc, selectedNode, PositionedNode, action),
+        if (selectedNode.getParent() is StackNode) _menuItemButton("Positioned", snippetBloc, selectedNode, PositionedNode, action),
         if (selectedNode is DirectoryNode) ...[
-          _menuItemButton(
-              "Directory", snippetBloc, selectedNode, DirectoryNode, action),
+          _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
-        if (selectedNode is PollOptionNode)
-          _menuItemButton(
-              "Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
-        if (selectedNode is StepperNode)
-          _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
-        if (selectedNode.getParent() is MenuBarNode ||
-            selectedNode.getParent() is SubmenuButtonNode) ...[
-          _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
-              MenuItemButtonNode, action),
-          _menuItemButton("SubMenuButton", snippetBloc, selectedNode,
-              SubmenuButtonNode, action),
+        if (selectedNode is PollOptionNode) _menuItemButton("Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
+        if (selectedNode is StepperNode) _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
+        if (selectedNode.getParent() is MenuBarNode || selectedNode.getParent() is SubmenuButtonNode) ...[
+          _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
+          _menuItemButton("SubMenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
         ],
         if (selectedNode.getParent() is CarouselNode) ...[
-          _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
-              AssetImageNode, action),
-          _menuItemButton(
-              "SubMenuButton", snippetBloc, selectedNode, FSImageNode, action),
+          _menuItemButton("MenuItemButton", snippetBloc, selectedNode, AssetImageNode, action),
+          _menuItemButton("SubMenuButton", snippetBloc, selectedNode, FSImageNode, action),
         ],
       ],
       SubmenuButton(
         menuChildren: [
-          _menuItemButton(
-              "Align", snippetBloc, selectedNode, AlignNode, action),
-          _menuItemButton(
-              "Center", snippetBloc, selectedNode, CenterNode, action),
-          _menuItemButton(
-              "Container", snippetBloc, selectedNode, ContainerNode, action),
-          _menuItemButton(
-              "Expanded", snippetBloc, selectedNode, ExpandedNode, action),
+          _menuItemButton("Align", snippetBloc, selectedNode, AlignNode, action),
+          _menuItemButton("Center", snippetBloc, selectedNode, CenterNode, action),
+          _menuItemButton("Container", snippetBloc, selectedNode, ContainerNode, action),
+          _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
           // _addChildMenuItemButton("IntrinsicHeight", snippetBloc, selectedNode, IntrinsicHeightNode, action),
           // _addChildMenuItemButton("IntrinsicWidth", snippetBloc, selectedNode, IntrinsicWidthNode, action),
-          _menuItemButton(
-              "Padding", snippetBloc, selectedNode, PaddingNode, action),
-          _menuItemButton(
-              "SizedBox", snippetBloc, selectedNode, SizedBoxNode, action),
-          _menuItemButton("SingleChildScrollView", snippetBloc, selectedNode,
-              SingleChildScrollViewNode, action),
+          _menuItemButton("Padding", snippetBloc, selectedNode, PaddingNode, action),
+          _menuItemButton("SizedBox", snippetBloc, selectedNode, SizedBoxNode, action),
+          _menuItemButton("SingleChildScrollView", snippetBloc, selectedNode, SingleChildScrollViewNode, action),
         ],
-        child: Useful.coloredText("single-child container",
-            fontWeight: FontWeight.normal),
+        child: Useful.coloredText("single-child container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton(
-              "Column", snippetBloc, selectedNode, ColumnNode, action),
+          _menuItemButton("Column", snippetBloc, selectedNode, ColumnNode, action),
           _menuItemButton("Row", snippetBloc, selectedNode, RowNode, action),
-          _menuItemButton(
-              "Stack", snippetBloc, selectedNode, StackNode, action),
+          _menuItemButton("Stack", snippetBloc, selectedNode, StackNode, action),
           // _addChildMenuItemButton("Table", snippetBloc, selectedNode, TableNode),
         ],
-        child: Useful.coloredText("multi-child container",
-            fontWeight: FontWeight.normal),
+        child: Useful.coloredText("multi-child container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton("DefaultTextStyle", snippetBloc, selectedNode,
-              DefaultTextStyleNode, action),
+          _menuItemButton("DefaultTextStyle", snippetBloc, selectedNode, DefaultTextStyleNode, action),
           _menuItemButton("Text", snippetBloc, selectedNode, TextNode, action),
-          _menuItemButton(
-              "RichText", snippetBloc, selectedNode, RichTextNode, action),
-          _menuItemButton(
-              "TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
-          _menuItemButton(
-              "WidgetSpan", snippetBloc, selectedNode, WidgetSpanNode, action),
+          _menuItemButton("RichText", snippetBloc, selectedNode, RichTextNode, action),
+          _menuItemButton("TextSpan", snippetBloc, selectedNode, TextSpanNode, action),
+          _menuItemButton("WidgetSpan", snippetBloc, selectedNode, WidgetSpanNode, action),
         ],
         child: Useful.coloredText("text", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton("MenuItemButton", snippetBloc, selectedNode,
-              MenuItemButtonNode, action),
-          _menuItemButton("SubmenuButton", snippetBloc, selectedNode,
-              SubmenuButtonNode, action),
-          _menuItemButton(
-              "MenuBar", snippetBloc, selectedNode, MenuBarNode, action),
+          _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
+          _menuItemButton("SubmenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
+          _menuItemButton("MenuBar", snippetBloc, selectedNode, MenuBarNode, action),
         ],
         child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton(
-              "Asset Image", snippetBloc, selectedNode, AssetImageNode, action),
-          _menuItemButton("Firebase Storage Image", snippetBloc, selectedNode,
-              FSImageNode, action),
-          _menuItemButton(
-              "Carousel", snippetBloc, selectedNode, CarouselNode, action),
+          _menuItemButton("Asset Image", snippetBloc, selectedNode, AssetImageNode, action),
+          _menuItemButton("Firebase Storage Image", snippetBloc, selectedNode, FSImageNode, action),
+          _menuItemButton("Carousel", snippetBloc, selectedNode, CarouselNode, action),
         ],
         child: Useful.coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          if (selectedNode is! PollNode)
-            _menuItemButton(
-                "Poll", snippetBloc, selectedNode, PollNode, action),
-          if (selectedNode is PollNode)
-            _menuItemButton("PollOption", snippetBloc, selectedNode,
-                PollOptionNode, action),
+          if (selectedNode is! PollNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
+          if (selectedNode is PollNode) _menuItemButton("PollOption", snippetBloc, selectedNode, PollOptionNode, action),
         ],
         child: Useful.coloredText("poll", fontWeight: FontWeight.normal),
       ),
@@ -435,46 +363,37 @@ List<Widget> menuAnchorWidgets(
       //   ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton(
-              "ifrane", snippetBloc, selectedNode, IFrameNode, action),
-          _menuItemButton("Google Drive iframe", snippetBloc, selectedNode,
-              GoogleDriveIFrameNode, action),
+          _menuItemButton("ifrane", snippetBloc, selectedNode, IFrameNode, action),
+          _menuItemButton("Google Drive iframe", snippetBloc, selectedNode, GoogleDriveIFrameNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
-          _menuItemButton(
-              "Directory", snippetBloc, selectedNode, DirectoryNode, action),
+          _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
         ],
         child: Useful.coloredText("file", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton("ElevatedButton", snippetBloc, selectedNode,
-              ElevatedButton, action),
-          _menuItemButton("OutlinedButton", snippetBloc, selectedNode,
-              OutlinedButton, action),
-          _menuItemButton(
-              "TextButton", snippetBloc, selectedNode, TextButton, action),
-          _menuItemButton(
-              "FilledButton", snippetBloc, selectedNode, FilledButton, action),
-          _menuItemButton(
-              "IconButton", snippetBloc, selectedNode, IconButton, action),
+          _menuItemButton("ElevatedButton", snippetBloc, selectedNode, ElevatedButton, action),
+          _menuItemButton("OutlinedButton", snippetBloc, selectedNode, OutlinedButton, action),
+          _menuItemButton("TextButton", snippetBloc, selectedNode, TextButton, action),
+          _menuItemButton("FilledButton", snippetBloc, selectedNode, FilledButton, action),
+          _menuItemButton("IconButton", snippetBloc, selectedNode, IconButton, action),
         ],
         child: Useful.coloredText("button", fontWeight: FontWeight.normal),
       ),
-      _menuItemButton(
-          "SplitView", snippetBloc, selectedNode, SplitViewNode, action),
-      _menuItemButton(
-          "Stepper", snippetBloc, selectedNode, StepperNode, action),
+      _menuItemButton("SplitView", snippetBloc, selectedNode, SplitViewNode, action),
+      _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
       _menuItemButton("Gap", snippetBloc, selectedNode, GapNode, action),
       // _menuItemButton("TargetWrapper", snippetBloc, selectedNode, TargetButtonNode, action),
-      _menuItemButton("TargetGroupWrapper", snippetBloc, selectedNode,
-          TargetGroupWrapperNode, action),
-      _menuItemButton(
-          "Placeholder", snippetBloc, selectedNode, PlaceholderNode, action),
-      _menuItemButton(
-          "Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),
-      _menuItemButton("TabBar", snippetBloc, selectedNode, TabBarNode, action),
-      _menuItemButton(
-          "TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+      _menuItemButton("Hotspots", snippetBloc, selectedNode, HotspotsNode, action),
+      _menuItemButton("Placeholder", snippetBloc, selectedNode, PlaceholderNode, action),
+      _menuItemButton("Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),
+      SubmenuButton(
+        menuChildren: [
+          _menuItemButton("TabBar", snippetBloc, selectedNode, TabBarNode, action),
+          _menuItemButton("TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+        ],
+        child: Useful.coloredText("tabs", fontWeight: FontWeight.normal),
+      ),
       _menuItemButton("Youtube", snippetBloc, selectedNode, YTNode, action),
       _addSnippetsSubmenu(snippetBloc, selectedNode, action),
     ];
@@ -488,27 +407,30 @@ MenuItemButton _menuItemButton(
 ) =>
     MenuItemButton(
       onPressed: () {
-        if (action == NodeAction.replace)
-          snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
-        if (action == NodeAction.addChild)
-          snippetBloc.add(SnippetEvent.appendChild(type: childType));
-        if (action == NodeAction.addSiblingBefore)
-          snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
-        if (action == NodeAction.addSiblingAfter)
-          snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
+        if (action == NodeAction.replace) snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
+        if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
+        if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
+        if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
         if (action == NodeAction.wrapWith) {
+          var treeC = FC().snippetBeingEdited?.treeC;
+          bool navUp = selectedNode == treeC?.roots.firstOrNull;
           snippetBloc.add(SnippetEvent.wrapSelectionWith(type: childType));
           // in case need to show more of the tree (higher up)
           Useful.afterNextBuildDo(() {
-            snippetBloc.add(SnippetEvent.selectNode(
-              node: selectedNode.getParent() as STreeNode,
-              selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-            ));
+            if (navUp) {
+              SnippetTreePane.navigateUpTree();
+            }
           });
         }
         Callout.dismiss(TREENODE_MENU_CALLOUT);
-                FC.forceRefresh();
-
+        FC.forceRefresh();
+        Useful.afterNextBuildDo(() {
+          var snippetBeingEdited = FC().snippetBeingEdited?.rootNode;
+          var appInfo = FC().appInfoAsMap;
+          var cache = FC().snippetInfoCache;
+          debugPrint(appInfo.toString());
+          debugPrint(cache.toString());
+        });
       },
       child: Useful.coloredText(label, fontWeight: FontWeight.bold),
     );
@@ -519,37 +441,39 @@ SubmenuButton _addSnippetsSubmenu(
   NodeAction action,
 ) {
   List<MenuItemButton> snippetMIs = [];
-  List<SnippetName> snippetNames = FC().snippetCache.keys.toList()..sort();
-  for (String SnippetName in snippetNames) {
+  List<SnippetName> snippetNames = FC().snippetInfoCache.keys.toList()..sort();
+  for (String snippetName in snippetNames) {
     snippetMIs.add(
       MenuItemButton(
-        onPressed: () {
+        onPressed: () async {
+          // make sure snippet actually present
+          await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName);
           if (action == NodeAction.replace) {
             snippetBloc.add(SnippetEvent.replaceSelectionWith(
-              type: SnippetRefNode,
-              snippetName: SnippetName,
+              type: SnippetRootNode,
+              snippetName: snippetName,
             ));
           } else if (action == NodeAction.addSiblingBefore) {
             snippetBloc.add(SnippetEvent.addSiblingBefore(
-              type: SnippetRefNode,
-              snippetName: SnippetName,
+              type: SnippetRootNode,
+              snippetName: snippetName,
             ));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addSiblingAfter) {
             snippetBloc.add(SnippetEvent.addSiblingAfter(
-              type: SnippetRefNode,
-              snippetName: SnippetName,
+              type: SnippetRootNode,
+              snippetName: snippetName,
             ));
             // removeNodePropertiesCallout();
           } else if (action == NodeAction.addChild) {
             snippetBloc.add(SnippetEvent.appendChild(
-              type: SnippetRefNode,
-              snippetName: SnippetName,
+              type: SnippetRootNode,
+              snippetName: snippetName,
             ));
             // removeNodePropertiesCallout();
           }
         },
-        child: Text(SnippetName),
+        child: Text(snippetName),
       ),
     );
   }
@@ -557,11 +481,7 @@ SubmenuButton _addSnippetsSubmenu(
 }
 
 Widget insertItemMenuAnchor(SnippetBloC snippetBloc, STreeNode selectedNode,
-    {required NodeAction action,
-    String? label,
-    Color? bgColor,
-    String? tooltip,
-    key}) {
+    {required NodeAction action, String? label, Color? bgColor, String? tooltip, key}) {
   var title = action == NodeAction.replace
       ? 'replace with...'
       : action == NodeAction.wrapWith
@@ -572,8 +492,7 @@ Widget insertItemMenuAnchor(SnippetBloC snippetBloc, STreeNode selectedNode,
                   ? 'insert after...'
                   : 'append child...';
 
-  List<Widget> menuChildren =
-      menuAnchorWidgets(snippetBloc, selectedNode, action);
+  List<Widget> menuChildren = menuAnchorWidgets(snippetBloc, selectedNode, action);
   return MenuAnchor(
     menuChildren: menuChildren,
     builder: (BuildContext context, MenuController controller, Widget? child) {
@@ -590,8 +509,7 @@ Widget insertItemMenuAnchor(SnippetBloC snippetBloc, STreeNode selectedNode,
               icon: const Icon(Icons.add),
               label: Text(title),
               style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(
-                    bgColor ?? Colors.white.withOpacity(.9)),
+                backgroundColor: MaterialStatePropertyAll(bgColor ?? Colors.white.withOpacity(.9)),
                 //padding: MaterialStatePropertyAll(EdgeInsets.zero),
               ),
             )

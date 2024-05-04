@@ -4,17 +4,17 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 
-part 'target_group_wrapper_node.mapper.dart';
+part 'hotspots_node.mapper.dart';
 
 @MappableClass()
-class TargetGroupWrapperNode extends ButtonNode
-    with TargetGroupWrapperNodeMappable {
+class HotspotsNode extends ButtonNode
+    with HotspotsNodeMappable {
   // SnippetName name;
 
   List<TargetModel> targets;
   List<TargetModel> playList;
 
-  TargetGroupWrapperNode({
+  HotspotsNode({
     // required this.name,
     this.targets = const [],
     this.playList = const [],
@@ -81,5 +81,5 @@ class TargetGroupWrapperNode extends ButtonNode
   @override
   Widget? logoSrc() => const Icon(Icons.messenger);
 
-  static const String FLUTTER_TYPE = "TargetGroupWrapper";
+  static const String FLUTTER_TYPE = "Hotspots";
 }

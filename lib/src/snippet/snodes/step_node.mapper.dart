@@ -31,6 +31,9 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   static GenericSingleChildNode _$content(StepNode v) => v.content;
   static const Field<StepNode, GenericSingleChildNode> _f$content =
       Field('content', _$content);
+  static String _$uid(StepNode v) => v.uid;
+  static const Field<StepNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(StepNode v) => v.isExpanded;
   static const Field<StepNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -50,6 +53,7 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
     #title: _f$title,
     #subtitle: _f$subtitle,
     #content: _f$content,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -32,6 +32,9 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
   static List<STreeNode> _$children(SplitViewNode v) => v.children;
   static const Field<SplitViewNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(SplitViewNode v) => v.uid;
+  static const Field<SplitViewNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(SplitViewNode v) => v.isExpanded;
   static const Field<SplitViewNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -51,6 +54,7 @@ class SplitViewNodeMapper extends SubClassMapperBase<SplitViewNode> {
     #axis: _f$axis,
     #resizeable: _f$resizeable,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

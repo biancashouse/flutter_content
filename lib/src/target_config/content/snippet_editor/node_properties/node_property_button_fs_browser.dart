@@ -22,6 +22,7 @@ class NodePropertyButtonFSBrowser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NodePropertyCalloutButton(
+      feature: 'fs-browser',
       labelWidget: Text(originalFSPath == null ? '$label...' : '$originalFSPath...',
           style: const TextStyle(
             color: Colors.white,

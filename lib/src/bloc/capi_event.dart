@@ -123,19 +123,18 @@ class CAPIEvent with _$CAPIEvent {
   //   required String newSnippetName,
   // }) = SaveNodeAsSnippet;
 
-  const factory CAPIEvent.ensureSnippetPresent({
-    required String snippetName,
-    required SnippetTemplate fromTemplate,
-    @Default(false) bool onlyTargetsWrappers,
-  }) = EnsureSnippetPresent;
+  // const factory CAPIEvent.ensureSnippetPresent({
+  //   required String snippetName,
+  //   required SnippetTemplate fromTemplate,
+  //   @Default(false) bool onlyTargetsWrappers,
+  // }) = EnsureSnippetPresent;
 
-  const factory CAPIEvent.saveSnippet({
-    required SnippetRootNode snippetRootNode,
-    required VersionId newVersionId,
-    @Default(false) bool force,
-    @Default(false) bool dontEmit,
-    @Default(false) bool onlyTargetsWrappers,
-  }) = SaveSnippet;
+  // const factory CAPIEvent.createNewSnippetVersion({
+  //   required SnippetRootNode snippetRootNode,
+  //   @Default(false) bool force,
+  //   @Default(false) bool dontEmit,
+  //   @Default(false) bool onlyTargetsWrappers,
+  // }) = SaveSnippet;
 
   const factory CAPIEvent.publishSnippet({
     required SnippetName snippetName,
@@ -150,6 +149,15 @@ class CAPIEvent with _$CAPIEvent {
     required SnippetName snippetName,
     required VersionId versionId,
   }) = RevertSnippet;
+
+  const factory CAPIEvent.toggleAutoPublishingOfSnippet({
+    required SnippetName snippetName,
+  }) = ToggleAutoPublishingOfSnippet;
+
+  const factory CAPIEvent.autoPublishDefault({
+    required bool b,
+  }) = AutoPublishDefault;
+
 
 // const factory CAPIEvent.changedSnippetName({
 //   required TargetModel tc,

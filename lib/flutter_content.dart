@@ -10,21 +10,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/fs_folder_node.dart';
-import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'src/bloc/bloc_observer.dart';
 import 'src/bloc/capi_event.dart';
-import 'src/feature_discovery/discovery_controller.dart';
-import 'src/feature_discovery/featured_widget.dart';
 import 'src/model/model_repo.dart';
-import 'src/snippet/pnodes/enums/enum_alignment.dart';
-import 'src/snippet/pnodes/enums/enum_arrow_type.dart';
 
+// export 'src/snippet/snodes/fs_bucket_node.dart';
+// export 'src/snippet/snodes/fs_directory_node.dart';
+// export 'src/snippet/snodes/fs_file_node.dart';
+
+// const String getIt_offstageGK = "offstage:gk";
+// const String getIt_offstageOverlay = "offstage-widget-builder";
+// const String getIt_capiBloc = "capiBloC";
+// const String getIt_scaffoldGK = "scaffold:gk";
+// const String getIt_calloutGKs = "calloutGKs:feature";
+// const String getIt_singleTargetBtnFeatures = "singleTargetBtns:feature";
+// const String getIt_singleTargets = "singleTargets:name";
+// const String getIt_multiTargets = "multiTargets:uid";
+// const String getIt_snippets = "snippets:snippetName";
+// const String getIt_textFields = "snippets:textFields";
+
+export 'flutter_content_typedefs.dart';
 export 'src/api/panel/files_or_file_panel.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
+export 'src/api/snippet_panel/snippet_templates.dart';
 export 'src/api/wrapper/material_spa.dart';
 export 'src/api/wrapper/multiple/targets_wrapper.dart';
 export 'src/api/wrapper/single/single_target_wrapper.dart';
@@ -48,7 +60,7 @@ export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
 // export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
-export 'src/model/snippet_model.dart';
+export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
 export 'src/overlays/callouts/callout.dart';
@@ -115,8 +127,7 @@ export 'src/snippet/snodes/submenu_button_node.dart';
 export 'src/snippet/snodes/subtitle_snippet_root_node.dart';
 export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
-export 'src/snippet/snodes/target_button_node.dart';
-export 'src/snippet/snodes/target_group_wrapper_node.dart';
+export 'src/snippet/snodes/hotspots_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
@@ -127,98 +138,10 @@ export 'src/target_config/content/expansion_tile_section.dart';
 export 'src/text_editing/text_editor.dart';
 export 'src/useful.dart';
 export 'src/widget_helper.dart';
-// export 'src/snippet/snodes/fs_bucket_node.dart';
-// export 'src/snippet/snodes/fs_directory_node.dart';
-// export 'src/snippet/snodes/fs_file_node.dart';
-
-// const String getIt_offstageGK = "offstage:gk";
-// const String getIt_offstageOverlay = "offstage-widget-builder";
-// const String getIt_capiBloc = "capiBloC";
-// const String getIt_scaffoldGK = "scaffold:gk";
-// const String getIt_calloutGKs = "calloutGKs:feature";
-// const String getIt_singleTargetBtnFeatures = "singleTargetBtns:feature";
-// const String getIt_singleTargets = "singleTargets:name";
-// const String getIt_multiTargets = "multiTargets:uid";
-// const String getIt_snippets = "snippets:snippetName";
-// const String getIt_textFields = "snippets:textFields";
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
-
-typedef Feature = String;
-
-typedef EmailAddress = String;
-typedef VoterId = String;
-typedef PollOptionId = String; // 'a', 'b', 'c' etc.
-typedef OptionCountsAndVoterRecord = ({
-  Map<PollOptionId, int>? optionVoteCountMap,
-  PollOptionId? userVotedForOptionId,
-  int? when
-});
-
-typedef SnippetName = String;
-typedef BucketName = String;
-typedef BranchName = String;
-typedef PanelName = String;
-typedef TargetId = int;
-typedef VersionId = String;
-// typedef VersionIdHistory = List<VersionId>;
-typedef SnippetVersions = Map<VersionId, SnippetRootNode>;
-typedef VersionedSnippet = (VersionId, SnippetRootNode);
-typedef EncodedJson = String;
-typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
-typedef EncodedSnippetJson = String;
-typedef JsonMap = Map<String, dynamic>;
-typedef SizeFunc = Size Function();
-typedef PosFunc = Offset Function();
-
-typedef DoubleFunc = double Function();
-
-typedef TargetKeyFunc = GlobalKey? Function();
-// typedef CalloutConfigChangedF = void Function(AlignmentEnum newTA, ArrowTypeEnum newAT);
-
-typedef HandlerName = String;
-
-typedef PropertyName = String;
-
-typedef CalloutConfigChangedF = void Function(
-    AlignmentEnum newTA, ArrowTypeEnum newAT);
-
-typedef MaterialAppHomeFunc = Widget Function();
-typedef MaterialAppThemeFunc = ThemeData Function();
-typedef CAPIBlocFunc = CAPIBloC Function();
-
-typedef GksByFeature = Map<Feature, GlobalKey>;
-typedef GksByTargetId = Map<TargetId, GlobalKey>;
-typedef FeatureList = List<Feature>;
-
-typedef FeaturedWidgetHelpContentBuilder = Widget Function(
-    BuildContext context, FeaturedWidget? parent);
-typedef FeaturedWidgetActionF = void Function(
-    BuildContext, DiscoveryController);
-
-typedef TextStyleF = TextStyle Function();
-typedef TextAlignF = TextAlign Function();
-
-typedef JSON = Map<String, dynamic>;
-typedef SnippetJson = String;
-typedef Expansions = Set<STreeNode>;
-
-typedef SnippetBlocFunc = SnippetBloC Function();
-
-typedef SetStateF = void Function(VoidCallback f);
-
-// typedef PassBlocF = void Function(CAPIBloc);
-// typedef PassGlobalKeyF = void Function(GlobalKey);
-
-// typedef TextAlignCallback = void Function(NodeTextAlign value);
-// typedef AnimateArrowFunc = bool Function();
-// typedef ArrowTypeFunc = ArrowType Function();
-// typedef TextStyleFunc = TextStyle Function();
-// typedef TextAlignFunc = TextAlign Function();
-
-// typedef Adder<Node> = void Function({Node? parentNode, required Node selectedNode, required Node newNode});
 
 /// this is a global container
 class FC {
@@ -310,75 +233,61 @@ class FC {
   late String _appName;
 
   late AppInfoModel _appInfo; // must be instantiated in init()
+  AppInfoModel get appInfo => _appInfo;
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
-  bool isAutoPublishing() => _appInfo.autoPublish ?? true;
-  void setAutoPublishing() => _appInfo.autoPublish = ! isAutoPublishing();
-  Map<SnippetName, VersionId> get publishedVersionIds =>
-      _appInfo.publishedVersionIds;
-  Map<SnippetName, VersionId> get editingVersionIds =>
-      _appInfo.editingVersionIds;
-  Map<SnippetName, List<VersionId>> get versionIds => _appInfo.versionIds;
 
-  void addVersionId(SnippetName snippetName, VersionId versionId) {
-    final newVersionIds = Map<SnippetName, List<VersionId>>.of(versionIds);
-    if (versionIds.containsKey(snippetName)) {
-      newVersionIds[snippetName]!.insert(0, versionId);
-    } else {
-      newVersionIds[snippetName] = [versionId];
-    }
-    _appInfo.versionIds = newVersionIds;
-  }
+  // void addVersionId(SnippetName snippetName, VersionId versionId) {
+  //   final newVersionIds = Map<SnippetName, List<VersionId>>.of(versionIds);
+  //   if (versionIds.containsKey(snippetName)) {
+  //     newVersionIds[snippetName]!.insert(0, versionId);
+
+  //   } else {
+  //     newVersionIds[snippetName] = [versionId];
+  //   }
+  //   _appInfo.versionIds = newVersionIds;
+  // }
 
   STreeNode? get clipboard => _appInfo.clipboard;
   void setClipboard(STreeNode? newClipboard) =>
       _appInfo.clipboard = newClipboard;
 
-  Map<SnippetName, Map<VersionId, SnippetRootNode>> snippetCache =
-      {}; // must be instantiated in init()
+  // must be instantiated in init()
+  Map<SnippetName, SnippetInfoModel> snippetInfoCache = {};
+  Map<SnippetName, List<VersionId>> versionIdCache = {};
+  Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
-  void addToSnippetCache({
+  // create new snippet version in cache, then write through to FB
+  Future<void> possiblyCacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
     required SnippetRootNode rootNode,
-    required VersionId versionId,
-    // required bool editing,
-  }) {
-    debugPrint('addToSnippetCache($snippetName)');
-    if (snippetCache.containsKey(snippetName)) {
-      snippetCache[snippetName]![versionId] = rootNode;
+    bool? publish,
+  }) async {
+    debugPrint('newSnippetVersion($snippetName)');
+    SnippetInfoModel snippetInfo;
+    // snippet has changed
+    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+    // NEW snippet - initial version
+    if (!snippetInfoCache.containsKey(snippetName)) {
+      appInfo.snippetNames = [snippetName, ...appInfo.snippetNames];
+      bool publishImmediately = publish ?? appInfo.autoPublishDefault;
+      snippetInfo = snippetInfoCache[snippetName] = SnippetInfoModel(
+        editingVersionId: newVersionId,
+        publishedVersionId: publishImmediately ? newVersionId : null,
+        autoPublish: appInfo.autoPublishDefault,
+      );
     } else {
-      snippetCache.addAll({
-        snippetName: {versionId: rootNode}
-      });
+      // EXISTING snippet - just add new version
+      snippetInfo = snippetInfoCache[snippetName]!..editingVersionId = newVersionId;
+      if (snippetInfo.autoPublish??false) {
+        snippetInfo.publishedVersionId = newVersionId;
+      }
     }
-  }
-
-  void updateEditingVersionId({
-    required SnippetName snippetName,
-    required VersionId newVersionId,
-  }) {
-    final newEditingVersionIds =
-        Map<SnippetName, VersionId>.of(editingVersionIds);
-    if (newEditingVersionIds.containsKey(snippetName)) {
-      newEditingVersionIds[snippetName] = newVersionId;
-    } else {
-      newEditingVersionIds.addAll({snippetName: newVersionId});
-    }
-    _appInfo.editingVersionIds = newEditingVersionIds;
-  }
-
-  void updatePublishedVersionId({
-    required SnippetName snippetName,
-    required VersionId versionId,
-  }) {
-    final newPublishedVersionIds =
-        Map<SnippetName, VersionId>.of(publishedVersionIds);
-    if (newPublishedVersionIds.containsKey(snippetName)) {
-      newPublishedVersionIds[snippetName] = versionId;
-    } else {
-      newPublishedVersionIds.addAll({snippetName: versionId});
-    }
-    _appInfo.publishedVersionIds = newPublishedVersionIds;
+    FC().versionCache[snippetName] ??= {};
+    FC().versionIdCache[snippetName] ??= [];
+    FC().versionIdCache[snippetName]?.add(newVersionId);
+    FC().versionCache[snippetName]?.addAll({newVersionId: rootNode});
+    await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
   }
 
   late FSFolderNode? rootFSFolderNode;
@@ -466,6 +375,15 @@ class FC {
 
   bool get areAnySnippetsBeingEdited => _snippetsBeingEdited.isNotEmpty;
 
+  // void updateSnippetBeingEdited(SnippetRootNode rootNode) {
+  //   if (_snippetsBeingEdited.isEmpty) {
+  //     _snippetsBeingEdited.addFirst(snippetBloc);
+  //
+  //   }
+  //   debugPrint("snippetBeingEdited is $snippetBeingEdited");
+  //   return;
+  // }
+
   void pushSnippet(SnippetBloC snippetBloc) {
     _snippetsBeingEdited.addFirst(snippetBloc);
     debugPrint("snippetBeingEdited is $snippetBeingEdited");
@@ -522,32 +440,15 @@ class FC {
 
   bool get aNodeIsSelected => selectedNode != null;
 
-  SnippetRootNode? rootNodeOfPublishedSnippet(SnippetName snippetName) {
-    VersionId? publishedVersionId = publishedVersionIds[snippetName];
-    if (publishedVersionId != null) {
-      var versions = FC().snippetCache[snippetName];
-      var version = (versions ?? {})[publishedVersionId];
-      return version;
+  SnippetRootNode? currentSnippet(SnippetName snippetName) {
+    SnippetRootNode? rootNode;
+    SnippetInfoModel? snippetInfo = snippetInfoCache[snippetName];
+    VersionId? currentVersionId = snippetInfo?.currentVersionId;
+    if (currentVersionId != null) {
+      rootNode = FC().versionCache[snippetName]?[currentVersionId];
     }
-    return null;
+    return rootNode;
   }
-
-  // snippet expected to be definitely present in appInfo and snippetCache
-  SnippetRootNode? rootNodeOfEditingSnippet(SnippetName snippetName) {
-    VersionId? editingVersionId = editingVersionIds[snippetName];
-    if (editingVersionId != null) {
-      var versions = FC().snippetCache[snippetName];
-      var version = (versions ?? {})[editingVersionId];
-      return version;
-    }
-    return null;
-  }
-
-  SnippetRootNode? rootNodeOfSnippet(SnippetName snippetName) => canEditContent
-      ? rootNodeOfEditingSnippet(snippetName)
-      : rootNodeOfPublishedSnippet(snippetName);
-
-  Map<SnippetName, SnippetVersions> versions = {};
 
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 

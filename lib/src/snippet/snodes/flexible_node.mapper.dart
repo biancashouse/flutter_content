@@ -32,6 +32,9 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
   static STreeNode? _$child(FlexibleNode v) => v.child;
   static const Field<FlexibleNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(FlexibleNode v) => v.uid;
+  static const Field<FlexibleNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(FlexibleNode v) => v.isExpanded;
   static const Field<FlexibleNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -51,6 +54,7 @@ class FlexibleNodeMapper extends SubClassMapperBase<FlexibleNode> {
     #flex: _f$flex,
     #fit: _f$fit,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

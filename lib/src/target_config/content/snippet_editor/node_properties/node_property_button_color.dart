@@ -4,6 +4,7 @@ import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dar
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
 
 class NodePropertyButtonColor extends StatelessWidget {
+  final Feature feature;
   final String label;
   final String? tooltip;
   final Color? originalColor;
@@ -11,6 +12,7 @@ class NodePropertyButtonColor extends StatelessWidget {
   final Size calloutButtonSize;
 
   const NodePropertyButtonColor({
+    required this.feature,
     required this.label,
     this.tooltip,
     required this.originalColor,
@@ -34,6 +36,7 @@ class NodePropertyButtonColor extends StatelessWidget {
               color: Colors.white,
             ));
     return NodePropertyCalloutButton(
+      feature: feature,
       labelWidget: colorLabel,
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,
@@ -46,7 +49,9 @@ class NodePropertyButtonColor extends StatelessWidget {
             onChanged: (color) {
               onChangeF.call(color);
               // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-              // Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+              Useful.afterMsDelayDo(1000, () {
+                Callout.dismiss(feature);
+              });
             },
           ),
         );

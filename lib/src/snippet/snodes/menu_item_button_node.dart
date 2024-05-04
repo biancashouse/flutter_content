@@ -21,7 +21,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) {
-    List<String> allSnippets = FC().snippetCache.keys.toList()..sort();
+    List<String> allSnippets = FC().snippetInfoCache.keys.toList()..sort();
     List<PanelName> allPanelNames = FC().panelGkMap.keys.toList();
     return [
       StringPropertyValueNode(

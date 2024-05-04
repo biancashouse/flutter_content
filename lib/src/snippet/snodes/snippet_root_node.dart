@@ -4,11 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'sr', includeSubClasses: [
-  TitleSnippetRootNode,
-  SubtitleSnippetRootNode,
-  ContentSnippetRootNode
-])
+@MappableClass(discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   bool isEmbedded;
@@ -27,8 +23,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutSize: const Size(280, 140),
         ),
@@ -36,8 +31,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           snode: this,
           name: 'isEmbedded',
           boolValue: isEmbedded,
-          onBoolChange: (newValue) =>
-              refreshWithUpdate(() => isEmbedded = newValue ?? false),
+          onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
         ),
         StringPropertyValueNode(
           snode: this,
@@ -53,15 +47,112 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    // root snippet - always has a gk so callout can point to it
     setParent(parentNode);
-    return child?.toWidget(context, this) ?? const Placeholder();
+    return FutureBuilder<void>(
+        future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
+        builder: (futureContext, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            debugPrint("FutureBuilder<void> Ensuring ${name} present");
+            try {
+              // in case did a revert, ignore snapshot data and use the AppInfo instead
+              SnippetRootNode? snippet = FC().currentSnippet(name);
+              // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+              return snippet == null
+                  ? const Icon(Icons.error, color: Colors.redAccent)
+                  : snippet.child?.toWidget(futureContext, this) ?? Placeholder();
+            } catch (e) {
+              debugPrint('snippetRootNode.toWidget() failed!');
+              return Material(
+                textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.error, color: Colors.redAccent),
+                      hspacer(10),
+                      Useful.coloredText(e.toString()),
+                    ],
+                  ),
+                ),
+              );
+            }
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
+
+  // if root already exists, return it.
+  // If not, and a template name supplied, create a named copy of that template.
+  // If not, just create a snippet that comprises a PlaceholderNode.
+  static Future<void> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
+    required SnippetName snippetName,
+    SnippetTemplate? fromTemplate,
+  }) async {
+    SnippetRootNode? rootNode;
+
+    AppInfoModel appInfo = FC().appInfo;
+
+    // if not yet in AppInfo, must be a BRAND NEW snippet
+    if (!appInfo.snippetNames.contains(snippetName) && fromTemplate != null) {
+      SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplate(
+        fromTemplate,
+        snippetName,
+      );
+      await FC().possiblyCacheAndSaveANewSnippetVersion(
+        snippetName: snippetName,
+        rootNode: newSnippet,
+        publish: true,
+      );
+      return;
+    }
+
+    // snippet was definitely previously created (because snippetName present in appInfo)
+    SnippetInfoModel? snippetInfo = await FC().modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
+    if (snippetInfo != null) {
+      VersionId? currentVersionId = snippetInfo.currentVersionId;
+      // may already be in snippet cache
+      rootNode = FC().currentSnippet(snippetName);
+      //
+      if (rootNode == null && currentVersionId != null) {
+        // snippet version was not already in cache
+        await FC().modelRepo.possiblyLoadSnippetIntoCache(
+          snippetName: snippetName,
+          versionId: currentVersionId,
+        );
+      }
+    }
+  }
+
+  // static Future<void> ensureSnippetInCache({
+  //   required SnippetName snippetName,
+  //   SnippetTemplate fromTemplate = SnippetTemplate.empty_snippet,
+  // }) async {
+  //   // var appInfo = FC().appInfoAsMap;
+  //   VersionId? editingOrPublishedVersionId = FC().canEditContent
+  //       ? FC().snippetCache[snippetName]?.editingVersionId
+  //       : FC().snippetCache[snippetName]?.publishedVersionId;
+  //   if (editingOrPublishedVersionId != null) {
+  //     // exists in AppInfo, so make sure it has been fetched from FB
+  //     await FC().modelRepo.possiblyLoadSnippetIntoCache(
+  //         snippetName: snippetName, versionId: editingOrPublishedVersionId);
+  //     var rootNode = FC().snippetCache[snippetName]?.versions?[editingOrPublishedVersionId];
+  //     debugPrint('ensured snippet: ${rootNode?.name} ensured present.');
+  //   } else {
+  //     // snippet does not yet exist in FB
+  //     SnippetRootNode rootNode = SnippetPanel.createSnippetFromTemplate(fromTemplate, snippetName);
+  //     FC().possiblyCacheAndSaveNewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+  //   }
+  //   // // finally ensure any descendant snippet ref nodes are also loaded
+  //   // List<STreeNode> descSnippets = rootNode?.findDescendantsOfType(SnippetRefNode) ?? [];
+  //   // await Future.forEach<STreeNode>(descSnippets, (snippetRefNode) async {
+  //   //   await SnippetPanelState.ensureSnippetInCache(snippetName: (snippetRefNode as SnippetRefNode).snippetName);
+  //   // });
+  // }
 
   @override
   String toSource(BuildContext context) {
-    return child?.toSource(context) ??
-        'Icon(Icons.warning, color: Colors.red, size: 24,)';
+    return child?.toSource(context) ?? 'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
   SnippetRootNode cloneSnippet() {

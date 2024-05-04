@@ -21,41 +21,28 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   @override
   final String id = 'AppInfoModel';
 
-  static Map<String, String> _$publishedVersionIds(AppInfoModel v) =>
-      v.publishedVersionIds;
-  static const Field<AppInfoModel, Map<String, String>> _f$publishedVersionIds =
-      Field('publishedVersionIds', _$publishedVersionIds,
-          opt: true, def: const {});
-  static Map<String, String> _$editingVersionIds(AppInfoModel v) =>
-      v.editingVersionIds;
-  static const Field<AppInfoModel, Map<String, String>> _f$editingVersionIds =
-      Field('editingVersionIds', _$editingVersionIds, opt: true, def: const {});
-  static Map<String, List<String>> _$versionIds(AppInfoModel v) => v.versionIds;
-  static const Field<AppInfoModel, Map<String, List<String>>> _f$versionIds =
-      Field('versionIds', _$versionIds, opt: true, def: const {});
   static STreeNode? _$clipboard(AppInfoModel v) => v.clipboard;
   static const Field<AppInfoModel, STreeNode> _f$clipboard =
       Field('clipboard', _$clipboard, opt: true);
-  static bool? _$autoPublish(AppInfoModel v) => v.autoPublish;
-  static const Field<AppInfoModel, bool> _f$autoPublish =
-      Field('autoPublish', _$autoPublish, opt: true);
+  static bool _$autoPublishDefault(AppInfoModel v) => v.autoPublishDefault;
+  static const Field<AppInfoModel, bool> _f$autoPublishDefault =
+      Field('autoPublishDefault', _$autoPublishDefault, opt: true, def: false);
+  static List<String> _$snippetNames(AppInfoModel v) => v.snippetNames;
+  static const Field<AppInfoModel, List<String>> _f$snippetNames =
+      Field('snippetNames', _$snippetNames, opt: true, def: const []);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
-    #publishedVersionIds: _f$publishedVersionIds,
-    #editingVersionIds: _f$editingVersionIds,
-    #versionIds: _f$versionIds,
     #clipboard: _f$clipboard,
-    #autoPublish: _f$autoPublish,
+    #autoPublishDefault: _f$autoPublishDefault,
+    #snippetNames: _f$snippetNames,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
     return AppInfoModel(
-        publishedVersionIds: data.dec(_f$publishedVersionIds),
-        editingVersionIds: data.dec(_f$editingVersionIds),
-        versionIds: data.dec(_f$versionIds),
         clipboard: data.dec(_f$clipboard),
-        autoPublish: data.dec(_f$autoPublish));
+        autoPublishDefault: data.dec(_f$autoPublishDefault),
+        snippetNames: data.dec(_f$snippetNames));
   }
 
   @override
@@ -110,19 +97,12 @@ extension AppInfoModelValueCopy<$R, $Out>
 
 abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
-      get publishedVersionIds;
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
-      get editingVersionIds;
-  MapCopyWith<$R, String, List<String>,
-      ObjectCopyWith<$R, List<String>, List<String>>> get versionIds;
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get snippetNames;
   $R call(
-      {Map<String, String>? publishedVersionIds,
-      Map<String, String>? editingVersionIds,
-      Map<String, List<String>>? versionIds,
-      STreeNode? clipboard,
-      bool? autoPublish});
+      {STreeNode? clipboard,
+      bool? autoPublishDefault,
+      List<String>? snippetNames});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -135,51 +115,30 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AppInfoModel> $mapper =
       AppInfoModelMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
-      get publishedVersionIds => MapCopyWith(
-          $value.publishedVersionIds,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(publishedVersionIds: v));
-  @override
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
-      get editingVersionIds => MapCopyWith(
-          $value.editingVersionIds,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(editingVersionIds: v));
-  @override
-  MapCopyWith<$R, String, List<String>,
-          ObjectCopyWith<$R, List<String>, List<String>>>
-      get versionIds => MapCopyWith(
-          $value.versionIds,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(versionIds: v));
-  @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard =>
       $value.clipboard?.copyWith.$chain((v) => call(clipboard: v));
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get snippetNames => ListCopyWith(
+          $value.snippetNames,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(snippetNames: v));
+  @override
   $R call(
-          {Map<String, String>? publishedVersionIds,
-          Map<String, String>? editingVersionIds,
-          Map<String, List<String>>? versionIds,
-          Object? clipboard = $none,
-          Object? autoPublish = $none}) =>
+          {Object? clipboard = $none,
+          bool? autoPublishDefault,
+          List<String>? snippetNames}) =>
       $apply(FieldCopyWithData({
-        if (publishedVersionIds != null)
-          #publishedVersionIds: publishedVersionIds,
-        if (editingVersionIds != null) #editingVersionIds: editingVersionIds,
-        if (versionIds != null) #versionIds: versionIds,
         if (clipboard != $none) #clipboard: clipboard,
-        if (autoPublish != $none) #autoPublish: autoPublish
+        if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
+        if (snippetNames != null) #snippetNames: snippetNames
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
-      publishedVersionIds:
-          data.get(#publishedVersionIds, or: $value.publishedVersionIds),
-      editingVersionIds:
-          data.get(#editingVersionIds, or: $value.editingVersionIds),
-      versionIds: data.get(#versionIds, or: $value.versionIds),
       clipboard: data.get(#clipboard, or: $value.clipboard),
-      autoPublish: data.get(#autoPublish, or: $value.autoPublish));
+      autoPublishDefault:
+          data.get(#autoPublishDefault, or: $value.autoPublishDefault),
+      snippetNames: data.get(#snippetNames, or: $value.snippetNames));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

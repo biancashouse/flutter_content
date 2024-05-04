@@ -38,6 +38,9 @@ class DefaultTextStyleNodeMapper
   static STreeNode? _$child(DefaultTextStyleNode v) => v.child;
   static const Field<DefaultTextStyleNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(DefaultTextStyleNode v) => v.uid;
+  static const Field<DefaultTextStyleNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(DefaultTextStyleNode v) => v.isExpanded;
   static const Field<DefaultTextStyleNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -60,6 +63,7 @@ class DefaultTextStyleNodeMapper
     #namedTextStyle: _f$namedTextStyle,
     #textAlign: _f$textAlign,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

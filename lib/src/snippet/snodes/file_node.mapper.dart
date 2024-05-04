@@ -25,6 +25,9 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   static const Field<FileNode, String> _f$name = Field('name', _$name);
   static String _$src(FileNode v) => v.src;
   static const Field<FileNode, String> _f$src = Field('src', _$src);
+  static String _$uid(FileNode v) => v.uid;
+  static const Field<FileNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(FileNode v) => v.isExpanded;
   static const Field<FileNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -43,6 +46,7 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   final MappableFields<FileNode> fields = const {
     #name: _f$name,
     #src: _f$src,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -43,6 +43,9 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
   static InlineSpanNode _$text(RichTextNode v) => v.text;
   static const Field<RichTextNode, InlineSpanNode> _f$text =
       Field('text', _$text);
+  static String _$uid(RichTextNode v) => v.uid;
+  static const Field<RichTextNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(RichTextNode v) => v.isExpanded;
   static const Field<RichTextNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -65,6 +68,7 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #overflow: _f$overflow,
     #textScaleFactor: _f$textScaleFactor,
     #text: _f$text,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

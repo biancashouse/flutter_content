@@ -30,6 +30,9 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
   static double _$iframeHeight(IFrameNode v) => v.iframeHeight;
   static const Field<IFrameNode, double> _f$iframeHeight =
       Field('iframeHeight', _$iframeHeight, opt: true, def: 800);
+  static String _$uid(IFrameNode v) => v.uid;
+  static const Field<IFrameNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(IFrameNode v) => v.isExpanded;
   static const Field<IFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -49,6 +52,7 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
     #src: _f$src,
     #iframeWidth: _f$iframeWidth,
     #iframeHeight: _f$iframeHeight,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -15,7 +15,7 @@ abstract class Node extends Object {
     Iterable<STreeNode> children = [];
 
     if (node is SnippetRootNode) {
-      children = [if (node.child != null) node.child!];
+        children = [];
     } else if (node is ScaffoldNode) {
       children = [
         if (node.appBar != null) node.appBar!,

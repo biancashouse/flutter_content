@@ -39,6 +39,9 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
   static STreeNode? _$child(OutlinedButtonNode v) => v.child;
   static const Field<OutlinedButtonNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(OutlinedButtonNode v) => v.uid;
+  static const Field<OutlinedButtonNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(OutlinedButtonNode v) => v.isExpanded;
   static const Field<OutlinedButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -63,6 +66,7 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

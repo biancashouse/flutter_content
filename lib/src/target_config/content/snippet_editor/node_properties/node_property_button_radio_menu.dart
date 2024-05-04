@@ -26,6 +26,7 @@ class NodePropertyButtonEnum extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget mi = menuItems[originalEnumIndex ?? 0];
     return NodePropertyCalloutButton(
+      feature: 'radio-menu',
       notifier: ValueNotifier<int>(0),
       labelWidget: label.isNotEmpty
           ? Row(

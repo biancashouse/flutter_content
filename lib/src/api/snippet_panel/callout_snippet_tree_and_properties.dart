@@ -98,8 +98,8 @@ void showSnippetTreeAndPropertiesCallout({
   ScrollController? ancestorVScrollController,
   required VoidCallback onDismissedF,
   required STreeNode startingAtNode,
-  required STreeNode? selectedNode,
-  required STreeNode tappedNode,
+  required STreeNode selectedNode,
+  // required STreeNode tappedNode,
   bool allowButtonCallouts = false,
 }) async {
   STreeNode rootNode = snippetBloc.state.rootNode;
@@ -135,7 +135,7 @@ void showSnippetTreeAndPropertiesCallout({
 // imageTC: tc,
   ));
   Useful.afterNextBuildDo(() {
-    tappedNode.showNodeWidgetOverlay();
+    selectedNode.showNodeWidgetOverlay();
   });
 }
 

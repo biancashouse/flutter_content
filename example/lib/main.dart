@@ -253,8 +253,9 @@ Future<void> main() async {
     initialValueJsonAssetPath: "startup-scripts/example-config.json",
     webHome: const FlutterContentPage(
       panelName: 'home',
-      snippetName: 'example-home-4',
-      fromTemplate: SnippetTemplate.empty_snippet,
+      snippetName: 'test-1',
+      // snippetName: 'centred-tramshed',
+      fromTemplate: SnippetTemplate.save_as_snippet_test,
     ),
     // webHome: const ZoomerSamplePage(),
     mobileHome: const HomePageMobile(),

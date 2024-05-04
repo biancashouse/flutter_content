@@ -35,6 +35,9 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static TextAlignEnum? _$textAlign(TextNode v) => v.textAlign;
   static const Field<TextNode, TextAlignEnum> _f$textAlign =
       Field('textAlign', _$textAlign, opt: true);
+  static String _$uid(TextNode v) => v.uid;
+  static const Field<TextNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(TextNode v) => v.isExpanded;
   static const Field<TextNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -55,6 +58,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
     #textStyleGroup: _f$textStyleGroup,
     #namedTextStyle: _f$namedTextStyle,
     #textAlign: _f$textAlign,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

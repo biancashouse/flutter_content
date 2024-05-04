@@ -25,6 +25,9 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   static STreeNode? _$child(CenterNode v) => v.child;
   static const Field<CenterNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(CenterNode v) => v.uid;
+  static const Field<CenterNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(CenterNode v) => v.isExpanded;
   static const Field<CenterNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -42,6 +45,7 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   @override
   final MappableFields<CenterNode> fields = const {
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

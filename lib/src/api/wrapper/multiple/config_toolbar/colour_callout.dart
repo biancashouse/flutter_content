@@ -39,7 +39,7 @@ class ColourTool extends StatefulWidget {
     Callout.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
-        feature: CAPI.COLOUR_CALLOUT.name,
+        feature: 'color-picker',
         suppliedCalloutW: 300,
         suppliedCalloutH: 160,
         fillColor: Colors.purpleAccent,
@@ -91,7 +91,7 @@ class _ColourToolState extends State<ColourTool> {
               tc.setCalloutColor(color);
               // Callout.refreshOverlay(tc.snippetName);
               // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-              Callout.dismiss(CAPI.COLOUR_CALLOUT.name);
+              Callout.dismiss('color-picker');
               // Useful.afterNextBuildDo(() {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});

@@ -32,6 +32,9 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static GenericSingleChildNode _$body(ScaffoldNode v) => v.body;
   static const Field<ScaffoldNode, GenericSingleChildNode> _f$body =
       Field('body', _$body);
+  static String _$uid(ScaffoldNode v) => v.uid;
+  static const Field<ScaffoldNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(ScaffoldNode v) => v.isExpanded;
   static const Field<ScaffoldNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -51,6 +54,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     #bgColorValue: _f$bgColorValue,
     #appBar: _f$appBar,
     #body: _f$body,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

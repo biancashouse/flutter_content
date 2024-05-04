@@ -25,20 +25,12 @@ mixin _$CAPIEvent {
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -58,14 +50,10 @@ mixin _$CAPIEvent {
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -83,14 +71,10 @@ mixin _$CAPIEvent {
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -107,10 +91,11 @@ mixin _$CAPIEvent {
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -125,10 +110,11 @@ mixin _$CAPIEvent {
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -143,10 +129,11 @@ mixin _$CAPIEvent {
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -255,20 +242,12 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -291,14 +270,10 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -319,14 +294,10 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -349,10 +320,11 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -370,10 +342,11 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -391,10 +364,11 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -521,20 +495,12 @@ class _$OverrideTargetGKImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -557,14 +523,10 @@ class _$OverrideTargetGKImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -585,14 +547,10 @@ class _$OverrideTargetGKImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -615,10 +573,11 @@ class _$OverrideTargetGKImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -636,10 +595,11 @@ class _$OverrideTargetGKImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -657,10 +617,11 @@ class _$OverrideTargetGKImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -772,20 +733,12 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -808,14 +761,10 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -836,14 +785,10 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -866,10 +811,11 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -887,10 +833,11 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -908,10 +855,11 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1029,20 +977,12 @@ class _$UpdateClipboardImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1065,14 +1005,10 @@ class _$UpdateClipboardImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1093,14 +1029,10 @@ class _$UpdateClipboardImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1123,10 +1055,11 @@ class _$UpdateClipboardImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1144,10 +1077,11 @@ class _$UpdateClipboardImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1165,10 +1099,11 @@ class _$UpdateClipboardImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -1193,598 +1128,6 @@ abstract class UpdateClipboard implements CAPIEvent {
   dynamic get skipSave;
   @JsonKey(ignore: true)
   _$$UpdateClipboardImplCopyWith<_$UpdateClipboardImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$EnsureSnippetPresentImplCopyWith<$Res> {
-  factory _$$EnsureSnippetPresentImplCopyWith(_$EnsureSnippetPresentImpl value,
-          $Res Function(_$EnsureSnippetPresentImpl) then) =
-      __$$EnsureSnippetPresentImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call(
-      {String snippetName,
-      SnippetTemplate fromTemplate,
-      bool onlyTargetsWrappers});
-}
-
-/// @nodoc
-class __$$EnsureSnippetPresentImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$EnsureSnippetPresentImpl>
-    implements _$$EnsureSnippetPresentImplCopyWith<$Res> {
-  __$$EnsureSnippetPresentImplCopyWithImpl(_$EnsureSnippetPresentImpl _value,
-      $Res Function(_$EnsureSnippetPresentImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? snippetName = null,
-    Object? fromTemplate = null,
-    Object? onlyTargetsWrappers = null,
-  }) {
-    return _then(_$EnsureSnippetPresentImpl(
-      snippetName: null == snippetName
-          ? _value.snippetName
-          : snippetName // ignore: cast_nullable_to_non_nullable
-              as String,
-      fromTemplate: null == fromTemplate
-          ? _value.fromTemplate
-          : fromTemplate // ignore: cast_nullable_to_non_nullable
-              as SnippetTemplate,
-      onlyTargetsWrappers: null == onlyTargetsWrappers
-          ? _value.onlyTargetsWrappers
-          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$EnsureSnippetPresentImpl
-    with DiagnosticableTreeMixin
-    implements EnsureSnippetPresent {
-  const _$EnsureSnippetPresentImpl(
-      {required this.snippetName,
-      required this.fromTemplate,
-      this.onlyTargetsWrappers = false});
-
-  @override
-  final String snippetName;
-  @override
-  final SnippetTemplate fromTemplate;
-  @override
-  @JsonKey()
-  final bool onlyTargetsWrappers;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.ensureSnippetPresent(snippetName: $snippetName, fromTemplate: $fromTemplate, onlyTargetsWrappers: $onlyTargetsWrappers)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.ensureSnippetPresent'))
-      ..add(DiagnosticsProperty('snippetName', snippetName))
-      ..add(DiagnosticsProperty('fromTemplate', fromTemplate))
-      ..add(DiagnosticsProperty('onlyTargetsWrappers', onlyTargetsWrappers));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EnsureSnippetPresentImpl &&
-            (identical(other.snippetName, snippetName) ||
-                other.snippetName == snippetName) &&
-            (identical(other.fromTemplate, fromTemplate) ||
-                other.fromTemplate == fromTemplate) &&
-            (identical(other.onlyTargetsWrappers, onlyTargetsWrappers) ||
-                other.onlyTargetsWrappers == onlyTargetsWrappers));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, snippetName, fromTemplate, onlyTargetsWrappers);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$EnsureSnippetPresentImplCopyWith<_$EnsureSnippetPresentImpl>
-      get copyWith =>
-          __$$EnsureSnippetPresentImplCopyWithImpl<_$EnsureSnippetPresentImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
-        updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
-    required TResult Function(String snippetName, String versionId)
-        publishSnippet,
-    required TResult Function(String snippetName, String versionId)
-        revertSnippet,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
-    required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
-        pushSnippetBloc,
-    required TResult Function(bool save) popSnippetBloc,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-  }) {
-    return ensureSnippetPresent(snippetName, fromTemplate, onlyTargetsWrappers);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
-    TResult? Function(String snippetName, String versionId)? publishSnippet,
-    TResult? Function(String snippetName, String versionId)? revertSnippet,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-  }) {
-    return ensureSnippetPresent?.call(
-        snippetName, fromTemplate, onlyTargetsWrappers);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
-    TResult Function(String snippetName, String versionId)? publishSnippet,
-    TResult Function(String snippetName, String versionId)? revertSnippet,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult Function(bool save)? popSnippetBloc,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (ensureSnippetPresent != null) {
-      return ensureSnippetPresent(
-          snippetName, fromTemplate, onlyTargetsWrappers);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
-    required TResult Function(PublishSnippet value) publishSnippet,
-    required TResult Function(RevertSnippet value) revertSnippet,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
-    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
-    required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-  }) {
-    return ensureSnippetPresent(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
-    TResult? Function(PublishSnippet value)? publishSnippet,
-    TResult? Function(RevertSnippet value)? revertSnippet,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-  }) {
-    return ensureSnippetPresent?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
-    TResult Function(PublishSnippet value)? publishSnippet,
-    TResult Function(RevertSnippet value)? revertSnippet,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (ensureSnippetPresent != null) {
-      return ensureSnippetPresent(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class EnsureSnippetPresent implements CAPIEvent {
-  const factory EnsureSnippetPresent(
-      {required final String snippetName,
-      required final SnippetTemplate fromTemplate,
-      final bool onlyTargetsWrappers}) = _$EnsureSnippetPresentImpl;
-
-  String get snippetName;
-  SnippetTemplate get fromTemplate;
-  bool get onlyTargetsWrappers;
-  @JsonKey(ignore: true)
-  _$$EnsureSnippetPresentImplCopyWith<_$EnsureSnippetPresentImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$SaveSnippetImplCopyWith<$Res> {
-  factory _$$SaveSnippetImplCopyWith(
-          _$SaveSnippetImpl value, $Res Function(_$SaveSnippetImpl) then) =
-      __$$SaveSnippetImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call(
-      {SnippetRootNode snippetRootNode,
-      String newVersionId,
-      bool force,
-      bool dontEmit,
-      bool onlyTargetsWrappers});
-}
-
-/// @nodoc
-class __$$SaveSnippetImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$SaveSnippetImpl>
-    implements _$$SaveSnippetImplCopyWith<$Res> {
-  __$$SaveSnippetImplCopyWithImpl(
-      _$SaveSnippetImpl _value, $Res Function(_$SaveSnippetImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? snippetRootNode = null,
-    Object? newVersionId = null,
-    Object? force = null,
-    Object? dontEmit = null,
-    Object? onlyTargetsWrappers = null,
-  }) {
-    return _then(_$SaveSnippetImpl(
-      snippetRootNode: null == snippetRootNode
-          ? _value.snippetRootNode
-          : snippetRootNode // ignore: cast_nullable_to_non_nullable
-              as SnippetRootNode,
-      newVersionId: null == newVersionId
-          ? _value.newVersionId
-          : newVersionId // ignore: cast_nullable_to_non_nullable
-              as String,
-      force: null == force
-          ? _value.force
-          : force // ignore: cast_nullable_to_non_nullable
-              as bool,
-      dontEmit: null == dontEmit
-          ? _value.dontEmit
-          : dontEmit // ignore: cast_nullable_to_non_nullable
-              as bool,
-      onlyTargetsWrappers: null == onlyTargetsWrappers
-          ? _value.onlyTargetsWrappers
-          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SaveSnippetImpl with DiagnosticableTreeMixin implements SaveSnippet {
-  const _$SaveSnippetImpl(
-      {required this.snippetRootNode,
-      required this.newVersionId,
-      this.force = false,
-      this.dontEmit = false,
-      this.onlyTargetsWrappers = false});
-
-  @override
-  final SnippetRootNode snippetRootNode;
-  @override
-  final String newVersionId;
-  @override
-  @JsonKey()
-  final bool force;
-  @override
-  @JsonKey()
-  final bool dontEmit;
-  @override
-  @JsonKey()
-  final bool onlyTargetsWrappers;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.saveSnippet(snippetRootNode: $snippetRootNode, newVersionId: $newVersionId, force: $force, dontEmit: $dontEmit, onlyTargetsWrappers: $onlyTargetsWrappers)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.saveSnippet'))
-      ..add(DiagnosticsProperty('snippetRootNode', snippetRootNode))
-      ..add(DiagnosticsProperty('newVersionId', newVersionId))
-      ..add(DiagnosticsProperty('force', force))
-      ..add(DiagnosticsProperty('dontEmit', dontEmit))
-      ..add(DiagnosticsProperty('onlyTargetsWrappers', onlyTargetsWrappers));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SaveSnippetImpl &&
-            (identical(other.snippetRootNode, snippetRootNode) ||
-                other.snippetRootNode == snippetRootNode) &&
-            (identical(other.newVersionId, newVersionId) ||
-                other.newVersionId == newVersionId) &&
-            (identical(other.force, force) || other.force == force) &&
-            (identical(other.dontEmit, dontEmit) ||
-                other.dontEmit == dontEmit) &&
-            (identical(other.onlyTargetsWrappers, onlyTargetsWrappers) ||
-                other.onlyTargetsWrappers == onlyTargetsWrappers));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, snippetRootNode, newVersionId,
-      force, dontEmit, onlyTargetsWrappers);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SaveSnippetImplCopyWith<_$SaveSnippetImpl> get copyWith =>
-      __$$SaveSnippetImplCopyWithImpl<_$SaveSnippetImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
-        updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
-    required TResult Function(String snippetName, String versionId)
-        publishSnippet,
-    required TResult Function(String snippetName, String versionId)
-        revertSnippet,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
-    required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
-        pushSnippetBloc,
-    required TResult Function(bool save) popSnippetBloc,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-  }) {
-    return saveSnippet(
-        snippetRootNode, newVersionId, force, dontEmit, onlyTargetsWrappers);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
-    TResult? Function(String snippetName, String versionId)? publishSnippet,
-    TResult? Function(String snippetName, String versionId)? revertSnippet,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult? Function(bool save)? popSnippetBloc,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-  }) {
-    return saveSnippet?.call(
-        snippetRootNode, newVersionId, force, dontEmit, onlyTargetsWrappers);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
-    TResult Function(String snippetName, String versionId)? publishSnippet,
-    TResult Function(String snippetName, String versionId)? revertSnippet,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
-        pushSnippetBloc,
-    TResult Function(bool save)? popSnippetBloc,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (saveSnippet != null) {
-      return saveSnippet(
-          snippetRootNode, newVersionId, force, dontEmit, onlyTargetsWrappers);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
-    required TResult Function(PublishSnippet value) publishSnippet,
-    required TResult Function(RevertSnippet value) revertSnippet,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
-    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
-    required TResult Function(PopSnippetBloc value) popSnippetBloc,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-  }) {
-    return saveSnippet(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
-    TResult? Function(PublishSnippet value)? publishSnippet,
-    TResult? Function(RevertSnippet value)? revertSnippet,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-  }) {
-    return saveSnippet?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
-    TResult Function(PublishSnippet value)? publishSnippet,
-    TResult Function(RevertSnippet value)? revertSnippet,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
-    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
-    TResult Function(PopSnippetBloc value)? popSnippetBloc,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    required TResult orElse(),
-  }) {
-    if (saveSnippet != null) {
-      return saveSnippet(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class SaveSnippet implements CAPIEvent {
-  const factory SaveSnippet(
-      {required final SnippetRootNode snippetRootNode,
-      required final String newVersionId,
-      final bool force,
-      final bool dontEmit,
-      final bool onlyTargetsWrappers}) = _$SaveSnippetImpl;
-
-  SnippetRootNode get snippetRootNode;
-  String get newVersionId;
-  bool get force;
-  bool get dontEmit;
-  bool get onlyTargetsWrappers;
-  @JsonKey(ignore: true)
-  _$$SaveSnippetImplCopyWith<_$SaveSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1882,20 +1225,12 @@ class _$PublishSnippetImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -1918,14 +1253,10 @@ class _$PublishSnippetImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1946,14 +1277,10 @@ class _$PublishSnippetImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -1976,10 +1303,11 @@ class _$PublishSnippetImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -1997,10 +1325,11 @@ class _$PublishSnippetImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2018,10 +1347,11 @@ class _$PublishSnippetImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2142,20 +1472,12 @@ class _$RevertSnippetImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2178,14 +1500,10 @@ class _$RevertSnippetImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2206,14 +1524,10 @@ class _$RevertSnippetImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2236,10 +1550,11 @@ class _$RevertSnippetImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2257,10 +1572,11 @@ class _$RevertSnippetImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2278,10 +1594,11 @@ class _$RevertSnippetImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2306,6 +1623,481 @@ abstract class RevertSnippet implements CAPIEvent {
   String get versionId;
   @JsonKey(ignore: true)
   _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleAutoPublishingOfSnippetImplCopyWith<$Res> {
+  factory _$$ToggleAutoPublishingOfSnippetImplCopyWith(
+          _$ToggleAutoPublishingOfSnippetImpl value,
+          $Res Function(_$ToggleAutoPublishingOfSnippetImpl) then) =
+      __$$ToggleAutoPublishingOfSnippetImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String snippetName});
+}
+
+/// @nodoc
+class __$$ToggleAutoPublishingOfSnippetImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$ToggleAutoPublishingOfSnippetImpl>
+    implements _$$ToggleAutoPublishingOfSnippetImplCopyWith<$Res> {
+  __$$ToggleAutoPublishingOfSnippetImplCopyWithImpl(
+      _$ToggleAutoPublishingOfSnippetImpl _value,
+      $Res Function(_$ToggleAutoPublishingOfSnippetImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? snippetName = null,
+  }) {
+    return _then(_$ToggleAutoPublishingOfSnippetImpl(
+      snippetName: null == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ToggleAutoPublishingOfSnippetImpl
+    with DiagnosticableTreeMixin
+    implements ToggleAutoPublishingOfSnippet {
+  const _$ToggleAutoPublishingOfSnippetImpl({required this.snippetName});
+
+  @override
+  final String snippetName;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.toggleAutoPublishingOfSnippet(snippetName: $snippetName)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty(
+          'type', 'CAPIEvent.toggleAutoPublishingOfSnippet'))
+      ..add(DiagnosticsProperty('snippetName', snippetName));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleAutoPublishingOfSnippetImpl &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, snippetName);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleAutoPublishingOfSnippetImplCopyWith<
+          _$ToggleAutoPublishingOfSnippetImpl>
+      get copyWith => __$$ToggleAutoPublishingOfSnippetImplCopyWithImpl<
+          _$ToggleAutoPublishingOfSnippetImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetBloc,
+    required TResult Function(bool save) popSnippetBloc,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+  }) {
+    return toggleAutoPublishingOfSnippet(snippetName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult? Function(bool save)? popSnippetBloc,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+  }) {
+    return toggleAutoPublishingOfSnippet?.call(snippetName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult Function(bool save)? popSnippetBloc,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (toggleAutoPublishingOfSnippet != null) {
+      return toggleAutoPublishingOfSnippet(snippetName);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
+    required TResult Function(PopSnippetBloc value) popSnippetBloc,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+  }) {
+    return toggleAutoPublishingOfSnippet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+  }) {
+    return toggleAutoPublishingOfSnippet?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (toggleAutoPublishingOfSnippet != null) {
+      return toggleAutoPublishingOfSnippet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ToggleAutoPublishingOfSnippet implements CAPIEvent {
+  const factory ToggleAutoPublishingOfSnippet(
+          {required final String snippetName}) =
+      _$ToggleAutoPublishingOfSnippetImpl;
+
+  String get snippetName;
+  @JsonKey(ignore: true)
+  _$$ToggleAutoPublishingOfSnippetImplCopyWith<
+          _$ToggleAutoPublishingOfSnippetImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AutoPublishDefaultImplCopyWith<$Res> {
+  factory _$$AutoPublishDefaultImplCopyWith(_$AutoPublishDefaultImpl value,
+          $Res Function(_$AutoPublishDefaultImpl) then) =
+      __$$AutoPublishDefaultImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({bool b});
+}
+
+/// @nodoc
+class __$$AutoPublishDefaultImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$AutoPublishDefaultImpl>
+    implements _$$AutoPublishDefaultImplCopyWith<$Res> {
+  __$$AutoPublishDefaultImplCopyWithImpl(_$AutoPublishDefaultImpl _value,
+      $Res Function(_$AutoPublishDefaultImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? b = null,
+  }) {
+    return _then(_$AutoPublishDefaultImpl(
+      b: null == b
+          ? _value.b
+          : b // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AutoPublishDefaultImpl
+    with DiagnosticableTreeMixin
+    implements AutoPublishDefault {
+  const _$AutoPublishDefaultImpl({required this.b});
+
+  @override
+  final bool b;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.autoPublishDefault(b: $b)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.autoPublishDefault'))
+      ..add(DiagnosticsProperty('b', b));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AutoPublishDefaultImpl &&
+            (identical(other.b, b) || other.b == b));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, b);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AutoPublishDefaultImplCopyWith<_$AutoPublishDefaultImpl> get copyWith =>
+      __$$AutoPublishDefaultImplCopyWithImpl<_$AutoPublishDefaultImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetBloc,
+    required TResult Function(bool save) popSnippetBloc,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+  }) {
+    return autoPublishDefault(b);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult? Function(bool save)? popSnippetBloc,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+  }) {
+    return autoPublishDefault?.call(b);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetBloc,
+    TResult Function(bool save)? popSnippetBloc,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (autoPublishDefault != null) {
+      return autoPublishDefault(b);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(PushSnippetBloc value) pushSnippetBloc,
+    required TResult Function(PopSnippetBloc value) popSnippetBloc,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+  }) {
+    return autoPublishDefault(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult? Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+  }) {
+    return autoPublishDefault?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(PushSnippetBloc value)? pushSnippetBloc,
+    TResult Function(PopSnippetBloc value)? popSnippetBloc,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    required TResult orElse(),
+  }) {
+    if (autoPublishDefault != null) {
+      return autoPublishDefault(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AutoPublishDefault implements CAPIEvent {
+  const factory AutoPublishDefault({required final bool b}) =
+      _$AutoPublishDefaultImpl;
+
+  bool get b;
+  @JsonKey(ignore: true)
+  _$$AutoPublishDefaultImplCopyWith<_$AutoPublishDefaultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2388,20 +2180,12 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2424,14 +2208,10 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2452,14 +2232,10 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2482,10 +2258,11 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2503,10 +2280,11 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2524,10 +2302,11 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2646,20 +2425,12 @@ class _$SetPanelSnippetImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2682,14 +2453,10 @@ class _$SetPanelSnippetImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2710,14 +2477,10 @@ class _$SetPanelSnippetImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2740,10 +2503,11 @@ class _$SetPanelSnippetImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -2761,10 +2525,11 @@ class _$SetPanelSnippetImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2782,10 +2547,11 @@ class _$SetPanelSnippetImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -2908,20 +2674,12 @@ class _$PushSnippetBlocImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -2944,14 +2702,10 @@ class _$PushSnippetBlocImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -2972,14 +2726,10 @@ class _$PushSnippetBlocImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3002,10 +2752,11 @@ class _$PushSnippetBlocImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3023,10 +2774,11 @@ class _$PushSnippetBlocImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3044,10 +2796,11 @@ class _$PushSnippetBlocImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3158,20 +2911,12 @@ class _$PopSnippetBlocImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3194,14 +2939,10 @@ class _$PopSnippetBlocImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3222,14 +2963,10 @@ class _$PopSnippetBlocImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3252,10 +2989,11 @@ class _$PopSnippetBlocImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3273,10 +3011,11 @@ class _$PopSnippetBlocImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3294,10 +3033,11 @@ class _$PopSnippetBlocImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3375,20 +3115,12 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3411,14 +3143,10 @@ class _$ShowDirectoryTreeImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3439,14 +3167,10 @@ class _$ShowDirectoryTreeImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3469,10 +3193,11 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3490,10 +3215,11 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3511,10 +3237,11 @@ class _$ShowDirectoryTreeImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3617,20 +3344,12 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
     required TResult Function(STreeNode? newContent, dynamic skipSave)
         updateClipboard,
-    required TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)
-        ensureSnippetPresent,
-    required TResult Function(
-            SnippetRootNode snippetRootNode,
-            String newVersionId,
-            bool force,
-            bool dontEmit,
-            bool onlyTargetsWrappers)
-        saveSnippet,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelSnippet,
@@ -3653,14 +3372,10 @@ class _$RemoveDirectoryTreeImpl
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult? Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult? Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)? setPanelSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3681,14 +3396,10 @@ class _$RemoveDirectoryTreeImpl
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
-    TResult Function(String snippetName, SnippetTemplate fromTemplate,
-            bool onlyTargetsWrappers)?
-        ensureSnippetPresent,
-    TResult Function(SnippetRootNode snippetRootNode, String newVersionId,
-            bool force, bool dontEmit, bool onlyTargetsWrappers)?
-        saveSnippet,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)? setPanelSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
@@ -3711,10 +3422,11 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(OverrideTargetGK value) overrideTargetGK,
     required TResult Function(ForceRefresh value) forceRefresh,
     required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(EnsureSnippetPresent value) ensureSnippetPresent,
-    required TResult Function(SaveSnippet value) saveSnippet,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value) setPanelSnippet,
     required TResult Function(PushSnippetBloc value) pushSnippetBloc,
@@ -3732,10 +3444,11 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(OverrideTargetGK value)? overrideTargetGK,
     TResult? Function(ForceRefresh value)? forceRefresh,
     TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult? Function(SaveSnippet value)? saveSnippet,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelSnippet,
     TResult? Function(PushSnippetBloc value)? pushSnippetBloc,
@@ -3753,10 +3466,11 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(OverrideTargetGK value)? overrideTargetGK,
     TResult Function(ForceRefresh value)? forceRefresh,
     TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(EnsureSnippetPresent value)? ensureSnippetPresent,
-    TResult Function(SaveSnippet value)? saveSnippet,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelSnippet,
     TResult Function(PushSnippetBloc value)? pushSnippetBloc,

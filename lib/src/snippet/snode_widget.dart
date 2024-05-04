@@ -26,14 +26,14 @@ class NodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SnippetBloC snippetBloc = context.read<SnippetBloC>();
+    // SnippetBloC snippetBloc = context.read<SnippetBloC>();
 
-    if (entry.node is SnippetRootNode && entry.parent == null) {
-      return const Offstage();
-    }
+    // if (entry.node is SnippetRootNode && entry.parent == null) {
+    //   return const Offstage();
+    // }
 
     // bool selected = FlutterContent().capiBloc.selectedNode == entry.node;
-    Color boxColor = snippetBloc.state.nodeBeingDeleted == entry.node
+    Color boxColor = FC().snippetBeingEdited!.state.nodeBeingDeleted == entry.node
         ? Colors.red
         : entry.node is GenericSingleChildNode
             ? Colors.transparent
@@ -44,7 +44,9 @@ class NodeWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          key: snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode == entry.node ? snippetBloc.state.selectedTreeNodeGK : null,
+          key: FC().snippetBeingEdited!.state.aNodeIsSelected && FC().snippetBeingEdited!.state.selectedNode == entry.node
+              ? FC().snippetBeingEdited!.state.selectedTreeNodeGK
+              : null,
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: entry.node is DirectoryNode || entry.node is FileNode
@@ -59,7 +61,7 @@ class NodeWidget extends StatelessWidget {
             children: [
               if (entry.node.logoSrc() != null && entry.node is! GenericSingleChildNode) entry.node.logoSrc()!,
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
-              _name(context, snippetBloc),
+              _name(context, FC().snippetBeingEdited!),
             ],
           ),
         ),
@@ -87,6 +89,23 @@ class NodeWidget extends StatelessWidget {
     return InkWell(
       // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
       // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
+      onDoubleTap: () {
+        if (entry.node is! SnippetRootNode) return;
+
+        // change tree to snippet
+        Callout.dismissAll();
+
+        // instead of using the embedded snippet node, which has no child,
+        // use the actual (STANDALONE) snippet itself
+        // Assumption: actual snippet will be in versionCache
+        SnippetRootNode snippet = FC().currentSnippet((entry.node as SnippetRootNode).name)!;
+
+        STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+          snippet.name,
+          snippet,
+          snippet.child ?? snippet,
+        );
+      },
       onTap: () {
         if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
 
@@ -108,7 +127,7 @@ class NodeWidget extends StatelessWidget {
           }
           snippetBloc.add(const SnippetEvent.clearNodeSelection());
           Useful.afterNextBuildDo(() {
-            final List<PTreeNode> propertyNodes = entry.node.properties(context);
+            // final List<PTreeNode> propertyNodes = entry.node.properties(context);
             // get a new treeController only when snippet selected
             // entry.node.pTreeC ??= PTreeNodeTreeController(
             //   roots: propertyNodes,

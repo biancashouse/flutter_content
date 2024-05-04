@@ -42,7 +42,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    if (parentNode == null) throw Exception("parent is null!");
+   // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     // MaterialSPAState? spaState = MaterialSPA.of(context);

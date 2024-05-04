@@ -36,6 +36,9 @@ class SubtitleSnippetRootNodeMapper
   static STreeNode? _$child(SubtitleSnippetRootNode v) => v.child;
   static const Field<SubtitleSnippetRootNode, STreeNode> _f$child =
       Field('child', _$child, opt: true);
+  static String _$uid(SubtitleSnippetRootNode v) => v.uid;
+  static const Field<SubtitleSnippetRootNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(SubtitleSnippetRootNode v) => v.isExpanded;
   static const Field<SubtitleSnippetRootNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -58,6 +61,7 @@ class SubtitleSnippetRootNodeMapper
     #isEmbedded: _f$isEmbedded,
     #tags: _f$tags,
     #child: _f$child,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

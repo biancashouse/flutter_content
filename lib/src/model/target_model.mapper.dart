@@ -110,10 +110,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$autoPlay(TargetModel v) => v.autoPlay;
   static const Field<TargetModel, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
-  static TargetGroupWrapperNode? _$targetsWrapperNode(TargetModel v) =>
+  static HotspotsNode? _$targetsWrapperNode(TargetModel v) =>
       v.targetsWrapperNode;
-  static const Field<TargetModel, TargetGroupWrapperNode>
-      _f$targetsWrapperNode =
+  static const Field<TargetModel, HotspotsNode> _f$targetsWrapperNode =
       Field('targetsWrapperNode', _$targetsWrapperNode, mode: FieldMode.member);
   static bool _$visible(TargetModel v) => v.visible;
   static const Field<TargetModel, bool> _f$visible =

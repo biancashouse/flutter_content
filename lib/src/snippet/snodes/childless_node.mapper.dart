@@ -22,7 +22,6 @@ class CLMapper extends SubClassMapperBase<CL> {
       GoogleDriveIFrameNodeMapper.ensureInitialized();
       FileNodeMapper.ensureInitialized();
       FirebaseStorageImageNodeMapper.ensureInitialized();
-      SnippetRefNodeMapper.ensureInitialized();
       GapNodeMapper.ensureInitialized();
       PollOptionNodeMapper.ensureInitialized();
       StepNodeMapper.ensureInitialized();
@@ -36,6 +35,9 @@ class CLMapper extends SubClassMapperBase<CL> {
   @override
   final String id = 'CL';
 
+  static String _$uid(CL v) => v.uid;
+  static const Field<CL, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(CL v) => v.isExpanded;
   static const Field<CL, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -51,6 +53,7 @@ class CLMapper extends SubClassMapperBase<CL> {
 
   @override
   final MappableFields<CL> fields = const {
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -81,12 +81,18 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                 ],
               )
             : MultiSplitViewTheme(
-                key: createNodeGK(),
-                data: MultiSplitViewThemeData(
-                    dividerPainter: DividerPainters.grooved1(color: Colors.indigo[100]!, highlightedColor: Colors.indigo[900]!)),
+                data: MultiSplitViewThemeData(dividerPainter: DividerPainters.grooved1(color: Colors.indigo[100]!, highlightedColor: Colors.indigo[900]!)),
                 child: MultiSplitView(
+                  key: createNodeGK(),
                   axis: svAxis,
-                  children: super.children.map((child) => child.toWidget(context, this)).toList(),
+                  initialAreas: super
+                      .children
+                      .map(
+                        (child) => Area(
+                          widget: child.toWidget(context, this),
+                        ),
+                      )
+                      .toList(),
                 ),
               );
       });

@@ -4,18 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
-
-enum SnippetTemplate {
-  empty_snippet,
-  scaffold_with_tabs,
-  scaffold_with_menubar,
-  scaffold_with_actions,
-  target_content_widget,
-}
 
 class SnippetPanel extends StatefulWidget {
   final String panelName;
@@ -55,124 +46,17 @@ class SnippetPanel extends StatefulWidget {
     });
   }
 
-  static SnippetPanelState? of(BuildContext context) =>
-      context.findAncestorStateOfType<SnippetPanelState>();
+  static SnippetPanelState? of(BuildContext context) => context.findAncestorStateOfType<SnippetPanelState>();
 
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static SnippetRootNode createSnippetFromTemplate(
-      SnippetTemplate template, String snippetName) {
-    var rootNode = templates
-        .firstWhere((root) => root.name == template.name)
-        .cloneSnippet();
+  static SnippetRootNode createSnippetFromTemplate(SnippetTemplate template, String snippetName) {
+    var rootNode = templates.firstWhere((root) => root.name == template.name).cloneSnippet();
     rootNode.validateTree();
     rootNode.name = snippetName;
     return rootNode;
   }
-
-  static List<SnippetRootNode> templates = [
-    // empty snippet for test only
-    SnippetRootNode(
-        name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
-    SnippetRootNode(
-      name: SnippetTemplate.target_content_widget.name,
-      // child: SizedBoxNode(
-      //     width: 200,
-      //     height: 150,
-      //     child: ContainerNode(fillColorValues: UpTo6ColorValues(
-      //       color1Value: Colors.white.value,
-      //     ))),
-    ),
-    // Scaffold with a TabBar in its AppBar bottom
-    SnippetRootNode(
-      name: SnippetTemplate.scaffold_with_tabs.name,
-      child: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.grey.value,
-          title: GenericSingleChildNode(
-              propertyName: 'title', child: TextNode(text: 'my title')),
-          bottom: GenericSingleChildNode(
-            propertyName: 'bottom',
-            child: TabBarNode(
-              children: [
-                TextNode(text: 'tab 1'),
-                TextNode(text: 'Tab 2'),
-              ],
-            ),
-          ),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: TabBarViewNode(
-            children: [
-              PlaceholderNode(
-                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              PlaceholderNode(
-                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
-            ],
-          ),
-        ),
-      ),
-    ),
-    // Scaffold with a MenuBar in its AppBar bottom
-    SnippetRootNode(
-      name: SnippetTemplate.scaffold_with_menubar.name,
-      child: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.grey.value,
-          title: GenericSingleChildNode(
-              propertyName: 'title', child: TextNode(text: 'my title')),
-          bottom: GenericSingleChildNode(
-            propertyName: 'bottom',
-            child: MenuBarNode(children: [
-              MenuItemButtonNode(itemLabel: 'item 1'),
-              MenuItemButtonNode(itemLabel: 'item 2'),
-              MenuItemButtonNode(itemLabel: 'item 3'),
-            ]),
-          ),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: PlaceholderNode(
-              name: 'body-placeholder', centredLabel: 'menu item destination'),
-        ),
-      ),
-    ),
-    SnippetRootNode(
-      name: SnippetTemplate.scaffold_with_actions.name,
-      child: ScaffoldNode(
-        appBar: AppBarNode(
-          bgColorValue: Colors.grey.value,
-          title: GenericSingleChildNode(
-              propertyName: 'title', child: TextNode(text: 'my title')),
-          actions: GenericMultiChildNode(propertyName: 'actions', children: [
-            FilledButtonNode(child: TextNode(text: 'action 1')),
-            FilledButtonNode(child: TextNode(text: 'action 2')),
-            FilledButtonNode(child: TextNode(text: 'action 3')),
-          ]),
-        ),
-        body: GenericSingleChildNode(
-          propertyName: 'body',
-          child: PlaceholderNode(
-              name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
-        ),
-      ),
-    ),
-  ];
-
-  // static SnippetNode getRootNode(SnippetName snippetName) {
-  //   SnippetNode? sNode = FlutterContent().capiBloc.state.rootNode(snippetName);
-  //   if (sNode == null) {
-  //     // debugPrint("sNode is null");
-  //     sNode = SnippetNode(name: snippetName, child: PlaceholderNode());
-  //     // Snippet.reg(widget.onPressed, widget.onLongPress);
-  //     FlutterContent().capiBloc.add(CAPIEvent.createdSnippet(
-  //       newNode: sNode,
-  //     ));
-  //   }
-  //   return sNode;
-  // }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -181,100 +65,17 @@ class SnippetPanel extends StatefulWidget {
   }
 }
 
-class SnippetPanelState extends State<SnippetPanel>
-    with TickerProviderStateMixin {
+class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
   // late String snippetNameToUse;
-  TabController?
-      tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
+  TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
-  bool?
-      backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
+  bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
 
+  late Future<void> _fInit;
+
   // ZoomerState? get parentTSState => Zoomer.of(context);
-
-  // if root already exists, return it.
-  // If not, and a template name supplied, create a named copy of that template.
-  // If not, just create a snippet that comprises a PlaceholderNode.
-  Future<SnippetRootNode> getOrCreateSnippetFromTemplate() async {
-    // if exists, ensure cached first
-    VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
-    if (editingVersionId != null) {
-      // ensure snippet is in the cache
-      await FC().modelRepo.getSnippetFromCacheOrFB(
-          snippetName: widget.snippetName, versionId: editingVersionId);
-    }
-    SnippetRootNode? snippetRootNode =
-        FC().rootNodeOfEditingSnippet(widget.snippetName);
-    // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
-    if (snippetRootNode == null) {
-      snippetRootNode = SnippetPanel.createSnippetFromTemplate(
-          widget.fromTemplate, widget.snippetName);
-      VersionId initialVersionId =
-          DateTime.now().millisecondsSinceEpoch.toString();
-      FC().addToSnippetCache(
-        snippetName: widget.snippetName,
-        rootNode: snippetRootNode,
-        versionId: initialVersionId,
-        // editing: true,
-      );
-      FC().updateEditingVersionId(
-        snippetName: widget.snippetName,
-        newVersionId: initialVersionId,
-      );
-      FC().capiBloc.add(CAPIEvent.saveSnippet(
-            snippetRootNode: snippetRootNode,
-            newVersionId: initialVersionId,
-            onlyTargetsWrappers: false,
-          ));
-    }
-    snippetRootNode.name = widget.snippetName;
-    return snippetRootNode;
-  }
-
-  // assumption: snippet definitely not in Cache (nor FB),
-  // but is in AppInfo
-  // SnippetRootNode? createSnippetFromTemplate(VersionId initialVersionId) async {
-  //   // if exists, ensure cached first
-  //   VersionId? editingVersionId = FC().editingVersionIds[widget.snippetName];
-  //   SnippetRootNode? snippetRootNode = FC().rootNodeOfEditingSnippet(widget.snippetName);
-  //   // possibly create new root snippet, which will have a scaffold, appbar and a tabbar for a main menu
-  //   if (snippetRootNode == null && widget.fromTemplate != null) {
-  //     snippetRootNode = SnippetPanel.createSnippetFromTemplate(
-  //         widget.fromTemplate!, widget.snippetName);
-  //     VersionId initialVersionId =
-  //     DateTime.now().millisecondsSinceEpoch.toString();
-  //     FC().addToSnippetCache(
-  //       snippetName: widget.snippetName,
-  //       rootNode: snippetRootNode,
-  //       initialVersionId: initialVersionId,
-  //       editing: true,
-  //     );
-  //     FC().capiBloc.add(CAPIEvent.saveSnippet(
-  //       snippetRootNode: snippetRootNode,
-  //       newVersionId: initialVersionId,
-  //     ));
-  //   } else if (snippetRootNode == null) {
-  //     snippetRootNode =
-  //         SnippetRootNode(name: widget.snippetName, child: PlaceholderNode())
-  //             .cloneSnippet();
-  //     VersionId initialVersionId =
-  //     DateTime.now().millisecondsSinceEpoch.toString();
-  //     FC().addToSnippetCache(
-  //       snippetName: widget.snippetName,
-  //       rootNode: snippetRootNode,
-  //       initialVersionId: initialVersionId,
-  //       editing: true,
-  //     );
-  //     FC().capiBloc.add(CAPIEvent.saveSnippet(
-  //       snippetRootNode: snippetRootNode,
-  //       newVersionId: initialVersionId,
-  //     ));
-  //   }
-  //   snippetRootNode.name = widget.snippetName;
-  //   return snippetRootNode;
-  // }
 
   // int countTabs() {
   //   SnippetRootNode? rootNode = FlutterContent().capiBloc.state.rootNode("root");
@@ -301,6 +102,11 @@ class SnippetPanelState extends State<SnippetPanel>
 
     // debugPrint('*** SnippetPanel() ***');
 
+    _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+      fromTemplate: widget.fromTemplate,
+      snippetName: widget.snippetName,
+    );
+
     // register snippet? with panel
     FC().snippetPlacementMap[widget.panelName] = widget.snippetName;
 
@@ -312,14 +118,12 @@ class SnippetPanelState extends State<SnippetPanel>
           tabC!.addListener(() {
             if (!(tabC?.indexIsChanging ?? true)) {
               if (tabBarGK != null) {
-                TabBarNode? tbNode =
-                    FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+                TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
                 if (tbNode != null && !(backBtnPressed ?? false)) {
                   prevTabQ.add(tbNode.selection ?? 0);
                   tbNode.selection = tabC!.index;
                   prevTabQSize.value = prevTabQ.length;
-                  debugPrint(
-                      "tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+                  debugPrint("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
                 } else {
                   tbNode?.selection = tabC!.index;
                   backBtnPressed = false;
@@ -333,41 +137,6 @@ class SnippetPanelState extends State<SnippetPanel>
     });
   }
 
-  Future<void> _ensureSnippetInCache() async {
-    SnippetRootNode? rootNode;
-    VersionId? editingOrPublishedVersionId = FC().canEditContent
-        ? FC().editingVersionIds[widget.snippetName]
-        : FC().publishedVersionIds[widget.snippetName];
-    if (editingOrPublishedVersionId != null) {
-      // exists in AppInfo, so make sure it has been fetched from FB
-      await FC().modelRepo.getSnippetFromCacheOrFB(
-          snippetName: widget.snippetName,
-          versionId: editingOrPublishedVersionId);
-      rootNode =
-          FC().snippetCache[widget.snippetName]?[editingOrPublishedVersionId];
-    } else {
-      // snippet does not yet exist in FB, hence not in AppInfo
-      VersionId initialVersionId =
-          DateTime.now().millisecondsSinceEpoch.toString();
-      rootNode = SnippetPanel.createSnippetFromTemplate(
-          widget.fromTemplate, widget.snippetName);
-      FC().addToSnippetCache(
-        snippetName: widget.snippetName,
-        rootNode: rootNode,
-        versionId: initialVersionId,
-        // editing: true,
-      );
-      FC().updatePublishedVersionId(
-          snippetName: widget.snippetName, versionId: initialVersionId);
-      FC().updateEditingVersionId(
-          snippetName: widget.snippetName, newVersionId: initialVersionId);
-      FC().capiBloc.add(CAPIEvent.saveSnippet(
-          snippetRootNode: rootNode,
-          newVersionId: initialVersionId,
-          dontEmit: true));
-    }
-  }
-
   void resetTabQandC() {
     prevTabQ = [];
     if (tabBarGK != null) {
@@ -377,140 +146,6 @@ class SnippetPanelState extends State<SnippetPanel>
     }
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   Useful.instance.initWithContext(context, force: true);
-  //   super.didChangeDependencies();
-  // }
-
-  // Widget _pencilIconButton(BuildContext ctx) => Positioned(
-  //       top: 2,
-  //       right: 2,
-  //       child: Container(
-  //         width: 20,
-  //         height: 20,
-  //         color: Colors.white.withOpacity(.5),
-  //         child: Center(
-  //           child: IconButton(
-  //             onPressed: () {
-  //               if (FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty) {
-  //                 //   Node.unhighlightSelectedNode();
-  //                 //   //FlutterContent().capiBloc.add(CAPIEvent.hideSnippetTree(save: true));
-  //                 //   if (Callout.anyPresent([widget.sName.hashCode])) {
-  //                 //     removeSnippetTreeCallout(widget.sName);
-  //                 //   }
-  //                 // } else {
-  //                 hideAllSingleTargetBtns();
-  //                 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //                 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-  //                 FlutterContent().capiBloc.add(CAPIEvent.pushSnippetTree(snippetBloc: snippetBloc));
-  //                 //possibly show snippet tree in a callout
-  //                 // showSnippetTreeCallout(
-  //                 //   // context: context,
-  //                 //   snippetName: widget.sName,
-  //                 //   targetGKF: () => snippetPanelGK,
-  //                 //   onChangedF: () {},
-  //                 //   allowButtonCallouts: widget.allowButtonCallouts,
-  //                 // );
-  //                 CalloutState? state = Callout.of(ctx);
-  //                 state?.toggle();
-  //               }
-  //             },
-  //             padding: EdgeInsets.zero,
-  //             icon: FlutterContent().capiBloc.state.hideSnippetPencilIcons
-  //                 ? const Offstage()
-  //                 : Tooltip(
-  //                     message: widget.sName,
-  //                     child: const Icon(
-  //                       Icons.edit,
-  //                       color: Colors.purpleAccent,
-  //                       size: 20,
-  //                     ),
-  //                   ),
-  //           ),
-  //         ),
-  //       ),
-  //     );
-
-  // static CalloutConfig snippetTreeCalloutConfig(SnippetBloC snippetBloc) {
-  //   double width() {
-  //     // if (root?.child == null) return 190;
-  //     double w = min(FlutterContent().capiBloc.state.snippetTreeCalloutW ?? 400, 600);
-  //     return w > 0 ? w : 400;
-  //   }
-  //
-  //   double height() {
-  //     // if (root?.child == null) return 60;
-  //     // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
-  //     // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-  //     double h = min(FlutterContent().capiBloc.state.snippetTreeCalloutH ?? 400, Useful.scrH - 50);
-  //     return h > 0 ? h : 400;
-  //   }
-  //
-  //   return CalloutConfig(
-  //     feature: snippetBloc.rootNode?.name ?? "snippet name ?!",
-  //     // frameTarget: true,
-  //     // barrier: CalloutBarrier(
-  //     //   opacity: .1,
-  //     //   // closeOnTapped: false,
-  //     //   // hideOnTapped: true,
-  //     // ),
-  //     // onDismissedF: () {
-  //     //   CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-  //     //   STreeNode.unhighlightSelectedNode();
-  //     //   Callout.dismiss('selected-panel-border-overlay');
-  //     //   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-  //     //   FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
-  //     //   // removeNodePropertiesCallout();
-  //     //   Callout.dismiss(TREENODE_MENU_CALLOUT);
-  //     //   MaterialAppWrapper.showAllPinkSnippetOverlays();
-  //     //   if (snippetBloc.state.canUndo()) {
-  //     //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
-  //     //   }
-  //     // },
-  //     // onHiddenF: () {
-  //     //   STreeNode.unhighlightSelectedNode();
-  //     //   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-  //     //   Callout.dismiss(TREENODE_MENU_CALLOUT);
-  //     //   MaterialAppWrapper.showAllPinkSnippetOverlays();
-  //     //   if (snippetBloc.state.canUndo()) {
-  //     //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
-  //     //   }
-  //     // },
-  //     suppliedCalloutW: width(),
-  //     suppliedCalloutH: height(),
-  //     //calloutH ?? 500,
-  //     // barrierOpacity: .1,
-  //     // arrowType: ArrowType.POINTY,
-  //     // color: Colors.purpleAccent.shade100,
-  //     roundedCorners: 16,
-  //     // initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
-  //     finalSeparation: 40,
-  //     // onBarrierTappedF: () async {
-  //     //   // also check whether any snippet change
-  //     //   var newSnippetMap = CAPIBloc.getSnippetJsonsFromTree(bloc.state.snippetTreeC);
-  //     //   bool changeOccurred = true || !mapEquals(originalSnippetMap, newSnippetMap) || originalClipboardJson != bloc.state.jsonClipboard;
-  //     //   bloc.add(CAPIEvent.hideSnippetTree(save: changeOccurred));
-  //     //   removeSnippetTreeCallout(snippetName);
-  //     //   onClosedF.call();
-  //     // },
-  //     // draggable: false,
-  //     dragHandleHeight: 40,
-  //     resizeableH: true,
-  //     resizeableV: true,
-  //     onResize: (newSize) {
-  //       //TODO - fix
-  //       // bloc.add(CAPIEvent.changedSnippetTreeCalloutSize(newW: newSize.width, newH: newSize.height));
-  //     },
-  //     onDragStartedF: () {
-  //       snippetBloc.state.selectedNode?.hidePropertiesWhileDragging = true;
-  //     },
-  //     onDragEndedF: (_) {
-  //       snippetBloc.state.selectedNode?.hidePropertiesWhileDragging = false;
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     // panel name is always supplied, but snippet name can be omitted,
@@ -519,94 +154,62 @@ class SnippetPanelState extends State<SnippetPanel>
     // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
     //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     // }
-
-    // TODO no BloC when user not able to edit ?
-    return BlocBuilder<CAPIBloC, CAPIState>(
-      key: FC().panelGkMap[widget.panelName] =
-          GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-      buildWhen: (previous, current) => !current.onlyTargetsWrappers,
-      builder: (innerContext, state) {
-        debugPrint("build SnippetPanel / BlocBuilder ${widget.panelName}");
-        return FutureBuilder<void>(
-            future: _ensureSnippetInCache(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                debugPrint(
-                    "BloC build panel:snippet ${widget.panelName}:${widget.snippetName}");
-                try {
-                  // in case did a revert, ignore snapshot data and use the AppInfo instead
-                  SnippetRootNode? snippetRoot =
-                      FC().rootNodeOfSnippet(widget.snippetName);
-                  // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-                  return snippetRoot == null
-                      ? const CircularProgressIndicator() //Icon(Icons.error, color: Colors.redAccent)
-                      : snippetRoot.toWidget(innerContext, null);
-                } catch (e) {
-                  debugPrint('snippetRoot.toWidget() failed!');
-                  return Material(
-                    textStyle:
-                        const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          const Icon(Icons.error, color: Colors.redAccent),
-                          hspacer(10),
-                          Useful.coloredText(e.toString()),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              } else {
-                return const Icon(Icons.error, color: Colors.redAccent);
-              }
-            });
-      },
-    );
+    return FutureBuilder<void>(
+        future: _fInit,
+        builder: (futureContext, snapshot) {
+          return snapshot.connectionState != ConnectionState.done
+              ? const CircularProgressIndicator()
+              : BlocBuilder<CAPIBloC, CAPIState>(
+                  key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+                  buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+                  builder: (blocContext, state) {
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${widget.snippetName}\n");
+                    var fc = FC();
+                    SnippetInfoModel? snippetInfo = FC().snippetInfoCache[widget.snippetName];
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                    // snippet panel renders a root snippet
+                    return _renderSnippet(context);
+                    // SnippetRootNode panelSnippet = SnippetRootNode(name:widget.snippetName);
+                    // var w = panelSnippet.toWidget(context, null);
+                    // return w ?? const Icon(Icons.error_rounded, color: Colors.deepOrange, size: 36);
+                  },
+                );
+        });
   }
-}
 
-//   @override
-//   Widget build2(BuildContext context) {
-//     return FutureBuilder<Widget?>(
-//       future: snippetWidgetFuture,
-//       builder: (context, snapshot) => snapshot.connectionState != ConnectionState.done
-//           ? const Placeholder(
-//               fallbackWidth: 595,
-//               fallbackHeight: 842,
-//             )
-// //      Offstage() //const CircularProgressIndicator(backgroundColor: Colors.purpleAccent)
-//           : snapshot.hasData
-//               ? NotificationListener<SizeChangedLayoutNotification>(
-//                   onNotification: (SizeChangedLayoutNotification notification) {
-//                     // debugPrint("Snippet SizeChangedLayoutNotification - ${widget.sName}");
-//                     return true;
-//                   },
-//                   child: SizeChangedLayoutNotifier(
-//                     child: BlocBuilder<CAPIBloc, CAPIState>(builder: (context, state) {
-//                       // either get snippet node from treeC, or create it now
-//                       Widget snippetW = snapshot.data ?? const Icon(Icons.report_problem, color: Colors.red);
-//                       return Stack(
-//                         children: [
-//                           ConstrainedBox(
-//                             constraints: const BoxConstraints(
-//                               minWidth: 40,
-//                               minHeight: 40,
-//                             ),
-//                             child: Container(
-//                               decoration: BoxDecoration(
-//                                 border: Border.all(width: 1, color: Colors.purpleAccent, style: BorderStyle.solid),
-//                               ),
-//                               child: snippetW,
-//                             ),
-//                           ),
-//                           if (kDebugMode) _pencilIconButton(),
-//                         ],
-//                       );
-//                     }),
-//                   ),
-//                 )
-//               : const Icon(Icons.report_problem, color: Colors.red),
-//     );
-//   }
+  _renderSnippet(context) => FutureBuilder<void>(
+      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: widget.snippetName),
+      builder: (futureContext, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          Widget snippetWidget;
+          try {
+            // in case did a revert, ignore snapshot data and use the AppInfo instead
+            SnippetRootNode? snippet = FC().currentSnippet(widget.snippetName);
+            // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+            snippetWidget = snippet == null
+                ? const Icon(Icons.error, color: Colors.redAccent)
+                : snippet.child?.toWidget(futureContext, snippet) ?? Placeholder();
+          } catch (e) {
+            debugPrint('snippetRootNode.toWidget() failed!');
+            snippetWidget = Material(
+              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    const Icon(Icons.error, color: Colors.redAccent),
+                    hspacer(10),
+                    Useful.coloredText(e.toString()),
+                  ],
+                ),
+              ),
+            );
+          }
+          return snippetWidget;
+        } else {
+          return const CircularProgressIndicator();
+        }
+      });
+}

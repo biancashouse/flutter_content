@@ -98,11 +98,8 @@ class NodePropertyButton_String extends HookWidget {
         );
     return GestureDetector(
       onTap: () {
-        Callout.showOverlay(
-          calloutConfig: calloutConfig,
-          boxContentF: boxContent,
-          targetGkF: () => propertyBtnGK,
-        );
+
+
       },
       child: SizedBox(
         key: propertyBtnGK = GlobalKey(debugLabel: label),

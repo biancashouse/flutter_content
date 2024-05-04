@@ -39,6 +39,9 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
   static List<STreeNode> _$children(ColumnNode v) => v.children;
   static const Field<ColumnNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(ColumnNode v) => v.uid;
+  static const Field<ColumnNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(ColumnNode v) => v.isExpanded;
   static const Field<ColumnNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -59,6 +62,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #mainAxisSize: _f$mainAxisSize,
     #crossAxisAlignment: _f$crossAxisAlignment,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

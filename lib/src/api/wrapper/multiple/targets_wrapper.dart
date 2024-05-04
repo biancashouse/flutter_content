@@ -8,7 +8,7 @@ import 'positioned_target_play_btn.dart';
 import 'target_cover.dart';
 
 class TargetsWrapper extends StatefulWidget {
-  final TargetGroupWrapperNode parentNode;
+  final HotspotsNode parentNode;
   final Widget? child;
   final bool hardEdge;
 
@@ -73,8 +73,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // Timer? _sizeChangedTimer;
   TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
   void setPlayingOrEditingTc(newtC) => setState(() {
-    _playingOrEditingTc = newtC;
-  });
+        _playingOrEditingTc = newtC;
+      });
   get playingTc => _playingOrEditingTc;
 
   double? scrollOffset;
@@ -172,7 +172,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         ));
         foundTc.onChange();
       }
-      FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      FC()
+          .capiBloc
+          .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     }
 
     //
@@ -199,23 +201,16 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       newTC.btnLocalLeftPc =
           newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
 
-      widget.parentNode.targets.add(newTC);
+      widget.parentNode.targets = [newTC,...widget.parentNode.targets];
+      // widget.parentNode.targets.add(newTC);
       FC()
           .capiBloc
           .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-      // TargetGroupModel? mtc = bloc.state.targetGroupMap[widget.name];
-      VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-      FC().updateEditingVersionId(
-          snippetName: snippetName, newVersionId: newVersionId);
-
-      FC().capiBloc.add(
-            CAPIEvent.saveSnippet(
-              snippetRootNode: widget.parentNode.rootNodeOfSnippet()!,
-              newVersionId: newVersionId,
-              onlyTargetsWrappers: true,
-            ),
-          );
+      FC().possiblyCacheAndSaveANewSnippetVersion(
+        snippetName: snippetName,
+        rootNode: widget.parentNode.rootNodeOfSnippet()!,
+      );
     }
 
     List<TargetModel> tcs = widget.parentNode.targets;
@@ -260,7 +255,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
             // TARGET BUTTONS
             for (TargetModel tc in tcs)
-              if (playingTc == null )
+              if (playingTc == null)
                 PositionedTargetPlayBtn(
                   initialTC: tc,
                   index: _targetIndex(tc),

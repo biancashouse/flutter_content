@@ -51,7 +51,7 @@ dependencies:
   google_fonts: ^6.1.0
   watcher: ^1.1.0
   pointer_interceptor: ^0.10.1
-  multi_split_view: ^2.4.0
+  multi_split_view: ^3.0.0
   # compals
   url_launcher: ^6.2.5
   intl: ^0.18.1

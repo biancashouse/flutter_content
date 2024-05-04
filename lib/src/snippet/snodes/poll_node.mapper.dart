@@ -43,6 +43,9 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static List<STreeNode> _$children(PollNode v) => v.children;
   static const Field<PollNode, List<STreeNode>> _f$children =
       Field('children', _$children);
+  static String _$uid(PollNode v) => v.uid;
+  static const Field<PollNode, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
   static bool _$isExpanded(PollNode v) => v.isExpanded;
   static const Field<PollNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -66,6 +69,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #createdBy: _f$createdBy,
     #voterPool: _f$voterPool,
     #children: _f$children,
+    #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
