@@ -62,19 +62,16 @@ abstract class PTreeNode extends Node {
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
     if (_selectedPropertyGK.currentState == null) return _selectedPropertyGK;
-    debugPrint(
-        "_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
+    debugPrint("_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }
 
   static Callout get selectedPropertyWidget => _selectedPropertyWidget;
 
-  static set selectedPropertyWidget(Callout newObj) =>
-      _selectedPropertyWidget = newObj;
+  static set selectedPropertyWidget(Callout newObj) => _selectedPropertyWidget = newObj;
 
   static late Callout _selectedPropertyWidget;
-  static final GlobalKey _selectedPropertyGK =
-      GlobalKey(debugLabel: "PTreeNode.selectionGK");
+  static final GlobalKey _selectedPropertyGK = GlobalKey(debugLabel: "PTreeNode.selectionGK");
 }
 
 class PropertyGroup extends PTreeNode {
@@ -789,6 +786,7 @@ class StringPropertyValueNode extends PTreeNode {
         calloutButtonSize: calloutButtonSize,
         calloutSize: calloutSize,
         // calloutSize: calloutSize,
+        propertyBtnGK: GlobalKey(debugLabel: ''),
         onChangeF: (s) {
           onStringChange(s);
         });
@@ -826,21 +824,20 @@ class SnippetNamePropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButton_SnippetName(
-          originalText: stringValue ?? '',
-          label: super.name,
-          maxLines: numLines,
-          expands: expands,
-          skipLabelText: true,
-          skipHelperText: true,
-          // textInputType: const TextInputType.numberWithOptions(decimal: true),
-          calloutButtonSize: calloutButtonSize,
-          calloutSize: calloutSize,
-          // calloutSize: calloutSize,
-          onChangeF: (s) {
-            onStringChange(s);
-          });
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_SnippetName(
+      originalText: stringValue ?? '',
+      label: super.name,
+      maxLines: numLines,
+      expands: expands,
+      skipLabelText: true,
+      skipHelperText: true,
+      // textInputType: const TextInputType.numberWithOptions(decimal: true),
+      calloutButtonSize: calloutButtonSize,
+      calloutSize: calloutSize,
+      // calloutSize: calloutSize,
+      onChangeF: (s) {
+        onStringChange(s);
+      });
 }
 
 class DecimalPropertyValueNode extends PTreeNode {
@@ -869,8 +866,7 @@ class DecimalPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButton_String(
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_String(
         originalText: decimalValue != null ? decimalValue.toString() : '',
         label: super.name,
         skipLabelText: true,
@@ -879,6 +875,7 @@ class DecimalPropertyValueNode extends PTreeNode {
         calloutButtonSize: calloutButtonSize,
         calloutSize: const Size(120, 80),
         // calloutSize: calloutSize,
+        propertyBtnGK: GlobalKey(debugLabel: 'decimal'),
         onChangeF: (s) {
           if (s.toLowerCase() == 'infinity') {
             onDoubleChange.call(decimalValue = 999999999);
@@ -992,10 +989,10 @@ class SizePropertyValueNode extends PTreeNode {
                     onSizeChange.call((widthValue = part1 / part2, part2));
                   }
                 } else {
-                  onSizeChange
-                      .call((widthValue = double.tryParse(s), heightValue));
+                  onSizeChange.call((widthValue = double.tryParse(s), heightValue));
                 }
               },
+              propertyBtnGK: GlobalKey(debugLabel: 'width'),
             ),
             const SizedBox(width: 40, child: Text('x')),
             NodePropertyButton_String(
@@ -1020,10 +1017,10 @@ class SizePropertyValueNode extends PTreeNode {
                     onSizeChange.call((part2, heightValue = part1 / part2));
                   }
                 } else {
-                  onSizeChange
-                      .call((widthValue, heightValue = double.tryParse(s)));
+                  onSizeChange.call((widthValue, heightValue = double.tryParse(s)));
                 }
               },
+              propertyBtnGK: GlobalKey(debugLabel: 'height'),
             ),
           ],
         ),
@@ -1060,12 +1057,13 @@ class OffsetPropertyValueNode extends PTreeNode {
           children: [
             NodePropertyButton_String(
               originalText: topValue != null ? topValue.toString() : '',
-              label: 'width',
+              label: 'left',
               skipLabelText: true,
               skipHelperText: true,
               //inputType: double,
               calloutButtonSize: const Size(80, 20),
               calloutSize: const Size(120, 80),
+              propertyBtnGK: GlobalKey(debugLabel: 'left'),
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
                   onOffsetChange.call((topValue = 999999999, leftValue));
@@ -1079,21 +1077,21 @@ class OffsetPropertyValueNode extends PTreeNode {
                     onOffsetChange.call((topValue = part1 / part2, part2));
                   }
                 } else {
-                  onOffsetChange
-                      .call((topValue = double.tryParse(s), leftValue));
+                  onOffsetChange.call((topValue = double.tryParse(s), leftValue));
                 }
               },
             ),
             const SizedBox(width: 40, child: Text('x')),
             NodePropertyButton_String(
               originalText: leftValue != null ? leftValue.toString() : '',
-              label: 'height',
+              label: 'top',
               skipLabelText: true,
               skipHelperText: true,
               //inputType: double,
               calloutButtonSize: const Size(80, 20),
               calloutSize: const Size(120, 80),
               // calloutOffset: calloutOffset,
+              propertyBtnGK: GlobalKey(debugLabel: 'top'),
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
                   onOffsetChange.call((topValue, leftValue = 999999999));
@@ -1107,8 +1105,7 @@ class OffsetPropertyValueNode extends PTreeNode {
                     onOffsetChange.call((part2, leftValue = part1 / part2));
                   }
                 } else {
-                  onOffsetChange
-                      .call((topValue, leftValue = double.tryParse(s)));
+                  onOffsetChange.call((topValue, leftValue = double.tryParse(s)));
                 }
               },
             ),
@@ -1141,27 +1138,18 @@ class IntPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => true || viaButton
-      ? NodePropertyButton_String(
-          originalText: intValue != null ? intValue.toString() : '',
-          label: super.name,
-          skipLabelText: true,
-          skipHelperText: true,
-          inputType: int,
-          calloutButtonSize: calloutButtonSize,
-          calloutSize: const Size(120, 100),
-          onChangeF: (s) {
-            onIntChange.call(intValue = int.tryParse(s));
-          })
-      : NodePropertyButton_String(
-          originalText: intValue != null ? intValue.toString() : '',
-          label: super.name,
-          calloutButtonSize: calloutButtonSize,
-          calloutSize: const Size(80, 50),
-          onChangeF: (s) {
-            onIntChange.call(intValue = int.tryParse(s));
-          },
-        );
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_String(
+      originalText: intValue != null ? intValue.toString() : '',
+      label: super.name,
+      skipLabelText: true,
+      skipHelperText: true,
+      inputType: int,
+      calloutButtonSize: calloutButtonSize,
+      calloutSize: const Size(120, 100),
+      propertyBtnGK: GlobalKey(debugLabel: 'int'),
+      onChangeF: (s) {
+        onIntChange.call(intValue = int.tryParse(s));
+      });
 }
 
 class DatePropertyValueNode extends PTreeNode {
@@ -1240,8 +1228,7 @@ class ColorPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButtonColor(
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonColor(
         feature: 'color',
         label: name,
         tooltip: tooltip,
@@ -1277,47 +1264,39 @@ class GradientPropertyValueNode extends PTreeNode {
       message: name,
       child: SizedBox(
         width: 180,
-        child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              StatefulBuilder(
-                  builder: (BuildContext context, StateSetter setState) {
-                return NodePropertyButtonColor(
-                  feature: 'color1',
-                  key: GlobalKey(),
-                  label: '',
-                  originalColor: colorValues?.color1Value != null
-                      ? Color(colorValues!.color1Value!)
-                      : null,
-                  onChangeF: (Color? newColor) {
-                    if (newColor != null) {
-                      setState(() => onColorChange.call(
-                            colorValues = UpTo6ColorValues(
-                              color1Value: newColor.value,
-                              color2Value: colorValues?.color2Value,
-                              color3Value: colorValues?.color3Value,
-                              color4Value: colorValues?.color4Value,
-                              color5Value: colorValues?.color5Value,
-                              color6Value: colorValues?.color6Value,
-                            ),
-                          ));
-                    }
-                  },
-                  calloutButtonSize: const Size(24, 24),
-                );
-              }),
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return NodePropertyButtonColor(
-                    feature: 'color2',
-                    label: '',
-                    originalColor: colorValues?.color2Value != null
-                        ? Color(colorValues!.color2Value!)
-                        : null,
-                    onChangeF: (Color? newColor) {
-                      if (newColor != null) {
-                        setState(() => onColorChange.call(
+        child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+            return NodePropertyButtonColor(
+              feature: 'color1',
+              key: GlobalKey(),
+              label: '',
+              originalColor: colorValues?.color1Value != null ? Color(colorValues!.color1Value!) : null,
+              onChangeF: (Color? newColor) {
+                if (newColor != null) {
+                  setState(() => onColorChange.call(
+                        colorValues = UpTo6ColorValues(
+                          color1Value: newColor.value,
+                          color2Value: colorValues?.color2Value,
+                          color3Value: colorValues?.color3Value,
+                          color4Value: colorValues?.color4Value,
+                          color5Value: colorValues?.color5Value,
+                          color6Value: colorValues?.color6Value,
+                        ),
+                      ));
+                }
+              },
+              calloutButtonSize: const Size(24, 24),
+            );
+          }),
+          StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return NodePropertyButtonColor(
+                feature: 'color2',
+                label: '',
+                originalColor: colorValues?.color2Value != null ? Color(colorValues!.color2Value!) : null,
+                onChangeF: (Color? newColor) {
+                  if (newColor != null) {
+                    setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: newColor.value,
@@ -1327,23 +1306,21 @@ class GradientPropertyValueNode extends PTreeNode {
                             color6Value: colorValues?.color6Value,
                           ),
                         ));
-                    }
-                    },
-                    calloutButtonSize: const Size(24, 24),
-                  );
+                  }
                 },
-              ),
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return NodePropertyButtonColor(
-                    feature: 'color3',
-                    label: '',
-                    originalColor: colorValues?.color3Value != null
-                        ? Color(colorValues!.color3Value!)
-                        : null,
-                    onChangeF: (Color? newColor) {
-                      if (newColor != null) {
-                        setState(() => onColorChange.call(
+                calloutButtonSize: const Size(24, 24),
+              );
+            },
+          ),
+          StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return NodePropertyButtonColor(
+                feature: 'color3',
+                label: '',
+                originalColor: colorValues?.color3Value != null ? Color(colorValues!.color3Value!) : null,
+                onChangeF: (Color? newColor) {
+                  if (newColor != null) {
+                    setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1353,23 +1330,21 @@ class GradientPropertyValueNode extends PTreeNode {
                             color6Value: colorValues?.color6Value,
                           ),
                         ));
-                    }
-                    },
-                    calloutButtonSize: const Size(24, 24),
-                  );
+                  }
                 },
-              ),
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return NodePropertyButtonColor(
-                    feature: 'color4',
-                    label: '',
-                    originalColor: colorValues?.color4Value != null
-                        ? Color(colorValues!.color4Value!)
-                        : null,
-                    onChangeF: (Color? newColor) {
-                      if (newColor != null) {
-                        setState(() => onColorChange.call(
+                calloutButtonSize: const Size(24, 24),
+              );
+            },
+          ),
+          StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return NodePropertyButtonColor(
+                feature: 'color4',
+                label: '',
+                originalColor: colorValues?.color4Value != null ? Color(colorValues!.color4Value!) : null,
+                onChangeF: (Color? newColor) {
+                  if (newColor != null) {
+                    setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1379,23 +1354,21 @@ class GradientPropertyValueNode extends PTreeNode {
                             color6Value: colorValues?.color6Value,
                           ),
                         ));
-                    }
-                    },
-                    calloutButtonSize: const Size(24, 24),
-                  );
+                  }
                 },
-              ),
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return NodePropertyButtonColor(
-                    feature: 'color5',
-                    label: '',
-                    originalColor: colorValues?.color5Value != null
-                        ? Color(colorValues!.color5Value!)
-                        : null,
-                    onChangeF: (Color? newColor) {
-                      if (newColor != null) {
-                        setState(() => onColorChange.call(
+                calloutButtonSize: const Size(24, 24),
+              );
+            },
+          ),
+          StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return NodePropertyButtonColor(
+                feature: 'color5',
+                label: '',
+                originalColor: colorValues?.color5Value != null ? Color(colorValues!.color5Value!) : null,
+                onChangeF: (Color? newColor) {
+                  if (newColor != null) {
+                    setState(() => onColorChange.call(
                           colorValues = UpTo6ColorValues(
                             color1Value: colorValues?.color1Value,
                             color2Value: colorValues?.color2Value,
@@ -1405,39 +1378,37 @@ class GradientPropertyValueNode extends PTreeNode {
                             color6Value: colorValues?.color6Value,
                           ),
                         ));
-                    }
-                    },
-                    calloutButtonSize: const Size(24, 24),
-                  );
+                  }
                 },
-              ),
-              StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return NodePropertyButtonColor(
-                    feature: 'color6',
-                    label: '',
-                    originalColor: colorValues?.color6Value != null
-                        ? Color(colorValues!.color6Value!)
-                        : null,
-                    onChangeF: (Color? newColor) {
-                      if (newColor != null) {
-                        setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: colorValues?.color2Value,
-                                color3Value: colorValues?.color3Value,
-                                color4Value: colorValues?.color4Value,
-                                color5Value: colorValues?.color5Value,
-                                color6Value: newColor.value,
-                              ),
-                            ));
-                      }
-                    },
-                    calloutButtonSize: const Size(24, 24),
-                  );
+                calloutButtonSize: const Size(24, 24),
+              );
+            },
+          ),
+          StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return NodePropertyButtonColor(
+                feature: 'color6',
+                label: '',
+                originalColor: colorValues?.color6Value != null ? Color(colorValues!.color6Value!) : null,
+                onChangeF: (Color? newColor) {
+                  if (newColor != null) {
+                    setState(() => onColorChange.call(
+                          colorValues = UpTo6ColorValues(
+                            color1Value: colorValues?.color1Value,
+                            color2Value: colorValues?.color2Value,
+                            color3Value: colorValues?.color3Value,
+                            color4Value: colorValues?.color4Value,
+                            color5Value: colorValues?.color5Value,
+                            color6Value: newColor.value,
+                          ),
+                        ));
+                  }
                 },
-              ),
-            ]),
+                calloutButtonSize: const Size(24, 24),
+              );
+            },
+          ),
+        ]),
       ),
     );
   }
@@ -1463,8 +1434,7 @@ class FSImagePathPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButtonFSBrowser(
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonFSBrowser(
         label: name,
         tooltip: tooltip,
         originalFSPath: stringValue,
@@ -1494,8 +1464,7 @@ class FontFamilyPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      NodePropertyButtonFontFamily(
+  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonFontFamily(
         label: "fontFamily",
         originalFontFamily: fontFamily,
         menuBgColor: Colors.purpleAccent,
@@ -1558,19 +1527,12 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // BoxFit -------------
     if (sameType<T, BoxFitEnum?>()) {
       return BoxFitEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Alignment -------------
     if (sameType<T, AlignmentEnum?>()) {
       return AlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Alignment -------------
     if (sameType<T, DecorationShapeEnum?>()) {
@@ -1578,90 +1540,53 @@ class EnumPropertyValueNode<T> extends PTreeNode {
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
-        onChangedF: (newValueIndex) =>
-            onIndexChange(valueIndex = newValueIndex),
+        onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex),
       );
     }
     // ArrowType -------------
     if (sameType<T, ArrowTypeEnum?>()) {
       return ArrowTypeEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Axis -------------
     if (sameType<T, AxisEnum?>()) {
       return AxisEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Clip -------------
     if (sameType<T, ClipEnum?>()) {
       return ClipEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // MainAxisAlignment -------------
     if (sameType<T, MainAxisAlignmentEnum?>()) {
       return MainAxisAlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // MainAxisSize -------------
     if (sameType<T, MainAxisSizeEnum?>()) {
       return MainAxisSizeEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // CrossAxisAlignment -------------
     if (sameType<T, CrossAxisAlignmentEnum?>()) {
       return CrossAxisAlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FlexFit -------------
     if (sameType<T, TextDirectionEnum?>()) {
       return TextDirectionEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FontStyle -------------
     if (sameType<T, FontStyleEnum?>()) {
       return FontStyleEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FontWeight -------------
     if (sameType<T, FontWeightEnum?>()) {
       return FontWeightEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Material3 Text Size -------------
     if (sameType<T, Material3TextSizeEnum?>()) {
@@ -1670,62 +1595,37 @@ class EnumPropertyValueNode<T> extends PTreeNode {
           label: name,
           themeData: Theme.of(context),
           enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // OutlinedBorder -------------
     if (sameType<T, OutlinedBorderEnum?>()) {
       return OutlinedBorderEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // StackFit -------------
     if (sameType<T, StackFitEnum?>()) {
       return StackFitEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // StepperType -------------
     if (sameType<T, StepperTypeEnum?>()) {
       return StepperTypeEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextAlign -------------
     if (sameType<T, TextAlignEnum?>()) {
       return TextAlignEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextDirection -------------
     if (sameType<T, TextDirectionEnum?>()) {
       return TextDirectionEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextOverflow -------------
     if (sameType<T, TextOverflowEnum?>()) {
       return TextOverflowEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // T property not implemented yet
     return const Icon(Icons.error_outline, color: Colors.blue);

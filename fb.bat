@@ -1,1 +1,0 @@
-\Installs\firebase-tools-instant-win.exe

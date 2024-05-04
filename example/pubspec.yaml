@@ -2,7 +2,7 @@ name: example
 description: "Example website project to demo the flutter_content pkg."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.9.1+18
+version: 0.9.7+18
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -29,4 +29,10 @@ flutter:
   assets:
     - assets/images/
     - startup-scripts/
+
+
+
+
+
+
 

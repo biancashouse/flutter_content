@@ -15,6 +15,7 @@ class NodePropertyButton_String extends HookWidget {
   final Type? inputType;
   final bool skipLabelText;
   final bool skipHelperText;
+  final GlobalKey propertyBtnGK;
   final Function(String) onChangeF;
 
   NodePropertyButton_String({
@@ -29,12 +30,12 @@ class NodePropertyButton_String extends HookWidget {
     this.skipLabelText = false,
     this.skipHelperText = false,
     required this.onChangeF,
+    required this.propertyBtnGK,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey? propertyBtnGK;
     GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
     final textValue = useState<String>(originalText);
     String textLabel() =>
@@ -98,11 +99,14 @@ class NodePropertyButton_String extends HookWidget {
         );
     return GestureDetector(
       onTap: () {
-
-
+        Callout.showOverlay(
+          calloutConfig: calloutConfig,
+          boxContentF: boxContent,
+          targetGkF: () => propertyBtnGK,
+        );
       },
       child: SizedBox(
-        key: propertyBtnGK = GlobalKey(debugLabel: label),
+        key: propertyBtnGK,
         // margin: const EdgeInsets.only(top: 8),
         width: calloutButtonSize.width,
         height: calloutButtonSize.height,

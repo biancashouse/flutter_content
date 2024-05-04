@@ -210,9 +210,9 @@ class FlutterPollState extends State<FlutterPoll> {
     if (voterId != null) {
       // firestore
       OptionCountsAndVoterRecord result = await FC().capiBloc.modelRepo.getPollResultsForUser(
-        voterId: voterId!,
-        pollName: widget.pollName,
-      );
+            voterId: voterId!,
+            pollName: widget.pollName,
+          );
       pollBloc = PollBloC(
         modelRepo: FC().capiBloc.modelRepo,
         voterId: voterId!,
@@ -266,6 +266,7 @@ class FlutterPollState extends State<FlutterPoll> {
                                         skipHelperText: true,
                                         calloutButtonSize: const Size(110, 20),
                                         calloutSize: const Size(300, 80),
+                                        propertyBtnGK: GlobalKey(debugLabel: 'ea'),
                                         onChangeF: (userEA) {
                                           snapshot.data!.add(PollEvent.voterIdCreated(newVoterId: userEA));
                                         })
@@ -283,8 +284,7 @@ class FlutterPollState extends State<FlutterPoll> {
                           SizedBox(height: widget.heightBetweenTitleAndOptions),
                           ...widget.children,
                           vspacer(10),
-                          Useful.coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}',
-                              color: Colors.blue[900], fontSize: 14),
+                          Useful.coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
                           vspacer(10),
                           Align(
                               alignment: Alignment.centerRight,
@@ -306,5 +306,4 @@ class FlutterPollState extends State<FlutterPoll> {
               : const CircularProgressIndicator();
         });
   }
-
 }
