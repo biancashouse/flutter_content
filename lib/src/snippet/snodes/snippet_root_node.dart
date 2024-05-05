@@ -52,14 +52,14 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
         builder: (futureContext, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            debugPrint("FutureBuilder<void> Ensuring ${name} present");
+            debugPrint("FutureBuilder<void> Ensuring $name present");
             try {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
               SnippetRootNode? snippet = FC().currentSnippet(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
               return snippet == null
                   ? const Icon(Icons.error, color: Colors.redAccent)
-                  : snippet.child?.toWidget(futureContext, this) ?? Placeholder();
+                  : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
               debugPrint('snippetRootNode.toWidget() failed!');
               return Material(

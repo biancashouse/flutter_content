@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/snippet_templates.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class FlutterContentPage extends HookWidget {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
-import '../repo_test_suite.dart';
 import '../unit_test.mocks.dart';
 
 // class MockCAPIBloC extends MockBloc<CAPIEvent, CAPIState> implements CAPIBloC {}

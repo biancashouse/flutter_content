@@ -33,8 +33,9 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     SnippetPanelState? ss = SnippetPanel.of(context);
-    if (!(ss?.mounted ?? false))
+    if (!(ss?.mounted ?? false)) {
       return const Icon(Icons.error, color: Colors.red);
+    }
 
     // TreeController<Node> treeC = FlutterContent().capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
     SnippetTreeController treeC = SnippetTreeController(

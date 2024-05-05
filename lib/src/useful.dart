@@ -498,7 +498,7 @@ class Useful {
   }
 
   static String removeNonNumeric(s) =>
-      s.replaceAll(new RegExp(r"\D"), "");
+      s.replaceAll(RegExp(r"\D"), "");
 
 
 // static (double, double) ensureOnScreenOLD(Rect calloutRect) {

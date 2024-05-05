@@ -96,7 +96,7 @@ class FirebaseStorageImageNode extends CL
     return StorageGridView(
       ref: FirebaseStorage.instance.ref('/some-folder'),
       loadingBuilder: (context) {
-        return Center(
+        return const Center(
           child: Text('Loading...'),
         );
       },
@@ -108,7 +108,6 @@ class FirebaseStorageImageNode extends CL
         );
       },
     );
-    ;
 
     return fsUrl.isNotEmpty
         ? SizedBox(

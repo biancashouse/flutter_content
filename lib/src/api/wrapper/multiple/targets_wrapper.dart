@@ -154,7 +154,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     // when dragging a btn or cover ends
-    void _droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
+    void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       var data = details.data;
       TargetId uid = data.$1;
       TargetModel? foundTc = widget.parentNode.findTarget(uid);
@@ -178,7 +178,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     //
-    void _longPressedeBarrier(LongPressStartDetails details) {
+    void longPressedeBarrier(LongPressStartDetails details) {
       if (!FC().canEditContent) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
@@ -229,11 +229,11 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     onTap: () {
                       debugPrint('TAP');
                     },
-                    onLongPressStart: _longPressedeBarrier,
+                    onLongPressStart: longPressedeBarrier,
                   ),
                 );
               },
-              onAcceptWithDetails: _droppedBtnOrCover,
+              onAcceptWithDetails: droppedBtnOrCover,
             ),
 
             // CHILD, typically an image

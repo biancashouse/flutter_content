@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/people/v1.dart';
 import 'package:googleapis_auth/googleapis_auth.dart' as auth show AuthClient;
-import 'firebase_options.dart';
 
 const List<String> scopes = <String>[
   'email',

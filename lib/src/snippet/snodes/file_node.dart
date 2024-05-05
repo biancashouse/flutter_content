@@ -5,15 +5,19 @@ import 'package:flutter_content/flutter_content.dart';
 part 'file_node.mapper.dart';
 
 Widget driveFileIcon(String src) {
-  if (src.contains('https://docs.google.com/document/'))
+  if (src.contains('https://docs.google.com/document/')) {
     return Image.asset(googleDocsIconSrc, height: 24);
-  if (src.contains('https://docs.google.com/spreadsheets/'))
+  }
+  if (src.contains('https://docs.google.com/spreadsheets/')) {
     return Image.asset(googleSheetsIconSrc, height: 24);
-  if (src.contains('https://docs.google.com/presentation/'))
+  }
+  if (src.contains('https://docs.google.com/presentation/')) {
     return Image.asset(googleSlidesIconSrc, height: 24);
-  if (src.contains('https://docs.google.com/forms/'))
+  }
+  if (src.contains('https://docs.google.com/forms/')) {
     return Image.asset(googleSlidesIconSrc, height: 24);
-  return Icon(Icons.question_mark, color: Colors.red);
+  }
+  return const Icon(Icons.question_mark, color: Colors.red);
 }
 
 get googleDocsIconSrc =>

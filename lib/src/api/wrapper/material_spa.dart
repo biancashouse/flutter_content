@@ -38,7 +38,7 @@ class MaterialSPA extends StatefulWidget {
 
   // final bool localTestingFilePaths;
 
-  MaterialSPA({
+  const MaterialSPA({super.key, 
     required this.appName,
     this.title = '',
     // required this.pageSnippetName,
@@ -54,7 +54,7 @@ class MaterialSPA extends StatefulWidget {
     @visibleForTesting this.testWidget,
   });
 
-  static GlobalKey _lockIconGK =
+  static final GlobalKey _lockIconGK =
       GlobalKey(); //will go null after user tap bianca
 
   // static void removeAllPinkSnippetOverlays() {
@@ -630,7 +630,7 @@ class MaterialSPAState extends State<MaterialSPA>
                       // });
                       Callout.dismiss("EditorPassword");
                       FC().capiBloc.add(
-                          CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                          const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                       showDevToolsFAB();
                     }
                   },
@@ -685,7 +685,7 @@ Future<void> _signOut() async {
   //   FC().appInfo.publishedVersionIds[]
   // }
 
-  FC().capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
   // Useful.afterNextBuildDo(() {
   // });
 }

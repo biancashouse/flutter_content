@@ -598,8 +598,9 @@ class SnippetTreePane extends StatelessWidget {
                 // final STreeNode? selectedNode = snippetBloc.state.selectedNode;
                 bool canShowNavigateUpBtn = true;
                 if (snippetBloc.treeC.roots.first.getParent() == null) canShowNavigateUpBtn = false;
-                if (snippetBloc.treeC.roots.first.getParent() is SnippetRootNode && snippetBloc.treeC.roots.first.getParent()?.getParent() == null)
+                if (snippetBloc.treeC.roots.first.getParent() is SnippetRootNode && snippetBloc.treeC.roots.first.getParent()?.getParent() == null) {
                   canShowNavigateUpBtn = false;
+                }
                 if (snippetBloc.rootNode != snippetBloc.treeC.roots.first && snippetBloc.treeC.roots.first is! ScaffoldNode) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

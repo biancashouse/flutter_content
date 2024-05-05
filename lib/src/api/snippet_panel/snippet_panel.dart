@@ -190,7 +190,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
             snippetWidget = snippet == null
                 ? const Icon(Icons.error, color: Colors.redAccent)
-                : snippet.child?.toWidget(futureContext, snippet) ?? Placeholder();
+                : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
           } catch (e) {
             debugPrint('snippetRootNode.toWidget() failed!');
             snippetWidget = Material(

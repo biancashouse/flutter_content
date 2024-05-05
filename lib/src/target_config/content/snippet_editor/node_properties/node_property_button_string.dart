@@ -18,7 +18,7 @@ class NodePropertyButton_String extends HookWidget {
   final GlobalKey propertyBtnGK;
   final Function(String) onChangeF;
 
-  NodePropertyButton_String({
+  const NodePropertyButton_String({
     required this.originalText,
     this.options,
     required this.label,

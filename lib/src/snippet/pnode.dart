@@ -1,10 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
@@ -31,13 +28,11 @@ import 'package:flutter_content/src/target_config/content/snippet_editor/node_pr
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_fs_browser.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_snippet_name.dart';
 import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_string.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_callout_button.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
 import 'pnodes/enums/enum_decoration.dart';
 import 'pnodes/groups/button_style_group.dart';
-import 'pnodes/groups/callout_config_group.dart';
 import 'pnodes/groups/outlined_border_group.dart';
 import 'snodes/upto6color_values.dart';
 

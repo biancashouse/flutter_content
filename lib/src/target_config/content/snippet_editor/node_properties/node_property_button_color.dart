@@ -49,9 +49,9 @@ class NodePropertyButtonColor extends StatelessWidget {
             onChanged: (color) {
               onChangeF.call(color);
               // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-              Useful.afterMsDelayDo(1000, () {
+              // Useful.afterMsDelayDo(1000, () {
                 Callout.dismiss(feature);
-              });
+              // });
             },
           ),
         );

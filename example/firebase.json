@@ -1,6 +1,13 @@
 {
   "hosting": {
     "public": "build/web",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "cacheControl": "no-cache, no-store, must-revalidate",
     "target": "staging-deploy",
     "ignore": [
       "firebase.json",

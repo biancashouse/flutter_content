@@ -68,7 +68,7 @@ class FireStoreModelRepository implements IModelRepository {
     // may be already in cache
     SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName];
     if (snippetInfo != null) {
-    // if (FC().currentSnippet(snippetName) != null) {
+      // if (FC().currentSnippet(snippetName) != null) {
       return snippetInfo;
     }
 
@@ -100,7 +100,6 @@ class FireStoreModelRepository implements IModelRepository {
   @override
   // if not in cache, gets from FB and adds to cache
   Future<void> possiblyLoadSnippetIntoCache({required SnippetName snippetName, required VersionId versionId}) async {
-
     // try to fetch the specified version from cache, otherwise try to fetch from FB
     var snippetInfo = FC().snippetInfoCache[snippetName];
     var version = FC().versionCache[snippetName]?[versionId];
@@ -133,8 +132,12 @@ class FireStoreModelRepository implements IModelRepository {
         // cache it
         FC().versionCache[snippetName] ??= {};
         FC().versionIdCache[snippetName] ??= [];
-        FC().versionCache[snippetName]?.addAll({versionId: version});
-        FC().versionIdCache[snippetName]?.add(versionId);
+        if (!FC().versionCache[snippetName]!.containsKey(versionId)) {
+          FC().versionCache[snippetName]!.addAll({versionId: version});
+        }
+        if (!FC().versionIdCache[snippetName]!.contains(versionId)) {
+          FC().versionIdCache[snippetName]?.add(versionId);
+        }
         debugPrint('editing: ${snippetInfo.editingVersionId}');
         debugPrint('published: ${snippetInfo.publishedVersionId}');
         debugPrint('versionId: $versionId');
@@ -189,7 +192,7 @@ class FireStoreModelRepository implements IModelRepository {
 
     debugPrint('--- SAVED ---------------------------------------------------');
     debugPrint('wrote latest snippet ($snippetName) version to FB:');
-    debugPrint('editing: ${snippetInfo!.editingVersionId}');
+    debugPrint('editing: ${snippetInfo.editingVersionId}');
     debugPrint('published: ${snippetInfo.publishedVersionId}');
     debugPrint('autoPublish: ${snippetInfo.autoPublish}');
     debugPrint('versionId: $latestVersionId');
@@ -212,14 +215,14 @@ class FireStoreModelRepository implements IModelRepository {
     // set the snippet properties
     DocumentReference snippetDocRef = appDocRef.collection('snippets').doc(snippetName);
     await snippetDocRef.set({
-      'editingVersionId': editingVersionId ?? snippet!.editingVersionId,
-      'publishedVersionId': publishingVersionId ?? snippet!.publishedVersionId,
-      'autoPublish': autoPublish ?? snippet!.autoPublish,
+      'editingVersionId': editingVersionId ?? snippet.editingVersionId,
+      'publishedVersionId': publishingVersionId ?? snippet.publishedVersionId,
+      'autoPublish': autoPublish ?? snippet.autoPublish,
     }, SetOptions(merge: true));
 
     debugPrint('--- UPDATED SNIPPET PROPERTIES ------------------------------');
     debugPrint('wrote snippet ($snippetName) properties to FB:');
-    debugPrint('editing: ${snippet!.editingVersionId}');
+    debugPrint('editing: ${snippet.editingVersionId}');
     debugPrint('published: ${snippet.publishedVersionId}');
     debugPrint('autoPublish: ${snippet.autoPublish}');
     debugPrint('-------------------------------------------------------------');

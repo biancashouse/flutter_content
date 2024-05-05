@@ -244,8 +244,8 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
-        if (selectedNode is PollOptionNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
-        if (selectedNode is StepNode) _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
+        if (selectedNode is PollOptionNode && selectedNode.getParent() is! PollNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
+        if (selectedNode is StepNode && selectedNode.getParent() is! StepperNode) _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
       ] else if (action == NodeAction.addChild) ...[
         if (selectedNode is StackNode) _menuItemButton("Positioned", snippetBloc, selectedNode, PositionedNode, action),
         if (selectedNode is FlexNode) _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
@@ -264,18 +264,22 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
-      ] else ...[
+      ] else if (action == NodeAction.replace) ...[
+        if (selectedNode is PollOptionNode) _menuItemButton("Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
+        if (selectedNode is StepperNode) _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
+        if (selectedNode is TabBarNode) _menuItemButton("TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+      ] else if (action == NodeAction.addSiblingBefore || action == NodeAction.addSiblingAfter) ...[
         if (selectedNode.getParent() is FlexNode) ...[
           _menuItemButton("Expanded", snippetBloc, selectedNode, ExpandedNode, action),
           _menuItemButton("Flexible", snippetBloc, selectedNode, FlexibleNode, action),
         ],
+        if (selectedNode.getParent() is PollNode) _menuItemButton("Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
+        if (selectedNode.getParent() is StepperNode) _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
         if (selectedNode.getParent() is StackNode) _menuItemButton("Positioned", snippetBloc, selectedNode, PositionedNode, action),
         if (selectedNode is DirectoryNode) ...[
           _menuItemButton("Directory", snippetBloc, selectedNode, DirectoryNode, action),
           _menuItemButton("File", snippetBloc, selectedNode, FileNode, action),
         ],
-        if (selectedNode is PollOptionNode) _menuItemButton("Poll Option", snippetBloc, selectedNode, PollOptionNode, action),
-        if (selectedNode is StepperNode) _menuItemButton("Step", snippetBloc, selectedNode, StepNode, action),
         if (selectedNode.getParent() is MenuBarNode || selectedNode.getParent() is SubmenuButtonNode) ...[
           _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
           _menuItemButton("SubMenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
@@ -296,17 +300,14 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("Padding", snippetBloc, selectedNode, PaddingNode, action),
           _menuItemButton("SizedBox", snippetBloc, selectedNode, SizedBoxNode, action),
           _menuItemButton("SingleChildScrollView", snippetBloc, selectedNode, SingleChildScrollViewNode, action),
-        ],
-        child: Useful.coloredText("single-child container", fontWeight: FontWeight.normal),
-      ),
-      SubmenuButton(
-        menuChildren: [
+          Divider(),
           _menuItemButton("Column", snippetBloc, selectedNode, ColumnNode, action),
           _menuItemButton("Row", snippetBloc, selectedNode, RowNode, action),
           _menuItemButton("Stack", snippetBloc, selectedNode, StackNode, action),
-          // _addChildMenuItemButton("Table", snippetBloc, selectedNode, TableNode),
+          Divider(),
+          _menuItemButton("Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),
         ],
-        child: Useful.coloredText("multi-child container", fontWeight: FontWeight.normal),
+        child: Useful.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -320,11 +321,33 @@ List<Widget> menuAnchorWidgets(
       ),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
-          _menuItemButton("SubmenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
-          _menuItemButton("MenuBar", snippetBloc, selectedNode, MenuBarNode, action),
+          SubmenuButton(
+            menuChildren: [
+              _menuItemButton("MenuItemButton", snippetBloc, selectedNode, MenuItemButtonNode, action),
+              _menuItemButton("SubmenuButton", snippetBloc, selectedNode, SubmenuButtonNode, action),
+              _menuItemButton("MenuBar", snippetBloc, selectedNode, MenuBarNode, action),
+            ],
+            child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
+          ),
+          SubmenuButton(
+            menuChildren: [
+              _menuItemButton("TabBar", snippetBloc, selectedNode, TabBarNode, action),
+              _menuItemButton("TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+            ],
+            child: Useful.coloredText("tab bar", fontWeight: FontWeight.normal),
+          ),
+          SubmenuButton(
+            menuChildren: [
+              _menuItemButton("ElevatedButton", snippetBloc, selectedNode, ElevatedButton, action),
+              _menuItemButton("OutlinedButton", snippetBloc, selectedNode, OutlinedButton, action),
+              _menuItemButton("TextButton", snippetBloc, selectedNode, TextButton, action),
+              _menuItemButton("FilledButton", snippetBloc, selectedNode, FilledButton, action),
+              _menuItemButton("IconButton", snippetBloc, selectedNode, IconButton, action),
+            ],
+            child: Useful.coloredText("button", fontWeight: FontWeight.normal),
+          ),
         ],
-        child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
+        child: Useful.coloredText("navigation", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -333,13 +356,6 @@ List<Widget> menuAnchorWidgets(
           _menuItemButton("Carousel", snippetBloc, selectedNode, CarouselNode, action),
         ],
         child: Useful.coloredText("image", fontWeight: FontWeight.normal),
-      ),
-      SubmenuButton(
-        menuChildren: [
-          if (selectedNode is! PollNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
-          if (selectedNode is PollNode) _menuItemButton("PollOption", snippetBloc, selectedNode, PollOptionNode, action),
-        ],
-        child: Useful.coloredText("poll", fontWeight: FontWeight.normal),
       ),
       // if (selectedNode.findNearestAncestor<FSBucketNode>() == null)
       //   SubmenuButton(
@@ -370,30 +386,19 @@ List<Widget> menuAnchorWidgets(
         ],
         child: Useful.coloredText("file", fontWeight: FontWeight.normal),
       ),
-      SubmenuButton(
-        menuChildren: [
-          _menuItemButton("ElevatedButton", snippetBloc, selectedNode, ElevatedButton, action),
-          _menuItemButton("OutlinedButton", snippetBloc, selectedNode, OutlinedButton, action),
-          _menuItemButton("TextButton", snippetBloc, selectedNode, TextButton, action),
-          _menuItemButton("FilledButton", snippetBloc, selectedNode, FilledButton, action),
-          _menuItemButton("IconButton", snippetBloc, selectedNode, IconButton, action),
-        ],
-        child: Useful.coloredText("button", fontWeight: FontWeight.normal),
-      ),
       _menuItemButton("SplitView", snippetBloc, selectedNode, SplitViewNode, action),
       _menuItemButton("Stepper", snippetBloc, selectedNode, StepperNode, action),
       _menuItemButton("Gap", snippetBloc, selectedNode, GapNode, action),
       // _menuItemButton("TargetWrapper", snippetBloc, selectedNode, TargetButtonNode, action),
       _menuItemButton("Hotspots", snippetBloc, selectedNode, HotspotsNode, action),
-      _menuItemButton("Placeholder", snippetBloc, selectedNode, PlaceholderNode, action),
-      _menuItemButton("Scaffold", snippetBloc, selectedNode, ScaffoldNode, action),
       SubmenuButton(
         menuChildren: [
-          _menuItemButton("TabBar", snippetBloc, selectedNode, TabBarNode, action),
-          _menuItemButton("TabBarView", snippetBloc, selectedNode, TabBarViewNode, action),
+          if (selectedNode is! PollNode) _menuItemButton("Poll", snippetBloc, selectedNode, PollNode, action),
+          if (selectedNode is PollNode) _menuItemButton("PollOption", snippetBloc, selectedNode, PollOptionNode, action),
         ],
-        child: Useful.coloredText("tabs", fontWeight: FontWeight.normal),
+        child: Useful.coloredText("Poll", fontWeight: FontWeight.normal),
       ),
+      _menuItemButton("Placeholder", snippetBloc, selectedNode, PlaceholderNode, action),
       _menuItemButton("Youtube", snippetBloc, selectedNode, YTNode, action),
       _addSnippetsSubmenu(snippetBloc, selectedNode, action),
     ];

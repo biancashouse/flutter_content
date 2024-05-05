@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/undo_redo_snippet_tree.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 
-import '../repo_test_suite.dart';
 import '../unit_test.dart';
 import '../unit_test.mocks.dart';
 
