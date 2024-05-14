@@ -157,6 +157,9 @@ class RichTextNode extends CL with RichTextNodeMappable {
   // }
   //
   @override
+  List<Type> addChildOnly() => [TextSpanNode];
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "RichText";

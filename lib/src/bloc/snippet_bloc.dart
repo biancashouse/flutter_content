@@ -142,87 +142,97 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   }
 
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
-    //_createSnippetUndo();
-    STreeNode? sel = state.selectedNode;
-    STreeNode? selParent = sel?.getParent() as STreeNode?;
-    if (selParent != null && _possiblyRemoveFromParentButNotChildren()) {
+    if (state.aNodeIsSelected) {
+      //_createSnippetUndo();
+      STreeNode? sel = state.selectedNode;
+      // STreeNode? selParent = sel?.getParent() as STreeNode?;
+      STreeNode newSel = _possiblyRemoveFromParentButNotChildren();
       state.treeC.rebuild();
       // debugPrint("--------------");
       // debugPrint(state.snippetTreeC.roots.first.toMap());
       emit(state.copyWith(
         nodeBeingDeleted: null,
-        selectedNode: selParent,
-        // showAdders: false,
-        showProperties: false,
+        selectedNode: newSel,
         // ur: state.ur,
       ));
-      FC.forceRefresh();
     }
   }
 
-  bool _possiblyRemoveFromParentButNotChildren() {
-    if (!state.aNodeIsSelected) return false;
-    try {
-      STreeNode sel = state.selectedNode!;
-      if (sel is SnippetRootNode && sel.getParent() == null) return false;
-      if (sel.getParent() == null) return false;
-      STreeNode selParent = sel.getParent() as STreeNode;
-      // tab-related
-      if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
-        int index = (selParent as TabBarNode).children.indexOf(sel);
-        selParent.children.remove(sel);
-        ScaffoldNode? scaffold = selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
-        if (scaffold?.body.child is TabBarViewNode?) {
-          (scaffold!.body.child as TabBarViewNode).children.removeAt(index);
-        }
-        // tabView-related
-      } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
-        int index = (selParent as TabBarViewNode).children.indexOf(sel);
-        selParent.children.remove(sel);
-        ScaffoldNode? scaffold = selParent.getParent()?.getParent() as ScaffoldNode?;
-        if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
-          (scaffold?.appBar!.bottom!.child as TabBarNode).children.removeAt(index);
-        }
-      } else if (selParent is SC && (sel is CL || sel is SnippetRootNode)) {
-        selParent.child = null;
-      } else if (selParent is SC && sel is SC) {
-        selParent.child = sel.child?..setParent(selParent);
-      } else if (selParent is SC && sel is MC && sel.children.isEmpty) {
-        selParent.child = null;
-      } else if (selParent is SC && sel is MC && sel.children.length < 2) {
-        selParent.child = sel.children.first..setParent(selParent);
-      } else if (selParent is MC && (sel is CL || sel is SnippetRootNode)) {
-        selParent.children.remove(sel);
-      } else if (selParent is MC && sel is SC && sel.child != null) {
-        int index = selParent.children.indexOf(sel);
-        selParent.children[index] = sel.child!..setParent(selParent);
-      } else if (selParent is MC && sel is MC && sel.children.length == 1) {
-        int index = selParent.children.indexOf(sel);
-        selParent.children[index] = sel.children.first..setParent(selParent);
-      } else if (selParent is MC && ((sel is SC && sel.child == null) || (sel is MC && sel.children.isEmpty))) {
-        selParent.children.remove(sel);
-      } else if (selParent is RichTextNode && sel is TextSpanNode && sel.children?.length == 1) {
-        selParent.text = sel.children!.first..setParent(selParent);
-      } else if (selParent is RichTextNode && (sel is WidgetSpanNode || sel is TextSpanNode && sel.children?.length != 1)) {
-        selParent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)..setParent(selParent);
-      } else if (selParent is TextSpanNode) {
-        selParent.children!.remove(sel);
+  STreeNode _possiblyRemoveFromParentButNotChildren() {
+    STreeNode sel = state.selectedNode!;
+    // node to be deleted must have a parent
+    if (sel.getParent() == null) return sel;
+    STreeNode selParent = sel.getParent() as STreeNode;
+    // tab-related
+    if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
+      int index = (selParent as TabBarNode).children.indexOf(sel);
+      selParent.children.remove(sel);
+      ScaffoldNode? scaffold = selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
+      if (scaffold?.body?.child is TabBarViewNode?) {
+        (scaffold!.body?.child as TabBarViewNode).children.removeAt(index);
       }
-      // certain nodes must have a child
-      if (selParent is SnippetRootNode && selParent.child == null) {
-        selParent.child = PlaceholderNode()..setParent(selParent);
+      return selParent;
+      // tabView-related
+    } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
+      int index = (selParent as TabBarViewNode).children.indexOf(sel);
+      selParent.children.remove(sel);
+      ScaffoldNode? scaffold = selParent.getParent()?.getParent() as ScaffoldNode?;
+      if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
+        (scaffold?.appBar!.bottom!.child as TabBarNode).children.removeAt(index);
       }
-      if (selParent is GenericSingleChildNode && selParent.propertyName == 'title') {
-        selParent.child = TextNode(text: 'must have a title widget!')..setParent(selParent);
-      }
-      if (selParent is GenericSingleChildNode && selParent.propertyName == 'content') {
-        selParent.child = TextNode(text: 'must have a content widget!')..setParent(selParent);
-      }
-    } catch (e) {
-      debugPrint("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
-      rethrow;
+      return selParent;
+    } else if (selParent is SnippetRootNode) {
+      selParent.child = PlaceholderNode()..setParent(selParent);
+      return selParent;
+    } else if (sel is StepNode && selParent is StepperNode) {
+      selParent.children.remove(sel);
+      return selParent;
+    } else if (sel is PollOptionNode && selParent is PollNode) {
+      selParent.children.remove(sel);
+      return selParent;
+    } else if (selParent is SC && (sel is CL || sel is SnippetRootNode)) {
+      selParent.child = null;
+      return selParent;
+    } else if (selParent is SC && sel is SC) {
+      selParent.child = sel.child?..setParent(selParent);
+      return selParent;
+    } else if (selParent is SC && sel is MC && sel.children.isEmpty) {
+      selParent.child = null;
+      return selParent;
+    } else if (selParent is SC && sel is MC && sel.children.length < 2) {
+      selParent.child = sel.children.first..setParent(selParent);
+      return selParent;
+    } else if (selParent is MC && (sel is CL || sel is SnippetRootNode)) {
+      selParent.children.remove(sel);
+      return selParent;
+    } else if (selParent is MC && sel is SC && sel.child != null) {
+      int index = selParent.children.indexOf(sel);
+      selParent.children[index] = sel.child!..setParent(selParent);
+      return selParent;
+    } else if (selParent is MC && sel is MC && sel.children.length == 1) {
+      int index = selParent.children.indexOf(sel);
+      selParent.children[index] = sel.children.first..setParent(selParent);
+      return selParent;
+    } else if (selParent is MC && ((sel is SC && sel.child == null) || (sel is MC && sel.children.isEmpty))) {
+      selParent.children.remove(sel);
+      return selParent;
+    } else if (selParent is RichTextNode && sel is TextSpanNode && sel.children?.length == 1) {
+      selParent.text = sel.children!.first..setParent(selParent);
+      return selParent;
+    } else if (selParent is RichTextNode && (sel is WidgetSpanNode || sel is TextSpanNode && sel.children?.length != 1)) {
+      selParent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)..setParent(selParent);
+      return selParent;
+    } else if (selParent is TextSpanNode) {
+      selParent.children!.remove(sel);
+      return selParent;
+    } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'title') {
+      selParent.child = TextNode(text: 'must have a title widget!')..setParent(selParent);
+      return selParent;
+    } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'content') {
+      selParent.child = TextNode(text: 'must have a content widget!')..setParent(selParent);
+      return selParent;
     }
-    return true;
+    return sel;
   }
 
   // void _possiblyRemoveFromParentButNotChildrenOLD() {
@@ -370,7 +380,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
         const (ColumnNode) => ColumnNode(mainAxisSize: MainAxisSizeEnum.max, children: childNode != null ? [childNode] : []),
         const (ContainerNode) =>
           state.selectedNode?.getParent() is ContainerNode ? ContainerNode(child: childNode, alignment: AlignmentEnum.center) : ContainerNode(child: childNode),
-        const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
+        // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
         const (DefaultTextStyleNode) => DefaultTextStyleNode(child: childNode, textStyleGroup: TextStyleGroup(fontSizeName: Material3TextSizeEnum.bodyM)),
         // const (FSBucketNode) => FSBucketNode(
         //     name: 'bucket name missing ?',
@@ -435,7 +445,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
             ),
           ]),
         const (SubmenuButtonNode) => SubmenuButtonNode(menuChildren: childNode != null ? [childNode] : []),
-        const (SubtitleSnippetRootNode) => SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
+        // const (SubtitleSnippetRootNode) => SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
         // const (TargetButtonNode) =>
         //   TargetButtonNode(name: 'no name!', child: childNode),
         const (HotspotsNode) => HotspotsNode(child: childNode),
@@ -979,7 +989,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     if (state.selectedNode?.getParent() is SC) {
       (state.selectedNode?.getParent() as SC).child = refNode;
     } else if (state.selectedNode?.getParent() is MC) {
-      int index =  (state.selectedNode?.getParent() as MC).children.indexOf(event.node);
+      int index = (state.selectedNode?.getParent() as MC).children.indexOf(event.node);
       (state.selectedNode?.getParent() as MC).children[index] = refNode;
     } else if (state.selectedNode?.getParent() is WidgetSpanNode) {
       (state.selectedNode?.getParent() as WidgetSpanNode).child = refNode;

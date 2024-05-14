@@ -30,9 +30,12 @@ class CalloutConfigGroupMapper extends ClassMapperBase<CalloutConfigGroup> {
       v.targetAlignment;
   static const Field<CalloutConfigGroup, AlignmentEnum> _f$targetAlignment =
       Field('targetAlignment', _$targetAlignment, opt: true);
-  static Offset? _$calloutPos(CalloutConfigGroup v) => v.calloutPos;
-  static const Field<CalloutConfigGroup, Offset> _f$calloutPos =
-      Field('calloutPos', _$calloutPos, opt: true);
+  static double? _$calloutTop(CalloutConfigGroup v) => v.calloutTop;
+  static const Field<CalloutConfigGroup, double> _f$calloutTop =
+      Field('calloutTop', _$calloutTop, opt: true);
+  static double? _$calloutLeft(CalloutConfigGroup v) => v.calloutLeft;
+  static const Field<CalloutConfigGroup, double> _f$calloutLeft =
+      Field('calloutLeft', _$calloutLeft, opt: true);
   static int? _$colorValue(CalloutConfigGroup v) => v.colorValue;
   static const Field<CalloutConfigGroup, int> _f$colorValue =
       Field('colorValue', _$colorValue, opt: true);
@@ -65,7 +68,8 @@ class CalloutConfigGroupMapper extends ClassMapperBase<CalloutConfigGroup> {
   final MappableFields<CalloutConfigGroup> fields = const {
     #contentSnippetName: _f$contentSnippetName,
     #targetAlignment: _f$targetAlignment,
-    #calloutPos: _f$calloutPos,
+    #calloutTop: _f$calloutTop,
+    #calloutLeft: _f$calloutLeft,
     #colorValue: _f$colorValue,
     #arrowType: _f$arrowType,
     #arrowColor: _f$arrowColor,
@@ -81,7 +85,8 @@ class CalloutConfigGroupMapper extends ClassMapperBase<CalloutConfigGroup> {
     return CalloutConfigGroup(
         contentSnippetName: data.dec(_f$contentSnippetName),
         targetAlignment: data.dec(_f$targetAlignment),
-        calloutPos: data.dec(_f$calloutPos),
+        calloutTop: data.dec(_f$calloutTop),
+        calloutLeft: data.dec(_f$calloutLeft),
         colorValue: data.dec(_f$colorValue),
         arrowType: data.dec(_f$arrowType),
         arrowColor: data.dec(_f$arrowColor),
@@ -151,7 +156,8 @@ abstract class CalloutConfigGroupCopyWith<$R, $In extends CalloutConfigGroup,
   $R call(
       {String? contentSnippetName,
       AlignmentEnum? targetAlignment,
-      Offset? calloutPos,
+      double? calloutTop,
+      double? calloutLeft,
       int? colorValue,
       ArrowTypeEnum? arrowType,
       Color? arrowColor,
@@ -177,7 +183,8 @@ class _CalloutConfigGroupCopyWithImpl<$R, $Out>
   $R call(
           {Object? contentSnippetName = $none,
           Object? targetAlignment = $none,
-          Object? calloutPos = $none,
+          Object? calloutTop = $none,
+          Object? calloutLeft = $none,
           Object? colorValue = $none,
           Object? arrowType = $none,
           Object? arrowColor = $none,
@@ -191,7 +198,8 @@ class _CalloutConfigGroupCopyWithImpl<$R, $Out>
         if (contentSnippetName != $none)
           #contentSnippetName: contentSnippetName,
         if (targetAlignment != $none) #targetAlignment: targetAlignment,
-        if (calloutPos != $none) #calloutPos: calloutPos,
+        if (calloutTop != $none) #calloutTop: calloutTop,
+        if (calloutLeft != $none) #calloutLeft: calloutLeft,
         if (colorValue != $none) #colorValue: colorValue,
         if (arrowType != $none) #arrowType: arrowType,
         if (arrowColor != $none) #arrowColor: arrowColor,
@@ -207,7 +215,8 @@ class _CalloutConfigGroupCopyWithImpl<$R, $Out>
       contentSnippetName:
           data.get(#contentSnippetName, or: $value.contentSnippetName),
       targetAlignment: data.get(#targetAlignment, or: $value.targetAlignment),
-      calloutPos: data.get(#calloutPos, or: $value.calloutPos),
+      calloutTop: data.get(#calloutTop, or: $value.calloutTop),
+      calloutLeft: data.get(#calloutLeft, or: $value.calloutLeft),
       colorValue: data.get(#colorValue, or: $value.colorValue),
       arrowType: data.get(#arrowType, or: $value.arrowType),
       arrowColor: data.get(#arrowColor, or: $value.arrowColor),

@@ -27,7 +27,7 @@ class SnippetPanel extends StatefulWidget {
   SnippetPanel({
     required this.panelName,
     required this.snippetName,
-    this.fromTemplate = SnippetTemplate.empty_snippet,
+    this.fromTemplate = SnippetTemplate.empty,
     this.handlers,
     this.allowButtonCallouts = true,
     this.justPlaying = true,
@@ -187,6 +187,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           try {
             // in case did a revert, ignore snapshot data and use the AppInfo instead
             SnippetRootNode? snippet = FC().currentSnippet(widget.snippetName);
+            snippet?.validateTree();
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
             snippetWidget = snippet == null
                 ? const Icon(Icons.error, color: Colors.redAccent)

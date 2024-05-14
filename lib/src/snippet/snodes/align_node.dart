@@ -89,6 +89,12 @@ class AlignNode extends SC with AlignNodeMappable {
   //   return toMenuItems(context, nodeTypes: types, onPressed: onPressed);
   // }
 
+  // @override
+  // List<Widget> menuAnchorWidgets_ReplaceWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  //   if (getParent() is StackNode) menuAnchorWidgets_ReplaceWith(snippetBloc, action, skipHeading)
+  //   return menuAnchorWidgets_ReplaceWith(snippetBloc, action, skipHeading);
+  // }
+
   @override
   String toString() => FLUTTER_TYPE;
 

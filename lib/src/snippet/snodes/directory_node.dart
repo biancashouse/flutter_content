@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/directory_tree_node_widget.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/directory_tree_node_widget.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 part 'directory_node.mapper.dart';
@@ -24,7 +24,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 80),
+          calloutWidth: 280,
         ),
       ];
   @override
@@ -114,6 +114,9 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
 
   @override
   Widget? logoSrc() => null;
+
+  @override
+  bool canBeDeleted() => children.isEmpty;
 
   static const String FLUTTER_TYPE = "Directory";
 }

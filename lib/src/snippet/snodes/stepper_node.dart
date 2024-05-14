@@ -35,7 +35,7 @@ class StepperNode extends MC with StepperNodeMappable {
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           expands: false,
           calloutButtonSize: const Size(280, 20),
-          calloutSize: const Size(280, 80),
+          calloutWidth: 280,
         ),
       ];
 
@@ -59,6 +59,20 @@ class StepperNode extends MC with StepperNodeMappable {
         children: ${children.map((node) => node.toSource(context)).toList()},
       )''';
   }
+
+  @override
+  bool canBeDeleted() => children.isEmpty;
+
+  @override
+  List<Widget> menuAnchorWidgets_Append(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("Step", snippetBloc, StepNode, action),
+    ];
+  }
+
+  @override
+  List<Type> addChildOnly() => [StepNode];
 
   @override
   String toString() => FLUTTER_TYPE;

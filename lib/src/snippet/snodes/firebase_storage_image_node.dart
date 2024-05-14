@@ -37,22 +37,20 @@ class FirebaseStorageImageNode extends CL
           name: 'name',
           stringValue: name,
           skipHelperText: true,
-          skipLabelText: true,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(400, 120),
+          calloutWidth: 400,
         ),
         StringPropertyValueNode(
           snode: this,
           name: 'fsUrl',
           stringValue: fsUrl,
           skipHelperText: true,
-          skipLabelText: true,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(400, 150),
+          calloutWidth: 400,
         ),
         DecimalPropertyValueNode(
           snode: this,

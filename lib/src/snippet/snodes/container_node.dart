@@ -169,7 +169,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
         snode: this,
         name: 'alignment',
         valueIndex: alignment?.index,
-        onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+        onIndexChange: (newValue) => refreshWithUpdate(
+          () {
+            alignment = AlignmentEnum.of(newValue);
+          },
+        ),
       ),
       // PropertyGroup(
       //   snode: this,

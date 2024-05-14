@@ -2,7 +2,7 @@ name: example
 description: "Example website project to demo the flutter_content pkg."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.9.10+18
+version: 0.9.12+18
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
@@ -10,10 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-#  firebase_core: ^2.25.4
-#  flutter_hooks: ^0.20.3
   flutter_content:
     path: ../
+  go_router: ^14.0.2
 
 dev_dependencies:
   flutter_test:
@@ -29,6 +28,8 @@ flutter:
   assets:
     - assets/images/
     - startup-scripts/
+
+
 
 
 

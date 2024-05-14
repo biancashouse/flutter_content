@@ -20,62 +20,71 @@ abstract class FlexNode extends MC with FlexNodeMappable {
     required super.children,
   });
 
-  // bool get isRow {
-  //   throw UnimplementedError('FlexNode.isRow !');
-  // }
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("Expanded", snippetBloc, ExpandedNode, action),
+      menuItemButton("Flexible", snippetBloc, FlexibleNode, action),
+      ...super.menuAnchorWidgets_WrapWith(snippetBloc, action, true),
+    ];
+  }
 
-  // @override
-  // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
-  //       NodePropertyButtonEnum(
-  //         label: 'mainAxisAlignment',
-  //         menuItems: MainAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
-  //         originalEnumIndex: mainAxisAlignment?.index,
-  //         onChangeF: (newOption) {
-  //           mainAxisAlignment = MainAxisAlignmentEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
-  //         },
-  //         wrap: !isRow,
-  //         calloutSize: MainAxisAlignmentEnum.calloutSize(isRow: isRow),
-  //       ),
-  //       const SizedBox(width: 10, height: 10),
-  //       Container(
-  //         color: Colors.purple,
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Column(
-  //           children: [
-  //             Text('mainAxisSize:'),
-  //             const SizedBox(width: 10),
-  //             MainAxisSizeEditor(
-  //               originalValue: mainAxisSize,
-  //               onChangedF: (newValue) {
-  //                 mainAxisSize = newValue;
-  //                 bloc.add(const CAPIEvent.forceRefresh());
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //       // NodePropertyButtonRadioMenu(
-  //       //   label: 'mainAxisSize',
-  //       //   menuItems: NodeMainAxisSize.values.map((e) => e.toMenuItem()).toList(),
-  //       //   originalOption: mainAxisSize?.index,
-  //       //   onChangeF: (newOption) {
-  //       //     mainAxisSize = NodeMainAxisSize.values[newOption];
-  //       //     bloc.add(const CAPIEvent.forceRefresh());
-  //       //   },
-  //       //   calloutSize: NodeMainAxisSize.calloutSize,
-  //       // ),
-  //       NodePropertyButtonEnum(
-  //         label: 'crossAxisAlignment',
-  //         menuItems: CrossAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
-  //         originalEnumIndex: crossAxisAlignment?.index,
-  //         onChangeF: (newOption) {
-  //           crossAxisAlignment = CrossAxisAlignmentEnum.values[newOption];
-  //           bloc.add(const CAPIEvent.forceRefresh());
-  //         },
-  //         wrap: !isRow,
-  //         calloutSize: CrossAxisAlignmentEnum.calloutSize(isRow: isRow),
-  //       ),
-  //     ];
+// bool get isRow {
+//   throw UnimplementedError('FlexNode.isRow !');
+// }
 
+// @override
+// List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
+//       NodePropertyButtonEnum(
+//         label: 'mainAxisAlignment',
+//         menuItems: MainAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
+//         originalEnumIndex: mainAxisAlignment?.index,
+//         onChangeF: (newOption) {
+//           mainAxisAlignment = MainAxisAlignmentEnum.values[newOption];
+//           bloc.add(const CAPIEvent.forceRefresh());
+//         },
+//         wrap: !isRow,
+//         calloutSize: MainAxisAlignmentEnum.calloutSize(isRow: isRow),
+//       ),
+//       const SizedBox(width: 10, height: 10),
+//       Container(
+//         color: Colors.purple,
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           children: [
+//             Text('mainAxisSize:'),
+//             const SizedBox(width: 10),
+//             MainAxisSizeEditor(
+//               originalValue: mainAxisSize,
+//               onChangedF: (newValue) {
+//                 mainAxisSize = newValue;
+//                 bloc.add(const CAPIEvent.forceRefresh());
+//               },
+//             ),
+//           ],
+//         ),
+//       ),
+//       // NodePropertyButtonRadioMenu(
+//       //   label: 'mainAxisSize',
+//       //   menuItems: NodeMainAxisSize.values.map((e) => e.toMenuItem()).toList(),
+//       //   originalOption: mainAxisSize?.index,
+//       //   onChangeF: (newOption) {
+//       //     mainAxisSize = NodeMainAxisSize.values[newOption];
+//       //     bloc.add(const CAPIEvent.forceRefresh());
+//       //   },
+//       //   calloutSize: NodeMainAxisSize.calloutSize,
+//       // ),
+//       NodePropertyButtonEnum(
+//         label: 'crossAxisAlignment',
+//         menuItems: CrossAxisAlignmentEnum.values.map((e) => e.toMenuItem(isRow)).toList(),
+//         originalEnumIndex: crossAxisAlignment?.index,
+//         onChangeF: (newOption) {
+//           crossAxisAlignment = CrossAxisAlignmentEnum.values[newOption];
+//           bloc.add(const CAPIEvent.forceRefresh());
+//         },
+//         wrap: !isRow,
+//         calloutSize: CrossAxisAlignmentEnum.calloutSize(isRow: isRow),
+//       ),
+//     ];
 }

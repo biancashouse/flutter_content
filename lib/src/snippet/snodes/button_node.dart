@@ -39,7 +39,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
           onStringChange: (newValue) =>
               refreshWithUpdate(() => namedButtonStyle = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         StringPropertyValueNode(
           snode: this,
@@ -48,7 +48,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
           onStringChange: (newValue) =>
               refreshWithUpdate(() => onTapHandlerName = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         PropertyGroup(
           snode: this,

@@ -108,6 +108,8 @@ class NodeWidget extends StatelessWidget {
       onTap: () {
         if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
 
+        if (snippetBloc.state.aNodeIsSelected && entry.node == snippetBloc.state.selectedNode) return;
+
         if (!treeController.getExpansionState(entry.node)) {
           treeController.expand(entry.node);
         }
@@ -145,7 +147,7 @@ class NodeWidget extends StatelessWidget {
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             Useful.afterNextBuildDo(() {
-              MaterialSPAState.showNodeWidgetOverlay(entry.node);
+              FlutterContentPage.showNodeWidgetOverlay(entry.node);
               // create selected node's properties tree
             });
           });
@@ -309,11 +311,11 @@ class NodeWidget extends StatelessWidget {
                             ? selectedNode.name
                             : selectedNode.toString();
 
-    bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
-    if (badParent) {
-      debugPrint("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
-      debugPrint("sensible parents: ${selectedNode.sensibleParents().toString()}");
-    }
+    // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
+    // if (badParent) {
+    //   debugPrint("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
+    //   debugPrint("sensible parents: ${selectedNode.sensibleParents().toString()}");
+    // }
 
     Color textColor = Colors.black;
     if (snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode != selectedNode) textColor = Colors.grey;
@@ -321,9 +323,7 @@ class NodeWidget extends StatelessWidget {
       displayedNodeName,
       textScaler: TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
       style: TextStyle(
-        color: badParent
-            ? Colors.orange
-            : selectedNode is SnippetRootNode || selectedNode is GenericSingleChildNode
+        color: selectedNode is SnippetRootNode || selectedNode is GenericSingleChildNode
                 ? Colors.white
                 : textColor,
         fontSize: 12.0,

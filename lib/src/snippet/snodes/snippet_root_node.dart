@@ -4,7 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
+@MappableClass()//discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   bool isEmbedded;
@@ -25,7 +25,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           stringValue: name,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 140),
+          calloutWidth: 280,
         ),
         BoolPropertyValueNode(
           snode: this,
@@ -41,12 +41,15 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             refreshWithUpdate(() => tags = newValue);
           },
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 140),
+          calloutWidth: 280,
         ),
       ];
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    if (findDescendant(SnippetRootNode) != null) {
+
+    }
     setParent(parentNode);
     return FutureBuilder<void>(
         future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),

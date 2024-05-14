@@ -8,8 +8,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
-import 'package:flutter_content/src/snippet/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/model_repo.dart';
+import 'src/api/snippet_panel/clipboard_view.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -34,20 +37,21 @@ import 'src/model/model_repo.dart';
 // const String getIt_textFields = "snippets:textFields";
 
 export 'flutter_content_typedefs.dart';
-export 'src/api/panel/files_or_file_panel.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
-export 'src/api/wrapper/material_spa.dart';
-export 'src/api/wrapper/multiple/targets_wrapper.dart';
-export 'src/api/wrapper/single/single_target_wrapper.dart';
-export 'src/api/wrapper/zoomer.dart';
+export 'src/api/material_spa/material_spa.dart';
+export 'src/snippet/snodes/widget/hotspots/targets_wrapper.dart';
+export 'src/home_page_provider/zoomer.dart';
+
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
-export 'src/app/constant_scrolling_behavior.dart';
+export 'src/api/material_spa/constant_scrolling_behavior.dart';
 export 'src/blink.dart';
+
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/snippet_bloc.dart';
+
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
@@ -58,15 +62,15 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
+
 // export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
-export 'src/overlays/callouts/callout.dart';
-export 'src/overlays/callouts/callout_config.dart';
-export 'src/overlays/callouts/toast.dart';
-export 'src/overlays/overlay_manager.dart';
+export 'src/api/callouts/callout.dart';
+export 'src/api/callouts/callout_config.dart';
+export 'src/api/callouts/toast.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
@@ -104,6 +108,7 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
+
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -117,7 +122,6 @@ export 'src/snippet/snodes/scaffold_node.dart';
 export 'src/snippet/snodes/single_child_node.dart';
 export 'src/snippet/snodes/singlechildscrollview_node.dart';
 export 'src/snippet/snodes/sizedbox_node.dart';
-export 'src/snippet/snodes/snippet_ref_node.dart';
 export 'src/snippet/snodes/snippet_root_node.dart';
 export 'src/snippet/snodes/split_view_node.dart';
 export 'src/snippet/snodes/stack_node.dart';
@@ -134,8 +138,7 @@ export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-export 'src/target_config/content/expansion_tile_section.dart';
-export 'src/text_editing/text_editor.dart';
+export 'src/text_editing/fc_textfield_T.dart';
 export 'src/useful.dart';
 export 'src/widget_helper.dart';
 
@@ -161,8 +164,7 @@ class FC {
   Future<CAPIBloC> init({
     required String modelName,
     FirebaseOptions? fbOptions,
-    final IModelRepository?
-        testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
+    final IModelRepository? testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
     List<String> googleFontNames = const [
       'Roboto',
@@ -171,8 +173,9 @@ class FC {
       'Merriweather Sans',
     ],
     Map<String, NamedTextStyle> namedStyles = const {},
-    bool skipAssetPkgName =
-        false, // would only use true when pkg dir is actually inside current project
+    required GoRouter webRouter,
+    required GoRouter mobileRouter,
+    bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) async {
     _appName = modelName;
     _googleFontNames = googleFontNames;
@@ -186,13 +189,28 @@ class FC {
       // ignore - perhaps testing
     }
 
+    // extract go routes
+    List<String> webRouteNames = [];
+    List<String> mobileRouteNames = [];
+    void parseRouteConfig(List<String> routeNames, List<GoRoute> routes) {
+      for (GoRoute route in routes) {
+        if (route.name != null) routeNames.add(route.name!);
+        parseRouteConfig(routeNames, List.from(route.routes));
+      }
+    }
+
+    parseRouteConfig(webRouteNames, List.from(webRouter.configuration.routes));
+    parseRouteConfig(mobileRouteNames, List.from(mobileRouter.configuration.routes));
+
+    debugPrint(mobileRouteNames.toString());
+    debugPrint('');
+    debugPrint(mobileRouteNames.toString());
+
     try {
       HydratedBloc.storage;
     } catch (e) {
       // init local storage access
-      var dir = kIsWeb
-          ? HydratedStorage.webStorageDirectory
-          : await getTemporaryDirectory();
+      var dir = kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
       HydratedBloc.storage = await HydratedStorage.build(
         storageDirectory: dir,
       );
@@ -200,8 +218,7 @@ class FC {
 
     if (fbOptions != null) {
       modelRepo = FireStoreModelRepository(fbOptions);
-      await (modelRepo as FireStoreModelRepository)
-          .possiblyInitFireStoreRelatedAPIs();
+      await (modelRepo as FireStoreModelRepository).possiblyInitFireStoreRelatedAPIs();
 
       // fetch model
       AppInfoModel? fbAppInfo = await FC().modelRepo.getAppInfo();
@@ -234,7 +251,9 @@ class FC {
 
   late AppInfoModel _appInfo; // must be instantiated in init()
   AppInfoModel get appInfo => _appInfo;
+
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
+
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
 
   // void addVersionId(SnippetName snippetName, VersionId versionId) {
@@ -249,8 +268,10 @@ class FC {
   // }
 
   STreeNode? get clipboard => _appInfo.clipboard;
-  void setClipboard(STreeNode? newClipboard) =>
-      _appInfo.clipboard = newClipboard;
+
+  bool get clipboardIsEmpty => _appInfo.clipboard == null;
+
+  void setClipboard(STreeNode? newClipboard) => _appInfo.clipboard = newClipboard;
 
   // must be instantiated in init()
   Map<SnippetName, SnippetInfoModel> snippetInfoCache = {};
@@ -279,7 +300,7 @@ class FC {
     } else {
       // EXISTING snippet - just add new version
       snippetInfo = snippetInfoCache[snippetName]!..editingVersionId = newVersionId;
-      if (snippetInfo.autoPublish??false) {
+      if (snippetInfo.autoPublish ?? false) {
         snippetInfo.publishedVersionId = newVersionId;
       }
     }
@@ -303,23 +324,21 @@ class FC {
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   late CAPIBloC capiBloc;
-  late bool
-      _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
+  late bool _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, NamedTextStyle> _namedStyles;
   String? jsonBeforePush;
   Offset? _devToolsFABPos;
   Offset? _calloutConfigToolbarPos;
-  bool skipEditModeEscape =
-      false; // property editors can set this to prevent exit from EditMode
+  bool skipEditModeEscape = false; // property editors can set this to prevent exit from EditMode
 
   final inEditMode = ValueNotifier<bool>(false);
 
-  bool get canEditContent =>
-      HydratedBloc.storage.read("canEditContent") ?? false;
+  bool get canEditContent => HydratedBloc.storage.read("canEditContent") ?? false;
 
-  static void forceRefresh() =>
-      _instance!.capiBloc.add(const CAPIEvent.forceRefresh());
+  static void forceRefreshSnippetTree() => FC().snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
+
+  static void forceRefresh() => _instance!.capiBloc.add(const CAPIEvent.forceRefresh());
 
   void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
 
@@ -330,25 +349,20 @@ class FC {
         Useful.scrH / 2 - 40,
       );
 
-  void setCalloutConfigToolbarPos(Offset newPos) =>
-      _calloutConfigToolbarPos = newPos;
+  void setCalloutConfigToolbarPos(Offset newPos) => _calloutConfigToolbarPos = newPos;
 
-  Offset devToolsFABPos(context) =>
-      _devToolsFABPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
+  Offset devToolsFABPos(context) => _devToolsFABPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
   bool? showingNodeOBoundaryOverlays;
 
-  registerHandler(HandlerName name, void Function(BuildContext) f) =>
-      _handlers[name] = f;
+  registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
 
-  void Function(BuildContext)? namedHandler(HandlerName name) =>
-      _handlers[name];
+  void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
   // each snippet panel has a gk, a last selected node, and a ur
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
-      {}; // every node's toWidget() creates a GK
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -390,8 +404,7 @@ class FC {
     return;
   }
 
-  SnippetBloC? popSnippet() =>
-      areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
+  SnippetBloC? popSnippet() => areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
 
   final GksByFeature _calloutGkMap = {};
 
@@ -461,13 +474,10 @@ class FC {
 
   static Future<bool> canInformUserOfNewVersion() async {
     // decide whether new version loaded
-    String? storedVersionAndBuild =
-        await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild =
-        '${FC().yamlVersion}-${FC().yamlBuildNumber}';
+    String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
+    String latestVersionAndBuild = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
     if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage
-          .write('versionAndBuild', latestVersionAndBuild);
+      await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
       if (storedVersionAndBuild != null) return true;
     }
     return false;
@@ -476,15 +486,30 @@ class FC {
   static Future<bool> informUserOfNewVersion() async {
     // _packageInfo = await PackageInfo.fromPlatform();
     // decide whether new version loaded
-    String? storedVersionAndBuild =
-        await HydratedBloc.storage.read("versionAndBuild");
+    String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
     String latestVersionAndBuild = '${FC().appName}-${FC().yamlBuildNumber}';
     if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage
-          .write('versionAndBuild', latestVersionAndBuild);
+      await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
       if (storedVersionAndBuild != null) return true;
     }
     return false;
+  }
+
+  void hideClipboard() => Callout.dismiss("floating-clipboard");
+
+  void showFloatingClipboard() {
+    Callout.dismiss("floating-clipboard");
+    Callout.showOverlay(
+        boxContentF: (context) => const ClipboardView(),
+        calloutConfig: CalloutConfig(
+          feature: "floating-clipboard",
+          suppliedCalloutW: 300,
+          suppliedCalloutH: 180,
+          initialCalloutPos: Offset(Useful.scrW - 400, 0),
+          fillColor: Colors.transparent,
+          arrowType: ArrowType.NO_CONNECTOR,
+          borderRadius: 16,
+        ));
   }
 
   // static Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
@@ -519,8 +544,7 @@ class FC {
 
   static Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");
-    FC().rootFSFolderNode =
-        await FC().modelRepo.createAndPopulateFolderNode(ref: rootRef);
+    FC().rootFSFolderNode = await FC().modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 }
 

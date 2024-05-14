@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/iframe.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/iframe.dart';
 
 part 'google_drive_iframe_node.mapper.dart';
 
@@ -33,7 +33,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           stringValue: name,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         StringPropertyValueNode(
           snode: this,
@@ -41,7 +41,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           stringValue: folderId,
           onStringChange: (newValue) => refreshWithUpdate(() => folderId = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         StringPropertyValueNode(
           snode: this,
@@ -49,7 +49,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           stringValue: resourceKey,
           onStringChange: (newValue) => refreshWithUpdate(() => resourceKey = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         DecimalPropertyValueNode(
           snode: this,

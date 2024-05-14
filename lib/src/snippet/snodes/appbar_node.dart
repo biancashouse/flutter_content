@@ -54,7 +54,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     SnippetPanelState? spState = SnippetPanel.of(context);
     Widget leadingWidget() {
       if (spState != null) {
-        if (spState.prevTabQ.isNotEmpty??false) {
+        if (spState.prevTabQ.isNotEmpty ?? false) {
           return IconButton(
             onPressed: () {
               if (spState.prevTabQ.isNotEmpty) {
@@ -106,6 +106,26 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
       );
     }
   }
+
+  @override
+  bool canBeDeleted() => (leading == null && title == null && bottom == null && actions == null);
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      if (getParent() is! ScaffoldNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      if (getParent() is! ScaffoldNode) menuItemButton("Scaffold", snippetBloc, ScaffoldNode, action),
+    ];
+  }
+
+  @override
+  List<Type> replaceWithOnly() => [AppBarNode];
+
+  @override
+  List<Type> wrapCandidates() => [ScaffoldNode];
+
+  @override
+  List<Type> wrapWithOnly() => [ScaffoldNode];
 
   @override
   String toString() => FLUTTER_TYPE;

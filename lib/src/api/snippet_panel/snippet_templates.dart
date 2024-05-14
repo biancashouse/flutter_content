@@ -7,7 +7,8 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dar
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 
 enum SnippetTemplate {
-  empty_snippet,
+  empty,
+  rich_text,
   scaffold_with_tabs,
   scaffold_with_menubar,
   scaffold_with_actions,
@@ -22,8 +23,18 @@ enum SnippetTemplate {
 
 List<SnippetRootNode> templates = [
   // empty snippet for test only
+  SnippetRootNode(name: SnippetTemplate.empty.name, child: PlaceholderNode()),
   SnippetRootNode(
-      name: SnippetTemplate.empty_snippet.name, child: PlaceholderNode()),
+    name: SnippetTemplate.rich_text.name,
+    child: RichTextNode(
+      text: TextSpanNode(
+        text: 'ABC',
+        children: [
+          TextSpanNode(text: ' def')
+        ],
+      ),
+    ),
+  ),
   // SnippetRootNode(
   //   name: SnippetTemplate.target_content_widget.name,
   //   // child: SizedBoxNode(
@@ -39,8 +50,7 @@ List<SnippetRootNode> templates = [
     child: ScaffoldNode(
       appBar: AppBarNode(
         bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(
-            propertyName: 'title', child: TextNode(text: 'my title')),
+        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
         bottom: GenericSingleChildNode(
           propertyName: 'bottom',
           child: TabBarNode(
@@ -55,10 +65,8 @@ List<SnippetRootNode> templates = [
         propertyName: 'body',
         child: TabBarViewNode(
           children: [
-            PlaceholderNode(
-                centredLabel: 'page 1', colorValue: Colors.yellow.value),
-            PlaceholderNode(
-                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
+            PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
           ],
         ),
       ),
@@ -70,8 +78,7 @@ List<SnippetRootNode> templates = [
     child: ScaffoldNode(
       appBar: AppBarNode(
         bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(
-            propertyName: 'title', child: TextNode(text: 'my title')),
+        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
         bottom: GenericSingleChildNode(
           propertyName: 'bottom',
           child: MenuBarNode(children: [
@@ -83,8 +90,7 @@ List<SnippetRootNode> templates = [
       ),
       body: GenericSingleChildNode(
         propertyName: 'body',
-        child: PlaceholderNode(
-            name: 'body-placeholder', centredLabel: 'menu item destination'),
+        child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
       ),
     ),
   ),
@@ -93,8 +99,7 @@ List<SnippetRootNode> templates = [
     child: ScaffoldNode(
       appBar: AppBarNode(
         bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(
-            propertyName: 'title', child: TextNode(text: 'my title')),
+        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
         actions: GenericMultiChildNode(propertyName: 'actions', children: [
           FilledButtonNode(child: TextNode(text: 'action 1')),
           FilledButtonNode(child: TextNode(text: 'action 2')),
@@ -103,8 +108,7 @@ List<SnippetRootNode> templates = [
       ),
       body: GenericSingleChildNode(
         propertyName: 'body',
-        child: PlaceholderNode(
-            name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
+        child: PlaceholderNode(name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
       ),
     ),
   ),

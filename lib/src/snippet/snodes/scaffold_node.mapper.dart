@@ -29,7 +29,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static AppBarNode? _$appBar(ScaffoldNode v) => v.appBar;
   static const Field<ScaffoldNode, AppBarNode> _f$appBar =
       Field('appBar', _$appBar, opt: true);
-  static GenericSingleChildNode _$body(ScaffoldNode v) => v.body;
+  static GenericSingleChildNode? _$body(ScaffoldNode v) => v.body;
   static const Field<ScaffoldNode, GenericSingleChildNode> _f$body =
       Field('body', _$body);
   static String _$uid(ScaffoldNode v) => v.uid;
@@ -128,7 +128,7 @@ abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
     implements STreeNodeCopyWith<$R, $In, $Out> {
   AppBarNodeCopyWith<$R, AppBarNode, AppBarNode>? get appBar;
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-      GenericSingleChildNode> get body;
+      GenericSingleChildNode>? get body;
   @override
   $R call(
       {int? bgColorValue, AppBarNode? appBar, GenericSingleChildNode? body});
@@ -148,17 +148,17 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
       $value.appBar?.copyWith.$chain((v) => call(appBar: v));
   @override
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
-          GenericSingleChildNode>
-      get body => $value.body.copyWith.$chain((v) => call(body: v));
+          GenericSingleChildNode>?
+      get body => $value.body?.copyWith.$chain((v) => call(body: v));
   @override
   $R call(
           {Object? bgColorValue = $none,
           Object? appBar = $none,
-          GenericSingleChildNode? body}) =>
+          Object? body = $none}) =>
       $apply(FieldCopyWithData({
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
         if (appBar != $none) #appBar: appBar,
-        if (body != null) #body: body
+        if (body != $none) #body: body
       }));
   @override
   ScaffoldNode $make(CopyWithData data) => ScaffoldNode(

@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/iframe.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/iframe.dart';
 
 // import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -31,7 +31,7 @@ class YTNode extends CL with YTNodeMappable {
           stringValue: ytUrl,
           onStringChange: (newValue) => refreshWithUpdate(() => ytUrl = newValue),
           calloutButtonSize: const Size(280, 20),
-          calloutSize: const Size(280, 140),
+          calloutWidth: 280,
         ),
     IntPropertyValueNode(
       snode: this,

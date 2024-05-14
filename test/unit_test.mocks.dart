@@ -8,7 +8,8 @@ import 'dart:async' as _i4;
 import 'package:firebase_storage/firebase_storage.dart' as _i6;
 import 'package:flutter_content/flutter_content.dart' as _i5;
 import 'package:flutter_content/src/model/model_repo.dart' as _i3;
-import 'package:flutter_content/src/snippet/fs_folder_node.dart' as _i2;
+import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart'
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint

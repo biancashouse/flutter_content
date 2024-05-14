@@ -4,10 +4,9 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/bloc/snippet_state.dart';
-import 'package:flutter_content/src/snippet/callout_node_menu.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/input_snippet_name.dart';
+import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -38,7 +37,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('SnippetTreeAndPropertiesCalloutContents tree build');
+    // debugPrint('SnippetTreeAndPropertiesCalloutContents tree build');
     // final snippetBloc = context.watch<SnippetBloC>();
     // final STreeNode? selectedNode = snippetBloc.state.selectedNode;
     // get parent callout config
@@ -363,7 +362,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                      color: Colors.red.withOpacity( !snippetBloc.state.aNodeIsSelected ||
+                          !snippetBloc.state.selectedNode.canBeDeleted() ||
                               (snippetBloc.state.selectedNode is SnippetRootNode && snippetBloc.state.selectedNode.getParent() == null) ||
                               (gc is GenericSingleChildNode? && gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
                           ? .5
@@ -432,8 +432,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           if (snippetBloc.state.selectedNode is! GenericSingleChildNode && _canReplace(snippetBloc.state.selectedNode!))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
-                  action: NodeAction.replace, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
+              child: snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
+                  action: NodeAction.replaceWith, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
             ),
           editTreeStructureIconButtons(snippetBloc),
           vspacer(10),
@@ -491,13 +491,13 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                          snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
                               action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
                           vspacer(12),
                           // snippetBloc.state.selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
-                          insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                          snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
                               action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                         ],
                       ),
@@ -506,14 +506,14 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     Positioned(
                       top: 10,
                       left: 10,
-                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                      child: snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
                           action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
                     ),
                   if (_canAddChld(snippetBloc.state.selectedNode!))
                     Positioned(
                       bottom: 10,
                       right: 10,
-                      child: insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                      child:snippetBloc.state.selectedNode!. insertItemMenuAnchor(snippetBloc,
                           action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
                     ),
                 ],
@@ -531,9 +531,9 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                    snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
                         action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
-                    insertItemMenuAnchor(snippetBloc, snippetBloc.state.selectedNode!,
+                    snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
                         action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                   ],
                 ),
@@ -553,9 +553,8 @@ class SnippetTreePane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (snippetBloc.rootNode.child == null) {
-      List<Widget> menuChildren = menuAnchorWidgets(
+      List<Widget> menuChildren = snippetBloc.rootNode.menuAnchorWidgets(
         snippetBloc,
-        snippetBloc.rootNode,
         NodeAction.addChild,
       );
       return MenuAnchor(

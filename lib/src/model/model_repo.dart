@@ -1,6 +1,6 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
 // enum FSAction { undo, redo }
 

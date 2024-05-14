@@ -76,6 +76,9 @@ class HotspotsNode extends ButtonNode
   }
 
   @override
+  bool canBeDeleted() => targets.isEmpty;
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   @override

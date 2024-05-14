@@ -40,7 +40,7 @@ class PollNode extends MC with PollNodeMappable {
           stringValue: name,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(300, 20),
-          calloutSize: const Size(300, 80),
+          calloutWidth: 300,
         ),
         StringPropertyValueNode(
           snode: this,
@@ -50,7 +50,7 @@ class PollNode extends MC with PollNodeMappable {
           numLines: 3,
           onStringChange: (newValue) => refreshWithUpdate(() => title = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 140),
+          calloutWidth: 300,
         ),
         DateRangePropertyValueNode(
           snode: this,
@@ -111,6 +111,17 @@ class PollNode extends MC with PollNodeMappable {
             );
       },
     );
+  }
+
+  @override
+  bool canBeDeleted() => children.isEmpty;
+
+  @override
+  List<Widget> menuAnchorWidgets_Append(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("PollOption", snippetBloc, PollOptionNode, action),
+    ];
   }
 
   @override

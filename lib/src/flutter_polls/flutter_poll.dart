@@ -8,7 +8,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_event.dart';
 import 'package:flutter_content/src/bloc/poll_state.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_string.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // FlutterPolls widget.
@@ -257,7 +257,7 @@ class FlutterPollState extends State<FlutterPoll> {
                                 color: showTextInputButton ? Colors.red[900] : Colors.white,
                                 padding: const EdgeInsets.all(4),
                                 child: showTextInputButton
-                                    ? NodePropertyButton_String(
+                                    ? PropertyButton<String>(
                                         originalText: voterId ?? '',
                                         label: 'email address',
                                         maxLines: 1,

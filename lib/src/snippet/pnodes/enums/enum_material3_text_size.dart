@@ -3,7 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_radio_menu.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 
 part 'enum_material3_text_size.mapper.dart';
 
@@ -34,7 +34,7 @@ enum Material3TextSizeEnum {
     ValueChanged<int?>? onChangedF,
     required ThemeData themeData,
   }) =>
-      NodePropertyButtonEnum(
+      PropertyButtonEnum(
         label: enumValueIndex != null ? '' : 'Material 3 FontSize',
         //'Material3 font size',
         menuItems: values.map((e) => e.toMenuItem(themeData)).toList(),

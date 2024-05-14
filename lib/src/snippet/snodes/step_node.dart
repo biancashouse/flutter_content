@@ -23,6 +23,8 @@ class StepNode extends CL with StepNodeMappable {
   List<PTreeNode> createPropertiesList(BuildContext context) => [];
 
   Step toStep(BuildContext context, int index, FCStepperState parent) {
+    setParent(parent.widget.stepperNode);
+    possiblyHighlightSelectedNode();
      return Step(
        isActive: parent.currentStep >= index,
       title: title.toWidgetProperty(context, this) ?? Useful.coloredText('must have a title', color: Colors.red),
@@ -33,6 +35,30 @@ class StepNode extends CL with StepNodeMappable {
 
   @override
   String toSource(BuildContext context) => '';
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      if (getParent() is! StepperNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      if (getParent() is! StepperNode) menuItemButton("Stepper", snippetBloc, StepperNode, action),
+    ];
+  }
+
+  @override
+  bool canBeDeleted() => true;
+
+  @override
+  List<Type> replaceWithOnly() => [StepNode];
+
+  @override
+  List<Type> wrapCandidates() => [StepperNode];
+
+  @override
+  List<Type> wrapWithOnly() => [StepperNode];
+
+  @override
+  List<Type> insertSiblingOnly() => [StepNode];
+
 
   @override
   String toString() => FLUTTER_TYPE;

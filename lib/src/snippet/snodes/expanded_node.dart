@@ -25,12 +25,6 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
       ];
 
   @override
-  List<String> sensibleParents() => const [
-        RowNode.FLUTTER_TYPE,
-        ColumnNode.FLUTTER_TYPE,
-      ];
-
-  @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
@@ -88,6 +82,16 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   //   List<Type> candidateTypes = [RowNode, ColumnNode];
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
+
+  @override
+  List<Type> replaceWithRecommendations() => [ExpandedNode,FlexibleNode];
+
+  @override
+  List<Type> wrapCandidates() => [FlexNode];
+
+  @override
+  List<Type> wrapWithOnly() => [RowNode,ColumnNode];
+
 
   @override
   String toString() => FLUTTER_TYPE;

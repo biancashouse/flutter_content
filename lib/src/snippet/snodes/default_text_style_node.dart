@@ -40,7 +40,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
           options: FC().namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           calloutButtonSize: const Size(280, 20),
-          calloutSize: const Size(280, 48),
+          calloutWidth: 280,
         ),
         EnumPropertyValueNode<TextAlignEnum?>(
           snode: this,

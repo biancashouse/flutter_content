@@ -22,6 +22,12 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   @override
   final String id = 'MenuBarNode';
 
+  static double? _$width(MenuBarNode v) => v.width;
+  static const Field<MenuBarNode, double> _f$width =
+      Field('width', _$width, opt: true);
+  static double? _$height(MenuBarNode v) => v.height;
+  static const Field<MenuBarNode, double> _f$height =
+      Field('height', _$height, opt: true);
   static List<STreeNode> _$children(MenuBarNode v) => v.children;
   static const Field<MenuBarNode, List<STreeNode>> _f$children =
       Field('children', _$children);
@@ -44,6 +50,8 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
 
   @override
   final MappableFields<MenuBarNode> fields = const {
+    #width: _f$width,
+    #height: _f$height,
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -59,7 +67,10 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   late final ClassMapperBase superMapper = MCMapper.ensureInitialized();
 
   static MenuBarNode _instantiate(DecodingData data) {
-    return MenuBarNode(children: data.dec(_f$children));
+    return MenuBarNode(
+        width: data.dec(_f$width),
+        height: data.dec(_f$height),
+        children: data.dec(_f$children));
   }
 
   @override
@@ -117,7 +128,7 @@ abstract class MenuBarNodeCopyWith<$R, $In extends MenuBarNode, $Out>
   ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
       get children;
   @override
-  $R call({List<STreeNode>? children});
+  $R call({double? width, double? height, List<STreeNode>? children});
   MenuBarNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -134,11 +145,20 @@ class _MenuBarNodeCopyWithImpl<$R, $Out>
       get children => ListCopyWith($value.children,
           (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
   @override
-  $R call({List<STreeNode>? children}) =>
-      $apply(FieldCopyWithData({if (children != null) #children: children}));
+  $R call(
+          {Object? width = $none,
+          Object? height = $none,
+          List<STreeNode>? children}) =>
+      $apply(FieldCopyWithData({
+        if (width != $none) #width: width,
+        if (height != $none) #height: height,
+        if (children != null) #children: children
+      }));
   @override
-  MenuBarNode $make(CopyWithData data) =>
-      MenuBarNode(children: data.get(#children, or: $value.children));
+  MenuBarNode $make(CopyWithData data) => MenuBarNode(
+      width: data.get(#width, or: $value.width),
+      height: data.get(#height, or: $value.height),
+      children: data.get(#children, or: $value.children));
 
   @override
   MenuBarNodeCopyWith<$R2, MenuBarNode, $Out2> $chain<$R2, $Out2>(

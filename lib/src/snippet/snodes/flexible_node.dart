@@ -111,17 +111,17 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   //       ),
   //     ];
 
-  @override
-  List<String> sensibleParents() => const [
-        RowNode.FLUTTER_TYPE,
-        ColumnNode.FLUTTER_TYPE,
-      ];
-
   // @override
   // List<Widget> wrapWithCandidates(final BuildContext context, final STreeNode? parentNode, ValueChanged<Type> onPressed) {
   //   List<Type> candidateTypes = [RowNode, ColumnNode];
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
+
+  @override
+  List<Type> wrapCandidates() => [FlexNode];
+
+  @override
+  List<Type> wrapWithOnly() => [RowNode,ColumnNode];
 
   @override
   String toString() => FLUTTER_TYPE;

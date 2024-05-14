@@ -130,6 +130,12 @@ class CarouselNode extends MC with CarouselNodeMappable {
   }
 
   @override
+  bool canBeDeleted() => children.isEmpty;
+
+  @override
+  List<Type> addChildOnly() => [AssetImageNode, FirebaseStorageImageNode];
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Carousel";

@@ -6,7 +6,12 @@ part 'menu_bar_node.mapper.dart';
 
 @MappableClass()
 class MenuBarNode extends MC with MenuBarNodeMappable {
+  double? width;
+  double? height;
+
   MenuBarNode({
+    this.width,
+    this.height,
     required super.children,
   });
 
@@ -27,15 +32,54 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
     if (menuBarChildren.isEmpty) {
       return const Text('new MenuBar');
     } else {
-      return MenuBar(
-        key: createNodeGK(),
-        children: super.children.map((child) => child.toWidget(context, this)).toList(),
-      );
+      try {
+        return PreferredSizeMenuBar(
+          MenuBar(
+            key: createNodeGK(),
+            children: super.children.map((child) => child.toWidget(context, this)).toList(),
+          ),
+          width ?? Useful.scrW,
+          height ?? 60,
+        );
+      } catch (e) {
+        debugPrint('MenuBarNode.toWidget() failed!');
+        return Material(
+          textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                const Icon(Icons.error, color: Colors.redAccent),
+                hspacer(10),
+                Useful.coloredText(e.toString()),
+              ],
+            ),
+          ),
+        );
+      }
     }
   }
+
+  @override
+  bool canBeDeleted() => children.isEmpty;
 
   @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "MenuBar";
+}
+
+class PreferredSizeMenuBar extends StatelessWidget implements PreferredSizeWidget {
+  final double width;
+  final double height;
+  final MenuBar menuBar;
+  const PreferredSizeMenuBar(this.menuBar, this.width, this.height, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return menuBar;
+  }
+
+  @override
+  Size get preferredSize => Size(width,height );
 }

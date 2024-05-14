@@ -34,7 +34,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           stringValue: name,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(150, 20),
-          calloutSize: const Size(150, 80),
+          calloutWidth: 150,
         ),
         DecimalPropertyValueNode(
           snode: this,

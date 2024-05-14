@@ -11,7 +11,8 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
   String? contentSnippetName;
   AlignmentEnum? targetAlignment;
   // AlignmentEnum? calloutAlignment;
-  Offset? calloutPos;
+  double? calloutTop;
+  double? calloutLeft;
   int? colorValue;
   ArrowTypeEnum? arrowType;
   Color? arrowColor;
@@ -26,7 +27,8 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
     this.contentSnippetName,
     this.targetAlignment,
     // this.calloutAlignment,
-    this.calloutPos,
+    this.calloutTop,
+    this.calloutLeft,
     this.colorValue,
     this.arrowType,
     this.arrowColor,

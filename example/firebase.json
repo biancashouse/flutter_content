@@ -7,7 +7,6 @@
         "destination": "/index.html"
       }
     ],
-    "cacheControl": "no-cache, no-store, must-revalidate",
     "target": "staging-deploy",
     "ignore": [
       "firebase.json",

@@ -32,24 +32,21 @@ class PositionedNode extends SC with PositionedNodeMappable {
           snode: this,
           name: 'left',
           decimalValue: left,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => left = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => left = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'bottom',
           decimalValue: bottom,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => bottom = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => bottom = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'right',
           decimalValue: right,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => right = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => right = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];
@@ -87,11 +84,6 @@ class PositionedNode extends SC with PositionedNodeMappable {
     )'''
         : 'const Offstage()';
   }
-
-  @override
-  List<String> sensibleParents() => const [
-        StackNode.FLUTTER_TYPE,
-      ];
 
   // @override
   // List<Widget> nodePropertyEditors(BuildContext context, {bool allowButtonCallouts = false}) => [
@@ -195,6 +187,20 @@ class PositionedNode extends SC with PositionedNodeMappable {
   //   List<Type> candidateTypes = [StackNode];
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
+
+  @override
+  List<Type> replaceWithRecommendations() => [PositionedNode, AlignNode];
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      if (getParent() is! StackNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      if (getParent() is! StackNode) menuItemButton("Stack", snippetBloc, StackNode, action),
+    ];
+  }
+
+  @override
+  List<Type> wrapCandidates() => [StackNode];
 
   @override
   String toString() => FLUTTER_TYPE;

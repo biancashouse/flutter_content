@@ -55,7 +55,7 @@ class FileNode extends CL with FileNodeMappable {
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
         StringPropertyValueNode(
           snode: this,
@@ -63,7 +63,7 @@ class FileNode extends CL with FileNodeMappable {
           stringValue: src,
           onStringChange: (newValue) => refreshWithUpdate(() => src = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
       ];
 
@@ -124,6 +124,9 @@ class FileNode extends CL with FileNodeMappable {
   //   List<Type> candidateTypes = [DirectoryNode, FileNode];
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
+
+  @override
+  List<Type> wrapWithOnly() => [DirectoryNode];
 
   @override
   String toString() => FLUTTER_TYPE;

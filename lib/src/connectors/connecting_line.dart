@@ -3,9 +3,9 @@ import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/overlays/callouts/coord.dart';
-import 'package:flutter_content/src/overlays/callouts/line.dart';
-import 'package:flutter_content/src/overlays/callouts/pointing_line.dart';
+import 'package:flutter_content/src/api/callouts/coord.dart';
+import 'package:flutter_content/src/api/callouts/line.dart';
+import 'package:flutter_content/src/api/callouts/pointing_line.dart';
 
 
 class ConnectingLine {

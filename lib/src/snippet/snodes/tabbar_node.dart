@@ -128,6 +128,9 @@ class TabBarNode extends MC with TabBarNodeMappable {
   }
 
   @override
+  bool canBeDeleted() => children.isEmpty;
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "TabBar";

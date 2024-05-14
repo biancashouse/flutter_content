@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
 import 'model_repo.dart';
 
@@ -21,7 +21,7 @@ class FireStoreModelRepository implements IModelRepository {
   Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs() async {
     fbApp = await Firebase.initializeApp(options: fbOptions);
     // emulator if in non-prod mode
-    if (kDebugMode) {
+    if (false && kDebugMode) {
       FirebaseFirestore.instance.settings = Settings(
         host: '${Useful.isAndroid ? "10.0.2.2" : "localhost"}:8080',
         sslEnabled: false,

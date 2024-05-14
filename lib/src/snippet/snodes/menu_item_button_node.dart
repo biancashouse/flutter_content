@@ -4,6 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:go_router/go_router.dart';
 
 part 'menu_item_button_node.mapper.dart';
 
@@ -12,11 +13,13 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
   String itemLabel;
   String? destinationPanelName;
   String? destinationSnippetName;
+  String? destinationPageName; // go routeer route name
 
   MenuItemButtonNode({
     this.itemLabel = '',
     this.destinationPanelName,
     this.destinationSnippetName,
+    this.destinationPageName,
   });
 
   @override
@@ -31,26 +34,36 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
         onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue),
         expands: false,
         calloutButtonSize: const Size(280, 20),
-        calloutSize: const Size(280, 80),
+        calloutWidth: 280,
       ),
       StringPropertyValueNode(
         snode: this,
-        name: 'snippet Name',
+        name: 'Snippet Name',
         stringValue: destinationSnippetName,
         onStringChange: (newValue) => refreshWithUpdate(() => destinationSnippetName = newValue),
         expands: false,
         calloutButtonSize: const Size(280, 20),
-        calloutSize: const Size(280, 80),
+        calloutWidth: 280,
         options: allSnippets,
       ),
       StringPropertyValueNode(
         snode: this,
-        name: 'panel Name',
+        name: 'Panel Name',
         stringValue: destinationPanelName,
         onStringChange: (newValue) => refreshWithUpdate(() => destinationPanelName = newValue),
         expands: false,
         calloutButtonSize: const Size(280, 20),
-        calloutSize: const Size(280, 80),
+        calloutWidth: 280,
+        options: allPanelNames,
+      ),
+      StringPropertyValueNode(
+        snode: this,
+        name: 'Page Name',
+        stringValue: destinationPageName,
+        onStringChange: (newValue) => refreshWithUpdate(() => destinationPageName = newValue),
+        expands: false,
+        calloutButtonSize: const Size(280, 20),
+        calloutWidth: 280,
         options: allPanelNames,
       ),
     ];
@@ -58,7 +71,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
+    setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
     return MenuItemButton(
       key: createNodeGK(),
@@ -69,6 +82,8 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
             snippetName: destinationSnippetName!,
             panelName: destinationPanelName!,
           ));
+        } else if (destinationPageName != null) {
+          context.goNamed(destinationPageName!);
         }
       },
       style: Useful.buttonStyle(30),
@@ -81,6 +96,15 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
     return '''MenuItemButton(
       )''';
   }
+
+  @override
+  List<Type> replaceWithOnly() => [SubmenuButton];
+
+  @override
+  List<Type> wrapCandidates() => [SubmenuButtonNode, MenuBarNode];
+
+  @override
+  List<Type> wrapWithOnly() => [MenuBarNode, SubmenuButtonNode];
 
   @override
   String toString() => FLUTTER_TYPE;

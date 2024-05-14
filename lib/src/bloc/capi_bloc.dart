@@ -439,6 +439,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
     if (event.skipSave) return;
     FC().modelRepo.saveAppInfo();
+    // possibly hide or show clipbaord tab
+    if (event.newContent == null) {
+      FC().hideClipboard();
+    } else {
+      FC().hideClipboard();
+      FC().showFloatingClipboard();
+    }
   }
 
 // // update current scale, translate and selected target

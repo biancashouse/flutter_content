@@ -27,7 +27,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
           stringValue: itemLabel,
           onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
       ];
 
@@ -55,7 +55,8 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     return SubmenuButton(
-            key: createNodeGK(),      style: Useful.buttonStyle(36),
+      key: createNodeGK(),
+      style: Useful.buttonStyle(36),
       menuStyle: MenuStyle(
         backgroundColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
@@ -71,6 +72,25 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
       child: Text(itemLabel),
     );
   }
+
+  @override
+  bool canBeDeleted() => children.isEmpty;
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      if (getParent() is! MenuBarNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      if (findNearestAncestor<MenuBarNode>() == null && findNearestAncestor<SubmenuButtonNode>() == null)
+        menuItemButton("MenuBar", snippetBloc, MenuBarNode, action),
+      menuItemButton("SubMenu", snippetBloc, SubmenuButtonNode, action),
+    ];
+  }
+
+  @override
+  List<Type> wrapCandidates() => [MenuBarNode];
+
+  @override
+  List<Type> wrapWithOnly() => [MenuBarNode];
 
   @override
   String toString() => FLUTTER_TYPE;

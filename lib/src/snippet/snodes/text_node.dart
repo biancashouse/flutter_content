@@ -28,13 +28,16 @@ class TextNode extends CL with TextNodeMappable {
         StringPropertyValueNode(
           snode: this,
           name: 'text',
-          skipLabelText: true,
+          // options: ['aardvark', 'blah', 'apple', 'oranges', 'bananas', 'grapes', 'coconut'],
           nameOnSeparateLine: true,
           expands: true,
+          numLines: 3,
           stringValue: text,
-          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
+          onStringChange: (newValue) {
+            refreshWithUpdate(() => text = newValue);
+          },
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(300, 240),
+          calloutWidth: 300,
         ),
         TextStylePropertyGroup(
           snode: this,
@@ -50,7 +53,7 @@ class TextNode extends CL with TextNodeMappable {
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           expands: false,
           calloutButtonSize: const Size(280, 20),
-          calloutSize: const Size(280, 80),
+          calloutWidth: 280,
         ),
         EnumPropertyValueNode<TextAlignEnum?>(
           snode: this,
@@ -252,7 +255,7 @@ class TextNode extends CL with TextNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    TextStyle? ts = (textStyleGroup??TextStyleGroup()).toTextStyle(context, namedTextStyle: namedTextStyle);
+    TextStyle? ts = (textStyleGroup ?? TextStyleGroup()).toTextStyle(context, namedTextStyle: namedTextStyle);
     try {
       return Text(
         key: createNodeGK(),

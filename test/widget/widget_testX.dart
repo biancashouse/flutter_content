@@ -10,7 +10,7 @@ void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
   SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
-      SnippetTemplate.empty_snippet, 'empty_snippet');
+      SnippetTemplate.empty, 'empty_snippet');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   const appName = 'flutter-content-widget-test';
@@ -96,7 +96,7 @@ void main() {
         appName: 'flutter-content-widget-test',
         testModelRepo: mockRepository,
         testWidget: FlutterContentPage(
-            panelName: "my-panel",
+            pageName: "my-panel",
             snippetName: SnippetTemplate.scaffold_with_tabs.name),
         materialAppThemeF: () => ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

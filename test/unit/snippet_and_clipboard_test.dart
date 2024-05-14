@@ -33,7 +33,7 @@ void main() {
 
   // sample data -----------
   SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
-    SnippetTemplate.empty_snippet,
+    SnippetTemplate.empty,
     'some-name',
   );
   late STreeNode firstTabViewNode;

@@ -8,7 +8,7 @@ part 'scaffold_node.mapper.dart';
 class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   int? bgColorValue;
   AppBarNode? appBar;
-  GenericSingleChildNode body;
+  GenericSingleChildNode? body;
 
   // int numTabs;
 
@@ -50,9 +50,24 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
       key: createNodeGK(),
       backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
       appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?, // guaranteed the widget is actually an AppBar
-      body: body.toWidgetProperty(context, this),
+      body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
     );
   }
+
+  @override
+  bool canBeDeleted() => appBar == null && body == null;
+
+  @override
+  List<Widget> menuAnchorWidgets_Append(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("PollOption", snippetBloc, PollOptionNode, action),
+    ];
+  }
+
+  @override
+  List<Type> replaceWithRecommendations() => [ScaffoldNode];
+
 
   @override
   String toString() => FLUTTER_TYPE;

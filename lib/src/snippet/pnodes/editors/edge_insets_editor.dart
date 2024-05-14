@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_double.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 enum EdgeInsetsInputModeEnum { all, symmetrical, only }
@@ -23,7 +23,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
     final ei = useState<EdgeInsetsValue>(originalValue);
     final inputMode = useState<EdgeInsetsInputModeEnum>(EdgeInsetsInputModeEnum.all);
     return SizedBox(
-      width: 200,
+      width: 240,
       height: 180,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,16 +77,32 @@ class EdgeInsetsPropertyEditor extends HookWidget {
           ),
           SizedBox(
             // color: Colors.white,
-            width: 200,
+            width: 240,
             height: 100,
             child: Stack(
               children: [
                 Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    // padding: EdgeInsets.all(10),
+                    width: 100,
+                    height: 40,
+                    color: Colors.purple,
+                  ),
+                ),
+                Align(
                   alignment: Alignment.topCenter,
-                  child: _tappableNumber(
-                    ei.value.top,
-                    'top',
-                    (s) {
+                  child: PropertyButtonNumber<double>(
+                    originalValue: ei.value.top,
+                    labelWidget: RichText(
+                      text: TextSpan(text: 'top: ', style: TextStyle(color: Colors.white), children: [
+                        TextSpan(
+                          text: '${ei.value.top}',
+                          style: const TextStyle(color: Colors.cyanAccent),
+                        ),
+                      ]),
+                    ),
+                    onChangedF: (s) {
                       double? newTop = double.tryParse(s);
                       if (newTop != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -99,14 +115,24 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                       }
                       onChangedF.call(ei.value);
                     },
+                    alignment: Alignment.center,
+                    buttonSize: const Size(50, 40),
+                    editorSize: const Size(80, 60),
                   ),
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: _tappableNumber(
-                    ei.value.left,
-                    'left',
-                    (s) {
+                  child: PropertyButtonNumber<double>(
+                    originalValue: ei.value.left,
+                    labelWidget: RichText(
+                      text: TextSpan(text: 'left: ', style: TextStyle(color: Colors.white), children: [
+                        TextSpan(
+                          text: '${ei.value.left}',
+                          style: const TextStyle(color: Colors.cyanAccent),
+                        ),
+                      ]),
+                    ),
+                    onChangedF: (s) {
                       double? newLeft = double.tryParse(s);
                       if (newLeft != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -119,14 +145,24 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                       }
                       onChangedF.call(ei.value);
                     },
+                    alignment: Alignment.center,
+                    buttonSize: const Size(50, 40),
+                    editorSize: const Size(80, 60),
                   ),
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: _tappableNumber(
-                    ei.value.right,
-                    'right',
-                    (s) {
+                  child: PropertyButtonNumber<double>(
+                    originalValue: ei.value.right,
+                    labelWidget: RichText(
+                      text: TextSpan(text: 'right: ', style: TextStyle(color: Colors.white), children: [
+                        TextSpan(
+                          text: '${ei.value.right}',
+                          style: const TextStyle(color: Colors.cyanAccent),
+                        ),
+                      ]),
+                    ),
+                    onChangedF: (s) {
                       double? newRight = double.tryParse(s);
                       if (newRight != null) {
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
@@ -139,14 +175,24 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                       }
                       onChangedF.call(ei.value);
                     },
+                    alignment: Alignment.center,
+                    buttonSize: const Size(70, 40),
+                    editorSize: const Size(80, 60),
                   ),
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: _tappableNumber(
-                    ei.value.bottom,
-                    'bottom',
-                    (s) {
+                  child: PropertyButtonNumber<double>(
+                    originalValue: ei.value.bottom,
+                    labelWidget: RichText(
+                      text: TextSpan(text: 'bottom: ', style: TextStyle(color: Colors.white), children: [
+                        TextSpan(
+                          text: '${ei.value.bottom}',
+                          style: const TextStyle(color: Colors.cyanAccent),
+                        ),
+                      ]),
+                    ),
+                    onChangedF: (s) {
                       double? newBottom = double.tryParse(s);
                       if (newBottom != null) {
                         // debugPrint(inputMode.name);
@@ -160,6 +206,9 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                       }
                       onChangedF.call(ei.value);
                     },
+                    alignment: Alignment.center,
+                    buttonSize: const Size(90, 40),
+                    editorSize: const Size(80, 60),
                   ),
                 ),
               ],
@@ -169,66 +218,4 @@ class EdgeInsetsPropertyEditor extends HookWidget {
       ),
     );
   }
-
-  Widget _tappableNumber(final double value, final String label, final ValueChanged<String> onChangedF) => SizedBox(
-        width: 60,
-        height: 40,
-        child: Align(
-          alignment: Alignment.center,
-          child: NodePropertyEditor_Double(
-            originalValue: value,
-            onChangedF: onChangedF,
-            alignment: Alignment.center,
-            label: value.toString(),
-            calloutButtonSize: const Size(60, 30),
-          ),
-        ),
-      );
 }
-
-// class _Checkbox extends StatefulWidget {
-//   final bool initialState;
-//   final ValueChanged<bool> edgeInsetsSideChangedF;
-//
-//   _Checkbox({this.initialState = false, required this.edgeInsetsSideChangedF, super.key});
-//
-//   @override
-//   State<_Checkbox> createState() => _CheckboxState();
-// }
-//
-// class _CheckboxState extends State<_Checkbox> {
-//   late bool isSelected;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     isSelected = initialState;
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     Color getColor(Set<MaterialState> states) {
-//       const Set<MaterialState> interactiveStates = <MaterialState>{
-//         MaterialState.pressed,
-//         MaterialState.hovered,
-//         MaterialState.focused,
-//       };
-//       if (states.any(interactiveStates.contains)) {
-//         return Colors.orange;
-//       }
-//       return isSelected ? Colors.purple : Colors.purpleAccent;
-//     }
-//
-//     return Checkbox(
-//       value: isSelected,
-//       checkColor: Colors.white,
-//       fillColor: MaterialStateProperty.resolveWith(getColor),
-//       onChanged: (bool? value) {
-//         setState(() {
-//           isSelected = value!;
-//           edgeInsetsSideChangedF(isSelected);
-//         });
-//       },
-//     );
-//   }
-// }

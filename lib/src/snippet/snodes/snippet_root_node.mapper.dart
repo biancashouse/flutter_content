@@ -14,9 +14,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SnippetRootNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      TitleSnippetRootNodeMapper.ensureInitialized();
-      SubtitleSnippetRootNodeMapper.ensureInitialized();
-      ContentSnippetRootNodeMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;

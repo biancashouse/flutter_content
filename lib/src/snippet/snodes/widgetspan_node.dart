@@ -40,9 +40,20 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   }
 
   @override
-  List<String> sensibleParents() => const [
-        TextSpanNode.FLUTTER_TYPE,
-      ];
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("TextSpan", snippetBloc, TextSpanNode, action),
+    ];
+  }
+  @override
+  List<Type> replaceWithOnly() => [TextSpanNode, WidgetSpan];
+
+  @override
+  List<Type> wrapCandidates() => [TextSpanNode];
+
+  @override
+  List<Type> wrapWithOnly() => [TextSpanNode];
 
   @override
   String toString() => FLUTTER_TYPE;

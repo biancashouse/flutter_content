@@ -29,10 +29,11 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
         StringPropertyValueNode(
           snode: this,
           name: 'text',
+          numLines: 6,
           stringValue: text,
           onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(300, 240),
+          calloutWidth: 300,
         ),
         BoolPropertyValueNode(
           snode: this,
@@ -49,11 +50,13 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
         StringPropertyValueNode(
           snode: this,
           name: 'namedTextStyle',
+          nameOnSeparateLine: true,
+          expands: true,
           stringValue: namedTextStyle,
           options: FC().namedStyles.keys.toList(),
           onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
           calloutButtonSize: const Size(280, 20),
-          calloutSize: const Size(280, 70),
+          calloutWidth: 280,
         ),
       ];
 
@@ -66,7 +69,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
     try {
       return TextSpan(
         text: text ?? "",
-        style: isRoot
+        style: isRoot && false
             ? DefaultTextStyle.of(context).style.merge(textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle))
             : textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle),
         children: children?.map<InlineSpan>((inlinespanNode) => inlinespanNode.toInlineSpan(context, isRoot: false)).toList(),
@@ -231,6 +234,20 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //   List<Type> candidateTypes = [TextSpanNode, WidgetSpanNode];
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
+
+  @override
+  bool canBeDeleted() => children == null || children!.isEmpty;
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("TextSpan", snippetBloc, TextSpanNode, action),
+    ];
+  }
+
+  @override
+  List<Type> replaceWithRecommendations() => [TextSpanNode, if (getParent() is TextSpanNode) WidgetSpanNode];
 
   @override
   String toString() => FLUTTER_TYPE;

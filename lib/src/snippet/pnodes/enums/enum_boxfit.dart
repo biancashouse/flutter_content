@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_radio_menu.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 
 part 'enum_boxfit.mapper.dart';
 
@@ -51,7 +51,7 @@ enum BoxFitEnum {
     required String label,
     ValueChanged<int?>? onChangedF,
   }) =>
-      NodePropertyButtonEnum(
+      PropertyButtonEnum(
         label: label,
         menuItems: values.map((e) => e.toMenuItem()).toList(),
         originalEnumIndex: enumValueIndex,

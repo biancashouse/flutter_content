@@ -82,6 +82,9 @@ class PTreeNodeWidget extends StatelessWidget {
 
   Widget _propertyButton(context) {
     return GestureDetector(
+      onTap: (){
+        debugPrint('_propertyButton.tap');
+      },
       onDoubleTap: () {
         // revert to original value
         propertyNode.revertToOriginalValue();

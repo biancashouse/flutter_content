@@ -22,12 +22,11 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_bool.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_color.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_font_family.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_fs_browser.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_snippet_name.dart';
-import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_property_button_string.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_font_family.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_fs_browser.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
@@ -559,7 +558,7 @@ class BoolPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyEditorBool(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyEditorBool(
         name: super.name,
         boolValue: boolValue ?? false,
         onChanged: (newValue) {
@@ -738,7 +737,7 @@ class StringPropertyValueNode extends PTreeNode {
   final bool skipHelperText;
   final nameOnSeparateLine;
   final Size calloutButtonSize;
-  final Size calloutSize;
+  final double calloutWidth;
   final int numLines;
 
   StringPropertyValueNode({
@@ -750,7 +749,7 @@ class StringPropertyValueNode extends PTreeNode {
     this.skipHelperText = false,
     this.nameOnSeparateLine = false,
     required this.calloutButtonSize,
-    required this.calloutSize,
+    required this.calloutWidth,
     this.numLines = 1,
     required super.snode,
     required super.name,
@@ -764,7 +763,7 @@ class StringPropertyValueNode extends PTreeNode {
   @override
   Widget toPropertyNodeContents(BuildContext context) {
     debugPrint('toPropertyNodeContents');
-    return NodePropertyButton_String(
+    return PropertyButton<String>(
         // originalText: (stringValue??'').isNotEmpty
         //     ? nameOnSeparateLine
         //     ? '$name: \n$stringValue'
@@ -775,65 +774,73 @@ class StringPropertyValueNode extends PTreeNode {
         label: super.name,
         maxLines: numLines,
         expands: expands,
-        skipLabelText: true,
-        skipHelperText: true,
+        skipLabelText: skipLabelText,
+        skipHelperText: skipHelperText,
         // textInputType: const TextInputType.numberWithOptions(decimal: true),
         calloutButtonSize: calloutButtonSize,
-        calloutSize: calloutSize,
+        calloutSize: Size(calloutWidth, numLines * 28 + 52),
         // calloutSize: calloutSize,
         propertyBtnGK: GlobalKey(debugLabel: ''),
         onChangeF: (s) {
-          onStringChange(s);
+          Callout.dismiss('matches');
+          Callout.dismiss('te');
+          onStringChange(stringValue = s);
         });
   }
 }
 
-class SnippetNamePropertyValueNode extends PTreeNode {
-  String? stringValue;
-  final ValueChanged<String> onStringChange;
-  final bool expands;
-  final bool skipLabelText;
-  final bool skipHelperText;
-  final nameOnSeparateLine;
-  final Size calloutButtonSize;
-  final Size calloutSize;
-  final int numLines;
-
-  SnippetNamePropertyValueNode({
-    required this.stringValue,
-    required this.onStringChange,
-    this.expands = false,
-    this.skipLabelText = false,
-    this.skipHelperText = false,
-    this.nameOnSeparateLine = false,
-    required this.calloutButtonSize,
-    required this.calloutSize,
-    this.numLines = 1,
-    required super.snode,
-    required super.name,
-  });
-
-  @override
-  void revertToOriginalValue() {
-    onStringChange(stringValue = '');
-  }
-
-  @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_SnippetName(
-      originalText: stringValue ?? '',
-      label: super.name,
-      maxLines: numLines,
-      expands: expands,
-      skipLabelText: true,
-      skipHelperText: true,
-      // textInputType: const TextInputType.numberWithOptions(decimal: true),
-      calloutButtonSize: calloutButtonSize,
-      calloutSize: calloutSize,
-      // calloutSize: calloutSize,
-      onChangeF: (s) {
-        onStringChange(s);
-      });
-}
+// class SnippetNamePropertyValueNode extends PTreeNode {
+//   String? stringValue;
+//   final ValueChanged<String> onStringChange;
+//   final bool expands;
+//   final bool skipLabelText;
+//   final bool skipHelperText;
+//   final nameOnSeparateLine;
+//   final Size calloutButtonSize;
+//   final double calloutWidth;
+//   final int numLines;
+//
+//   SnippetNamePropertyValueNode({
+//     required this.stringValue,
+//     required this.onStringChange,
+//     this.expands = false,
+//     this.skipLabelText = false,
+//     this.skipHelperText = false,
+//     this.nameOnSeparateLine = false,
+//     required this.calloutButtonSize,
+//     required this.calloutWidth,
+//     this.numLines = 1,
+//     required super.snode,
+//     required super.name,
+//   });
+//
+//   @override
+//   void revertToOriginalValue() {
+//     onStringChange(stringValue = '');
+//   }
+//
+//   @override
+//   Widget toPropertyNodeContents(BuildContext context) {
+//     debugPrint('toPropertyNodeContents');
+//     return PropertyButton<String>(
+//         originalText: stringValue ?? '',
+//         options: FC().snippetInfoCache.keys.toList()..sort(),
+//         label: super.name,
+//         maxLines: numLines,
+//         expands: expands,
+//         skipLabelText: true,
+//         skipHelperText: true,
+//         // textInputType: const TextInputType.numberWithOptions(decimal: true),
+//         calloutButtonSize: calloutButtonSize,
+//         calloutSize: Size(calloutWidth, numLines * 28 + 52),
+//         propertyBtnGK: GlobalKey(debugLabel: 'snippetName property'),
+//         onChangeF: (s) {
+//           Callout.dismiss('matches');
+//           Callout.dismiss('te');
+//           onStringChange(stringValue = s);
+//         });
+//   }
+// }
 
 class DecimalPropertyValueNode extends PTreeNode {
   double? decimalValue;
@@ -861,10 +868,9 @@ class DecimalPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_String(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyButton<double>(
         originalText: decimalValue != null ? decimalValue.toString() : '',
         label: super.name,
-        skipLabelText: true,
         skipHelperText: true,
         //inputType: double,
         calloutButtonSize: calloutButtonSize,
@@ -888,51 +894,6 @@ class DecimalPropertyValueNode extends PTreeNode {
           }
         },
       );
-// : SizedBox(
-//     width: 100,
-//     height: 50,
-//     child: TextField(
-//       maxLines: 1,
-//       //style: const TextStyle(fontSize: 16, fontFamily: 'monospace', color: Colors.black),
-//       controller: teC,
-//       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-//       decoration: InputDecoration(
-//         // helperText: super.name,
-//         prefix: Text('${super.name} '),
-//       ),
-//       onEditingComplete: () {
-//
-//       },
-//       onChanged: (s) {
-//         if (s.contains('/') && s.split('/').length == 2) {
-//           var split = s.split('/');
-//           double? w = double.tryParse(split[0]);
-//           double? h = double.tryParse(split[1]);
-//           if (w != null && h != null) onChange?.call(w / h);
-//         } else {
-//           onChange?.call(double.tryParse(s));
-//         }
-//       },
-//     ),
-//   );
-//   child: FlutterTextEditor(
-//     name: super.name,
-//     originalS: decimalValue?.toString() ?? "",
-//     textInputType: const TextInputType.numberWithOptions(decimal: true),
-//     numLines: 1,
-//     onChangedF: (s) {
-//       if (s.contains('/') && s.split('/').length == 2) {
-//         var split = s.split('/');
-//         double? w = double.tryParse(split[0]);
-//         double? h = double.tryParse(split[1]);
-//         if (w != null && h != null) onChange?.call(w / h);
-//       } else {
-//         onChange?.call(double.tryParse(s));
-//       }
-//
-//     },
-//   ),
-// );
 }
 
 class SizePropertyValueNode extends PTreeNode {
@@ -963,14 +924,13 @@ class SizePropertyValueNode extends PTreeNode {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            NodePropertyButton_String(
+            PropertyButton<double>(
               originalText: widthValue != null ? widthValue.toString() : '',
               label: 'width',
-              skipLabelText: true,
               skipHelperText: true,
               //inputType: double,
               calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(120, 80),
+              calloutSize: const Size(80, 80),
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
                   onSizeChange.call((widthValue = 999999999, heightValue));
@@ -990,14 +950,13 @@ class SizePropertyValueNode extends PTreeNode {
               propertyBtnGK: GlobalKey(debugLabel: 'width'),
             ),
             const SizedBox(width: 40, child: Text('x')),
-            NodePropertyButton_String(
+            PropertyButton<double>(
               originalText: heightValue != null ? heightValue.toString() : '',
               label: 'height',
-              skipLabelText: true,
               skipHelperText: true,
               //inputType: double,
               calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(120, 80),
+              calloutSize: const Size(80, 80),
               // calloutSize: calloutSize,
               onChangeF: (s) {
                 if (s.toLowerCase() == 'infinity') {
@@ -1050,7 +1009,7 @@ class OffsetPropertyValueNode extends PTreeNode {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            NodePropertyButton_String(
+            PropertyButton<double>(
               originalText: topValue != null ? topValue.toString() : '',
               label: 'left',
               skipLabelText: true,
@@ -1077,7 +1036,7 @@ class OffsetPropertyValueNode extends PTreeNode {
               },
             ),
             const SizedBox(width: 40, child: Text('x')),
-            NodePropertyButton_String(
+            PropertyButton<double>(
               originalText: leftValue != null ? leftValue.toString() : '',
               label: 'top',
               skipLabelText: true,
@@ -1133,12 +1092,10 @@ class IntPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButton_String(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyButton<int>(
       originalText: intValue != null ? intValue.toString() : '',
       label: super.name,
-      skipLabelText: true,
       skipHelperText: true,
-      inputType: int,
       calloutButtonSize: calloutButtonSize,
       calloutSize: const Size(120, 100),
       propertyBtnGK: GlobalKey(debugLabel: 'int'),
@@ -1223,7 +1180,7 @@ class ColorPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonColor(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyButtonColor(
         feature: 'color',
         label: name,
         tooltip: tooltip,
@@ -1261,7 +1218,7 @@ class GradientPropertyValueNode extends PTreeNode {
         width: 180,
         child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
-            return NodePropertyButtonColor(
+            return PropertyButtonColor(
               feature: 'color1',
               key: GlobalKey(),
               label: '',
@@ -1285,7 +1242,7 @@ class GradientPropertyValueNode extends PTreeNode {
           }),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return NodePropertyButtonColor(
+              return PropertyButtonColor(
                 feature: 'color2',
                 label: '',
                 originalColor: colorValues?.color2Value != null ? Color(colorValues!.color2Value!) : null,
@@ -1309,7 +1266,7 @@ class GradientPropertyValueNode extends PTreeNode {
           ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return NodePropertyButtonColor(
+              return PropertyButtonColor(
                 feature: 'color3',
                 label: '',
                 originalColor: colorValues?.color3Value != null ? Color(colorValues!.color3Value!) : null,
@@ -1333,7 +1290,7 @@ class GradientPropertyValueNode extends PTreeNode {
           ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return NodePropertyButtonColor(
+              return PropertyButtonColor(
                 feature: 'color4',
                 label: '',
                 originalColor: colorValues?.color4Value != null ? Color(colorValues!.color4Value!) : null,
@@ -1357,7 +1314,7 @@ class GradientPropertyValueNode extends PTreeNode {
           ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return NodePropertyButtonColor(
+              return PropertyButtonColor(
                 feature: 'color5',
                 label: '',
                 originalColor: colorValues?.color5Value != null ? Color(colorValues!.color5Value!) : null,
@@ -1381,7 +1338,7 @@ class GradientPropertyValueNode extends PTreeNode {
           ),
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return NodePropertyButtonColor(
+              return PropertyButtonColor(
                 feature: 'color6',
                 label: '',
                 originalColor: colorValues?.color6Value != null ? Color(colorValues!.color6Value!) : null,
@@ -1429,7 +1386,7 @@ class FSImagePathPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonFSBrowser(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyButtonFSBrowser(
         label: name,
         tooltip: tooltip,
         originalFSPath: stringValue,
@@ -1459,7 +1416,7 @@ class FontFamilyPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => NodePropertyButtonFontFamily(
+  Widget toPropertyNodeContents(BuildContext context) => PropertyButtonFontFamily(
         label: "fontFamily",
         originalFontFamily: fontFamily,
         menuBgColor: Colors.purpleAccent,

@@ -27,7 +27,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
           stringValue: text,
           onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(280, 140),
+          calloutWidth: 280,
         ),
       ];
 
@@ -62,6 +62,26 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   String toSource(BuildContext context) => '';
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      if (getParent() is! PollNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      if (getParent() is! PollNode) menuItemButton("Poll", snippetBloc, PollNode, action),
+    ];
+  }
+
+  @override
+  List<Type> replaceWithOnly() => [PollOptionNode];
+
+  @override
+  List<Type> wrapCandidates() => [PollNode];
+
+  @override
+  List<Type> wrapWithOnly() => [PollNode];
+
+  @override
+  List<Type> insertSiblingOnly() => [PollOptionNode];
 
   @override
   String toString() => FLUTTER_TYPE;

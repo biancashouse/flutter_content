@@ -19,7 +19,7 @@ abstract class Node extends Object {
     } else if (node is ScaffoldNode) {
       children = [
         if (node.appBar != null) node.appBar!,
-        node.body,
+        if (node.body != null) node.body!,
       ];
     } else if (node is AppBarNode) {
       children = [

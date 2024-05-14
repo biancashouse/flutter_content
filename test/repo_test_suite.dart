@@ -18,7 +18,7 @@ void main() {
   // late SnippetTreeUR ur;
 
   final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplate(
-      SnippetTemplate.empty_snippet, 'empty_snippet');
+      SnippetTemplate.empty, 'empty_snippet');
   final SnippetRootNode scaffoldWithTabsSnippet =
       SnippetPanel.createSnippetFromTemplate(
           SnippetTemplate.scaffold_with_tabs, 'scaffold_with_tabs');

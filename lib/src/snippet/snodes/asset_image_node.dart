@@ -40,10 +40,9 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'name',
           stringValue: name,
           skipHelperText: true,
-          skipLabelText: true,
           onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
-          calloutSize: const Size(400, 120),
+          calloutWidth: 400,
         ),
         DecimalPropertyValueNode(
           snode: this,
@@ -158,7 +157,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
+    setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
     return name.isNotEmpty
         ? SizedBox(
@@ -201,6 +200,19 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //     fallbackHeight: (height??300) * (scale ?? 1.0),
   //   )''';
   // }
+
+  @override
+  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+    return [
+      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
+      menuItemButton("Carousel", snippetBloc, CarouselNode, action),
+      menuItemButton("AspectRatio", snippetBloc, AspectRatioNode, action),
+      ...super.menuAnchorWidgets_WrapWith(snippetBloc, action, true),
+    ];
+  }
+
+  @override
+  List<Type> wrapWithRecommendations() => [CarouselNode];
 
   @override
   String toString() => FLUTTER_TYPE;
