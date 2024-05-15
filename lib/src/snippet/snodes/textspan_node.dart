@@ -239,10 +239,10 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   bool canBeDeleted() => children == null || children!.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      menuItemButton("TextSpan", snippetBloc, TextSpanNode, action),
+      ...super.menuAnchorWidgets_Heading(action),
+      menuItemButton("TextSpan", TextSpanNode, action),
     ];
   }
 

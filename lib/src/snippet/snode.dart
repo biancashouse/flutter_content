@@ -105,6 +105,7 @@ const List<Type> singleChildSubClasses = [
   DefaultTextStyleNode,
   AspectRatioNode,
   GenericSingleChildNode,
+  HotspotsNode,
 ];
 
 const List<Type> multiChildSubClasses = [
@@ -129,8 +130,8 @@ const List<Type> buttonSubClasses = [
   TextButtonNode,
   FilledButtonNode,
   IconButtonNode,
-  // TargetButtonNode,
-  HotspotsNode,
+  // // TargetButtonNode,
+  // HotspotsNode,
 ];
 
 const List<Type> flexSubClasses = [
@@ -241,7 +242,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
             FlutterContentPage.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
-            var b = nodeWidgetGK?.currentContext?.mounted;
+//             var b = nodeWidgetGK?.currentContext?.mounted;
             pushThenShowNamedSnippetWithNodeSelected(snippetName, this, this);
             // Useful.afterNextBuildDo(() {
             // });
@@ -327,9 +328,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // return;
     Useful.afterNextBuildDo(() {
       debugPrint('after pushSnippetBloc');
-      var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
+      // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
       var gk = startingAtNode.nodeWidgetGK;
-      var ctx = gk?.currentContext;
+      // var ctx = gk?.currentContext;
       if (fc.snippetBeingEdited != null) {
         Useful.afterNextBuildDo(() {
           fc.snippetBeingEdited?.treeC.expandAll();
@@ -339,12 +340,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             FC().showFloatingClipboard();
           }
         });
+        var snippetBloc = fc.snippetBeingEdited!;
         showSnippetTreeAndPropertiesCallout(
-          snippetBloc: fc.snippetBeingEdited!,
+          snippetBloc: snippetBloc,
           targetGKF: () => gk,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-            var snippetBloc = fc.snippetBeingEdited;
             STreeNode.unhighlightSelectedNode();
             Callout.dismiss('selected-panel-border-overlay');
             showAllTargetBtns();
@@ -354,7 +355,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             FC().hideClipboard();
             FlutterContentPage.exitEditMode();
             // skip if no change
-            String currentJsonS = snippetBloc!.rootNode.toJson();
+            String currentJsonS = snippetBloc.rootNode.toJson();
             if (jsonBeforePush == currentJsonS) return;
             fc.possiblyCacheAndSaveANewSnippetVersion(
               snippetName: snippetName,
@@ -485,6 +486,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool canBeDeleted() {
     if (this is StepNode) return true;
     if (this is PollOptionNode) return true;
+    if (this is MC && (this as MC).children.length > 1) return false;
     ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
     // if (this is RichTextNode) return false;
     if (scaffold?.appBar?.bottom?.child is TabBarNode) {
@@ -725,7 +727,6 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   Future<void> possiblyHighlightSelectedNode() async {
     if (fc.selectedNode == this) {
       unhighlightSelectedNode();
-      SnippetBloC? snippetBloc = fc.snippetBeingEdited;
       var gk = nodeWidgetGK;
       Rect? r = gk?.globalPaintBounds();
       if (r != null) {
@@ -1056,7 +1057,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                     ? 'insert after...'
                     : 'append child...';
 
-    List<Widget> menuChildren = menuAnchorWidgets(snippetBloc, action);
+    List<Widget> menuChildren = menuAnchorWidgets(action);
     return MenuAnchor(
       menuChildren: menuChildren,
       builder: (BuildContext context, MenuController controller, Widget? child) {
@@ -1106,19 +1107,19 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     );
   }
 
-  List<Widget> menuAnchorWidgets(SnippetBloC snippetBloc, NodeAction action) {
+  List<Widget> menuAnchorWidgets(NodeAction action) {
     List<Widget> mis = [];
     if (action == NodeAction.wrapWith) {
-      mis.addAll(menuAnchorWidgets_WrapWith(snippetBloc, action, false));
+      mis.addAll(menuAnchorWidgets_WrapWith(action, false));
     }
     if (action == NodeAction.addChild) {
-      mis.addAll(menuAnchorWidgets_Append(snippetBloc, action, false));
+      mis.addAll(menuAnchorWidgets_Append(action, false));
     }
     if (action == NodeAction.addSiblingBefore || action == NodeAction.addSiblingAfter) {
-      mis.addAll(menuAnchorWidgets_InsertSibling(snippetBloc, action, false));
+      mis.addAll(menuAnchorWidgets_InsertSibling(action, false));
     }
     if (action == NodeAction.replaceWith) {
-      mis.addAll(menuAnchorWidgets_ReplaceWith(snippetBloc, action, false));
+      mis.addAll(menuAnchorWidgets_ReplaceWith(action, false));
     }
     return mis;
   }
@@ -1146,65 +1147,65 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<Type> insertSiblingRecommendations() => [];
 
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(snippetBloc, action),
+      if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Align", snippetBloc, AlignNode, action),
-          menuItemButton("Center", snippetBloc, CenterNode, action),
-          menuItemButton("Container", snippetBloc, ContainerNode, action),
-          menuItemButton("Padding", snippetBloc, PaddingNode, action),
-          menuItemButton("SizedBox", snippetBloc, SizedBoxNode, action),
-          menuItemButton("SingleChildScrollView", snippetBloc, SingleChildScrollViewNode, action),
+          menuItemButton("Align", AlignNode, action),
+          menuItemButton("Center", CenterNode, action),
+          menuItemButton("Container", ContainerNode, action),
+          menuItemButton("Padding", PaddingNode, action),
+          menuItemButton("SizedBox", SizedBoxNode, action),
+          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
           const Divider(),
-          menuItemButton("Column", snippetBloc, ColumnNode, action),
-          menuItemButton("Row", snippetBloc, RowNode, action),
-          menuItemButton("Expanded", snippetBloc, ExpandedNode, action),
-          menuItemButton("Flexible", snippetBloc, FlexibleNode, action),
-          menuItemButton("Stack", snippetBloc, StackNode, action),
-          menuItemButton("Positioned", snippetBloc, PositionedNode, action),
+          menuItemButton("Column", ColumnNode, action),
+          menuItemButton("Row", RowNode, action),
+          menuItemButton("Expanded", ExpandedNode, action),
+          menuItemButton("Flexible", FlexibleNode, action),
+          menuItemButton("Stack", StackNode, action),
+          menuItemButton("Positioned", PositionedNode, action),
           const Divider(),
-          menuItemButton("Scaffold", snippetBloc, ScaffoldNode, action),
+          menuItemButton("Scaffold", ScaffoldNode, action),
         ],
         child: Useful.coloredText("container", fontWeight: FontWeight.normal),
       ),
-      menuItemButton("SplitView", snippetBloc, SplitViewNode, action),
-      menuItemButton("Hotspots", snippetBloc, HotspotsNode, action),
-      menuItemButton("DefaultTextStyle", snippetBloc, DefaultTextStyleNode, action),
+      menuItemButton("SplitView", SplitViewNode, action),
+      menuItemButton("Hotspots", HotspotsNode, action),
+      menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_Append(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
     return [
-      if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(snippetBloc, action),
+      if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Align", snippetBloc, AlignNode, action),
-          menuItemButton("Center", snippetBloc, CenterNode, action),
-          menuItemButton("Container", snippetBloc, ContainerNode, action),
-          menuItemButton("Expanded", snippetBloc, ExpandedNode, action),
-          // _addChildMenuItemButton("IntrinsicHeight", snippetBloc, IntrinsicHeightNode, action),
-          // _addChildMenuItemButton("IntrinsicWidth", snippetBloc, IntrinsicWidthNode, action),
-          menuItemButton("Padding", snippetBloc, PaddingNode, action),
-          menuItemButton("SizedBox", snippetBloc, SizedBoxNode, action),
-          menuItemButton("SingleChildScrollView", snippetBloc, SingleChildScrollViewNode, action),
+          menuItemButton("Align", AlignNode, action),
+          menuItemButton("Center", CenterNode, action),
+          menuItemButton("Container", ContainerNode, action),
+          menuItemButton("Expanded", ExpandedNode, action),
+          // _addChildMenuItemButton("IntrinsicHeight", IntrinsicHeightNode, action),
+          // _addChildMenuItemButton("IntrinsicWidth", IntrinsicWidthNode, action),
+          menuItemButton("Padding", PaddingNode, action),
+          menuItemButton("SizedBox", SizedBoxNode, action),
+          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
           const Divider(),
-          menuItemButton("Column", snippetBloc, ColumnNode, action),
-          menuItemButton("Row", snippetBloc, RowNode, action),
-          menuItemButton("Stack", snippetBloc, StackNode, action),
+          menuItemButton("Column", ColumnNode, action),
+          menuItemButton("Row", RowNode, action),
+          menuItemButton("Stack", StackNode, action),
           const Divider(),
-          menuItemButton("Scaffold", snippetBloc, ScaffoldNode, action),
+          menuItemButton("Scaffold", ScaffoldNode, action),
         ],
         child: Useful.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("DefaultTextStyle", snippetBloc, DefaultTextStyleNode, action),
-          menuItemButton("Text", snippetBloc, TextNode, action),
-          menuItemButton("RichText", snippetBloc, RichTextNode, action),
-          menuItemButton("TextSpan", snippetBloc, TextSpanNode, action),
-          menuItemButton("WidgetSpan", snippetBloc, WidgetSpanNode, action),
+          menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
+          menuItemButton("Text", TextNode, action),
+          menuItemButton("RichText", RichTextNode, action),
+          menuItemButton("TextSpan", TextSpanNode, action),
+          menuItemButton("WidgetSpan", WidgetSpanNode, action),
         ],
         child: Useful.coloredText("text", fontWeight: FontWeight.normal),
       ),
@@ -1212,26 +1213,26 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuChildren: [
           SubmenuButton(
             menuChildren: [
-              menuItemButton("MenuItemButton", snippetBloc, MenuItemButtonNode, action),
-              menuItemButton("SubmenuButton", snippetBloc, SubmenuButtonNode, action),
-              menuItemButton("MenuBar", snippetBloc, MenuBarNode, action),
+              menuItemButton("MenuItemButton", MenuItemButtonNode, action),
+              menuItemButton("SubmenuButton", SubmenuButtonNode, action),
+              menuItemButton("MenuBar", MenuBarNode, action),
             ],
             child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
-              menuItemButton("TabBar", snippetBloc, TabBarNode, action),
-              menuItemButton("TabBarView", snippetBloc, TabBarViewNode, action),
+              menuItemButton("TabBar", TabBarNode, action),
+              menuItemButton("TabBarView", TabBarViewNode, action),
             ],
             child: Useful.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
-              menuItemButton("ElevatedButton", snippetBloc, ElevatedButton, action),
-              menuItemButton("OutlinedButton", snippetBloc, OutlinedButton, action),
-              menuItemButton("TextButton", snippetBloc, TextButton, action),
-              menuItemButton("FilledButton", snippetBloc, FilledButton, action),
-              menuItemButton("IconButton", snippetBloc, IconButton, action),
+              menuItemButton("ElevatedButton", ElevatedButtonNode, action),
+              menuItemButton("OutlinedButton", OutlinedButtonNode, action),
+              menuItemButton("TextButton", TextButtonNode, action),
+              menuItemButton("FilledButton", FilledButtonNode, action),
+              menuItemButton("IconButton", IconButtonNode, action),
             ],
             child: Useful.coloredText("button", fontWeight: FontWeight.normal),
           ),
@@ -1240,59 +1241,59 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Asset Image", snippetBloc, AssetImageNode, action),
-          menuItemButton("Firebase Storage Image", snippetBloc, FSImageNode, action),
-          menuItemButton("Carousel", snippetBloc, CarouselNode, action),
+          menuItemButton("Asset Image", AssetImageNode, action),
+          menuItemButton("Firebase Storage Image", FSImageNode, action),
+          menuItemButton("Carousel", CarouselNode, action),
         ],
         child: Useful.coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("ifrane", snippetBloc, IFrameNode, action),
-          menuItemButton("Google Drive iframe", snippetBloc, GoogleDriveIFrameNode, action),
-          menuItemButton("File", snippetBloc, FileNode, action),
-          menuItemButton("Directory", snippetBloc, DirectoryNode, action),
+          menuItemButton("ifrane", IFrameNode, action),
+          menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action),
+          menuItemButton("File", FileNode, action),
+          menuItemButton("Directory", DirectoryNode, action),
         ],
         child: Useful.coloredText("file", fontWeight: FontWeight.normal),
       ),
-      menuItemButton("SplitView", snippetBloc, SplitViewNode, action),
-      menuItemButton("Stepper", snippetBloc, StepperNode, action),
-      menuItemButton("Gap", snippetBloc, GapNode, action),
-      menuItemButton("Hotspots", snippetBloc, HotspotsNode, action),
-      menuItemButton("Poll", snippetBloc, PollNode, action),
-      menuItemButton("Placeholder", snippetBloc, PlaceholderNode, action),
-      menuItemButton("Youtube", snippetBloc, YTNode, action),
-      addSnippetsSubmenu(snippetBloc, action),
+      menuItemButton("SplitView", SplitViewNode, action),
+      menuItemButton("Stepper", StepperNode, action),
+      menuItemButton("Gap", GapNode, action),
+      menuItemButton("Hotspots", HotspotsNode, action),
+      menuItemButton("Poll", PollNode, action),
+      menuItemButton("Placeholder", PlaceholderNode, action),
+      menuItemButton("Youtube", YTNode, action),
+      addSnippetsSubmenu(action),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_InsertSibling(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_InsertSibling(NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is FlexNode) ...[
-        menuItemButton("Expanded", snippetBloc, ExpandedNode, action),
-        menuItemButton("Flexible", snippetBloc, FlexibleNode, action),
+        menuItemButton("Expanded", ExpandedNode, action),
+        menuItemButton("Flexible", FlexibleNode, action),
       ],
-      if (getParent() is StepperNode) menuItemButton("Step", snippetBloc, StepNode, action),
-      if (getParent() is StackNode) menuItemButton("Positioned", snippetBloc, PositionedNode, action),
+      if (getParent() is StepperNode) menuItemButton("Step", StepNode, action),
+      if (getParent() is StackNode) menuItemButton("Positioned", PositionedNode, action),
       if (getParent() is DirectoryNode) ...[
-        menuItemButton("Directory", snippetBloc, DirectoryNode, action),
-        menuItemButton("File", snippetBloc, FileNode, action),
+        menuItemButton("Directory", DirectoryNode, action),
+        menuItemButton("File", FileNode, action),
       ],
       if (getParent() is MenuBarNode) ...[
-        menuItemButton("SubMenuButton", snippetBloc, SubmenuButtonNode, action),
-        menuItemButton("MenuItemButton", snippetBloc, MenuItemButtonNode, action),
+        menuItemButton("SubMenuButton", SubmenuButtonNode, action),
+        menuItemButton("MenuItemButton", MenuItemButtonNode, action),
       ],
       if (getParent() is SubmenuButtonNode) ...[
-        menuItemButton("MenuItemButton", snippetBloc, MenuItemButtonNode, action),
+        menuItemButton("MenuItemButton", MenuItemButtonNode, action),
       ],
       if (getParent() is CarouselNode) ...[
-        menuItemButton("AssetImage", snippetBloc, AssetImageNode, action),
-        menuItemButton("FirestoreStorageImage", snippetBloc, FSImageNode, action),
+        menuItemButton("AssetImage", AssetImageNode, action),
+        menuItemButton("FirestoreStorageImage", FSImageNode, action),
       ],
     ];
   }
 
-  List<Widget> menuAnchorWidgets_ReplaceWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_ReplaceWith(NodeAction action, bool? skipHeading) {
     bool skipTheRest = false;
     List<Type> replaceTypes = replaceWithOnly();
     if (replaceWithOnly().isEmpty) {
@@ -1312,35 +1313,35 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ),
       pasteMI(action) ?? const Offstage(),
 
-      for (Type type in replaceTypes) menuItemButton(type.toString(), snippetBloc, type, action),
+      for (Type type in replaceTypes) menuItemButton(type.toString(), type, action),
       if (!skipTheRest) ...[
         SubmenuButton(
           menuChildren: [
-            menuItemButton("Align", snippetBloc, AlignNode, action),
-            menuItemButton("Center", snippetBloc, CenterNode, action),
-            menuItemButton("Container", snippetBloc, ContainerNode, action),
-            menuItemButton("Padding", snippetBloc, PaddingNode, action),
-            menuItemButton("SizedBox", snippetBloc, SizedBoxNode, action),
-            menuItemButton("SingleChildScrollView", snippetBloc, SingleChildScrollViewNode, action),
+            menuItemButton("Align", AlignNode, action),
+            menuItemButton("Center", CenterNode, action),
+            menuItemButton("Container", ContainerNode, action),
+            menuItemButton("Padding", PaddingNode, action),
+            menuItemButton("SizedBox", SizedBoxNode, action),
+            menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
             const Divider(),
-            menuItemButton("Column", snippetBloc, ColumnNode, action),
-            menuItemButton("Row", snippetBloc, RowNode, action),
-            menuItemButton("Expanded", snippetBloc, ExpandedNode, action),
-            menuItemButton("Flexible", snippetBloc, FlexibleNode, action),
-            menuItemButton("Stack", snippetBloc, StackNode, action),
-            menuItemButton("Positioned", snippetBloc, PositionedNode, action),
+            menuItemButton("Column", ColumnNode, action),
+            menuItemButton("Row", RowNode, action),
+            menuItemButton("Expanded", ExpandedNode, action),
+            menuItemButton("Flexible", FlexibleNode, action),
+            menuItemButton("Stack", StackNode, action),
+            menuItemButton("Positioned", PositionedNode, action),
             const Divider(),
-            menuItemButton("Scaffold", snippetBloc, ScaffoldNode, action),
+            menuItemButton("Scaffold", ScaffoldNode, action),
           ],
           child: Useful.coloredText("container", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("DefaultTextStyle", snippetBloc, DefaultTextStyleNode, action),
-            menuItemButton("Text", snippetBloc, TextNode, action),
-            menuItemButton("RichText", snippetBloc, RichTextNode, action),
-            menuItemButton("TextSpan", snippetBloc, TextSpanNode, action),
-            menuItemButton("WidgetSpan", snippetBloc, WidgetSpanNode, action),
+            menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
+            menuItemButton("Text", TextNode, action),
+            menuItemButton("RichText", RichTextNode, action),
+            menuItemButton("TextSpan", TextSpanNode, action),
+            menuItemButton("WidgetSpan", WidgetSpanNode, action),
           ],
           child: Useful.coloredText("text", fontWeight: FontWeight.normal),
         ),
@@ -1348,26 +1349,26 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuChildren: [
             SubmenuButton(
               menuChildren: [
-                menuItemButton("MenuItemButton", snippetBloc, MenuItemButtonNode, action),
-                menuItemButton("SubmenuButton", snippetBloc, SubmenuButtonNode, action),
-                menuItemButton("MenuBar", snippetBloc, MenuBarNode, action),
+                menuItemButton("MenuItemButton", MenuItemButtonNode, action),
+                menuItemButton("SubmenuButton", SubmenuButtonNode, action),
+                menuItemButton("MenuBar", MenuBarNode, action),
               ],
               child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton("TabBar", snippetBloc, TabBarNode, action),
-                menuItemButton("TabBarView", snippetBloc, TabBarViewNode, action),
+                menuItemButton("TabBar", TabBarNode, action),
+                menuItemButton("TabBarView", TabBarViewNode, action),
               ],
               child: Useful.coloredText("tab bar", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton("ElevatedButton", snippetBloc, ElevatedButton, action),
-                menuItemButton("OutlinedButton", snippetBloc, OutlinedButton, action),
-                menuItemButton("TextButton", snippetBloc, TextButton, action),
-                menuItemButton("FilledButton", snippetBloc, FilledButton, action),
-                menuItemButton("IconButton", snippetBloc, IconButton, action),
+                menuItemButton("ElevatedButton", ElevatedButtonNode, action),
+                menuItemButton("OutlinedButton", OutlinedButtonNode, action),
+                menuItemButton("TextButton", TextButtonNode, action),
+                menuItemButton("FilledButton", FilledButtonNode, action),
+                menuItemButton("IconButton", IconButtonNode, action),
               ],
               child: Useful.coloredText("button", fontWeight: FontWeight.normal),
             ),
@@ -1376,36 +1377,36 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("Asset Image", snippetBloc, AssetImageNode, action),
-            menuItemButton("Firebase Storage Image", snippetBloc, FSImageNode, action),
-            menuItemButton("Carousel", snippetBloc, CarouselNode, action),
+            menuItemButton("Asset Image", AssetImageNode, action),
+            menuItemButton("Firebase Storage Image", FSImageNode, action),
+            menuItemButton("Carousel", CarouselNode, action),
           ],
           child: Useful.coloredText("image", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("ifrane", snippetBloc, IFrameNode, action),
-            menuItemButton("Google Drive iframe", snippetBloc, GoogleDriveIFrameNode, action),
-            menuItemButton("File", snippetBloc, FileNode, action),
-            menuItemButton("Directory", snippetBloc, DirectoryNode, action),
+            menuItemButton("ifrane", IFrameNode, action),
+            menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action),
+            menuItemButton("File", FileNode, action),
+            menuItemButton("Directory", DirectoryNode, action),
           ],
           child: Useful.coloredText("file", fontWeight: FontWeight.normal),
         ),
-        menuItemButton("SplitView", snippetBloc, SplitViewNode, action),
-        menuItemButton("Stepper", snippetBloc, StepperNode, action),
-        menuItemButton("Gap", snippetBloc, GapNode, action),
-        // menuItemButton("TargetWrapper", snippetBloc, TargetButtonNode, action),
-        menuItemButton("Hotspots", snippetBloc, HotspotsNode, action),
-        menuItemButton("Poll", snippetBloc, PollNode, action),
-        menuItemButton("PollOption", snippetBloc, PollOptionNode, action),
-        menuItemButton("Placeholder", snippetBloc, PlaceholderNode, action),
-        menuItemButton("Youtube", snippetBloc, YTNode, action),
-        addSnippetsSubmenu(snippetBloc, action),
+        menuItemButton("SplitView", SplitViewNode, action),
+        menuItemButton("Stepper", StepperNode, action),
+        menuItemButton("Gap", GapNode, action),
+        // menuItemButton("TargetWrapper", TargetButtonNode, action),
+        menuItemButton("Hotspots", HotspotsNode, action),
+        menuItemButton("Poll", PollNode, action),
+        menuItemButton("PollOption", PollOptionNode, action),
+        menuItemButton("Placeholder", PlaceholderNode, action),
+        menuItemButton("Youtube", YTNode, action),
+        addSnippetsSubmenu(action),
       ],
     ];
   }
 
-  List<Widget> menuAnchorWidgets_Heading(SnippetBloC snippetBloc, NodeAction action) {
+  List<Widget> menuAnchorWidgets_Heading(NodeAction action) {
     return [
       Container(
         margin: const EdgeInsets.all(10),
@@ -1421,16 +1422,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   MenuItemButton menuItemButton(
     final String label,
-    SnippetBloC snippetBloc,
     Type childType,
     NodeAction action,
   ) =>
       MenuItemButton(
         onPressed: () {
-          if (action == NodeAction.replaceWith) snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
-          if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
-          if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
-          if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
+          var snippetBloc = FC().snippetBeingEdited!;
           if (action == NodeAction.wrapWith) {
             var treeC = FC().snippetBeingEdited?.treeC;
             bool navUp = this == treeC?.roots.firstOrNull;
@@ -1441,15 +1438,21 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 SnippetTreePane.navigateUpTree();
               }
             });
+            return;
           }
-          Callout.dismiss(TREENODE_MENU_CALLOUT);
-          FC.forceRefresh();
+          else if (action == NodeAction.replaceWith) snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
+          else if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
+          else if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
+          else if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
           Useful.afterNextBuildDo(() {
-            var snippetBeingEdited = FC().snippetBeingEdited?.rootNode;
-            var appInfo = FC().appInfoAsMap;
-            var cache = FC().snippetInfoCache;
-            debugPrint(appInfo.toString());
-            debugPrint(cache.toString());
+            var snippetBlocAfter = FC().snippetBeingEdited!;
+            debugPrint('after');
+            // FC.forceRefresh();
+            // var snippetBeingEdited = FC().snippetBeingEdited?.rootNode;
+            // var appInfo = FC().appInfoAsMap;
+            // var cache = FC().snippetInfoCache;
+            // debugPrint(appInfo.toString());
+            // debugPrint(cache.toString());
           });
         },
         child: Useful.coloredText(label, fontWeight: FontWeight.bold),
@@ -1488,7 +1491,6 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   SubmenuButton addSnippetsSubmenu(
-    SnippetBloC snippetBloc,
     NodeAction action,
   ) {
     List<MenuItemButton> snippetMIs = [];
@@ -1499,6 +1501,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           onPressed: () async {
             // make sure snippet actually present
             await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName);
+            var snippetBloc = FC().snippetBeingEdited!;
             if (action == NodeAction.replaceWith) {
               snippetBloc.add(SnippetEvent.replaceSelectionWith(
                 type: SnippetRootNode,

@@ -13,7 +13,7 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static HotspotsNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = HotspotsNodeMapper._());
-      ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SCMapper.ensureInitialized().addSubMapper(_instance!);
       TargetModelMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
@@ -48,20 +48,6 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static const Field<HotspotsNode, GlobalKey<State<StatefulWidget>>>
       _f$nodeWidgetGK =
       Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
-  static ButtonStyleGroup? _$buttonStyleGroup(HotspotsNode v) =>
-      v.buttonStyleGroup;
-  static const Field<HotspotsNode, ButtonStyleGroup> _f$buttonStyleGroup =
-      Field('buttonStyleGroup', _$buttonStyleGroup, mode: FieldMode.member);
-  static String? _$namedButtonStyle(HotspotsNode v) => v.namedButtonStyle;
-  static const Field<HotspotsNode, String> _f$namedButtonStyle =
-      Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
-  static String? _$onTapHandlerName(HotspotsNode v) => v.onTapHandlerName;
-  static const Field<HotspotsNode, String> _f$onTapHandlerName =
-      Field('onTapHandlerName', _$onTapHandlerName, mode: FieldMode.member);
-  static CalloutConfigGroup? _$calloutConfigGroup(HotspotsNode v) =>
-      v.calloutConfigGroup;
-  static const Field<HotspotsNode, CalloutConfigGroup> _f$calloutConfigGroup =
-      Field('calloutConfigGroup', _$calloutConfigGroup, mode: FieldMode.member);
 
   @override
   final MappableFields<HotspotsNode> fields = const {
@@ -72,18 +58,14 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #buttonStyleGroup: _f$buttonStyleGroup,
-    #namedButtonStyle: _f$namedButtonStyle,
-    #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfigGroup: _f$calloutConfigGroup,
   };
 
   @override
-  final String discriminatorKey = 'button';
+  final String discriminatorKey = 'sc';
   @override
   final dynamic discriminatorValue = 'HotspotsNode';
   @override
-  late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
 
   static HotspotsNode _instantiate(DecodingData data) {
     return HotspotsNode(
@@ -143,7 +125,7 @@ extension HotspotsNodeValueCopy<$R, $Out>
 }
 
 abstract class HotspotsNodeCopyWith<$R, $In extends HotspotsNode, $Out>
-    implements ButtonNodeCopyWith<$R, $In, $Out> {
+    implements SCCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, TargetModel,
       TargetModelCopyWith<$R, TargetModel, TargetModel>> get targets;
   ListCopyWith<$R, TargetModel,

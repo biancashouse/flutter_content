@@ -28,6 +28,7 @@ class SCMapper extends SubClassMapperBase<SC> {
       SnippetRootNodeMapper.ensureInitialized();
       DefaultTextStyleNodeMapper.ensureInitialized();
       AspectRatioNodeMapper.ensureInitialized();
+      HotspotsNodeMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;

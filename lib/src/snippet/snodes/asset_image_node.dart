@@ -202,12 +202,12 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      menuItemButton("Carousel", snippetBloc, CarouselNode, action),
-      menuItemButton("AspectRatio", snippetBloc, AspectRatioNode, action),
-      ...super.menuAnchorWidgets_WrapWith(snippetBloc, action, true),
+      ...super.menuAnchorWidgets_Heading(action),
+      menuItemButton("Carousel", CarouselNode, action),
+      menuItemButton("AspectRatio", AspectRatioNode, action),
+      ...super.menuAnchorWidgets_WrapWith(action, true),
     ];
   }
 

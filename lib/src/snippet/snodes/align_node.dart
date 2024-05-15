@@ -90,7 +90,7 @@ class AlignNode extends SC with AlignNodeMappable {
   // }
 
   // @override
-  // List<Widget> menuAnchorWidgets_ReplaceWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  // List<Widget> menuAnchorWidgets_ReplaceWith(NodeAction action, bool? skipHeading) {
   //   if (getParent() is StackNode) menuAnchorWidgets_ReplaceWith(snippetBloc, action, skipHeading)
   //   return menuAnchorWidgets_ReplaceWith(snippetBloc, action, skipHeading);
   // }

@@ -117,10 +117,10 @@ class PollNode extends MC with PollNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
     return [
-      ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      menuItemButton("PollOption", snippetBloc, PollOptionNode, action),
+      ...super.menuAnchorWidgets_Heading(action),
+      menuItemButton("PollOption", PollOptionNode, action),
     ];
   }
 

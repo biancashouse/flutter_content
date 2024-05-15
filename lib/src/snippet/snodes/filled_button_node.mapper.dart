@@ -58,6 +58,11 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   static String? _$namedButtonStyle(FilledButtonNode v) => v.namedButtonStyle;
   static const Field<FilledButtonNode, String> _f$namedButtonStyle =
       Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
+  static String? _$destinationPageName(FilledButtonNode v) =>
+      v.destinationPageName;
+  static const Field<FilledButtonNode, String> _f$destinationPageName = Field(
+      'destinationPageName', _$destinationPageName,
+      mode: FieldMode.member);
 
   @override
   final MappableFields<FilledButtonNode> fields = const {
@@ -70,6 +75,7 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,
+    #destinationPageName: _f$destinationPageName,
   };
 
   @override

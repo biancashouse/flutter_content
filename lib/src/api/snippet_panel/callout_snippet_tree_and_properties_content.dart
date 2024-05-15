@@ -348,12 +348,12 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         SnippetPanelState? spState = SnippetPanel.of(context);
                         spState?.resetTabQandC;
                         // redraw tree if deleted node was root
-                        if (wasShowingAsRoot && parentNode != null) {
-                          snippetBloc.add(SnippetEvent.selectNode(
-                            node: parentNode,
-                            selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-                          ));
-                        }
+                        // if (wasShowingAsRoot && parentNode != null) {
+                        //   snippetBloc.add(SnippetEvent.selectNode(
+                        //     node: parentNode,
+                        //     selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+                        //   ));
+                        // }
                       });
                     });
                     if (node is HotspotsNode) {
@@ -553,10 +553,7 @@ class SnippetTreePane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (snippetBloc.rootNode.child == null) {
-      List<Widget> menuChildren = snippetBloc.rootNode.menuAnchorWidgets(
-        snippetBloc,
-        NodeAction.addChild,
-      );
+      List<Widget> menuChildren = snippetBloc.rootNode.menuAnchorWidgets(NodeAction.addChild);
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
         menuChildren: menuChildren,

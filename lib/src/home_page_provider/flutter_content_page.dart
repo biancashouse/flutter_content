@@ -280,7 +280,8 @@ class FlutterContentPage extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Useful.purpleText("Editor Access", fontSize: 24, family: 'Merriweather'),
-              SizedBox(
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
                 width: 240,
                 height: 100,
                 child: FC_TextField(

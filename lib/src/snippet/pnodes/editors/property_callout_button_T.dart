@@ -108,7 +108,7 @@ class PropertyButton<T> extends HookWidget {
               editedText.value = s;
               onChangeF(s);
             },
-            dontAutoFocus: true,
+            dontAutoFocus: false,
             bgColor: Colors.white,
             maxLines: maxLines,
           ),

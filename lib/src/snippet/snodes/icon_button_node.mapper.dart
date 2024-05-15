@@ -72,6 +72,11 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static String? _$namedButtonStyle(IconButtonNode v) => v.namedButtonStyle;
   static const Field<IconButtonNode, String> _f$namedButtonStyle =
       Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
+  static String? _$destinationPageName(IconButtonNode v) =>
+      v.destinationPageName;
+  static const Field<IconButtonNode, String> _f$destinationPageName = Field(
+      'destinationPageName', _$destinationPageName,
+      mode: FieldMode.member);
 
   @override
   final MappableFields<IconButtonNode> fields = const {
@@ -89,6 +94,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,
+    #destinationPageName: _f$destinationPageName,
   };
 
   @override

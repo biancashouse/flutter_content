@@ -57,6 +57,11 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   static String? _$namedButtonStyle(TextButtonNode v) => v.namedButtonStyle;
   static const Field<TextButtonNode, String> _f$namedButtonStyle =
       Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
+  static String? _$destinationPageName(TextButtonNode v) =>
+      v.destinationPageName;
+  static const Field<TextButtonNode, String> _f$destinationPageName = Field(
+      'destinationPageName', _$destinationPageName,
+      mode: FieldMode.member);
 
   @override
   final MappableFields<TextButtonNode> fields = const {
@@ -69,6 +74,7 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,
+    #destinationPageName: _f$destinationPageName,
   };
 
   @override

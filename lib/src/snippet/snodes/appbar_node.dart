@@ -54,7 +54,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     SnippetPanelState? spState = SnippetPanel.of(context);
     Widget leadingWidget() {
       if (spState != null) {
-        if (spState.prevTabQ.isNotEmpty ?? false) {
+        if (spState.prevTabQ.isNotEmpty) {
           return IconButton(
             onPressed: () {
               if (spState.prevTabQ.isNotEmpty) {
@@ -111,10 +111,10 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   bool canBeDeleted() => (leading == null && title == null && bottom == null && actions == null);
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      if (getParent() is! ScaffoldNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      if (getParent() is! ScaffoldNode) menuItemButton("Scaffold", snippetBloc, ScaffoldNode, action),
+      if (getParent() is! ScaffoldNode) ...super.menuAnchorWidgets_Heading(action),
+      if (getParent() is! ScaffoldNode) menuItemButton("Scaffold", ScaffoldNode, action),
     ];
   }
 

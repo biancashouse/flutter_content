@@ -173,8 +173,7 @@ class FC {
       'Merriweather Sans',
     ],
     Map<String, NamedTextStyle> namedStyles = const {},
-    required GoRouter webRouter,
-    required GoRouter mobileRouter,
+    required GoRouter router,
     bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) async {
     _appName = modelName;
@@ -183,28 +182,19 @@ class FC {
     _skipAssetPkgName = skipAssetPkgName;
     Bloc.observer = MyGlobalObserver();
 
-    try {
-      pkgInfo = await PackageInfo.fromPlatform();
-    } catch (e) {
-      // ignore - perhaps testing
-    }
-
     // extract go routes
-    List<String> webRouteNames = [];
-    List<String> mobileRouteNames = [];
-    void parseRouteConfig(List<String> routeNames, List<GoRoute> routes) {
+    void parseRouteConfig(List<String> names, List<GoRoute> routes) {
       for (GoRoute route in routes) {
-        if (route.name != null) routeNames.add(route.name!);
-        parseRouteConfig(routeNames, List.from(route.routes));
+        if (route.name != null) names.add(route.name!);
+        parseRouteConfig(names, List.from(route.routes));
       }
     }
 
-    parseRouteConfig(webRouteNames, List.from(webRouter.configuration.routes));
-    parseRouteConfig(mobileRouteNames, List.from(mobileRouter.configuration.routes));
+    parseRouteConfig(_routeNames, List.from(router.configuration.routes));
 
-    debugPrint(mobileRouteNames.toString());
-    debugPrint('');
-    debugPrint(mobileRouteNames.toString());
+    debugPrint('Routes--------------------------');
+    debugPrint(_routeNames.toString());
+    debugPrint('--------------------------------');
 
     try {
       HydratedBloc.storage;
@@ -233,19 +223,24 @@ class FC {
   }
 
   late IModelRepository modelRepo;
-  late PackageInfo pkgInfo;
+  Future<PackageInfo> get pkgInfo async => await PackageInfo.fromPlatform();
 
   // set by .init()
   String get appName => _appName;
 
   /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
-  String get yamlAppName => pkgInfo.appName;
+  Future<String> get yamlAppName async=> (await pkgInfo).appName;
 
-  String get yamlBuildNumber => pkgInfo.buildNumber;
+  Future<String> get yamlBuildNumber async => (await pkgInfo).buildNumber;
 
-  String get yamlPackageName => pkgInfo.packageName;
+  Future<String> get yamlPackageName async => (await pkgInfo).packageName;
 
-  String get yamlVersion => pkgInfo.version;
+  Future<String> get yamlVersion async => (await pkgInfo).version;
+  Future<String> get versionAndBuild async {
+    var ver = await yamlVersion;
+    var buildNum = await yamlBuildNumber;
+    return '$ver-$buildNum';
+  }
 
   late String _appName;
 
@@ -253,6 +248,10 @@ class FC {
   AppInfoModel get appInfo => _appInfo;
 
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
+
+  List<RouteName> _routeNames = [];
+
+  List<RouteName> get routeNames => _routeNames;
 
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
 
@@ -472,28 +471,16 @@ class FC {
     }
   }
 
-  static Future<bool> canInformUserOfNewVersion() async {
-    // decide whether new version loaded
-    String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
-    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
-      if (storedVersionAndBuild != null) return true;
-    }
-    return false;
-  }
-
-  static Future<bool> informUserOfNewVersion() async {
-    // _packageInfo = await PackageInfo.fromPlatform();
-    // decide whether new version loaded
-    String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
-    String latestVersionAndBuild = '${FC().appName}-${FC().yamlBuildNumber}';
-    if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-      await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
-      if (storedVersionAndBuild != null) return true;
-    }
-    return false;
-  }
+  // static Future<bool> canInformUserOfNewVersion() async {
+  //   // decide whether new version loaded
+  //   String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
+  //   String latestVersionAndBuild = '${FC().yamlVersion}-${FC().yamlBuildNumber}';
+  //   if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
+  //     await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
+  //     if (storedVersionAndBuild != null) return true;
+  //   }
+  //   return false;
+  // }
 
   void hideClipboard() => Callout.dismiss("floating-clipboard");
 

@@ -64,10 +64,10 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      if (getParent() is! PollNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      if (getParent() is! PollNode) menuItemButton("Poll", snippetBloc, PollNode, action),
+      if (getParent() is! PollNode) ...super.menuAnchorWidgets_Heading(action),
+      if (getParent() is! PollNode) menuItemButton("Poll", PollNode, action),
     ];
   }
 

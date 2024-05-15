@@ -14,7 +14,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_platform/universal_platform.dart';
 
-
 class Useful {
   // late SharedPreferences _prefs;
   // late LocalStoreHydrated _localStore;
@@ -51,7 +50,6 @@ class Useful {
 //   }
 
   // static OverlayManager namedOM(String name) => instance._overlays[name]!;
-
 
   static String asset(String name) {
     // only need to specify the asset pkg when used by a client project; i.e. not within the flutter_content project itself
@@ -160,10 +158,10 @@ class Useful {
   static double get scrW => instance._mqd.size.width;
 
   static double get scrH => instance._mqd.size.height;
+
   static Size get scrSize => instance._mqd.size;
 
   // static double get keyboardHeight => instance._mqd.viewInsets.bottom;
-
 
   // The warning: "Don't use 'BuildContext's across async gaps." occurs
   // because after an async call, it's not guaranteed the current context will
@@ -177,6 +175,7 @@ class Useful {
 
   // static BuildContext? get latestContext => instance._latestContext;
   static BuildContext? get rootContext => instance._rootContext;
+
   // static set latestContext(BuildContext? newContext) => instance._latestContext = newContext;
   static set rootContext(BuildContext? newContext) => instance._rootContext = newContext;
 
@@ -430,8 +429,7 @@ class Useful {
   static Icon whiteIcon(IconData iconData) => Icon(iconData, color: Colors.white);
 
   static BoxDecoration rectangularBox({Color? color, double thickness = 1.0, double radius = 0.0}) {
-    return BoxDecoration(
-        color: color, border: Border.all(width: thickness), borderRadius: radius > 0 ? BorderRadius.all(Radius.circular(radius)) : null);
+    return BoxDecoration(color: color, border: Border.all(width: thickness), borderRadius: radius > 0 ? BorderRadius.all(Radius.circular(radius)) : null);
   }
 
   static Widget boxedText({String text = '', Color? color}) => Container(
@@ -497,27 +495,37 @@ class Useful {
     return Rect.fromLTWH(left, top, width, height);
   }
 
-  static String removeNonNumeric(s) =>
-      s.replaceAll(RegExp(r"\D"), "");
+  static String removeNonNumeric(s) => s.replaceAll(RegExp(r"\D"), "");
 
+  // compare appInfo versionAndBuild with this app's yaml values
+  // static Future<bool> possiblyInformUserOfNewVersion() async {
+  //   String appsVersionAndBuildNum = await FC().versionAndBuild;
+  //   String? storedVersionAndBuild = FC().appInfo.versionAndBuildNum ?? '';
+  //   if (appsVersionAndBuildNum != storedVersionAndBuild) {
+  //     FC().appInfo.versionAndBuildNum = appsVersionAndBuildNum;
+  //     if (false) FC().modelRepo.saveAppInfo();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
 // static (double, double) ensureOnScreenOLD(Rect calloutRect) {
-  //   double startingCalloutLeft = calloutRect.left;
-  //   double startingCalloutTop = calloutRect.top;
-  //   double resultLeft = startingCalloutLeft;
-  //   double resultTop = startingCalloutTop;
-  //   // adjust s.t entirely visible
-  //   if (startingCalloutLeft + calloutRect.width > Useful.scrW) {
-  //     resultLeft = Useful.scrW - calloutRect.width;
-  //   }
-  //   if (startingCalloutTop + calloutRect.height > (Useful.scrH - Useful.kbdH)) {
-  //     resultTop = Useful.scrH - calloutRect.height - Useful.kbdH;
-  //   }
-  //   if (startingCalloutLeft < 0) resultLeft = 0;
-  //   if (startingCalloutTop < 0) resultTop = 0;
-  //
-  //   return (resultLeft, resultTop);
-  // }
+//   double startingCalloutLeft = calloutRect.left;
+//   double startingCalloutTop = calloutRect.top;
+//   double resultLeft = startingCalloutLeft;
+//   double resultTop = startingCalloutTop;
+//   // adjust s.t entirely visible
+//   if (startingCalloutLeft + calloutRect.width > Useful.scrW) {
+//     resultLeft = Useful.scrW - calloutRect.width;
+//   }
+//   if (startingCalloutTop + calloutRect.height > (Useful.scrH - Useful.kbdH)) {
+//     resultTop = Useful.scrH - calloutRect.height - Useful.kbdH;
+//   }
+//   if (startingCalloutLeft < 0) resultLeft = 0;
+//   if (startingCalloutTop < 0) resultTop = 0;
+//
+//   return (resultLeft, resultTop);
+// }
 }
 
 enum PlatformEnum { android, ios, web, windows, osx, fuchsia, linux }
@@ -666,7 +674,7 @@ extension GlobalKeyExtension on GlobalKey {
     Rect? paintBounds;
     try {
       paintBounds = renderObject?.paintBounds;
-    } catch(e) {
+    } catch (e) {
       debugPrint('paintBounds = renderObject?.paintBounds - ${e.toString()}');
     }
     // possibly warn about the target having an infinite width

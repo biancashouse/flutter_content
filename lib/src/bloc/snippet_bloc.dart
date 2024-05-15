@@ -147,12 +147,20 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       STreeNode? sel = state.selectedNode;
       // STreeNode? selParent = sel?.getParent() as STreeNode?;
       STreeNode newSel = _possiblyRemoveFromParentButNotChildren();
-      state.treeC.rebuild();
+      SnippetTreeController possiblyNewTreeC = state.treeC;
+      if (newSel.getParent() is SnippetRootNode) {
+        possiblyNewTreeC = SnippetTreeController(
+          roots: [newSel],
+          childrenProvider: Node.snippetTreeChildrenProvider,
+        );
+      }
+      possiblyNewTreeC.rebuild();
       // debugPrint("--------------");
       // debugPrint(state.snippetTreeC.roots.first.toMap());
       emit(state.copyWith(
         nodeBeingDeleted: null,
         selectedNode: newSel,
+        treeC: possiblyNewTreeC,
         // ur: state.ur,
       ));
     }
@@ -163,6 +171,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     // node to be deleted must have a parent
     if (sel.getParent() == null) return sel;
     STreeNode selParent = sel.getParent() as STreeNode;
+    late STreeNode newSel;
     // tab-related
     if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarNode).children.indexOf(sel);
@@ -171,7 +180,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       if (scaffold?.body?.child is TabBarViewNode?) {
         (scaffold!.body?.child as TabBarViewNode).children.removeAt(index);
       }
-      return selParent;
+      newSel = selParent;
       // tabView-related
     } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarViewNode).children.indexOf(sel);
@@ -180,59 +189,69 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
       if (scaffold?.appBar?.bottom?.child is TabBarNode?) {
         (scaffold?.appBar!.bottom!.child as TabBarNode).children.removeAt(index);
       }
-      return selParent;
-    } else if (selParent is SnippetRootNode) {
-      selParent.child = PlaceholderNode()..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (sel is StepNode && selParent is StepperNode) {
       selParent.children.remove(sel);
-      return selParent;
+      newSel = selParent;
     } else if (sel is PollOptionNode && selParent is PollNode) {
       selParent.children.remove(sel);
-      return selParent;
+      newSel = selParent;
+    } else if (selParent is SnippetRootNode && sel is CL) {
+      STreeNode ph = PlaceholderNode()..setParent(selParent);
+      newSel = selParent.child = ph;
+    } else if (selParent is SnippetRootNode && sel is SC && sel.child == null) {
+      STreeNode ph = PlaceholderNode()..setParent(selParent);
+      newSel = selParent.child = ph;
+    } else if (selParent is SnippetRootNode && sel is MC && sel.children.isEmpty) {
+      STreeNode ph = PlaceholderNode()..setParent(selParent);
+      newSel = selParent.child = ph;
     } else if (selParent is SC && (sel is CL || sel is SnippetRootNode)) {
       selParent.child = null;
-      return selParent;
+      newSel = selParent;
     } else if (selParent is SC && sel is SC) {
       selParent.child = sel.child?..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is SC && sel is MC && sel.children.isEmpty) {
       selParent.child = null;
-      return selParent;
+      newSel = selParent;
     } else if (selParent is SC && sel is MC && sel.children.length < 2) {
       selParent.child = sel.children.first..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is MC && (sel is CL || sel is SnippetRootNode)) {
       selParent.children.remove(sel);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is MC && sel is SC && sel.child != null) {
       int index = selParent.children.indexOf(sel);
       selParent.children[index] = sel.child!..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is MC && sel is MC && sel.children.length == 1) {
       int index = selParent.children.indexOf(sel);
       selParent.children[index] = sel.children.first..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is MC && ((sel is SC && sel.child == null) || (sel is MC && sel.children.isEmpty))) {
       selParent.children.remove(sel);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is RichTextNode && sel is TextSpanNode && sel.children?.length == 1) {
       selParent.text = sel.children!.first..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is RichTextNode && (sel is WidgetSpanNode || sel is TextSpanNode && sel.children?.length != 1)) {
       selParent.text = TextSpanNode(text: 'xxx', isRootTextSpan: true)..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is TextSpanNode) {
       selParent.children!.remove(sel);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'title') {
       selParent.child = TextNode(text: 'must have a title widget!')..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'content') {
       selParent.child = TextNode(text: 'must have a content widget!')..setParent(selParent);
-      return selParent;
+      newSel = selParent;
     }
-    return sel;
+
+    if (newSel is SnippetRootNode && newSel.getParent() == null && newSel.child != null) {
+      newSel = newSel.child!;
+    }
+    return newSel;
   }
 
   // void _possiblyRemoveFromParentButNotChildrenOLD() {
@@ -642,15 +661,15 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
     // update treeC if rootNode changed (that's the Snippet's child)
     SnippetTreeController possiblyNewTreeC = state.treeC;
-    // if (r.getParent() is SnippetRootNode) {
-    //   possiblyNewTreeC = SnippetTreeController(
-    //     roots: [r],
-    //     childrenProvider: Node.snippetTreeChildrenProvider,
-    //   );
-    // }
-    state.rootNode.validateTree();
-    state.treeC.expand(r);
-    state.treeC.rebuild();
+    if (r.getParent() is SnippetRootNode) {
+      possiblyNewTreeC = SnippetTreeController(
+        roots: [r],
+        childrenProvider: Node.snippetTreeChildrenProvider,
+      );
+    }
+    possiblyNewTreeC.roots.first.validateTree();
+    possiblyNewTreeC.expand(r);
+    possiblyNewTreeC.rebuild();
     emit(state.copyWith(
       selectedNode: r,
       treeC: possiblyNewTreeC,

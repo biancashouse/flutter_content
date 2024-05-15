@@ -19,7 +19,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       TextButtonNodeMapper.ensureInitialized();
       FilledButtonNodeMapper.ensureInitialized();
       IconButtonNodeMapper.ensureInitialized();
-      HotspotsNodeMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -37,6 +36,9 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   static String? _$namedButtonStyle(ButtonNode v) => v.namedButtonStyle;
   static const Field<ButtonNode, String> _f$namedButtonStyle =
       Field('namedButtonStyle', _$namedButtonStyle, opt: true);
+  static String? _$destinationPageName(ButtonNode v) => v.destinationPageName;
+  static const Field<ButtonNode, String> _f$destinationPageName =
+      Field('destinationPageName', _$destinationPageName, opt: true);
   static String? _$onTapHandlerName(ButtonNode v) => v.onTapHandlerName;
   static const Field<ButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -68,6 +70,7 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   final MappableFields<ButtonNode> fields = const {
     #buttonStyleGroup: _f$buttonStyleGroup,
     #namedButtonStyle: _f$namedButtonStyle,
+    #destinationPageName: _f$destinationPageName,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -109,9 +112,17 @@ mixin ButtonNodeMappable {
 
 abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
+  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
+      get buttonStyleGroup;
+  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
+      get calloutConfigGroup;
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
-  $R call({STreeNode? child});
+  $R call(
+      {ButtonStyleGroup? buttonStyleGroup,
+      String? onTapHandlerName,
+      CalloutConfigGroup? calloutConfigGroup,
+      STreeNode? child});
   ButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

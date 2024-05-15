@@ -7,8 +7,7 @@ import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.d
 part 'hotspots_node.mapper.dart';
 
 @MappableClass()
-class HotspotsNode extends ButtonNode
-    with HotspotsNodeMappable {
+class HotspotsNode extends SC with HotspotsNodeMappable {
   // SnippetName name;
 
   List<TargetModel> targets;

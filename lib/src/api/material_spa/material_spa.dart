@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/router_provider/router_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
@@ -201,7 +202,6 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     registerWebViewImplementation();
 
     fInitApp = _initApp();
-
   }
 
   // @override
@@ -227,16 +227,18 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       modelName: widget.appName,
       fbOptions: widget.fbOptions,
       namedStyles: widget.namedStyles,
-      webRouter: widget.webRouter,
-      mobileRouter: widget.mobileRouter,
+      router: RouterProvider().getWebOrMobileRouter(widget.webRouter, widget.mobileRouter),
     );
     STreeNode.hideAllTargetCovers();
     // trigger another build
-      Useful.afterNextBuildDo(() {
-        Useful.afterMsDelayDo(1000, () {
-          FC.forceRefresh();
-        });
+    Useful.afterNextBuildDo(() {
+      Useful.afterMsDelayDo(1000, () async {
+        debugPrint('============================================================================');
+        debugPrint('================   ${FC().appName}-${await FC().versionAndBuild}  ================');
+        debugPrint('============================================================================');
+        FC.forceRefresh();
       });
+    });
     return capiBloc;
   }
 

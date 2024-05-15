@@ -59,6 +59,11 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   static String? _$namedButtonStyle(ElevatedButtonNode v) => v.namedButtonStyle;
   static const Field<ElevatedButtonNode, String> _f$namedButtonStyle =
       Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
+  static String? _$destinationPageName(ElevatedButtonNode v) =>
+      v.destinationPageName;
+  static const Field<ElevatedButtonNode, String> _f$destinationPageName = Field(
+      'destinationPageName', _$destinationPageName,
+      mode: FieldMode.member);
 
   @override
   final MappableFields<ElevatedButtonNode> fields = const {
@@ -71,6 +76,7 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #namedButtonStyle: _f$namedButtonStyle,
+    #destinationPageName: _f$destinationPageName,
   };
 
   @override

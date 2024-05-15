@@ -24,8 +24,6 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
 
   @override
   List<PTreeNode> createPropertiesList(BuildContext context) {
-    List<String> allSnippets = FC().snippetInfoCache.keys.toList()..sort();
-    List<PanelName> allPanelNames = FC().panelGkMap.keys.toList();
     return [
       StringPropertyValueNode(
         snode: this,
@@ -44,7 +42,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
         expands: false,
         calloutButtonSize: const Size(280, 20),
         calloutWidth: 280,
-        options: allSnippets,
+        options: FC().snippetInfoCache.keys.toList()..sort(),
       ),
       StringPropertyValueNode(
         snode: this,
@@ -54,7 +52,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
         expands: false,
         calloutButtonSize: const Size(280, 20),
         calloutWidth: 280,
-        options: allPanelNames,
+        options: FC().panelGkMap.keys.toList(),
       ),
       StringPropertyValueNode(
         snode: this,
@@ -64,7 +62,7 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
         expands: false,
         calloutButtonSize: const Size(280, 20),
         calloutWidth: 280,
-        options: allPanelNames,
+        options: FC().routeNames,
       ),
     ];
   }

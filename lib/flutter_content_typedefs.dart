@@ -25,6 +25,7 @@ typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
+typedef RouteName = String;
 typedef TargetId = int;
 typedef VersionId = String;
 // typedef VersionIdHistory = List<VersionId>;

@@ -192,10 +192,10 @@ class PositionedNode extends SC with PositionedNodeMappable {
   List<Type> replaceWithRecommendations() => [PositionedNode, AlignNode];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(SnippetBloC snippetBloc, NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
-      if (getParent() is! StackNode) ...super.menuAnchorWidgets_Heading(snippetBloc, action),
-      if (getParent() is! StackNode) menuItemButton("Stack", snippetBloc, StackNode, action),
+      if (getParent() is! StackNode) ...super.menuAnchorWidgets_Heading(action),
+      if (getParent() is! StackNode) menuItemButton("Stack", StackNode, action),
     ];
   }
 
