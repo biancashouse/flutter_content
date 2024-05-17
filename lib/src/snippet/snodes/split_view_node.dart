@@ -89,7 +89,9 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                       .children
                       .map(
                         (child) => Area(
-                          widget: child.toWidget(context, this),
+                          builder: (ctx, area) {
+                            return child.toWidget(context, this);
+                          }
                         ),
                       )
                       .toList(),

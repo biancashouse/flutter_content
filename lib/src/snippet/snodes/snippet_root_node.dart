@@ -89,8 +89,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
   static Future<void> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
-    required SnippetName snippetName,
     SnippetTemplate? fromTemplate,
+    required SnippetName snippetName,
   }) async {
     SnippetRootNode? rootNode;
 

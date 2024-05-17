@@ -40,8 +40,7 @@ class FSFoldersAndImagePicker extends HookWidget {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: Useful.coloredText('Firebase Storage Image Picker',
-              fontSize: 16.0, color: Colors.white),
+          title: Useful.coloredText('Firebase Storage Image Picker', fontSize: 16.0, color: Colors.white),
         ),
         body: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -51,12 +50,9 @@ class FSFoldersAndImagePicker extends HookWidget {
               axis: Axis.horizontal,
               // controller: msvC.value,
               // onWeightChange: () => setState(() {}),
-              dividerBuilder:
-                  (axis, index, resizable, dragging, highlighted, themeData) {
+              dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
                 return Container(
-                  color: dragging
-                      ? Colors.purpleAccent[200]
-                      : Colors.purpleAccent[100],
+                  color: dragging ? Colors.purpleAccent[200] : Colors.purpleAccent[100],
                   child: Icon(
                     Icons.drag_indicator,
                     color: highlighted ? Colors.blueAccent : Colors.white,
@@ -65,16 +61,20 @@ class FSFoldersAndImagePicker extends HookWidget {
               },
               initialAreas: [
                 Area(
-                  widget: fsFolderPane(
-                    selectedFolderRef.value,
-                    (newRef) => selectedFolderRef.value = newRef,
-                  ),
+                  builder: (ctx, area) {
+                    return fsFolderPane(
+                      selectedFolderRef.value,
+                      (newRef) => selectedFolderRef.value = newRef,
+                    );
+                  },
                 ),
                 Area(
-                  widget: FolderImagesGridView(
-                    onChangeF: onChangeF,
-                    selectedFolderRef: selectedFolderRef.value,
-                  ),
+                  builder: (ctx, area) {
+                    return FolderImagesGridView(
+                      onChangeF: onChangeF,
+                      selectedFolderRef: selectedFolderRef.value,
+                    );
+                  },
                 ),
               ],
             ),
@@ -84,8 +84,7 @@ class FSFoldersAndImagePicker extends HookWidget {
     );
   }
 
-  Widget fsFolderPane(
-      Reference selectedFolderRef, ValueChanged<Reference> onSelectionF) {
+  Widget fsFolderPane(Reference selectedFolderRef, ValueChanged<Reference> onSelectionF) {
     if (FC().rootFSFolderNode == null) {
       return const Icon(
         Icons.warning,
@@ -132,17 +131,12 @@ class FSFoldersAndImagePicker extends HookWidget {
                       onPressed: () {
                         onSelectionF.call(entry.node.ref);
                       },
-                      child: Useful.coloredText(
-                          entry.node.ref.name.isEmpty
-                              ? '/'
-                              : entry.node.ref.name,
-                          color: Colors.white),
+                      child: Useful.coloredText(entry.node.ref.name.isEmpty ? '/' : entry.node.ref.name, color: Colors.white),
                     ),
                     if (entry.hasChildren)
                       ExpandIcon(
                         key: GlobalObjectKey(entry.node),
-                        isExpanded: treeC
-                            .getExpansionState(entry.node), //entry.isExpanded,
+                        isExpanded: treeC.getExpansionState(entry.node), //entry.isExpanded,
                         padding: EdgeInsets.zero,
                         onPressed: (_) {
                           if (treeC.getExpansionState(entry.node)) {
@@ -176,7 +170,8 @@ class FolderImagesGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('fsFoldersImagesPane(${selectedFolderRef.name})');
 
-    return Container(color: Colors.purple,
+    return Container(
+      color: Colors.purple,
       child: StorageGridView(
         key: UniqueKey(),
         loadingController: PaginatedLoadingController(ref: selectedFolderRef),

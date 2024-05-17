@@ -198,53 +198,57 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               initialAreas: [
                 // SNIPPET TREE
                 Area(
-                  widget: GestureDetector(
-                    onTap: () {
-                      FC().snippetBeingEdited!.add(const SnippetEvent.clearNodeSelection());
-                      Callout.hide("floating-clipboard");
-                    },
-                    child: BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
-                      return SnippetTreePane(snippetBloc: FC().snippetBeingEdited!);
-                    }),
-                  ),
+                  builder: (ctx, area) {
+                    return GestureDetector(
+                      onTap: () {
+                        FC().snippetBeingEdited!.add(const SnippetEvent.clearNodeSelection());
+                        Callout.hide("floating-clipboard");
+                      },
+                      child: BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
+                        return SnippetTreePane(snippetBloc: FC().snippetBeingEdited!);
+                      }),
+                    );
+                  },
                   flex: 1,
                 ),
                 // NODE PROPERTIES
                 if (FC().snippetBeingEdited!.state.selectedNode?.pTreeC != null)
                   Area(
-                    widget: BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
-                      return !FC().snippetBeingEdited!.state.aNodeIsSelected
-                          ? const Offstage()
-                          : Container(
-                              color: Colors.purpleAccent[100],
-                              child: Center(
-                                child: ListView(
-                                  controller: FC().snippetBeingEdited!.state.selectedNode!.propertiesPaneSC(),
-                                  shrinkWrap: true,
-                                  children: [
-                                    // icon buttons
-                                    ExpansionTile(
-                                      title: Useful.coloredText('widget actions', color: Colors.white54, fontSize: 14),
-                                      backgroundColor: Colors.black,
-                                      collapsedBackgroundColor: Colors.black,
-                                      onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
-                                      initiallyExpanded: FC().showingNodeButtons,
-                                      children: [nodeButtons(FC().snippetBeingEdited!, context)],
-                                    ),
-                                    // NODE PROPERTIES TREE
-                                    if (FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context).roots.isEmpty)
-                                      Useful.coloredText(' (no widget properties)', color: Colors.white),
-                                    Material(
-                                        color: Colors.black,
-                                        child: PropertiesTreeView(
-                                          treeC: FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context),
-                                        )),
-                                    // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-                                  ],
+                    builder: (ctx, area) {
+                      return BlocBuilder<SnippetBloC, SnippetState>(builder: (context, state) {
+                        return !FC().snippetBeingEdited!.state.aNodeIsSelected
+                            ? const Offstage()
+                            : Container(
+                                color: Colors.purpleAccent[100],
+                                child: Center(
+                                  child: ListView(
+                                    controller: FC().snippetBeingEdited!.state.selectedNode!.propertiesPaneSC(),
+                                    shrinkWrap: true,
+                                    children: [
+                                      // icon buttons
+                                      ExpansionTile(
+                                        title: Useful.coloredText('widget actions', color: Colors.white54, fontSize: 14),
+                                        backgroundColor: Colors.black,
+                                        collapsedBackgroundColor: Colors.black,
+                                        onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
+                                        initiallyExpanded: FC().showingNodeButtons,
+                                        children: [nodeButtons(FC().snippetBeingEdited!, context)],
+                                      ),
+                                      // NODE PROPERTIES TREE
+                                      if (FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context).roots.isEmpty)
+                                        Useful.coloredText(' (no widget properties)', color: Colors.white),
+                                      Material(
+                                          color: Colors.black,
+                                          child: PropertiesTreeView(
+                                            treeC: FC().snippetBeingEdited!.state.selectedNode!.pTreeC(context),
+                                          )),
+                                      // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            );
-                    }),
+                              );
+                      });
+                    },
                     flex: 1,
                   ),
               ],
@@ -336,8 +340,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     // some properties cannot be deleted
                     if (!snippetBloc.state.selectedNode.canBeDeleted()) return;
                     STreeNode node = snippetBloc.state.selectedNode;
-                    bool wasShowingAsRoot = snippetBloc.state.selectedNode == snippetBloc.treeC.roots.first;
-                    STreeNode? parentNode = snippetBloc.state.selectedNode.getParent() as STreeNode?;
+                    // bool wasShowingAsRoot = snippetBloc.state.selectedNode == snippetBloc.treeC.roots.first;
+                    // STreeNode? parentNode = snippetBloc.state.selectedNode.getParent() as STreeNode?;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     snippetBloc.add(const SnippetEvent.deleteNodeTapped());
                     Useful.afterNextBuildDo(() async {
@@ -362,8 +366,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     Callout.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity( !snippetBloc.state.aNodeIsSelected ||
-                          !snippetBloc.state.selectedNode.canBeDeleted() ||
+                      color: Colors.red.withOpacity(!snippetBloc.state.aNodeIsSelected ||
+                              !snippetBloc.state.selectedNode.canBeDeleted() ||
                               (snippetBloc.state.selectedNode is SnippetRootNode && snippetBloc.state.selectedNode.getParent() == null) ||
                               (gc is GenericSingleChildNode? && gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
                           ? .5
@@ -432,8 +436,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           if (snippetBloc.state.selectedNode is! GenericSingleChildNode && _canReplace(snippetBloc.state.selectedNode!))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
-                  action: NodeAction.replaceWith, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
+              child: snippetBloc.state.selectedNode!
+                  .insertItemMenuAnchor(snippetBloc, action: NodeAction.replaceWith, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
             ),
           editTreeStructureIconButtons(snippetBloc),
           vspacer(10),
@@ -497,8 +501,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                           // snippetBloc.state.selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
-                          snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
-                              action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
+                          snippetBloc.state.selectedNode!
+                              .insertItemMenuAnchor(snippetBloc, action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                         ],
                       ),
                     ),
@@ -506,15 +510,15 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     Positioned(
                       top: 10,
                       left: 10,
-                      child: snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
-                          action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
+                      child: snippetBloc.state.selectedNode!
+                          .insertItemMenuAnchor(snippetBloc, action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
                     ),
                   if (_canAddChld(snippetBloc.state.selectedNode!))
                     Positioned(
                       bottom: 10,
                       right: 10,
-                      child:snippetBloc.state.selectedNode!. insertItemMenuAnchor(snippetBloc,
-                          action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
+                      child: snippetBloc.state.selectedNode!
+                          .insertItemMenuAnchor(snippetBloc, action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
                     ),
                 ],
               ),
@@ -531,10 +535,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
-                        action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
-                    snippetBloc.state.selectedNode!.insertItemMenuAnchor(snippetBloc,
-                        action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
+                    snippetBloc.state.selectedNode!
+                        .insertItemMenuAnchor(snippetBloc, action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
+                    snippetBloc.state.selectedNode!
+                        .insertItemMenuAnchor(snippetBloc, action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
                   ],
                 ),
               ),
@@ -722,21 +726,21 @@ class SnippetTreeView extends StatelessWidget {
         var fc = FC();
         if (entry.node == fc.selectedNode) debugPrint('SnippetTreeView - selected node: ${fc.selectedNode.toString()}');
         // never show the tree root node
-        return true//entry.node is! SnippetRootNode && entry.node != snippetBloc.treeC.roots.firstOrNull
-        ? TreeIndentation(
-          guide: IndentGuide.connectingLines(
-            color: FC().aNodeIsSelected && entry.node == FC().selectedNode ? Colors.green : Colors.white,
-            indent: 40.0,
-          ),
-          entry: entry,
-          child: NodeWidget(
-            snippetName: snippetBloc.rootNode.name,
-            treeController: snippetBloc.treeC,
-            entry: entry,
-            allowButtonCallouts: allowButtonCallouts,
-          ),
-        )
-        : const Offstage();
+        return true //entry.node is! SnippetRootNode && entry.node != snippetBloc.treeC.roots.firstOrNull
+            ? TreeIndentation(
+                guide: IndentGuide.connectingLines(
+                  color: FC().aNodeIsSelected && entry.node == FC().selectedNode ? Colors.green : Colors.white,
+                  indent: 40.0,
+                ),
+                entry: entry,
+                child: NodeWidget(
+                  snippetName: snippetBloc.rootNode.name,
+                  treeController: snippetBloc.treeC,
+                  entry: entry,
+                  allowButtonCallouts: allowButtonCallouts,
+                ),
+              )
+            : const Offstage();
       },
     );
   }

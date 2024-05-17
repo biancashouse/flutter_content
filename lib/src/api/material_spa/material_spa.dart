@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/router_provider/router_provider.dart';
+import 'package:flutter_content/src/routingconfig_provider/routingconfig_provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
@@ -23,8 +22,9 @@ class MaterialSPA extends StatefulWidget {
   final String title;
 
   // final SnippetName pageSnippetName;
-  final GoRouter webRouter;
-  final GoRouter mobileRouter;
+  final RoutingConfig webRoutingConfig;
+  final RoutingConfig mobileRoutingConfig;
+  final String initialRoutePath;
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
   final Map<String, NamedTextStyle> namedStyles;
@@ -41,9 +41,10 @@ class MaterialSPA extends StatefulWidget {
     this.title = '',
     // required this.pageSnippetName,
     // this.localTestingFilePaths = false,
-    required this.webRouter,
-    required this.mobileRouter,
+    required this.webRoutingConfig,
+    required this.mobileRoutingConfig,
     required this.materialAppThemeF,
+    required this.initialRoutePath,
     this.fbOptions,
     this.namedStyles = const {},
     this.hideStatusBar = true,
@@ -227,7 +228,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
       modelName: widget.appName,
       fbOptions: widget.fbOptions,
       namedStyles: widget.namedStyles,
-      router: RouterProvider().getWebOrMobileRouter(widget.webRouter, widget.mobileRouter),
+      routingConfig: RoutingConfigProvider().getWebOrMobileRoutingConfig(
+        widget.webRoutingConfig,
+        widget.mobileRoutingConfig,
+      ),
+      initialRoutePath: widget.initialRoutePath,
     );
     STreeNode.hideAllTargetCovers();
     // trigger another build
@@ -257,7 +262,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             return BlocProvider<CAPIBloC>(
               create: (BuildContext context) => snapshot.data!,
               child: MaterialApp.router(
-                routerConfig: RouterProvider().getWebOrMobileRouter(widget.webRouter, widget.mobileRouter),
+                routerConfig: FC().router,
                 theme: widget.materialAppThemeF(),
                 debugShowCheckedModeBanner: false,
                 title: widget.title,

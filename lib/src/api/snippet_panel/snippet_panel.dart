@@ -10,8 +10,11 @@ const BODY_PLACEHOLDER = 'body-placeholder';
 
 class SnippetPanel extends StatefulWidget {
   final String panelName;
-  final String snippetName;
-  final SnippetTemplate fromTemplate;
+
+  // from canned snippet or by providing tree of nodes
+  final String? snippetName;
+  final STreeNode? rootNode;
+  final SnippetTemplate? fromTemplate;
   final Map<String, void Function(BuildContext)>? handlers;
   final bool allowButtonCallouts;
   final bool justPlaying;
@@ -26,8 +29,9 @@ class SnippetPanel extends StatefulWidget {
 
   SnippetPanel({
     required this.panelName,
-    required this.snippetName,
-    this.fromTemplate = SnippetTemplate.empty,
+    this.snippetName,
+    this.rootNode,
+    this.fromTemplate,
     this.handlers,
     this.allowButtonCallouts = true,
     this.justPlaying = true,
@@ -102,13 +106,15 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
     // debugPrint('*** SnippetPanel() ***');
 
-    _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-      fromTemplate: widget.fromTemplate,
-      snippetName: widget.snippetName,
-    );
+    if (widget.snippetName != null && widget.fromTemplate != null) {
+      _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+        snippetName: widget.snippetName!,
+        fromTemplate: widget.fromTemplate,
+      );
 
-    // register snippet? with panel
-    FC().snippetPlacementMap[widget.panelName] = widget.snippetName;
+      // register snippet? with panel
+      FC().snippetPlacementMap[widget.panelName] = widget.snippetName!;
+    }
 
     prevTabQ = [];
 
@@ -148,50 +154,49 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
-    // panel name is always supplied, but snippet name can be omitted,
-    // in which case a default snippet name is used: Snippet[pName].
-    // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-    // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
-    //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
-    // }
-    return FutureBuilder<void>(
-        future: _fInit,
-        builder: (futureContext, snapshot) {
-          return snapshot.connectionState != ConnectionState.done
-              ? const CircularProgressIndicator()
-              : BlocBuilder<CAPIBloC, CAPIState>(
-                  key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-                  buildWhen: (previous, current) => !current.onlyTargetsWrappers,
-                  builder: (blocContext, state) {
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${widget.snippetName}\n");
-                    var fc = FC();
-                    SnippetInfoModel? snippetInfo = FC().snippetInfoCache[widget.snippetName];
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
-                    // snippet panel renders a root snippet
-                    return _renderSnippet(context);
-                    // SnippetRootNode panelSnippet = SnippetRootNode(name:widget.snippetName);
-                    // var w = panelSnippet.toWidget(context, null);
-                    // return w ?? const Icon(Icons.error_rounded, color: Colors.deepOrange, size: 36);
-                  },
-                );
-        });
+    return widget.rootNode != null
+        ? widget.rootNode!.toWidget(context, null)
+
+        // panel name is always supplied, but snippet name can be omitted,
+        // in which case a default snippet name is used: Snippet[pName].
+        // But first, see if there's an entry in the placement map, in which case we use that snippet name.
+        // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
+        //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
+        // }
+        : FutureBuilder<void>(
+            future: _fInit,
+            builder: (futureContext, snapshot) {
+              return snapshot.connectionState != ConnectionState.done
+                  ? const CircularProgressIndicator()
+                  : BlocBuilder<CAPIBloC, CAPIState>(
+                      key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+                      buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+                      builder: (blocContext, state) {
+                        debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
+                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${widget.snippetName}\n");
+                        // var fc = FC();
+                        SnippetInfoModel? snippetInfo = FC().snippetInfoCache[widget.snippetName];
+                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                        // snippet panel renders a canned snippet or a supplied snippet tree
+                        return _renderSnippet(context);
+                      },
+                    );
+            });
   }
 
   _renderSnippet(context) => FutureBuilder<void>(
-      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: widget.snippetName),
+      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: widget.snippetName!),
       builder: (futureContext, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Widget snippetWidget;
           try {
             // in case did a revert, ignore snapshot data and use the AppInfo instead
-            SnippetRootNode? snippet = FC().currentSnippet(widget.snippetName);
+            SnippetRootNode? snippet = FC().currentSnippet(widget.snippetName!);
             snippet?.validateTree();
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-            snippetWidget = snippet == null
-                ? const Icon(Icons.error, color: Colors.redAccent)
-                : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+            snippetWidget =
+                snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
           } catch (e) {
             debugPrint('snippetRootNode.toWidget() failed!');
             snippetWidget = Material(

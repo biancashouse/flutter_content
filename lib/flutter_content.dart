@@ -74,8 +74,10 @@ export 'src/api/callouts/toast.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
+export 'src/snippet/pnodes/enums/enum_axis.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
+export 'src/snippet/snodes/edgeinsets_node_value.dart';
 export 'src/snippet/snodes/appbar_node.dart';
 export 'src/snippet/snodes/aspect_ratio_node.dart';
 export 'src/snippet/snodes/asset_image_node.dart';
@@ -173,7 +175,8 @@ class FC {
       'Merriweather Sans',
     ],
     Map<String, NamedTextStyle> namedStyles = const {},
-    required GoRouter router,
+    required RoutingConfig routingConfig,
+    required String initialRoutePath,
     bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) async {
     _appName = modelName;
@@ -181,6 +184,10 @@ class FC {
     _namedStyles = namedStyles;
     _skipAssetPkgName = skipAssetPkgName;
     Bloc.observer = MyGlobalObserver();
+
+    // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
+    routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
+    router = GoRouter.routingConfig(initialLocation: initialRoutePath, routingConfig: routingConfigVN);
 
     // extract go routes
     void parseRouteConfig(List<String> names, List<GoRoute> routes) {
@@ -223,19 +230,21 @@ class FC {
   }
 
   late IModelRepository modelRepo;
+
   Future<PackageInfo> get pkgInfo async => await PackageInfo.fromPlatform();
 
   // set by .init()
   String get appName => _appName;
 
   /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
-  Future<String> get yamlAppName async=> (await pkgInfo).appName;
+  Future<String> get yamlAppName async => (await pkgInfo).appName;
 
   Future<String> get yamlBuildNumber async => (await pkgInfo).buildNumber;
 
   Future<String> get yamlPackageName async => (await pkgInfo).packageName;
 
   Future<String> get yamlVersion async => (await pkgInfo).version;
+
   Future<String> get versionAndBuild async {
     var ver = await yamlVersion;
     var buildNum = await yamlBuildNumber;
@@ -249,9 +258,22 @@ class FC {
 
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
 
+  late ValueNotifier<RoutingConfig> routingConfigVN;
+
+  late GoRouter router;
+
   List<RouteName> _routeNames = [];
 
   List<RouteName> get routeNames => _routeNames;
+
+  void addRoute(GoRoute newRoute) {
+    routingConfigVN.value = RoutingConfig(
+      routes: <RouteBase>[
+        ...routingConfigVN.value.routes,
+        newRoute,
+      ],
+    );
+  }
 
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
 
