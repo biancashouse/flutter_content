@@ -60,7 +60,7 @@ class ColourTool extends StatefulWidget {
     );
   }
 
-  static bool isShowing() => Callout.anyPresent([CAPI.ARROW_TYPE_CALLOUT.name]);
+  static bool isShowing() => Callout.anyPresent(["arrow-type"]);
 }
 
 class _ColourToolState extends State<ColourTool> {

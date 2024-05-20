@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SnippetState {
-// ---- the state gets saved between snippet tree callout instances ------------------
+  String get pageName =>
+      throw _privateConstructorUsedError; // ---- the state gets saved between snippet tree callout instances ------------------
   SnippetRootNode get rootNode => throw _privateConstructorUsedError;
   SnippetTreeController get treeC =>
       throw _privateConstructorUsedError; // required SnippetTreeUR ur,
@@ -41,7 +42,8 @@ abstract class $SnippetStateCopyWith<$Res> {
       _$SnippetStateCopyWithImpl<$Res, SnippetState>;
   @useResult
   $Res call(
-      {SnippetRootNode rootNode,
+      {String pageName,
+      SnippetRootNode rootNode,
       SnippetTreeController treeC,
       STreeNode? selectedNode,
       GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
@@ -63,6 +65,7 @@ class _$SnippetStateCopyWithImpl<$Res, $Val extends SnippetState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? pageName = null,
     Object? rootNode = null,
     Object? treeC = null,
     Object? selectedNode = freezed,
@@ -72,6 +75,10 @@ class _$SnippetStateCopyWithImpl<$Res, $Val extends SnippetState>
     Object? force = null,
   }) {
     return _then(_value.copyWith(
+      pageName: null == pageName
+          ? _value.pageName
+          : pageName // ignore: cast_nullable_to_non_nullable
+              as String,
       rootNode: null == rootNode
           ? _value.rootNode
           : rootNode // ignore: cast_nullable_to_non_nullable
@@ -113,7 +120,8 @@ abstract class _$$SnippetStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {SnippetRootNode rootNode,
+      {String pageName,
+      SnippetRootNode rootNode,
       SnippetTreeController treeC,
       STreeNode? selectedNode,
       GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
@@ -133,6 +141,7 @@ class __$$SnippetStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? pageName = null,
     Object? rootNode = null,
     Object? treeC = null,
     Object? selectedNode = freezed,
@@ -142,6 +151,10 @@ class __$$SnippetStateImplCopyWithImpl<$Res>
     Object? force = null,
   }) {
     return _then(_$SnippetStateImpl(
+      pageName: null == pageName
+          ? _value.pageName
+          : pageName // ignore: cast_nullable_to_non_nullable
+              as String,
       rootNode: null == rootNode
           ? _value.rootNode
           : rootNode // ignore: cast_nullable_to_non_nullable
@@ -178,7 +191,8 @@ class __$$SnippetStateImplCopyWithImpl<$Res>
 
 class _$SnippetStateImpl extends _SnippetState {
   _$SnippetStateImpl(
-      {required this.rootNode,
+      {required this.pageName,
+      required this.rootNode,
       required this.treeC,
       this.selectedNode,
       this.selectedTreeNodeGK,
@@ -187,6 +201,8 @@ class _$SnippetStateImpl extends _SnippetState {
       this.force = 0})
       : super._();
 
+  @override
+  final String pageName;
 // ---- the state gets saved between snippet tree callout instances ------------------
   @override
   final SnippetRootNode rootNode;
@@ -211,7 +227,7 @@ class _$SnippetStateImpl extends _SnippetState {
 
   @override
   String toString() {
-    return 'SnippetState(rootNode: $rootNode, treeC: $treeC, selectedNode: $selectedNode, selectedTreeNodeGK: $selectedTreeNodeGK, showProperties: $showProperties, nodeBeingDeleted: $nodeBeingDeleted, force: $force)';
+    return 'SnippetState(pageName: $pageName, rootNode: $rootNode, treeC: $treeC, selectedNode: $selectedNode, selectedTreeNodeGK: $selectedTreeNodeGK, showProperties: $showProperties, nodeBeingDeleted: $nodeBeingDeleted, force: $force)';
   }
 
   @override
@@ -219,6 +235,8 @@ class _$SnippetStateImpl extends _SnippetState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SnippetStateImpl &&
+            (identical(other.pageName, pageName) ||
+                other.pageName == pageName) &&
             (identical(other.rootNode, rootNode) ||
                 other.rootNode == rootNode) &&
             (identical(other.treeC, treeC) || other.treeC == treeC) &&
@@ -234,8 +252,16 @@ class _$SnippetStateImpl extends _SnippetState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, rootNode, treeC, selectedNode,
-      selectedTreeNodeGK, showProperties, nodeBeingDeleted, force);
+  int get hashCode => Object.hash(
+      runtimeType,
+      pageName,
+      rootNode,
+      treeC,
+      selectedNode,
+      selectedTreeNodeGK,
+      showProperties,
+      nodeBeingDeleted,
+      force);
 
   @JsonKey(ignore: true)
   @override
@@ -246,7 +272,8 @@ class _$SnippetStateImpl extends _SnippetState {
 
 abstract class _SnippetState extends SnippetState {
   factory _SnippetState(
-      {required final SnippetRootNode rootNode,
+      {required final String pageName,
+      required final SnippetRootNode rootNode,
       required final SnippetTreeController treeC,
       final STreeNode? selectedNode,
       final GlobalKey<State<StatefulWidget>>? selectedTreeNodeGK,
@@ -255,6 +282,8 @@ abstract class _SnippetState extends SnippetState {
       final int force}) = _$SnippetStateImpl;
   _SnippetState._() : super._();
 
+  @override
+  String get pageName;
   @override // ---- the state gets saved between snippet tree callout instances ------------------
   SnippetRootNode get rootNode;
   @override

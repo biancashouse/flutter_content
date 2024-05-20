@@ -83,6 +83,8 @@ abstract class Node extends Object {
       );
 
   CAPIBloC get capiBloc => FC().capiBloc;
+
+  Node();
 }
 
 class SnippetTreeController extends TreeController<STreeNode> {

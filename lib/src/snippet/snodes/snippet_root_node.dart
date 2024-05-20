@@ -4,7 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-@MappableClass()//discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
+@MappableClass() //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   bool isEmbedded;
@@ -47,9 +47,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    if (findDescendant(SnippetRootNode) != null) {
-
-    }
+    if (findDescendant(SnippetRootNode) != null) {}
     setParent(parentNode);
     return FutureBuilder<void>(
         future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
@@ -60,9 +58,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
               SnippetRootNode? snippet = FC().currentSnippet(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-              return snippet == null
-                  ? const Icon(Icons.error, color: Colors.redAccent)
-                  : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+              return snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
               debugPrint('snippetRootNode.toWidget() failed!');
               return Material(
@@ -89,22 +85,16 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
   static Future<void> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
-    SnippetTemplate? fromTemplate,
+    SnippetRootNode? snippetRootNode,
     required SnippetName snippetName,
   }) async {
-    SnippetRootNode? rootNode;
-
     AppInfoModel appInfo = FC().appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!appInfo.snippetNames.contains(snippetName) && fromTemplate != null) {
-      SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplate(
-        fromTemplate,
-        snippetName,
-      );
+    if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
       await FC().possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
-        rootNode: newSnippet,
+        rootNode: snippetRootNode,
         publish: true,
       );
       return;
@@ -115,14 +105,14 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     if (snippetInfo != null) {
       VersionId? currentVersionId = snippetInfo.currentVersionId;
       // may already be in snippet cache
-      rootNode = FC().currentSnippet(snippetName);
+      SnippetRootNode? rootNode = FC().currentSnippet(snippetName);
       //
       if (rootNode == null && currentVersionId != null) {
         // snippet version was not already in cache
         await FC().modelRepo.possiblyLoadSnippetIntoCache(
-          snippetName: snippetName,
-          versionId: currentVersionId,
-        );
+              snippetName: snippetName,
+              versionId: currentVersionId,
+            );
       }
     }
   }
@@ -158,7 +148,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     return child?.toSource(context) ?? 'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
-  SnippetRootNode cloneSnippet() {
+  SnippetRootNode clone() {
     String jsonS = toJson();
     return STreeNodeMapper.fromJson(jsonS) as SnippetRootNode;
   }

@@ -20,6 +20,8 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
   @override
   final String id = 'SnippetInfoModel';
 
+  static String _$name(SnippetInfoModel v) => v.name;
+  static const Field<SnippetInfoModel, String> _f$name = Field('name', _$name);
   static String? _$editingVersionId(SnippetInfoModel v) => v.editingVersionId;
   static const Field<SnippetInfoModel, String> _f$editingVersionId =
       Field('editingVersionId', _$editingVersionId, opt: true);
@@ -36,6 +38,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
 
   @override
   final MappableFields<SnippetInfoModel> fields = const {
+    #name: _f$name,
     #editingVersionId: _f$editingVersionId,
     #publishedVersionId: _f$publishedVersionId,
     #autoPublish: _f$autoPublish,
@@ -43,7 +46,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
   };
 
   static SnippetInfoModel _instantiate(DecodingData data) {
-    return SnippetInfoModel(
+    return SnippetInfoModel(data.dec(_f$name),
         editingVersionId: data.dec(_f$editingVersionId),
         publishedVersionId: data.dec(_f$publishedVersionId),
         autoPublish: data.dec(_f$autoPublish),
@@ -105,7 +108,8 @@ extension SnippetInfoModelValueCopy<$R, $Out>
 abstract class SnippetInfoModelCopyWith<$R, $In extends SnippetInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
-      {String? editingVersionId,
+      {String? name,
+      String? editingVersionId,
       String? publishedVersionId,
       bool? autoPublish,
       String? pagePath});
@@ -123,11 +127,13 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
       SnippetInfoModelMapper.ensureInitialized();
   @override
   $R call(
-          {Object? editingVersionId = $none,
+          {String? name,
+          Object? editingVersionId = $none,
           Object? publishedVersionId = $none,
           Object? autoPublish = $none,
           Object? pagePath = $none}) =>
       $apply(FieldCopyWithData({
+        if (name != null) #name: name,
         if (editingVersionId != $none) #editingVersionId: editingVersionId,
         if (publishedVersionId != $none)
           #publishedVersionId: publishedVersionId,
@@ -135,13 +141,14 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
         if (pagePath != $none) #pagePath: pagePath
       }));
   @override
-  SnippetInfoModel $make(CopyWithData data) => SnippetInfoModel(
-      editingVersionId:
-          data.get(#editingVersionId, or: $value.editingVersionId),
-      publishedVersionId:
-          data.get(#publishedVersionId, or: $value.publishedVersionId),
-      autoPublish: data.get(#autoPublish, or: $value.autoPublish),
-      pagePath: data.get(#pagePath, or: $value.pagePath));
+  SnippetInfoModel $make(CopyWithData data) =>
+      SnippetInfoModel(data.get(#name, or: $value.name),
+          editingVersionId:
+              data.get(#editingVersionId, or: $value.editingVersionId),
+          publishedVersionId:
+              data.get(#publishedVersionId, or: $value.publishedVersionId),
+          autoPublish: data.get(#autoPublish, or: $value.autoPublish),
+          pagePath: data.get(#pagePath, or: $value.pagePath));
 
   @override
   SnippetInfoModelCopyWith<$R2, SnippetInfoModel, $Out2> $chain<$R2, $Out2>(

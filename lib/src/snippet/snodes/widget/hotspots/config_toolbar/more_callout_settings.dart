@@ -42,14 +42,14 @@ class MoreCalloutConfigSettings extends StatefulWidget {
               ancestorVScrollController: ancestorVScrollController,
             ),
         calloutConfig: CalloutConfig(
-          feature: CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name,
+          feature: "more-cc-settings",
           suppliedCalloutW: 200,
           suppliedCalloutH: 440,
           barrier: CalloutBarrier(
             opacity: 0.1,
             // onTappedF: () async {
             //   // FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-            //   Callout.dismiss(CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name);
+            //   Callout.dismiss("more-cc-settings");
             //   removeSnippetContentCallout(tc.snippetName);
             //   FC().parentTW(twName)?.zoomer?.resetTransform();
             //   FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
@@ -70,7 +70,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   }
 
   static bool isShowing() =>
-      Callout.anyPresent([CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name]);
+      Callout.anyPresent(["more-cc-settings"]);
 }
 
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
@@ -186,7 +186,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   }
 
   void _refreshContentCallout() {
-    Callout.dismiss(CAPI.MORE_CALLOUT_CONFIG_SETTINGS.name);
+    Callout.dismiss("more-cc-settings");
     removeSnippetContentCallout(tc.snippetName);
     tc.targetsWrapperState()
         ?.zoomer

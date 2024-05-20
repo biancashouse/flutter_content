@@ -172,6 +172,7 @@ class CAPIEvent with _$CAPIEvent {
   }) = SetPanelSnippet;
 
   const factory CAPIEvent.pushSnippetBloc({
+    required PageName pageName,
     required SnippetName snippetName,
     STreeNode? visibleDecendantNode,
   }) = PushSnippetBloc;

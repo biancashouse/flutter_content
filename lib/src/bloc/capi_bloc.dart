@@ -995,6 +995,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         );
 
     SnippetBloC newSnippetBloc = SnippetBloC(
+      pageName: event.pageName,
       rootNode: rootNode,
       treeC: newTreeC()..expandAll(),
       // treeUR: SnippetTreeUR()

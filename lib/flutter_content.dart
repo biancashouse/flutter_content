@@ -16,10 +16,10 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/model_repo.dart';
-import 'src/api/snippet_panel/clipboard_view.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -37,47 +37,40 @@ import 'src/api/snippet_panel/clipboard_view.dart';
 // const String getIt_textFields = "snippets:textFields";
 
 export 'flutter_content_typedefs.dart';
-export 'src/api/snippet_panel/snippet_panel.dart';
-export 'src/api/snippet_panel/snippet_templates.dart';
-export 'src/api/material_spa/material_spa.dart';
-export 'src/snippet/snodes/widget/hotspots/targets_wrapper.dart';
-export 'src/home_page_provider/zoomer.dart';
-
+export 'src/api/callouts/callout.dart';
+export 'src/api/callouts/callout_config.dart';
+export 'src/api/callouts/toast.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
 export 'src/api/material_spa/constant_scrolling_behavior.dart';
+export 'src/api/material_spa/flutter_content_page.dart';
+export 'src/api/material_spa/material_spa.dart';
+export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/blink.dart';
-
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/snippet_bloc.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
 export 'src/gotits/gotits_helper_string.dart';
 export 'src/gsi/sign_in_button.dart';
-export 'src/home_page_provider/flutter_content_page.dart';
+export 'src/home_page_provider/zoomer.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
-export 'src/api/callouts/callout.dart';
-export 'src/api/callouts/callout_config.dart';
-export 'src/api/callouts/toast.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
-export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
+export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/snode.dart';
 export 'src/snippet/snodes/align_node.dart';
-export 'src/snippet/snodes/edgeinsets_node_value.dart';
 export 'src/snippet/snodes/appbar_node.dart';
 export 'src/snippet/snodes/aspect_ratio_node.dart';
 export 'src/snippet/snodes/asset_image_node.dart';
@@ -90,6 +83,7 @@ export 'src/snippet/snodes/container_node.dart';
 export 'src/snippet/snodes/content_snippet_root_node.dart';
 export 'src/snippet/snodes/default_text_style_node.dart';
 export 'src/snippet/snodes/directory_node.dart';
+export 'src/snippet/snodes/edgeinsets_node_value.dart';
 export 'src/snippet/snodes/elevated_button_node.dart';
 export 'src/snippet/snodes/expanded_node.dart';
 export 'src/snippet/snodes/file_node.dart';
@@ -102,6 +96,7 @@ export 'src/snippet/snodes/gap_node.dart';
 export 'src/snippet/snodes/generic_multi_child_node.dart';
 export 'src/snippet/snodes/generic_single_child_node.dart';
 export 'src/snippet/snodes/google_drive_iframe_node.dart';
+export 'src/snippet/snodes/hotspots_node.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
 export 'src/snippet/snodes/inlinespan_node.dart';
@@ -110,7 +105,6 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
-
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -133,16 +127,17 @@ export 'src/snippet/snodes/submenu_button_node.dart';
 export 'src/snippet/snodes/subtitle_snippet_root_node.dart';
 export 'src/snippet/snodes/tabbar_node.dart';
 export 'src/snippet/snodes/tabbarview_node.dart';
-export 'src/snippet/snodes/hotspots_node.dart';
 export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
+export 'src/snippet/snodes/widget/hotspots/targets_wrapper.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
 export 'src/text_editing/fc_textfield_T.dart';
 export 'src/useful.dart';
 export 'src/widget_helper.dart';
+export 'src/routingconfig_provider/fc_route.dart';
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
@@ -314,6 +309,7 @@ class FC {
       appInfo.snippetNames = [snippetName, ...appInfo.snippetNames];
       bool publishImmediately = publish ?? appInfo.autoPublishDefault;
       snippetInfo = snippetInfoCache[snippetName] = SnippetInfoModel(
+        snippetName,
         editingVersionId: newVersionId,
         publishedVersionId: publishImmediately ? newVersionId : null,
         autoPublish: appInfo.autoPublishDefault,
@@ -372,19 +368,25 @@ class FC {
 
   void setCalloutConfigToolbarPos(Offset newPos) => _calloutConfigToolbarPos = newPos;
 
-  Offset devToolsFABPos(context) => _devToolsFABPos ?? Offset(40, MediaQuery.of(context).size.height - 100);
+  Offset devToolsFABPos(context) => _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
-  bool? showingNodeOBoundaryOverlays;
+  bool? showingNodeBoundaryOverlays;
 
   registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
 
   void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
   // each snippet panel has a gk, a last selected node, and a ur
+  final Map<PageName, GlobalKey> pageGKs = {};
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
+
+  // BuildContext? pageContext(String pageName) => pageGKMap[pageName]?.currentContext;
+
+  FlutterContentPageState? pageState(String pageName) => pageGKs[pageName]?.currentState as FlutterContentPageState?;
+
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
   final Map<STreeNode, Set<PTreeNode>> expandedNodes = {};
@@ -426,6 +428,12 @@ class FC {
   }
 
   SnippetBloC? popSnippet() => areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
+
+  /// A FlutterContentPage has a snippet with the same route name
+  void pushPage({
+    required String routeName,
+    required String path,
+  }) {}
 
   final GksByFeature _calloutGkMap = {};
 

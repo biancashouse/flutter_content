@@ -32,7 +32,7 @@ void main() {
   // final ur = SnippetTreeUR();
 
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
+  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplateNodes(
     SnippetTemplate.empty,
     'some-name',
   );

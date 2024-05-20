@@ -23,7 +23,7 @@ class Useful {
 
   static final instance = Useful._();
 
-  late MediaQueryData _mqd;
+  // late MediaQueryData _mqd;
   late _Responsive _responsive;
 
   // static SharedPreferences get prefs => instance._prefs;
@@ -56,18 +56,17 @@ class Useful {
     return FC().skipAssetPkgName ? name : 'packages/flutter_content/$name';
   }
 
-  static void refreshMQ(BuildContext ctx) => instance._mqd = MediaQuery.of(ctx);
+  // static void refreshMQ(BuildContext ctx) => mqd = MediaQuery.of(ctx);
 
   // must be called from a widget build
   void initWithContext(BuildContext context) {
-    _responsive = _Responsive().init();
-    if (rootContext != null) return;
+    if (_rootContext == null) {
+      _responsive = _Responsive().init();
+      afterNextBuildDo(() {
+        _createOffstageOverlay(context);
+      });
+    }
     _rootContext = context;
-    _mqd = MediaQuery.of(context);
-    // if (!instance._oms.containsKey("root")) instance._oms["root"] = OverlayManager(Overlay.of(context, rootOverlay: true));
-    afterNextBuildDo(() {
-      _createOffstageOverlay(context);
-    });
   }
 
   static GlobalKey? _offstageGK;
@@ -155,13 +154,18 @@ class Useful {
 
   // needs a context to get mediaquery, so gets set in the pqge builds [see getScreenSizeAndPossiblyNewOverlayManager()], but for now JIC, give default values
 
-  static double get scrW => instance._mqd.size.width;
+  static double get scrW => scrSize.width;
 
-  static double get scrH => instance._mqd.size.height;
+  static double get scrH => scrSize.height;
 
-  static Size get scrSize => instance._mqd.size;
+  static Size get scrSize {
+    if (rootContext == null) {
+      debugPrint("root context NULL ?");
+    }
+    return MediaQuery.sizeOf(rootContext!);
+  }
 
-  // static double get keyboardHeight => instance._mqd.viewInsets.bottom;
+  // static double get keyboardHeight => mqd.viewInsets.bottom;
 
   // The warning: "Don't use 'BuildContext's across async gaps." occurs
   // because after an async call, it's not guaranteed the current context will
@@ -186,28 +190,30 @@ class Useful {
     return viewInsets.bottom;
   }
 
-  static TextScaler get textScaler => instance._mqd.textScaler;
+  static MediaQueryData get mqd => MediaQuery.of(instance._rootContext!);
+  
+  static TextScaler get textScaler => mqd.textScaler;
 
-  static Orientation get orientation => instance._mqd.orientation;
+  static Orientation get orientation => mqd.orientation;
 
   static bool get isPortrait => orientation == Orientation.portrait;
 
   static bool get isLandscape => orientation == Orientation.landscape;
 
-  static double get shortestSide => instance._mqd.size.shortestSide;
+  static double get shortestSide => mqd.size.shortestSide;
 
-  static double get longestSide => instance._mqd.size.longestSide;
+  static double get longestSide => mqd.size.longestSide;
 
-  static bool get narrowWidth => instance._mqd.size.shortestSide < 600 && isPortrait;
+  static bool get narrowWidth => mqd.size.shortestSide < 600 && isPortrait;
 
-  static bool get shortHeight => instance._mqd.size.shortestSide < 600 && isLandscape;
+  static bool get shortHeight => mqd.size.shortestSide < 600 && isLandscape;
 
   // The equivalent of the "smallestWidth" qualifier on Android.
-  static bool get usePhoneLayout => instance._mqd.size.shortestSide < 600;
+  static bool get usePhoneLayout => mqd.size.shortestSide < 600;
 
-  static bool get useTabletLayout => !kIsWeb && instance._mqd.size.shortestSide >= 600;
+  static bool get useTabletLayout => !kIsWeb && mqd.size.shortestSide >= 600;
 
-  static EdgeInsets get viewPadding => instance._mqd.viewPadding;
+  static EdgeInsets get viewPadding => mqd.viewPadding;
 
   static debug() {
     developer.log('queryData.size.width = $scrW');

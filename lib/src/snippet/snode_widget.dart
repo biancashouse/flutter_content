@@ -100,6 +100,7 @@ class NodeWidget extends StatelessWidget {
         SnippetRootNode snippet = FC().currentSnippet((entry.node as SnippetRootNode).name)!;
 
         STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+          snippetBloc.state.pageName,
           snippet.name,
           snippet,
           snippet.child ?? snippet,
@@ -147,7 +148,10 @@ class NodeWidget extends StatelessWidget {
               selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             Useful.afterNextBuildDo(() {
-              FlutterContentPage.showNodeWidgetOverlay(entry.node);
+              String pageName = snippetBloc.state.pageName;
+              FC().pageState(pageName)
+                ?..removeAllNodeWidgetOverlays()
+                ..showNodeWidgetOverlay(entry.node);
               // create selected node's properties tree
             });
           });
@@ -323,9 +327,7 @@ class NodeWidget extends StatelessWidget {
       displayedNodeName,
       textScaler: TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
       style: TextStyle(
-        color: selectedNode is SnippetRootNode || selectedNode is GenericSingleChildNode
-                ? Colors.white
-                : textColor,
+        color: selectedNode is SnippetRootNode || selectedNode is GenericSingleChildNode ? Colors.white : textColor,
         fontSize: 12.0,
         fontStyle: selectedNode is MC && !selectedNode.children.isNotEmpty ? FontStyle.italic : FontStyle.normal,
         fontWeight: snippetBloc.state.aNodeIsSelected && snippetBloc.state.selectedNode == selectedNode ? FontWeight.bold : FontWeight.normal,

@@ -11,6 +11,7 @@ class SnippetState with _$SnippetState {
   const SnippetState._();
 
   factory SnippetState({
+    required PageName pageName,
     // ---- the state gets saved between snippet tree callout instances ------------------
     required SnippetRootNode rootNode,
     required SnippetTreeController treeC,

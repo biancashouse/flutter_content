@@ -13,8 +13,7 @@ class SnippetPanel extends StatefulWidget {
 
   // from canned snippet or by providing tree of nodes
   final String? snippetName;
-  final STreeNode? rootNode;
-  final SnippetTemplate? fromTemplate;
+  final SnippetRootNode? snippetRootNode;
   final Map<String, void Function(BuildContext)>? handlers;
   final bool allowButtonCallouts;
   final bool justPlaying;
@@ -27,11 +26,20 @@ class SnippetPanel extends StatefulWidget {
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
-  SnippetPanel({
+  SnippetPanel.fromNodes({
     required this.panelName,
-    this.snippetName,
-    this.rootNode,
-    this.fromTemplate,
+    required this.snippetRootNode,
+    this.handlers,
+    this.allowButtonCallouts = true,
+    this.justPlaying = true,
+    this.ancestorHScrollController,
+    this.ancestorVScrollController,
+    super.key,
+  }) : snippetName = null;
+
+  SnippetPanel.fromSnippet({
+    required this.panelName,
+    required this.snippetName,
     this.handlers,
     this.allowButtonCallouts = true,
     this.justPlaying = true,
@@ -43,20 +51,14 @@ class SnippetPanel extends StatefulWidget {
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     super.key,
-  }) {
-    handlers?.forEach((key, value) {
-      FC().registerHandler(key, value);
-      debugPrint("registered handler '$key'");
-    });
-  }
+  }) : snippetRootNode = null;
 
   static SnippetPanelState? of(BuildContext context) => context.findAncestorStateOfType<SnippetPanelState>();
 
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static SnippetRootNode createSnippetFromTemplate(SnippetTemplate template, String snippetName) {
-    var rootNode = templates.firstWhere((root) => root.name == template.name).cloneSnippet();
+  static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
     rootNode.validateTree();
     rootNode.name = snippetName;
     return rootNode;
@@ -76,6 +78,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   late List<int> prevTabQ;
   bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
+
+  String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
 
   late Future<void> _fInit;
 
@@ -104,17 +108,20 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void initState() {
     super.initState();
 
+    widget.handlers?.forEach((key, value) {
+      FC().registerHandler(key, value);
+      debugPrint("registered handler '$key'");
+    });
+
     // debugPrint('*** SnippetPanel() ***');
 
-    if (widget.snippetName != null && widget.fromTemplate != null) {
-      _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-        snippetName: widget.snippetName!,
-        fromTemplate: widget.fromTemplate,
-      );
+    _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+      snippetName: snippetName(),
+      snippetRootNode: widget.snippetRootNode,
+    );
 
-      // register snippet? with panel
-      FC().snippetPlacementMap[widget.panelName] = widget.snippetName!;
-    }
+    // register snippet? with panel
+    FC().snippetPlacementMap[widget.panelName] = snippetName();
 
     prevTabQ = [];
 
@@ -154,45 +161,52 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
-    return widget.rootNode != null
-        ? widget.rootNode!.toWidget(context, null)
+    // bool nodeTreeSupplied = widget.rootNode != null;
+    // if (nodeTreeSupplied) {
+    //   SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
+    //     widget.rootNode!,
+    //     widget.rootNode!.name,
+    //   );
+    // }
 
-        // panel name is always supplied, but snippet name can be omitted,
-        // in which case a default snippet name is used: Snippet[pName].
-        // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-        // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
-        //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
-        // }
-        : FutureBuilder<void>(
-            future: _fInit,
-            builder: (futureContext, snapshot) {
-              return snapshot.connectionState != ConnectionState.done
-                  ? const CircularProgressIndicator()
-                  : BlocBuilder<CAPIBloC, CAPIState>(
-                      key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
-                      buildWhen: (previous, current) => !current.onlyTargetsWrappers,
-                      builder: (blocContext, state) {
-                        debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
-                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${widget.snippetName}\n");
-                        // var fc = FC();
-                        SnippetInfoModel? snippetInfo = FC().snippetInfoCache[widget.snippetName];
-                        debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
-                        // snippet panel renders a canned snippet or a supplied snippet tree
-                        return _renderSnippet(context);
-                      },
-                    );
-            });
+    // panel name is always supplied, but snippet name can be omitted,
+    // in which case a default snippet name is used: Snippet[pName].
+    // But first, see if there's an entry in the placement map, in which case we use that snippet name.
+    // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
+    //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
+    // }
+    return FutureBuilder<void>(
+        future: _fInit,
+        builder: (futureContext, snapshot) {
+          return snapshot.connectionState != ConnectionState.done
+              ? const CircularProgressIndicator()
+              : BlocBuilder<CAPIBloC, CAPIState>(
+                  key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+                  buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+                  builder: (blocContext, state) {
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                    // var fc = FC();
+                    SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
+                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                    // snippet panel renders a canned snippet or a supplied snippet tree
+                    return _renderSnippet(context);
+                  },
+                );
+        });
   }
 
-  _renderSnippet(context) => FutureBuilder<void>(
-      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: widget.snippetName!),
+  _renderSnippet(context) {
+    return FutureBuilder<void>(
+
+      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
       builder: (futureContext, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Widget snippetWidget;
           try {
             // in case did a revert, ignore snapshot data and use the AppInfo instead
-            SnippetRootNode? snippet = FC().currentSnippet(widget.snippetName!);
+            SnippetRootNode? snippet = FC().currentSnippet(snippetName());
             snippet?.validateTree();
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
             snippetWidget =
@@ -218,4 +232,5 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           return const CircularProgressIndicator();
         }
       });
+  }
 }

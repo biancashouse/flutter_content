@@ -17,6 +17,7 @@ final GoRouter _webRouter = GoRouter(
           pageName: 'home',
           snippetName: 'rich-text-snippet',
           fromTemplate: SnippetTemplate.rich_text,
+          pageGK: GlobalKey(),
         );
       },
       routes: <RouteBase>[

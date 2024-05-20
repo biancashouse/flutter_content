@@ -4,7 +4,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -15,6 +14,7 @@ import 'snippet_state.dart';
 
 class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   SnippetBloC({
+    required PageName pageName,
     required SnippetRootNode rootNode,
     // following could be restored from CAPIState.snippetStateMap (previous snippet tree callout)
     required SnippetTreeController treeC,
@@ -23,6 +23,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
     GlobalKey? selectedWidgetGK,
     GlobalKey? selectedTreeNodeGK,
   }) : super(SnippetState(
+          pageName: pageName,
           rootNode: rootNode,
           treeC: treeC,
           // ur: treeUR,
@@ -144,7 +145,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
     if (state.aNodeIsSelected) {
       //_createSnippetUndo();
-      STreeNode? sel = state.selectedNode;
+      // STreeNode? sel = state.selectedNode;
       // STreeNode? selParent = sel?.getParent() as STreeNode?;
       STreeNode newSel = _possiblyRemoveFromParentButNotChildren();
       SnippetTreeController possiblyNewTreeC = state.treeC;
@@ -985,7 +986,7 @@ class SnippetBloC extends Bloc<SnippetEvent, SnippetState> {
 
     // create new snippet
     SnippetRootNode newRootNode = SnippetRootNode(name: event.newSnippetName, child: event.node);
-    VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+    // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
     await FC().possiblyCacheAndSaveANewSnippetVersion(snippetName: event.newSnippetName, rootNode: newRootNode);
     // FC().addToSnippetCache(
     //   snippetName: event.newSnippetName,

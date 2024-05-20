@@ -262,6 +262,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             return BlocProvider<CAPIBloC>(
               create: (BuildContext context) => snapshot.data!,
               child: MaterialApp.router(
+                // backButtonDispatcher: RouterBackUtil.backButtonDispatcher(context);,
                 routerConfig: FC().router,
                 theme: widget.materialAppThemeF(),
                 debugShowCheckedModeBanner: false,

@@ -205,11 +205,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
-  void showTappableNodeWidgetOverlay(Rect r) {
+  void showTappableNodeWidgetOverlay(PageName pageName, String nodeTypeName, Rect r) {
 // overlay rect with a transparent pink rect, and a 3px surround
+    String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     Rect restrictedRect = Useful.restrictRectToScreen(r);
-    // debugPrint(
-    //     "=== showTappableNodeWidgetOverlay =====>  r restricted to ${restrictedRect.toString()}");
+    debugPrint(
+        "=== showTappableNodeWidgetOverlay =====>\n  feature: $feature\n  r restricted to ${restrictedRect.toString()}");
     const int BORDER = 3;
     double borderLeft = max(restrictedRect.left - 3, 0);
     double borderTop = max(restrictedRect.top - 3, 0);
@@ -217,7 +218,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
     Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
     CalloutConfig cc = CalloutConfig(
-      feature: '${nodeWidgetGK.hashCode}-pink-overlay',
+      feature: feature,
       suppliedCalloutW: borderRect.width.abs() + 6,
       suppliedCalloutH: borderRect.height.abs() + 6,
       initialCalloutPos: borderRect.topLeft.translate(-3, -3),
@@ -232,7 +233,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         intercepting: true,
         child: InkWell(
           onTap: () {
-            debugPrint("node widget tapped");
+            debugPrint("${toString()} tapped");
             SnippetName? snippetName = rootNodeOfSnippet()?.name;
             if (snippetName == null) return;
             // var cc = nodeWidgetGK?.currentContext;
@@ -240,10 +241,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             hideAllSingleTargetBtns();
 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-            FlutterContentPage.removeAllNodeWidgetOverlays();
+            FC().pageState(pageName)?.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
 //             var b = nodeWidgetGK?.currentContext?.mounted;
-            pushThenShowNamedSnippetWithNodeSelected(snippetName, this, this);
+            pushThenShowNamedSnippetWithNodeSelected(
+              pageName,
+              snippetName,
+              this,
+              this,
+            );
             // Useful.afterNextBuildDo(() {
             // });
           },
@@ -251,9 +257,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             width: borderRect.width.abs(),
             height: borderRect.height.abs(),
             decoration: BoxDecoration(
-//color: Colors.purpleAccent.withOpacity(.1),
+              //color: Colors.purpleAccent.withOpacity(.1),
               border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
             ),
+            alignment: Alignment.bottomLeft,
+            child: Useful.coloredText(nodeTypeName, color: Colors.purpleAccent),
           ),
         ),
       ),
@@ -262,11 +270,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     );
   }
 
-  void showNodeWidgetOverlay() {
+  void showNodeWidgetOverlay(String pageName) {
     Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       r = Useful.restrictRectToScreen(r);
-      FlutterContentPage.removeAllNodeWidgetOverlays();
+      // pageState.removeAllNodeWidgetOverlays();
       Rect restrictedRect = Useful.restrictRectToScreen(r);
       const int BORDER = 3;
       double borderLeft = max(restrictedRect.left - 3, 0);
@@ -275,7 +283,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
       Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
       CalloutConfig cc = CalloutConfig(
-        feature: '${nodeWidgetGK.hashCode}-pink-overlay',
+        feature: 'pink-border-overlay-non-tappable',
         suppliedCalloutW: borderRect.width + 6,
         suppliedCalloutH: borderRect.height + 6,
         initialCalloutPos: borderRect.topLeft.translate(-3, -3),
@@ -304,6 +312,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // node is where the snippet tree starts (not necc the snippet's root node)
   // selection is poss a current (lower) selection in the tree
   static void pushThenShowNamedSnippetWithNodeSelected(
+    PageName pageName,
     SnippetName snippetName,
     STreeNode startingAtNode,
     STreeNode selectedNode,
@@ -322,7 +331,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
     // set bloc state skipSnippetPanelBuild true
     String? jsonBeforePush = fc.currentSnippet(snippetName)?.toJson();
-    fc.capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName, visibleDecendantNode: highestNode));
+    fc.capiBloc.add(CAPIEvent.pushSnippetBloc(
+      pageName: pageName,
+      snippetName: snippetName,
+      visibleDecendantNode: highestNode,
+    ));
     // Useful.afterNextBuildDo(() {
     // });
     // return;
@@ -347,13 +360,17 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
-            Callout.dismiss('selected-panel-border-overlay');
+            Callout.printFeatures();
+            var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
+            FC().pageState(pageName)?.unhideFAB();
+            Callout.dismiss(pinkOverlayFeature);
+            Callout.printFeatures();
             showAllTargetBtns();
             showAllTargetCovers();
             // fc.capiBloc.add(const CAPIEvent.popSnippetBloc());
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             FC().hideClipboard();
-            FlutterContentPage.exitEditMode();
+            // FlutterContentPage.exitEditMode();
             // skip if no change
             String currentJsonS = snippetBloc.rootNode.toJson();
             if (jsonBeforePush == currentJsonS) return;
@@ -367,9 +384,6 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             //         newVersionId: newVersionId,
             //       ),
             //     );
-            Useful.afterNextBuildDo(() {
-              FlutterContentPage.showDevToolsFAB();
-            });
           },
           startingAtNode: startingAtNode,
           selectedNode: selectedNode,
@@ -406,7 +420,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       SnippetBloC? snippetBloc = fc.snippetBeingEdited;
       SnippetState? snippetBlocState = snippetBloc?.state;
       if (snippetBlocState?.selectedNode != null) {
-        FlutterContentPage.showNodeWidgetOverlay((snippetBlocState?.selectedNode)!);
+        FC().pageState(snippetBlocState!.pageName)?.showNodeWidgetOverlay((snippetBlocState.selectedNode)!);
       }
     });
   }
@@ -509,6 +523,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     return true;
   }
+
+  bool get canShowTappableNodeWidgetOverlay => getParent() is! CarouselNode;
 
   bool hasChildren() =>
       (this is SC && (this as SC).child != null) ||
@@ -1439,21 +1455,23 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               }
             });
             return;
-          }
-          else if (action == NodeAction.replaceWith) snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
-          else if (action == NodeAction.addChild) snippetBloc.add(SnippetEvent.appendChild(type: childType));
-          else if (action == NodeAction.addSiblingBefore) snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
+          } else if (action == NodeAction.replaceWith)
+            snippetBloc.add(SnippetEvent.replaceSelectionWith(type: childType));
+          else if (action == NodeAction.addChild)
+            snippetBloc.add(SnippetEvent.appendChild(type: childType));
+          else if (action == NodeAction.addSiblingBefore)
+            snippetBloc.add(SnippetEvent.addSiblingBefore(type: childType));
           else if (action == NodeAction.addSiblingAfter) snippetBloc.add(SnippetEvent.addSiblingAfter(type: childType));
-          Useful.afterNextBuildDo(() {
-            var snippetBlocAfter = FC().snippetBeingEdited!;
-            debugPrint('after');
-            // FC.forceRefresh();
-            // var snippetBeingEdited = FC().snippetBeingEdited?.rootNode;
-            // var appInfo = FC().appInfoAsMap;
-            // var cache = FC().snippetInfoCache;
-            // debugPrint(appInfo.toString());
-            // debugPrint(cache.toString());
-          });
+          // Useful.afterNextBuildDo(() {
+          //   var snippetBlocAfter = FC().snippetBeingEdited!;
+          //   debugPrint('after');
+          //   // FC.forceRefresh();
+          //   // var snippetBeingEdited = FC().snippetBeingEdited?.rootNode;
+          //   // var appInfo = FC().appInfoAsMap;
+          //   // var cache = FC().snippetInfoCache;
+          //   // debugPrint(appInfo.toString());
+          //   // debugPrint(cache.toString());
+          // });
         },
         child: Useful.coloredText(label, fontWeight: FontWeight.bold),
       );
@@ -1533,7 +1551,6 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     return SubmenuButton(menuChildren: snippetMIs, child: const Text('snippet'));
   }
-
 }
 
 // /// Exception when an encoded enum value has no match.

@@ -102,7 +102,11 @@ void showSnippetTreeAndPropertiesCallout({
   // required STreeNode tappedNode,
   bool allowButtonCallouts = false,
 }) async {
-  STreeNode rootNode = snippetBloc.state.rootNode;
+  SnippetRootNode rootNode = snippetBloc.state.rootNode;
+
+  // dismiss any pink border overlays
+  Callout.dismissAll(exceptFeatures: [rootNode.name]);
+
   // if (rootNode == null) return;
 
   // to check for any change
@@ -135,7 +139,8 @@ void showSnippetTreeAndPropertiesCallout({
 // imageTC: tc,
   ));
   Useful.afterNextBuildDo(() {
-    selectedNode.showNodeWidgetOverlay();
+    String pageName = snippetBloc.state.pageName;
+    selectedNode.showNodeWidgetOverlay(pageName);
   });
 }
 

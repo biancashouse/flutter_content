@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
@@ -12,12 +13,49 @@ final _webRoutingConfig = RoutingConfig(
         return const MyHomePage(title: 'hello');
       },
     ),
+
     GoRoute(
-      name: 'panel-demo',
-      path: '/panel-demo',
+      name: 'panels-demo1',
+      path: '/panels-demo1',
       builder: (BuildContext context, GoRouterState state) {
-        return const MyPanelDemoPage();
+        return const PanelsDemoPage();
       },
+    ),
+
+    FCRoute(
+      name: 'panels-demo2',
+      path: '/panels-demo2',
+      widgetBuilder: (context) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: SnippetPanel.fromNodes(
+              panelName: 'panel1',
+              snippetRootNode: SnippetRootNode(
+                name: 'demo2-panel1',
+                child: PaddingNode(
+                  padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
+                  child: AssetImageNode(name: 'assets/images/flowers.jpg'),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: SnippetPanel.fromNodes(
+              panelName: 'panel2',
+              snippetRootNode: SnippetRootNode(
+                name: 'demo2-panel2',
+                child: CarouselNode(children: [
+                  AssetImageNode(name: 'assets/images/frog.jpg'),
+                  AssetImageNode(name: 'assets/images/hummingbird.jpg'),
+                  AssetImageNode(name: 'assets/images/indian-chat.jpg'),
+                ]),
+              ),
+            ),
+          ),
+        ],
+      ),
     ),
   ],
 );
@@ -32,10 +70,51 @@ final _mobileRoutingConfig = RoutingConfig(
       },
     ),
     GoRoute(
-      name: 'panel-demo',
-      path: '/panel-demo',
+      name: 'panels-demo1',
+      path: '/panels-demo1',
       builder: (BuildContext context, GoRouterState state) {
-        return const MyPanelDemoPage();
+        return const PanelsDemoPage();
+      },
+    ),
+    GoRoute(
+      name: 'panels-demo2',
+      path: '/panels-demo2',
+      builder: (BuildContext context, GoRouterState state) {
+        return FlutterContentPage(
+          key: FC().pageGKs['fc-demo2'] = GlobalKey(),
+          pageName: 'fc-demo2',
+          pageBuilder: (context) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: SnippetPanel.fromNodes(
+                  panelName: 'panel1',
+                  snippetRootNode: SnippetRootNode(
+                    name: 'demo2-panel1',
+                    child: PaddingNode(
+                      padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
+                      child: AssetImageNode(name: 'assets/images/flowers.jpg'),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SnippetPanel.fromNodes(
+                  panelName: 'panel2',
+                  snippetRootNode: SnippetRootNode(
+                    name: 'demo2-panel2',
+                    child: CarouselNode(children: [
+                      AssetImageNode(name: 'assets/images/frog.jpg'),
+                      AssetImageNode(name: 'assets/images/hummingbird.jpg'),
+                      AssetImageNode(name: 'assets/images/indian-chat.jpg'),
+                    ]),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
     ),
   ],
@@ -146,9 +225,18 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go('/panel-demo');
+                  context.go('/panels-demo1');
                 },
-                child: const Text('go to flutter_content page: home'),
+                child: const Text('go to a page that has 2 SnippetPanels'),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: FilledButton(
+                onPressed: () {
+                  context.go('/panels-demo2');
+                },
+                child: const Text('go to a EDITABLE page that has 2 SnippetPanels'),
               ),
             ),
           ],
@@ -163,27 +251,41 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class MyPanelDemoPage extends StatelessWidget {
-  const MyPanelDemoPage({super.key});
+class PanelsDemoPage extends StatelessWidget {
+  const PanelsDemoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SnippetPanel(
-        panelName: 'some-panel',
-        rootNode: SplitViewNode(
-          axis: AxisEnum.horizontal,
-          children: [
-            PaddingNode(padding:EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30), child:AssetImageNode(name: 'assets/images/flowers.jpg')),
-            CarouselNode(children: [
-              AssetImageNode(name: 'assets/images/frog.jpg'),
-              AssetImageNode(name: 'assets/images/hummingbird.jpg'),
-              AssetImageNode(name: 'assets/images/indian-chat.jpg'),
-            ]),
-          ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: SnippetPanel.fromNodes(
+            panelName: 'panel1',
+            snippetRootNode: SnippetRootNode(
+              name: 'panels-demo1-panel1',
+              child: PaddingNode(
+                padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
+                child: AssetImageNode(name: 'assets/images/flowers.jpg'),
+              ),
+            ),
+          ),
         ),
-        fromTemplate: SnippetTemplate.column_with_2_images,
-      ),
+        Expanded(
+          child: SnippetPanel.fromNodes(
+            panelName: 'panel2',
+            snippetRootNode: SnippetRootNode(
+              name: 'panels-demo2-panel2',
+              child: CarouselNode(children: [
+                AssetImageNode(name: 'assets/images/frog.jpg'),
+                AssetImageNode(name: 'assets/images/hummingbird.jpg'),
+                AssetImageNode(name: 'assets/images/indian-chat.jpg'),
+              ]),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

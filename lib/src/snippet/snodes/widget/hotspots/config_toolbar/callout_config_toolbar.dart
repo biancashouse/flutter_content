@@ -46,7 +46,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   @override
   Widget build(BuildContext context) {
     TargetModel tc = widget.tc;
-    Size ivSize = tc.targetsWrapperState()?.wrapperRect.size ?? MediaQuery.of(context).size;
+    Size ivSize = tc.targetsWrapperState()?.wrapperRect.size ?? MediaQuery.sizeOf(context);
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),

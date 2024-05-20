@@ -17,10 +17,10 @@ void main() {
   late SnippetTreeController emptyTreeC;
   // late SnippetTreeUR ur;
 
-  final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplate(
+  final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplateNodes(
       SnippetTemplate.empty, 'empty_snippet');
   final SnippetRootNode scaffoldWithTabsSnippet =
-      SnippetPanel.createSnippetFromTemplate(
+      SnippetPanel.createSnippetFromTemplateNodes(
           SnippetTemplate.scaffold_with_tabs, 'scaffold_with_tabs');
 
   // setupAll() runs once before any test in the suite

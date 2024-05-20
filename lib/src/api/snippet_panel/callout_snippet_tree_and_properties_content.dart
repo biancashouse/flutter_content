@@ -675,8 +675,9 @@ class SnippetTreePane extends StatelessWidget {
 
   static void navigateUpTree() {
     // change tree root to parent
-    STreeNode? treeRootNode = FC().snippetBeingEdited?.treeC.roots.first;
-    if (treeRootNode == null) return;
+    SnippetBloC? snippetBloc = FC().snippetBeingEdited;
+    if (snippetBloc == null) return;
+    STreeNode treeRootNode = snippetBloc.treeC.roots.first;
     STreeNode? parent = treeRootNode.getParent() as STreeNode?;
     if (parent is GenericSingleChildNode) {
       parent = parent.getParent() as STreeNode?;
@@ -687,6 +688,7 @@ class SnippetTreePane extends StatelessWidget {
     if (parent != null) {
       Callout.dismissAll();
       STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+        snippetBloc.state.pageName,
         parent.rootNodeOfSnippet()!.name,
         parent,
         parent,

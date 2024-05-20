@@ -41,13 +41,13 @@ class PointyTool extends StatefulWidget {
               justPlaying: justPlaying,
             ),
         calloutConfig: CalloutConfig(
-          feature: CAPI.ARROW_TYPE_CALLOUT.name,
+          feature: "arrow-type",
           suppliedCalloutW: 300,
           suppliedCalloutH: 200,
           barrier: CalloutBarrier(
             opacity: 0.1,
             // onTappedF: () async {
-            //   Callout.removeOverlay(CAPI.ARROW_TYPE_CALLOUT.name);
+            //   Callout.removeOverlay("arrow-type");
             // },
           ),
           fillColor: Colors.purpleAccent,
@@ -57,7 +57,7 @@ class PointyTool extends StatefulWidget {
         ));
   }
 
-  static bool isShowing() => Callout.anyPresent([CAPI.ARROW_TYPE_CALLOUT.name]);
+  static bool isShowing() => Callout.anyPresent(["arrow-type"]);
 }
 
 class _PointyToolState extends State<PointyTool> {
@@ -79,7 +79,7 @@ class _PointyToolState extends State<PointyTool> {
     setState(() => _arrowType = t);
     tc.calloutArrowTypeIndex = t.index;
     // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-    Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
+    Callout.dismiss("arrow-type");
     // Useful.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
@@ -166,7 +166,7 @@ class _PointyToolState extends State<PointyTool> {
             setState(() => _animate = !_animate);
             tc.animateArrow = _animate;
             _onPressed(tc.getArrowType(), tc, tc.animateArrow);
-            Callout.dismiss(CAPI.ARROW_TYPE_CALLOUT.name);
+            Callout.dismiss("arrow-type");
             // Useful.afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
             // });

@@ -9,7 +9,7 @@ import '../unit_test.mocks.dart';
 void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplate(
+  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplateNodes(
       SnippetTemplate.empty, 'empty_snippet');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;

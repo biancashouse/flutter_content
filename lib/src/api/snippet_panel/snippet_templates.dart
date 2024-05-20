@@ -18,7 +18,11 @@ enum SnippetTemplate {
   splitview_with_2_snippets,
   column_with_2_snippets,
   save_as_snippet_test,
-  failed_to_load,
+  failed_to_load;
+
+  SnippetRootNode? clone() => templates.where((node) => node.name == name).firstOrNull
+    ?..clone()
+    ..validateTree();
 }
 
 List<SnippetRootNode> templates = [
@@ -29,9 +33,7 @@ List<SnippetRootNode> templates = [
     child: RichTextNode(
       text: TextSpanNode(
         text: 'ABC',
-        children: [
-          TextSpanNode(text: ' def')
-        ],
+        children: [TextSpanNode(text: ' def')],
       ),
     ),
   ),

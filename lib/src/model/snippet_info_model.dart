@@ -5,12 +5,13 @@ part 'snippet_info_model.mapper.dart';
 
 @MappableClass()
 class SnippetInfoModel with SnippetInfoModelMappable {
+  SnippetName name; // snippet name == route name
+  String? pagePath;
   VersionId? editingVersionId;
   VersionId? publishedVersionId;
   bool? autoPublish;
-  String? pagePath;
 
-  SnippetInfoModel({this.editingVersionId, this.publishedVersionId, this.autoPublish, this.pagePath});
+  SnippetInfoModel(this.name, {this.editingVersionId, this.publishedVersionId, this.autoPublish, this.pagePath});
 
   bool get isAPageSnippet => pagePath != null;
 

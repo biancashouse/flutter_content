@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/snippet_templates.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -45,12 +46,15 @@ Future<void> showSnippetContentCallout({
   var snippet = FC().snippetInfoCache[tc.snippetName];
   FC().targetSnippetBeingConfigured = FC().currentSnippet(tc.snippetName);
   if (FC().targetSnippetBeingConfigured == null) {
-    SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplate(
-        SnippetTemplate.target_content_widget, tc.snippetName);
-    FC().possiblyCacheAndSaveANewSnippetVersion(
-        snippetName: tc.snippetName,
-        rootNode: newSnippet);
-    FC().targetSnippetBeingConfigured = newSnippet;
+    var rootNode = SnippetTemplate.target_content_widget.clone();
+    if (rootNode != null) {
+      SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
+          rootNode, tc.snippetName);
+      FC().possiblyCacheAndSaveANewSnippetVersion(
+          snippetName: tc.snippetName,
+          rootNode: newSnippet);
+      FC().targetSnippetBeingConfigured = newSnippet;
+    }
   }
   // snipper may not exist yet
   //  by now should definitely have created the target's snippet

@@ -85,7 +85,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
             Callout.showOverlay(
                 targetGkF: () => FC().getCalloutGk(feature),
                 boxContentF: (_) =>
-                    SnippetPanel(
+                    SnippetPanel.fromSnippet(
                       panelName: calloutConfigGroup!.contentSnippetName!,
                       snippetName: BODY_PLACEHOLDER,
                       allowButtonCallouts: false,

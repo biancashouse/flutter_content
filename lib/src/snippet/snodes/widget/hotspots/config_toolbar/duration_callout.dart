@@ -4,12 +4,12 @@ import 'package:flutter_content/flutter_content.dart';
 import 'numberic_keypad.dart';
 
 
-bool isShowingTargetDurationCallout() => Callout.anyPresent([CAPI.DURATION_CALLOUT.name]);
+bool isShowingTargetDurationCallout() => Callout.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
-  if (Callout.anyPresent([CAPI.DURATION_CALLOUT.name])) {
+  if (Callout.anyPresent(["duration"])) {
     debugPrint("removeStartTimeCallout");
-    Callout.dismiss(CAPI.DURATION_CALLOUT.name);
+    Callout.dismiss("duration");
   }
 }
 
@@ -31,11 +31,11 @@ Future<void> showTargetDurationCallout(
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
               tc.calloutDurationMs = int.tryParse(s)??0;
-              Callout.dismiss(CAPI.DURATION_CALLOUT.name);
+              Callout.dismiss("duration");
             },
           ),
       calloutConfig: CalloutConfig(
-        feature: CAPI.DURATION_CALLOUT.name,
+        feature: "duration",
         hScrollController: ancestorHScrollController,
         vScrollController: ancestorVScrollController,
         initialTargetAlignment: Alignment.centerRight,

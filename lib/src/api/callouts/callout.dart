@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
@@ -6,29 +7,6 @@ export "rectangle.dart";
 export "side.dart";
 
 const Color FUCHSIA_X = Color.fromRGBO(255, 0, 255, 1);
-
-enum CAPI {
-  ANY_TOAST,
-  DURATION_CALLOUT,
-  TARGET_RADIUS_AND_ZOOM_CALLOUT,
-  COLOUR_CALLOUT,
-  ARROW_TYPE_CALLOUT,
-  MORE_CALLOUT_CONFIG_SETTINGS,
-  TEXT_STYLE_CALLOUT,
-  IMAGE_CALLOUT,
-  // SNIPPET_CONTENT_CALLOUT,
-  HELP_CONTENT_CALLOUT,
-  CALLOUT_CONFIG_TOOLBAR_CALLOUT,
-  FONT_FAMILY_CALLOUT,
-  TEXT_ALIGNMENT_CALLOUT,
-  COLOR_CALLOUT,
-  DOTTED_BORDER_CALLOUT,
-  PICK_IMAGE,
-  DEBUG_CALLOUT,
-  CPI,
-  SINGLE_TARGET_CALLOUT,
-  SOURCE_CODE;
-}
 
 /// callout creator
 
@@ -75,6 +53,15 @@ class Callout extends StatefulWidget {
       OEs.remove(oe);
       debug();
     }
+  }
+
+  static void printFeatures() {
+    debugPrint('------------');
+    for (OE oe in OEs) {
+      debugPrint(
+          '${oe.calloutConfig.feature} ${oe.opC!=null?"*":""}');
+    }
+    debugPrint('------------');
   }
 
   static void debug() {
@@ -136,14 +123,14 @@ class Callout extends StatefulWidget {
     return null;
   }
 
-  static CalloutState? of(BuildContext ctx) => ctx.findAncestorStateOfType<CalloutState>();
+  static CalloutState? of(BuildContext context) => context.findAncestorStateOfType<CalloutState>();
 
 // hide OpenPortal overlay
   static void hideParentCallout(BuildContext context) => Callout.of(context)?.hideOP();
 
 // unhide OpenPortal overlay
-  static void unhideParentCallout(BuildContext ctx, {bool animateSeparation = false, int hideAfterMs = 0}) {
-    CalloutState? c = Callout.of(ctx);
+  static void unhideParentCallout(BuildContext context, {bool animateSeparation = false, int hideAfterMs = 0}) {
+    CalloutState? c = Callout.of(context);
     c?.unhide(animateSeparation: animateSeparation, hideAfterMs: hideAfterMs);
   }
 
@@ -202,7 +189,9 @@ class Callout extends StatefulWidget {
       pos = result.$1;
       lowestOverlay = result.$2;
     }
+
     Overlay.of(Useful.rootContext!).insert(entry, below: lowestOverlay);
+
 // animate separation just once
     if (calloutConfig.finalSeparation > 0.0) {
       AnimationController animationController = AnimationController(
@@ -240,17 +229,17 @@ class Callout extends StatefulWidget {
     if ((calloutConfig.calloutW ?? 0) < 0) {
       print('tbd');
     }
-    if (targetGkF != null) {
-      GlobalKey? gk = targetGkF.call();
-      // var cs = gk?.currentState;
-      // var cw = gk?.currentWidget;
-      var cc = gk?.currentContext;
-      // if (cc == null) {
-      //   debugPrint(
-      //       '${calloutConfig.feature} missing target gk - overlay not shown');
-      //   return;
-      // }
-    }
+    // if (targetGkF != null) {
+    //   GlobalKey? gk = targetGkF.call();
+    //   // var cs = gk?.currentState;
+    //   // var cw = gk?.currentWidget;
+    //   var cc = gk?.currentContext;
+    //   // if (cc == null) {
+    //   //   debugPrint(
+    //   //       '${calloutConfig.feature} missing target gk - overlay not shown');
+    //   //   return;
+    //   // }
+    // }
 
     // target's GlobalKey supplied
     if (removeAfterMs != null) {
@@ -262,7 +251,9 @@ class Callout extends StatefulWidget {
 
     late OverlayEntry oEntry; // will be null if target not present
     calloutConfig.calloutW = calloutConfig.suppliedCalloutW;
+
     calloutConfig.calloutH = calloutConfig.suppliedCalloutH;
+
     // possibly create the overlay after measuring the callout's content
     if (calloutConfig.suppliedCalloutW == null || calloutConfig.suppliedCalloutH == null) {
       Useful.afterNextBuildMeasureThenDo(
@@ -315,61 +306,59 @@ class Callout extends StatefulWidget {
     int removeAfterMs = 2000,
   }) {
 // if (width != null && height == null) height = 60;
-    BuildContext? cachedContext = Useful.rootContext;
-    if (cachedContext?.mounted ?? false) {
-      if (removeAfterMs > 0) {
-        Future.delayed(Duration(milliseconds: removeAfterMs), () {
-          dismiss(feature);
-        });
-      }
-      showOverlay(
-        calloutConfig: CalloutConfig(
-          feature: feature,
-          gravity: gravity,
-          scale: 1.0,
-          suppliedCalloutW: width,
-          suppliedCalloutH: height,
-          fillColor: backgroundColor,
-          elevation: elevation,
-          modal: false,
-          noBorder: true,
-          animate: true,
-          borderRadius: 10,
-          alwaysReCalcSize: true,
-          arrowType: ArrowType.NO_CONNECTOR,
-          draggable: false,
-          onDismissedF: onDiscardedF,
-          initialCalloutPos: _initialOffsetFromGravity(gravity, width, height),
-          onlyOnce: onlyOnce,
-          showcpi: showcpi,
-        ),
-        boxContentF: (cachedContext) => ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: width),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: 32, minWidth: Useful.scrW * .8),
-              child: Container(
+
+    if (removeAfterMs > 0) {
+      Future.delayed(Duration(milliseconds: removeAfterMs), () {
+        dismiss(feature);
+      });
+    }
+    showOverlay(
+      calloutConfig: CalloutConfig(
+        feature: feature,
+        gravity: gravity,
+        scale: 1.0,
+        suppliedCalloutW: width,
+        suppliedCalloutH: height,
+        fillColor: backgroundColor,
+        elevation: elevation,
+        modal: false,
+        noBorder: true,
+        animate: true,
+        borderRadius: 10,
+        alwaysReCalcSize: true,
+        arrowType: ArrowType.NO_CONNECTOR,
+        draggable: false,
+        onDismissedF: onDiscardedF,
+        initialCalloutPos: _initialOffsetFromGravity(gravity, width, height),
+        onlyOnce: onlyOnce,
+        showcpi: showcpi,
+      ),
+      boxContentF: (cachedContext) => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: width),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 32, minWidth: Useful.scrW * .8),
+            child: Container(
 //width: w,
 // decoration: BoxDecoration(
 //   color: background,
 //   borderRadius: BorderRadius.circular(backgroundRadius),
 // ),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Center(
-                  child: Text(
-                    msgText,
-                    softWrap: true,
-                    textScaler: TextScaler.linear(textScaleFactor),
-                    style: TextStyle(fontSize: 24, color: textColor),
-                  ),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Center(
+                child: Text(
+                  msgText,
+                  softWrap: true,
+                  textScaler: TextScaler.linear(textScaleFactor),
+                  style: TextStyle(fontSize: 24, color: textColor),
                 ),
               ),
             ),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 
   static void showWidgetToast({
@@ -391,38 +380,35 @@ class Callout extends StatefulWidget {
     double roundedCorners = 10,
     int removeAfterMs = 2000,
   }) {
-    BuildContext? cachedContext = Useful.rootContext;
-    if (cachedContext?.mounted ?? false) {
-      if (removeAfterMs > 0) {
-        Future.delayed(Duration(milliseconds: removeAfterMs), () {
-          dismiss(feature);
-        });
-      }
-      showOverlay(
-        calloutConfig: CalloutConfig(
-          feature: feature,
-          gravity: gravity,
-          scale: 1.0,
-          suppliedCalloutW: width,
-          suppliedCalloutH: height,
-          fillColor: backgroundColor,
-          elevation: elevation,
-          modal: false,
-          noBorder: true,
-          animate: true,
-          borderRadius: 10,
-          alwaysReCalcSize: true,
-          arrowType: ArrowType.NO_CONNECTOR,
-          draggable: false,
-          onDismissedF: onDiscardedF,
-          onAcceptedF: onAcceptedF,
-          initialCalloutPos: _initialOffsetFromGravity(gravity, width, height),
-          onlyOnce: onlyOnce,
-          showcpi: showcpi,
-        ),
-        boxContentF: (cachedContext) => contents(cachedContext),
-      );
+    if (removeAfterMs > 0) {
+      Future.delayed(Duration(milliseconds: removeAfterMs), () {
+        dismiss(feature);
+      });
     }
+    showOverlay(
+      calloutConfig: CalloutConfig(
+        feature: feature,
+        gravity: gravity,
+        scale: 1.0,
+        suppliedCalloutW: width,
+        suppliedCalloutH: height,
+        fillColor: backgroundColor,
+        elevation: elevation,
+        modal: false,
+        noBorder: true,
+        animate: true,
+        borderRadius: 10,
+        alwaysReCalcSize: true,
+        arrowType: ArrowType.NO_CONNECTOR,
+        draggable: false,
+        onDismissedF: onDiscardedF,
+        onAcceptedF: onAcceptedF,
+        initialCalloutPos: _initialOffsetFromGravity(gravity, width, height),
+        onlyOnce: onlyOnce,
+        showcpi: showcpi,
+      ),
+      boxContentF: (cachedContext) => contents(cachedContext),
+    );
   }
 
   static void showCircularProgressIndicator(bool show, {required String reason}) {
@@ -469,12 +455,12 @@ class Callout extends StatefulWidget {
   static void dismissAll({List<Feature> exceptFeatures = const [], bool onlyToasts = false, bool exceptToasts = false}) {
     List<Feature> overlays2bRemoved = [];
     for (OE oe in OEs) {
-      // if (oe.entry != null) {
+// if (oe.entry != null) {
       bool isToast = oe.calloutConfig.gravity != null;
       if ((onlyToasts && isToast) || (exceptToasts && !isToast) || (!onlyToasts && !exceptToasts)) {
         overlays2bRemoved.add(oe.calloutConfig.feature);
       }
-      // }
+// }
     }
     for (Feature feature in overlays2bRemoved) {
       if (!exceptFeatures.contains(feature)) dismiss(feature);
@@ -482,10 +468,10 @@ class Callout extends StatefulWidget {
   }
 
   static void dismiss(String feature) {
-    // debugPrint('-- dismiss -----------------------------------');
-    // for (OE oe in OEs) {
-    //   debugPrint(oe.calloutConfig.feature);
-    // }
+// debugPrint('-- dismiss -----------------------------------');
+// for (OE oe in OEs) {
+//   debugPrint(oe.calloutConfig.feature);
+// }
 
     OE? oeObj = findOE(feature);
     if (oeObj != null) {
@@ -494,7 +480,7 @@ class Callout extends StatefulWidget {
         ..opC?.hide()
         ..entry?.remove();
       deRegisterOE(oeObj);
-      debugPrint('-- dismissed $feature ---------------------------');
+      debugPrint('-- dismissed $feature ${oeObj.opC!=null?"*":""} ---------------------------');
     }
   }
 
@@ -621,7 +607,7 @@ class CalloutState extends State<Callout> {
 
   @override
   void initState() {
-    // TODO initState can only run when widget is actually in the widget tree ?
+// TODO initState can only run when widget is actually in the widget tree ?
     super.initState();
     _config = widget.calloutConfig;
     _targetMeasuringGK = GlobalKey(debugLabel: 'measuring-target-gk');
@@ -633,7 +619,7 @@ class CalloutState extends State<Callout> {
     Useful.afterNextBuildDo(() {
       Useful.afterMsDelayDo(_AllowImagesToRenderMs, () {
         _waitingForAnyImagesToRender = false;
-        // get initial size after first build + a little more time to allow any images to render
+// get initial size after first build + a little more time to allow any images to render
         Rect? r = _targetMeasuringGK.globalPaintBounds(skipWidthConstraintWarning: widget.skipWidthConstraintWarning);
         if (r != null) {
           targetPos = r.topLeft;
@@ -642,10 +628,10 @@ class CalloutState extends State<Callout> {
       });
     });
 
-    // if a notifer was passed in, means inside another overlay, so the target would change as the overlay gets moved or resized
+// if a notifer was passed in, means inside another overlay, so the target would change as the overlay gets moved or resized
     widget.targetChangedNotifier?.addListener(() {
       debugPrint("\n\ntime to update the target\n\n");
-      // measure target again
+// measure target again
       Rect? r = _targetMeasuringGK.globalPaintBounds(); //Measuring.findGlobalRect(_targetMeasuringGK);
       if (r != null) {
         targetPos = r.topLeft;
@@ -664,7 +650,7 @@ class CalloutState extends State<Callout> {
   @override
   Widget build(BuildContext contexT) => OverlayPortal(
         controller: opController,
-        // the CalloutConfig + overlayPortalChild + overlayContent are combined to make the Overlay
+// the CalloutConfig + overlayPortalChild + overlayContent are combined to make the Overlay
         overlayChildBuilder: (contexT) {
           Rect r = Rect.fromLTWH(targetPos?.dx ?? 0, targetPos?.dy ?? 0, targetSize?.width ?? 0, targetSize?.height ?? 0);
           return _config.opContentWidget(
@@ -676,17 +662,17 @@ class CalloutState extends State<Callout> {
             rebuildF: () => opController.show(),
           );
         },
-        //     (BuildContext ctx) {
-        //   debugPrint("overlayChildBuilder...");
-        //   if (targetSize != null && targetPos != null) debugPrint("target not measured!");
-        //   if (calloutSize != null) debugPrint("callout boxContent not measured!");
-        //   return targetSize != null && targetPos != null
-        //       ? _config.calloutOverlayEntryAlreadyMeasured(
-        //           context: ctx,
-        //           boxContent: widget.calloutBoxContentBuilderF(ctx),
-        //         )
-        //       : const Offstage();
-        // }, // need the context of the State, so client app can access the opController
+//     (BuildContext ctx) {
+//   debugPrint("overlayChildBuilder...");
+//   if (targetSize != null && targetPos != null) debugPrint("target not measured!");
+//   if (calloutSize != null) debugPrint("callout boxContent not measured!");
+//   return targetSize != null && targetPos != null
+//       ? _config.calloutOverlayEntryAlreadyMeasured(
+//           context: ctx,
+//           boxContent: widget.calloutBoxContentBuilderF(ctx),
+//         )
+//       : const Offstage();
+// }, // need the context of the State, so client app can access the opController
         child: Builder(
           key: _targetMeasuringGK,
           builder: (ctx) => widget.targetBuilderF(ctx),
@@ -698,7 +684,7 @@ class CalloutState extends State<Callout> {
   }
 
   void showOP() {
-    // may be called before target sized properly
+// may be called before target sized properly
     if (false && _waitingForAnyImagesToRender) {
       Useful.afterMsDelayDo(_AllowImagesToRenderMs, () {
         opController.show;
@@ -711,13 +697,13 @@ class CalloutState extends State<Callout> {
       return;
     }
 
-    // restore content size - may be null
+// restore content size - may be null
     _config.calloutW = boxContentInitialSize?.width;
     _config.calloutH = boxContentInitialSize?.height;
-    //
+//
     _config.calloutW ??= _config.suppliedCalloutW;
     _config.calloutH ??= _config.suppliedCalloutH;
-    // possibly create the overlay after measuring the callout's content
+// possibly create the overlay after measuring the callout's content
     if (_config.suppliedCalloutW == null || _config.suppliedCalloutH == null) {
       Useful.afterNextBuildMeasureThenDo(
           skipWidthConstraintWarning: _config.calloutW != null,
@@ -729,9 +715,9 @@ class CalloutState extends State<Callout> {
         opController.show();
       });
     } else {
-      // Useful.afterNextBuildDo(() {
+// Useful.afterNextBuildDo(() {
       opController.show();
-      // });
+// });
     }
 
     _possiblyAnimateSeparation(context);
@@ -748,7 +734,7 @@ class CalloutState extends State<Callout> {
 
   void _possiblyAnimateSeparation(BuildContext context) {
     if (_config.finalSeparation > 0.0) {
-      // animate separation, top or left
+// animate separation, top or left
       AnimationController animationController = AnimationController(
         duration: const Duration(milliseconds: 300),
         vsync: MaterialSPA.of(context)!,
@@ -756,7 +742,7 @@ class CalloutState extends State<Callout> {
       Tween<double> tween = Tween<double>(begin: 0.0, end: _config.finalSeparation);
       Animation<double> animation = tween.animate(animationController);
       animation.addListener(() {
-        // debugPrint('--- ${_config.feature} --- animation value ${animation.value}');
+// debugPrint('--- ${_config.feature} --- animation value ${animation.value}');
         _config.setSeparation(animation.value, () => opController.show());
       });
       _config.startedAnimatingSeparation();
