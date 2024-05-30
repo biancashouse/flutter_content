@@ -117,7 +117,7 @@ class CAPIEvent with _$CAPIEvent {
   //   required SnippetRootNode newSnippetNode,
   // }) = CreatedSnippet;
 
-  // const factory SnippetEvent.saveNodeAsSnippet({
+  // const factory CAPIEvent.saveNodeAsSnippet({
   //   required STreeNode node,
   //   STreeNode? nodeParent,
   //   required String newSnippetName,
@@ -171,15 +171,14 @@ class CAPIEvent with _$CAPIEvent {
     required PanelName panelName,
   }) = SetPanelSnippet;
 
-  const factory CAPIEvent.pushSnippetBloc({
-    required PageName pageName,
+  const factory CAPIEvent.pushSnippetEditor({
     required SnippetName snippetName,
     STreeNode? visibleDecendantNode,
-  }) = PushSnippetBloc;
+  }) = PushSnippetEditor;
 
-  const factory CAPIEvent.popSnippetBloc({
+  const factory CAPIEvent.popSnippetEditor({
     @Default(false) bool save,
-  }) = PopSnippetBloc;
+  }) = PopSnippetEditor;
 
   // const factory CAPIEvent.restoredSnippetBloc({
   //   required SnippetBloC restoredBloc,
@@ -209,4 +208,123 @@ class CAPIEvent with _$CAPIEvent {
 //   required double? newW,
 //   required double? newH,
 // }) = ChangedSnippetPropertiesCalloutSize;
+
+//==========================================================================================
+//====  SNIPPET EDITING  ===================================================================
+//==========================================================================================
+  const factory CAPIEvent.selectNode({
+    required STreeNode node,
+    // required GlobalKey selectedWidgetGK,
+    required GlobalKey selectedTreeNodeGK,
+    // TargetModel? imageTC,
+    // TargetModel? widgetTC,
+  }) = SelectNode;
+
+  const factory CAPIEvent.clearNodeSelection() = ClearNodeSelection;
+
+  const factory CAPIEvent.saveNodeAsSnippet({
+    required STreeNode node,
+    required String newSnippetName,
+  }) = SaveNodeAsSnippet;
+
+  // const factory CAPIEvent.highlightNode({
+  //   required STreeNode? node,
+  // }) = HighlightNode;
+
+  // const factory CAPIEvent.showNodeProperties({
+  //   required Node node,
+  //   required int nodeRootIndex,
+  //   required bool showAdders,
+  //   required bool showProperties,
+  //   TargetModel? tc,
+  // }) = ShowNodeProperties;
+
+  const factory CAPIEvent.replaceSelectionWith({
+    Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
+    STreeNode? testNode,
+  }) = ReplaceSelectionWith;
+
+  const factory CAPIEvent.wrapSelectionWith({
+    Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
+    STreeNode? testNode,
+  }) = WrapSelectionWith;
+
+  const factory CAPIEvent.appendChild({
+    Type? type,
+    STreeNode? testNode,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
+    Type? widgetSpanChildType,
+    STreeNode? testWidgetSpanChildNode,
+  }) = AppendChild;
+
+  const factory CAPIEvent.addSiblingBefore({
+    Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
+    STreeNode? testNode,
+  }) = AddSiblingBefore;
+
+  const factory CAPIEvent.addSiblingAfter({
+    Type? type,
+    SnippetName? snippetName, // only used when type is SnippetRefNode
+    STreeNode? testNode,
+  }) = AddSiblingAfter;
+
+  const factory CAPIEvent.pasteReplacement({
+    // required STreeNode clipboardNode,
+    Type? widgetSpanChildType,
+  }) = PasteReplacement;
+
+  const factory CAPIEvent.pasteChild({
+    // required STreeNode clipboardNode,
+    Type? widgetSpanChildType,
+    STreeNode? testWidgetSpanChildNode,
+  }) = PasteChild;
+
+  const factory CAPIEvent.pasteSiblingBefore() = PasteSiblingBefore;
+
+  const factory CAPIEvent.pasteSiblingAfter() = PasteSiblingAfter;
+
+  const factory CAPIEvent.deleteNodeTapped() = DeleteNodeTapped;
+  const factory CAPIEvent.completeDeletion() = CompleteDeletion;
+
+  // const factory CAPIEvent.addNode({
+  //   required STreeNode adder2InsertBefore,
+  // }) = AddNode;
+
+  const factory CAPIEvent.copyNode({
+    required STreeNode node,
+    @Default(false) skipSave,
+  }) = CopyNode;
+
+  const factory CAPIEvent.cutNode({
+    required STreeNode node,
+    @Default(false) skipSave,
+  }) = CutNode;
+
+  // const factory CAPIEvent.pasteNode({
+  //   required STreeNode adder,
+  // }) = PasteNode;
+
+  const factory CAPIEvent.selectedDirectoryOrNode({
+    required SnippetName snippetName,
+    required STreeNode? selectedNode, // null means clear selection
+  }) = SelectedDirectoryOrNode;
+
+  // const factory CAPIEvent.selectedFSDirectoryOrNode({
+  //   required FSBucketNode bucket,
+  //   required STreeNode? selectedNode, // null means clear selection
+  // }) = SelectedFSDirectoryOrNode;
+
+  const factory CAPIEvent.undo({
+    required String name,
+    @Default(false) bool skipRedo,
+  }) = Undo;
+
+  const factory CAPIEvent.redo({
+    required String name,
+  }) = Redo;
+
+  const factory CAPIEvent.forceSnippetRefresh() = ForceSnippetRefresh;
 }

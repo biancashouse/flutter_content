@@ -18,7 +18,7 @@ class PTreeNodeWidget extends StatelessWidget {
     this.ancestorVScrollController,
   });
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   PTreeNode get propertyNode => entry.node;
 
@@ -36,7 +36,7 @@ class PTreeNodeWidget extends StatelessWidget {
             border: Border.all(color: Colors.purple, width: entry.isExpanded ? 1 : 2),
             borderRadius: const BorderRadius.all(Radius.circular(4)),
           ),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: propertyNode is PropertyGroup ? _propertyGroupLabel() : _propertyButton(context),
         ),
         if (entry.hasChildren)
@@ -82,10 +82,11 @@ class PTreeNodeWidget extends StatelessWidget {
 
   Widget _propertyButton(context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         debugPrint('_propertyButton.tap');
       },
       onDoubleTap: () {
+        debugPrint('_propertyButton.double-tap');
         // revert to original value
         propertyNode.revertToOriginalValue();
         treeC.rebuild();

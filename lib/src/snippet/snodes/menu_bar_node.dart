@@ -16,7 +16,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => const [];
+  List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
   String toSource(BuildContext context) => '''MenuBar(

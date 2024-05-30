@@ -16,7 +16,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         DecimalPropertyValueNode(
           snode: this,
           name: 'aspectRatio',

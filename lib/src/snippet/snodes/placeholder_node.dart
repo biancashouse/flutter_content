@@ -23,7 +23,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',

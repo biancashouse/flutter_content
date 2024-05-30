@@ -7,26 +7,26 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
-class FlutterContentPage extends StatefulWidget {
-  final PanelName pageName;
-  final WidgetBuilder pageBuilder;
+class EditablePage extends StatefulWidget {
+  final String routePath;
+  final WidgetBuilder builder;
 
-  const FlutterContentPage({
-    required this.pageName,
-    required this.pageBuilder,
+  const EditablePage({
+    required this.routePath,
+    required this.builder,
     required super.key,
   });
 
   @override
-  State<FlutterContentPage> createState() => FlutterContentPageState();
+  State<EditablePage> createState() => EditablePageState();
 }
 
-class FlutterContentPageState extends State<FlutterContentPage> {
+class EditablePageState extends State<EditablePage> {
   final focusNode = FocusNode();
   final GlobalKey _lockIconGK = GlobalKey();
 
   bool isFABVisible = true; // Tracks FAB visibility
-  Offset fabPosition = const Offset(20, 20); // Initial position of the FAB
+  Offset? fabPosition;
 
   void unhideFAB() {
     setState(() {
@@ -42,7 +42,15 @@ class FlutterContentPageState extends State<FlutterContentPage> {
 
   @override
   void initState() {
+    FC().pageGKs[widget.routePath] = widget.key as GlobalKey;
     super.initState();
+
+    Useful.afterNextBuildDo((){
+      setState(() {
+        fabPosition = Offset(20, Useful.scrH-90); // Initial position of the FAB
+      });
+    }
+    );
   }
 
   //will go null after user tap bianca
@@ -81,10 +89,15 @@ class FlutterContentPageState extends State<FlutterContentPage> {
               child: Material(
                 child: Stack(
                   children: [
-                    Zoomer(child: widget.pageBuilder(context)),
-                    Positioned(
-                      left: fabPosition.dx,
-                      top: fabPosition.dy,
+                    Zoomer(
+                      child: Useful.isAndroid
+                          ? _buildAndroid(context, widget.builder(context))
+                          : widget.builder(context),
+                    ),
+                    if (fabPosition != null)
+                      Positioned(
+                      left: fabPosition!.dx,
+                      top: fabPosition!.dy,
                       child: Draggable(
                         feedback: FAB(),
                         child: isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
@@ -104,9 +117,9 @@ class FlutterContentPageState extends State<FlutterContentPage> {
   }
 
   Widget FAB() => Container(
-        decoration: const BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        decoration: BoxDecoration(
+          color: !FC().canEditContent ? Colors.green : Colors.blue,
+          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         ),
         child: FC().canEditContent
             ? PointerInterceptor(
@@ -139,26 +152,26 @@ class FlutterContentPageState extends State<FlutterContentPage> {
     hideFAB();
     FC().inEditMode.value = true;
     showAllNodeWidgetOverlays();
-    Callout.showTextToast(
-      feature: 'tap-a-widget',
-      backgroundColor: Colors.red,
-      textColor: Colors.white,
-      textScaleFactor: 2.5,
-      msgText: 'Tap a widget...',
-      onlyOnce: true,
-      height: 100,
-    );
+    // Callout.showTextToast(
+    //   feature: 'tap-a-widget',
+    //   backgroundColor: Colors.red,
+    //   textColor: Colors.white,
+    //   textScaleFactor: 2.5,
+    //   msgText: 'Tap a widget...',
+    //   onlyOnce: true,
+    //   height: 100,
+    // );
   }
 
   void exitEditMode() {
     FC().inEditMode.value = false;
     removeAllNodeWidgetOverlays();
-    String feature = FC().snippetBeingEdited?.rootNode.name ?? "snippet name ?!";
+    String feature = MaterialSPA.rootNode?.name ?? "snippet name ?!";
     if (Callout.anyPresent([feature])) {
       Callout.dismiss(feature);
     }
     unhideFAB();
-    FC().capiBloc.add(const CAPIEvent.popSnippetBloc());
+    MaterialSPA.capiBloc.add(const CAPIEvent.popSnippetEditor());
   }
 
   void removeAllNodeWidgetOverlays() {
@@ -202,7 +215,7 @@ class FlutterContentPageState extends State<FlutterContentPage> {
             // debugPrint('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             node.showTappableNodeWidgetOverlay(
-              widget.pageName,
+              widget.routePath,
               node.toString(),
               r,
             );
@@ -224,7 +237,7 @@ class FlutterContentPageState extends State<FlutterContentPage> {
   void showNodeWidgetOverlay(STreeNode node) {
     Callout.dismiss('pink-border-overlay-non-tappable');
     Useful.afterNextBuildDo(() {
-      node.showNodeWidgetOverlay(widget.pageName);
+      node.showNodeWidgetOverlay();
     });
     return;
     // Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
@@ -261,7 +274,7 @@ class FlutterContentPageState extends State<FlutterContentPage> {
                       Callout.dismiss("EditorPassword");
                       FC().setCanEdit(true);
                       // await FC.loadLatestSnippetMap();
-                      // FC().capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+                      // MaterialSPA.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
                       // Useful.afterNextBuildDo(() {
                       //   FC()
                       //       .capiBloc
@@ -269,7 +282,7 @@ class FlutterContentPageState extends State<FlutterContentPage> {
                       //   showDevToolsFAB();
                       // });
                       Callout.dismiss("EditorPassword");
-                      FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                      MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                       setState(() {
                         enterEditMode();
                       });
@@ -326,7 +339,7 @@ class FlutterContentPageState extends State<FlutterContentPage> {
     //   FC().appInfo.publishedVersionIds[]
     // }
 
-    FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+    MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
   }
 
   // wait for android to register screen size

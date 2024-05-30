@@ -53,7 +53,15 @@ mixin _$CAPIState {
       throw _privateConstructorUsedError; // hacky way to force a transition
   bool get onlyTargetsWrappers =>
       throw _privateConstructorUsedError; // hacky way to force a transition
-//
+//==========================================================================================
+//====  PAGE ROUTE NAME  ===================================================================
+//==========================================================================================
+  String? get routeName =>
+      throw _privateConstructorUsedError; //==========================================================================================
+//====  SNIPPET EDITING  ===================================================================
+//==========================================================================================
+  SnippetBeingEdited? get snippetBeingEdited =>
+      throw _privateConstructorUsedError;
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -82,6 +90,8 @@ abstract class $CAPIStateCopyWith<$Res> {
       bool showClipboardContent,
       int force,
       bool onlyTargetsWrappers,
+      String? routeName,
+      SnippetBeingEdited? snippetBeingEdited,
       bool ONLY_TESTING});
 }
 
@@ -113,6 +123,8 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? showClipboardContent = null,
     Object? force = null,
     Object? onlyTargetsWrappers = null,
+    Object? routeName = freezed,
+    Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_value.copyWith(
@@ -176,6 +188,14 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.onlyTargetsWrappers
           : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
               as bool,
+      routeName: freezed == routeName
+          ? _value.routeName
+          : routeName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      snippetBeingEdited: freezed == snippetBeingEdited
+          ? _value.snippetBeingEdited
+          : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
+              as SnippetBeingEdited?,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
           : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
@@ -208,6 +228,8 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
       bool showClipboardContent,
       int force,
       bool onlyTargetsWrappers,
+      String? routeName,
+      SnippetBeingEdited? snippetBeingEdited,
       bool ONLY_TESTING});
 }
 
@@ -237,6 +259,8 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? showClipboardContent = null,
     Object? force = null,
     Object? onlyTargetsWrappers = null,
+    Object? routeName = freezed,
+    Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
     return _then(_$CAPIStateImpl(
@@ -300,6 +324,14 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.onlyTargetsWrappers
           : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
               as bool,
+      routeName: freezed == routeName
+          ? _value.routeName
+          : routeName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      snippetBeingEdited: freezed == snippetBeingEdited
+          ? _value.snippetBeingEdited
+          : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
+              as SnippetBeingEdited?,
       ONLY_TESTING: null == ONLY_TESTING
           ? _value.ONLY_TESTING
           : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
@@ -327,6 +359,8 @@ class _$CAPIStateImpl extends _CAPIState {
       this.showClipboardContent = true,
       this.force = 0,
       this.onlyTargetsWrappers = false,
+      this.routeName,
+      this.snippetBeingEdited,
       this.ONLY_TESTING = true})
       : super._();
 
@@ -394,14 +428,23 @@ class _$CAPIStateImpl extends _CAPIState {
   @JsonKey()
   final bool onlyTargetsWrappers;
 // hacky way to force a transition
-//
+//==========================================================================================
+//====  PAGE ROUTE NAME  ===================================================================
+//==========================================================================================
+  @override
+  final String? routeName;
+//==========================================================================================
+//====  SNIPPET EDITING  ===================================================================
+//==========================================================================================
+  @override
+  final SnippetBeingEdited? snippetBeingEdited;
   @override
   @JsonKey()
   final bool ONLY_TESTING;
 
   @override
   String toString() {
-    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -441,6 +484,10 @@ class _$CAPIStateImpl extends _CAPIState {
             (identical(other.force, force) || other.force == force) &&
             (identical(other.onlyTargetsWrappers, onlyTargetsWrappers) ||
                 other.onlyTargetsWrappers == onlyTargetsWrappers) &&
+            (identical(other.routeName, routeName) ||
+                other.routeName == routeName) &&
+            (identical(other.snippetBeingEdited, snippetBeingEdited) ||
+                other.snippetBeingEdited == snippetBeingEdited) &&
             (identical(other.ONLY_TESTING, ONLY_TESTING) ||
                 other.ONLY_TESTING == ONLY_TESTING));
   }
@@ -463,6 +510,8 @@ class _$CAPIStateImpl extends _CAPIState {
       showClipboardContent,
       force,
       onlyTargetsWrappers,
+      routeName,
+      snippetBeingEdited,
       ONLY_TESTING);
 
   @JsonKey(ignore: true)
@@ -489,6 +538,8 @@ abstract class _CAPIState extends CAPIState {
       final bool showClipboardContent,
       final int force,
       final bool onlyTargetsWrappers,
+      final String? routeName,
+      final SnippetBeingEdited? snippetBeingEdited,
       final bool ONLY_TESTING}) = _$CAPIStateImpl;
   _CAPIState._() : super._();
 
@@ -537,7 +588,15 @@ abstract class _CAPIState extends CAPIState {
   @override // hacky way to force a transition
   bool get onlyTargetsWrappers;
   @override // hacky way to force a transition
-//
+//==========================================================================================
+//====  PAGE ROUTE NAME  ===================================================================
+//==========================================================================================
+  String? get routeName;
+  @override //==========================================================================================
+//====  SNIPPET EDITING  ===================================================================
+//==========================================================================================
+  SnippetBeingEdited? get snippetBeingEdited;
+  @override
   bool get ONLY_TESTING;
   @override
   @JsonKey(ignore: true)

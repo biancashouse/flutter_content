@@ -23,6 +23,9 @@ class TextStyleGroupMapper extends ClassMapperBase<TextStyleGroup> {
   @override
   final String id = 'TextStyleGroup';
 
+  static String? _$namedTextStyle(TextStyleGroup v) => v.namedTextStyle;
+  static const Field<TextStyleGroup, String> _f$namedTextStyle =
+      Field('namedTextStyle', _$namedTextStyle, opt: true);
   static String? _$fontFamily(TextStyleGroup v) => v.fontFamily;
   static const Field<TextStyleGroup, String> _f$fontFamily =
       Field('fontFamily', _$fontFamily, opt: true);
@@ -51,6 +54,7 @@ class TextStyleGroupMapper extends ClassMapperBase<TextStyleGroup> {
 
   @override
   final MappableFields<TextStyleGroup> fields = const {
+    #namedTextStyle: _f$namedTextStyle,
     #fontFamily: _f$fontFamily,
     #fontSize: _f$fontSize,
     #fontSizeName: _f$fontSizeName,
@@ -63,6 +67,7 @@ class TextStyleGroupMapper extends ClassMapperBase<TextStyleGroup> {
 
   static TextStyleGroup _instantiate(DecodingData data) {
     return TextStyleGroup(
+        namedTextStyle: data.dec(_f$namedTextStyle),
         fontFamily: data.dec(_f$fontFamily),
         fontSize: data.dec(_f$fontSize),
         fontSizeName: data.dec(_f$fontSizeName),
@@ -127,7 +132,8 @@ extension TextStyleGroupValueCopy<$R, $Out>
 abstract class TextStyleGroupCopyWith<$R, $In extends TextStyleGroup, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call(
-      {String? fontFamily,
+      {String? namedTextStyle,
+      String? fontFamily,
       double? fontSize,
       Material3TextSizeEnum? fontSizeName,
       FontStyleEnum? fontStyle,
@@ -149,7 +155,8 @@ class _TextStyleGroupCopyWithImpl<$R, $Out>
       TextStyleGroupMapper.ensureInitialized();
   @override
   $R call(
-          {Object? fontFamily = $none,
+          {Object? namedTextStyle = $none,
+          Object? fontFamily = $none,
           Object? fontSize = $none,
           Object? fontSizeName = $none,
           Object? fontStyle = $none,
@@ -158,6 +165,7 @@ class _TextStyleGroupCopyWithImpl<$R, $Out>
           Object? letterSpacing = $none,
           Object? colorValue = $none}) =>
       $apply(FieldCopyWithData({
+        if (namedTextStyle != $none) #namedTextStyle: namedTextStyle,
         if (fontFamily != $none) #fontFamily: fontFamily,
         if (fontSize != $none) #fontSize: fontSize,
         if (fontSizeName != $none) #fontSizeName: fontSizeName,
@@ -169,6 +177,7 @@ class _TextStyleGroupCopyWithImpl<$R, $Out>
       }));
   @override
   TextStyleGroup $make(CopyWithData data) => TextStyleGroup(
+      namedTextStyle: data.get(#namedTextStyle, or: $value.namedTextStyle),
       fontFamily: data.get(#fontFamily, or: $value.fontFamily),
       fontSize: data.get(#fontSize, or: $value.fontSize),
       fontSizeName: data.get(#fontSizeName, or: $value.fontSizeName),

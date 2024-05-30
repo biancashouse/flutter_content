@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -14,7 +15,7 @@ abstract class Node extends Object {
   static Iterable<STreeNode> snippetTreeChildrenProvider(STreeNode node) {
     Iterable<STreeNode> children = [];
 
-    if (node is SnippetRootNode) {
+    if (node is SnippetRootNode && node.getParent() != null) {
         children = [];
     } else if (node is ScaffoldNode) {
       children = [
@@ -56,6 +57,14 @@ abstract class Node extends Object {
   }
 
   static Iterable<PTreeNode> propertyTreeChildrenProvider(PTreeNode node) {
+
+    // // custom logic to hide style props when a named style prop is not null
+    // if (node.snode is TextSpanNode) {
+    //   TextSpanNode tsNode = node.snode as TextSpanNode;
+    //   if (tsNode.textStyleGroup?.namedTextStyle != null)
+    //     return [tsNode.textStyleGroup.];
+    // }
+
     if (node is PropertyGroup) {
       return node.children;
     }
@@ -82,7 +91,7 @@ abstract class Node extends Object {
         ],
       );
 
-  CAPIBloC get capiBloc => FC().capiBloc;
+  CAPIBloC get capiBloc => MaterialSPA.capiBloc;
 
   Node();
 }
@@ -110,6 +119,32 @@ class SnippetTreeController extends TreeController<STreeNode> {
     node.isExpanded = expanded;
   }
 
+  List<STreeNode> getExpandedNodes(STreeNode startingNode) {
+    List<STreeNode> expandedNodes = [];
+    breadthFirstSearch(
+      startingNodes: [startingNode],
+      descendCondition: (_) => true,
+      returnCondition: (_) => false,
+      onTraverse: (node) {
+        if (node.isExpanded) expandedNodes.add(node);
+      },
+    );
+    return expandedNodes;
+  }
+
+  void restoreExpansions(STreeNode startingNode, List<STreeNode> nodes) {
+    breadthFirstSearch(
+      startingNodes: [startingNode],
+      descendCondition: (_) => true,
+      returnCondition: (_) => false,
+      onTraverse: (node) {
+        if (nodes.contains(node)) {
+          setExpansionState(node, nodes.contains(node));
+        }
+      },
+    );
+  }
+
   int countNodesInTree(STreeNode startingNode) {
     int nodeCount = 0;
     breadthFirstSearch(
@@ -122,7 +157,8 @@ class SnippetTreeController extends TreeController<STreeNode> {
   }
 
   // find 1st node with the supplied type
-  STreeNode? findNodeTypeInTree(STreeNode startingNode, Type type) {
+  STreeNode? findNodeTypeInTree(STreeNode? startingNode, Type type) {
+    if (startingNode == null) return null;
     STreeNode? foundNode;
     foundNode = breadthFirstSearch(
       startingNodes: [startingNode],
@@ -212,6 +248,32 @@ class PTreeNodeTreeController extends TreeController<PTreeNode> {
     required super.childrenProvider,
     super.parentProvider,
   });
+
+  List<PTreeNode> getExpandedNodes(PTreeNode startingNode) {
+    List<PTreeNode> expandedNodes = [];
+    breadthFirstSearch(
+      startingNodes: [startingNode],
+      descendCondition: (_) => true,
+      returnCondition: (_) => false,
+      onTraverse: (node) {
+        if (getExpansionState(node)) expandedNodes.add(node);
+      },
+    );
+    return expandedNodes;
+  }
+
+  void restoreExpansions(PTreeNode startingNode, List<PTreeNode> nodes) {
+    breadthFirstSearch(
+      startingNodes: [startingNode],
+      descendCondition: (_) => true,
+      returnCondition: (_) => false,
+      onTraverse: (node) {
+        if (nodes.contains(node)) {
+          setExpansionState(node, nodes.contains(node));
+        }
+      },
+    );
+  }
 
   int countNodesInTree(PTreeNode startingNode) {
     int nodeCount = 0;

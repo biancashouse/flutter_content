@@ -29,9 +29,6 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static TextStyleGroup? _$textStyleGroup(TextNode v) => v.textStyleGroup;
   static const Field<TextNode, TextStyleGroup> _f$textStyleGroup =
       Field('textStyleGroup', _$textStyleGroup, opt: true);
-  static String? _$namedTextStyle(TextNode v) => v.namedTextStyle;
-  static const Field<TextNode, String> _f$namedTextStyle =
-      Field('namedTextStyle', _$namedTextStyle, opt: true);
   static TextAlignEnum? _$textAlign(TextNode v) => v.textAlign;
   static const Field<TextNode, TextAlignEnum> _f$textAlign =
       Field('textAlign', _$textAlign, opt: true);
@@ -56,7 +53,6 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   final MappableFields<TextNode> fields = const {
     #text: _f$text,
     #textStyleGroup: _f$textStyleGroup,
-    #namedTextStyle: _f$namedTextStyle,
     #textAlign: _f$textAlign,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -75,7 +71,6 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
     return TextNode(
         text: data.dec(_f$text),
         textStyleGroup: data.dec(_f$textStyleGroup),
-        namedTextStyle: data.dec(_f$namedTextStyle),
         textAlign: data.dec(_f$textAlign));
   }
 
@@ -132,10 +127,7 @@ abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
       get textStyleGroup;
   @override
   $R call(
-      {String? text,
-      TextStyleGroup? textStyleGroup,
-      String? namedTextStyle,
-      TextAlignEnum? textAlign});
+      {String? text, TextStyleGroup? textStyleGroup, TextAlignEnum? textAlign});
   TextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -155,19 +147,16 @@ class _TextNodeCopyWithImpl<$R, $Out>
   $R call(
           {String? text,
           Object? textStyleGroup = $none,
-          Object? namedTextStyle = $none,
           Object? textAlign = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (textStyleGroup != $none) #textStyleGroup: textStyleGroup,
-        if (namedTextStyle != $none) #namedTextStyle: namedTextStyle,
         if (textAlign != $none) #textAlign: textAlign
       }));
   @override
   TextNode $make(CopyWithData data) => TextNode(
       text: data.get(#text, or: $value.text),
       textStyleGroup: data.get(#textStyleGroup, or: $value.textStyleGroup),
-      namedTextStyle: data.get(#namedTextStyle, or: $value.namedTextStyle),
       textAlign: data.get(#textAlign, or: $value.textAlign));
 
   @override

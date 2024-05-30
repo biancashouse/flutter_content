@@ -24,7 +24,7 @@ class YTNode extends CL with YTNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'Youtube Url',

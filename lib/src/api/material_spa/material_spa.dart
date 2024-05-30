@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/routingconfig_provider/routingconfig_provider.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,8 +29,29 @@ class MaterialSPA extends StatefulWidget {
   final String initialRoutePath;
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
-  final Map<String, NamedTextStyle> namedStyles;
+  final Map<String, VoidCallback> namedVoidCallbacks;
+  final Map<String, TextStyle> namedTextStyles;
+  final Map<String, ButtonStyle> namedButtonStyles;
   final bool hideStatusBar;
+
+  // --- globally available -----------------------------------------------------
+  static CAPIBloC? _singletonBloc;
+
+  static CAPIBloC get capiBloc => _singletonBloc!;
+
+  static CAPIState get capiState => _singletonBloc!.state;
+
+  static SnippetBeingEdited? get snippetBeingEdited => capiState.snippetBeingEdited;
+
+  static STreeNode? get selectedNode => snippetBeingEdited?.selectedNode;
+
+  static SnippetRootNode? get rootNode => snippetBeingEdited?.rootNode;
+
+  static bool get showProperties => snippetBeingEdited?.showProperties ?? false;
+
+  static bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
+
+  // --- globally available -----------------------------------------------------
 
   // final IModelRepository? testModelRepo; // created in tests by a when(mockRepository.getCAPIModel(appName: appName...
   // final Widget? testWidget;
@@ -46,7 +69,9 @@ class MaterialSPA extends StatefulWidget {
     required this.materialAppThemeF,
     required this.initialRoutePath,
     this.fbOptions,
-    this.namedStyles = const {},
+    this.namedVoidCallbacks = const {},
+    this.namedTextStyles = const {},
+    this.namedButtonStyles = const {},
     this.hideStatusBar = true,
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
@@ -215,7 +240,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   //     Useful.afterMsDelayDo(1000, () {
   //               FC.forceRefresh();
 
-  //       FC().snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
+  //       MaterialSPA.snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
   //       // MaterialSPAState.showAllNodeWidgetOverlays(context);
   //     });
   //   }
@@ -227,7 +252,9 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     CAPIBloC capiBloc = await FC().init(
       modelName: widget.appName,
       fbOptions: widget.fbOptions,
-      namedStyles: widget.namedStyles,
+      namedVoidCallbacks: widget.namedVoidCallbacks,
+      namedTextStyles: widget.namedTextStyles,
+      namedButtonStyles: widget.namedButtonStyles,
       routingConfig: RoutingConfigProvider().getWebOrMobileRoutingConfig(
         widget.webRoutingConfig,
         widget.mobileRoutingConfig,
@@ -239,12 +266,12 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     Useful.afterNextBuildDo(() {
       Useful.afterMsDelayDo(1000, () async {
         debugPrint('============================================================================');
-        debugPrint('================   ${FC().appName}-${await FC().versionAndBuild}  ================');
+        debugPrint('================   ${FC().appName}-${await FC().versionAndBuild}  ==========');
         debugPrint('============================================================================');
         FC.forceRefresh();
       });
     });
-    return capiBloc;
+    return MaterialSPA._singletonBloc = capiBloc;
   }
 
   // ytController = YoutubePlayerController.fromVideoId(
@@ -262,7 +289,6 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             return BlocProvider<CAPIBloC>(
               create: (BuildContext context) => snapshot.data!,
               child: MaterialApp.router(
-                // backButtonDispatcher: RouterBackUtil.backButtonDispatcher(context);,
                 routerConfig: FC().router,
                 theme: widget.materialAppThemeF(),
                 debugShowCheckedModeBanner: false,

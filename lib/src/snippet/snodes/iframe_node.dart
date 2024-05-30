@@ -23,7 +23,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         // StringPropertyValueNode(
         //   snode: this,
         //   name: 'name',
@@ -135,17 +135,18 @@ class IFrameNode extends CL with IFrameNodeMappable {
               forceRefresh: true,
             ),
           )
-        : FC().areAnySnippetsBeingEdited
-            ? const Placeholder()
-            : Column(
-                children: [
-                  const Placeholder(),
-                  Row(key: createNodeGK(), children: [
-                    const Icon(Icons.code, size: 32, color: Colors.red),
-                    Useful.coloredText('src missing!', color: Colors.red),
-                  ]),
-                ],
-              );
+        : const Offstage();
+    // FC().areAnySnippetsBeingEdited
+    //         ? const Placeholder()
+    //         : Column(
+    //             children: [
+    //               const Placeholder(),
+    //               Row(key: createNodeGK(), children: [
+    //                 const Icon(Icons.code, size: 32, color: Colors.red),
+    //                 Useful.coloredText('src missing!', color: Colors.red),
+    //               ]),
+    //             ],
+    //           );
   }
 
   String? extractUrlFromIframe(String iframeTag) {

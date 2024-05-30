@@ -15,7 +15,7 @@ class SingleChildScrollViewNode extends SC with SingleChildScrollViewNodeMappabl
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
     PropertyGroup(
       snode: this,
       name: 'padding',

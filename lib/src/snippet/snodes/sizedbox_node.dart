@@ -16,7 +16,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         DecimalPropertyValueNode(
           snode: this,
           name: 'width',

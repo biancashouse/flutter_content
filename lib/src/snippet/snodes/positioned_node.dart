@@ -20,7 +20,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         DecimalPropertyValueNode(
           snode: this,
           name: 'top',

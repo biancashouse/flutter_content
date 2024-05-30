@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 class DirectoryTreeNodeWidget extends StatelessWidget {
@@ -68,7 +68,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     if (snippet?.mounted ?? false) {
-                      FC().snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                      MaterialSPA.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -77,7 +77,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                FC().snippetBeingEdited?.add(SnippetEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                MaterialSPA.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
               child: (entry.node as FileNode).toWidget(context, entry.node),
             ),
@@ -85,11 +85,11 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   }
 
   Widget _text() {
-    String displayedNodeName = entry.node is SnippetRootNode && (entry.node as SnippetRootNode).name.isNotEmpty
-        ? (entry.node as SnippetRootNode).name
-        : entry.node is DirectoryNode && (entry.node as DirectoryNode).name.isNotEmpty
-            ? (entry.node as DirectoryNode).name
-            : entry.node is DirectoryNode && (entry.node as DirectoryNode).name.isEmpty
+    String displayedNodeName = entry.node is SnippetRootNode && ((entry.node as SnippetRootNode).name.isNotEmpty ?? true)
+        ? (entry.node as SnippetRootNode).name!
+        : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isNotEmpty ?? true
+            ? (entry.node as DirectoryNode).name!
+            : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isEmpty ?? true
                 ? 'directory name ?'
                 : entry.node is FileNode && (entry.node as FileNode).name.isEmpty
                     ? 'file name ?'

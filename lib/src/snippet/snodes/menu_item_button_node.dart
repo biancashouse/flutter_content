@@ -4,68 +4,47 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 import 'package:go_router/go_router.dart';
 
 part 'menu_item_button_node.mapper.dart';
 
 @MappableClass()
-class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
+class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   String itemLabel;
-  String? destinationPanelName;
-  String? destinationSnippetName;
-  String? destinationPageName; // go routeer route name
 
   MenuItemButtonNode({
     this.itemLabel = '',
-    this.destinationPanelName,
-    this.destinationSnippetName,
-    this.destinationPageName,
-  });
+    super.destinationRoutePathSnippetName,
+    super.template,
+    super.destinationPanelName,
+    super.destinationSnippetName,
+    super.buttonStyle,
+    super.onTapHandlerName,
+    super.calloutConfigGroup,
+    super.child,
+  }) {
+    assert((destinationRoutePathSnippetName != null) == (template != null), 'You must specify a snippet template with the page path property');
+  }
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) {
+  List<PTreeNode> properties(BuildContext context) {
     return [
       StringPropertyValueNode(
         snode: this,
         name: 'item label',
         stringValue: itemLabel,
-        onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue),
+        onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue ?? ''),
         expands: false,
         calloutButtonSize: const Size(280, 20),
         calloutWidth: 280,
-      ),
-      StringPropertyValueNode(
-        snode: this,
-        name: 'Snippet Name',
-        stringValue: destinationSnippetName,
-        onStringChange: (newValue) => refreshWithUpdate(() => destinationSnippetName = newValue),
-        expands: false,
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
-        options: FC().snippetInfoCache.keys.toList()..sort(),
-      ),
-      StringPropertyValueNode(
-        snode: this,
-        name: 'Panel Name',
-        stringValue: destinationPanelName,
-        onStringChange: (newValue) => refreshWithUpdate(() => destinationPanelName = newValue),
-        expands: false,
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
-        options: FC().panelGkMap.keys.toList(),
-      ),
-      StringPropertyValueNode(
-        snode: this,
-        name: 'Page Name',
-        stringValue: destinationPageName,
-        onStringChange: (newValue) => refreshWithUpdate(() => destinationPageName = newValue),
-        expands: false,
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
-        options: FC().routeNames,
       ),
     ];
   }
+
+  @override
+  ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
@@ -80,8 +59,8 @@ class MenuItemButtonNode extends CL with MenuItemButtonNodeMappable {
             snippetName: destinationSnippetName!,
             panelName: destinationPanelName!,
           ));
-        } else if (destinationPageName != null) {
-          context.goNamed(destinationPageName!);
+        } else if (destinationRoutePathSnippetName != null) {
+          context.goNamed(destinationRoutePathSnippetName!);
         }
       },
       style: Useful.buttonStyle(30),

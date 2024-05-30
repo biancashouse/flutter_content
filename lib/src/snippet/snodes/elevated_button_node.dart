@@ -11,15 +11,22 @@ part 'elevated_button_node.mapper.dart';
 @MappableClass()
 class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
   ElevatedButtonNode({
-    super.buttonStyleGroup,
+    super.destinationRoutePathSnippetName,
+    super.template,
+    super.destinationPanelName,
+    super.destinationSnippetName,
+    super.buttonStyle,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
   });
 
   @override
+  ButtonStyle? defaultButtonStyle() => ElevatedButton.styleFrom();
+
+  @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ButtonStyle? btnStyle = buttonStyleGroup?.toButtonStyle(context);
+    ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
 
@@ -32,20 +39,20 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
       child: ElevatedButton(
         // if feature specified, must be a callout
         key: feature != null ? FC().setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: onPressed,
-        onLongPress: f != null ? () => f.call(context) : null,
+        onPressed: ()=>onPressed(context),
+        onLongPress: () => f?.call(context),
         style: btnStyle,
         child: child?.toWidget(context, this),
       ),
     );
   }
 
-  @override
-  String toSource(BuildContext context) => '''ElevatedButton(
-    onPressed: ${onTapHandlerName != null ? '(){Snippet.namedHandler(super.onTapHandlerName!)?.call(context);}' : 'null'},
-    style: ${buttonStyleGroup?.toButtonStyleSource(context)},
-    child: ${child?.toSource(context)},
-  )''';
+  // @override
+  // String toSource(BuildContext context) => '''ElevatedButton(
+  //   onPressed: ${onTapHandlerName != null ? '(){Snippet.namedHandler(super.onTapHandlerName!)?.call(context);}' : 'null'},
+  //   style: ${buttonStyle?.toButtonStyle(context, defaultButtonStyle())},
+  //   child: ${child?.toSource(context)},
+  // )''';
 
   @override
   String toString() => FLUTTER_TYPE;

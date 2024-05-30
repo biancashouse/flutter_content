@@ -68,7 +68,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) {
+  List<PTreeNode> properties(BuildContext context) {
     String paddingLabel = padding == null ? 'padding' : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
     String marginLabel = margin == null ? 'margin' : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
 

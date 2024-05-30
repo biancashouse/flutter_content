@@ -22,9 +22,9 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   @override
   final String id = 'DirectoryNode';
 
-  static String _$name(DirectoryNode v) => v.name;
+  static String? _$name(DirectoryNode v) => v.name;
   static const Field<DirectoryNode, String> _f$name =
-      Field('name', _$name, opt: true, def: "");
+      Field('name', _$name, opt: true);
   static List<STreeNode> _$children(DirectoryNode v) => v.children;
   static const Field<DirectoryNode, List<STreeNode>> _f$children =
       Field('children', _$children);
@@ -141,9 +141,9 @@ class _DirectoryNodeCopyWithImpl<$R, $Out>
       get children => ListCopyWith($value.children,
           (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
   @override
-  $R call({String? name, List<STreeNode>? children}) =>
+  $R call({Object? name = $none, List<STreeNode>? children}) =>
       $apply(FieldCopyWithData({
-        if (name != null) #name: name,
+        if (name != $none) #name: name,
         if (children != null) #children: children
       }));
   @override

@@ -11,12 +11,13 @@ const BODY_PLACEHOLDER = 'body-placeholder';
 class SnippetPanel extends StatefulWidget {
   final String panelName;
 
-  // from canned snippet or by providing tree of nodes
+  // from canned snippet
   final String? snippetName;
+  // or by providing tree of nodes
   final SnippetRootNode? snippetRootNode;
   final Map<String, void Function(BuildContext)>? handlers;
-  final bool allowButtonCallouts;
-  final bool justPlaying;
+  // final bool allowButtonCallouts;
+  // final bool justPlaying;
 
   // final Icon? icon;
   // final Color? iconColor;
@@ -30,8 +31,8 @@ class SnippetPanel extends StatefulWidget {
     required this.panelName,
     required this.snippetRootNode,
     this.handlers,
-    this.allowButtonCallouts = true,
-    this.justPlaying = true,
+    // this.allowButtonCallouts = true,
+    // this.justPlaying = true,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     super.key,
@@ -41,8 +42,8 @@ class SnippetPanel extends StatefulWidget {
     required this.panelName,
     required this.snippetName,
     this.handlers,
-    this.allowButtonCallouts = true,
-    this.justPlaying = true,
+    // this.allowButtonCallouts = true,
+    // this.justPlaying = true,
     // this.onPressed,
     // this.onLongPress,
     // this.icon,
@@ -73,6 +74,7 @@ class SnippetPanel extends StatefulWidget {
 
 class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
   // late String snippetNameToUse;
+  // NOTE - tabcontroller will only be instantiated if a TabBar calls createTabController
   TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
@@ -95,6 +97,23 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void createTabController(int numTabs) {
     tabC?.dispose();
     tabC = TabController(vsync: this, length: numTabs);
+
+    tabC!.addListener(() {
+      if (!(tabC?.indexIsChanging ?? true)) {
+        if (tabBarGK != null) {
+          TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+          if (tbNode != null && !(backBtnPressed ?? false)) {
+            prevTabQ.add(tbNode.selection ?? 0);
+            tbNode.selection = tabC!.index;
+            prevTabQSize.value = prevTabQ.length;
+            debugPrint("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+          } else {
+            tbNode?.selection = tabC!.index;
+            backBtnPressed = false;
+          }
+        }
+      }
+    });
 
     // tabC!.addListener(() {
     //   setState(() {
@@ -124,30 +143,6 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     FC().snippetPlacementMap[widget.panelName] = snippetName();
 
     prevTabQ = [];
-
-    Useful.afterNextBuildDo(() {
-      if (tabC != null) {
-        Useful.afterMsDelayDo(1000, () {
-          tabC!.addListener(() {
-            if (!(tabC?.indexIsChanging ?? true)) {
-              if (tabBarGK != null) {
-                TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
-                if (tbNode != null && !(backBtnPressed ?? false)) {
-                  prevTabQ.add(tbNode.selection ?? 0);
-                  tbNode.selection = tabC!.index;
-                  prevTabQSize.value = prevTabQ.length;
-                  debugPrint("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
-                } else {
-                  tbNode?.selection = tabC!.index;
-                  backBtnPressed = false;
-                }
-              }
-            }
-          });
-          debugPrint("*** start listening to tab controller");
-        });
-      }
-    });
   }
 
   void resetTabQandC() {
@@ -179,18 +174,18 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
         future: _fInit,
         builder: (futureContext, snapshot) {
           return snapshot.connectionState != ConnectionState.done
-              ? const CircularProgressIndicator()
+              ? const Center(child: CircularProgressIndicator())
               : BlocBuilder<CAPIBloC, CAPIState>(
                   key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
                   buildWhen: (previous, current) => !current.onlyTargetsWrappers,
                   builder: (blocContext, state) {
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
-                    // var fc = FC();
-                    SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
-                    debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
-                    // snippet panel renders a canned snippet or a supplied snippet tree
+                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
+                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                    // // var fc = FC();
+                    // SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
+                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                    // // snippet panel renders a canned snippet or a supplied snippet tree
                     return _renderSnippet(context);
                   },
                 );
@@ -229,7 +224,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           }
           return snippetWidget;
         } else {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         }
       });
   }

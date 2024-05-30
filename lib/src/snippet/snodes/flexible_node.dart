@@ -19,7 +19,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         IntPropertyValueNode(
           snode: this,
           name: 'flex',

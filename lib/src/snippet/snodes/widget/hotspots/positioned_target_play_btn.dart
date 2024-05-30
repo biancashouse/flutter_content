@@ -19,7 +19,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     super.key,
   });
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +125,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
                 if (tc.targetsWrapperState() == null) return;
 
-                // FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                // MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
                 // Useful.afterNextBuildDo(() {
                 // save for use after the refresh

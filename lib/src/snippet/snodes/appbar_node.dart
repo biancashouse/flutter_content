@@ -23,7 +23,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) {
+  List<PTreeNode> properties(BuildContext context) {
     // debugPrint("ContainerNode.properties()...");
     return [
       ColorPropertyValueNode(
@@ -76,6 +76,9 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     }
 
     var bottomWidget = bottom?.toWidgetProperty(context, this);
+    if (bottomWidget is! PreferredSizeWidget?) {
+      debugPrint("Oops.");
+    }
     var actionWidgets = actions?.toWidgetProperty(context, this);
     var titleWidget = title?.toWidgetProperty(context, this);
 
@@ -84,7 +87,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
         key: createNodeGK(),
         leading: ListenableBuilder(listenable: spState!.prevTabQSize, builder: (_, __) => leadingWidget()),
         title: titleWidget,
-        bottom: bottomWidget as PreferredSizeWidget,
+        bottom: bottomWidget as PreferredSizeWidget?,
         actions: actionWidgets,
         backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
         foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,

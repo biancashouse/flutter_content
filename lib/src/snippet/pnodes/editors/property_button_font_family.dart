@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
 
-
 class PropertyButtonFontFamily extends StatefulWidget {
   final String label;
   final String? originalFontFamily;
   final Color menuBgColor;
   final Function(String?) onChangeF;
 
-  const PropertyButtonFontFamily(
-      {required this.label, required this.originalFontFamily, required this.menuBgColor, required this.onChangeF, super.key});
+  const PropertyButtonFontFamily({
+    required this.label,
+    required this.originalFontFamily,
+    required this.menuBgColor,
+    required this.onChangeF,
+    super.key,
+  });
 
   @override
   State<PropertyButtonFontFamily> createState() => _PropertyButtonFontFamilyState();
@@ -28,8 +32,8 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
   @override
   Widget build(BuildContext context) {
     Widget fontFamilyLabel = widget.originalFontFamily != null
-        ? Text('style.fontFamily: ${widget.originalFontFamily}', style: const TextStyle(color: Colors.white))
-        : const Text('style.fontFamily...', style: TextStyle(color: Colors.white));
+        ? Text('fontFamily: ${widget.originalFontFamily}', style: const TextStyle(color: Colors.white))
+        : const Text('fontFamily...', style: TextStyle(color: Colors.white));
     return PropertyCalloutButton(
       feature: 'font-family',
       notifier: ValueNotifier<int>(0),
@@ -43,10 +47,11 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
               mainAxisSize: MainAxisSize.max,
               children: FC().googleFontNames.map((family) {
                 return RadioListTile<String>(
+                  fillColor: const WidgetStatePropertyAll<Color?>(Colors.purpleAccent),
                   dense: true,
                   value: family,
                   groupValue: widget.originalFontFamily,
-                  tileColor: Colors.brown.shade50,
+                  tileColor: Colors.purpleAccent,
                   title: Text(
                     family,
                     softWrap: false,

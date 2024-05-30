@@ -11,21 +11,20 @@ part 'textspan_node.mapper.dart';
 @MappableClass()
 class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   String? text;
-  bool isRootTextSpan;
+
+  // bool isRootTextSpan;
   TextStyleGroup? textStyleGroup;
-  String? namedTextStyle;
   List<InlineSpanNode>? children;
 
   TextSpanNode({
     this.text,
-    this.isRootTextSpan = false,
+    // this.isRootTextSpan = false,
     this.textStyleGroup,
-    this.namedTextStyle,
     this.children,
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'text',
@@ -35,44 +34,44 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
-        BoolPropertyValueNode(
-          snode: this,
-          name: 'isRootTextSpan',
-          boolValue: isRootTextSpan,
-          onBoolChange: (newValue) => refreshWithUpdate(() => isRootTextSpan = newValue ?? false),
-        ),
+        // BoolPropertyValueNode(
+        //   snode: this,
+        //   name: 'isRootTextSpan',
+        //   boolValue: isRootTextSpan,
+        //   onBoolChange: (newValue) => refreshWithUpdate(() => isRootTextSpan = newValue ?? false),
+        // ),
         TextStylePropertyGroup(
           snode: this,
           name: 'textStyle',
           textStyleGroup: textStyleGroup,
           onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
         ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'namedTextStyle',
-          nameOnSeparateLine: true,
-          expands: true,
-          stringValue: namedTextStyle,
-          options: FC().namedStyles.keys.toList(),
-          onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
-          calloutButtonSize: const Size(280, 20),
-          calloutWidth: 280,
-        ),
       ];
 
   @override
-  InlineSpan toInlineSpan(
-    BuildContext context, {
-    bool isRoot = false,
-  }) {
+  InlineSpan toInlineSpan(BuildContext context) {
     // TextStyle? test_ts = textStyle?.toTextStyle(context);
+    // var parentNode = getParent();
+    // print('parent is ${parentNode.toString()}');
+    // start with possible named style, or DefaultTextStyle
+    // TextStyle? ts = textStyleGroup?.toTextStyle(context)
+    //     ?? DefaultTextStyle.of(context).style;
+    // merge with individual text style properties
+    // if (textStyleGroup != null) {
+      // ts = ts.merge(
+      //   TextStyle(
+      //     color: textStyleGroup?.colorValue != null ? Color(textStyleGroup!.colorValue!) : null,
+      //     fontFamily: textStyleGroup?.fontFamily != null ? textStyleGroup!.fontFamily! : null,
+      //     fontSize: textStyleGroup?.fontSize != null ? textStyleGroup!.fontSize! : null,
+      //   ),
+      // );
+      // ts.merge(textStyleGroup?.toTextStyle(context));
+    // }
     try {
       return TextSpan(
         text: text ?? "",
-        style: isRoot && false
-            ? DefaultTextStyle.of(context).style.merge(textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle))
-            : textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle),
-        children: children?.map<InlineSpan>((inlinespanNode) => inlinespanNode.toInlineSpan(context, isRoot: false)).toList(),
+        style: textStyleGroup?.toTextStyle(context),
+        children: children?.map<InlineSpan>((inlinespanNode) => inlinespanNode.toInlineSpan(context)).toList(),
       );
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
@@ -162,7 +161,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //               ),
   //               Checkbox(
   //                 value: textStyle?.fontStyle == FontStyleEnum.italic,
-  //                 fillColor: const MaterialStatePropertyAll(Colors.purple),
+  //                 fillColor: const WidgetStatePropertyAll(Colors.purple),
   //                 onChanged: (bool? isChecked) {
   //                   debugPrint("checked: $isChecked");
   //                   textStyle ??= TextStyleNodeProperty();

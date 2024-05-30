@@ -13,9 +13,9 @@ class MainAxisSizeEditor extends HookWidget {
     final mas = useState<MainAxisSizeEnum?>(originalValue);
     return SegmentedButton<MainAxisSizeEnum?>(
       style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(Colors.white),
-        foregroundColor: MaterialStatePropertyAll(Colors.purpleAccent),
-        side: MaterialStatePropertyAll(BorderSide(color: Colors.purpleAccent)),
+        backgroundColor: WidgetStatePropertyAll(Colors.white),
+        foregroundColor: WidgetStatePropertyAll(Colors.purpleAccent),
+        side: WidgetStatePropertyAll(BorderSide(color: Colors.purpleAccent)),
         visualDensity: VisualDensity(horizontal: -4, vertical: -4),
       ),
       segments: const <ButtonSegment<MainAxisSizeEnum?>>[

@@ -8,18 +8,18 @@ part 'directory_node.mapper.dart';
 
 @MappableClass()
 class DirectoryNode extends MC with DirectoryNodeMappable {
-  String name;
+  String? name;
 
   DirectoryNode({
-    this.name = "",
+    this.name,
     required super.children,
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
-          name: 'name',
+          name: 'name'??'',
           stringValue: name,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
@@ -87,8 +87,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
     ),
   );
 
-  ListView immediateChildrenOnly(
-      SnippetBloC snippetBloc, BuildContext context) {
+  ListView immediateChildrenOnly(BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: super.children.map((childNode) {
@@ -100,7 +99,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
                 children: [
                   const Icon(Icons.folder, size: 28, color: Colors.amber),
                   Container(
-                    child: Text(childNode.name),
+                    child: Text(childNode.name??''),
                   ),
                 ],
               )

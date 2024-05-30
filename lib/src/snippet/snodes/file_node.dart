@@ -47,13 +47,13 @@ class FileNode extends CL with FileNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -61,7 +61,7 @@ class FileNode extends CL with FileNodeMappable {
           snode: this,
           name: 'src',
           stringValue: src,
-          onStringChange: (newValue) => refreshWithUpdate(() => src = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => src = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

@@ -10,7 +10,7 @@ void main() {
   late MockModelRepository mockRepository;
   // sample data -----------
   SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplateNodes(
-      SnippetTemplate.empty, 'empty_snippet');
+      SnippetTemplateEnum.empty, 'empty_snippet');
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   const appName = 'flutter-content-widget-test';
@@ -95,9 +95,9 @@ void main() {
       MaterialSPA(
         appName: 'flutter-content-widget-test',
         testModelRepo: mockRepository,
-        testWidget: FlutterContentPage(
-            pageName: "my-panel",
-            snippetName: SnippetTemplate.scaffold_with_tabs.name),
+        testWidget: EditablePage(
+            routeName: "my-panel",
+            snippetName: SnippetTemplateEnum.scaffold_with_tabbar.name),
         materialAppThemeF: () => ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           primaryColor: FUCHSIA_X,
@@ -107,9 +107,9 @@ void main() {
     );
 
     expect(find.byType(MaterialSPA), findsOneWidget);
-    expect(find.byType(FlutterContentPage), findsOneWidget);
+    expect(find.byType(EditablePage), findsOneWidget);
 
-    BuildContext context = tester.element(find.byType(FlutterContentPage));
+    BuildContext context = tester.element(find.byType(EditablePage));
 
     // await tester.tap(find.byIcon(Icons.search));
     await tester.pump();

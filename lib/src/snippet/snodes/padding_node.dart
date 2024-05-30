@@ -18,7 +18,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EdgeInsetsPropertyValueNode(
           snode: this,
           name: 'padding',

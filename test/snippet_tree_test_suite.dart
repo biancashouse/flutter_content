@@ -23,7 +23,7 @@ void main() {
   });
 
   test('snippet comprises just a placeholder node', () async {
-    expect(SnippetPanel.createSnippetFromTemplateNodes(SnippetTemplate.empty, 'empty_snippet').child, isA<PlaceholderNode>());
+    expect(SnippetPanel.createSnippetFromTemplateNodes(SnippetTemplateEnum.empty, 'empty_snippet').child, isA<PlaceholderNode>());
     // printPrettyJson(rootNode.toMap(), indent: 2);
   });
 

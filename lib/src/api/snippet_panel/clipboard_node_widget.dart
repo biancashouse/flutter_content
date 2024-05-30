@@ -20,13 +20,13 @@ class ClipboardNodeWidget extends StatelessWidget {
     this.onClipboard = false,
   });
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool selected = FC().selectedNode == entry.node;
+        bool selected = MaterialSPA.snippetBeingEdited?.selectedNode == entry.node;
         ThemeData themeData = Theme.of(context);
         TreeEntry<Node>? parentEntry = entry.parent;
 

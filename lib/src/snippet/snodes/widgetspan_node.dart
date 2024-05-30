@@ -13,7 +13,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => const [];
+  List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {

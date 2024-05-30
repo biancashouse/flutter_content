@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 
-class PropertyButton<T> extends HookWidget {
+class PropertyButton<T> extends StatelessWidget {
   final String originalText;
   final List<String>? options;
   final String? label;
@@ -35,109 +35,116 @@ class PropertyButton<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final editedText = useState<String>(originalText);
-
-    String textLabel() =>
-        skipLabelText
-        ? editedText.value
-        : editedText.value.isNotEmpty ? '$label: ${editedText.value}' : '$label...';
-    Widget labelWidget() => Text(
-          textLabel(),
-          style: const TextStyle(color: Colors.white),
-          overflow: TextOverflow.ellipsis,
-        );
-    return GestureDetector(
-      onTap: () {
-        String inputDecorationLabel() => originalText.isNotEmpty && maxLines < 2 ? '$label: ${originalText}' : '$label...';
-        CalloutConfig teCC = CalloutConfig(
-          feature: 'te',
-          containsTextField: true,
-          barrier: CalloutBarrier(
-              opacity: .25,
-              onTappedF: () {
-                Callout.dismiss('matches');
-                Callout.dismiss('te');
-              }),
-          // arrowThickness: ArrowThickness.THIN,
-          fillColor: Colors.white,
-          // arrowColor: Colors.red,
-          arrowType: ArrowType.NO_CONNECTOR,
-          finalSeparation: 0.0,
-          initialCalloutAlignment: Alignment.topLeft,
-          initialTargetAlignment: Alignment.topLeft,
-          modal: false,
-          suppliedCalloutW: calloutSize.width,
-          suppliedCalloutH: calloutSize.height,
-          resizeableH: maxLines > 1,
-          resizeableV: maxLines > 1,
-          onDismissedF: () {},
-          onAcceptedF: () {},
-          // containsTextField: true,
-          onResize: (Size newSize) {},
-          onDragF: (Offset newOffset) {},
-          targetTranslateX: 0,
-          targetTranslateY: 0,
-          draggable: false,
-          notUsingHydratedStorage: true,
-        );
-        Callout.showOverlay(
-          calloutConfig: teCC,
-          boxContentF: (_) => FC_TextField(
-            inputType: T,
-            // key: calloutChildGK,
-            prompt: () => label??'',
-            inputDecorationLabel: inputDecorationLabel,
-            parentFeature: 'te',
-            originalS: editedText.value,
-            onTextChangedF: (s) {
-              editedText.value = s;
-              Callout.dismiss('matches');
-              // possibly show matching options
-              if ((options?.isNotEmpty ?? false) && _matches(options, editedText.value).isNotEmpty) {
-                _showOptionMatches(
-                  options!,
-                  editedText.value,
-                  (s) {
-                    editedText.value = s;
-                    onChangeF(s);
-                  },
-                );
-              }
-            },
-            onEditingCompleteF: (s) {
-              editedText.value = s;
-              onChangeF(s);
-            },
-            dontAutoFocus: false,
-            bgColor: Colors.white,
-            maxLines: maxLines,
-          ),
-          targetGkF: () => propertyBtnGK,
-        );
-        // show options, if any
-        if ((options?.isNotEmpty ?? false) && _matches(options, editedText.value).isNotEmpty) {
-          _showOptionMatches(
-            options!,
-            editedText.value,
-                (s) {
-              editedText.value = s;
-              onChangeF(s);
-            },
+    return StatefulBuilder(builder: (BuildContext context, StateSetter setState){
+      String editedText = originalText;
+      // print('editedText: $editedText');
+      // print('label: $label');
+      String textLabel() => skipLabelText
+          ? editedText ?? ''
+          : (editedText ?? '').isNotEmpty
+          ? '$label: $editedText'
+          : '$label...';
+      Widget labelWidget = Text(
+        textLabel(),
+        style: const TextStyle(color: Colors.white),
+        overflow: TextOverflow.ellipsis,
+      );
+      // print('labelWidget: $labelWidget');
+      return GestureDetector(
+        onTap: () {
+          String inputDecorationLabel() => originalText.isNotEmpty && maxLines < 2 ? '$label: $originalText' : '$label...';
+          CalloutConfig teCC = CalloutConfig(
+            feature: 'te',
+            containsTextField: true,
+            barrier: CalloutBarrier(
+                opacity: .25,
+                onTappedF: () {
+                  Callout.dismiss('matches');
+                  Callout.dismiss('te');
+                }),
+            // arrowThickness: ArrowThickness.THIN,
+            fillColor: Colors.white,
+            // arrowColor: Colors.red,
+            arrowType: ArrowType.NO_CONNECTOR,
+            finalSeparation: 0.0,
+            initialCalloutAlignment: Alignment.topLeft,
+            initialTargetAlignment: Alignment.topLeft,
+            modal: false,
+            suppliedCalloutW: calloutSize.width,
+            suppliedCalloutH: calloutSize.height,
+            resizeableH: maxLines > 1,
+            resizeableV: maxLines > 1,
+            onDismissedF: () {},
+            onAcceptedF: () {},
+            // containsTextField: true,
+            onResize: (Size newSize) {},
+            onDragF: (Offset newOffset) {},
+            targetTranslateX: 0,
+            targetTranslateY: 0,
+            draggable: false,
+            notUsingHydratedStorage: true,
           );
-        }
-      },
-      child: Container(
-        alignment: T is! String ? Alignment.center : Alignment.centerLeft,
-        key: propertyBtnGK,
-        // margin: const EdgeInsets.only(top: 8),
-        width: calloutButtonSize.width,
-        height: calloutButtonSize.height,
-        // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-        // color: Colors.white70,
-        // alignment: Alignment.center,
-        child: labelWidget(),
-      ),
-    );
+          Callout.showOverlay(
+            calloutConfig: teCC,
+            boxContentF: (_) => FC_TextField(
+              inputType: T,
+              // key: calloutChildGK,
+              prompt: () => label ?? '',
+              inputDecorationLabel: inputDecorationLabel,
+              parentFeature: 'te',
+              originalS: editedText ?? '',
+              onTextChangedF: (s) {
+                editedText = s;
+                Callout.dismiss('matches');
+                // possibly show matching options
+                if ((options?.isNotEmpty ?? false) && _matches(options, editedText).isNotEmpty) {
+                  _showOptionMatches(
+                    options!,
+                    editedText ?? '',
+                        (s) {
+                      editedText = s;
+                      onChangeF(s);
+                    },
+                  );
+                }
+              },
+              onEditingCompleteF: (s) {
+                editedText = s;
+                setState((){});
+                onChangeF(s);
+              },
+              dontAutoFocus: false,
+              bgColor: Colors.white,
+              maxLines: maxLines,
+            ),
+            targetGkF: () => propertyBtnGK,
+          );
+          // show options, if any
+          if ((options?.isNotEmpty ?? false) && _matches(options, editedText).isNotEmpty) {
+            _showOptionMatches(
+              options!,
+              editedText ?? '',
+                  (s) {
+                editedText = s;
+                onChangeF(s);
+              },
+            );
+          }
+        },
+        child: Container(
+          // alignment: T != String ? Alignment.center : Alignment.centerLeft,
+          alignment: Alignment.centerLeft,
+          key: propertyBtnGK,
+          // margin: const EdgeInsets.only(top: 8),
+          width: calloutButtonSize.width,
+          height: calloutButtonSize.height,
+          // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          // color: Colors.white70,
+          // alignment: Alignment.center,
+          child: labelWidget,
+        ),
+      );
+    });
   }
 
   void _showOptionMatches(List<String> options, String editedText, ValueChanged<String> tappedAMatchF) {
@@ -199,6 +206,6 @@ class PropertyButton<T> extends HookWidget {
   }
 
   List<String> _matches(options, editedText) => options.where((String option) {
-    return option.contains(editedText.toLowerCase());
-  }).toList();
+        return option.contains(editedText.toLowerCase());
+      }).toList();
 }

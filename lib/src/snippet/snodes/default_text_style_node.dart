@@ -12,35 +12,24 @@ part 'default_text_style_node.mapper.dart';
 @MappableClass()
 class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   TextStyleGroup? textStyleGroup;
-  String? namedTextStyle;
   TextAlignEnum? textAlign;
 
   // bool softWrap;
 
   DefaultTextStyleNode({
     this.textStyleGroup,
-    this.namedTextStyle,
     this.textAlign,
     // this.softWrap = true,
     super.child,
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         TextStylePropertyGroup(
           snode: this,
           name: 'textStyle',
           textStyleGroup: textStyleGroup,
           onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
-        ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'namedTextStyle',
-          stringValue: namedTextStyle,
-          options: FC().namedStyles.keys.toList(),
-          onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
-          calloutButtonSize: const Size(280, 20),
-          calloutWidth: 280,
         ),
         EnumPropertyValueNode<TextAlignEnum?>(
           snode: this,
@@ -50,16 +39,16 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
         ),
       ];
 
-  @override
-  String toSource(BuildContext context) {
-    return child != null
-        ? '''DefaultTextStyle.merge(
-      style: ${textStyleGroup?.toSource(context)},
-      textAlign: ${textAlign?.toSource()},
-      child: ${child!.toSource(context)},
-    )'''
-        : 'const Offstage()';
-  }
+  // @override
+  // String toSource(BuildContext context) {
+  //   return child != null
+  //       ? '''DefaultTextStyle.merge(
+  //     style: ${textStyleGroup?.toSource(context)},
+  //     textAlign: ${textAlign?.toSource()},
+  //     child: ${child!.toSource(context)},
+  //   )'''
+  //       : 'const Offstage()';
+  // }
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
@@ -68,7 +57,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
     return child != null
         ? DefaultTextStyle.merge(
             key: createNodeGK(),
-            style: textStyleGroup?.toTextStyle(context, namedTextStyle: namedTextStyle),
+            style: textStyleGroup?.toTextStyle(context),
             textAlign: textAlign?.flutterValue,
             child: child!.toWidget(context, this),
           )

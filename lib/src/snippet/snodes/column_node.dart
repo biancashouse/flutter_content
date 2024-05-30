@@ -19,7 +19,7 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<MainAxisSizeEnum?>(
           snode: this,
           name: 'mainAxisSize',

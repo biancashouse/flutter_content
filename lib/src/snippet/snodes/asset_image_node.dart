@@ -10,7 +10,7 @@ part 'asset_image_node.mapper.dart';
 
 @MappableClass()
 class AssetImageNode extends CL with AssetImageNodeMappable {
-  String name;
+  String? name;
   double? width;
   double? height;
   double? scale;
@@ -22,7 +22,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // BlendMode? colorBlendMode;
 
   AssetImageNode({
-    this.name = '',
+    this.name,
     this.fit,
     this.alignment,
     this.width,
@@ -34,7 +34,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',
@@ -159,13 +159,13 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
-    return name.isNotEmpty
+    return name?.isNotEmpty ?? false
         ? SizedBox(
             key: createNodeGK(),
             width: width,
             height: height,
             child: Image.asset(
-              name,
+              name!,
               scale: scale,
               width: width,
               height: height,

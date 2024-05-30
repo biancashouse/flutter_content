@@ -20,12 +20,12 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   }) : super(children: menuChildren);
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'itemLabel',
           stringValue: itemLabel,
-          onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

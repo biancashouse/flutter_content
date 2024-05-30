@@ -24,9 +24,9 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
 
   static String _$name(SnippetRootNode v) => v.name;
   static const Field<SnippetRootNode, String> _f$name = Field('name', _$name);
-  static bool _$isEmbedded(SnippetRootNode v) => v.isEmbedded;
-  static const Field<SnippetRootNode, bool> _f$isEmbedded =
-      Field('isEmbedded', _$isEmbedded, opt: true, def: false);
+  static String? _$routePath(SnippetRootNode v) => v.routePath;
+  static const Field<SnippetRootNode, String> _f$routePath =
+      Field('routePath', _$routePath, opt: true);
   static String _$tags(SnippetRootNode v) => v.tags;
   static const Field<SnippetRootNode, String> _f$tags =
       Field('tags', _$tags, opt: true, def: '');
@@ -53,7 +53,7 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   @override
   final MappableFields<SnippetRootNode> fields = const {
     #name: _f$name,
-    #isEmbedded: _f$isEmbedded,
+    #routePath: _f$routePath,
     #tags: _f$tags,
     #child: _f$child,
     #uid: _f$uid,
@@ -72,7 +72,7 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static SnippetRootNode _instantiate(DecodingData data) {
     return SnippetRootNode(
         name: data.dec(_f$name),
-        isEmbedded: data.dec(_f$isEmbedded),
+        routePath: data.dec(_f$routePath),
         tags: data.dec(_f$tags),
         child: data.dec(_f$child));
   }
@@ -133,7 +133,7 @@ abstract class SnippetRootNodeCopyWith<$R, $In extends SnippetRootNode, $Out>
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
-  $R call({String? name, bool? isEmbedded, String? tags, STreeNode? child});
+  $R call({String? name, String? routePath, String? tags, STreeNode? child});
   SnippetRootNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -152,19 +152,19 @@ class _SnippetRootNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {String? name,
-          bool? isEmbedded,
+          Object? routePath = $none,
           String? tags,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (isEmbedded != null) #isEmbedded: isEmbedded,
+        if (routePath != $none) #routePath: routePath,
         if (tags != null) #tags: tags,
         if (child != $none) #child: child
       }));
   @override
   SnippetRootNode $make(CopyWithData data) => SnippetRootNode(
       name: data.get(#name, or: $value.name),
-      isEmbedded: data.get(#isEmbedded, or: $value.isEmbedded),
+      routePath: data.get(#routePath, or: $value.routePath),
       tags: data.get(#tags, or: $value.tags),
       child: data.get(#child, or: $value.child));
 

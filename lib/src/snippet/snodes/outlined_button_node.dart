@@ -11,7 +11,11 @@ part 'outlined_button_node.mapper.dart';
 @MappableClass()
 class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   OutlinedButtonNode({
-    super.buttonStyleGroup,
+    super.destinationRoutePathSnippetName,
+    super.template,
+    super.destinationPanelName,
+    super.destinationSnippetName,
+    super.buttonStyle,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -24,8 +28,11 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
+  ButtonStyle? defaultButtonStyle() => OutlinedButton.styleFrom();
+
+  @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ButtonStyle? btnStyle = buttonStyleGroup?.toButtonStyle(context);
+    ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
@@ -37,7 +44,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
       child: OutlinedButton(
         // if feature specified, must be a callout
         key: feature != null ? FC().setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: onPressed,
+        onPressed: ()=>onPressed(context),
         onLongPress: f != null ? () => f.call(context) : null,
         style: btnStyle,
         child: child?.toWidget(context, this),
@@ -45,17 +52,17 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
     );
   }
 
-  @override
-  String toSource(BuildContext context) {
-    return '''OutlinedButton(
-    onPressed: () {},
-    style: ${buttonStyleGroup?.toButtonStyleSource(context)},
-    child: ${child?.toSource(context) ?? const Text(
-              "missing OutlinedButton child!",
-              style: TextStyle(color: Colors.red),
-            )},
-  )''';
-  }
+  // @override
+  // String toSource(BuildContext context) {
+  //   return '''OutlinedButton(
+  //   onPressed: () {},
+  //   style: ${buttonStyle?.toButtonStyleSource(context)},
+  //   child: ${child?.toSource(context) ?? const Text(
+  //             "missing OutlinedButton child!",
+  //             style: TextStyle(color: Colors.red),
+  //           )},
+  // )''';
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;

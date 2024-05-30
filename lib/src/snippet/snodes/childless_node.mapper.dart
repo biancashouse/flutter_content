@@ -25,7 +25,6 @@ class CLMapper extends SubClassMapperBase<CL> {
       GapNodeMapper.ensureInitialized();
       PollOptionNodeMapper.ensureInitialized();
       StepNodeMapper.ensureInitialized();
-      MenuItemButtonNodeMapper.ensureInitialized();
       PlaceholderNodeMapper.ensureInitialized();
       YTNodeMapper.ensureInitialized();
     }

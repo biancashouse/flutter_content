@@ -14,6 +14,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = IconButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -39,10 +40,26 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static double? _$iconSize(IconButtonNode v) => v.iconSize;
   static const Field<IconButtonNode, double> _f$iconSize =
       Field('iconSize', _$iconSize, opt: true);
-  static ButtonStyleGroup? _$buttonStyleGroup(IconButtonNode v) =>
-      v.buttonStyleGroup;
-  static const Field<IconButtonNode, ButtonStyleGroup> _f$buttonStyleGroup =
-      Field('buttonStyleGroup', _$buttonStyleGroup, opt: true);
+  static String? _$destinationRoutePathSnippetName(IconButtonNode v) =>
+      v.destinationRoutePathSnippetName;
+  static const Field<IconButtonNode, String>
+      _f$destinationRoutePathSnippetName = Field(
+          'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
+          opt: true);
+  static SnippetTemplateEnum? _$template(IconButtonNode v) => v.template;
+  static const Field<IconButtonNode, SnippetTemplateEnum> _f$template =
+      Field('template', _$template, opt: true);
+  static String? _$destinationPanelName(IconButtonNode v) =>
+      v.destinationPanelName;
+  static const Field<IconButtonNode, String> _f$destinationPanelName =
+      Field('destinationPanelName', _$destinationPanelName, opt: true);
+  static String? _$destinationSnippetName(IconButtonNode v) =>
+      v.destinationSnippetName;
+  static const Field<IconButtonNode, String> _f$destinationSnippetName =
+      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
+  static ButtonStyleGroup? _$buttonStyle(IconButtonNode v) => v.buttonStyle;
+  static const Field<IconButtonNode, ButtonStyleGroup> _f$buttonStyle =
+      Field('buttonStyle', _$buttonStyle, opt: true);
   static String? _$onTapHandlerName(IconButtonNode v) => v.onTapHandlerName;
   static const Field<IconButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -69,14 +86,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static const Field<IconButtonNode, GlobalKey<State<StatefulWidget>>>
       _f$nodeWidgetGK =
       Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
-  static String? _$namedButtonStyle(IconButtonNode v) => v.namedButtonStyle;
-  static const Field<IconButtonNode, String> _f$namedButtonStyle =
-      Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
-  static String? _$destinationPageName(IconButtonNode v) =>
-      v.destinationPageName;
-  static const Field<IconButtonNode, String> _f$destinationPageName = Field(
-      'destinationPageName', _$destinationPageName,
-      mode: FieldMode.member);
 
   @override
   final MappableFields<IconButtonNode> fields = const {
@@ -85,7 +94,11 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #iconFontPackage: _f$iconFontPackage,
     #iconColor: _f$iconColor,
     #iconSize: _f$iconSize,
-    #buttonStyleGroup: _f$buttonStyleGroup,
+    #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
+    #template: _f$template,
+    #destinationPanelName: _f$destinationPanelName,
+    #destinationSnippetName: _f$destinationSnippetName,
+    #buttonStyle: _f$buttonStyle,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -93,8 +106,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #namedButtonStyle: _f$namedButtonStyle,
-    #destinationPageName: _f$destinationPageName,
   };
 
   @override
@@ -111,7 +122,12 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
         iconFontPackage: data.dec(_f$iconFontPackage),
         iconColor: data.dec(_f$iconColor),
         iconSize: data.dec(_f$iconSize),
-        buttonStyleGroup: data.dec(_f$buttonStyleGroup),
+        destinationRoutePathSnippetName:
+            data.dec(_f$destinationRoutePathSnippetName),
+        template: data.dec(_f$template),
+        destinationPanelName: data.dec(_f$destinationPanelName),
+        destinationSnippetName: data.dec(_f$destinationSnippetName),
+        buttonStyle: data.dec(_f$buttonStyle),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -172,7 +188,7 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
     implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
   ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup;
+      get buttonStyle;
   @override
   CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
       get calloutConfigGroup;
@@ -185,7 +201,11 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
       String? iconFontPackage,
       int? iconColor,
       double? iconSize,
-      ButtonStyleGroup? buttonStyleGroup,
+      String? destinationRoutePathSnippetName,
+      SnippetTemplateEnum? template,
+      String? destinationPanelName,
+      String? destinationSnippetName,
+      ButtonStyleGroup? buttonStyle,
       String? onTapHandlerName,
       CalloutConfigGroup? calloutConfigGroup,
       STreeNode? child});
@@ -203,8 +223,8 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       IconButtonNodeMapper.ensureInitialized();
   @override
   ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup => $value.buttonStyleGroup?.copyWith
-          .$chain((v) => call(buttonStyleGroup: v));
+      get buttonStyle =>
+          $value.buttonStyle?.copyWith.$chain((v) => call(buttonStyle: v));
   @override
   CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
       get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
@@ -219,7 +239,11 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           Object? iconFontPackage = $none,
           Object? iconColor = $none,
           Object? iconSize = $none,
-          Object? buttonStyleGroup = $none,
+          Object? destinationRoutePathSnippetName = $none,
+          Object? template = $none,
+          Object? destinationPanelName = $none,
+          Object? destinationSnippetName = $none,
+          Object? buttonStyle = $none,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
@@ -229,7 +253,14 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
         if (iconFontPackage != $none) #iconFontPackage: iconFontPackage,
         if (iconColor != $none) #iconColor: iconColor,
         if (iconSize != $none) #iconSize: iconSize,
-        if (buttonStyleGroup != $none) #buttonStyleGroup: buttonStyleGroup,
+        if (destinationRoutePathSnippetName != $none)
+          #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
+        if (template != $none) #template: template,
+        if (destinationPanelName != $none)
+          #destinationPanelName: destinationPanelName,
+        if (destinationSnippetName != $none)
+          #destinationSnippetName: destinationSnippetName,
+        if (buttonStyle != $none) #buttonStyle: buttonStyle,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -242,8 +273,15 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       iconFontPackage: data.get(#iconFontPackage, or: $value.iconFontPackage),
       iconColor: data.get(#iconColor, or: $value.iconColor),
       iconSize: data.get(#iconSize, or: $value.iconSize),
-      buttonStyleGroup:
-          data.get(#buttonStyleGroup, or: $value.buttonStyleGroup),
+      destinationRoutePathSnippetName: data.get(
+          #destinationRoutePathSnippetName,
+          or: $value.destinationRoutePathSnippetName),
+      template: data.get(#template, or: $value.template),
+      destinationPanelName:
+          data.get(#destinationPanelName, or: $value.destinationPanelName),
+      destinationSnippetName:
+          data.get(#destinationSnippetName, or: $value.destinationSnippetName),
+      buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

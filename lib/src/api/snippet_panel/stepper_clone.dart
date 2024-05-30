@@ -558,8 +558,8 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
                   backgroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
                     return _isDark() || states.contains(MaterialState.disabled) ? null : colorScheme.primary;
                   }),
-                  padding: const MaterialStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
-                  shape: const MaterialStatePropertyAll<OutlinedBorder>(buttonShape),
+                  padding: const WidgetStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
+                  shape: const WidgetStatePropertyAll<OutlinedBorder>(buttonShape),
                 ),
                 child: Text(
                     themeData.useMaterial3

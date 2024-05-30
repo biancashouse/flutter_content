@@ -21,7 +21,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         // StringPropertyValueNode(
         //   snode: this,
         //   name: 'wrapper name',

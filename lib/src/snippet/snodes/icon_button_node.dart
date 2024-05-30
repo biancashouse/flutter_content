@@ -23,7 +23,11 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     this.iconFontPackage,
     this.iconColor,
     this.iconSize,
-    super.buttonStyleGroup,
+    super.destinationRoutePathSnippetName,
+    super.template,
+    super.destinationPanelName,
+    super.destinationSnippetName,
+    super.buttonStyle,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -69,17 +73,22 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   //     ];
 
   @override
+  ButtonStyle? defaultButtonStyle() => IconButton.styleFrom();
+
+  @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
 
+    ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
+
     IconButton button = IconButton(
       // if feature specified, must be a callout
       key: feature != null ? FC().setCalloutGk(feature!, GlobalKey()) : null,
-      onPressed: onPressed,
-      style: buttonStyleGroup?.toButtonStyle(context),
+      onPressed: ()=>onPressed(context),
+      style: btnStyle,
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
@@ -100,17 +109,17 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     );
   }
 
-  @override
-  String toSource(BuildContext context) {
-    return '''IconButton(
-    onPressed: null,
-    style: ${buttonStyleGroup?.toButtonStyleSource(context)},
-    child: ${child?.toSource(context) ?? const Text(
-              "missing IconButton child!",
-              style: TextStyle(color: Colors.red),
-            )},
-  )''';
-  }
+  // @override
+  // String toSource(BuildContext context) {
+  //   return '''IconButton(
+  //   onPressed: null,
+  //   style: ${buttonStyle?.toButtonStyleSource(context)},
+  //   child: ${child?.toSource(context) ?? const Text(
+  //             "missing IconButton child!",
+  //             style: TextStyle(color: Colors.red),
+  //           )},
+  // )''';
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;

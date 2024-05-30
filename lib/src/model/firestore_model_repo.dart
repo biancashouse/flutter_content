@@ -21,7 +21,7 @@ class FireStoreModelRepository implements IModelRepository {
   Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs() async {
     fbApp = await Firebase.initializeApp(options: fbOptions);
     // emulator if in non-prod mode
-    if (false && kDebugMode) {
+    if (kDebugMode) {
       FirebaseFirestore.instance.settings = Settings(
         host: '${Useful.isAndroid ? "10.0.2.2" : "localhost"}:8080',
         sslEnabled: false,

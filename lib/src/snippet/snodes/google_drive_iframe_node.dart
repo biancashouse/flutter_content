@@ -26,12 +26,12 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -39,7 +39,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'folderId',
           stringValue: folderId,
-          onStringChange: (newValue) => refreshWithUpdate(() => folderId = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => folderId = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -47,7 +47,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'resourceKey',
           stringValue: resourceKey,
-          onStringChange: (newValue) => refreshWithUpdate(() => resourceKey = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => resourceKey = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -152,16 +152,18 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
               forceRefresh: true,
             ),
           )
-        : FC().areAnySnippetsBeingEdited
-            ? const Placeholder()
-            : Row(
-                key: createNodeGK(),
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.code, size: 32, color: Colors.red),
-                  Useful.coloredText('folder id missing!', color: Colors.red),
-                ],
-              );
+        :
+    const Offstage();
+    // FC().areAnySnippetsBeingEdited
+    //         ? const Placeholder()
+    //         : Row(
+    //             key: createNodeGK(),
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               const Icon(Icons.code, size: 32, color: Colors.red),
+    //               Useful.coloredText('folder id missing!', color: Colors.red),
+    //             ],
+    //           );
   }
 
 

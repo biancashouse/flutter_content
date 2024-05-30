@@ -1,123 +1,74 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hello/firebase_options.dart';
 
+enum PageButtonInfo {
+
+  home(
+    buttonLabel: Text('home'),
+    path: '/home'
+  ),
+  rowOf2Panels(
+    buttonLabel: Text('demo: row of 2 panels'),
+    path: '/row-of-2-panels',
+  ),
+  snippetSandbox(
+    buttonLabel: Text('demo: editable snippet sandbox panel'),
+    path: '/snippet-sandbox',
+  ),
+  scaffoldWithMenuBar(
+    buttonLabel: Text('demo: editable scaffold with MenuBar'),
+    path: '/editable-scaffold-with-menubar',
+  ),
+  scaffoldWithTabBar(
+    buttonLabel: Text('demo: editable scaffold with TabBar'),
+    path: '/editable-scaffold-with-tabbar',
+  ),
+  richText(
+    buttonLabel: Text('demo: editable rich text'),
+    path: '/editable-rich-text',
+  );
+
+
+  const PageButtonInfo({required this.buttonLabel, required this.path});
+
+  final String path;
+  final Widget buttonLabel;
+}
+
 final _webRoutingConfig = RoutingConfig(
   routes: <RouteBase>[
     GoRoute(
-      name: 'hello',
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MyHomePage(title: 'hello');
-      },
+      name: 'home',
+      path: PageButtonInfo.home.path,
+      builder: (BuildContext context, GoRouterState state) => const FlutterPageHome(title: 'hello'),
     ),
-
     GoRoute(
-      name: 'panels-demo1',
-      path: '/panels-demo1',
-      builder: (BuildContext context, GoRouterState state) {
-        return const PanelsDemoPage();
-      },
+      path: PageButtonInfo.rowOf2Panels.path,
+      builder: (BuildContext context, GoRouterState state) => const FlutterPageRowOf2Panels(),
     ),
-
-    FCRoute(
-      name: 'panels-demo2',
-      path: '/panels-demo2',
-      widgetBuilder: (context) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Expanded(
-            child: SnippetPanel.fromNodes(
-              panelName: 'panel1',
-              snippetRootNode: SnippetRootNode(
-                name: 'demo2-panel1',
-                child: PaddingNode(
-                  padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
-                  child: AssetImageNode(name: 'assets/images/flowers.jpg'),
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: SnippetPanel.fromNodes(
-              panelName: 'panel2',
-              snippetRootNode: SnippetRootNode(
-                name: 'demo2-panel2',
-                child: CarouselNode(children: [
-                  AssetImageNode(name: 'assets/images/frog.jpg'),
-                  AssetImageNode(name: 'assets/images/hummingbird.jpg'),
-                  AssetImageNode(name: 'assets/images/indian-chat.jpg'),
-                ]),
-              ),
-            ),
-          ),
-        ],
-      ),
+    EditableRoute(
+      path: PageButtonInfo.snippetSandbox.path,
+      template: SnippetTemplateEnum.empty,
+    ),
+    EditableRoute(
+      path: PageButtonInfo.scaffoldWithMenuBar.path,
+      template: SnippetTemplateEnum.scaffold_with_menubar,
+    ),
+    EditableRoute(
+      path: PageButtonInfo.scaffoldWithTabBar.path,
+      template: SnippetTemplateEnum.scaffold_with_tabbar,
+    ),
+    EditableRoute(
+      path: PageButtonInfo.richText.path,
+      template: SnippetTemplateEnum.rich_text,
     ),
   ],
 );
 
-final _mobileRoutingConfig = RoutingConfig(
-  routes: <RouteBase>[
-    GoRoute(
-      name: 'hello',
-      path: '/',
-      builder: (BuildContext context, GoRouterState state) {
-        return const MyHomePage(title: 'hello');
-      },
-    ),
-    GoRoute(
-      name: 'panels-demo1',
-      path: '/panels-demo1',
-      builder: (BuildContext context, GoRouterState state) {
-        return const PanelsDemoPage();
-      },
-    ),
-    GoRoute(
-      name: 'panels-demo2',
-      path: '/panels-demo2',
-      builder: (BuildContext context, GoRouterState state) {
-        return FlutterContentPage(
-          key: FC().pageGKs['fc-demo2'] = GlobalKey(),
-          pageName: 'fc-demo2',
-          pageBuilder: (context) => Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: SnippetPanel.fromNodes(
-                  panelName: 'panel1',
-                  snippetRootNode: SnippetRootNode(
-                    name: 'demo2-panel1',
-                    child: PaddingNode(
-                      padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
-                      child: AssetImageNode(name: 'assets/images/flowers.jpg'),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SnippetPanel.fromNodes(
-                  panelName: 'panel2',
-                  snippetRootNode: SnippetRootNode(
-                    name: 'demo2-panel2',
-                    child: CarouselNode(children: [
-                      AssetImageNode(name: 'assets/images/frog.jpg'),
-                      AssetImageNode(name: 'assets/images/hummingbird.jpg'),
-                      AssetImageNode(name: 'assets/images/indian-chat.jpg'),
-                    ]),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    ),
-  ],
+const _mobileRoutingConfig = RoutingConfig(
+  routes: <RouteBase>[],
 );
 
 // original main
@@ -133,25 +84,26 @@ Future<void> main() async {
     appName: 'flutter-content-example-app',
     webRoutingConfig: _webRoutingConfig,
     mobileRoutingConfig: _mobileRoutingConfig,
-    initialRoutePath: '/',
+    initialRoutePath: '/home',
     materialAppThemeF: () => ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       primaryColor: FUCHSIA_X,
       primarySwatch: Colors.purple,
     ),
     fbOptions: DefaultFirebaseOptions.currentPlatform,
-    namedStyles: {
-      "purple24": NamedTextStyle(color: Colors.purpleAccent, fontSize: 24),
-      "white30": NamedTextStyle(color: Colors.white, fontSize: 30),
-      "white36": NamedTextStyle(color: Colors.white, fontSize: 36),
-      "yellow72": NamedTextStyle(color: Colors.yellow, fontSize: 72),
-      "blue-tab": NamedTextStyle(color: Colors.blue, fontSize: 24),
+    namedTextStyles: const {
+      "purple24": TextStyle(color: Colors.purpleAccent, fontSize: 24),
+      "white30": TextStyle(color: Colors.white, fontSize: 30),
+      "white36": TextStyle(color: Colors.white, fontSize: 36),
+      "yellow72": TextStyle(color: Colors.yellow, fontSize: 72),
+      "blue-tab": TextStyle(color: Colors.blue, fontSize: 24),
     },
+    namedButtonStyles: const {},
   ));
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class FlutterPageHome extends StatefulWidget {
+  const FlutterPageHome({super.key, required this.title});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -165,10 +117,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<FlutterPageHome> createState() => _FlutterPageHomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _FlutterPageHomeState extends State<FlutterPageHome> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -225,18 +177,45 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go('/panels-demo1');
+                  context.go(PageButtonInfo.snippetSandbox.path);
                 },
-                child: const Text('go to a page that has 2 SnippetPanels'),
+                child: PageButtonInfo.snippetSandbox.buttonLabel,
               ),
             ),
             Flexible(
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go('/panels-demo2');
+                  context.go(PageButtonInfo.scaffoldWithMenuBar.path);
                 },
-                child: const Text('go to a EDITABLE page that has 2 SnippetPanels'),
+                child: PageButtonInfo.scaffoldWithMenuBar.buttonLabel,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: FilledButton(
+                onPressed: () {
+                  context.go(PageButtonInfo.scaffoldWithTabBar.path);
+                },
+                child: PageButtonInfo.scaffoldWithTabBar.buttonLabel,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: FilledButton(
+                onPressed: () {
+                  context.go(PageButtonInfo.richText.path);
+                },
+                child: PageButtonInfo.richText.buttonLabel,
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: FilledButton(
+                onPressed: () {
+                  context.go(PageButtonInfo.rowOf2Panels.path);
+                },
+                child: PageButtonInfo.rowOf2Panels.buttonLabel,
               ),
             ),
           ],
@@ -251,8 +230,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class PanelsDemoPage extends StatelessWidget {
-  const PanelsDemoPage({super.key});
+class FlutterPageRowOf2Panels extends StatelessWidget {
+  const FlutterPageRowOf2Panels({super.key});
 
   @override
   Widget build(BuildContext context) {

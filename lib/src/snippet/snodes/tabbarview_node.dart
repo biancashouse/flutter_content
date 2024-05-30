@@ -13,7 +13,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [];
+  List<PTreeNode> properties(BuildContext context) => [];
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {

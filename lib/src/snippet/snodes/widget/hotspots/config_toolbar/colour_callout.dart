@@ -69,7 +69,7 @@ class _ColourToolState extends State<ColourTool> {
 
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   @override
   void initState() {

@@ -14,7 +14,7 @@ class GapNode extends CL with GapNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         DecimalPropertyValueNode(
           snode: this,
           name: 'gap',
@@ -56,7 +56,7 @@ class GapNode extends CL with GapNodeMappable {
 
   @override
   Widget? logoSrc() => Row(children: [
-        const Icon(Icons.link),
+        const Icon(Icons.square_outlined),
         hspacer(6),
       ]);
 

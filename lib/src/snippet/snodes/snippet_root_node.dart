@@ -7,38 +7,62 @@ part 'snippet_root_node.mapper.dart';
 @MappableClass() //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
-  bool isEmbedded;
+  RoutePath? routePath;
+  // bool isEmbedded;
   String tags;
 
   SnippetRootNode({
     required this.name,
-    this.isEmbedded = false,
+    this.routePath,
+    // this.isEmbedded = false,
     this.tags = '',
     super.child,
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
-          name: 'name',
+          name: 'Snippet Name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
-        BoolPropertyValueNode(
+        PropertyGroup(
           snode: this,
-          name: 'isEmbedded',
-          boolValue: isEmbedded,
-          onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
+          name: 'Page Snippet...',
+          children: [
+            StringPropertyValueNode(
+              snode: this,
+              name: 'Snippet Name',
+              stringValue: name,
+              onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+              calloutButtonSize: const Size(280, 70),
+              calloutWidth: 280,
+            ),
+            StringPropertyValueNode(
+              snode: this,
+              name: 'Route Path',
+              stringValue: routePath,
+              onStringChange: (newValue) => refreshWithUpdate(() => routePath = newValue),
+              calloutButtonSize: const Size(280, 70),
+              calloutWidth: 280,
+            ),
+          ],
         ),
+        // BoolPropertyValueNode(
+        //   snode: this,
+        //   name: 'isEmbedded',
+        //   boolValue: isEmbedded,
+        //   onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
+        // ),
         StringPropertyValueNode(
           snode: this,
           name: 'tags',
           stringValue: tags.toString(),
           onStringChange: (newValue) {
-            refreshWithUpdate(() => tags = newValue);
+            refreshWithUpdate(() => tags = newValue??'');
           },
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,

@@ -10,7 +10,7 @@ const List<Type> inlinespanSubClasses = [TextSpanNode, WidgetSpanNode];
 abstract class InlineSpanNode extends STreeNode with InlineSpanNodeMappable {
   InlineSpanNode();
 
-  InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
+  InlineSpan toInlineSpan(BuildContext context) {
     // superclasses must override
     throw UnimplementedError();
   }

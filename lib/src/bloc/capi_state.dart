@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'snippet_being_edited.dart';
+
 part 'capi_state.freezed.dart';
 // part 'cc_state.g.dart';
 
@@ -21,7 +23,7 @@ class CAPIState with _$CAPIState {
     // required bool useFirebase,
     // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
     String?
-        initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+    initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
     // required ModelUR modelUR,
     @Default(false) bool hideIframes,
     @Default(false) bool hideSnippetPencilIcons,
@@ -55,7 +57,17 @@ class CAPIState with _$CAPIState {
     @Default(true) bool showClipboardContent,
     @Default(0) int force, // hacky way to force a transition
     @Default(false) bool onlyTargetsWrappers, // hacky way to force a transition
-    //
+
+    //==========================================================================================
+    //====  PAGE ROUTE NAME  ===================================================================
+    //==========================================================================================
+    String? routeName,
+
+    //==========================================================================================
+    //====  SNIPPET EDITING  ===================================================================
+    //==========================================================================================
+    SnippetBeingEdited? snippetBeingEdited,
+
     @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;
 
@@ -99,6 +111,6 @@ class CAPIState with _$CAPIState {
 
   final double CAPI_TARGET_BTN_RADIUS = 15.0;
 
-  /// total duration is sum(target durations) + transition time for each
+/// total duration is sum(target durations) + transition time for each
 // int totalDurationMs() => (imageTargetListMap..map((t) => t.calloutDurationMs).reduce((a, b) => a + b)) + TRANSITION_DURATION_MS * (targets.length + 1);
 }

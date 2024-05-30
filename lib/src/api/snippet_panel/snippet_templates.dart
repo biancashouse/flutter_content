@@ -1,174 +1,155 @@
 // ignore_for_file: camel_case_types
 
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_axis.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 
-enum SnippetTemplate {
+part 'snippet_templates.mapper.dart';
+
+@MappableEnum()
+enum SnippetTemplateEnum {
   empty,
-  rich_text,
-  scaffold_with_tabs,
+  scaffold_with_tabbar,
   scaffold_with_menubar,
-  scaffold_with_actions,
-  target_content_widget,
-  splitview_with_2_images,
-  column_with_2_images,
-  splitview_with_2_snippets,
-  column_with_2_snippets,
-  save_as_snippet_test,
-  failed_to_load;
+  splitview_with_2_placeholders,
+  column_with_2_placeholders,
+  rich_text,
+  callout_content;
 
-  SnippetRootNode? clone() => templates.where((node) => node.name == name).firstOrNull
-    ?..clone()
+  Widget toMenuItem() => Useful.coloredText(_menuItem(), color: Colors.white);
+
+  String _menuItem() => switch (this) {
+        SnippetTemplateEnum.empty => 'placeholder',
+        SnippetTemplateEnum.scaffold_with_tabbar => 'scaffold with a tab bar',
+        SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
+        SnippetTemplateEnum.splitview_with_2_placeholders => 'splitview with 2 placeholders',
+        SnippetTemplateEnum.column_with_2_placeholders => 'column with 2 placeholders',
+        SnippetTemplateEnum.rich_text => 'rich text',
+        SnippetTemplateEnum.callout_content => 'callout contents'
+      };
+
+  static Widget propertyNodeContents({
+    int? enumValueIndex,
+    required STreeNode snode,
+    required String label,
+    ValueChanged<int?>? onChangedF,
+  }) =>
+      PropertyButtonEnum(
+        label: label,
+        menuItems: values.map((e) => e.toMenuItem()).toList(),
+        originalEnumIndex: enumValueIndex,
+        onChangeF: (newIndex) {
+          onChangedF?.call(newIndex);
+        },
+        wrap: true,
+        calloutButtonSize: const Size(280, 80),
+        calloutSize: Size(300, values.length * 80),
+      );
+
+  SnippetRootNode templateSnippet() => switch (this) {
+        //
+        SnippetTemplateEnum.empty => SnippetRootNode(name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
+        //
+        SnippetTemplateEnum.scaffold_with_tabbar => SnippetRootNode(
+            name: SnippetTemplateEnum.scaffold_with_tabbar.name,
+            child: ScaffoldNode(
+              appBar: AppBarNode(
+                bgColorValue: Colors.grey.value,
+                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                bottom: GenericSingleChildNode(
+                  propertyName: 'bottom',
+                  child: TabBarNode(
+                    children: [
+                      TextNode(text: 'tab 1'),
+                      TextNode(text: 'Tab 2'),
+                    ],
+                  ),
+                ),
+              ),
+              body: GenericSingleChildNode(
+                propertyName: 'body',
+                child: TabBarViewNode(
+                  children: [
+                    PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
+                    PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        //
+        SnippetTemplateEnum.scaffold_with_menubar => SnippetRootNode(
+            name: SnippetTemplateEnum.scaffold_with_menubar.name,
+            child: ScaffoldNode(
+              appBar: AppBarNode(
+                bgColorValue: Colors.grey.value,
+                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                bottom: GenericSingleChildNode(
+                  propertyName: 'bottom',
+                  child: MenuBarNode(children: [
+                    MenuItemButtonNode(itemLabel: 'item 1'),
+                    MenuItemButtonNode(itemLabel: 'item 2'),
+                    MenuItemButtonNode(itemLabel: 'item 3'),
+                  ]),
+                ),
+              ),
+              body: GenericSingleChildNode(
+                propertyName: 'body',
+                child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
+              ),
+            ),
+          ),
+        //
+        SnippetTemplateEnum.splitview_with_2_placeholders => SnippetRootNode(
+            name: SnippetTemplateEnum.splitview_with_2_placeholders.name,
+            child: SplitViewNode(
+              axis: AxisEnum.vertical,
+              children: [
+                PlaceholderNode(),
+                PlaceholderNode(),
+              ],
+            ),
+          ),
+        //
+        SnippetTemplateEnum.column_with_2_placeholders => SnippetRootNode(
+            name: SnippetTemplateEnum.column_with_2_placeholders.name,
+            child: ColumnNode(
+              mainAxisSize: MainAxisSizeEnum.max,
+              children: [
+                SizedBoxNode(
+                  child: CenterNode(
+                    child: AssetImageNode(name: 'assets/images/bridging-the-gap-logo.jpeg'),
+                  ),
+                ),
+                SizedBoxNode(
+                  child: CenterNode(
+                    child: HotspotsNode(
+                      child: AssetImageNode(name: 'assets/images/top-cat-gang.png'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        //
+        SnippetTemplateEnum.rich_text => SnippetRootNode(
+            name: SnippetTemplateEnum.rich_text.name,
+            child: RichTextNode(
+              text: TextSpanNode(
+                text: 'ABC',
+                children: [TextSpanNode(text: ' def')],
+              ),
+            ),
+          ),
+        //
+        SnippetTemplateEnum.callout_content => SnippetRootNode(name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
+      };
+
+  List<Widget> get allItems => values.map((e) => e.toMenuItem()).toList();
+
+  SnippetRootNode clone() => templateSnippet()
+    ..clone()
     ..validateTree();
 }
-
-List<SnippetRootNode> templates = [
-  // empty snippet for test only
-  SnippetRootNode(name: SnippetTemplate.empty.name, child: PlaceholderNode()),
-  SnippetRootNode(
-    name: SnippetTemplate.rich_text.name,
-    child: RichTextNode(
-      text: TextSpanNode(
-        text: 'ABC',
-        children: [TextSpanNode(text: ' def')],
-      ),
-    ),
-  ),
-  // SnippetRootNode(
-  //   name: SnippetTemplate.target_content_widget.name,
-  //   // child: SizedBoxNode(
-  //   //     width: 200,
-  //   //     height: 150,
-  //   //     child: ContainerNode(fillColorValues: UpTo6ColorValues(
-  //   //       color1Value: Colors.white.value,
-  //   //     ))),
-  // ),
-  // Scaffold with a TabBar in its AppBar bottom
-  SnippetRootNode(
-    name: SnippetTemplate.scaffold_with_tabs.name,
-    child: ScaffoldNode(
-      appBar: AppBarNode(
-        bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-        bottom: GenericSingleChildNode(
-          propertyName: 'bottom',
-          child: TabBarNode(
-            children: [
-              TextNode(text: 'tab 1'),
-              TextNode(text: 'Tab 2'),
-            ],
-          ),
-        ),
-      ),
-      body: GenericSingleChildNode(
-        propertyName: 'body',
-        child: TabBarViewNode(
-          children: [
-            PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-            PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
-          ],
-        ),
-      ),
-    ),
-  ),
-  // Scaffold with a MenuBar in its AppBar bottom
-  SnippetRootNode(
-    name: SnippetTemplate.scaffold_with_menubar.name,
-    child: ScaffoldNode(
-      appBar: AppBarNode(
-        bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-        bottom: GenericSingleChildNode(
-          propertyName: 'bottom',
-          child: MenuBarNode(children: [
-            MenuItemButtonNode(itemLabel: 'item 1'),
-            MenuItemButtonNode(itemLabel: 'item 2'),
-            MenuItemButtonNode(itemLabel: 'item 3'),
-          ]),
-        ),
-      ),
-      body: GenericSingleChildNode(
-        propertyName: 'body',
-        child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
-      ),
-    ),
-  ),
-  SnippetRootNode(
-    name: SnippetTemplate.scaffold_with_actions.name,
-    child: ScaffoldNode(
-      appBar: AppBarNode(
-        bgColorValue: Colors.grey.value,
-        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
-        actions: GenericMultiChildNode(propertyName: 'actions', children: [
-          FilledButtonNode(child: TextNode(text: 'action 1')),
-          FilledButtonNode(child: TextNode(text: 'action 2')),
-          FilledButtonNode(child: TextNode(text: 'action 3')),
-        ]),
-      ),
-      body: GenericSingleChildNode(
-        propertyName: 'body',
-        child: PlaceholderNode(name: BODY_PLACEHOLDER, centredLabel: 'menu item destination'),
-      ),
-    ),
-  ),
-  // tab bar with 1st tab view containing a splitview of 2 embedded snippets
-  SnippetRootNode(
-    name: SnippetTemplate.splitview_with_2_images.name,
-    child: SplitViewNode(
-      axis: AxisEnum.vertical,
-      children: [
-        SizedBoxNode(
-          child: CenterNode(
-            child: AssetImageNode(name: 'assets/images/bridging-the-gap-logo.jpeg'),
-          ),
-        ),
-        SizedBoxNode(
-          child: CenterNode(
-            child: HotspotsNode(
-              child: AssetImageNode(name: 'assets/images/top-cat-gang.png'),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  SnippetRootNode(
-    name: SnippetTemplate.column_with_2_images.name,
-    child: ColumnNode(
-      mainAxisSize: MainAxisSizeEnum.max,
-      children: [
-        SizedBoxNode(
-          child: CenterNode(
-            child: AssetImageNode(name: 'assets/images/bridging-the-gap-logo.jpeg'),
-          ),
-        ),
-        SizedBoxNode(
-          child: CenterNode(
-            child: HotspotsNode(
-              child: AssetImageNode(name: 'assets/images/top-cat-gang.png'),
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-  SnippetRootNode(
-    name: SnippetTemplate.save_as_snippet_test.name,
-    child: ContainerNode(
-      padding: EdgeInsetsValue(top: 30, left: 30, bottom: 30, right: 30),
-      child: CenterNode(
-        child: AssetImageNode(name: 'assets/images/bridging-the-gap-logo.jpeg'),
-      ),
-    ),
-  ),
-  SnippetRootNode(
-    name: SnippetTemplate.failed_to_load.name,
-    child: ContainerNode(
-      padding: EdgeInsetsValue(top: 6, left: 6, bottom: 6, right: 6),
-      child: TextNode(text: 'Failed to load snippet'),
-    ),
-  ),
-];

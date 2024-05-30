@@ -30,7 +30,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         FSImagePathPropertyValueNode(
           snode: this,
           name: 'fullPath',

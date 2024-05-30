@@ -10,6 +10,7 @@ part 'text_style_group.mapper.dart';
 
 @MappableClass(discriminatorKey: 'ts', includeSubClasses: [])
 class TextStyleGroup with TextStyleGroupMappable {
+  String? namedTextStyle;
   String? fontFamily;
   double? fontSize;
   Material3TextSizeEnum? fontSizeName;
@@ -20,6 +21,7 @@ class TextStyleGroup with TextStyleGroupMappable {
   int? colorValue;
 
   TextStyleGroup({
+    this.namedTextStyle,
     this.fontFamily,
     this.fontSize,
     this.fontSizeName,
@@ -74,44 +76,37 @@ class TextStyleGroup with TextStyleGroupMappable {
   //   )''';
   // }
 
-  TextStyle? toTextStyle(BuildContext context, {String? namedTextStyle}) {
-    NamedTextStyle? namedStyle = FC().namedStyles[namedTextStyle];
-    String? fFamily = (namedStyle?.fontFamily ?? fontFamily);
-    Material3TextSizeEnum? fSizeName = (namedStyle?.fontSizeName ?? fontSizeName);
-    double? fSize = (namedStyle?.fontSize ?? fontSize);
-    FontStyleEnum? fStyle = (namedStyle?.fontStyle ?? fontStyle);
-    FontWeightEnum? fWeight = (namedStyle?.fontWeight ?? fontWeight);
-    double? lSpacing = (namedStyle?.letterSpacing ?? letterSpacing);
-    double? lh = (namedStyle?.lineHeight ?? lineHeight);
-    int? colorVal = (namedStyle?.color?.value ?? colorValue);
-    return fFamily != null
-        ? GoogleFonts.getFont(
-            fFamily,
-            textStyle: fSizeName?.flutterTextStyle(
-                themeData: Theme.of(context),
-            ),
-            fontStyle: fStyle?.flutterValue,
-            fontWeight: fWeight?.flutterValue,
-            letterSpacing: lSpacing,
-            height: lh,
-            color: colorVal != null ? Color(colorVal) : null,
-          )
-        : (fontSizeName??fSizeName) != null
-            ? fSizeName?.flutterTextStyle(themeData: Theme.of(context))?.copyWith(
-                  fontSize: fSize,
-                  fontStyle: fStyle?.flutterValue,
-                  fontWeight: fWeight?.flutterValue,
-                  letterSpacing: lSpacing,
-                  height: lh,
-                  color: colorVal != null ? Color(colorVal) : null,
-                )
-            : TextStyle(
-                fontSize: fSize,
-                fontStyle: fStyle?.flutterValue,
-                fontWeight: fWeight?.flutterValue,
-                letterSpacing: lSpacing,
-                height: lh,
-                color: colorVal != null ? Color(colorVal) : null,
-              );
+  TextStyle? toTextStyle(BuildContext context) {
+    // start with default textstyle
+    var ts = DefaultTextStyle.of(context).style;
+    // possibly apply named textstyle
+    TextStyle? defaultTS;
+    if (namedTextStyle != null) {
+      defaultTS = FC().namedTextStyles[namedTextStyle];
+      if (defaultTS != null) {
+        ts = ts.merge(defaultTS);
+      }
+    } else {
+      // possibly apply a google font
+      if (fontFamily != null) {
+        ts = ts.merge(GoogleFonts.getFont(fontFamily!));
+      }
+      // possibly apply a material named size
+      if (fontSizeName != null) {
+        ts = ts.merge(fontSizeName!.materialTextStyle(themeData: Theme.of(context)));
+      }
+      // finally apply any properties from this node's TextStyleGroup properties
+      ts = ts.merge(
+        TextStyle(
+          fontSize: fontSizeName != null ? null : fontSize,
+          fontStyle: fontStyle?.flutterValue,
+          fontWeight: fontWeight?.flutterValue,
+          letterSpacing: letterSpacing,
+          height: lineHeight,
+          color: colorValue != null ? Color(colorValue!) : null,
+        ),
+      );
+    }
+    return ts;
   }
 }

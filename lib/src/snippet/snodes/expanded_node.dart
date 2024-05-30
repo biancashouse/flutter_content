@@ -14,7 +14,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         IntPropertyValueNode(
             snode: this,
             name: 'flex',

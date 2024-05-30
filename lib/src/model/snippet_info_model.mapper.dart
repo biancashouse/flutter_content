@@ -32,9 +32,9 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
   static bool? _$autoPublish(SnippetInfoModel v) => v.autoPublish;
   static const Field<SnippetInfoModel, bool> _f$autoPublish =
       Field('autoPublish', _$autoPublish, opt: true);
-  static String? _$pagePath(SnippetInfoModel v) => v.pagePath;
-  static const Field<SnippetInfoModel, String> _f$pagePath =
-      Field('pagePath', _$pagePath, opt: true);
+  static String? _$routePath(SnippetInfoModel v) => v.routePath;
+  static const Field<SnippetInfoModel, String> _f$routePath =
+      Field('routePath', _$routePath, opt: true);
 
   @override
   final MappableFields<SnippetInfoModel> fields = const {
@@ -42,7 +42,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     #editingVersionId: _f$editingVersionId,
     #publishedVersionId: _f$publishedVersionId,
     #autoPublish: _f$autoPublish,
-    #pagePath: _f$pagePath,
+    #routePath: _f$routePath,
   };
 
   static SnippetInfoModel _instantiate(DecodingData data) {
@@ -50,7 +50,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
         editingVersionId: data.dec(_f$editingVersionId),
         publishedVersionId: data.dec(_f$publishedVersionId),
         autoPublish: data.dec(_f$autoPublish),
-        pagePath: data.dec(_f$pagePath));
+        routePath: data.dec(_f$routePath));
   }
 
   @override
@@ -112,7 +112,7 @@ abstract class SnippetInfoModelCopyWith<$R, $In extends SnippetInfoModel, $Out>
       String? editingVersionId,
       String? publishedVersionId,
       bool? autoPublish,
-      String? pagePath});
+      String? routePath});
   SnippetInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -131,14 +131,14 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
           Object? editingVersionId = $none,
           Object? publishedVersionId = $none,
           Object? autoPublish = $none,
-          Object? pagePath = $none}) =>
+          Object? routePath = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (editingVersionId != $none) #editingVersionId: editingVersionId,
         if (publishedVersionId != $none)
           #publishedVersionId: publishedVersionId,
         if (autoPublish != $none) #autoPublish: autoPublish,
-        if (pagePath != $none) #pagePath: pagePath
+        if (routePath != $none) #routePath: routePath
       }));
   @override
   SnippetInfoModel $make(CopyWithData data) =>
@@ -148,7 +148,7 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
           publishedVersionId:
               data.get(#publishedVersionId, or: $value.publishedVersionId),
           autoPublish: data.get(#autoPublish, or: $value.autoPublish),
-          pagePath: data.get(#pagePath, or: $value.pagePath));
+          routePath: data.get(#routePath, or: $value.routePath));
 
   @override
   SnippetInfoModelCopyWith<$R2, SnippetInfoModel, $Out2> $chain<$R2, $Out2>(

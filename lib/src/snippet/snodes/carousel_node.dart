@@ -37,7 +37,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         DecimalPropertyValueNode(
           snode: this,
           name: 'aspectRatio',

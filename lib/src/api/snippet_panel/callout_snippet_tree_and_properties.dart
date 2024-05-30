@@ -1,10 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // void removeSnippetTreeCallout(String snippetName) => Callout.removeOverlay(snippetName);
@@ -15,14 +14,13 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 //
 // void refreshSnippetTreeCallout(String snippetName) => Callout.refreshOverlay(snippetName);
 
-CalloutConfig snippetTreeCalloutConfig(
-    SnippetBloC snippetBloc, VoidCallback onDismissedF) {
+CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
   double width() {
     double? w = HydratedBloc.storage.read("snippet-tree-callout-width");
     if (w != null) return w.abs();
 
     // if (root?.child == null) return 190;
-    w = min(FC().capiBloc.state.snippetTreeCalloutW ?? 500, 600);
+    w = min(MaterialSPA.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
     return w > 0 ? w : 500;
   }
 
@@ -33,12 +31,12 @@ CalloutConfig snippetTreeCalloutConfig(
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
 // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-    h = min(FC().capiBloc.state.snippetTreeCalloutH ?? 500, Useful.scrH - 50);
+    h = min(MaterialSPA.capiBloc.state.snippetTreeCalloutH ?? 500, Useful.scrH - 50);
     return h > 0 ? h : 500;
   }
 
   return CalloutConfig(
-    feature: snippetBloc.rootNode.name,
+    feature: MaterialSPA.rootNode!.name,
     // frameTarget: true,
     arrowType: ArrowType.NO_CONNECTOR,
     barrier: CalloutBarrier(
@@ -83,16 +81,15 @@ CalloutConfig snippetTreeCalloutConfig(
       HydratedBloc.storage.write("snippet-tree-callout-height", newSize.height);
     },
     onDragStartedF: () {
-      snippetBloc.state.selectedNode?.hidePropertiesWhileDragging = true;
+      MaterialSPA.selectedNode?.hidePropertiesWhileDragging = true;
     },
     onDragEndedF: (_) {
-      snippetBloc.state.selectedNode?.hidePropertiesWhileDragging = false;
+      MaterialSPA.selectedNode?.hidePropertiesWhileDragging = false;
     },
   );
 }
 
 void showSnippetTreeAndPropertiesCallout({
-  required SnippetBloC snippetBloc,
   required TargetKeyFunc targetGKF,
   ScrollController? ancestorHScrollController,
   ScrollController? ancestorVScrollController,
@@ -102,7 +99,8 @@ void showSnippetTreeAndPropertiesCallout({
   // required STreeNode tappedNode,
   bool allowButtonCallouts = false,
 }) async {
-  SnippetRootNode rootNode = snippetBloc.state.rootNode;
+  SnippetRootNode? rootNode = MaterialSPA.rootNode;
+  if (rootNode == null) return;
 
   // dismiss any pink border overlays
   Callout.dismissAll(exceptFeatures: [rootNode.name]);
@@ -111,36 +109,32 @@ void showSnippetTreeAndPropertiesCallout({
 
   // to check for any change
   // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
-  EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  // String? originalClipboardJson = FC().capiBloc.state.jsonClipboard;
+  // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
+  // String? originalClipboardJson = MaterialSPA.capiBloc.state.jsonClipboard;
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
-  CalloutConfig cc = snippetTreeCalloutConfig(snippetBloc, onDismissedF);
+  CalloutConfig cc = snippetTreeCalloutConfig(onDismissedF);
   Callout.showOverlay(
     calloutConfig: cc,
     boxContentF: (_) {
       // debugPrint('+++++++++++++++++++++++++++++ re-build SnippetTreeCalloutContents');
-      return BlocProvider<SnippetBloC>(
-        create: (context) => snippetBloc,
-        child: SnippetTreeAndPropertiesCalloutContents(
+      return SnippetTreeAndPropertiesCalloutContents(
           ancestorHScrollController: ancestorHScrollController,
           ancestorVScrollController: ancestorVScrollController,
           allowButtonCallouts: allowButtonCallouts,
-        ),
       );
     },
     targetGkF: targetGKF,
   );
   // imm select a node
   STreeNode sel = selectedNode ?? startingAtNode;
-  snippetBloc.add(SnippetEvent.selectNode(
+  MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
     node: sel,
     selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
   ));
   Useful.afterNextBuildDo(() {
-    String pageName = snippetBloc.state.pageName;
-    selectedNode.showNodeWidgetOverlay(pageName);
+    selectedNode.showNodeWidgetOverlay();
   });
 }
 

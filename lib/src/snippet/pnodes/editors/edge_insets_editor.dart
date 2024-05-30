@@ -40,9 +40,9 @@ class EdgeInsetsPropertyEditor extends HookWidget {
           ),
           SegmentedButton<EdgeInsetsInputModeEnum>(
             style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Colors.white),
-              foregroundColor: MaterialStatePropertyAll(Colors.purple),
-              side: MaterialStatePropertyAll(BorderSide(color: Colors.purple)),
+              backgroundColor: WidgetStatePropertyAll(Colors.white),
+              foregroundColor: WidgetStatePropertyAll(Colors.purple),
+              side: WidgetStatePropertyAll(BorderSide(color: Colors.purple)),
               visualDensity: VisualDensity(horizontal: -4, vertical: -4),
             ),
             segments: const <ButtonSegment<EdgeInsetsInputModeEnum>>[

@@ -20,7 +20,7 @@ class StepperNode extends MC with StepperNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) =>
+  List<PTreeNode> properties(BuildContext context) =>
       [
         EnumPropertyValueNode<StepperTypeEnum?>(
           snode: this,

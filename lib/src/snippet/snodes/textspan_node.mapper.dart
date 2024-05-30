@@ -26,15 +26,9 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static String? _$text(TextSpanNode v) => v.text;
   static const Field<TextSpanNode, String> _f$text =
       Field('text', _$text, opt: true);
-  static bool _$isRootTextSpan(TextSpanNode v) => v.isRootTextSpan;
-  static const Field<TextSpanNode, bool> _f$isRootTextSpan =
-      Field('isRootTextSpan', _$isRootTextSpan, opt: true, def: false);
   static TextStyleGroup? _$textStyleGroup(TextSpanNode v) => v.textStyleGroup;
   static const Field<TextSpanNode, TextStyleGroup> _f$textStyleGroup =
       Field('textStyleGroup', _$textStyleGroup, opt: true);
-  static String? _$namedTextStyle(TextSpanNode v) => v.namedTextStyle;
-  static const Field<TextSpanNode, String> _f$namedTextStyle =
-      Field('namedTextStyle', _$namedTextStyle, opt: true);
   static List<InlineSpanNode>? _$children(TextSpanNode v) => v.children;
   static const Field<TextSpanNode, List<InlineSpanNode>> _f$children =
       Field('children', _$children, opt: true);
@@ -58,9 +52,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   @override
   final MappableFields<TextSpanNode> fields = const {
     #text: _f$text,
-    #isRootTextSpan: _f$isRootTextSpan,
     #textStyleGroup: _f$textStyleGroup,
-    #namedTextStyle: _f$namedTextStyle,
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -79,9 +71,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static TextSpanNode _instantiate(DecodingData data) {
     return TextSpanNode(
         text: data.dec(_f$text),
-        isRootTextSpan: data.dec(_f$isRootTextSpan),
         textStyleGroup: data.dec(_f$textStyleGroup),
-        namedTextStyle: data.dec(_f$namedTextStyle),
         children: data.dec(_f$children));
   }
 
@@ -144,9 +134,7 @@ abstract class TextSpanNodeCopyWith<$R, $In extends TextSpanNode, $Out>
   @override
   $R call(
       {String? text,
-      bool? isRootTextSpan,
       TextStyleGroup? textStyleGroup,
-      String? namedTextStyle,
       List<InlineSpanNode>? children});
   TextSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -173,23 +161,17 @@ class _TextSpanNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? text = $none,
-          bool? isRootTextSpan,
           Object? textStyleGroup = $none,
-          Object? namedTextStyle = $none,
           Object? children = $none}) =>
       $apply(FieldCopyWithData({
         if (text != $none) #text: text,
-        if (isRootTextSpan != null) #isRootTextSpan: isRootTextSpan,
         if (textStyleGroup != $none) #textStyleGroup: textStyleGroup,
-        if (namedTextStyle != $none) #namedTextStyle: namedTextStyle,
         if (children != $none) #children: children
       }));
   @override
   TextSpanNode $make(CopyWithData data) => TextSpanNode(
       text: data.get(#text, or: $value.text),
-      isRootTextSpan: data.get(#isRootTextSpan, or: $value.isRootTextSpan),
       textStyleGroup: data.get(#textStyleGroup, or: $value.textStyleGroup),
-      namedTextStyle: data.get(#namedTextStyle, or: $value.namedTextStyle),
       children: data.get(#children, or: $value.children));
 
   @override

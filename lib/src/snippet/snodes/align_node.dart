@@ -17,7 +17,7 @@ class AlignNode extends SC with AlignNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',

@@ -28,7 +28,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
@@ -65,7 +65,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
-      TextSpan rootTextSpan = (text.toInlineSpan(context, isRoot: true)) as TextSpan;
+      TextSpan rootTextSpan = (text.toInlineSpan(context)) as TextSpan;
       setParent(parentNode);
       possiblyHighlightSelectedNode();
       RichText rt = RichText(

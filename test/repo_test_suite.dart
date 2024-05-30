@@ -8,7 +8,7 @@ const VersionId TEST_VERSION_ID = '1700000000000';
 
 void main() {
   const appName = 'flutter-content-test-app';
-  final scaffoldWithTabs = SnippetTemplate.scaffold_with_tabs.name;
+  final scaffoldWithTabs = SnippetTemplateEnum.scaffold_with_tabbar.name;
 
   late MockModelRepository mockRepo;
   late SnippetBloC snippetBloc;
@@ -18,10 +18,10 @@ void main() {
   // late SnippetTreeUR ur;
 
   final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplateNodes(
-      SnippetTemplate.empty, 'empty_snippet');
+      SnippetTemplateEnum.empty, 'empty_snippet');
   final SnippetRootNode scaffoldWithTabsSnippet =
       SnippetPanel.createSnippetFromTemplateNodes(
-          SnippetTemplate.scaffold_with_tabs, 'scaffold_with_tabs');
+          SnippetTemplateEnum.scaffold_with_tabbar, 'scaffold_with_tabs');
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {

@@ -13,7 +13,11 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   static MenuItemButtonNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MenuItemButtonNodeMapper._());
-      CLMapper.ensureInitialized().addSubMapper(_instance!);
+      ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SnippetTemplateEnumMapper.ensureInitialized();
+      ButtonStyleGroupMapper.ensureInitialized();
+      CalloutConfigGroupMapper.ensureInitialized();
+      STreeNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -24,6 +28,15 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   static String _$itemLabel(MenuItemButtonNode v) => v.itemLabel;
   static const Field<MenuItemButtonNode, String> _f$itemLabel =
       Field('itemLabel', _$itemLabel, opt: true, def: '');
+  static String? _$destinationRoutePathSnippetName(MenuItemButtonNode v) =>
+      v.destinationRoutePathSnippetName;
+  static const Field<MenuItemButtonNode, String>
+      _f$destinationRoutePathSnippetName = Field(
+          'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
+          opt: true);
+  static SnippetTemplateEnum? _$template(MenuItemButtonNode v) => v.template;
+  static const Field<MenuItemButtonNode, SnippetTemplateEnum> _f$template =
+      Field('template', _$template, opt: true);
   static String? _$destinationPanelName(MenuItemButtonNode v) =>
       v.destinationPanelName;
   static const Field<MenuItemButtonNode, String> _f$destinationPanelName =
@@ -32,10 +45,20 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
       v.destinationSnippetName;
   static const Field<MenuItemButtonNode, String> _f$destinationSnippetName =
       Field('destinationSnippetName', _$destinationSnippetName, opt: true);
-  static String? _$destinationPageName(MenuItemButtonNode v) =>
-      v.destinationPageName;
-  static const Field<MenuItemButtonNode, String> _f$destinationPageName =
-      Field('destinationPageName', _$destinationPageName, opt: true);
+  static ButtonStyleGroup? _$buttonStyle(MenuItemButtonNode v) => v.buttonStyle;
+  static const Field<MenuItemButtonNode, ButtonStyleGroup> _f$buttonStyle =
+      Field('buttonStyle', _$buttonStyle, opt: true);
+  static String? _$onTapHandlerName(MenuItemButtonNode v) => v.onTapHandlerName;
+  static const Field<MenuItemButtonNode, String> _f$onTapHandlerName =
+      Field('onTapHandlerName', _$onTapHandlerName, opt: true);
+  static CalloutConfigGroup? _$calloutConfigGroup(MenuItemButtonNode v) =>
+      v.calloutConfigGroup;
+  static const Field<MenuItemButtonNode, CalloutConfigGroup>
+      _f$calloutConfigGroup =
+      Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
+  static STreeNode? _$child(MenuItemButtonNode v) => v.child;
+  static const Field<MenuItemButtonNode, STreeNode> _f$child =
+      Field('child', _$child, opt: true);
   static String _$uid(MenuItemButtonNode v) => v.uid;
   static const Field<MenuItemButtonNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -57,9 +80,14 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   @override
   final MappableFields<MenuItemButtonNode> fields = const {
     #itemLabel: _f$itemLabel,
+    #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
+    #template: _f$template,
     #destinationPanelName: _f$destinationPanelName,
     #destinationSnippetName: _f$destinationSnippetName,
-    #destinationPageName: _f$destinationPageName,
+    #buttonStyle: _f$buttonStyle,
+    #onTapHandlerName: _f$onTapHandlerName,
+    #calloutConfigGroup: _f$calloutConfigGroup,
+    #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -67,18 +95,24 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   };
 
   @override
-  final String discriminatorKey = 'cl';
+  final String discriminatorKey = 'button';
   @override
   final dynamic discriminatorValue = 'MenuItemButtonNode';
   @override
-  late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = ButtonNodeMapper.ensureInitialized();
 
   static MenuItemButtonNode _instantiate(DecodingData data) {
     return MenuItemButtonNode(
         itemLabel: data.dec(_f$itemLabel),
+        destinationRoutePathSnippetName:
+            data.dec(_f$destinationRoutePathSnippetName),
+        template: data.dec(_f$template),
         destinationPanelName: data.dec(_f$destinationPanelName),
         destinationSnippetName: data.dec(_f$destinationSnippetName),
-        destinationPageName: data.dec(_f$destinationPageName));
+        buttonStyle: data.dec(_f$buttonStyle),
+        onTapHandlerName: data.dec(_f$onTapHandlerName),
+        calloutConfigGroup: data.dec(_f$calloutConfigGroup),
+        child: data.dec(_f$child));
   }
 
   @override
@@ -135,13 +169,26 @@ extension MenuItemButtonNodeValueCopy<$R, $Out>
 }
 
 abstract class MenuItemButtonNodeCopyWith<$R, $In extends MenuItemButtonNode,
-    $Out> implements CLCopyWith<$R, $In, $Out> {
+    $Out> implements ButtonNodeCopyWith<$R, $In, $Out> {
+  @override
+  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
+      get buttonStyle;
+  @override
+  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
+      get calloutConfigGroup;
+  @override
+  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
       {String? itemLabel,
+      String? destinationRoutePathSnippetName,
+      SnippetTemplateEnum? template,
       String? destinationPanelName,
       String? destinationSnippetName,
-      String? destinationPageName});
+      ButtonStyleGroup? buttonStyle,
+      String? onTapHandlerName,
+      CalloutConfigGroup? calloutConfigGroup,
+      STreeNode? child});
   MenuItemButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -155,29 +202,59 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MenuItemButtonNode> $mapper =
       MenuItemButtonNodeMapper.ensureInitialized();
   @override
+  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
+      get buttonStyle =>
+          $value.buttonStyle?.copyWith.$chain((v) => call(buttonStyle: v));
+  @override
+  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
+      get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
+          .$chain((v) => call(calloutConfigGroup: v));
+  @override
+  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+      $value.child?.copyWith.$chain((v) => call(child: v));
+  @override
   $R call(
           {String? itemLabel,
+          Object? destinationRoutePathSnippetName = $none,
+          Object? template = $none,
           Object? destinationPanelName = $none,
           Object? destinationSnippetName = $none,
-          Object? destinationPageName = $none}) =>
+          Object? buttonStyle = $none,
+          Object? onTapHandlerName = $none,
+          Object? calloutConfigGroup = $none,
+          Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (itemLabel != null) #itemLabel: itemLabel,
+        if (destinationRoutePathSnippetName != $none)
+          #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
+        if (template != $none) #template: template,
         if (destinationPanelName != $none)
           #destinationPanelName: destinationPanelName,
         if (destinationSnippetName != $none)
           #destinationSnippetName: destinationSnippetName,
-        if (destinationPageName != $none)
-          #destinationPageName: destinationPageName
+        if (buttonStyle != $none) #buttonStyle: buttonStyle,
+        if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
+        if (calloutConfigGroup != $none)
+          #calloutConfigGroup: calloutConfigGroup,
+        if (child != $none) #child: child
       }));
   @override
   MenuItemButtonNode $make(CopyWithData data) => MenuItemButtonNode(
       itemLabel: data.get(#itemLabel, or: $value.itemLabel),
+      destinationRoutePathSnippetName: data.get(
+          #destinationRoutePathSnippetName,
+          or: $value.destinationRoutePathSnippetName),
+      template: data.get(#template, or: $value.template),
       destinationPanelName:
           data.get(#destinationPanelName, or: $value.destinationPanelName),
       destinationSnippetName:
           data.get(#destinationSnippetName, or: $value.destinationSnippetName),
-      destinationPageName:
-          data.get(#destinationPageName, or: $value.destinationPageName));
+      buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),
+      onTapHandlerName:
+          data.get(#onTapHandlerName, or: $value.onTapHandlerName),
+      calloutConfigGroup:
+          data.get(#calloutConfigGroup, or: $value.calloutConfigGroup),
+      child: data.get(#child, or: $value.child));
 
   @override
   MenuItemButtonNodeCopyWith<$R2, MenuItemButtonNode, $Out2> $chain<$R2, $Out2>(

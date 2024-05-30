@@ -13,18 +13,16 @@ part 'text_node.mapper.dart';
 class TextNode extends CL with TextNodeMappable {
   String text;
   TextStyleGroup? textStyleGroup;
-  String? namedTextStyle;
   TextAlignEnum? textAlign;
 
   TextNode({
     this.text = '',
     this.textStyleGroup,
-    this.namedTextStyle,
     this.textAlign,
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'text',
@@ -34,7 +32,7 @@ class TextNode extends CL with TextNodeMappable {
           numLines: 3,
           stringValue: text,
           onStringChange: (newValue) {
-            refreshWithUpdate(() => text = newValue);
+            refreshWithUpdate(() => text = newValue??'');
           },
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
@@ -44,16 +42,6 @@ class TextNode extends CL with TextNodeMappable {
           name: 'textStyle',
           textStyleGroup: textStyleGroup,
           onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
-        ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'namedTextStyle',
-          stringValue: namedTextStyle,
-          options: FC().namedStyles.keys.toList(),
-          onStringChange: (newValue) => refreshWithUpdate(() => namedTextStyle = newValue),
-          expands: false,
-          calloutButtonSize: const Size(280, 20),
-          calloutWidth: 280,
         ),
         EnumPropertyValueNode<TextAlignEnum?>(
           snode: this,
@@ -188,7 +176,7 @@ class TextNode extends CL with TextNodeMappable {
   //                           ),
   //                           child: Checkbox(
   //                             value: textStyle?.fontStyle == FontStyleEnum.italic,
-  //                             fillColor: const MaterialStatePropertyAll(Colors.purple),
+  //                             fillColor: const WidgetStatePropertyAll(Colors.purple),
   //                             onChanged: (bool? isChecked) {
   //                               debugPrint("checked: $isChecked");
   //                               textStyle ??= TextStyleNodeProperty();
@@ -255,14 +243,15 @@ class TextNode extends CL with TextNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    TextStyle? ts = (textStyleGroup ?? TextStyleGroup()).toTextStyle(context, namedTextStyle: namedTextStyle);
+    TextStyle? ts = textStyleGroup?.toTextStyle(context);
     try {
-      return Text(
+      Text t = Text(
         key: createNodeGK(),
         text,
         style: ts,
         textAlign: textAlign?.flutterValue,
       );
+      return t;
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
     }

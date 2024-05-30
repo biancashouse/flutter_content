@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
 
@@ -9,11 +10,12 @@ part 'button_style_group.mapper.dart';
 
 @MappableClass(discriminatorKey: 'bs', includeSubClasses: [])
 class ButtonStyleGroup with ButtonStyleGroupMappable {
+  String? namedButtonStyle;
   int? fgColorValue;
   int? bgColorValue;
   double? elevation;
   double? padding;
-  TextStyleGroup? style;
+  // TextStyleGroup? textStyle;
   OutlinedBorderEnum? shape;
   BorderSideGroup? side;
   double? radius;
@@ -25,11 +27,12 @@ class ButtonStyleGroup with ButtonStyleGroupMappable {
   double? fixedW;
 
   ButtonStyleGroup({
+    this.namedButtonStyle,
     this.fgColorValue,
     this.bgColorValue,
     this.elevation,
     this.padding,
-    this.style,
+    // this.textStyle,
     this.shape,
     this.side,
     this.radius,
@@ -41,33 +44,39 @@ class ButtonStyleGroup with ButtonStyleGroupMappable {
     this.fixedH,
   });
 
-  ButtonStyle? toButtonStyle(BuildContext context) {
+  ButtonStyle? toButtonStyle(BuildContext context, ButtonStyle? defaultButtonStyle) {
     OutlinedBorder ob = shape != null
         ? shape!.toFlutterWidget(nodeSide: side!, nodeRadius: radius)
-        : const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+        : RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(radius??8.0)),
           );
     BorderSide? bs = side?.toBorderSide();
-    return ButtonStyle(
-      backgroundColor: MaterialStatePropertyAll<Color?>(bgColorValue != null ? Color(bgColorValue!) : null),
-      foregroundColor: MaterialStatePropertyAll<Color?>(fgColorValue != null ? Color(fgColorValue!) : null),
-      padding: MaterialStatePropertyAll<EdgeInsets?>(EdgeInsets.all(padding ?? 0.0)),
-      elevation: MaterialStatePropertyAll<double?>(elevation),
-      minimumSize: MaterialStatePropertyAll<Size?>(minW != null && minH != null ? Size(minW!, minH!) : null),
-      maximumSize: MaterialStatePropertyAll<Size?>(maxW != null && maxH != null ? Size(maxW!, maxH!) : null),
-      fixedSize: MaterialStatePropertyAll<Size?>(fixedW != null && fixedH != null ? Size(fixedW!, fixedH!) : null),
-      shape: MaterialStatePropertyAll<OutlinedBorder>(ob),
-      side: bs != null ? MaterialStatePropertyAll<BorderSide>(bs) : null,
+
+    // TextStyle? ts = textStyle?.toTextStyle(context);
+
+    return (FC().namedButtonStyles[namedButtonStyle] ?? defaultButtonStyle)?.merge(
+      ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll<Color?>(bgColorValue != null ? Color(bgColorValue!) : null),
+        foregroundColor: WidgetStatePropertyAll<Color?>(fgColorValue != null ? Color(fgColorValue!) : null),
+        padding: WidgetStatePropertyAll<EdgeInsets?>(EdgeInsets.all(padding ?? 0.0)),
+        elevation: WidgetStatePropertyAll<double?>(elevation),
+        minimumSize: WidgetStatePropertyAll<Size?>(minW != null && minH != null ? Size(minW!, minH!) : null),
+        maximumSize: WidgetStatePropertyAll<Size?>(maxW != null && maxH != null ? Size(maxW!, maxH!) : null),
+        fixedSize: WidgetStatePropertyAll<Size?>(fixedW != null && fixedH != null ? Size(fixedW!, fixedH!) : null),
+        shape: WidgetStatePropertyAll<OutlinedBorder>(ob),
+        side: WidgetStatePropertyAll<BorderSide?>(bs),
+        // textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
+      ),
     );
   }
 
-  String toButtonStyleSource(BuildContext context) => '''ButtonStyle(
-      backgroundColor: MaterialStatePropertyAll<Color?>(${bgColorValue != null ? 'Color($bgColorValue!)' : 'null'}),
-      foregroundColor: MaterialStatePropertyAll<Color?>(${fgColorValue != null ? 'Color($fgColorValue!)' : 'null'}),
-      padding: MaterialStatePropertyAll<EdgeInsets?>(EdgeInsets.all(${padding ?? 0.0})),
-      elevation: MaterialStatePropertyAll<double?>($elevation),
-      minimumSize: MaterialStatePropertyAll<Size?>(${minW != null && minH != null ? 'Size(${minW!}, ${minH!})' : 'null'}),
-      maximumSize: MaterialStatePropertyAll<Size?>(${maxW != null && maxH != null ? 'Size(${maxW!}, ${maxH!})' : 'null'}),
-      fixedSize: MaterialStatePropertyAll<Size?>(${fixedW != null && fixedH != null ? 'Size(${fixedW!}, ${fixedH!})' : 'null'}),
-   )''';
+// String toButtonStyleSource(BuildContext context) => '''ButtonStyle(
+//     backgroundColor: WidgetStatePropertyAll<Color?>(${bgColorValue != null ? 'Color($bgColorValue!)' : 'null'}),
+//     foregroundColor: WidgetStatePropertyAll<Color?>(${fgColorValue != null ? 'Color($fgColorValue!)' : 'null'}),
+//     padding: WidgetStatePropertyAll<EdgeInsets?>(EdgeInsets.all(${padding ?? 0.0})),
+//     elevation: WidgetStatePropertyAll<double?>($elevation),
+//     minimumSize: WidgetStatePropertyAll<Size?>(${minW != null && minH != null ? 'Size(${minW!}, ${minH!})' : 'null'}),
+//     maximumSize: WidgetStatePropertyAll<Size?>(${maxW != null && maxH != null ? 'Size(${maxW!}, ${maxH!})' : 'null'}),
+//     fixedSize: WidgetStatePropertyAll<Size?>(${fixedW != null && fixedH != null ? 'Size(${fixedW!}, ${fixedH!})' : 'null'}),
+//  )''';
 }

@@ -66,7 +66,7 @@ class _PointyToolState extends State<PointyTool> {
 
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   @override
   void initState() {

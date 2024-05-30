@@ -19,7 +19,7 @@ class RowNode extends FlexNode with RowNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<MainAxisAlignmentEnum?>(
           snode: this,
           name: 'mainAxisAlignment',

@@ -23,9 +23,9 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   @override
   final String id = 'AssetImageNode';
 
-  static String _$name(AssetImageNode v) => v.name;
+  static String? _$name(AssetImageNode v) => v.name;
   static const Field<AssetImageNode, String> _f$name =
-      Field('name', _$name, opt: true, def: '');
+      Field('name', _$name, opt: true);
   static BoxFitEnum? _$fit(AssetImageNode v) => v.fit;
   static const Field<AssetImageNode, BoxFitEnum> _f$fit =
       Field('fit', _$fit, opt: true);
@@ -164,14 +164,14 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
       AssetImageNodeMapper.ensureInitialized();
   @override
   $R call(
-          {String? name,
+          {Object? name = $none,
           Object? fit = $none,
           Object? alignment = $none,
           Object? width = $none,
           Object? height = $none,
           Object? scale = $none}) =>
       $apply(FieldCopyWithData({
-        if (name != null) #name: name,
+        if (name != $none) #name: name,
         if (fit != $none) #fit: fit,
         if (alignment != $none) #alignment: alignment,
         if (width != $none) #width: width,

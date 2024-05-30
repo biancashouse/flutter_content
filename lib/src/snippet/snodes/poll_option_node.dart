@@ -20,12 +20,12 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String get id => text;
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'text',
           stringValue: text,
-          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

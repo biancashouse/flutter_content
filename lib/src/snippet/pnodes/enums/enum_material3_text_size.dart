@@ -47,7 +47,7 @@ enum Material3TextSizeEnum {
         calloutSize: const Size(275, 800),
       );
 
-  TextStyle? flutterTextStyle({ThemeData? themeData}) {
+  TextStyle? materialTextStyle({ThemeData? themeData}) {
     return switch (this) {
       Material3TextSizeEnum.displayL => themeData?.textTheme.displayLarge,
       Material3TextSizeEnum.displayM => themeData?.textTheme.displayMedium,
@@ -74,7 +74,7 @@ enum Material3TextSizeEnum {
             name.substring(0, name.length - 1),
             // textScaler: TextScaler.linear(.9),
             softWrap: false,
-            style: flutterTextStyle(themeData: themeData)?.copyWith(
+            style: materialTextStyle(themeData: themeData)?.copyWith(
               overflow: TextOverflow.fade,
               color: colorValue == null ? Colors.white : Color(colorValue),
               fontFamily: fontFamily,

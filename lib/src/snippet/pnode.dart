@@ -3,9 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_font_family.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_fs_browser.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_axis.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
@@ -21,12 +25,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dar
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_font_family.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_fs_browser.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
@@ -51,7 +49,7 @@ abstract class PTreeNode extends Node {
     throw UnimplementedError();
   }
 
-  void revertToOriginalValue();
+  void revertToOriginalValue() {}
 
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
@@ -99,6 +97,21 @@ class TextStylePropertyGroup extends PropertyGroup {
     super.children = const [],
   }) {
     super.children = [
+      StringPropertyValueNode(
+        snode: super.snode,
+        name: 'namedTextStyle',
+        nameOnSeparateLine: true,
+        expands: true,
+        stringValue: textStyleGroup?.namedTextStyle,
+        options: FC().namedTextStyles.keys.toList(),
+        onStringChange: (newValue) {
+          textStyleGroup ??= TextStyleGroup();
+          textStyleGroup!.namedTextStyle = newValue;
+          onGroupChange.call(textStyleGroup!);
+        },
+        calloutButtonSize: const Size(280, 20),
+        calloutWidth: 280,
+      ),
       ColorPropertyValueNode(
         snode: super.snode,
         name: 'color',
@@ -267,6 +280,21 @@ class ButtonStylePropertyGroup extends PropertyGroup {
     super.children = const [],
   }) {
     super.children = [
+      StringPropertyValueNode(
+        snode: super.snode,
+        name: 'namedButtonStyle',
+        nameOnSeparateLine: true,
+        expands: true,
+        stringValue: buttonStyleGroup?.namedButtonStyle,
+        options: FC().namedButtonStyles.keys.toList(),
+        onStringChange: (newValue) {
+          buttonStyleGroup ??=ButtonStyleGroup();
+          buttonStyleGroup!.namedButtonStyle = newValue;
+          onGroupChange.call(buttonStyleGroup!);
+        },
+        calloutButtonSize: const Size(280, 20),
+        calloutWidth: 280,
+      ),
       PropertyGroup(
         snode: super.snode,
         name: 'colour',
@@ -293,16 +321,16 @@ class ButtonStylePropertyGroup extends PropertyGroup {
           ),
         ],
       ),
-      TextStylePropertyGroup(
-        snode: super.snode,
-        name: 'textStyle',
-        textStyleGroup: buttonStyleGroup?.style,
-        onGroupChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.style = newValue;
-          onGroupChange.call(buttonStyleGroup!);
-        },
-      ),
+      // TextStylePropertyGroup(
+      //   snode: super.snode,
+      //   name: 'textStyle',
+      //   textStyleGroup: buttonStyleGroup?.textStyle,
+      //   onGroupChange: (newValue) {
+      //     buttonStyleGroup ??= ButtonStyleGroup();
+      //     buttonStyleGroup!.textStyle = newValue;
+      //     onGroupChange.call(buttonStyleGroup!);
+      //   },
+      // ),
       EnumPropertyValueNode<OutlinedBorderEnum?>(
         snode: super.snode,
         name: 'shape',
@@ -730,7 +758,7 @@ class BoolPropertyValueNode extends PTreeNode {
 
 class StringPropertyValueNode extends PTreeNode {
   String? stringValue;
-  final ValueChanged<String> onStringChange;
+  final ValueChanged<String?> onStringChange;
   final List<String>? options;
   final bool expands;
   final bool skipLabelText;
@@ -757,12 +785,12 @@ class StringPropertyValueNode extends PTreeNode {
 
   @override
   void revertToOriginalValue() {
-    onStringChange(stringValue = '');
+    onStringChange(stringValue = null);
   }
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    debugPrint('toPropertyNodeContents');
+    // debugPrint('toPropertyNodeContents');
     return PropertyButton<String>(
         // originalText: (stringValue??'').isNotEmpty
         //     ? nameOnSeparateLine
@@ -1476,6 +1504,11 @@ class EnumPropertyValueNode<T> extends PTreeNode {
   Widget toPropertyNodeContents(BuildContext context) {
     // just show name for null property value
     // if (value == null) return Useful.coloredText(name, color:Colors.white);
+    // SnippetTemplate -------------
+    if (sameType<T, SnippetTemplateEnum?>()) {
+      return SnippetTemplateEnum.propertyNodeContents(
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
+    }
     // BoxFit -------------
     if (sameType<T, BoxFitEnum?>()) {
       return BoxFitEnum.propertyNodeContents(

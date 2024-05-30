@@ -46,7 +46,7 @@ Future<void> showSnippetContentCallout({
   var snippet = FC().snippetInfoCache[tc.snippetName];
   FC().targetSnippetBeingConfigured = FC().currentSnippet(tc.snippetName);
   if (FC().targetSnippetBeingConfigured == null) {
-    var rootNode = SnippetTemplate.target_content_widget.clone();
+    var rootNode = SnippetTemplateEnum.callout_content.clone();
     if (rootNode != null) {
       SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
           rootNode, tc.snippetName);
@@ -101,7 +101,7 @@ Future<void> showSnippetContentCallout({
           tc
             ..calloutWidth = newSize.width
             ..calloutHeight = newSize.height;
-          // FC().capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+          // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         },
         onDragEndedF: (Offset newPos) {
           if (newPos.dy / Useful.scrH != tc.calloutTopPc ||
@@ -109,7 +109,7 @@ Future<void> showSnippetContentCallout({
             tc.calloutTopPc = newPos.dy / Useful.scrH;
             tc.calloutLeftPc = newPos.dx / Useful.scrW;
             tc.onChange();
-            // FC().capiBloc.add(
+            // MaterialSPA.capiBloc.add(
             //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
@@ -132,7 +132,7 @@ Future<void> showSnippetContentCallout({
         // }
         onDismissedF: () {
           // FC().parentTW(twName)?.zoomer?.resetTransform();
-          // FC().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+          // MaterialSPA.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
         },
       ),
       // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,

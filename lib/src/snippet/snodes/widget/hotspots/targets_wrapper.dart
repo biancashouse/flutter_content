@@ -161,8 +161,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // $2 true means target btn rather than target cover
       if (foundTc != null && data.$2) {
         foundTc.setBtnStackPosPc(details.offset.translate(
-          FC().capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-          FC().capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          MaterialSPA.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          MaterialSPA.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
         ));
         foundTc.onChange();
       } else if (foundTc != null) {
@@ -172,7 +172,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         ));
         foundTc.onChange();
       }
-      FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     }
 
     //
@@ -200,7 +200,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
       widget.parentNode.targets = [newTC, ...widget.parentNode.targets];
       // widget.parentNode.targets.add(newTC);
-      FC().capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
       FC().possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
@@ -290,7 +290,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   const IntegerCircleAvatar(this.tc,
       {this.num, required this.textColor, required this.bgColor, required this.radius, required this.fontSize, this.child, super.key});
 
-  CAPIBloC get bloc => FC().capiBloc;
+  CAPIBloC get bloc => MaterialSPA.capiBloc;
 
   @override
   Widget build(BuildContext context) => CircleAvatar(

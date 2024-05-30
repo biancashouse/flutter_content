@@ -23,7 +23,7 @@ class StackNode extends MC with StackNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<StackFitEnum?>(
           snode: this,
           name: 'fit',

@@ -461,7 +461,7 @@ class Useful {
       GoogleFonts.getFont(
         fontFamily,
         color: color,
-        textStyle: fontSizeName?.flutterTextStyle(themeData: Theme.of(context)),
+        textStyle: fontSizeName?.materialTextStyle(themeData: Theme.of(context)),
         fontSize: fontSize,
         fontStyle: fontStyle,
         fontWeight: fontWeight,

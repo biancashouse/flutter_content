@@ -6,5 +6,5 @@ RoutingConfigProvider getRouterProvider() => MobileRoutingConfigProvider();
 
 class MobileRoutingConfigProvider implements RoutingConfigProvider {
   @override
-  RoutingConfig getWebOrMobileRoutingConfig(RoutingConfig webRoutingConfig, RoutingConfig mobileRoutingConfig) => mobileRoutingConfig;
+  RoutingConfig getWebOrMobileRoutingConfig(RoutingConfig webRoutingConfig, RoutingConfig mobileRoutingConfig) => mobileRoutingConfig ?? webRoutingConfig;
 }

@@ -2,13 +2,10 @@
 
 library flutter_content;
 
-import 'dart:collection';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
@@ -40,16 +37,20 @@ export 'flutter_content_typedefs.dart';
 export 'src/api/callouts/callout.dart';
 export 'src/api/callouts/callout_config.dart';
 export 'src/api/callouts/toast.dart';
+
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
 export 'src/api/material_spa/constant_scrolling_behavior.dart';
-export 'src/api/material_spa/flutter_content_page.dart';
+export 'src/api/material_spa/editable_page.dart';
 export 'src/api/material_spa/material_spa.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
+export 'src/api/snippet_panel/snippet_templates.dart';
 export 'src/blink.dart';
+
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/snippet_bloc.dart';
+
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
@@ -60,11 +61,13 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
+
 // export 'src/model/branch_model.dart';
 export 'src/model/model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
+export 'src/routingconfig_provider/editable_page_route.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
@@ -105,6 +108,7 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
+
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -137,7 +141,6 @@ export 'src/snippet/snodes/yt_node.dart';
 export 'src/text_editing/fc_textfield_T.dart';
 export 'src/useful.dart';
 export 'src/widget_helper.dart';
-export 'src/routingconfig_provider/fc_route.dart';
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
@@ -169,14 +172,18 @@ class FC {
       'Merriweather',
       'Merriweather Sans',
     ],
-    Map<String, NamedTextStyle> namedStyles = const {},
+    Map<String, VoidCallback> namedVoidCallbacks = const {},
+    Map<String, TextStyle> namedTextStyles = const {},
+    Map<String, ButtonStyle> namedButtonStyles = const {},
     required RoutingConfig routingConfig,
     required String initialRoutePath,
     bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) async {
     _appName = modelName;
     _googleFontNames = googleFontNames;
-    _namedStyles = namedStyles;
+    _namedVoidCallbacks = namedVoidCallbacks;
+    _namedTextStyles = namedTextStyles;
+    _namedButtonStyles = namedButtonStyles;
     _skipAssetPkgName = skipAssetPkgName;
     Bloc.observer = MyGlobalObserver();
 
@@ -192,10 +199,10 @@ class FC {
       }
     }
 
-    parseRouteConfig(_routeNames, List.from(router.configuration.routes));
+    parseRouteConfig(pagePaths, List.from(router.configuration.routes));
 
     debugPrint('Routes--------------------------');
-    debugPrint(_routeNames.toString());
+    debugPrint(pagePaths.toString());
     debugPrint('--------------------------------');
 
     try {
@@ -216,12 +223,20 @@ class FC {
       AppInfoModel? fbAppInfo = await FC().modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
 
+      // add any snippet names that start with /, because they are also page pathnames
+      for (String snippetName in _appInfo.snippetNames) {
+        if (snippetName.startsWith('/') && !pagePaths.contains(snippetName)) {
+          addRoute(newPath: snippetName, template: SnippetTemplateEnum.empty);
+        }
+      }
+      pagePaths.sort();
+
       // await loadLatestSnippetMap();
       await loadFirebaseStorageFolders();
     }
 
     // FutureBuilder requires this return
-    return capiBloc = CAPIBloC(modelRepo: modelRepo);
+    return CAPIBloC(modelRepo: modelRepo);
   }
 
   late IModelRepository modelRepo;
@@ -257,15 +272,23 @@ class FC {
 
   late GoRouter router;
 
-  List<RouteName> _routeNames = [];
+  List<RoutePath> get pagePaths {
+    List<RouteBase> routes = routingConfigVN.value.routes;
+    return routes.map((route) => (route as GoRoute).path).toList();
+  }
 
-  List<RouteName> get routeNames => _routeNames;
-
-  void addRoute(GoRoute newRoute) {
+  //
+  void addRoute({
+    required String newPath,
+    required SnippetTemplateEnum template,
+  }) {
     routingConfigVN.value = RoutingConfig(
       routes: <RouteBase>[
         ...routingConfigVN.value.routes,
-        newRoute,
+        EditableRoute(
+          path: newPath,
+          template: template,
+        ),
       ],
     );
   }
@@ -297,6 +320,7 @@ class FC {
   // create new snippet version in cache, then write through to FB
   Future<void> possiblyCacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
+    String? pagePath,
     required SnippetRootNode rootNode,
     bool? publish,
   }) async {
@@ -307,19 +331,20 @@ class FC {
     // NEW snippet - initial version
     if (!snippetInfoCache.containsKey(snippetName)) {
       appInfo.snippetNames = [snippetName, ...appInfo.snippetNames];
-      bool publishImmediately = publish ?? appInfo.autoPublishDefault;
+      bool publishImmediately = true; //publish ?? appInfo.autoPublishDefault;
       snippetInfo = snippetInfoCache[snippetName] = SnippetInfoModel(
         snippetName,
+        routePath: pagePath,
         editingVersionId: newVersionId,
         publishedVersionId: publishImmediately ? newVersionId : null,
-        autoPublish: appInfo.autoPublishDefault,
+        autoPublish: true, //appInfo.autoPublishDefault,
       );
     } else {
       // EXISTING snippet - just add new version
       snippetInfo = snippetInfoCache[snippetName]!..editingVersionId = newVersionId;
-      if (snippetInfo.autoPublish ?? false) {
-        snippetInfo.publishedVersionId = newVersionId;
-      }
+      // if (snippetInfo.autoPublish ?? false) {
+      snippetInfo.publishedVersionId = newVersionId;
+      // }
     }
     FC().versionCache[snippetName] ??= {};
     FC().versionIdCache[snippetName] ??= [];
@@ -340,11 +365,11 @@ class FC {
   /// Note, on iOS if an app has no buildNumber specified this property will return version
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
-  late CAPIBloC capiBloc;
   late bool _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
-  late Map<String, NamedTextStyle> _namedStyles;
-  String? jsonBeforePush;
+  late Map<String, VoidCallback> _namedVoidCallbacks;
+  late Map<String, TextStyle> _namedTextStyles;
+  late Map<String, ButtonStyle> _namedButtonStyles;
   Offset? _devToolsFABPos;
   Offset? _calloutConfigToolbarPos;
   bool skipEditModeEscape = false; // property editors can set this to prevent exit from EditMode
@@ -353,9 +378,7 @@ class FC {
 
   bool get canEditContent => HydratedBloc.storage.read("canEditContent") ?? false;
 
-  static void forceRefreshSnippetTree() => FC().snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
-
-  static void forceRefresh() => _instance!.capiBloc.add(const CAPIEvent.forceRefresh());
+  static void forceRefresh() => MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh());
 
   void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
 
@@ -379,13 +402,15 @@ class FC {
   void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
   // each snippet panel has a gk, a last selected node, and a ur
-  final Map<PageName, GlobalKey> pageGKs = {};
+  final Map<RouteName, GlobalKey> pageGKs = {};
+  String? currentRoute;
+
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   final Map<PanelName, SnippetName> snippetPlacementMap = {};
 
-  // BuildContext? pageContext(String pageName) => pageGKMap[pageName]?.currentContext;
-
-  FlutterContentPageState? pageState(String pageName) => pageGKs[pageName]?.currentState as FlutterContentPageState?;
+  EditablePageState? get currentPageState {
+    return currentRoute != null ? pageGKs[currentRoute]?.currentState as EditablePageState? : null;
+  }
 
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final List<ScrollController> registeredScrollControllers = [];
@@ -398,19 +423,14 @@ class FC {
 
   List<String> get googleFontNames => _googleFontNames;
 
-  Map<String, NamedTextStyle> get namedStyles => _namedStyles;
+  Map<String, VoidCallback> get namedVoidCallbacks => _namedVoidCallbacks;
+
+  Map<String, TextStyle> get namedTextStyles => _namedTextStyles;
+
+  Map<String, ButtonStyle> get namedButtonStyles => _namedButtonStyles;
 
   // PTreeNodeTreeController? selectedNodePTree;
   SnippetRootNode? targetSnippetBeingConfigured;
-
-  // Snippet Stack
-  final Queue<SnippetBloC> _snippetsBeingEdited = Queue<SnippetBloC>();
-
-  SnippetBloC? get snippetBeingEdited {
-    return _snippetsBeingEdited.isNotEmpty ? _snippetsBeingEdited.first : null;
-  }
-
-  bool get areAnySnippetsBeingEdited => _snippetsBeingEdited.isNotEmpty;
 
   // void updateSnippetBeingEdited(SnippetRootNode rootNode) {
   //   if (_snippetsBeingEdited.isEmpty) {
@@ -420,14 +440,6 @@ class FC {
   //   debugPrint("snippetBeingEdited is $snippetBeingEdited");
   //   return;
   // }
-
-  void pushSnippet(SnippetBloC snippetBloc) {
-    _snippetsBeingEdited.addFirst(snippetBloc);
-    debugPrint("snippetBeingEdited is $snippetBeingEdited");
-    return;
-  }
-
-  SnippetBloC? popSnippet() => areAnySnippetsBeingEdited ? _snippetsBeingEdited.removeFirst() : null;
 
   /// A FlutterContentPage has a snippet with the same route name
   void pushPage({
@@ -471,16 +483,6 @@ class FC {
   // final FeatureList _singleTargetBtnFeatures = [];
 
   // FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
-
-  bool get aSnippetIsBeingEdited => snippetBeingEdited != null;
-
-  STreeNode? get selectedNode => snippetBeingEdited?.state.selectedNode;
-
-  // STreeNode? get highlightedNode => snippetBeingEdited?.state.highlightedNode;
-
-  SnippetTreeController? get currentTreeC => snippetBeingEdited?.state.treeC;
-
-  bool get aNodeIsSelected => selectedNode != null;
 
   SnippetRootNode? currentSnippet(SnippetName snippetName) {
     SnippetRootNode? rootNode;

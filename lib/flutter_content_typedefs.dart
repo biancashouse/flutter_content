@@ -25,8 +25,9 @@ typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
-typedef RouteName = String;
-typedef PageName = String;
+// typedef RouteName = String;
+typedef RouteName = String;  // Go Route Page Name
+typedef RoutePath = String; // Go Route Path
 typedef TargetId = int;
 typedef VersionId = String;
 // typedef VersionIdHistory = List<VersionId>;
@@ -51,6 +52,7 @@ typedef PropertyName = String;
 typedef CalloutConfigChangedF = void Function(
     AlignmentEnum newTA, ArrowTypeEnum newAT);
 
+typedef ButtonStyleFunc = ButtonStyle Function();
 typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();
 typedef CAPIBlocFunc = CAPIBloC Function();
@@ -70,8 +72,6 @@ typedef TextAlignF = TextAlign Function();
 typedef JSON = Map<String, dynamic>;
 typedef SnippetJson = String;
 typedef Expansions = Set<STreeNode>;
-
-typedef SnippetBlocFunc = SnippetBloC Function();
 
 typedef SetStateF = void Function(VoidCallback f);
 

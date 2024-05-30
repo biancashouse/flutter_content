@@ -31,14 +31,14 @@ class FirebaseStorageImageNode extends CL
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',
           stringValue: name,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
@@ -48,7 +48,7 @@ class FirebaseStorageImageNode extends CL
           stringValue: fsUrl,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),

@@ -14,6 +14,7 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = OutlinedButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -24,10 +25,26 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
   @override
   final String id = 'OutlinedButtonNode';
 
-  static ButtonStyleGroup? _$buttonStyleGroup(OutlinedButtonNode v) =>
-      v.buttonStyleGroup;
-  static const Field<OutlinedButtonNode, ButtonStyleGroup> _f$buttonStyleGroup =
-      Field('buttonStyleGroup', _$buttonStyleGroup, opt: true);
+  static String? _$destinationRoutePathSnippetName(OutlinedButtonNode v) =>
+      v.destinationRoutePathSnippetName;
+  static const Field<OutlinedButtonNode, String>
+      _f$destinationRoutePathSnippetName = Field(
+          'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
+          opt: true);
+  static SnippetTemplateEnum? _$template(OutlinedButtonNode v) => v.template;
+  static const Field<OutlinedButtonNode, SnippetTemplateEnum> _f$template =
+      Field('template', _$template, opt: true);
+  static String? _$destinationPanelName(OutlinedButtonNode v) =>
+      v.destinationPanelName;
+  static const Field<OutlinedButtonNode, String> _f$destinationPanelName =
+      Field('destinationPanelName', _$destinationPanelName, opt: true);
+  static String? _$destinationSnippetName(OutlinedButtonNode v) =>
+      v.destinationSnippetName;
+  static const Field<OutlinedButtonNode, String> _f$destinationSnippetName =
+      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
+  static ButtonStyleGroup? _$buttonStyle(OutlinedButtonNode v) => v.buttonStyle;
+  static const Field<OutlinedButtonNode, ButtonStyleGroup> _f$buttonStyle =
+      Field('buttonStyle', _$buttonStyle, opt: true);
   static String? _$onTapHandlerName(OutlinedButtonNode v) => v.onTapHandlerName;
   static const Field<OutlinedButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -56,18 +73,14 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
   static const Field<OutlinedButtonNode, GlobalKey<State<StatefulWidget>>>
       _f$nodeWidgetGK =
       Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
-  static String? _$namedButtonStyle(OutlinedButtonNode v) => v.namedButtonStyle;
-  static const Field<OutlinedButtonNode, String> _f$namedButtonStyle =
-      Field('namedButtonStyle', _$namedButtonStyle, mode: FieldMode.member);
-  static String? _$destinationPageName(OutlinedButtonNode v) =>
-      v.destinationPageName;
-  static const Field<OutlinedButtonNode, String> _f$destinationPageName = Field(
-      'destinationPageName', _$destinationPageName,
-      mode: FieldMode.member);
 
   @override
   final MappableFields<OutlinedButtonNode> fields = const {
-    #buttonStyleGroup: _f$buttonStyleGroup,
+    #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
+    #template: _f$template,
+    #destinationPanelName: _f$destinationPanelName,
+    #destinationSnippetName: _f$destinationSnippetName,
+    #buttonStyle: _f$buttonStyle,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -75,8 +88,6 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
-    #namedButtonStyle: _f$namedButtonStyle,
-    #destinationPageName: _f$destinationPageName,
   };
 
   @override
@@ -88,7 +99,12 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
 
   static OutlinedButtonNode _instantiate(DecodingData data) {
     return OutlinedButtonNode(
-        buttonStyleGroup: data.dec(_f$buttonStyleGroup),
+        destinationRoutePathSnippetName:
+            data.dec(_f$destinationRoutePathSnippetName),
+        template: data.dec(_f$template),
+        destinationPanelName: data.dec(_f$destinationPanelName),
+        destinationSnippetName: data.dec(_f$destinationSnippetName),
+        buttonStyle: data.dec(_f$buttonStyle),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -151,7 +167,7 @@ abstract class OutlinedButtonNodeCopyWith<$R, $In extends OutlinedButtonNode,
     $Out> implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
   ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup;
+      get buttonStyle;
   @override
   CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
       get calloutConfigGroup;
@@ -159,7 +175,11 @@ abstract class OutlinedButtonNodeCopyWith<$R, $In extends OutlinedButtonNode,
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {ButtonStyleGroup? buttonStyleGroup,
+      {String? destinationRoutePathSnippetName,
+      SnippetTemplateEnum? template,
+      String? destinationPanelName,
+      String? destinationSnippetName,
+      ButtonStyleGroup? buttonStyle,
       String? onTapHandlerName,
       CalloutConfigGroup? calloutConfigGroup,
       STreeNode? child});
@@ -177,8 +197,8 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
       OutlinedButtonNodeMapper.ensureInitialized();
   @override
   ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup => $value.buttonStyleGroup?.copyWith
-          .$chain((v) => call(buttonStyleGroup: v));
+      get buttonStyle =>
+          $value.buttonStyle?.copyWith.$chain((v) => call(buttonStyle: v));
   @override
   CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
       get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
@@ -188,12 +208,23 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {Object? buttonStyleGroup = $none,
+          {Object? destinationRoutePathSnippetName = $none,
+          Object? template = $none,
+          Object? destinationPanelName = $none,
+          Object? destinationSnippetName = $none,
+          Object? buttonStyle = $none,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
-        if (buttonStyleGroup != $none) #buttonStyleGroup: buttonStyleGroup,
+        if (destinationRoutePathSnippetName != $none)
+          #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
+        if (template != $none) #template: template,
+        if (destinationPanelName != $none)
+          #destinationPanelName: destinationPanelName,
+        if (destinationSnippetName != $none)
+          #destinationSnippetName: destinationSnippetName,
+        if (buttonStyle != $none) #buttonStyle: buttonStyle,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -201,8 +232,15 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
       }));
   @override
   OutlinedButtonNode $make(CopyWithData data) => OutlinedButtonNode(
-      buttonStyleGroup:
-          data.get(#buttonStyleGroup, or: $value.buttonStyleGroup),
+      destinationRoutePathSnippetName: data.get(
+          #destinationRoutePathSnippetName,
+          or: $value.destinationRoutePathSnippetName),
+      template: data.get(#template, or: $value.template),
+      destinationPanelName:
+          data.get(#destinationPanelName, or: $value.destinationPanelName),
+      destinationSnippetName:
+          data.get(#destinationSnippetName, or: $value.destinationSnippetName),
+      buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

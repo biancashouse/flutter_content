@@ -20,7 +20,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<AxisEnum?>(
           snode: this,
           name: 'axis',

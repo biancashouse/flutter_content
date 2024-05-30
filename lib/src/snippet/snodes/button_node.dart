@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
+import 'package:go_router/go_router.dart';
 
 import '../pnodes/enums/enum_alignment.dart';
 
@@ -10,59 +11,93 @@ part 'button_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
 abstract class ButtonNode extends SC with ButtonNodeMappable {
-  ButtonStyleGroup? buttonStyleGroup;
-  String? namedButtonStyle;
-  String? destinationPageName; // go routeer route name
-  String? onTapHandlerName;
+  // String label;
+  // when populating a panel with a snippet
+  String? destinationPanelName;
+  String? destinationSnippetName;
+
+  // when navigating to path, which is also used as the page's snippet name
+  String? destinationRoutePathSnippetName;
+  SnippetTemplateEnum? template;
+
+  ButtonStyleGroup? buttonStyle;
+  String? onTapHandlerName; // client supplied onTap (list of handlers supplied to MaterialSPA)
 
   CalloutConfigGroup? calloutConfigGroup;
 
   ButtonNode({
-    this.buttonStyleGroup,
-    this.namedButtonStyle,
-    this.destinationPageName,
+    // required this.label,
+    this.destinationPanelName,
+    this.destinationSnippetName,
+    this.destinationRoutePathSnippetName,
+    this.template,
+    this.buttonStyle,
     this.onTapHandlerName,
     this.calloutConfigGroup,
     super.child,
   });
+
+  ButtonStyle? defaultButtonStyle();
 
   String? getTapHandlerName() => onTapHandlerName;
 
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) =>
-      [
+  List<PTreeNode> properties(BuildContext context) => [
+        PropertyGroup(
+          snode: this,
+          name: 'goto Page...',
+          children: [
+            StringPropertyValueNode(
+              snode: this,
+              name: 'destination Route Path',
+              stringValue: destinationRoutePathSnippetName,
+              onStringChange: (newValue) {
+                refreshWithUpdate(() => destinationRoutePathSnippetName = newValue);
+              },
+              options: FC().pagePaths,
+              calloutButtonSize: const Size(280, 70),
+              calloutWidth: 280,
+            ),
+          ],
+        ),
+        PropertyGroup(
+          snode: this,
+          name: 'show Snippet in Panel...',
+          children: [
+            StringPropertyValueNode(
+              snode: this,
+              name: 'destination Panel Name',
+              stringValue: destinationPanelName,
+              onStringChange: (newValue) {
+                refreshWithUpdate(() => destinationPanelName = newValue);
+              },
+              calloutButtonSize: const Size(280, 70),
+              calloutWidth: 280,
+            ),
+            StringPropertyValueNode(
+              snode: this,
+              name: 'destination Snippet Name',
+              stringValue: destinationSnippetName,
+              onStringChange: (newValue) {
+                refreshWithUpdate(() => destinationSnippetName = newValue);
+              },
+              calloutButtonSize: const Size(280, 70),
+              calloutWidth: 280,
+            )
+          ],
+        ),
         ButtonStylePropertyGroup(
           snode: this,
-          buttonStyleGroup: buttonStyleGroup,
-          onGroupChange: (newGroup) {},
-        ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'namedButtonStyle',
-          stringValue: namedButtonStyle,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(() => namedButtonStyle = newValue),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 280,
-        ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'Page Name',
-          stringValue: destinationPageName,
-          onStringChange: (newValue) => refreshWithUpdate(() => destinationPageName = newValue),
-          expands: false,
-          calloutButtonSize: const Size(280, 20),
-          calloutWidth: 280,
-          options: FC().routeNames,
+          buttonStyleGroup: buttonStyle,
+          onGroupChange: (newValue) => refreshWithUpdate(() => buttonStyle = newValue),
         ),
         StringPropertyValueNode(
           snode: this,
           name: 'onTapHandlerName',
           stringValue: onTapHandlerName,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(() => onTapHandlerName = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => onTapHandlerName = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -75,42 +110,48 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   Feature? get feature => calloutConfigGroup?.contentSnippetName;
 
-  Future<void> onPressed() async {
-    // possible callout
-    if (feature != null) {
+  void onPressed(BuildContext context) {
+    if (onTapHandlerName != null) {
+      FC().namedVoidCallbacks[onTapHandlerName]?.call();
+    } else if (feature != null) {
+      // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
-            () =>
-            Callout.showOverlay(
-                targetGkF: () => FC().getCalloutGk(feature),
-                boxContentF: (_) =>
-                    SnippetPanel.fromSnippet(
-                      panelName: calloutConfigGroup!.contentSnippetName!,
-                      snippetName: BODY_PLACEHOLDER,
-                      allowButtonCallouts: false,
-                    ),
-                calloutConfig: CalloutConfig(
-                  feature: feature!,
-                  initialTargetAlignment: calloutConfigGroup!.targetAlignment != null
-                      ? calloutConfigGroup!.targetAlignment!.flutterValue
-                      : AlignmentEnum.bottomRight.flutterValue,
-                  initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
-                      ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
-                      : AlignmentEnum.topLeft.flutterValue,
-                  suppliedCalloutW: 200,
-                  suppliedCalloutH: 150,
-                  arrowType: calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
-                  finalSeparation: 100,
-                  barrier: CalloutBarrier(
-                    opacity: 0.1,
-                    onTappedF: () async {
-                      Callout.dismiss(feature!);
-                    },
-                  ),
-                  fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
-                )),
+        () => Callout.showOverlay(
+            targetGkF: () => FC().getCalloutGk(feature),
+            boxContentF: (_) => SnippetPanel.fromSnippet(
+                  panelName: calloutConfigGroup!.contentSnippetName!,
+                  snippetName: BODY_PLACEHOLDER,
+                  // allowButtonCallouts: false,
+                ),
+            calloutConfig: CalloutConfig(
+              feature: feature!,
+              initialTargetAlignment:
+                  calloutConfigGroup!.targetAlignment != null ? calloutConfigGroup!.targetAlignment!.flutterValue : AlignmentEnum.bottomRight.flutterValue,
+              initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
+                  ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
+                  : AlignmentEnum.topLeft.flutterValue,
+              suppliedCalloutW: 200,
+              suppliedCalloutH: 150,
+              arrowType: calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
+              finalSeparation: 100,
+              barrier: CalloutBarrier(
+                opacity: 0.1,
+                onTappedF: () async {
+                  Callout.dismiss(feature!);
+                },
+              ),
+              fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
+            )),
       );
+    } else if (destinationRoutePathSnippetName != null) {
+      FC().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      context.go(destinationRoutePathSnippetName!);
+      // create a GoRoute and load or create snippet with pageName
+    } else if (destinationPanelName != null && destinationSnippetName != null) {
+      // if panel found, load snippet into it (may need to create empty snippet)
+      //TODO
     }
   }
 

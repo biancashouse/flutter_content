@@ -12,7 +12,7 @@ class CenterNode extends SC with CenterNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => const [];
+  List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
   String toString() => FLUTTER_TYPE;

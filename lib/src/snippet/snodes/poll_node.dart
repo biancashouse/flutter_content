@@ -29,7 +29,7 @@ class PollNode extends MC with PollNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'name',
@@ -38,7 +38,7 @@ class PollNode extends MC with PollNodeMappable {
           // skipHelperText: true,
           // skipLabelText: true,
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
@@ -48,7 +48,7 @@ class PollNode extends MC with PollNodeMappable {
           stringValue: title,
           expands: false,
           numLines: 3,
-          onStringChange: (newValue) => refreshWithUpdate(() => title = newValue),
+          onStringChange: (newValue) => refreshWithUpdate(() => title = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),

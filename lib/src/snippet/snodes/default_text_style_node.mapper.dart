@@ -29,9 +29,6 @@ class DefaultTextStyleNodeMapper
       v.textStyleGroup;
   static const Field<DefaultTextStyleNode, TextStyleGroup> _f$textStyleGroup =
       Field('textStyleGroup', _$textStyleGroup, opt: true);
-  static String? _$namedTextStyle(DefaultTextStyleNode v) => v.namedTextStyle;
-  static const Field<DefaultTextStyleNode, String> _f$namedTextStyle =
-      Field('namedTextStyle', _$namedTextStyle, opt: true);
   static TextAlignEnum? _$textAlign(DefaultTextStyleNode v) => v.textAlign;
   static const Field<DefaultTextStyleNode, TextAlignEnum> _f$textAlign =
       Field('textAlign', _$textAlign, opt: true);
@@ -60,7 +57,6 @@ class DefaultTextStyleNodeMapper
   @override
   final MappableFields<DefaultTextStyleNode> fields = const {
     #textStyleGroup: _f$textStyleGroup,
-    #namedTextStyle: _f$namedTextStyle,
     #textAlign: _f$textAlign,
     #child: _f$child,
     #uid: _f$uid,
@@ -79,7 +75,6 @@ class DefaultTextStyleNodeMapper
   static DefaultTextStyleNode _instantiate(DecodingData data) {
     return DefaultTextStyleNode(
         textStyleGroup: data.dec(_f$textStyleGroup),
-        namedTextStyle: data.dec(_f$namedTextStyle),
         textAlign: data.dec(_f$textAlign),
         child: data.dec(_f$child));
   }
@@ -148,7 +143,6 @@ abstract class DefaultTextStyleNodeCopyWith<
   @override
   $R call(
       {TextStyleGroup? textStyleGroup,
-      String? namedTextStyle,
       TextAlignEnum? textAlign,
       STreeNode? child});
   DefaultTextStyleNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -173,19 +167,16 @@ class _DefaultTextStyleNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? textStyleGroup = $none,
-          Object? namedTextStyle = $none,
           Object? textAlign = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (textStyleGroup != $none) #textStyleGroup: textStyleGroup,
-        if (namedTextStyle != $none) #namedTextStyle: namedTextStyle,
         if (textAlign != $none) #textAlign: textAlign,
         if (child != $none) #child: child
       }));
   @override
   DefaultTextStyleNode $make(CopyWithData data) => DefaultTextStyleNode(
       textStyleGroup: data.get(#textStyleGroup, or: $value.textStyleGroup),
-      namedTextStyle: data.get(#namedTextStyle, or: $value.namedTextStyle),
       textAlign: data.get(#textAlign, or: $value.textAlign),
       child: data.get(#child, or: $value.child));
 

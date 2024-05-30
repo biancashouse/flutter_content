@@ -19,6 +19,8 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       TextButtonNodeMapper.ensureInitialized();
       FilledButtonNodeMapper.ensureInitialized();
       IconButtonNodeMapper.ensureInitialized();
+      MenuItemButtonNodeMapper.ensureInitialized();
+      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStyleGroupMapper.ensureInitialized();
       CalloutConfigGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -29,16 +31,25 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   @override
   final String id = 'ButtonNode';
 
-  static ButtonStyleGroup? _$buttonStyleGroup(ButtonNode v) =>
-      v.buttonStyleGroup;
-  static const Field<ButtonNode, ButtonStyleGroup> _f$buttonStyleGroup =
-      Field('buttonStyleGroup', _$buttonStyleGroup, opt: true);
-  static String? _$namedButtonStyle(ButtonNode v) => v.namedButtonStyle;
-  static const Field<ButtonNode, String> _f$namedButtonStyle =
-      Field('namedButtonStyle', _$namedButtonStyle, opt: true);
-  static String? _$destinationPageName(ButtonNode v) => v.destinationPageName;
-  static const Field<ButtonNode, String> _f$destinationPageName =
-      Field('destinationPageName', _$destinationPageName, opt: true);
+  static String? _$destinationPanelName(ButtonNode v) => v.destinationPanelName;
+  static const Field<ButtonNode, String> _f$destinationPanelName =
+      Field('destinationPanelName', _$destinationPanelName, opt: true);
+  static String? _$destinationSnippetName(ButtonNode v) =>
+      v.destinationSnippetName;
+  static const Field<ButtonNode, String> _f$destinationSnippetName =
+      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
+  static String? _$destinationRoutePathSnippetName(ButtonNode v) =>
+      v.destinationRoutePathSnippetName;
+  static const Field<ButtonNode, String> _f$destinationRoutePathSnippetName =
+      Field(
+          'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
+          opt: true);
+  static SnippetTemplateEnum? _$template(ButtonNode v) => v.template;
+  static const Field<ButtonNode, SnippetTemplateEnum> _f$template =
+      Field('template', _$template, opt: true);
+  static ButtonStyleGroup? _$buttonStyle(ButtonNode v) => v.buttonStyle;
+  static const Field<ButtonNode, ButtonStyleGroup> _f$buttonStyle =
+      Field('buttonStyle', _$buttonStyle, opt: true);
   static String? _$onTapHandlerName(ButtonNode v) => v.onTapHandlerName;
   static const Field<ButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -68,9 +79,11 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
 
   @override
   final MappableFields<ButtonNode> fields = const {
-    #buttonStyleGroup: _f$buttonStyleGroup,
-    #namedButtonStyle: _f$namedButtonStyle,
-    #destinationPageName: _f$destinationPageName,
+    #destinationPanelName: _f$destinationPanelName,
+    #destinationSnippetName: _f$destinationSnippetName,
+    #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
+    #template: _f$template,
+    #buttonStyle: _f$buttonStyle,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -113,14 +126,18 @@ mixin ButtonNodeMappable {
 abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyleGroup;
+      get buttonStyle;
   CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
       get calloutConfigGroup;
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {ButtonStyleGroup? buttonStyleGroup,
+      {String? destinationPanelName,
+      String? destinationSnippetName,
+      String? destinationRoutePathSnippetName,
+      SnippetTemplateEnum? template,
+      ButtonStyleGroup? buttonStyle,
       String? onTapHandlerName,
       CalloutConfigGroup? calloutConfigGroup,
       STreeNode? child});

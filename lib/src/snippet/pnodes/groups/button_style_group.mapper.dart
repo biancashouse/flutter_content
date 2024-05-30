@@ -13,7 +13,6 @@ class ButtonStyleGroupMapper extends ClassMapperBase<ButtonStyleGroup> {
   static ButtonStyleGroupMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ButtonStyleGroupMapper._());
-      TextStyleGroupMapper.ensureInitialized();
       OutlinedBorderEnumMapper.ensureInitialized();
       BorderSideGroupMapper.ensureInitialized();
     }
@@ -23,6 +22,9 @@ class ButtonStyleGroupMapper extends ClassMapperBase<ButtonStyleGroup> {
   @override
   final String id = 'ButtonStyleGroup';
 
+  static String? _$namedButtonStyle(ButtonStyleGroup v) => v.namedButtonStyle;
+  static const Field<ButtonStyleGroup, String> _f$namedButtonStyle =
+      Field('namedButtonStyle', _$namedButtonStyle, opt: true);
   static int? _$fgColorValue(ButtonStyleGroup v) => v.fgColorValue;
   static const Field<ButtonStyleGroup, int> _f$fgColorValue =
       Field('fgColorValue', _$fgColorValue, opt: true);
@@ -35,9 +37,6 @@ class ButtonStyleGroupMapper extends ClassMapperBase<ButtonStyleGroup> {
   static double? _$padding(ButtonStyleGroup v) => v.padding;
   static const Field<ButtonStyleGroup, double> _f$padding =
       Field('padding', _$padding, opt: true);
-  static TextStyleGroup? _$style(ButtonStyleGroup v) => v.style;
-  static const Field<ButtonStyleGroup, TextStyleGroup> _f$style =
-      Field('style', _$style, opt: true);
   static OutlinedBorderEnum? _$shape(ButtonStyleGroup v) => v.shape;
   static const Field<ButtonStyleGroup, OutlinedBorderEnum> _f$shape =
       Field('shape', _$shape, opt: true);
@@ -68,11 +67,11 @@ class ButtonStyleGroupMapper extends ClassMapperBase<ButtonStyleGroup> {
 
   @override
   final MappableFields<ButtonStyleGroup> fields = const {
+    #namedButtonStyle: _f$namedButtonStyle,
     #fgColorValue: _f$fgColorValue,
     #bgColorValue: _f$bgColorValue,
     #elevation: _f$elevation,
     #padding: _f$padding,
-    #style: _f$style,
     #shape: _f$shape,
     #side: _f$side,
     #radius: _f$radius,
@@ -86,11 +85,11 @@ class ButtonStyleGroupMapper extends ClassMapperBase<ButtonStyleGroup> {
 
   static ButtonStyleGroup _instantiate(DecodingData data) {
     return ButtonStyleGroup(
+        namedButtonStyle: data.dec(_f$namedButtonStyle),
         fgColorValue: data.dec(_f$fgColorValue),
         bgColorValue: data.dec(_f$bgColorValue),
         elevation: data.dec(_f$elevation),
         padding: data.dec(_f$padding),
-        style: data.dec(_f$style),
         shape: data.dec(_f$shape),
         side: data.dec(_f$side),
         radius: data.dec(_f$radius),
@@ -156,14 +155,13 @@ extension ButtonStyleGroupValueCopy<$R, $Out>
 
 abstract class ButtonStyleGroupCopyWith<$R, $In extends ButtonStyleGroup, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>? get style;
   BorderSideGroupCopyWith<$R, BorderSideGroup, BorderSideGroup>? get side;
   $R call(
-      {int? fgColorValue,
+      {String? namedButtonStyle,
+      int? fgColorValue,
       int? bgColorValue,
       double? elevation,
       double? padding,
-      TextStyleGroup? style,
       OutlinedBorderEnum? shape,
       BorderSideGroup? side,
       double? radius,
@@ -186,18 +184,15 @@ class _ButtonStyleGroupCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ButtonStyleGroup> $mapper =
       ButtonStyleGroupMapper.ensureInitialized();
   @override
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>? get style =>
-      $value.style?.copyWith.$chain((v) => call(style: v));
-  @override
   BorderSideGroupCopyWith<$R, BorderSideGroup, BorderSideGroup>? get side =>
       $value.side?.copyWith.$chain((v) => call(side: v));
   @override
   $R call(
-          {Object? fgColorValue = $none,
+          {Object? namedButtonStyle = $none,
+          Object? fgColorValue = $none,
           Object? bgColorValue = $none,
           Object? elevation = $none,
           Object? padding = $none,
-          Object? style = $none,
           Object? shape = $none,
           Object? side = $none,
           Object? radius = $none,
@@ -208,11 +203,11 @@ class _ButtonStyleGroupCopyWithImpl<$R, $Out>
           Object? fixedW = $none,
           Object? fixedH = $none}) =>
       $apply(FieldCopyWithData({
+        if (namedButtonStyle != $none) #namedButtonStyle: namedButtonStyle,
         if (fgColorValue != $none) #fgColorValue: fgColorValue,
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
         if (elevation != $none) #elevation: elevation,
         if (padding != $none) #padding: padding,
-        if (style != $none) #style: style,
         if (shape != $none) #shape: shape,
         if (side != $none) #side: side,
         if (radius != $none) #radius: radius,
@@ -225,11 +220,12 @@ class _ButtonStyleGroupCopyWithImpl<$R, $Out>
       }));
   @override
   ButtonStyleGroup $make(CopyWithData data) => ButtonStyleGroup(
+      namedButtonStyle:
+          data.get(#namedButtonStyle, or: $value.namedButtonStyle),
       fgColorValue: data.get(#fgColorValue, or: $value.fgColorValue),
       bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
       elevation: data.get(#elevation, or: $value.elevation),
       padding: data.get(#padding, or: $value.padding),
-      style: data.get(#style, or: $value.style),
       shape: data.get(#shape, or: $value.shape),
       side: data.get(#side, or: $value.side),
       radius: data.get(#radius, or: $value.radius),

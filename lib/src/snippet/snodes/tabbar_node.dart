@@ -30,7 +30,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   });
 
   @override
-  List<PTreeNode> createPropertiesList(BuildContext context) =>
+  List<PTreeNode> properties(BuildContext context) =>
       [
         ColorPropertyValueNode(
           snode: this,

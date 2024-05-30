@@ -7,7 +7,7 @@ part 'app_info_model.mapper.dart';
 class AppInfoModel with AppInfoModelMappable {
   bool autoPublishDefault;
   STreeNode? clipboard;
-  List<SnippetName> snippetNames;
+  List<SnippetName> snippetNames; // a snippet may be a Page snippet; i.e. also has a Route Path property
 
   AppInfoModel({
     this.clipboard,
