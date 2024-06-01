@@ -40,9 +40,7 @@ mixin _$CAPIEvent {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -101,9 +99,7 @@ mixin _$CAPIEvent {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -153,9 +149,7 @@ mixin _$CAPIEvent {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -420,9 +414,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -484,9 +476,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -539,9 +529,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -836,9 +824,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -900,9 +886,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -955,9 +939,7 @@ class _$OverrideTargetGKImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1237,9 +1219,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -1301,9 +1281,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1356,9 +1334,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1644,9 +1620,7 @@ class _$UpdateClipboardImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -1708,9 +1682,7 @@ class _$UpdateClipboardImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -1763,9 +1735,7 @@ class _$UpdateClipboardImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2055,9 +2025,7 @@ class _$PublishSnippetImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -2119,9 +2087,7 @@ class _$PublishSnippetImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2174,9 +2140,7 @@ class _$PublishSnippetImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2465,9 +2429,7 @@ class _$RevertSnippetImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -2529,9 +2491,7 @@ class _$RevertSnippetImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2584,9 +2544,7 @@ class _$RevertSnippetImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2869,9 +2827,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -2933,9 +2889,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -2988,9 +2942,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3268,9 +3220,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -3332,9 +3282,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3387,9 +3335,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3662,9 +3608,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -3726,9 +3670,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -3781,9 +3723,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4070,9 +4010,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -4134,9 +4072,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4189,9 +4125,7 @@ class _$SetPanelSnippetImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4482,9 +4416,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -4546,9 +4478,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4601,9 +4531,7 @@ class _$PushSnippetEditorImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -4882,9 +4810,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -4946,9 +4872,7 @@ class _$PopSnippetEditorImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5001,9 +4925,7 @@ class _$PopSnippetEditorImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5249,9 +5171,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -5313,9 +5233,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5368,9 +5286,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5641,9 +5557,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -5705,9 +5619,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5760,9 +5672,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -5947,8 +5857,7 @@ abstract class _$$SelectNodeImplCopyWith<$Res> {
           _$SelectNodeImpl value, $Res Function(_$SelectNodeImpl) then) =
       __$$SelectNodeImplCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK});
+  $Res call({STreeNode node});
 }
 
 /// @nodoc
@@ -5963,17 +5872,12 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? node = null,
-    Object? selectedTreeNodeGK = null,
   }) {
     return _then(_$SelectNodeImpl(
       node: null == node
           ? _value.node
           : node // ignore: cast_nullable_to_non_nullable
               as STreeNode,
-      selectedTreeNodeGK: null == selectedTreeNodeGK
-          ? _value.selectedTreeNodeGK
-          : selectedTreeNodeGK // ignore: cast_nullable_to_non_nullable
-              as GlobalKey<State<StatefulWidget>>,
     ));
   }
 }
@@ -5981,18 +5885,14 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
-  const _$SelectNodeImpl(
-      {required this.node, required this.selectedTreeNodeGK});
+  const _$SelectNodeImpl({required this.node});
 
   @override
   final STreeNode node;
-// required GlobalKey selectedWidgetGK,
-  @override
-  final GlobalKey<State<StatefulWidget>> selectedTreeNodeGK;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.selectNode(node: $node, selectedTreeNodeGK: $selectedTreeNodeGK)';
+    return 'CAPIEvent.selectNode(node: $node)';
   }
 
   @override
@@ -6000,8 +5900,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.selectNode'))
-      ..add(DiagnosticsProperty('node', node))
-      ..add(DiagnosticsProperty('selectedTreeNodeGK', selectedTreeNodeGK));
+      ..add(DiagnosticsProperty('node', node));
   }
 
   @override
@@ -6009,13 +5908,11 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SelectNodeImpl &&
-            (identical(other.node, node) || other.node == node) &&
-            (identical(other.selectedTreeNodeGK, selectedTreeNodeGK) ||
-                other.selectedTreeNodeGK == selectedTreeNodeGK));
+            (identical(other.node, node) || other.node == node));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, node, selectedTreeNodeGK);
+  int get hashCode => Object.hash(runtimeType, node);
 
   @JsonKey(ignore: true)
   @override
@@ -6048,9 +5945,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -6089,7 +5984,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return selectNode(node, selectedTreeNodeGK);
+    return selectNode(node);
   }
 
   @override
@@ -6112,9 +6007,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6144,7 +6037,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return selectNode?.call(node, selectedTreeNodeGK);
+    return selectNode?.call(node);
   }
 
   @override
@@ -6167,9 +6060,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6201,7 +6092,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult orElse(),
   }) {
     if (selectNode != null) {
-      return selectNode(node, selectedTreeNodeGK);
+      return selectNode(node);
     }
     return orElse();
   }
@@ -6339,13 +6230,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
 }
 
 abstract class SelectNode implements CAPIEvent {
-  const factory SelectNode(
-          {required final STreeNode node,
-          required final GlobalKey<State<StatefulWidget>> selectedTreeNodeGK}) =
-      _$SelectNodeImpl;
+  const factory SelectNode({required final STreeNode node}) = _$SelectNodeImpl;
 
-  STreeNode get node; // required GlobalKey selectedWidgetGK,
-  GlobalKey<State<StatefulWidget>> get selectedTreeNodeGK;
+  STreeNode get node;
   @JsonKey(ignore: true)
   _$$SelectNodeImplCopyWith<_$SelectNodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -6419,9 +6306,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -6483,9 +6368,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6538,9 +6421,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6821,9 +6702,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -6885,9 +6764,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -6940,9 +6817,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -7243,9 +7118,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -7307,9 +7180,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -7362,9 +7233,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -7665,9 +7534,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -7729,9 +7596,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -7784,9 +7649,7 @@ class _$WrapSelectionWithImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -8117,9 +7980,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -8182,9 +8043,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -8238,9 +8097,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -8546,9 +8403,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -8610,9 +8465,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -8665,9 +8518,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -8968,9 +8819,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -9032,9 +8881,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -9087,9 +8934,7 @@ class _$AddSiblingAfterImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -9371,9 +9216,7 @@ class _$PasteReplacementImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -9435,9 +9278,7 @@ class _$PasteReplacementImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -9490,9 +9331,7 @@ class _$PasteReplacementImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -9782,9 +9621,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -9846,9 +9683,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -9901,9 +9736,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10153,9 +9986,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -10217,9 +10048,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10272,9 +10101,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10515,9 +10342,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -10579,9 +10404,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10634,9 +10457,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10877,9 +10698,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -10941,9 +10760,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -10996,9 +10813,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -11239,9 +11054,7 @@ class _$CompleteDeletionImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -11303,9 +11116,7 @@ class _$CompleteDeletionImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -11358,9 +11169,7 @@ class _$CompleteDeletionImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -11635,9 +11444,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -11699,9 +11506,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -11754,9 +11559,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12038,9 +11841,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -12102,9 +11903,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12157,9 +11956,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12450,9 +12247,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -12514,9 +12309,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12569,9 +12362,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12856,9 +12647,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -12920,9 +12709,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -12975,9 +12762,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -13250,9 +13035,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -13314,9 +13097,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -13369,9 +13150,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -13619,9 +13398,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(
-            STreeNode node, GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)
-        selectNode,
+    required TResult Function(STreeNode node) selectNode,
     required TResult Function() clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
@@ -13683,9 +13460,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult? Function(STreeNode node)? selectNode,
     TResult? Function()? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
@@ -13738,9 +13513,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(STreeNode node,
-            GlobalKey<State<StatefulWidget>> selectedTreeNodeGK)?
-        selectNode,
+    TResult Function(STreeNode node)? selectNode,
     TResult Function()? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?

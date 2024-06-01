@@ -422,6 +422,19 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           selectedNode: selectedNode,
         );
 
+        MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
+          node: selectedNode,
+          // imageTC: tc,
+          // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+          // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+        ));
+        Useful.afterNextBuildDo(() {
+          FC().currentPageState
+            ?..removeAllNodeWidgetOverlays()
+            ..showNodeWidgetOverlay(selectedNode);
+          // create selected node's properties tree
+        });
+
         // set the properties tree
         // final List<PTreeNode> propertyNodes = sel.properties(context);
         // // get a new treeController only when snippet selected

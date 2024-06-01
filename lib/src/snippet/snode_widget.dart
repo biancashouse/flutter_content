@@ -146,7 +146,7 @@ class NodeWidget extends StatelessWidget {
               node: entry.node,
               // imageTC: tc,
               // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-              selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+              // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             Useful.afterNextBuildDo(() {
               FC().currentPageState

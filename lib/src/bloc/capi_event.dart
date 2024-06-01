@@ -215,7 +215,7 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.selectNode({
     required STreeNode node,
     // required GlobalKey selectedWidgetGK,
-    required GlobalKey selectedTreeNodeGK,
+    // required GlobalKey selectedTreeNodeGK,
     // TargetModel? imageTC,
     // TargetModel? widgetTC,
   }) = SelectNode;

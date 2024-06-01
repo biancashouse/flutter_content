@@ -130,7 +130,7 @@ void showSnippetTreeAndPropertiesCallout({
   STreeNode sel = selectedNode ?? startingAtNode;
   MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
     node: sel,
-    selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+    //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
   ));
   Useful.afterNextBuildDo(() {

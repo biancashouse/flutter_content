@@ -1232,7 +1232,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     state.snippetBeingEdited!.treeC = possiblyNewTreeC;
     state.snippetBeingEdited!.selectedNode = event.node;
-    state.snippetBeingEdited!.selectedTreeNodeGK = event.selectedTreeNodeGK;
+    // state.snippetBeingEdited!.selectedTreeNodeGK = event.selectedTreeNodeGK;
     state.snippetBeingEdited!.showProperties = true;
     state.snippetBeingEdited!.nodeBeingDeleted = null;
 
