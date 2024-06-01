@@ -45,12 +45,11 @@ class EditablePageState extends State<EditablePage> {
     FC().pageGKs[widget.routePath] = widget.key as GlobalKey;
     super.initState();
 
-    Useful.afterNextBuildDo((){
+    Useful.afterNextBuildDo(() {
       setState(() {
-        fabPosition = Offset(20, Useful.scrH-90); // Initial position of the FAB
+        fabPosition = Offset(20, Useful.scrH - 90); // Initial position of the FAB
       });
-    }
-    );
+    });
   }
 
   //will go null after user tap bianca
@@ -90,24 +89,22 @@ class EditablePageState extends State<EditablePage> {
                 child: Stack(
                   children: [
                     Zoomer(
-                      child: Useful.isAndroid
-                          ? _buildAndroid(context, widget.builder(context))
-                          : widget.builder(context),
+                      child: Useful.isAndroid ? _buildAndroid(context, widget.builder(context)) : widget.builder(context),
                     ),
-                    if (fabPosition != null)
+                    if (fabPosition != null && isFABVisible)
                       Positioned(
-                      left: fabPosition!.dx,
-                      top: fabPosition!.dy,
-                      child: Draggable(
-                        feedback: FAB(),
-                        child: isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
-                        onDragEnd: (details) {
-                          setState(() {
-                            fabPosition = details.offset; // Update FAB position when dragged
-                          });
-                        },
+                        left: fabPosition!.dx,
+                        top: fabPosition!.dy,
+                        child: Draggable(
+                          feedback: FAB(),
+                          child: FAB(), //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
+                          onDragEnd: (details) {
+                            setState(() {
+                              fabPosition = details.offset; // Update FAB position when dragged
+                            });
+                          },
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -126,13 +123,15 @@ class EditablePageState extends State<EditablePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                      IconButton(
+                        tooltip: 'show editable widgets',
+                        onPressed: () async {
+                          enterEditMode(); //rootState.context);
+                        },
+                        icon: const Icon(Icons.search, color: Colors.white),
+                      ),
                     IconButton(
-                      onPressed: () async {
-                        enterEditMode(); //rootState.context);
-                      },
-                      icon: const Icon(Icons.search, color: Colors.white),
-                    ),
-                    IconButton(
+                      tooltip: 'sign out',
                       onPressed: () async {
                         if (!Callout.anyPresent(['config-toolbar'])) _signOut();
                       },
@@ -148,10 +147,41 @@ class EditablePageState extends State<EditablePage> {
             : _lockIconButton(context),
       );
 
+  void showExitEditModeCallout() {
+    Callout.showOverlay(
+      boxContentF: (ctx) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.orange,
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        child: IconButton(
+          tooltip: 'exit edit mode',
+          onPressed: () async {
+            if (!Callout.anyPresent(['config-toolbar'])) exitEditMode();
+          },
+          icon: const Icon(
+            Icons.close,
+            color: Colors.red,
+            size: 36,
+          ),
+        ),
+      ),
+      calloutConfig: CalloutConfig(
+        feature: "exit-editMode",
+        initialCalloutPos: fabPosition,
+        suppliedCalloutW: 60,
+        suppliedCalloutH: 60,
+        borderRadius: 20,
+        fillColor: Colors.orange,
+      ),
+    );
+  }
+
   void enterEditMode() {
     hideFAB();
     FC().inEditMode.value = true;
     showAllNodeWidgetOverlays();
+    showExitEditModeCallout();
     // Callout.showTextToast(
     //   feature: 'tap-a-widget',
     //   backgroundColor: Colors.red,
@@ -171,6 +201,7 @@ class EditablePageState extends State<EditablePage> {
       Callout.dismiss(feature);
     }
     unhideFAB();
+    Callout.dismiss('exit-editMode');
     MaterialSPA.capiBloc.add(const CAPIEvent.popSnippetEditor());
   }
 

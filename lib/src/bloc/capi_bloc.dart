@@ -362,6 +362,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     await modelRepo.updateSnippetProps(
       snippetName: event.snippetName,
       editingVersionId: event.versionId,
+      publishingVersionId: event.versionId,
     );
 
     if (stopwatch.elapsedMilliseconds < 2000) {

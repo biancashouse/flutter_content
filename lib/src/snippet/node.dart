@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -66,6 +65,20 @@ abstract class Node extends Object {
     // }
 
     if (node is PropertyGroup) {
+      // named text style hides individual text style properties
+      if (node is TextStylePropertyGroup) {
+        var namedTextStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedTextStyle';});
+        if (namedTextStyleNode is StringPropertyValueNode && namedTextStyleNode.stringValue != null) {
+          return [namedTextStyleNode];
+        }
+      }
+      // ditto for button styles
+      if (node is ButtonStylePropertyGroup) {
+        var namedButtonStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedButtonStyle';});
+        if (namedButtonStyleNode is StringPropertyValueNode && namedButtonStyleNode.stringValue != null) {
+          return [namedButtonStyleNode];
+        }
+      }
       return node.children;
     }
 

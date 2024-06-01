@@ -21,6 +21,7 @@ typedef OptionCountsAndVoterRecord = ({
   int? when
 });
 
+typedef TextStyleName = String;
 typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;

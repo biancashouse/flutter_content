@@ -86,9 +86,12 @@ class FireStoreModelRepository implements IModelRepository {
       // populate snippetInfo with its version ids
       try {
         final versionsSnapshot = await snippetInfoDocRef.collection('versions').get();
-        final versionIds = versionsSnapshot.docs.map((doc) => doc.id).toList();
-        FC().versionIdCache[snippetName] ??= [];
+        var versionIds = versionsSnapshot.docs.map((doc) => doc.id);
+        FC().versionIdCache[snippetName] ??= [];  //LinkedList<VersionEntryItem>();
         FC().versionIdCache[snippetName]?.addAll(versionIds);
+        // FC().versionIdCache[snippetName]?.addAll(
+        //       versionIds.map((vId) => VersionEntryItem(vId)),
+        //     );
       } catch (e) {
         // Handle errors
         print(e.toString());
@@ -131,12 +134,12 @@ class FireStoreModelRepository implements IModelRepository {
         version = SnippetRootNodeMapper.fromMap(data);
         // cache it
         FC().versionCache[snippetName] ??= {};
-        FC().versionIdCache[snippetName] ??= [];
+        FC().versionIdCache[snippetName] ??= [];  //LinkedList<VersionEntryItem>();
         if (!FC().versionCache[snippetName]!.containsKey(versionId)) {
           FC().versionCache[snippetName]!.addAll({versionId: version});
         }
         if (!FC().versionIdCache[snippetName]!.contains(versionId)) {
-          FC().versionIdCache[snippetName]?.add(versionId);
+          FC().versionIdCache[snippetName]?.add(versionId); //.add(VersionEntryItem(versionId));
         }
         debugPrint('editing: ${snippetInfo.editingVersionId}');
         debugPrint('published: ${snippetInfo.publishedVersionId}');
@@ -172,11 +175,13 @@ class FireStoreModelRepository implements IModelRepository {
   Future<VersionId?> saveLatestSnippetVersion({
     required SnippetName snippetName,
   }) async {
-    var fc = FC();
+    // var fc = FC();
 
     var snippetInfo = FC().snippetInfoCache[snippetName];
     var latestVersionId = FC().versionIdCache[snippetName]?.lastOrNull;
-    var latestVersion = FC().versionCache[snippetName]?[latestVersionId];
+    var latestVersion = latestVersionId == null
+        ? null
+        : FC().versionCache[snippetName]?[latestVersionId];
 
     if (latestVersion == null) return null;
 
@@ -208,7 +213,7 @@ class FireStoreModelRepository implements IModelRepository {
     VersionId? publishingVersionId,
     bool? autoPublish,
   }) async {
-    var fc = FC();
+    // var fc = FC();
 
     var snippet = FC().snippetInfoCache[snippetName];
     if (snippet == null) return;
@@ -219,6 +224,10 @@ class FireStoreModelRepository implements IModelRepository {
       'publishedVersionId': publishingVersionId ?? snippet.publishedVersionId,
       'autoPublish': autoPublish ?? snippet.autoPublish,
     }, SetOptions(merge: true));
+
+    // update local values
+    FC().snippetInfoCache[snippetName]!..editingVersionId = editingVersionId;
+    FC().snippetInfoCache[snippetName]!..publishedVersionId = editingVersionId;
 
     debugPrint('--- UPDATED SNIPPET PROPERTIES ------------------------------');
     debugPrint('wrote snippet ($snippetName) properties to FB:');

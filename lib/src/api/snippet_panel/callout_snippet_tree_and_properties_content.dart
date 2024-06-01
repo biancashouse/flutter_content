@@ -62,6 +62,14 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     //     }
     //   });
     // }
+    // for the prev and next icons
+    var fc = FC();
+    SnippetName? snippetName = MaterialSPA.rootNode?.name;
+    if (snippetName == null) return const Icon(Icons.error_outline, size: 48, color: Colors.orange);
+    VersionId? currentEditingVersionId = FC().snippetInfoCache[snippetName]?.editingVersionId;
+    if (currentEditingVersionId == null) return const Icon(Icons.error_outline, size: 48, color: Colors.lime);
+    int index = FC().versionIds(snippetName).indexOf(currentEditingVersionId);
+    //
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
       child: Scaffold(
@@ -101,6 +109,45 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           //   ),
           // ),
           actions: [
+            IconButton(
+              hoverColor: Colors.white30,
+              onPressed: () async {
+                if (index > 0) {
+                  VersionId? prevId = FC().versionIds(snippetName)[index - 1];
+                  MaterialSPA.capiBloc.add(
+                    CAPIEvent.revertSnippet(
+                      snippetName: snippetName,
+                      versionId: Useful.removeNonNumeric(prevId),
+                    ),
+                  );
+                  Useful.afterNextBuildDo(() {
+                    debugPrint('reverted to previous version.');
+                  });
+                }
+              },
+              icon: Icon(Icons.undo, color: index > 0 ? Colors.white : Colors.white54),
+              tooltip: 'previous version',
+            ),
+
+            IconButton(
+              hoverColor: Colors.white30,
+              onPressed: () async {
+                if (index < FC().versionIds(snippetName).length - 1) {
+                  VersionId? nextId = FC().versionIds(snippetName)[index + 1];
+                  MaterialSPA.capiBloc.add(
+                    CAPIEvent.revertSnippet(
+                      snippetName: snippetName,
+                      versionId: Useful.removeNonNumeric(nextId),
+                    ),
+                  );
+                  Useful.afterNextBuildDo(() {
+                    debugPrint('reverted to next version.');
+                  });
+                }
+              },
+              icon: Icon(Icons.redo, color: (index < FC().versionIds(snippetName).length - 1) ? Colors.white : Colors.white54),
+              tooltip: 'next version',
+            ),
             IconButton(
               hoverColor: Colors.white30,
               onPressed: () async {},
@@ -762,7 +809,7 @@ class PropertiesTreeView extends StatelessWidget {
 
   // final bool allowButtonCallouts;
 
-  PropertiesTreeView({
+  const PropertiesTreeView({
     required this.treeC,
     // this.allowButtonCallouts = false,
     super.key,
@@ -775,6 +822,7 @@ class PropertiesTreeView extends StatelessWidget {
         treeController: treeC..rebuild(),
         // filter or all
         nodeBuilder: (BuildContext context, TreeEntry<PTreeNode> entry) {
+          if (entry.node.name == 'namedTextStyle') {}
           return TreeIndentation(
             guide: const IndentGuide.connectingLines(
               color: Colors.blueAccent,
@@ -804,7 +852,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
 
     // REVERT menu items
     List<MenuItemButton> revertMIs = [];
-    for (VersionId versionId in FC().versionIdCache[widget.snippetName] ?? [] /*.sublist(0, 10)*/) {
+    for (VersionId versionId in FC().versionIds(widget.snippetName) /*.sublist(0, 10)*/) {
       bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == currentVersionId;
       bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == publishedVersionId;
       Color itemTextColor = Colors.black;

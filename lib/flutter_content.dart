@@ -37,7 +37,6 @@ export 'flutter_content_typedefs.dart';
 export 'src/api/callouts/callout.dart';
 export 'src/api/callouts/callout_config.dart';
 export 'src/api/callouts/toast.dart';
-
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
 export 'src/api/material_spa/constant_scrolling_behavior.dart';
@@ -46,11 +45,9 @@ export 'src/api/material_spa/material_spa.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
 export 'src/blink.dart';
-
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/snippet_bloc.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
@@ -61,9 +58,7 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
-export 'src/model/model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
@@ -108,7 +103,6 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
-
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -315,6 +309,9 @@ class FC {
   // must be instantiated in init()
   Map<SnippetName, SnippetInfoModel> snippetInfoCache = {};
   Map<SnippetName, List<VersionId>> versionIdCache = {};
+  // Map<SnippetName, LinkedList<VersionEntryItem>> versionIdCache = {};
+  List<VersionId> versionIds(SnippetName snippetName) => versionIdCache[snippetName] ?? [];
+      // versionIdCache[snippetName]?.map((e) => e.versionId).toList() ??[];
   Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
   // create new snippet version in cache, then write through to FB
@@ -347,8 +344,8 @@ class FC {
       // }
     }
     FC().versionCache[snippetName] ??= {};
-    FC().versionIdCache[snippetName] ??= [];
-    FC().versionIdCache[snippetName]?.add(newVersionId);
+    FC().versionIdCache[snippetName] ??= []; //LinkedList<VersionEntryItem>();
+    FC().versionIdCache[snippetName]?.add(newVersionId); //add(VersionEntryItem(newVersionId));
     FC().versionCache[snippetName]?.addAll({newVersionId: rootNode});
     await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
   }

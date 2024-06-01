@@ -10,7 +10,7 @@ part 'text_style_group.mapper.dart';
 
 @MappableClass(discriminatorKey: 'ts', includeSubClasses: [])
 class TextStyleGroup with TextStyleGroupMappable {
-  String? namedTextStyle;
+  TextStyleName? namedTextStyle;
   String? fontFamily;
   double? fontSize;
   Material3TextSizeEnum? fontSizeName;
@@ -32,7 +32,7 @@ class TextStyleGroup with TextStyleGroupMappable {
     this.colorValue,
   });
 
-  String toSource(BuildContext context, {String? namedTextStyle}) => '';
+  String toSource(BuildContext context, {TextStyleName? namedTextStyle}) => '';
 
   // @override
   // String toSource(BuildContext context, {String? namedTextStyle}) {
