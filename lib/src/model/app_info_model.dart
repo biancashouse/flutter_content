@@ -19,12 +19,12 @@ class AppInfoModel with AppInfoModelMappable {
 }
 
 /// we don't persist this linked list
-final class VersionEntryItem extends LinkedListEntry<VersionEntryItem> {
-  final VersionId versionId;
-  VersionEntryItem(this.versionId);
-
-  @override
-  String toString() {
-    return versionId;
-  }
-}
+// final class VersionEntryItem extends LinkedListEntry<VersionEntryItem> {
+//   final VersionId versionId;
+//   VersionEntryItem(this.versionId);
+//
+//   @override
+//   String toString() {
+//     return versionId;
+//   }
+// }

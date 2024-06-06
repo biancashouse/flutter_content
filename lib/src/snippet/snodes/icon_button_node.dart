@@ -25,7 +25,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     this.iconSize,
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,

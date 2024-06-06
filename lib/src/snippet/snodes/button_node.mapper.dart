@@ -31,9 +31,12 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   @override
   final String id = 'ButtonNode';
 
-  static String? _$destinationPanelName(ButtonNode v) => v.destinationPanelName;
-  static const Field<ButtonNode, String> _f$destinationPanelName =
-      Field('destinationPanelName', _$destinationPanelName, opt: true);
+  static String? _$destinationPanelOrPlaceholderName(ButtonNode v) =>
+      v.destinationPanelOrPlaceholderName;
+  static const Field<ButtonNode, String> _f$destinationPanelOrPlaceholderName =
+      Field('destinationPanelOrPlaceholderName',
+          _$destinationPanelOrPlaceholderName,
+          opt: true);
   static String? _$destinationSnippetName(ButtonNode v) =>
       v.destinationSnippetName;
   static const Field<ButtonNode, String> _f$destinationSnippetName =
@@ -79,7 +82,7 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
 
   @override
   final MappableFields<ButtonNode> fields = const {
-    #destinationPanelName: _f$destinationPanelName,
+    #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
@@ -133,7 +136,7 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {String? destinationPanelName,
+      {String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
       String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,

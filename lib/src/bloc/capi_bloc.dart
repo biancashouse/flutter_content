@@ -105,7 +105,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
     // on<RestoredSnippetBloc>((event, emit) => _restoredSnippetBloc(event, emit));
     // on<CreatedSnippet>((event, emit) => _createdSnippet(event, emit));
-    on<SetPanelSnippet>((event, emit) => _setPanelSnippet(event, emit));
+    on<SetPanelSnippet>((event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
     // on<DockChangeSnippetEditor>((event, emit) => _dockChangeSnippetEditor(event, emit));
     // on<ShowNodeProperties>((event, emit) => _showNodeProperties(event, emit));
     // on<ChangedSnippetName>((event, emit) => _changedSnippetName(event, emit));
@@ -1073,7 +1073,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   ));
   // }
 
-  void _setPanelSnippet(SetPanelSnippet event, emit) {
+  void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
     FC().snippetPlacementMap[event.panelName] = event.snippetName;
     emit(state.copyWith(
       force: state.force + 1,

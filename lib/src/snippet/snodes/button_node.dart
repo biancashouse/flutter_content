@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +12,8 @@ part 'button_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
 abstract class ButtonNode extends SC with ButtonNodeMappable {
-  // String label;
   // when populating a panel with a snippet
-  String? destinationPanelName;
+  String? destinationPanelOrPlaceholderName;
   String? destinationSnippetName;
 
   // when navigating to path, which is also used as the page's snippet name
@@ -26,8 +26,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   CalloutConfigGroup? calloutConfigGroup;
 
   ButtonNode({
-    // required this.label,
-    this.destinationPanelName,
+    this.destinationPanelOrPlaceholderName,
     this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
     this.template,
@@ -69,9 +68,9 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
             StringPropertyValueNode(
               snode: this,
               name: 'destination Panel Name',
-              stringValue: destinationPanelName,
+              stringValue: destinationPanelOrPlaceholderName,
               onStringChange: (newValue) {
-                refreshWithUpdate(() => destinationPanelName = newValue);
+                refreshWithUpdate(() => destinationPanelOrPlaceholderName = newValue);
               },
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
@@ -149,9 +148,12 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       FC().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
-    } else if (destinationPanelName != null && destinationSnippetName != null) {
-      // if panel found, load snippet into it (may need to create empty snippet)
-      //TODO
+    } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
+      destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+      capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+        snippetName: destinationSnippetName!,
+        panelName: destinationPanelOrPlaceholderName!,
+      ));
     }
   }
 

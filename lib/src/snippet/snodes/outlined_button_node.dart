@@ -13,7 +13,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   OutlinedButtonNode({
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,

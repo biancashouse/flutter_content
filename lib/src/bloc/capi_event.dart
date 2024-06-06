@@ -166,7 +166,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.hideIframes({required bool hide}) = HideIframes;
 
-  const factory CAPIEvent.setPanelSnippet({
+  const factory CAPIEvent.setPanelOrPlaceholderSnippet({
     required SnippetName snippetName,
     required PanelName panelName,
   }) = SetPanelSnippet;

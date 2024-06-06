@@ -1,6 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,14 +20,16 @@ class ChipNode extends CL with ChipNodeMappable {
   bool enabled;
 
   // when populating a panel with a snippet
-  String? destinationPanelName;
+  String? destinationPanelOrPlaceholderName;
   String? destinationSnippetName;
 
   // when navigating to path, which is also used as the page's snippet name
   String? destinationRoutePathSnippetName;
   SnippetTemplateEnum? template;
 
-  String? onTapHandlerName; // client supplied onTap (list of handlers supplied to MaterialSPA)
+  String?
+      onTapHandlerName; // client supplied onTap (list of handlers supplied to MaterialSPA)
+  CalloutConfigGroup? calloutConfigGroup;
 
   ChipNode({
     this.label = 'chip-name?',
@@ -34,11 +39,12 @@ class ChipNode extends CL with ChipNodeMappable {
     this.disabledColorValue,
     this.selectedColorValue,
     this.enabled = false,
-    this.destinationPanelName,
+    this.destinationPanelOrPlaceholderName,
     this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
     this.template,
     this.onTapHandlerName,
+    this.calloutConfigGroup,
   });
 
   String? getTapHandlerName() => onTapHandlerName;
@@ -46,15 +52,15 @@ class ChipNode extends CL with ChipNodeMappable {
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
-  List<PTreeNode> properties(BuildContext context) =>
-      [
+  List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
           name: 'label',
           expands: false,
           numLines: 1,
           stringValue: label,
-          onStringChange: (newValue) => refreshWithUpdate(() => label = newValue ?? ''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => label = newValue ?? ''),
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
@@ -62,7 +68,8 @@ class ChipNode extends CL with ChipNodeMappable {
           snode: this,
           name: 'labelStyle',
           textStyleGroup: labelStyle,
-          onGroupChange: (newValue) => refreshWithUpdate(() => labelStyle = newValue),
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => labelStyle = newValue),
         ),
         PropertyGroup(
           snode: this,
@@ -72,7 +79,8 @@ class ChipNode extends CL with ChipNodeMappable {
               snode: this,
               name: 'labelPadding',
               eiValue: labelPadding ?? EdgeInsetsValue(),
-              onEIChangedF: (newValue) => refreshWithUpdate(() => labelPadding = newValue),
+              onEIChangedF: (newValue) =>
+                  refreshWithUpdate(() => labelPadding = newValue),
             ),
           ],
         ),
@@ -81,7 +89,8 @@ class ChipNode extends CL with ChipNodeMappable {
           name: 'b/g color',
           tooltip: "The chip's b/g color.",
           colorValue: bgColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => bgColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => bgColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
         ColorPropertyValueNode(
@@ -89,7 +98,8 @@ class ChipNode extends CL with ChipNodeMappable {
           name: 'disabled color',
           tooltip: "The color to use for an unselected chip.",
           colorValue: disabledColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => disabledColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => disabledColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
         ColorPropertyValueNode(
@@ -97,14 +107,16 @@ class ChipNode extends CL with ChipNodeMappable {
           name: 'selected color',
           tooltip: 'The color for a selected chip.',
           colorValue: selectedColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => selectedColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => selectedColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
         BoolPropertyValueNode(
           snode: this,
           name: 'enabled',
           boolValue: enabled,
-          onBoolChange: (newValue) => refreshWithUpdate(() => enabled = newValue ?? true),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => enabled = newValue ?? true),
         ),
         PropertyGroup(
           snode: this,
@@ -115,7 +127,8 @@ class ChipNode extends CL with ChipNodeMappable {
               name: 'destination Route Path',
               stringValue: destinationRoutePathSnippetName,
               onStringChange: (newValue) {
-                refreshWithUpdate(() => destinationRoutePathSnippetName = newValue);
+                refreshWithUpdate(
+                    () => destinationRoutePathSnippetName = newValue);
               },
               options: FC().pagePaths,
               calloutButtonSize: const Size(280, 70),
@@ -130,9 +143,9 @@ class ChipNode extends CL with ChipNodeMappable {
             StringPropertyValueNode(
               snode: this,
               name: 'destination Panel Name',
-              stringValue: destinationPanelName,
+              stringValue: destinationPanelOrPlaceholderName,
               onStringChange: (newValue) {
-                refreshWithUpdate(() => destinationPanelName = newValue);
+                refreshWithUpdate(() => destinationPanelOrPlaceholderName = newValue);
               },
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
@@ -153,7 +166,8 @@ class ChipNode extends CL with ChipNodeMappable {
           snode: this,
           name: 'onTapHandlerName',
           stringValue: onTapHandlerName,
-          onStringChange: (newValue) => refreshWithUpdate(() => onTapHandlerName = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => onTapHandlerName = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -164,32 +178,87 @@ class ChipNode extends CL with ChipNodeMappable {
     TextStyle? ts = labelStyle?.toTextStyle(context);
 
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f =
+        onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
-    return Chip(
-      key: createNodeGK(),
-      label: Text(label),
-      // onPressed: () => onPressed(context),
-      // onLongPress: f != null ? () => f.call(context) : null,
-      labelStyle: ts,
+    return InkWell(
+      onTap: () => onPressed(context),
+      child: Chip(
+        key: createNodeGK(),
+        label: Text(label),
+        // onLongPress: f != null ? () => f.call(context) : null,
+        labelStyle: ts,
+      ),
     );
   }
+
+  Feature? get feature => calloutConfigGroup?.contentSnippetName;
 
   void onPressed(BuildContext context) {
     if (onTapHandlerName != null) {
       FC().namedVoidCallbacks[onTapHandlerName]?.call();
+    } else if (feature != null) {
+      // possible callout
+      // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
+      Future.delayed(
+        const Duration(seconds: 1),
+            () => Callout.showOverlay(
+            targetGkF: () => FC().getCalloutGk(feature),
+            boxContentF: (_) => SnippetPanel.fromSnippet(
+              panelName: calloutConfigGroup!.contentSnippetName!,
+              snippetName: BODY_PLACEHOLDER,
+              // allowButtonCallouts: false,
+            ),
+            calloutConfig: CalloutConfig(
+              feature: feature!,
+              initialTargetAlignment:
+              calloutConfigGroup!.targetAlignment != null ? calloutConfigGroup!.targetAlignment!.flutterValue : AlignmentEnum.bottomRight.flutterValue,
+              initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
+                  ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
+                  : AlignmentEnum.topLeft.flutterValue,
+              suppliedCalloutW: 200,
+              suppliedCalloutH: 150,
+              arrowType: calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
+              finalSeparation: 100,
+              barrier: CalloutBarrier(
+                opacity: 0.1,
+                onTappedF: () async {
+                  Callout.dismiss(feature!);
+                },
+              ),
+              fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
+            )),
+      );
     } else if (destinationRoutePathSnippetName != null) {
       FC().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
-    } else if (destinationPanelName != null && destinationSnippetName != null) {
-      // if panel found, load snippet into it (may need to create empty snippet)
-      //TODO
+    } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
+      destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+      capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+        snippetName: destinationSnippetName!,
+        panelName: destinationPanelOrPlaceholderName!,
+      ));
     }
   }
+
+  // void onPressed(BuildContext context) {
+  //   if (onTapHandlerName != null) {
+  //     FC().namedVoidCallbacks[onTapHandlerName]?.call();
+  //   } else if (destinationRoutePathSnippetName != null) {
+  //     FC().addRoute(
+  //         newPath: destinationRoutePathSnippetName!,
+  //         template: SnippetTemplateEnum.empty);
+  //     context.go(destinationRoutePathSnippetName!);
+  //     // create a GoRoute and load or create snippet with pageName
+  //   } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
+  //     // if panel found, load snippet into it (may need to create empty snippet)
+  //     //TODO
+  //   }
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;

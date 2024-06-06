@@ -13,7 +13,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   FilledButtonNode({
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,

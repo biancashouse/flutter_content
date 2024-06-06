@@ -83,8 +83,6 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
   String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
 
-  late Future<void> _fInit;
-
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
   // int countTabs() {
@@ -132,12 +130,9 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
       debugPrint("registered handler '$key'");
     });
 
-    // debugPrint('*** SnippetPanel() ***');
-
-    _fInit = SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-      snippetName: snippetName(),
-      snippetRootNode: widget.snippetRootNode,
-    );
+    if (!FC().placeNames.contains(widget.panelName)) {
+      FC().placeNames.add(widget.panelName);
+    }
 
     prevTabQ = [];
   }
@@ -168,7 +163,10 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
     // }
     return FutureBuilder<void>(
-        future: _fInit,
+        future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+          snippetName: snippetName(),
+          snippetRootNode: widget.snippetRootNode,
+        ),
         builder: (futureContext, snapshot) {
           return snapshot.connectionState != ConnectionState.done
               ? const Center(child: CircularProgressIndicator())
@@ -183,46 +181,70 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                     // SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                     // // snippet panel renders a canned snippet or a supplied snippet tree
-                    return _renderSnippet(context);
-                  },
+                    //return _renderSnippet(context);
+                    Widget snippetWidget;
+                    try {
+                      // in case did a revert, ignore snapshot data and use the AppInfo instead
+                      SnippetRootNode? snippet = FC().currentSnippet(snippetName());
+                      snippet?.validateTree();
+                      // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                      snippetWidget =
+                      snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+                    } catch (e) {
+                      debugPrint('snippetRootNode.toWidget() failed!');
+                      snippetWidget = Material(
+                        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              const Icon(Icons.error, color: Colors.redAccent),
+                              hspacer(10),
+                              Useful.coloredText(e.toString()),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    return snippetWidget;                  },
                 );
         });
   }
 
-  _renderSnippet(context) {
-    return FutureBuilder<void>(
-
-      future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
-      builder: (futureContext, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          Widget snippetWidget;
-          try {
-            // in case did a revert, ignore snapshot data and use the AppInfo instead
-            SnippetRootNode? snippet = FC().currentSnippet(snippetName());
-            snippet?.validateTree();
-            // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-            snippetWidget =
-                snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
-          } catch (e) {
-            debugPrint('snippetRootNode.toWidget() failed!');
-            snippetWidget = Material(
-              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    const Icon(Icons.error, color: Colors.redAccent),
-                    hspacer(10),
-                    Useful.coloredText(e.toString()),
-                  ],
-                ),
-              ),
-            );
-          }
-          return snippetWidget;
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
-      });
-  }
+  // _renderSnippet(context) {
+  //   return FutureBuilder<void>(
+  //
+  //     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
+  //     builder: (futureContext, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.done) {
+  //         Widget snippetWidget;
+  //         try {
+  //           // in case did a revert, ignore snapshot data and use the AppInfo instead
+  //           SnippetRootNode? snippet = FC().currentSnippet(snippetName());
+  //           snippet?.validateTree();
+  //           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+  //           snippetWidget =
+  //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+  //         } catch (e) {
+  //           debugPrint('snippetRootNode.toWidget() failed!');
+  //           snippetWidget = Material(
+  //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+  //             child: SingleChildScrollView(
+  //               scrollDirection: Axis.horizontal,
+  //               child: Row(
+  //                 children: [
+  //                   const Icon(Icons.error, color: Colors.redAccent),
+  //                   hspacer(10),
+  //                   Useful.coloredText(e.toString()),
+  //                 ],
+  //               ),
+  //             ),
+  //           );
+  //         }
+  //         return snippetWidget;
+  //       } else {
+  //         return const Center(child: CircularProgressIndicator());
+  //       }
+  //     });
+  // }
 }

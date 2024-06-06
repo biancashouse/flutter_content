@@ -33,7 +33,7 @@ mixin _$CAPIEvent {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -93,7 +93,8 @@ mixin _$CAPIEvent {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -143,7 +144,8 @@ mixin _$CAPIEvent {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -193,7 +195,8 @@ mixin _$CAPIEvent {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -233,7 +236,7 @@ mixin _$CAPIEvent {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -272,7 +275,7 @@ mixin _$CAPIEvent {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -407,7 +410,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -470,7 +473,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -523,7 +527,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -579,7 +584,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -622,7 +628,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -664,7 +670,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -817,7 +823,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -880,7 +886,8 @@ class _$OverrideTargetGKImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -933,7 +940,8 @@ class _$OverrideTargetGKImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -989,7 +997,8 @@ class _$OverrideTargetGKImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1032,7 +1041,7 @@ class _$OverrideTargetGKImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1074,7 +1083,7 @@ class _$OverrideTargetGKImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1212,7 +1221,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -1275,7 +1284,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -1328,7 +1338,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -1384,7 +1395,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1427,7 +1439,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1469,7 +1481,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1613,7 +1625,7 @@ class _$UpdateClipboardImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -1676,7 +1688,8 @@ class _$UpdateClipboardImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -1729,7 +1742,8 @@ class _$UpdateClipboardImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -1785,7 +1799,8 @@ class _$UpdateClipboardImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1828,7 +1843,7 @@ class _$UpdateClipboardImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1870,7 +1885,7 @@ class _$UpdateClipboardImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2018,7 +2033,7 @@ class _$PublishSnippetImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -2081,7 +2096,8 @@ class _$PublishSnippetImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -2134,7 +2150,8 @@ class _$PublishSnippetImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -2190,7 +2207,8 @@ class _$PublishSnippetImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -2233,7 +2251,7 @@ class _$PublishSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2275,7 +2293,7 @@ class _$PublishSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2422,7 +2440,7 @@ class _$RevertSnippetImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -2485,7 +2503,8 @@ class _$RevertSnippetImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -2538,7 +2557,8 @@ class _$RevertSnippetImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -2594,7 +2614,8 @@ class _$RevertSnippetImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -2637,7 +2658,7 @@ class _$RevertSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2679,7 +2700,7 @@ class _$RevertSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2820,7 +2841,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -2883,7 +2904,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -2936,7 +2958,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -2992,7 +3015,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -3035,7 +3059,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3077,7 +3101,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3213,7 +3237,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -3276,7 +3300,8 @@ class _$AutoPublishDefaultImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -3329,7 +3354,8 @@ class _$AutoPublishDefaultImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -3385,7 +3411,8 @@ class _$AutoPublishDefaultImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -3428,7 +3455,7 @@ class _$AutoPublishDefaultImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3470,7 +3497,7 @@ class _$AutoPublishDefaultImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3601,7 +3628,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -3664,7 +3691,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -3717,7 +3745,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -3773,7 +3802,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -3816,7 +3846,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3858,7 +3888,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3952,14 +3982,15 @@ class _$SetPanelSnippetImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.setPanelSnippet(snippetName: $snippetName, panelName: $panelName)';
+    return 'CAPIEvent.setPanelOrPlaceholderSnippet(snippetName: $snippetName, panelName: $panelName)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.setPanelSnippet'))
+      ..add(
+          DiagnosticsProperty('type', 'CAPIEvent.setPanelOrPlaceholderSnippet'))
       ..add(DiagnosticsProperty('snippetName', snippetName))
       ..add(DiagnosticsProperty('panelName', panelName));
   }
@@ -4003,7 +4034,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -4049,7 +4080,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return setPanelSnippet(snippetName, panelName);
+    return setPanelOrPlaceholderSnippet(snippetName, panelName);
   }
 
   @override
@@ -4066,7 +4097,8 @@ class _$SetPanelSnippetImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -4102,7 +4134,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return setPanelSnippet?.call(snippetName, panelName);
+    return setPanelOrPlaceholderSnippet?.call(snippetName, panelName);
   }
 
   @override
@@ -4119,7 +4151,8 @@ class _$SetPanelSnippetImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -4156,8 +4189,8 @@ class _$SetPanelSnippetImpl
     TResult Function()? forceSnippetRefresh,
     required TResult orElse(),
   }) {
-    if (setPanelSnippet != null) {
-      return setPanelSnippet(snippetName, panelName);
+    if (setPanelOrPlaceholderSnippet != null) {
+      return setPanelOrPlaceholderSnippet(snippetName, panelName);
     }
     return orElse();
   }
@@ -4175,7 +4208,8 @@ class _$SetPanelSnippetImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -4202,7 +4236,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
   }) {
-    return setPanelSnippet(this);
+    return setPanelOrPlaceholderSnippet(this);
   }
 
   @override
@@ -4218,7 +4252,7 @@ class _$SetPanelSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4244,7 +4278,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
   }) {
-    return setPanelSnippet?.call(this);
+    return setPanelOrPlaceholderSnippet?.call(this);
   }
 
   @override
@@ -4260,7 +4294,7 @@ class _$SetPanelSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4287,8 +4321,8 @@ class _$SetPanelSnippetImpl
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
     required TResult orElse(),
   }) {
-    if (setPanelSnippet != null) {
-      return setPanelSnippet(this);
+    if (setPanelOrPlaceholderSnippet != null) {
+      return setPanelOrPlaceholderSnippet(this);
     }
     return orElse();
   }
@@ -4409,7 +4443,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -4472,7 +4506,8 @@ class _$PushSnippetEditorImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -4525,7 +4560,8 @@ class _$PushSnippetEditorImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -4581,7 +4617,8 @@ class _$PushSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -4624,7 +4661,7 @@ class _$PushSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4666,7 +4703,7 @@ class _$PushSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4803,7 +4840,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -4866,7 +4903,8 @@ class _$PopSnippetEditorImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -4919,7 +4957,8 @@ class _$PopSnippetEditorImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -4975,7 +5014,8 @@ class _$PopSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -5018,7 +5058,7 @@ class _$PopSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5060,7 +5100,7 @@ class _$PopSnippetEditorImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5164,7 +5204,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -5227,7 +5267,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -5280,7 +5321,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -5336,7 +5378,8 @@ class _$ShowDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -5379,7 +5422,7 @@ class _$ShowDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5421,7 +5464,7 @@ class _$ShowDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5550,7 +5593,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -5613,7 +5656,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -5666,7 +5710,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -5722,7 +5767,8 @@ class _$RemoveDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -5765,7 +5811,7 @@ class _$RemoveDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5807,7 +5853,7 @@ class _$RemoveDirectoryTreeImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5938,7 +5984,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -6001,7 +6047,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -6054,7 +6101,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6110,7 +6158,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6153,7 +6202,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6195,7 +6244,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6299,7 +6348,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -6362,7 +6411,8 @@ class _$ClearNodeSelectionImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -6415,7 +6465,8 @@ class _$ClearNodeSelectionImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6471,7 +6522,8 @@ class _$ClearNodeSelectionImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6514,7 +6566,7 @@ class _$ClearNodeSelectionImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6556,7 +6608,7 @@ class _$ClearNodeSelectionImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6695,7 +6747,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -6758,7 +6810,8 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -6811,7 +6864,8 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6867,7 +6921,8 @@ class _$SaveNodeAsSnippetImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6910,7 +6965,7 @@ class _$SaveNodeAsSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6952,7 +7007,7 @@ class _$SaveNodeAsSnippetImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7111,7 +7166,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -7174,7 +7229,8 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -7227,7 +7283,8 @@ class _$ReplaceSelectionWithImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -7283,7 +7340,8 @@ class _$ReplaceSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -7326,7 +7384,7 @@ class _$ReplaceSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7368,7 +7426,7 @@ class _$ReplaceSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7527,7 +7585,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -7590,7 +7648,8 @@ class _$WrapSelectionWithImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -7643,7 +7702,8 @@ class _$WrapSelectionWithImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -7699,7 +7759,8 @@ class _$WrapSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -7742,7 +7803,7 @@ class _$WrapSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7784,7 +7845,7 @@ class _$WrapSelectionWithImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7973,7 +8034,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -8037,7 +8098,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8091,7 +8153,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -8148,7 +8211,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -8191,7 +8255,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8233,7 +8297,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8396,7 +8460,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -8459,7 +8523,8 @@ class _$AddSiblingBeforeImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8512,7 +8577,8 @@ class _$AddSiblingBeforeImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -8568,7 +8634,8 @@ class _$AddSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -8611,7 +8678,7 @@ class _$AddSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8653,7 +8720,7 @@ class _$AddSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8812,7 +8879,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -8875,7 +8942,8 @@ class _$AddSiblingAfterImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8928,7 +8996,8 @@ class _$AddSiblingAfterImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -8984,7 +9053,8 @@ class _$AddSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9027,7 +9097,7 @@ class _$AddSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9069,7 +9139,7 @@ class _$AddSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9209,7 +9279,7 @@ class _$PasteReplacementImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -9272,7 +9342,8 @@ class _$PasteReplacementImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -9325,7 +9396,8 @@ class _$PasteReplacementImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -9381,7 +9453,8 @@ class _$PasteReplacementImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9424,7 +9497,7 @@ class _$PasteReplacementImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9466,7 +9539,7 @@ class _$PasteReplacementImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9614,7 +9687,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -9677,7 +9750,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -9730,7 +9804,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -9786,7 +9861,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9829,7 +9905,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9871,7 +9947,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9979,7 +10055,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -10042,7 +10118,8 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -10095,7 +10172,8 @@ class _$PasteSiblingBeforeImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -10151,7 +10229,8 @@ class _$PasteSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -10194,7 +10273,7 @@ class _$PasteSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10236,7 +10315,7 @@ class _$PasteSiblingBeforeImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10335,7 +10414,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -10398,7 +10477,8 @@ class _$PasteSiblingAfterImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -10451,7 +10531,8 @@ class _$PasteSiblingAfterImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -10507,7 +10588,8 @@ class _$PasteSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -10550,7 +10632,7 @@ class _$PasteSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10592,7 +10674,7 @@ class _$PasteSiblingAfterImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10691,7 +10773,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -10754,7 +10836,8 @@ class _$DeleteNodeTappedImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -10807,7 +10890,8 @@ class _$DeleteNodeTappedImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -10863,7 +10947,8 @@ class _$DeleteNodeTappedImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -10906,7 +10991,7 @@ class _$DeleteNodeTappedImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10948,7 +11033,7 @@ class _$DeleteNodeTappedImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11047,7 +11132,7 @@ class _$CompleteDeletionImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -11110,7 +11195,8 @@ class _$CompleteDeletionImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11163,7 +11249,8 @@ class _$CompleteDeletionImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -11219,7 +11306,8 @@ class _$CompleteDeletionImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -11262,7 +11350,7 @@ class _$CompleteDeletionImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11304,7 +11392,7 @@ class _$CompleteDeletionImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11437,7 +11525,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -11500,7 +11588,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11553,7 +11642,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -11609,7 +11699,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -11652,7 +11743,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11694,7 +11785,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11834,7 +11925,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -11897,7 +11988,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11950,7 +12042,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -12006,7 +12099,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -12049,7 +12143,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12091,7 +12185,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12240,7 +12334,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -12303,7 +12397,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -12356,7 +12451,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -12412,7 +12508,8 @@ class _$SelectedDirectoryOrNodeImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -12455,7 +12552,7 @@ class _$SelectedDirectoryOrNodeImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12497,7 +12594,7 @@ class _$SelectedDirectoryOrNodeImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12640,7 +12737,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -12703,7 +12800,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -12756,7 +12854,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -12812,7 +12911,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -12855,7 +12955,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12897,7 +12997,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13028,7 +13128,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -13091,7 +13191,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -13144,7 +13245,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -13200,7 +13302,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -13243,7 +13346,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13285,7 +13388,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13391,7 +13494,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
-        setPanelSnippet,
+        setPanelOrPlaceholderSnippet,
     required TResult Function(
             String snippetName, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
@@ -13454,7 +13557,8 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -13507,7 +13611,8 @@ class _$ForceSnippetRefreshImpl
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)? setPanelSnippet,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
     TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -13563,7 +13668,8 @@ class _$ForceSnippetRefreshImpl
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
     required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value) setPanelSnippet,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -13606,7 +13712,7 @@ class _$ForceSnippetRefreshImpl
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13648,7 +13754,7 @@ class _$ForceSnippetRefreshImpl
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelSnippet,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,

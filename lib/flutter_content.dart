@@ -405,7 +405,8 @@ class FC {
 
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
   // final Map<PanelName, SnippetName> snippetPlacementMap = {};
-  final Map<PlaceholderName, SnippetName> snippetPlacementMap = {};
+  final List<SnippetPlaceName> placeNames = [];
+  final Map<SnippetPlaceName, SnippetName> snippetPlacementMap = {};
 
   EditablePageState? get currentPageState {
     return currentRoute != null ? pageGKs[currentRoute]?.currentState as EditablePageState? : null;

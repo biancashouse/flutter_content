@@ -72,8 +72,8 @@ enum SnippetTemplateEnum {
                 propertyName: 'body',
                 child: TabBarViewNode(
                   children: [
-                    PlaceholderNode(centredLabel: 'page 1', colorValue: Colors.yellow.value),
-                    PlaceholderNode(centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+                    PlaceholderNode(),
+                    PlaceholderNode(),
                   ],
                 ),
               ),
@@ -97,7 +97,7 @@ enum SnippetTemplateEnum {
               ),
               body: GenericSingleChildNode(
                 propertyName: 'body',
-                child: PlaceholderNode(name: 'body-placeholder', centredLabel: 'menu item destination'),
+                child: PlaceholderNode(name: 'body-placeholder'),
               ),
             ),
           ),

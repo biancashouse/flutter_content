@@ -28,7 +28,7 @@ typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
-typedef PlaceholderName = String;
+typedef SnippetPlaceName = String; // panel or placeholder name
 // typedef RouteName = String;
 typedef RouteName = String;  // Go Route Page Name
 typedef RoutePath = String; // Go Route Path
@@ -78,6 +78,8 @@ typedef SnippetJson = String;
 typedef Expansions = Set<STreeNode>;
 
 typedef SetStateF = void Function(VoidCallback f);
+
+typedef ColorValue = int;
 
 // typedef PassBlocF = void Function(CAPIBloc);
 // typedef PassGlobalKeyF = void Function(GlobalKey);

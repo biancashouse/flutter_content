@@ -13,7 +13,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   TextButtonNode({
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,

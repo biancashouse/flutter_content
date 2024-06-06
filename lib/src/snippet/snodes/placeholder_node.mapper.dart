@@ -24,9 +24,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static String? _$name(PlaceholderNode v) => v.name;
   static const Field<PlaceholderNode, String> _f$name =
       Field('name', _$name, opt: true);
-  static String? _$centredLabel(PlaceholderNode v) => v.centredLabel;
-  static const Field<PlaceholderNode, String> _f$centredLabel =
-      Field('centredLabel', _$centredLabel, opt: true);
   static int? _$colorValue(PlaceholderNode v) => v.colorValue;
   static const Field<PlaceholderNode, int> _f$colorValue =
       Field('colorValue', _$colorValue, opt: true);
@@ -56,7 +53,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   @override
   final MappableFields<PlaceholderNode> fields = const {
     #name: _f$name,
-    #centredLabel: _f$centredLabel,
     #colorValue: _f$colorValue,
     #width: _f$width,
     #height: _f$height,
@@ -76,7 +72,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static PlaceholderNode _instantiate(DecodingData data) {
     return PlaceholderNode(
         name: data.dec(_f$name),
-        centredLabel: data.dec(_f$centredLabel),
         colorValue: data.dec(_f$colorValue),
         width: data.dec(_f$width),
         height: data.dec(_f$height));
@@ -136,12 +131,7 @@ extension PlaceholderNodeValueCopy<$R, $Out>
 abstract class PlaceholderNodeCopyWith<$R, $In extends PlaceholderNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call(
-      {String? name,
-      String? centredLabel,
-      int? colorValue,
-      double? width,
-      double? height});
+  $R call({String? name, int? colorValue, double? width, double? height});
   PlaceholderNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -157,13 +147,11 @@ class _PlaceholderNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? name = $none,
-          Object? centredLabel = $none,
           Object? colorValue = $none,
           Object? width = $none,
           Object? height = $none}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
-        if (centredLabel != $none) #centredLabel: centredLabel,
         if (colorValue != $none) #colorValue: colorValue,
         if (width != $none) #width: width,
         if (height != $none) #height: height
@@ -171,7 +159,6 @@ class _PlaceholderNodeCopyWithImpl<$R, $Out>
   @override
   PlaceholderNode $make(CopyWithData data) => PlaceholderNode(
       name: data.get(#name, or: $value.name),
-      centredLabel: data.get(#centredLabel, or: $value.centredLabel),
       colorValue: data.get(#colorValue, or: $value.colorValue),
       width: data.get(#width, or: $value.width),
       height: data.get(#height, or: $value.height));

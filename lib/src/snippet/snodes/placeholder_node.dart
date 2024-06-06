@@ -2,21 +2,24 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/capi_state.dart';
 
 part 'placeholder_node.mapper.dart';
 
 @MappableClass()
 class PlaceholderNode extends CL with PlaceholderNodeMappable {
   String? name;
-  String? centredLabel;
+
+  // String? centredLabel;
   int? colorValue;
   double? width;
   double? height;
 
   PlaceholderNode({
     this.name,
-    this.centredLabel,
+    // this.centredLabel,
     this.colorValue,
     this.width,
     this.height,
@@ -32,7 +35,8 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           // skipHelperText: true,
           // skipLabelText: true,
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(150, 20),
           calloutWidth: 150,
         ),
@@ -40,14 +44,16 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           snode: this,
           name: 'width',
           decimalValue: width,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'height',
           decimalValue: height,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];
@@ -56,31 +62,82 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
+
+    if (name != null && !FC().placeNames.contains(name!)) {
+      FC().placeNames.add(name!);
+    }
+
+    // possibly populate with a spnippet
     Widget? childWidget;
-    if (centredLabel?.isNotEmpty ?? false) {
-      childWidget = Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-                alignment: Alignment.center,
-                width: 150,
-                height: 70,
-                color: colorValue != null ? Color(colorValue!) : null,
-                child: Text(
-                  centredLabel!,
-                  textScaler: const TextScaler.linear(3),
-                )),
+    if (FC().snippetPlacementMap.containsKey(name)) {
+      String snippetName = FC().snippetPlacementMap[name]!;
+      return FutureBuilder<void>(
+          future:
+              SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
           ),
-        ],
+          builder: (futureContext, snapshot) {
+            return snapshot.connectionState != ConnectionState.done
+                ? const Center(child: CircularProgressIndicator())
+                : BlocBuilder<CAPIBloC, CAPIState>(
+                    buildWhen: (previous, current) =>
+                        !current.onlyTargetsWrappers,
+                    builder: (blocContext, state) {
+                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
+                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                      // // var fc = FC();
+                      // SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
+                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                      // // snippet panel renders a canned snippet or a supplied snippet tree
+                      //return _renderSnippet(context);
+                      Widget snippetWidget;
+                      try {
+                        // in case did a revert, ignore snapshot data and use the AppInfo instead
+                        SnippetRootNode? snippet =
+                            FC().currentSnippet(snippetName);
+                        snippet?.validateTree();
+                        // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                        snippetWidget = snippet == null
+                            ? const Icon(Icons.error, color: Colors.redAccent)
+                            : snippet.child?.toWidget(futureContext, snippet) ??
+                                const Placeholder();
+                      } catch (e) {
+                        debugPrint('snippetRootNode.toWidget() failed!');
+                        snippetWidget = Material(
+                          textStyle: const TextStyle(
+                              fontFamily: 'monospace', fontSize: 12),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.error,
+                                    color: Colors.redAccent),
+                                hspacer(10),
+                                Useful.coloredText(e.toString()),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+                      return Placeholder(
+                        key: createNodeGK(),
+                        fallbackWidth: width ?? 400,
+                        fallbackHeight: height ?? 400,
+                        child: snippetWidget,
+                      );
+                      ;
+                    },
+                  );
+          });
+    } else {
+      return Placeholder(
+        key: createNodeGK(),
+        fallbackWidth: width ?? 400,
+        fallbackHeight: height ?? 400,
+        child: childWidget,
       );
     }
-    return Placeholder(
-      key: createNodeGK(),
-      fallbackWidth: width ?? 400,
-      fallbackHeight: height ?? 400,
-      child: childWidget,
-    );
   }
 
   // @override

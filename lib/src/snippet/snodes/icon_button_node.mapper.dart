@@ -49,10 +49,13 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static SnippetTemplateEnum? _$template(IconButtonNode v) => v.template;
   static const Field<IconButtonNode, SnippetTemplateEnum> _f$template =
       Field('template', _$template, opt: true);
-  static String? _$destinationPanelName(IconButtonNode v) =>
-      v.destinationPanelName;
-  static const Field<IconButtonNode, String> _f$destinationPanelName =
-      Field('destinationPanelName', _$destinationPanelName, opt: true);
+  static String? _$destinationPanelOrPlaceholderName(IconButtonNode v) =>
+      v.destinationPanelOrPlaceholderName;
+  static const Field<IconButtonNode, String>
+      _f$destinationPanelOrPlaceholderName = Field(
+          'destinationPanelOrPlaceholderName',
+          _$destinationPanelOrPlaceholderName,
+          opt: true);
   static String? _$destinationSnippetName(IconButtonNode v) =>
       v.destinationSnippetName;
   static const Field<IconButtonNode, String> _f$destinationSnippetName =
@@ -96,7 +99,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #iconSize: _f$iconSize,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
-    #destinationPanelName: _f$destinationPanelName,
+    #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
     #buttonStyle: _f$buttonStyle,
     #onTapHandlerName: _f$onTapHandlerName,
@@ -125,7 +128,8 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
         template: data.dec(_f$template),
-        destinationPanelName: data.dec(_f$destinationPanelName),
+        destinationPanelOrPlaceholderName:
+            data.dec(_f$destinationPanelOrPlaceholderName),
         destinationSnippetName: data.dec(_f$destinationSnippetName),
         buttonStyle: data.dec(_f$buttonStyle),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
@@ -203,7 +207,7 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
       double? iconSize,
       String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
-      String? destinationPanelName,
+      String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
       ButtonStyleGroup? buttonStyle,
       String? onTapHandlerName,
@@ -241,7 +245,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           Object? iconSize = $none,
           Object? destinationRoutePathSnippetName = $none,
           Object? template = $none,
-          Object? destinationPanelName = $none,
+          Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
           Object? buttonStyle = $none,
           Object? onTapHandlerName = $none,
@@ -256,8 +260,8 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (template != $none) #template: template,
-        if (destinationPanelName != $none)
-          #destinationPanelName: destinationPanelName,
+        if (destinationPanelOrPlaceholderName != $none)
+          #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
         if (destinationSnippetName != $none)
           #destinationSnippetName: destinationSnippetName,
         if (buttonStyle != $none) #buttonStyle: buttonStyle,
@@ -277,8 +281,9 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
       template: data.get(#template, or: $value.template),
-      destinationPanelName:
-          data.get(#destinationPanelName, or: $value.destinationPanelName),
+      destinationPanelOrPlaceholderName: data.get(
+          #destinationPanelOrPlaceholderName,
+          or: $value.destinationPanelOrPlaceholderName),
       destinationSnippetName:
           data.get(#destinationSnippetName, or: $value.destinationSnippetName),
       buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),

@@ -1,15 +1,18 @@
+
+
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter_content/flutter_content_typedefs.dart';
 
 part 'upto6color_values.mapper.dart';
 
 @MappableClass()
 class UpTo6ColorValues with UpTo6ColorValuesMappable {
-  int? color1Value;
-  int? color2Value;
-  int? color3Value;
-  int? color4Value;
-  int? color5Value;
-  int? color6Value;
+  ColorValue? color1Value;
+  ColorValue? color2Value;
+  ColorValue? color3Value;
+  ColorValue? color4Value;
+  ColorValue? color5Value;
+  ColorValue? color6Value;
 
   UpTo6ColorValues({
     this.color1Value,

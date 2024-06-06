@@ -18,7 +18,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     // this.itemLabel = '',
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,
@@ -57,11 +57,11 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     return MenuItemButton(
       key: createNodeGK(),
       onPressed: () {
-        if (destinationPanelName != null) {
-          destinationSnippetName ??= '$destinationPanelName:default-snippet';
-          capiBloc.add(CAPIEvent.setPanelSnippet(
+        if (destinationPanelOrPlaceholderName != null) {
+          destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+          capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
             snippetName: destinationSnippetName!,
-            panelName: destinationPanelName!,
+            panelName: destinationPanelOrPlaceholderName!,
           ));
         } else if (destinationRoutePathSnippetName != null) {
           //context.goNamed(destinationRoutePathSnippetName!);

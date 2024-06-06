@@ -13,7 +13,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
   ElevatedButtonNode({
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelName,
+    super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
     super.buttonStyle,
     super.onTapHandlerName,
