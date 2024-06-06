@@ -1,5 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
@@ -21,6 +21,28 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   });
 
   @override
+  List<PTreeNode> properties(BuildContext context) => [
+    EnumPropertyValueNode<MainAxisAlignmentEnum?>(
+      snode: this,
+      name: 'mainAxisAlignment',
+      valueIndex: mainAxisAlignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
+    ),
+    EnumPropertyValueNode<MainAxisSizeEnum?>(
+      snode: this,
+      name: 'mainAxisSize',
+      valueIndex: mainAxisSize?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisSize = MainAxisSizeEnum.of(newValue)),
+    ),
+    EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
+      snode: this,
+      name: 'crossAxisAlignment',
+      valueIndex: crossAxisAlignment?.index,
+      onIndexChange: (newValue) => refreshWithUpdate(() => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
+    ),
+  ];
+
+  @override
   List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
@@ -29,6 +51,46 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       ...super.menuAnchorWidgets_WrapWith(action, true),
     ];
   }
+
+  @override
+  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
+    possiblyHighlightSelectedNode();
+    Widget w;
+    try {
+      w = LayoutBuilder(builder: (context, constraints) {
+        return (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity)
+            ? _errorWidget()
+            : Flex(
+          direction: this is RowNode ? Axis.horizontal : Axis.vertical,
+          key: createNodeGK(),
+          mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
+          mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
+          crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
+          textBaseline: TextBaseline.alphabetic,
+          children: children.map((node) => node.toWidget(context, this)).toList(),
+        );
+      });
+    } catch(e) {
+      w = _errorWidget();
+      debugPrint('Flex() failed to render properly. ===============================================');
+    }
+    return w;
+  }
+
+  Widget _errorWidget() => Row(
+        children: [
+          const Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+          hspacer(10),
+          const Text('Row has infinite maxWidth constraint!'),
+        ],
+      );
+
+  @override
+  List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
 
 // bool get isRow {
 //   throw UnimplementedError('FlexNode.isRow !');

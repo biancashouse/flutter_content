@@ -40,14 +40,13 @@ export 'src/api/callouts/toast.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
 // export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
 export 'src/api/material_spa/constant_scrolling_behavior.dart';
-export 'src/api/material_spa/editable_page.dart';
+export 'src/api/material_spa/editable_page-.dart';
 export 'src/api/material_spa/material_spa.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
 export 'src/blink.dart';
 // callouts
 export 'src/bloc/capi_bloc.dart';
-export 'src/bloc/snippet_bloc.dart';
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
@@ -76,6 +75,7 @@ export 'src/snippet/snodes/button_node.dart';
 export 'src/snippet/snodes/carousel_node.dart';
 export 'src/snippet/snodes/center_node.dart';
 export 'src/snippet/snodes/childless_node.dart';
+export 'src/snippet/snodes/chip_node.dart';
 export 'src/snippet/snodes/column_node.dart';
 export 'src/snippet/snodes/container_node.dart';
 export 'src/snippet/snodes/content_snippet_root_node.dart';
@@ -103,6 +103,7 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
+export 'src/snippet/snodes/wrap_node.dart';
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -403,7 +404,8 @@ class FC {
   String? currentRoute;
 
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
-  final Map<PanelName, SnippetName> snippetPlacementMap = {};
+  // final Map<PanelName, SnippetName> snippetPlacementMap = {};
+  final Map<PlaceholderName, SnippetName> snippetPlacementMap = {};
 
   EditablePageState? get currentPageState {
     return currentRoute != null ? pageGKs[currentRoute]?.currentState as EditablePageState? : null;

@@ -7,6 +7,7 @@ class SnippetBeingEdited {
   SnippetTreeController treeC;
   STreeNode? selectedNode;
   GlobalKey? selectedTreeNodeGK;
+  bool showTree;
   bool showProperties;
   STreeNode? nodeBeingDeleted;
   String jsonBeforePush;
@@ -16,7 +17,8 @@ class SnippetBeingEdited {
     required this.treeC,
     this.selectedNode,
     this.selectedTreeNodeGK,
-    this.showProperties = false,
+    this.showTree = true,
+    this.showProperties = true,
     this.nodeBeingDeleted,
     required this.jsonBeforePush,
   });

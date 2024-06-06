@@ -2,13 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
-import 'package:flutter_content/src/bloc/snippet_bloc.dart';
 import 'package:flutter_content/src/feature_discovery/discovery_controller.dart';
 import 'package:flutter_content/src/feature_discovery/featured_widget.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
 import 'package:flutter_content/src/snippet/snode.dart';
 import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
+
+import 'src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
+import 'src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 
 typedef Feature = String;
 
@@ -26,6 +28,7 @@ typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
 typedef PanelName = String;
+typedef PlaceholderName = String;
 // typedef RouteName = String;
 typedef RouteName = String;  // Go Route Page Name
 typedef RoutePath = String; // Go Route Path

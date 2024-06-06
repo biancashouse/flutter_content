@@ -172,9 +172,11 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     return child?.toSource(context) ?? 'Icon(Icons.warning, color: Colors.red, size: 24,)';
   }
 
+  @override
   SnippetRootNode clone() {
-    String jsonS = toJson();
-    return STreeNodeMapper.fromJson(jsonS) as SnippetRootNode;
+    SnippetRootNode copiedNode = super.clone() as SnippetRootNode;
+    copiedNode..name = '$name-copy'..nodeWidgetGK = GlobalKey();
+    return copiedNode;
   }
 
   @override

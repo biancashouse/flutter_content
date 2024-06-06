@@ -508,7 +508,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.9.7"
+    version: "0.9.8"
   flutter_fancy_tree_view:
     dependency: transitive
     description:

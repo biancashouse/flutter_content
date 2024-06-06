@@ -89,9 +89,9 @@ enum SnippetTemplateEnum {
                 bottom: GenericSingleChildNode(
                   propertyName: 'bottom',
                   child: MenuBarNode(children: [
-                    MenuItemButtonNode(itemLabel: 'item 1'),
-                    MenuItemButtonNode(itemLabel: 'item 2'),
-                    MenuItemButtonNode(itemLabel: 'item 3'),
+                    MenuItemButtonNode(child: TextNode(text:'item 1')),
+                    MenuItemButtonNode(child: TextNode(text:'item 2')),
+                    MenuItemButtonNode(child: TextNode(text:'item 3')),
                   ]),
                 ),
               ),

@@ -4,11 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:example/firebase_options.dart';
 
 enum PageButtonInfo {
-
-  home(
-      buttonLabel: Text('home'),
-      path: '/home'
-  ),
+  home(buttonLabel: Text('home'), path: '/home'),
   rowOf2Panels(
     buttonLabel: Text('demo: row of 2 panels'),
     path: '/row-of-2-panels',
@@ -29,7 +25,6 @@ enum PageButtonInfo {
     buttonLabel: Text('demo: editable rich text'),
     path: '/editable-rich-text',
   );
-
 
   const PageButtonInfo({required this.buttonLabel, required this.path});
 
@@ -76,9 +71,24 @@ const _mobileRoutingConfig = RoutingConfig(
 //   runApp(const MyApp());
 // }
 
+void disableOverflowErrors() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    final exception = details.exception;
+    final isOverflowError = exception is FlutterError && !exception.diagnostics.any((e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
+
+    if (isOverflowError) {
+      print(details);
+    } else {
+      FlutterError.presentError(details);
+    }
+  };
+}
+
 // main when using the flutter_content package
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  disableOverflowErrors();
 
   runApp(MaterialSPA(
     appName: 'flutter-content-example-app2',
@@ -268,4 +278,5 @@ class FlutterPageRowOf2Panels extends StatelessWidget {
       ],
     );
   }
+
 }

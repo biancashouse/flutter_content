@@ -17,6 +17,11 @@ class EditablePage extends StatefulWidget {
     required super.key,
   });
 
+  static void refreshSelectedNodeWidgetBorderOverlay() {
+    Callout.dismiss('pink-border-overlay-non-tappable');
+    MaterialSPA.selectedNode?.showNodeWidgetOverlay();
+  }
+
   @override
   State<EditablePage> createState() => EditablePageState();
 }
@@ -226,17 +231,17 @@ class EditablePageState extends State<EditablePage> {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         STreeNode? node = FC().gkSTreeNodeMap[gk];
-        debugPrint("traverseAndMeasure: ${node.toString()}");
+        // debugPrint("traverseAndMeasure: ${node.toString()}");
         if (node != null && node.canShowTappableNodeWidgetOverlay) {
-          if (node.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured) {
-            debugPrint("targetSnippetBeingConfigured: ${node.toString()}");
-          }
-          debugPrint('Rect? r = gk.globalPaintBounds...');
+          // if (node.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured) {
+            // debugPrint("targetSnippetBeingConfigured: ${node.toString()}");
+          // }
+          // debugPrint('Rect? r = gk.globalPaintBounds...');
 // measure node
           Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-          if (node is PlaceholderNode) {
-            debugPrint('PlaceholderNode');
-          }
+          // if (node is PlaceholderNode) {
+          //   debugPrint('PlaceholderNode');
+          // }
           if (r != null) {
             r = Useful.restrictRectToScreen(r);
             // debugPrint("========>  r restricted to ${r.toString()}");

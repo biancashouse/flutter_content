@@ -27,6 +27,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       StepNodeMapper.ensureInitialized();
       PlaceholderNodeMapper.ensureInitialized();
       YTNodeMapper.ensureInitialized();
+      ChipNodeMapper.ensureInitialized();
     }
     return _instance!;
   }

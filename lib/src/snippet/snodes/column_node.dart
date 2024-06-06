@@ -18,27 +18,27 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
     required super.children,
   });
 
-  @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<MainAxisSizeEnum?>(
-          snode: this,
-          name: 'mainAxisSize',
-          valueIndex: mainAxisSize?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisSize = MainAxisSizeEnum.of(newValue)),
-        ),
-        EnumPropertyValueNode<MainAxisAlignmentEnum?>(
-          snode: this,
-          name: 'mainAxisAlignment',
-          valueIndex: mainAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
-        ),
-        EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
-          snode: this,
-          name: 'crossAxisAlignment',
-          valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
-        ),
-      ];
+  // @override
+  // List<PTreeNode> properties(BuildContext context) => [
+  //       EnumPropertyValueNode<MainAxisSizeEnum?>(
+  //         snode: this,
+  //         name: 'mainAxisSize',
+  //         valueIndex: mainAxisSize?.index,
+  //         onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisSize = MainAxisSizeEnum.of(newValue)),
+  //       ),
+  //       EnumPropertyValueNode<MainAxisAlignmentEnum?>(
+  //         snode: this,
+  //         name: 'mainAxisAlignment',
+  //         valueIndex: mainAxisAlignment?.index,
+  //         onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
+  //       ),
+  //       EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
+  //         snode: this,
+  //         name: 'crossAxisAlignment',
+  //         valueIndex: crossAxisAlignment?.index,
+  //         onIndexChange: (newValue) => refreshWithUpdate(() => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
+  //       ),
+  //     ];
 
   // @override
   // String toSource(BuildContext context) {
@@ -51,25 +51,22 @@ class ColumnNode extends FlexNode with ColumnNodeMappable {
   //     )''';
   // }
 
-  @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    return possiblyCheckHeightConstraint(
-      parentNode,
-      Column(
-        key: createNodeGK(),
-        mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-        mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-        crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-        textBaseline: TextBaseline.alphabetic,
-        children: children.map((node) => node.toWidget(context, this)).toList(),
-      ),
-    );
-  }
-
-  @override
-  List<Type> addChildRecommendations() => [ExpandedNode, FlexibleNode];
+  // @override
+  // Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  //   setParent(parentNode);
+  //   possiblyHighlightSelectedNode();
+  //   return possiblyCheckHeightConstraint(
+  //     parentNode,
+  //     Column(
+  //       key: createNodeGK(),
+  //       mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
+  //       mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
+  //       crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
+  //       textBaseline: TextBaseline.alphabetic,
+  //       children: children.map((node) => node.toWidget(context, this)).toList(),
+  //     ),
+  //   );
+  // }
 
   @override
   String toString() => FLUTTER_TYPE;

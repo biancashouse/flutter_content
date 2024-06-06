@@ -26,6 +26,7 @@ class MCMapper extends SubClassMapperBase<MC> {
       StepperNodeMapper.ensureInitialized();
       TabBarNodeMapper.ensureInitialized();
       TabBarViewNodeMapper.ensureInitialized();
+      WrapNodeMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;

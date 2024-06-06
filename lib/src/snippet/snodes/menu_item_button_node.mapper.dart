@@ -25,9 +25,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   @override
   final String id = 'MenuItemButtonNode';
 
-  static String _$itemLabel(MenuItemButtonNode v) => v.itemLabel;
-  static const Field<MenuItemButtonNode, String> _f$itemLabel =
-      Field('itemLabel', _$itemLabel, opt: true, def: '');
   static String? _$destinationRoutePathSnippetName(MenuItemButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<MenuItemButtonNode, String>
@@ -79,7 +76,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
 
   @override
   final MappableFields<MenuItemButtonNode> fields = const {
-    #itemLabel: _f$itemLabel,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
     #destinationPanelName: _f$destinationPanelName,
@@ -103,7 +99,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
 
   static MenuItemButtonNode _instantiate(DecodingData data) {
     return MenuItemButtonNode(
-        itemLabel: data.dec(_f$itemLabel),
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
         template: data.dec(_f$template),
@@ -180,8 +175,7 @@ abstract class MenuItemButtonNodeCopyWith<$R, $In extends MenuItemButtonNode,
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {String? itemLabel,
-      String? destinationRoutePathSnippetName,
+      {String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
       String? destinationPanelName,
       String? destinationSnippetName,
@@ -214,8 +208,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {String? itemLabel,
-          Object? destinationRoutePathSnippetName = $none,
+          {Object? destinationRoutePathSnippetName = $none,
           Object? template = $none,
           Object? destinationPanelName = $none,
           Object? destinationSnippetName = $none,
@@ -224,7 +217,6 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
-        if (itemLabel != null) #itemLabel: itemLabel,
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (template != $none) #template: template,
@@ -240,7 +232,6 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
       }));
   @override
   MenuItemButtonNode $make(CopyWithData data) => MenuItemButtonNode(
-      itemLabel: data.get(#itemLabel, or: $value.itemLabel),
       destinationRoutePathSnippetName: data.get(
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),

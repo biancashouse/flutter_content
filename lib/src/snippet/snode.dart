@@ -85,6 +85,7 @@ const List<Type> childlessSubClasses = [
   PlaceholderNode,
   YTNode,
   // FSBucketNode,
+  ChipNode,
 ];
 
 const List<Type> singleChildSubClasses = [
@@ -119,6 +120,7 @@ const List<Type> multiChildSubClasses = [
   TabBarNode,
   TabBarViewNode,
   GenericMultiChildNode,
+  WrapNode,
 ];
 
 const List<Type> buttonSubClasses = [
@@ -161,6 +163,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   String uid = UniqueKey().toString();
   PTreeNodeTreeController? _pTreeC;
   ScrollController? _propertiesPaneSC;
+  List<PTreeNode>? _properties;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
@@ -171,9 +174,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     //   debugPrint(node.name);
     // }
     _pTreeC ??= PTreeNodeTreeController(
-        roots: properties(context),
-        childrenProvider: Node.propertyTreeChildrenProvider,
-      );
+      roots: _properties ??= properties(context),
+      childrenProvider: Node.propertyTreeChildrenProvider,
+    );
     // if (prevExpansions != null) {
     //   //_pTreeC!.expandedNodes = prevExpansions;
     //   for (PTreeNode node in prevExpansions) {
@@ -217,7 +220,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     Rect restrictedRect = Useful.restrictRectToScreen(r);
-    debugPrint("=== showTappableNodeWidgetOverlay =====>\n  feature: $feature\n  r restricted to ${restrictedRect.toString()}");
+    // debugPrint("=== showTappableNodeWidgetOverlay =====>\n  feature: $feature\n  r restricted to ${restrictedRect.toString()}");
     const double BORDER = 1;
     double borderLeft = max(restrictedRect.left - BORDER, 0);
     double borderTop = max(restrictedRect.top - BORDER, 0);
@@ -226,21 +229,20 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
     CalloutConfig cc = CalloutConfig(
       feature: feature,
-      suppliedCalloutW: borderRect.width.abs() + BORDER*2,
-      suppliedCalloutH: borderRect.height.abs() + BORDER*2,
+      suppliedCalloutW: borderRect.width.abs() + BORDER * 2,
+      suppliedCalloutH: borderRect.height.abs() + BORDER * 2,
       initialCalloutPos: borderRect.topLeft.translate(-BORDER, -BORDER),
       fillColor: Colors.transparent,
       arrowType: ArrowType.NO_CONNECTOR,
       draggable: false,
     );
-
     Callout.showOverlay(
       ensureLowestOverlay: false,
       boxContentF: (context) => PointerInterceptor(
         intercepting: true,
         child: InkWell(
           onTap: () {
-            debugPrint("${toString()} tapped");
+            // debugPrint("${toString()} tapped");
             SnippetName? snippetName = rootNodeOfSnippet()?.name;
             if (snippetName == null) return;
             // var cc = nodeWidgetGK?.currentContext;
@@ -250,7 +252,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
             FC().currentPageState?.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
-//             var b = nodeWidgetGK?.currentContext?.mounted;
+            // tapped a real widget with GlobalKey of nodeWidgetGK
+            var tappedNodeName = nodeTypeName;
+            var cs = nodeWidgetGK?.currentState;
+            var cc = nodeWidgetGK?.currentContext;
+            bool isMOunted = cc?.mounted ?? false;
+            var cw = nodeWidgetGK?.currentWidget;
             pushThenShowNamedSnippetWithNodeSelected(
               snippetName,
               this,
@@ -332,8 +339,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         ensureLowestOverlay: true,
         boxContentF: (context) => PointerInterceptor(
           child: Container(
-            width: borderRect.width,
-            height: borderRect.height,
+            width: cc.calloutW,
+            height: cc.calloutH,
             decoration: BoxDecoration(
 //color: Colors.purpleAccent.withOpacity(.1),
               border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
@@ -370,22 +377,26 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // Useful.afterNextBuildDo(() {
     // });
     // return;
+    // debugPrint('after pushSnippetBloc');
+    // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     Useful.afterNextBuildDo(() {
-      debugPrint('after pushSnippetBloc');
-      // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
       var gk = startingAtNode.nodeWidgetGK;
-      // var ctx = gk?.currentContext;
+
+      var tappedNodeName = gk;
+      var cs = gk?.currentState;
+      var cc = gk?.currentContext;
+      bool isMOunted = cc?.mounted ?? false;
+      var cw = gk?.currentWidget;
+
       if (MaterialSPA.snippetBeingEdited != null) {
-        Useful.afterNextBuildDo(() {
-          MaterialSPA.snippetBeingEdited?.treeC.expandAll();
-          MaterialSPA.snippetBeingEdited?.treeC.rebuild();
-          // possibly show clipboard
-          if (!FC().clipboardIsEmpty) {
-            FC().showFloatingClipboard();
-          }
-        });
+        MaterialSPA.snippetBeingEdited?.treeC.expandAll();
+        MaterialSPA.snippetBeingEdited?.treeC.rebuild();
+        // possibly show clipboard
+        if (!FC().clipboardIsEmpty) {
+          FC().showFloatingClipboard();
+        }
         showSnippetTreeAndPropertiesCallout(
-          targetGKF: () => gk,
+          targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
@@ -422,12 +433,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           selectedNode: selectedNode,
         );
 
-        MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
-          node: selectedNode,
-          // imageTC: tc,
-          // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-          // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-        ));
+        // MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
+        //   node: selectedNode,
+        //   // imageTC: tc,
+        //   // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+        //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+        // ));
         Useful.afterNextBuildDo(() {
           FC().currentPageState
             ?..removeAllNodeWidgetOverlays()
@@ -693,7 +704,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       } else {
         return null;
       }
-      debugPrint(node.runtimeType.toString());
+      // debugPrint(node.runtimeType.toString());
       // if (node.runtimeType == FSBucketNode) {
       //   print('x');
       // }
@@ -784,6 +795,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static void unhighlightSelectedNode() => Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
   Future<void> possiblyHighlightSelectedNode() async {
+    return;
     if (MaterialSPA.snippetBeingEdited?.selectedNode == this) {
       unhighlightSelectedNode();
       var gk = nodeWidgetGK;
@@ -793,7 +805,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         double w = r.width + thickness * 2;
         double h = r.height + thickness * 2;
         Offset translate = Offset(-thickness, -thickness);
-        debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
+        // debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
         Callout.showOverlay(
           ensureLowestOverlay: true,
           calloutConfig: CalloutConfig(
@@ -1220,6 +1232,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Column", ColumnNode, action),
           menuItemButton("Row", RowNode, action),
+          menuItemButton("Wrap", WrapNode, action),
           menuItemButton("Expanded", ExpandedNode, action),
           menuItemButton("Flexible", FlexibleNode, action),
           menuItemButton("Stack", StackNode, action),
@@ -1252,6 +1265,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Column", ColumnNode, action),
           menuItemButton("Row", RowNode, action),
+          menuItemButton("Wrap", WrapNode, action),
           menuItemButton("Stack", StackNode, action),
           const Divider(),
           menuItemButton("Scaffold", ScaffoldNode, action),
@@ -1295,6 +1309,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             ],
             child: Useful.coloredText("button", fontWeight: FontWeight.normal),
           ),
+          menuItemButton("Chip", ChipNode, action),
         ],
         child: Useful.coloredText("navigation", fontWeight: FontWeight.normal),
       ),
@@ -1385,6 +1400,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             const Divider(),
             menuItemButton("Column", ColumnNode, action),
             menuItemButton("Row", RowNode, action),
+            menuItemButton("Wrap", WrapNode, action),
             menuItemButton("Expanded", ExpandedNode, action),
             menuItemButton("Flexible", FlexibleNode, action),
             menuItemButton("Stack", StackNode, action),
@@ -1431,6 +1447,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               ],
               child: Useful.coloredText("button", fontWeight: FontWeight.normal),
             ),
+            menuItemButton("Chip", ChipNode, action),
           ],
           child: Useful.coloredText("navigation", fontWeight: FontWeight.normal),
         ),
@@ -1496,27 +1513,22 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 SnippetTreePane.navigateUpTree();
               }
             });
-            return;
-          } else if (action == NodeAction.replaceWith)
+          } else if (action == NodeAction.replaceWith) {
             MaterialSPA.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
-          else if (action == NodeAction.addChild)
+          } else if (action == NodeAction.addChild) {
             MaterialSPA.capiBloc.add(CAPIEvent.appendChild(type: childType));
-          else if (action == NodeAction.addSiblingBefore)
+          } else if (action == NodeAction.addSiblingBefore) {
             MaterialSPA.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
-          else if (action == NodeAction.addSiblingAfter)
+          } else if (action == NodeAction.addSiblingAfter) {
             MaterialSPA.capiBloc.add(
               CAPIEvent.addSiblingAfter(type: childType),
             );
-          // Useful.afterNextBuildDo(() {
-          //   var snippetBlocAfter = MaterialSPA.snippetBeingEdited!;
-          //   debugPrint('after');
-          //   // FC.forceRefresh();
-          //   // var snippetBeingEdited = MaterialSPA.snippetBeingEdited?.rootNode;
-          //   // var appInfo = FC().appInfoAsMap;
-          //   // var cache = FC().snippetInfoCache;
-          //   // debugPrint(appInfo.toString());
-          //   // debugPrint(cache.toString());
-          // });
+          }
+          Useful.afterNextBuildDo(() {
+            Useful.afterMsDelayDo(500, () {
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+            });
+          });
         },
         child: Useful.coloredText(label, fontWeight: FontWeight.bold),
       );
@@ -1593,6 +1605,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       );
     }
     return SubmenuButton(menuChildren: snippetMIs, child: const Text('snippet'));
+  }
+
+  STreeNode clone() {
+    String jsonS = toJson();
+    return STreeNodeMapper.fromJson(jsonS);
   }
 }
 

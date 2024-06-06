@@ -674,8 +674,9 @@ extension GlobalKeyExtension on GlobalKey {
   }
 
   Rect? globalPaintBounds({bool skipWidthConstraintWarning = true, bool skipHeightConstraintWarning = true}) {
-    var cc = currentWidget;
-    final renderObject = currentContext?.findRenderObject();
+    var cw = currentWidget;
+    var cc = currentContext;
+    final renderObject = cc?.findRenderObject();
     final translation = renderObject?.getTransformTo(null).getTranslation();
     Rect? paintBounds;
     try {

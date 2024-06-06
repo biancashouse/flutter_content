@@ -12,10 +12,10 @@ part 'menu_item_button_node.mapper.dart';
 
 @MappableClass()
 class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
-  String itemLabel;
+  // String itemLabel;
 
   MenuItemButtonNode({
-    this.itemLabel = '',
+    // this.itemLabel = '',
     super.destinationRoutePathSnippetName,
     super.template,
     super.destinationPanelName,
@@ -25,23 +25,27 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     super.calloutConfigGroup,
     super.child,
   }) {
-    assert((destinationRoutePathSnippetName != null) == (template != null), 'You must specify a snippet template with the page path property');
+    assert((destinationRoutePathSnippetName != null) == (template != null),
+        'You must specify a snippet template with the page path property');
   }
 
-  @override
-  List<PTreeNode> properties(BuildContext context) {
-    return [
-      StringPropertyValueNode(
-        snode: this,
-        name: 'item label',
-        stringValue: itemLabel,
-        onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue ?? ''),
-        expands: false,
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
-      ),
-    ];
-  }
+  // @override
+  // List<PTreeNode> properties(BuildContext context) => [];
+  // {
+  //   return [
+  //     if (child != null)
+  //       StringPropertyValueNode(
+  //         snode: this,
+  //         name: 'item label',
+  //         stringValue: itemLabel,
+  //         onStringChange: (newValue) =>
+  //             refreshWithUpdate(() => itemLabel = newValue ?? ''),
+  //         expands: false,
+  //         calloutButtonSize: const Size(280, 20),
+  //         calloutWidth: 280,
+  //       ),
+  //   ];
+  // }
 
   @override
   ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
@@ -60,11 +64,12 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
             panelName: destinationPanelName!,
           ));
         } else if (destinationRoutePathSnippetName != null) {
-          context.goNamed(destinationRoutePathSnippetName!);
+          //context.goNamed(destinationRoutePathSnippetName!);
+          onPressed(context);
         }
       },
       style: Useful.buttonStyle(30),
-      child: Text(itemLabel.isEmpty ? 'new item' : itemLabel),
+      child: child?.toWidget(context, this),
     );
   }
 

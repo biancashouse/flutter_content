@@ -139,9 +139,6 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
       snippetRootNode: widget.snippetRootNode,
     );
 
-    // register snippet? with panel
-    FC().snippetPlacementMap[widget.panelName] = snippetName();
-
     prevTabQ = [];
   }
 

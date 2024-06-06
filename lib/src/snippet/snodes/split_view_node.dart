@@ -25,13 +25,15 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
         BoolPropertyValueNode(
           snode: this,
           name: 'resizeable',
           boolValue: resizeable,
-          onBoolChange: (newValue) => refreshWithUpdate(() => resizeable = newValue ?? true),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => resizeable = newValue ?? true),
         ),
       ];
 
@@ -69,34 +71,42 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
     Axis svAxis = axis.flutterValue;
     try {
       return LayoutBuilder(builder: (context, constraints) {
-        return (svAxis == Axis.vertical && constraints.maxHeight == double.infinity) || (svAxis == Axis.horizontal && constraints.maxWidth == double.infinity)
-            ? Row(
-                children: [
-                  const Icon(
-                    Icons.error,
-                    color: Colors.red,
-                  ),
-                  hspacer(10),
-                  Useful.coloredText('MultiSplitView has infinite constraint!', color: Colors.red),
-                ],
-              )
-            : MultiSplitViewTheme(
-                data: MultiSplitViewThemeData(dividerPainter: DividerPainters.grooved1(color: Colors.indigo[100]!, highlightedColor: Colors.indigo[900]!)),
-                child: MultiSplitView(
-                  key: createNodeGK(),
-                  axis: svAxis,
-                  initialAreas: super
-                      .children
-                      .map(
-                        (child) => Area(
-                          builder: (ctx, area) {
-                            return child.toWidget(context, this);
-                          }
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
+        if ((svAxis == Axis.vertical &&
+                constraints.maxHeight == double.infinity) ||
+            (svAxis == Axis.horizontal &&
+                constraints.maxWidth == double.infinity)) {
+          return Row(
+            children: [
+              const Icon(
+                Icons.error,
+                color: Colors.red,
+              ),
+              hspacer(10),
+              Useful.coloredText('MultiSplitView has infinite constraint!',
+                  color: Colors.red),
+            ],
+          );
+        } else {
+          List<Area> areas = super
+              .children
+              .map(
+                (child) => Area(builder: (ctx, area) {
+              return child.toWidget(context, this);
+            }),
+          )
+              .toList();
+          return MultiSplitViewTheme(
+            data: MultiSplitViewThemeData(
+                dividerPainter: DividerPainters.grooved1(
+                    color: Colors.indigo[100]!,
+                    highlightedColor: Colors.indigo[900]!)),
+            child: MultiSplitView(
+              key: createNodeGK(),
+              axis: svAxis,
+              initialAreas: areas,
+            ),
+          );
+        }
       });
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');

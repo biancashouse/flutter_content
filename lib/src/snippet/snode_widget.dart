@@ -32,58 +32,66 @@ class NodeWidget extends StatelessWidget {
     // }
 
     // bool selected = FlutterContent().capiBloc.selectedNode == entry.node;
-    Color boxColor = MaterialSPA.snippetBeingEdited!.nodeBeingDeleted == entry.node
+    Color boxColor = MaterialSPA.snippetBeingEdited!.nodeBeingDeleted ==
+        entry.node
         ? Colors.red
         : entry.node is GenericSingleChildNode
-            ? Colors.transparent
-            : entry.node is SnippetRootNode
-                ? Colors.black
-                : Colors.white;
+        ? Colors.transparent
+        : entry.node is SnippetRootNode
+        ? Colors.black
+        : Colors.white;
     return BlocBuilder<CAPIBloC, CAPIState>(
-        // buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+      // buildWhen: (previous, current) => !current.onlyTargetsWrappers,
         builder: (blocContext, state) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            key: MaterialSPA.aNodeIsSelected && MaterialSPA.selectedNode == entry.node ? MaterialSPA.snippetBeingEdited!.selectedTreeNodeGK : null,
-            margin: EdgeInsets.zero,
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: entry.node is DirectoryNode || entry.node is FileNode
-                ? null
-                : BoxDecoration(
-                    color: boxColor,
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(entry.node is GenericSingleChildNode ? 4 : 30)),
-                  ),
-            alignment: Alignment.center,
-            child: Row(
-              children: [
-                if (entry.node.logoSrc() != null && entry.node is! GenericSingleChildNode) entry.node.logoSrc()!,
-                // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
-                _name(context),
-              ],
-            ),
-          ),
-          if (entry.hasChildren)
-            ExpandIcon(
-              key: GlobalObjectKey(entry.node),
-              isExpanded: treeController.getExpansionState(entry.node), //entry.isExpanded,
-              padding: EdgeInsets.zero,
-              onPressed: (_) {
-                if (treeController.getExpansionState(entry.node)) {
-                  treeController.toggleExpansion(entry.node);
-                } else {
-                  // instead of expanding current node, do a cascading expand
-                  treeController.expand(entry.node);
-                }
-              },
-            )
-          else
-            const SizedBox(height: 30),
-        ],
-      );
-    });
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                key: MaterialSPA.aNodeIsSelected &&
+                    MaterialSPA.selectedNode == entry.node ? MaterialSPA
+                    .snippetBeingEdited!.selectedTreeNodeGK : null,
+                margin: EdgeInsets.zero,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: entry.node is DirectoryNode ||
+                    entry.node is FileNode
+                    ? null
+                    : BoxDecoration(
+                  color: boxColor,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.all(Radius.circular(
+                      entry.node is GenericSingleChildNode ? 4 : 30)),
+                ),
+                alignment: Alignment.center,
+                child: Row(
+                  children: [
+                    if (entry.node.logoSrc() != null &&
+                        entry.node is! GenericSingleChildNode) entry.node
+                        .logoSrc()!,
+                    // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
+                    _name(context),
+                  ],
+                ),
+              ),
+              if (entry.hasChildren)
+                ExpandIcon(
+                  key: GlobalObjectKey(entry.node),
+                  isExpanded: treeController.getExpansionState(entry.node),
+                  //entry.isExpanded,
+                  padding: EdgeInsets.zero,
+                  onPressed: (_) {
+                    if (treeController.getExpansionState(entry.node)) {
+                      treeController.toggleExpansion(entry.node);
+                    } else {
+                      // instead of expanding current node, do a cascading expand
+                      treeController.expand(entry.node);
+                    }
+                  },
+                )
+              else
+                const SizedBox(height: 30),
+            ],
+          );
+        });
   }
 
   Widget _name(context) {
@@ -99,7 +107,8 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetRootNode snippet = FC().currentSnippet((entry.node as SnippetRootNode).name)!;
+        SnippetRootNode snippet = FC().currentSnippet(
+            (entry.node as SnippetRootNode).name)!;
 
         STreeNode.pushThenShowNamedSnippetWithNodeSelected(
           snippet.name,
@@ -109,8 +118,13 @@ class NodeWidget extends StatelessWidget {
       },
       onTap: () {
         if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
+        // if (entry.node is TextSpanNode) {
+        //   debugPrint('TextSpan cannot be selected (has no key property!)');
+        //   return;
+        // };
 
-        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected && entry.node == MaterialSPA.selectedNode) return;
+        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected &&
+            entry.node == MaterialSPA.selectedNode) return;
 
         if (!treeController.getExpansionState(entry.node)) {
           treeController.expand(entry.node);
@@ -120,11 +134,13 @@ class NodeWidget extends StatelessWidget {
 
         bool thisWasAlreadySelected = (entry.node == MaterialSPA.selectedNode);
 
-        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
+        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected &&
+            thisWasAlreadySelected) {
           Callout.hide("floating-clipboard");
           Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
           MaterialSPA.capiBloc.add(const CAPIEvent.clearNodeSelection());
-        } else if (!MaterialSPA.snippetBeingEdited!.aNodeIsSelected || !thisWasAlreadySelected) {
+        } else if (!MaterialSPA.snippetBeingEdited!.aNodeIsSelected ||
+            !thisWasAlreadySelected) {
           if (FC().clipboard != null) {
             Callout.unhide("floating-clipboard");
           }
@@ -248,17 +264,17 @@ class NodeWidget extends StatelessWidget {
       // },
       child: entry.node is DirectoryNode
           ? Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Icon(Icons.folder, size: 30, color: Colors.amber),
-                hspacer(6),
-                _text(),
-              ],
-            )
-          // : entry.node is FileNode
-          // ? (entry.node as FileNode).toWidget(snippetBloc, context)
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(Icons.folder, size: 30, color: Colors.amber),
+          hspacer(6),
+          _text(),
+        ],
+      )
+      // : entry.node is FileNode
+      // ? (entry.node as FileNode).toWidget(snippetBloc, context)
           : _text(),
     );
   }
@@ -304,16 +320,16 @@ class NodeWidget extends StatelessWidget {
     String displayedNodeName = node is SnippetRootNode && node.name.isNotEmpty
         ? node.name
         : node is DirectoryNode && node.name!.isNotEmpty
-            ? node.name!
-            : node is DirectoryNode && node.name!.isEmpty
-                ? 'name ?'
-                : node is FileNode && node.name.isEmpty
-                    ? 'filename ?'
-                    : node is FileNode && node.src.isEmpty
-                        ? 'src ?'
-                        : node is FileNode
-                            ? node.name
-                            : node.toString();
+        ? node.name!
+        : node is DirectoryNode && node.name!.isEmpty
+        ? 'name ?'
+        : node is FileNode && node.name.isEmpty
+        ? 'filename ?'
+        : node is FileNode && node.src.isEmpty
+        ? 'src ?'
+        : node is FileNode
+        ? node.name
+        : node.toString();
 
     // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
     // if (badParent) {
@@ -324,11 +340,16 @@ class NodeWidget extends StatelessWidget {
     Color textColor = node == selectedNode ? Colors.black : Colors.grey;
     return Text(
       displayedNodeName,
-      textScaler: TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
+      textScaler: TextScaler.linear(
+          entry.node is GenericSingleChildNode ? .9 : 1.0),
       style: TextStyle(
-        color: node is SnippetRootNode || node is GenericSingleChildNode ? Colors.white : textColor,
+        color: node is SnippetRootNode || node is GenericSingleChildNode
+            ? Colors.white
+            : textColor,
         fontSize: 12.0,
-        fontStyle: node is MC && !node.children.isNotEmpty ? FontStyle.italic : FontStyle.normal,
+        fontStyle: node is MC && !node.children.isNotEmpty
+            ? FontStyle.italic
+            : FontStyle.normal,
         fontWeight: node == selectedNode ? FontWeight.bold : FontWeight.normal,
       ),
     );
