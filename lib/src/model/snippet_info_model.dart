@@ -15,5 +15,5 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   bool get isAPageSnippet => routePath != null;
 
-  VersionId? get currentVersionId => FC().canEditContent ? editingVersionId : publishedVersionId;
+  VersionId? get currentVersionId => FContent().canEditContent ? editingVersionId : publishedVersionId;
 }

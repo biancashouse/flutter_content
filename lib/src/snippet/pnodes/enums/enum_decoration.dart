@@ -1,15 +1,16 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
-import 'package:flutter_content/src/surround/dotted_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
+import 'package:gap/gap.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 
 part 'enum_decoration.mapper.dart';
 
 @MappableEnum()
-enum DecorationShapeEnum {
+enum MappableDecorationShapeEnum {
   rectangle,
   rounded_rectangle,
   rectangle_dotted,
@@ -40,7 +41,7 @@ enum DecorationShapeEnum {
   Widget toMenuItem({bool skipLabel = true}) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          hspacer(8),
+          Gap(8),
           SizedBox(
             width: 50,
             height: 30,
@@ -50,7 +51,7 @@ enum DecorationShapeEnum {
               decoration: toDecoration(),
             ),
           ),
-          hspacer(8),
+          Gap(8),
         ],
       );
 
@@ -94,20 +95,20 @@ enum DecorationShapeEnum {
       border = GradientBoxBorder(gradient: borderGradient, width: thickness ?? 3);
     }
     return switch (this) {
-      DecorationShapeEnum.rectangle => BoxDecoration(
+      MappableDecorationShapeEnum.rectangle => BoxDecoration(
           shape: BoxShape.rectangle,
           border: border,
           gradient: fillGradient,
           color: fillColor,
         ),
-      DecorationShapeEnum.rounded_rectangle => BoxDecoration(
+      MappableDecorationShapeEnum.rounded_rectangle => BoxDecoration(
           shape: BoxShape.rectangle,
           border: border,
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
           gradient: fillGradient,
           color: fillColor,
         ),
-      DecorationShapeEnum.rectangle_dotted => DottedDecoration(
+      MappableDecorationShapeEnum.rectangle_dotted => DottedDecoration(
           shape: Shape.box,
           dash: const <int>[3, 3],
           borderColor: borderColors.firstOrNull ?? Colors.grey,
@@ -115,7 +116,7 @@ enum DecorationShapeEnum {
           fillColor: fillColor ?? Colors.white,
           fillGradient: fillGradient,
         ),
-      DecorationShapeEnum.rounded_rectangle_dotted => DottedDecoration(
+      MappableDecorationShapeEnum.rounded_rectangle_dotted => DottedDecoration(
           shape: Shape.box,
           dash: const <int>[3, 3],
           borderColor: borderColors.firstOrNull ?? Colors.grey,
@@ -124,13 +125,13 @@ enum DecorationShapeEnum {
           borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 8)),
           fillGradient: fillGradient,
         ),
-      DecorationShapeEnum.circle => BoxDecoration(
+      MappableDecorationShapeEnum.circle => BoxDecoration(
           shape: BoxShape.circle,
           border: border,
           color: fillGradient != null ? null : fillColor ?? Colors.white,
           gradient: fillGradient,
         ),
-      DecorationShapeEnum.bevelled => ShapeDecoration(
+      MappableDecorationShapeEnum.bevelled => ShapeDecoration(
           shape: BeveledRectangleBorder(
             side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 1),
             borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 6)),
@@ -138,14 +139,14 @@ enum DecorationShapeEnum {
           color: fillGradient != null ? null : fillColor ?? Colors.white,
           gradient: fillGradient,
         ),
-      DecorationShapeEnum.stadium => ShapeDecoration(
+      MappableDecorationShapeEnum.stadium => ShapeDecoration(
           shape: StadiumBorder(
             side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 2),
           ),
           color: fillGradient != null ? null : fillColor ?? Colors.white,
           gradient: fillGradient,
         ),
-      DecorationShapeEnum.star => ShapeDecoration(
+      MappableDecorationShapeEnum.star => ShapeDecoration(
           shape: StarBorder(
             side: BorderSide(color: borderColors.firstOrNull ?? Colors.black, width: thickness ?? 2),
             points: starPoints?.toDouble() ?? 7,
@@ -160,5 +161,5 @@ enum DecorationShapeEnum {
     };
   }
 
-  static DecorationShapeEnum? of(int? index) => index != null ? DecorationShapeEnum.values.elementAtOrNull(index) : null;
+  static MappableDecorationShapeEnum? of(int? index) => index != null ? MappableDecorationShapeEnum.values.elementAtOrNull(index) : null;
 }

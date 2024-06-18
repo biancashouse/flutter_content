@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/snippet_templates.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -27,7 +27,7 @@ Future<void> showSnippetContentCallout({
 }) async {
   // possibly transform before showing callout
 
-  Rect? targetRect = FC()
+  Rect? targetRect = FContent()
       .getTargetGk(tc.uid)!
       .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
 
@@ -39,26 +39,26 @@ Future<void> showSnippetContentCallout({
   double minHeight = 0;
   // int maxLines = 5;
   // TargetModel? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
-  GlobalKey? targetGK() => FC().getTargetGk(tc.uid)!;
+  GlobalKey? targetGK() => FContent().getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.snippetName;
-  var snippet = FC().snippetInfoCache[tc.snippetName];
-  FC().targetSnippetBeingConfigured = FC().currentSnippet(tc.snippetName);
-  if (FC().targetSnippetBeingConfigured == null) {
+  var snippet = FContent().snippetInfoCache[tc.snippetName];
+  FContent().targetSnippetBeingConfigured = FContent().currentSnippet(tc.snippetName);
+  if (FContent().targetSnippetBeingConfigured == null) {
     var rootNode = SnippetTemplateEnum.callout_content.clone();
     if (rootNode != null) {
       SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
           rootNode, tc.snippetName);
-      FC().possiblyCacheAndSaveANewSnippetVersion(
+      FContent().possiblyCacheAndSaveANewSnippetVersion(
           snippetName: tc.snippetName,
           rootNode: newSnippet);
-      FC().targetSnippetBeingConfigured = newSnippet;
+      FContent().targetSnippetBeingConfigured = newSnippet;
     }
   }
   // snipper may not exist yet
   //  by now should definitely have created the target's snippet
-  if (FC().targetSnippetBeingConfigured != null) {
+  if (FContent().targetSnippetBeingConfigured != null) {
     Callout.showOverlay(
       // zoomer: zoomer,
       targetGkF: targetGK,
@@ -66,7 +66,7 @@ Future<void> showSnippetContentCallout({
         child: BlocBuilder<CAPIBloC, CAPIState>(
           builder: (context, state) {
             return const CircularProgressIndicator();
-            return FC().targetSnippetBeingConfigured!.toWidget(context, null);
+            return FContent().targetSnippetBeingConfigured!.toWidget(context, null);
           },
         ),
       ),
@@ -84,7 +84,7 @@ Future<void> showSnippetContentCallout({
         arrowColor: tc.calloutColor(),
         arrowType: tc.getArrowType(),
         fromDelta:
-            tc.calloutDecorationShape == DecorationShapeEnum.star ? 60 : null,
+            tc.calloutDecorationShape == MappableDecorationShapeEnum.star ? 60 : null,
         animate: tc.animateArrow,
         initialCalloutPos: tc.getCalloutPos(),
         // initialCalloutAlignment: Alignment.bottomCenter,
@@ -104,10 +104,10 @@ Future<void> showSnippetContentCallout({
           // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         },
         onDragEndedF: (Offset newPos) {
-          if (newPos.dy / Useful.scrH != tc.calloutTopPc ||
-              newPos.dx / Useful.scrW != tc.calloutLeftPc) {
-            tc.calloutTopPc = newPos.dy / Useful.scrH;
-            tc.calloutLeftPc = newPos.dx / Useful.scrW;
+          if (newPos.dy / FContent().scrH != tc.calloutTopPc ||
+              newPos.dx / FContent().scrW != tc.calloutLeftPc) {
+            tc.calloutTopPc = newPos.dy / FContent().scrH;
+            tc.calloutLeftPc = newPos.dx / FContent().scrW;
             tc.onChange();
             // MaterialSPA.capiBloc.add(
             //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
@@ -195,7 +195,7 @@ Future<void> showSnippetContentCallout({
 //   txtEditorCallout.show(
 //     notUsingHydratedStorage: true,
 //     onReadyF: () {
-//       Useful.afterMsDelayDo(500, tc.textFocusNode().requestFocus);
+//       FC().afterMsDelayDo(500, tc.textFocusNode().requestFocus);
 //     },
 //   );
 //

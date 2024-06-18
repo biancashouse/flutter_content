@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 
@@ -29,7 +30,7 @@ class TargetsWrapper extends StatefulWidget {
 //
 //   if (targetRect == null) return null;
 //
-//   return Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+//   return FC().calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 // }
 
 // static void hideAllTargets({required CAPIBloc bloc, required String name, final TargetModel? exception}) {
@@ -98,7 +99,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       tc.targetsWrapperNode = widget.parentNode;
     }
 
-    Useful.afterNextBuildDo(
+    FContent().afterNextBuildDo(
       () {
         // if (zoomer?.widget.ancestorHScrollController != null) {
         //   FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
@@ -129,7 +130,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         Size wrapperSize = newPosAndSize.$2!;
         if (wrapperSize.width == 0 && wrapperSize.height == 0) {
-          wrapperSize = Useful.scrSize;
+          wrapperSize = FContent().scrSize;
         }
         wrapperRect = Rect.fromLTWH(
           globalPos.dx,
@@ -177,7 +178,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     //
     void longPressedeBarrier(LongPressStartDetails details) {
-      if (!FC().canEditContent) return;
+      if (!FContent().canEditContent) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
 
@@ -202,7 +203,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // widget.parentNode.targets.add(newTC);
       MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-      FC().possiblyCacheAndSaveANewSnippetVersion(
+      FContent().possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: widget.parentNode.rootNodeOfSnippet()!,
       );
@@ -240,8 +241,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 top: tc.targetStackPos().dy - tc.radius,
                 left: tc.targetStackPos().dx - tc.radius,
                 child: Visibility.maintain(
-                  key: FC().setTargetGk(tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
-                  visible: FC().canEditContent && (playingTc == null || playingTc == tc),
+                  key: FContent().setTargetGk(tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
+                  visible: FContent().canEditContent && (playingTc == null || playingTc == tc),
                   child: TargetCover(tc, _targetIndex(tc)),
                 ),
               ),
@@ -269,7 +270,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           ),
         );
 
-    return FC().canEditContent
+    return FContent().canEditContent
         ? IgnorePointer(
             ignoring: true,
             child: child,

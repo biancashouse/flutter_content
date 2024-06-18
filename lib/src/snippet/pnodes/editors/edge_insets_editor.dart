@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/edgeinsets_node_value.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -28,14 +27,14 @@ class EdgeInsetsPropertyEditor extends HookWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Useful.coloredText(name, color: Colors.white54),
+          // FC().coloredText(name, color: Colors.white54),
           // const Gap(6),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Useful.coloredText('all', color: Colors.white, fontSize: 10),
-              Useful.coloredText('Symm.', color: Colors.white, fontSize: 10),
-              Useful.coloredText('only', color: Colors.white, fontSize: 10),
+              FContent().coloredText('all', color: Colors.white, fontSize: 10),
+              FContent().coloredText('Symm.', color: Colors.white, fontSize: 10),
+              FContent().coloredText('only', color: Colors.white, fontSize: 10),
             ],
           ),
           SegmentedButton<EdgeInsetsInputModeEnum>(

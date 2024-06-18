@@ -58,7 +58,7 @@ enum TextOverflowEnum  {
   //   };
   // }
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static TextOverflowEnum? of(int? index) => index != null ? TextOverflowEnum.values.elementAtOrNull(index) : null;
 }

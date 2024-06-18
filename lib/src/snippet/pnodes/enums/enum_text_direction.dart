@@ -44,7 +44,7 @@ enum TextDirectionEnum   {
         ),
       );
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static TextDirectionEnum? of(int? index) => index != null ? TextDirectionEnum.values.elementAtOrNull(index) : null;
 

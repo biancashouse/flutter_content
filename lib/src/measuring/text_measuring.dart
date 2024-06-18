@@ -10,7 +10,7 @@ Size calculateTextSize({
   final TextPainter textPainter = TextPainter(
     text: TextSpan(text: text.replaceAll("`10`", "\n"), style: style),
     textDirection: TextDirection.ltr,
-    textScaler: Useful.textScaler,
+    textScaler: FContent().textScaler,
     maxLines: 6,
   )..layout(minWidth: 0, maxWidth: double.infinity);
 

@@ -34,7 +34,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
@@ -43,7 +43,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
       key: createNodeGK(),
       child: OutlinedButton(
         // if feature specified, must be a callout
-        key: feature != null ? FC().setCalloutGk(feature!, GlobalKey()) : null,
+        key: feature != null ? FContent().setCalloutGk(feature!, GlobalKey()) : null,
         onPressed: ()=>onPressed(context),
         onLongPress: f != null ? () => f.call(context) : null,
         style: btnStyle,

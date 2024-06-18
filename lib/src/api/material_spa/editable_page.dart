@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -47,12 +48,12 @@ class EditablePageState extends State<EditablePage> {
 
   @override
   void initState() {
-    FC().pageGKs[widget.routePath] = widget.key as GlobalKey;
+    FContent().pageGKs[widget.routePath] = widget.key as GlobalKey;
     super.initState();
 
-    Useful.afterNextBuildDo(() {
+    FContent().afterNextBuildDo(() {
       setState(() {
-        fabPosition = Offset(20, Useful.scrH - 90); // Initial position of the FAB
+        fabPosition = Offset(20, FContent().scrH - 90); // Initial position of the FAB
       });
     });
   }
@@ -60,15 +61,15 @@ class EditablePageState extends State<EditablePage> {
   //will go null after user tap bianca
   @override
   Widget build(BuildContext context) {
-    Useful.instance.initWithContext(context);
+    FCallouts().initWithContext(context);
 
     return NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
         debugPrint("MaterialSPA SizeChangedLayoutNotification}");
         Callout.dismissAll(exceptFeatures: ["FAB"]);
-        Useful.afterMsDelayDo(300, () {
-          // Useful.refreshMQ(context);
-          if (FC().showingNodeBoundaryOverlays ?? false) {
+        FContent().afterMsDelayDo(300, () {
+          // FC().refreshMQ(context);
+          if (FContent().showingNodeBoundaryOverlays ?? false) {
             removeAllNodeWidgetOverlays();
             showAllNodeWidgetOverlays();
           }
@@ -81,7 +82,7 @@ class EditablePageState extends State<EditablePage> {
             focusNode: focusNode, // <-- more magic
             onKeyEvent: (KeyEvent event) {
               bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
-              if (FC().inEditMode.value && isEsc) {
+              if (FContent().inEditMode.value && isEsc) {
                 exitEditMode();
               }
               // _enterOrExitEditMode(event, lastTapTime, tapCount);
@@ -94,7 +95,7 @@ class EditablePageState extends State<EditablePage> {
                 child: Stack(
                   children: [
                     Zoomer(
-                      child: Useful.isAndroid ? _buildAndroid(context, widget.builder(context)) : widget.builder(context),
+                      child: FContent().isAndroid ? _buildAndroid(context, widget.builder(context)) : widget.builder(context),
                     ),
                     if (fabPosition != null && isFABVisible)
                       Positioned(
@@ -120,10 +121,10 @@ class EditablePageState extends State<EditablePage> {
 
   Widget FAB() => Container(
         decoration: BoxDecoration(
-          color: !FC().canEditContent ? Colors.green : Colors.blue,
+          color: !FContent().canEditContent ? Colors.green : Colors.blue,
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         ),
-        child: FC().canEditContent
+        child: FContent().canEditContent
             ? PointerInterceptor(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -184,7 +185,7 @@ class EditablePageState extends State<EditablePage> {
 
   void enterEditMode() {
     hideFAB();
-    FC().inEditMode.value = true;
+    FContent().inEditMode.value = true;
     showAllNodeWidgetOverlays();
     showExitEditModeCallout();
     // Callout.showTextToast(
@@ -199,7 +200,7 @@ class EditablePageState extends State<EditablePage> {
   }
 
   void exitEditMode() {
-    FC().inEditMode.value = false;
+    FContent().inEditMode.value = false;
     removeAllNodeWidgetOverlays();
     String feature = MaterialSPA.rootNode?.name ?? "snippet name ?!";
     if (Callout.anyPresent([feature])) {
@@ -212,11 +213,11 @@ class EditablePageState extends State<EditablePage> {
 
   void removeAllNodeWidgetOverlays() {
     // debugPrint('removeAllNodeWidgetOverlays - start');
-    for (GlobalKey nodeWidgetGK in FC().gkSTreeNodeMap.keys) {
+    for (GlobalKey nodeWidgetGK in FContent().gkSTreeNodeMap.keys) {
       Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
     // debugPrint('removeAllNodeWidgetOverlays - ended');
-    FC().showingNodeBoundaryOverlays = false;
+    FContent().showingNodeBoundaryOverlays = false;
   }
 
   // only called with MaterialAppWrapper context
@@ -227,10 +228,10 @@ class EditablePageState extends State<EditablePage> {
     void traverseAndMeasure(BuildContext el) {
       // debugPrint('traverseAndMeasure(${el.toString()})');
 
-      if ((FC().gkSTreeNodeMap.containsKey(el.widget.key))) {
+      if ((FContent().gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = FC().gkSTreeNodeMap[gk];
+        STreeNode? node = FContent().gkSTreeNodeMap[gk];
         // debugPrint("traverseAndMeasure: ${node.toString()}");
         if (node != null && node.canShowTappableNodeWidgetOverlay) {
           // if (node.rootNodeOfSnippet() == FC().targetSnippetBeingConfigured) {
@@ -243,7 +244,7 @@ class EditablePageState extends State<EditablePage> {
           //   debugPrint('PlaceholderNode');
           // }
           if (r != null) {
-            r = Useful.restrictRectToScreen(r);
+            r = FContent().restrictRectToScreen(r);
             // debugPrint("========>  r restricted to ${r.toString()}");
             // debugPrint('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
             // node.setParent(parent);
@@ -265,20 +266,20 @@ class EditablePageState extends State<EditablePage> {
 
     var pageContext = context;
     traverseAndMeasure(pageContext);
-    FC().showingNodeBoundaryOverlays = true;
+    FContent().showingNodeBoundaryOverlays = true;
     // debugPrint('traverseAndMeasure(context) finished.');
   }
 
   // only called with MaterialAppWrapper context
   void showNodeWidgetOverlay(STreeNode node) {
     Callout.dismiss('pink-border-overlay-non-tappable');
-    Useful.afterNextBuildDo(() {
+    FContent().afterNextBuildDo(() {
       node.showNodeWidgetOverlay();
     });
     return;
     // Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     // if (r != null) {
-    //   r = Useful.restrictRectToScreen(r);
+    //   r = FC().restrictRectToScreen(r);
     //   // debugPrint("========>  r restricted to ${r.toString()}");
     //   Callout.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
     //   node.showNodeWidgetOverlay();
@@ -296,7 +297,7 @@ class EditablePageState extends State<EditablePage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Useful.purpleText("Editor Access", fontSize: 24, family: 'Merriweather'),
+              FContent().purpleText("Editor Access", fontSize: 24, family: 'Merriweather'),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 width: 240,
@@ -308,10 +309,10 @@ class EditablePageState extends State<EditablePage> {
                   onTextChangedF: (s) async {
                     if (s == (kDebugMode ? " " : "lakebeachocean")) {
                       Callout.dismiss("EditorPassword");
-                      FC().setCanEdit(true);
+                      FContent().setCanEdit(true);
                       // await FC.loadLatestSnippetMap();
                       // MaterialSPA.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
-                      // Useful.afterNextBuildDo(() {
+                      // FC().afterNextBuildDo(() {
                       //   FC()
                       //       .capiBloc
                       //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
@@ -328,7 +329,7 @@ class EditablePageState extends State<EditablePage> {
                   isPassword: true,
                   onEditingCompleteF: (s) {
                     // if (s == "lakebeachocean") {
-                    //   Useful.om.remove("TrainerPassword".hashCode);
+                    //   FC().om.remove("TrainerPassword".hashCode);
                     //   setState(() {
                     //     HydratedBloc.storage.write("trainerIsSignedIn", true);
                     //   });
@@ -367,7 +368,7 @@ class EditablePageState extends State<EditablePage> {
 
   void _signOut() {
     setState(() {
-      FC().setCanEdit(false);
+      FContent().setCanEdit(false);
     });
 
     // // if auto-publishing, make sure publishing version == editing version

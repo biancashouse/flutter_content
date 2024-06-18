@@ -58,12 +58,12 @@ enum TextAlignEnum   {
 
   Widget _toIcon() {
     return switch (this) {
-      TextAlignEnum.left => Useful.whiteIcon(Icons.format_align_left),
-      TextAlignEnum.start => Useful.whiteIcon(Icons.format_align_left),
-      TextAlignEnum.center => Useful.whiteIcon(Icons.format_align_center),
-      TextAlignEnum.right => Useful.whiteIcon(Icons.format_align_right),
-      TextAlignEnum.end => Useful.whiteIcon(Icons.format_align_right),
-      TextAlignEnum.justify => Useful.whiteIcon(Icons.format_align_justify),
+      TextAlignEnum.left => FContent().whiteIcon(Icons.format_align_left),
+      TextAlignEnum.start => FContent().whiteIcon(Icons.format_align_left),
+      TextAlignEnum.center => FContent().whiteIcon(Icons.format_align_center),
+      TextAlignEnum.right => FContent().whiteIcon(Icons.format_align_right),
+      TextAlignEnum.end => FContent().whiteIcon(Icons.format_align_right),
+      TextAlignEnum.justify => FContent().whiteIcon(Icons.format_align_justify),
     };
   }
 

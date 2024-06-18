@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/api/snippet_panel/clipboard_node_widget.dart';
@@ -16,7 +17,7 @@ class ClipboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CAPIBloC bloc = MaterialSPA.capiBloc;
-    STreeNode? clipboard = FC().clipboard;
+    STreeNode? clipboard = FContent().clipboard;
     if (clipboard == null) return const Offstage();
     SnippetTreeController clipboardTreeC = SnippetTreeController(
       roots: [clipboard],

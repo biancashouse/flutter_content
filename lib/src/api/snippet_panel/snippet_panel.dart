@@ -1,10 +1,12 @@
 // ignore_for_file: camel_case_types
 
+import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:gap/gap.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -99,7 +101,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     tabC!.addListener(() {
       if (!(tabC?.indexIsChanging ?? true)) {
         if (tabBarGK != null) {
-          TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+          TabBarNode? tbNode = FContent().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
           if (tbNode != null && !(backBtnPressed ?? false)) {
             prevTabQ.add(tbNode.selection ?? 0);
             tbNode.selection = tabC!.index;
@@ -126,12 +128,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     super.initState();
 
     widget.handlers?.forEach((key, value) {
-      FC().registerHandler(key, value);
+      FContent().registerHandler(key, value);
       debugPrint("registered handler '$key'");
     });
 
-    if (!FC().placeNames.contains(widget.panelName)) {
-      FC().placeNames.add(widget.panelName);
+    if (!FContent().placeNames.contains(widget.panelName)) {
+      FContent().placeNames.add(widget.panelName);
     }
 
     prevTabQ = [];
@@ -140,7 +142,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void resetTabQandC() {
     prevTabQ = [];
     if (tabBarGK != null) {
-      TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+      TabBarNode? tbNode = FContent().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
       tbNode?.selection = 0;
       tabC?.index = 0;
     }
@@ -171,7 +173,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           return snapshot.connectionState != ConnectionState.done
               ? const Center(child: CircularProgressIndicator())
               : BlocBuilder<CAPIBloC, CAPIState>(
-                  key: FC().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+                  key: FContent().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
                   buildWhen: (previous, current) => !current.onlyTargetsWrappers,
                   builder: (blocContext, state) {
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
@@ -185,7 +187,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                     Widget snippetWidget;
                     try {
                       // in case did a revert, ignore snapshot data and use the AppInfo instead
-                      SnippetRootNode? snippet = FC().currentSnippet(snippetName());
+                      SnippetRootNode? snippet = FContent().currentSnippet(snippetName());
                       snippet?.validateTree();
                       // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                       snippetWidget =
@@ -199,8 +201,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                           child: Row(
                             children: [
                               const Icon(Icons.error, color: Colors.redAccent),
-                              hspacer(10),
-                              Useful.coloredText(e.toString()),
+                              Gap(10),
+                              FContent().coloredText(e.toString()),
                             ],
                           ),
                         ),
@@ -234,8 +236,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //               child: Row(
   //                 children: [
   //                   const Icon(Icons.error, color: Colors.redAccent),
-  //                   hspacer(10),
-  //                   Useful.coloredText(e.toString()),
+  //                   Gap(10),
+  //                   FC().coloredText(e.toString()),
   //                 ],
   //               ),
   //             ),

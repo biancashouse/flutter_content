@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
@@ -31,7 +32,7 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
 // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-    h = min(MaterialSPA.capiBloc.state.snippetTreeCalloutH ?? 500, Useful.scrH - 50);
+    h = min(MaterialSPA.capiBloc.state.snippetTreeCalloutH ?? 500, FContent().scrH - 50);
     return h > 0 ? h : 500;
   }
 
@@ -133,7 +134,7 @@ void showSnippetTreeAndPropertiesCallout({
     //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
   ));
-  Useful.afterNextBuildDo(() {
+  FContent().afterNextBuildDo(() {
     selectedNode.showNodeWidgetOverlay();
   });
 }
@@ -144,7 +145,7 @@ void showSnippetTreeAndPropertiesCallout({
 //   Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
 //   Callout.removeOverlay(TREENODE_MENU_CALLOUT);
 //   Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
-//   // Useful.afterNextBuildDo(() {
+//   // FC().afterNextBuildDo(() {
 //   //   refreshSnippetTreeCallout(snippetName);
 //   // });
 // }

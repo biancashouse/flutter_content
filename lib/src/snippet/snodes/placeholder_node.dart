@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
+import 'package:gap/gap.dart';
 
 part 'placeholder_node.mapper.dart';
 
@@ -63,14 +64,14 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
-    if (name != null && !FC().placeNames.contains(name!)) {
-      FC().placeNames.add(name!);
+    if (name != null && !FContent().placeNames.contains(name!)) {
+      FContent().placeNames.add(name!);
     }
 
     // possibly populate with a spnippet
     Widget? childWidget;
-    if (FC().snippetPlacementMap.containsKey(name)) {
-      String snippetName = FC().snippetPlacementMap[name]!;
+    if (FContent().snippetPlacementMap.containsKey(name)) {
+      String snippetName = FContent().snippetPlacementMap[name]!;
       return FutureBuilder<void>(
           future:
               SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
@@ -95,7 +96,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                       try {
                         // in case did a revert, ignore snapshot data and use the AppInfo instead
                         SnippetRootNode? snippet =
-                            FC().currentSnippet(snippetName);
+                            FContent().currentSnippet(snippetName);
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null
@@ -113,8 +114,8 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                               children: [
                                 const Icon(Icons.error,
                                     color: Colors.redAccent),
-                                hspacer(10),
-                                Useful.coloredText(e.toString()),
+                                Gap(10),
+                                FContent().coloredText(e.toString()),
                               ],
                             ),
                           ),

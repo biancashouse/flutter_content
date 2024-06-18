@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 
 part 'text_style_group.mapper.dart';
@@ -82,7 +81,7 @@ class TextStyleGroup with TextStyleGroupMappable {
     // possibly apply named textstyle
     TextStyle? defaultTS;
     if (namedTextStyle != null) {
-      defaultTS = FC().namedTextStyles[namedTextStyle];
+      defaultTS = FContent().namedTextStyles[namedTextStyle];
       if (defaultTS != null) {
         ts = ts.merge(defaultTS);
       }

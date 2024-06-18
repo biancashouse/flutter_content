@@ -87,7 +87,7 @@ Future<void> main() async {
     initialRoutePath: '/home',
     materialAppThemeF: () => ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      primaryColor: FUCHSIA_X,
+      primaryColor: FContent().FUCHSIA_X,
       primarySwatch: Colors.purple,
     ),
     fbOptions: DefaultFirebaseOptions.currentPlatform,

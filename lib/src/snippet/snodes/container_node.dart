@@ -9,7 +9,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 import '../pnodes/groups/outlined_border_group.dart';
-import 'edgeinsets_node_value.dart';
 
 part 'container_node.mapper.dart';
 
@@ -21,7 +20,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   double? width;
   double? height;
   AlignmentEnum? alignment;
-  DecorationShapeEnum decoration;
+  MappableDecorationShapeEnum decoration;
   double? borderThickness;
   UpTo6ColorValues? borderColorValues;
   int? borderColor2Value;
@@ -52,7 +51,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
     this.width,
     this.height,
     this.alignment,
-    this.decoration = DecorationShapeEnum.rectangle,
+    this.decoration = MappableDecorationShapeEnum.rectangle,
     this.borderThickness,
     this.borderColorValues,
     this.borderRadius,
@@ -143,11 +142,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
               // Callout.hideOP('easy-color-picker');
             }),
           ),
-          EnumPropertyValueNode<DecorationShapeEnum?>(
+          EnumPropertyValueNode<MappableDecorationShapeEnum?>(
             snode: this,
             name: 'shape',
             valueIndex: decoration.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = DecorationShapeEnum.of(newValue) ?? DecorationShapeEnum.rectangle),
+            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = MappableDecorationShapeEnum.of(newValue) ?? MappableDecorationShapeEnum.rectangle),
           ),
           DecimalPropertyValueNode(
             snode: this,
@@ -465,7 +464,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //   child: InputDecorator(
   //       //     decoration: InputDecoration(
   //       //       labelText: 'border',
-  //       //       labelStyle: Useful.enclosureLabelTextStyle,
+  //       //       labelStyle: FC().enclosureLabelTextStyle,
   //       //       border: const OutlineInputBorder(),
   //       //       // isDense: false,
   //       //     ),

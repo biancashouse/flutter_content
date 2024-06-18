@@ -27,9 +27,9 @@ class StepNode extends CL with StepNodeMappable {
     possiblyHighlightSelectedNode();
      return Step(
        isActive: parent.currentStep >= index,
-      title: title.toWidgetProperty(context, this) ?? Useful.coloredText('must have a title', color: Colors.red),
+      title: title.toWidgetProperty(context, this) ?? FContent().coloredText('must have a title', color: Colors.red),
       subtitle: subtitle?.toWidgetProperty(context, this),
-      content: content.toWidgetProperty(context, this) ?? Useful.coloredText('must have content', color: Colors.red),
+      content: content.toWidgetProperty(context, this) ?? FContent().coloredText('must have content', color: Colors.red),
     );
   }
 

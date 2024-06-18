@@ -33,7 +33,7 @@ enum FlexFitEnum  {
         ),
       );
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static FlexFitEnum? of(int? index) => index != null ? FlexFitEnum.values.elementAtOrNull(index) : null;
 }

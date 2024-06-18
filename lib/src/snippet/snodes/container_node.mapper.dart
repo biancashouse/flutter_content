@@ -17,7 +17,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
       UpTo6ColorValuesMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
-      DecorationShapeEnumMapper.ensureInitialized();
+      MappableDecorationShapeEnumMapper.ensureInitialized();
       BadgePositionEnumMapper.ensureInitialized();
       OutlinedBorderGroupMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
@@ -47,10 +47,11 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static AlignmentEnum? _$alignment(ContainerNode v) => v.alignment;
   static const Field<ContainerNode, AlignmentEnum> _f$alignment =
       Field('alignment', _$alignment, opt: true);
-  static DecorationShapeEnum _$decoration(ContainerNode v) => v.decoration;
-  static const Field<ContainerNode, DecorationShapeEnum> _f$decoration = Field(
-      'decoration', _$decoration,
-      opt: true, def: DecorationShapeEnum.rectangle);
+  static MappableDecorationShapeEnum _$decoration(ContainerNode v) =>
+      v.decoration;
+  static const Field<ContainerNode, MappableDecorationShapeEnum> _f$decoration =
+      Field('decoration', _$decoration,
+          opt: true, def: MappableDecorationShapeEnum.rectangle);
   static double? _$borderThickness(ContainerNode v) => v.borderThickness;
   static const Field<ContainerNode, double> _f$borderThickness =
       Field('borderThickness', _$borderThickness, opt: true);
@@ -255,7 +256,7 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
       double? width,
       double? height,
       AlignmentEnum? alignment,
-      DecorationShapeEnum? decoration,
+      MappableDecorationShapeEnum? decoration,
       double? borderThickness,
       UpTo6ColorValues? borderColorValues,
       double? borderRadius,
@@ -308,7 +309,7 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
           Object? width = $none,
           Object? height = $none,
           Object? alignment = $none,
-          DecorationShapeEnum? decoration,
+          MappableDecorationShapeEnum? decoration,
           Object? borderThickness = $none,
           Object? borderColorValues = $none,
           Object? borderRadius = $none,

@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 
 import 'colour_callout.dart';
 import 'duration_callout.dart';
@@ -61,7 +62,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
-              Useful.coloredText('zoom', color: Colors.white70),
+              FContent().coloredText('zoom', color: Colors.white70),
               Tooltip(
                 message: 'edit the zoom...',
                 child: SizedBox(
@@ -94,7 +95,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
-              Useful.coloredText('target size', color: Colors.white70),
+              FContent().coloredText('target size', color: Colors.white70),
               Tooltip(
                 message: 'resize the circular target radius...',
                 child: SizedBox(
@@ -112,7 +113,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                         _debounce = Timer(const Duration(milliseconds: 100), () {
                           tc.radiusPc = value / ivSize.width;
                           tc.onChange();
-                          FC.forceRefresh();
+                          FContent.forceRefresh();
                         });
                       },
                       min: 16.0,
@@ -154,7 +155,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               //   bloc.add(CAPIEvent.createdSnippet(
               //     newNode: sNode,
               //   ));
-              //   Useful.afterNextBuildDo(() {
+              //   FC().afterNextBuildDo(() {
               //     showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
               //   });
               // } else {
@@ -185,7 +186,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             message: 'configure callout shape...',
             child: PropertyButtonEnum(
               label: "",
-              menuItems: DecorationShapeEnum.values
+              menuItems: MappableDecorationShapeEnum.values
                   .map((e) => e.toMenuItem())
                   .toList(),
               originalEnumIndex: tc.calloutDecorationShape.index,
@@ -207,7 +208,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   // widget.onParentBarrierTappedF,
                 );
                 // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-                // Useful.afterNextBuildDo(() {
+                // FC().afterNextBuildDo(() {
                 //   removeSnippetContentCallout(tc.snippetName);
                 //   showSnippetContentCallout(
                 //     twName: widget.twName,
@@ -252,7 +253,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 afterTransformF: () {
                   STreeNode.showAllTargetCovers();
                   STreeNode.showAllTargetBtns();
-                  FC.forceRefresh();
+                  FContent.forceRefresh();
                 }
               );
             },
@@ -272,7 +273,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   tc.onChange();
                   STreeNode.showAllTargetBtns();
                   STreeNode.showAllTargetCovers();
-                  FC.forceRefresh();
+                  FContent.forceRefresh();
                 }
               );
             },
@@ -289,7 +290,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
 
   @override
   void didChangeDependencies() {
-    // Useful.instance.initWithContext(context);
+    // FC().instance.initWithContext(context);
     updatedContext = context;
     super.didChangeDependencies();
   }

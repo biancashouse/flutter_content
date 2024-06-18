@@ -4,8 +4,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
-import 'edgeinsets_node_value.dart';
-
 part 'padding_node.mapper.dart';
 
 @MappableClass()

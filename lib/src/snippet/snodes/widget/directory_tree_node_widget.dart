@@ -101,7 +101,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
 
     // TreeEntry<Node>? parentEntry = widget.entry.parent;
     // String dirName = (treeController.rootNode(entry) as DirectoryNode).name;
-    return Useful.coloredText(
+    return FContent().coloredText(
       displayedNodeName, color:Colors.blue
     );
   }

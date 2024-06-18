@@ -28,15 +28,15 @@ enum StackFitEnum {
         height: 70,
         child: Column(
           children: [
-            Useful.coloredText('fit:', color: Colors.white),
+            FContent().coloredText('fit:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Useful.coloredText('loose', color: Colors.white),
-                Useful.coloredText('expand', color: Colors.white),
-                Useful.coloredText('passthrough', color: Colors.white),
+                FContent().coloredText('loose', color: Colors.white),
+                FContent().coloredText('expand', color: Colors.white),
+                FContent().coloredText('passthrough', color: Colors.white),
               ],
             ),
             StackFitEditor(
@@ -49,7 +49,7 @@ enum StackFitEnum {
         ),
       );
 
-   Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+   Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static StackFitEnum? of(int? index) => index != null ? StackFitEnum.values.elementAtOrNull(index) : null;
 }

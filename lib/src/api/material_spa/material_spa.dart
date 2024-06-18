@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:bh_shared/bh_shared.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
-import 'package:flutter_content/src/routingconfig_provider/routingconfig_provider.dart';
 import 'package:go_router/go_router.dart';
 
 // conditional import for webview ------------------
@@ -107,7 +107,7 @@ class MaterialSPA extends StatefulWidget {
   //             // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
   //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
   //             FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
-  //             Useful.afterNextBuildDo(() {
+  //             FC().afterNextBuildDo(() {
   //               SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
   //               if (snippetBeingEdited != null) {
   //                 showSnippetTreeCallout(
@@ -164,7 +164,7 @@ class MaterialSPA extends StatefulWidget {
   //             String? snippetName = CAPIState.snippetPlacementMap[panelName];
   //             if (snippetName != null) {
   //               FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
-  //               Useful.afterNextBuildDo(() {
+  //               FC().afterNextBuildDo(() {
   //                 SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
   //                 if (snippetBeingEdited != null) {
   //                   showSnippetTreeCallout(
@@ -176,7 +176,7 @@ class MaterialSPA extends StatefulWidget {
   //               });
   //             }
   //           },
-  //           child: Center(child: Useful.coloredText('$panelName / $rootSnippetName', color: Colors.white)),
+  //           child: Center(child: FC().coloredText('$panelName / $rootSnippetName', color: Colors.white)),
   //         ),
   //         calloutConfig: CalloutConfig(
   //           feature: '$panelName-panel-name-callout',
@@ -233,11 +233,11 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
   // @override
   // void didChangeDependencies() {
   //   debugPrint("didChangeDependencies");
-  //   // Useful.refreshMQ(context);
+  //   // FC().refreshMQ(context);
   //   if (FC().showingNodeOBoundaryOverlays??false) {
   //     MaterialSPAState.removeAllNodeWidgetOverlays();
   //     MaterialSPAState.exitEditMode();
-  //     Useful.afterMsDelayDo(1000, () {
+  //     FC().afterMsDelayDo(1000, () {
   //               FC.forceRefresh();
 
   //       MaterialSPA.snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
@@ -249,7 +249,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
 
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
-    CAPIBloC capiBloc = await FC().init(
+    CAPIBloC capiBloc = await FContent().init(
       modelName: widget.appName,
       fbOptions: widget.fbOptions,
       namedVoidCallbacks: widget.namedVoidCallbacks,
@@ -263,12 +263,12 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
     );
     STreeNode.hideAllTargetCovers();
     // trigger another build
-    Useful.afterNextBuildDo(() {
-      Useful.afterMsDelayDo(1000, () async {
+    FContent().afterNextBuildDo(() {
+      FContent().afterMsDelayDo(1000, () async {
         debugPrint('============================================================================');
-        debugPrint('================   ${FC().appName}-${await FC().versionAndBuild}  ==========');
+        debugPrint('================   ${FContent().appName}-${await FContent().versionAndBuild}  ==========');
         debugPrint('============================================================================');
-        FC.forceRefresh();
+        FContent.forceRefresh();
       });
     });
     return MaterialSPA._singletonBloc = capiBloc;
@@ -289,7 +289,7 @@ class MaterialSPAState extends State<MaterialSPA> with TickerProviderStateMixin 
             return BlocProvider<CAPIBloC>(
               create: (BuildContext context) => snapshot.data!,
               child: MaterialApp.router(
-                routerConfig: FC().router,
+                routerConfig: FContent().router,
                 theme: widget.materialAppThemeF(),
                 debugShowCheckedModeBanner: false,
                 title: widget.title,

@@ -6,72 +6,76 @@
 
 part of 'enum_decoration.dart';
 
-class DecorationShapeEnumMapper extends EnumMapper<DecorationShapeEnum> {
-  DecorationShapeEnumMapper._();
+class MappableDecorationShapeEnumMapper
+    extends EnumMapper<MappableDecorationShapeEnum> {
+  MappableDecorationShapeEnumMapper._();
 
-  static DecorationShapeEnumMapper? _instance;
-  static DecorationShapeEnumMapper ensureInitialized() {
+  static MappableDecorationShapeEnumMapper? _instance;
+  static MappableDecorationShapeEnumMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = DecorationShapeEnumMapper._());
+      MapperContainer.globals
+          .use(_instance = MappableDecorationShapeEnumMapper._());
     }
     return _instance!;
   }
 
-  static DecorationShapeEnum fromValue(dynamic value) {
+  static MappableDecorationShapeEnum fromValue(dynamic value) {
     ensureInitialized();
     return MapperContainer.globals.fromValue(value);
   }
 
   @override
-  DecorationShapeEnum decode(dynamic value) {
+  MappableDecorationShapeEnum decode(dynamic value) {
     switch (value) {
       case 'rectangle':
-        return DecorationShapeEnum.rectangle;
+        return MappableDecorationShapeEnum.rectangle;
       case 'rounded_rectangle':
-        return DecorationShapeEnum.rounded_rectangle;
+        return MappableDecorationShapeEnum.rounded_rectangle;
       case 'rectangle_dotted':
-        return DecorationShapeEnum.rectangle_dotted;
+        return MappableDecorationShapeEnum.rectangle_dotted;
       case 'rounded_rectangle_dotted':
-        return DecorationShapeEnum.rounded_rectangle_dotted;
+        return MappableDecorationShapeEnum.rounded_rectangle_dotted;
       case 'circle':
-        return DecorationShapeEnum.circle;
+        return MappableDecorationShapeEnum.circle;
       case 'bevelled':
-        return DecorationShapeEnum.bevelled;
+        return MappableDecorationShapeEnum.bevelled;
       case 'stadium':
-        return DecorationShapeEnum.stadium;
+        return MappableDecorationShapeEnum.stadium;
       case 'star':
-        return DecorationShapeEnum.star;
+        return MappableDecorationShapeEnum.star;
       default:
         throw MapperException.unknownEnumValue(value);
     }
   }
 
   @override
-  dynamic encode(DecorationShapeEnum self) {
+  dynamic encode(MappableDecorationShapeEnum self) {
     switch (self) {
-      case DecorationShapeEnum.rectangle:
+      case MappableDecorationShapeEnum.rectangle:
         return 'rectangle';
-      case DecorationShapeEnum.rounded_rectangle:
+      case MappableDecorationShapeEnum.rounded_rectangle:
         return 'rounded_rectangle';
-      case DecorationShapeEnum.rectangle_dotted:
+      case MappableDecorationShapeEnum.rectangle_dotted:
         return 'rectangle_dotted';
-      case DecorationShapeEnum.rounded_rectangle_dotted:
+      case MappableDecorationShapeEnum.rounded_rectangle_dotted:
         return 'rounded_rectangle_dotted';
-      case DecorationShapeEnum.circle:
+      case MappableDecorationShapeEnum.circle:
         return 'circle';
-      case DecorationShapeEnum.bevelled:
+      case MappableDecorationShapeEnum.bevelled:
         return 'bevelled';
-      case DecorationShapeEnum.stadium:
+      case MappableDecorationShapeEnum.stadium:
         return 'stadium';
-      case DecorationShapeEnum.star:
+      case MappableDecorationShapeEnum.star:
         return 'star';
     }
   }
 }
 
-extension DecorationShapeEnumMapperExtension on DecorationShapeEnum {
+extension MappableDecorationShapeEnumMapperExtension
+    on MappableDecorationShapeEnum {
   String toValue() {
-    DecorationShapeEnumMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<DecorationShapeEnum>(this) as String;
+    MappableDecorationShapeEnumMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<MappableDecorationShapeEnum>(this)
+        as String;
   }
 }

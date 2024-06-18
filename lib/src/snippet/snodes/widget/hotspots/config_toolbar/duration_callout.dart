@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 import 'numberic_keypad.dart';
@@ -22,7 +23,7 @@ Future<void> showTargetDurationCallout(
   // tc.single
   //     ? FC().getSingleTargetGk(tc.wName)
   //     :
-  FC().getTargetGk(tc.uid);
+  FContent().getTargetGk(tc.uid);
 
   Callout.showOverlay(
       targetGkF: () => targetGK,

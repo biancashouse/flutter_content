@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
+import 'package:gap/gap.dart';
 
 part 'poll_node.mapper.dart';
 
@@ -97,14 +98,14 @@ class PollNode extends MC with PollNodeMappable {
                     Icons.error,
                     color: Colors.red,
                   ),
-                  hspacer(10),
+                  Gap(10),
                   const Text('Poll has infinite maxHeight constraint!'),
                 ],
               )
             : FlutterPoll(
               key: createNodeGK(),
               pollName: name,
-              titleWidget: Center(child: Useful.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
+              titleWidget: Center(child: FContent().coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
               startDate: startDate,
               endDate: endDate,
               children: optionWidgets,

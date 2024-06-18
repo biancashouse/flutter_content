@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
@@ -32,7 +33,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         // tc.single
         //     ? FC().getSingleTargetGk(tc.wName)
         //     :
-        FC().getTargetGk(tc.uid);
+        FContent().getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
@@ -53,7 +54,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
             //   removeSnippetContentCallout(tc.snippetName);
             //   FC().parentTW(twName)?.zoomer?.resetTransform();
             //   MaterialSPA.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-            //   // Useful.afterNextBuildDo(() {
+            //   // FC().afterNextBuildDo(() {
             //   //   showSnippetContentCallout(
             //   //     twName: twName,
             //   //     tc: tc,
@@ -131,7 +132,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 ),
               ),
             ]),
-        if (tc.calloutDecorationShape == DecorationShapeEnum.star)
+        if (tc.calloutDecorationShape == MappableDecorationShapeEnum.star)
           Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,

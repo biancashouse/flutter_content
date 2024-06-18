@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:gap/gap.dart';
 
 part 'snippet_root_node.mapper.dart';
 
@@ -80,7 +81,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             debugPrint("FutureBuilder<void> Ensuring $name present");
             try {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
-              SnippetRootNode? snippet = FC().currentSnippet(name);
+              SnippetRootNode? snippet = FContent().currentSnippet(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
               return snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
@@ -92,8 +93,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                   child: Row(
                     children: [
                       const Icon(Icons.error, color: Colors.redAccent),
-                      hspacer(10),
-                      Useful.coloredText(e.toString()),
+                      Gap(10),
+                      FContent().coloredText(e.toString()),
                     ],
                   ),
                 ),
@@ -112,11 +113,11 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     SnippetRootNode? snippetRootNode,
     required SnippetName snippetName,
   }) async {
-    AppInfoModel appInfo = FC().appInfo;
+    AppInfoModel appInfo = FContent().appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
     if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
-      await FC().possiblyCacheAndSaveANewSnippetVersion(
+      await FContent().possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,
         publish: true,
@@ -125,15 +126,15 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     }
 
     // snippet was definitely previously created (because snippetName present in appInfo)
-    SnippetInfoModel? snippetInfo = await FC().modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
+    SnippetInfoModel? snippetInfo = await FContent().modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     if (snippetInfo != null) {
       VersionId? currentVersionId = snippetInfo.currentVersionId;
       // may already be in snippet cache
-      SnippetRootNode? rootNode = FC().currentSnippet(snippetName);
+      SnippetRootNode? rootNode = FContent().currentSnippet(snippetName);
       //
       if (rootNode == null && currentVersionId != null) {
         // snippet version was not already in cache
-        await FC().modelRepo.possiblyLoadSnippetIntoCache(
+        await FContent().modelRepo.possiblyLoadSnippetIntoCache(
               snippetName: snippetName,
               versionId: currentVersionId,
             );

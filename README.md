@@ -5,3 +5,5 @@ For Flutter developers, this package allows you to create callouts programmatica
 This is an initial upload to create the pkg on pub.dev.
 
 Documentation will follow...
+
+![Beautiful sunset](/example/assets/images/flowers.jpg)

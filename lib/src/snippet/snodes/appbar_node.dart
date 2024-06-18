@@ -1,6 +1,8 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:gap/gap.dart';
 
 part 'appbar_node.mapper.dart';
 
@@ -101,8 +103,8 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
           child: Row(
             children: [
               const Icon(Icons.error, color: Colors.redAccent),
-              hspacer(10),
-              Useful.coloredText(e.toString()),
+              Gap(10),
+              FContent().coloredText(e.toString()),
             ],
           ),
         ),

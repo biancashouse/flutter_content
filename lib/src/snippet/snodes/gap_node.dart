@@ -1,3 +1,4 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -57,7 +58,7 @@ class GapNode extends CL with GapNodeMappable {
   @override
   Widget? logoSrc() => Row(children: [
         const Icon(Icons.square_outlined),
-        hspacer(6),
+        Gap(6),
       ]);
 
   static const String FLUTTER_TYPE = "Gap";

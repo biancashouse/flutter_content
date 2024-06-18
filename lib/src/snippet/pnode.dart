@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
@@ -103,7 +104,7 @@ class TextStylePropertyGroup extends PropertyGroup {
         nameOnSeparateLine: true,
         expands: true,
         stringValue: textStyleGroup?.namedTextStyle,
-        options: FC().namedTextStyles.keys.toList(),
+        options: FContent().namedTextStyles.keys.toList(),
         onStringChange: (newValue) {
           textStyleGroup ??= TextStyleGroup();
           textStyleGroup!.namedTextStyle = newValue;
@@ -129,7 +130,7 @@ class TextStylePropertyGroup extends PropertyGroup {
         onFontFamilyChange: (newValue) {
           textStyleGroup ??= TextStyleGroup();
           textStyleGroup!.fontFamily = newValue;
-          FC.forceRefresh();
+          FContent.forceRefresh();
           onGroupChange.call(textStyleGroup!);
         },
       ),
@@ -286,7 +287,7 @@ class ButtonStylePropertyGroup extends PropertyGroup {
         nameOnSeparateLine: true,
         expands: true,
         stringValue: buttonStyleGroup?.namedButtonStyle,
-        options: FC().namedButtonStyles.keys.toList(),
+        options: FContent().namedButtonStyles.keys.toList(),
         onStringChange: (newValue) {
           buttonStyleGroup ??=ButtonStyleGroup();
           buttonStyleGroup!.namedButtonStyle = newValue;
@@ -734,7 +735,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             //
 //             //   },
 //             //   onDoneF: () {
-//             //     Useful.afterMsDelayDo(500, () {
+//             //     FC().afterMsDelayDo(500, () {
 //             //       Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
 //             //     });
 //             //   },
@@ -1503,25 +1504,25 @@ class EnumPropertyValueNode<T> extends PTreeNode {
   @override
   Widget toPropertyNodeContents(BuildContext context) {
     // just show name for null property value
-    // if (value == null) return Useful.coloredText(name, color:Colors.white);
+    // if (value == null) return FC().coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
-    if (sameType<T, SnippetTemplateEnum?>()) {
+    if (_sameType<T, SnippetTemplateEnum?>()) {
       return SnippetTemplateEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // BoxFit -------------
-    if (sameType<T, BoxFitEnum?>()) {
+    if (_sameType<T, BoxFitEnum?>()) {
       return BoxFitEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Alignment -------------
-    if (sameType<T, AlignmentEnum?>()) {
+    if (_sameType<T, AlignmentEnum?>()) {
       return AlignmentEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Alignment -------------
-    if (sameType<T, DecorationShapeEnum?>()) {
-      return DecorationShapeEnum.propertyNodeContents(
+    if (_sameType<T, MappableDecorationShapeEnum?>()) {
+      return MappableDecorationShapeEnum.propertyNodeContents(
         snode: snode,
         label: name,
         enumValueIndex: valueIndex,
@@ -1529,52 +1530,52 @@ class EnumPropertyValueNode<T> extends PTreeNode {
       );
     }
     // ArrowType -------------
-    if (sameType<T, ArrowTypeEnum?>()) {
+    if (_sameType<T, ArrowTypeEnum?>()) {
       return ArrowTypeEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Axis -------------
-    if (sameType<T, AxisEnum?>()) {
+    if (_sameType<T, AxisEnum?>()) {
       return AxisEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Clip -------------
-    if (sameType<T, ClipEnum?>()) {
+    if (_sameType<T, ClipEnum?>()) {
       return ClipEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // MainAxisAlignment -------------
-    if (sameType<T, MainAxisAlignmentEnum?>()) {
+    if (_sameType<T, MainAxisAlignmentEnum?>()) {
       return MainAxisAlignmentEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // MainAxisSize -------------
-    if (sameType<T, MainAxisSizeEnum?>()) {
+    if (_sameType<T, MainAxisSizeEnum?>()) {
       return MainAxisSizeEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // CrossAxisAlignment -------------
-    if (sameType<T, CrossAxisAlignmentEnum?>()) {
+    if (_sameType<T, CrossAxisAlignmentEnum?>()) {
       return CrossAxisAlignmentEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FlexFit -------------
-    if (sameType<T, TextDirectionEnum?>()) {
+    if (_sameType<T, TextDirectionEnum?>()) {
       return TextDirectionEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FontStyle -------------
-    if (sameType<T, FontStyleEnum?>()) {
+    if (_sameType<T, FontStyleEnum?>()) {
       return FontStyleEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FontWeight -------------
-    if (sameType<T, FontWeightEnum?>()) {
+    if (_sameType<T, FontWeightEnum?>()) {
       return FontWeightEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // Material3 Text Size -------------
-    if (sameType<T, Material3TextSizeEnum?>()) {
+    if (_sameType<T, Material3TextSizeEnum?>()) {
       return Material3TextSizeEnum.propertyNodeContents(
           snode: snode,
           label: name,
@@ -1583,38 +1584,38 @@ class EnumPropertyValueNode<T> extends PTreeNode {
           onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // OutlinedBorder -------------
-    if (sameType<T, OutlinedBorderEnum?>()) {
+    if (_sameType<T, OutlinedBorderEnum?>()) {
       return OutlinedBorderEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // StackFit -------------
-    if (sameType<T, StackFitEnum?>()) {
+    if (_sameType<T, StackFitEnum?>()) {
       return StackFitEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // StepperType -------------
-    if (sameType<T, StepperTypeEnum?>()) {
+    if (_sameType<T, StepperTypeEnum?>()) {
       return StepperTypeEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextAlign -------------
-    if (sameType<T, TextAlignEnum?>()) {
+    if (_sameType<T, TextAlignEnum?>()) {
       return TextAlignEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextDirection -------------
-    if (sameType<T, TextDirectionEnum?>()) {
+    if (_sameType<T, TextDirectionEnum?>()) {
       return TextDirectionEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // TextOverflow -------------
-    if (sameType<T, TextOverflowEnum?>()) {
+    if (_sameType<T, TextOverflowEnum?>()) {
       return TextOverflowEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // T property not implemented yet
     return const Icon(Icons.error_outline, color: Colors.blue);
   }
-}
 
-bool sameType<T1, T2>() => T1 == T2;
+}
+bool _sameType<T1, T2>() => T1 == T2;

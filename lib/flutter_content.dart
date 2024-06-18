@@ -2,16 +2,15 @@
 
 library flutter_content;
 
+import 'package:bh_shared/bh_shared.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
@@ -33,26 +32,18 @@ import 'src/model/model_repo.dart';
 // const String getIt_snippets = "snippets:snippetName";
 // const String getIt_textFields = "snippets:textFields";
 
-export 'flutter_content_typedefs.dart';
-export 'src/api/callouts/callout.dart';
-export 'src/api/callouts/callout_config.dart';
-export 'src/api/callouts/toast.dart';
-// export 'src/target_config/content/snippet_editor/node_properties/properties_drawer.dart';
-// export 'src/target_config/content/snippet_editor/node_properties/tree_drawer.dart';
+export 'src/typedefs.dart';
 export 'src/api/material_spa/constant_scrolling_behavior.dart';
-export 'src/api/material_spa/editable_page-.dart';
+export 'src/api/material_spa/editable_page.dart';
 export 'src/api/material_spa/material_spa.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
-export 'src/blink.dart';
 // callouts
 export 'src/bloc/capi_bloc.dart';
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
-export 'src/feature_discovery/flat_icon_button_with_callout_player.dart';
 export 'src/gotits/gotits_helper_string.dart';
 export 'src/gsi/sign_in_button.dart';
-export 'src/home_page_provider/zoomer.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
@@ -61,7 +52,7 @@ export 'src/model/app_info_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
-export 'src/routingconfig_provider/editable_page_route.dart';
+export 'src/api/material_spa/editable_page_route.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
@@ -98,12 +89,12 @@ export 'src/snippet/snodes/hotspots_node.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
 export 'src/snippet/snodes/inlinespan_node.dart';
+export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
-export 'src/snippet/snodes/wrap_node.dart';
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -132,26 +123,25 @@ export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
 export 'src/snippet/snodes/widget/hotspots/targets_wrapper.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
+export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-export 'src/text_editing/fc_textfield_T.dart';
-export 'src/useful.dart';
-export 'src/widget_helper.dart';
+export 'src/content_useful.dart';
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
 
 /// this is a global container
-class FC {
-  FC._();
+class FContent with ContentUseful, CalloutUseful, BaseUseful, WidgetHelper, BrowserStorage {
+  FContent._();
 
   // Static instance variable
-  static FC? _instance;
+  static FContent? _instance;
 
   // Factory method to provide access to the singleton instance
-  factory FC() {
+  factory FContent() {
     // If the instance doesn't exist, create it
-    _instance ??= FC._();
+    _instance ??= FContent._();
     return _instance!;
   }
 
@@ -179,7 +169,6 @@ class FC {
     _namedVoidCallbacks = namedVoidCallbacks;
     _namedTextStyles = namedTextStyles;
     _namedButtonStyles = namedButtonStyles;
-    _skipAssetPkgName = skipAssetPkgName;
     Bloc.observer = MyGlobalObserver();
 
     // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
@@ -200,22 +189,14 @@ class FC {
     debugPrint(pagePaths.toString());
     debugPrint('--------------------------------');
 
-    try {
-      HydratedBloc.storage;
-    } catch (e) {
-      // init local storage access
-      var dir = kIsWeb ? HydratedStorage.webStorageDirectory : await getTemporaryDirectory();
-      HydratedBloc.storage = await HydratedStorage.build(
-        storageDirectory: dir,
-      );
-    }
+    FContent().browserStorage_init();
 
     if (fbOptions != null) {
       modelRepo = FireStoreModelRepository(fbOptions);
       await (modelRepo as FireStoreModelRepository).possiblyInitFireStoreRelatedAPIs();
 
       // fetch model
-      AppInfoModel? fbAppInfo = await FC().modelRepo.getAppInfo();
+      AppInfoModel? fbAppInfo = await FContent().modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
 
       // add any snippet names that start with /, because they are also page pathnames
@@ -236,25 +217,8 @@ class FC {
 
   late IModelRepository modelRepo;
 
-  Future<PackageInfo> get pkgInfo async => await PackageInfo.fromPlatform();
-
   // set by .init()
   String get appName => _appName;
-
-  /// The app name. `CFBundleDisplayName` on iOS, `application/label` on Android.
-  Future<String> get yamlAppName async => (await pkgInfo).appName;
-
-  Future<String> get yamlBuildNumber async => (await pkgInfo).buildNumber;
-
-  Future<String> get yamlPackageName async => (await pkgInfo).packageName;
-
-  Future<String> get yamlVersion async => (await pkgInfo).version;
-
-  Future<String> get versionAndBuild async {
-    var ver = await yamlVersion;
-    var buildNum = await yamlBuildNumber;
-    return '$ver-$buildNum';
-  }
 
   late String _appName;
 
@@ -344,10 +308,10 @@ class FC {
       snippetInfo.publishedVersionId = newVersionId;
       // }
     }
-    FC().versionCache[snippetName] ??= {};
-    FC().versionIdCache[snippetName] ??= []; //LinkedList<VersionEntryItem>();
-    FC().versionIdCache[snippetName]?.add(newVersionId); //add(VersionEntryItem(newVersionId));
-    FC().versionCache[snippetName]?.addAll({newVersionId: rootNode});
+    FContent().versionCache[snippetName] ??= {};
+    FContent().versionIdCache[snippetName] ??= []; //LinkedList<VersionEntryItem>();
+    FContent().versionIdCache[snippetName]?.add(newVersionId); //add(VersionEntryItem(newVersionId));
+    FContent().versionCache[snippetName]?.addAll({newVersionId: rootNode});
     await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
   }
 
@@ -363,7 +327,6 @@ class FC {
   /// Note, on iOS if an app has no buildNumber specified this property will return version
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
-  late bool _skipAssetPkgName; // when using assets from within the flutter_content pkg itself
   late List<String> _googleFontNames;
   late Map<String, VoidCallback> _namedVoidCallbacks;
   late Map<String, TextStyle> _namedTextStyles;
@@ -374,17 +337,17 @@ class FC {
 
   final inEditMode = ValueNotifier<bool>(false);
 
-  bool get canEditContent => HydratedBloc.storage.read("canEditContent") ?? false;
+  bool get canEditContent => bool.parse(FContent().browserStorage_read("canEditContent"));
 
   static void forceRefresh() => MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh());
 
-  void setCanEdit(bool b) => HydratedBloc.storage.write("canEditContent", b);
+  void setCanEdit(bool b) => FContent().browserStorage_write("canEditContent", b.toString());
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
       Offset(
-        Useful.scrW / 2 - 350,
-        Useful.scrH / 2 - 40,
+        FContent().scrW / 2 - 350,
+        FContent().scrH / 2 - 40,
       );
 
   void setCalloutConfigToolbarPos(Offset newPos) => _calloutConfigToolbarPos = newPos;
@@ -413,13 +376,10 @@ class FC {
   }
 
   final Map<PanelName, GlobalKey> panelGkMap = {};
-  final List<ScrollController> registeredScrollControllers = [];
   final Map<STreeNode, Set<PTreeNode>> expandedNodes = {};
   final Map<HandlerName, void Function(BuildContext)> _handlers = {};
 
   bool showingNodeButtons = true;
-
-  bool get skipAssetPkgName => _skipAssetPkgName;
 
   List<String> get googleFontNames => _googleFontNames;
 
@@ -489,19 +449,12 @@ class FC {
     SnippetInfoModel? snippetInfo = snippetInfoCache[snippetName];
     VersionId? currentVersionId = snippetInfo?.currentVersionId;
     if (currentVersionId != null) {
-      rootNode = FC().versionCache[snippetName]?[currentVersionId];
+      rootNode = FContent().versionCache[snippetName]?[currentVersionId];
     }
     return rootNode;
   }
 
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
-
-  //avoids listening to the same scrollcontroller more than once for the purpose of refreshing the overlays
-  void registerScrollController(ScrollController sController) {
-    if (!registeredScrollControllers.contains(sController)) {
-      sController.addListener(() => Callout.refreshAll());
-    }
-  }
 
   // static Future<bool> canInformUserOfNewVersion() async {
   //   // decide whether new version loaded
@@ -524,7 +477,7 @@ class FC {
           feature: "floating-clipboard",
           suppliedCalloutW: 300,
           suppliedCalloutH: 180,
-          initialCalloutPos: Offset(Useful.scrW - 400, 0),
+          initialCalloutPos: Offset(FContent().scrW - 400, 0),
           fillColor: Colors.transparent,
           arrowType: ArrowType.NO_CONNECTOR,
           borderRadius: 16,
@@ -563,7 +516,7 @@ class FC {
 
   static Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");
-    FC().rootFSFolderNode = await FC().modelRepo.createAndPopulateFolderNode(ref: rootRef);
+    FContent().rootFSFolderNode = await FContent().modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 }
 

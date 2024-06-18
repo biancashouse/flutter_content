@@ -153,7 +153,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //                 child: InputDecorator(
   //                   decoration: InputDecoration(
   //                     labelText: 'italic',
-  //                     labelStyle: Useful.enclosureLabelTextStyle,
+  //                     labelStyle: FC().enclosureLabelTextStyle,
   //                     border: const OutlineInputBorder(),
   //                     // isDense: false,
   //                   ),

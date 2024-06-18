@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 
@@ -47,7 +48,7 @@ enum ArrowTypeEnum  {
         calloutSize: Size(260, values.length * 50),
       );
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static ArrowTypeEnum? of(int? index) => index != null ? ArrowTypeEnum.values.elementAtOrNull(index) : null;
 }

@@ -6,6 +6,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
+import 'package:gap/gap.dart';
 
 part 'stack_node.mapper.dart';
 
@@ -58,7 +59,7 @@ class StackNode extends MC with StackNodeMappable {
                       Icons.error,
                       color: Colors.red,
                     ),
-                    hspacer(10),
+                    Gap(10),
                     const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
                   ],
                 )
@@ -95,7 +96,7 @@ class StackNode extends MC with StackNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             Useful.coloredText('stackFit:', color: Colors.white),
+  //             FC().coloredText('stackFit:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             StackFitEditor(
   //               originalValue: fit,
@@ -113,7 +114,7 @@ class StackNode extends MC with StackNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             Useful.coloredText('clipBehavior:', color: Colors.white),
+  //             FC().coloredText('clipBehavior:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             StackClipEditor(
   //               originalValue: clipBehavior,

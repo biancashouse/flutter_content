@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
@@ -56,19 +58,19 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     // restore scrollPos
     // STreeNode? selectedNode = ;
     // if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
-    //   Useful.afterNextBuildDo(() {
+    //   FC().afterNextBuildDo(() {
     //     if (selectedNode?.propertiesPaneScrollPos != selectedNode?.propertiesPaneSC().offset) {
     //       selectedNode?.propertiesPaneSC().jumpTo(selectedNode.propertiesPaneScrollPos());
     //     }
     //   });
     // }
     // for the prev and next icons
-    var fc = FC();
+    var fc = FContent();
     SnippetName? snippetName = MaterialSPA.rootNode?.name;
     if (snippetName == null) return const Icon(Icons.error_outline, size: 48, color: Colors.orange);
-    VersionId? currentEditingVersionId = FC().snippetInfoCache[snippetName]?.editingVersionId;
+    VersionId? currentEditingVersionId = FContent().snippetInfoCache[snippetName]?.editingVersionId;
     if (currentEditingVersionId == null) return const Icon(Icons.error_outline, size: 48, color: Colors.lime);
-    int index = FC().versionIds(snippetName).indexOf(currentEditingVersionId);
+    int index = FContent().versionIds(snippetName).indexOf(currentEditingVersionId);
     //
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
@@ -79,7 +81,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           backgroundColor: Colors.black,
           title: Tooltip(
             message: 'snippet name',
-            child: Useful.coloredText(
+            child: FContent().coloredText(
               MaterialSPA.rootNode?.name ?? 'snippet name?',
               fontSize: 16.0,
               color: Colors.white,
@@ -89,7 +91,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           //   onTap: () {
           //     snippetBloc.add(const CAPIEvent.clearNodeSelection());
           //     Callout.hide("floating-clipboard");
-          //     Useful.afterNextBuildDo(() {
+          //     FC().afterNextBuildDo(() {
           //       snippetBloc.add(CAPIEvent.selectNode(
           //         node: snippetBloc.state.rootNode!,
           //         nodeParent: null,
@@ -105,7 +107,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           //       border: Border.all(color: Colors.grey, width: 1),
           //       borderRadius: const BorderRadius.all(Radius.circular(30)),
           //     ),
-          //     child: Useful.coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
+          //     child: FC().coloredText('SnippetName: ${snippetBloc.snippetName}', fontSize: 16.0, color: Colors.black87),
           //   ),
           // ),
           actions: [
@@ -113,14 +115,14 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               hoverColor: Colors.white30,
               onPressed: () async {
                 if (index > 0) {
-                  VersionId? prevId = FC().versionIds(snippetName)[index - 1];
+                  VersionId? prevId = FContent().versionIds(snippetName)[index - 1];
                   MaterialSPA.capiBloc.add(
                     CAPIEvent.revertSnippet(
                       snippetName: snippetName,
-                      versionId: Useful.removeNonNumeric(prevId),
+                      versionId: FContent().removeNonNumeric(prevId),
                     ),
                   );
-                  Useful.afterNextBuildDo(() {
+                  FContent().afterNextBuildDo(() {
                     debugPrint('reverted to previous version.');
                   });
                 }
@@ -132,20 +134,20 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             IconButton(
               hoverColor: Colors.white30,
               onPressed: () async {
-                if (index < FC().versionIds(snippetName).length - 1) {
-                  VersionId? nextId = FC().versionIds(snippetName)[index + 1];
+                if (index < FContent().versionIds(snippetName).length - 1) {
+                  VersionId? nextId = FContent().versionIds(snippetName)[index + 1];
                   MaterialSPA.capiBloc.add(
                     CAPIEvent.revertSnippet(
                       snippetName: snippetName,
-                      versionId: Useful.removeNonNumeric(nextId),
+                      versionId: FContent().removeNonNumeric(nextId),
                     ),
                   );
-                  Useful.afterNextBuildDo(() {
+                  FContent().afterNextBuildDo(() {
                     debugPrint('reverted to next version.');
                   });
                 }
               },
-              icon: Icon(Icons.redo, color: (index < FC().versionIds(snippetName).length - 1) ? Colors.white : Colors.white54),
+              icon: Icon(Icons.redo, color: (index < FContent().versionIds(snippetName).length - 1) ? Colors.white : Colors.white54),
               tooltip: 'next version',
             ),
             IconButton(
@@ -158,7 +160,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             // IconButton(
             //   onPressed: () {
             //     snippetBloc.add(CAPIEvent.cutNode(node: selectedNode!));
-            //     Useful.afterNextBuildDo(() {
+            //     FC().afterNextBuildDo(() {
             //       if (FlutterContent().capiBloc.state.jsonClipboard != null) {
             //         Callout.unhide("floating-clipboard");
             //       }
@@ -175,9 +177,9 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             // // if (snippetBloc.state.aNodeIsSelected && selectedNode is! SnippetRefNode)
             // IconButton(
             //   onPressed: () {
-            //     Useful.afterNextBuildDo(() {
+            //     FC().afterNextBuildDo(() {
             //       snippetBloc.add(CAPIEvent.copyNode(node: selectedNode!));
-            //       Useful.afterNextBuildDo(() {
+            //       FC().afterNextBuildDo(() {
             //         if (FlutterContent().capiBloc.state.jsonClipboard != null) {
             //           Callout.unhide("floating-clipboard");
             //         }
@@ -226,7 +228,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             //     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
             //   },
             // ),
-            // hspacer(16),
+            // Gap(16),
           ],
         ),
         body: Padding(
@@ -280,16 +282,16 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                                       children: [
                                         // icon buttons
                                         ExpansionTile(
-                                          title: Useful.coloredText('widget actions', color: Colors.white54, fontSize: 14),
+                                          title: FContent().coloredText('widget actions', color: Colors.white54, fontSize: 14),
                                           backgroundColor: Colors.black,
                                           collapsedBackgroundColor: Colors.black,
-                                          onExpansionChanged: (bool isExpanded) => FC().showingNodeButtons = isExpanded,
-                                          initiallyExpanded: FC().showingNodeButtons,
+                                          onExpansionChanged: (bool isExpanded) => FContent().showingNodeButtons = isExpanded,
+                                          initiallyExpanded: FContent().showingNodeButtons,
                                           children: [nodeButtons(context)],
                                         ),
                                         // NODE PROPERTIES TREE
                                         if (MaterialSPA.selectedNode!.pTreeC(context).roots.isEmpty)
-                                          Useful.coloredText(' (no widget properties)', color: Colors.white),
+                                          FContent().coloredText(' (no widget properties)', color: Colors.white),
                                         Material(
                                             color: Colors.black,
                                             child: PropertiesTreeView(
@@ -319,7 +321,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
         //               // icon buttons
         //               // nodeIconButtons(snippetBloc),
         //               // // NODE PROPERTIES TREE
-        //               // if (propertyNodes.isEmpty) Useful.coloredText(' (no properties)', color: Colors.white),
+        //               // if (propertyNodes.isEmpty) FC().coloredText(' (no properties)', color: Colors.white),
         //               // if (propertyNodes.isNotEmpty && selectedNode != null && selectedNode.pTreeC != null && !(selectedNode.hidePropertiesWhileDragging ?? false))
         //               //   Material(
         //               //       color: Colors.black,
@@ -353,8 +355,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     // some properties cannot be deleted
                     if (gc is GenericSingleChildNode? && gc?.getParent() is StepNode && (gc?.propertyName == 'title' || gc?.propertyName == 'content')) return;
                     MaterialSPA.capiBloc.add(CAPIEvent.cutNode(node: selectedNode));
-                    Useful.afterNextBuildDo(() {
-                      if (FC().clipboard != null) {
+                    FContent().afterNextBuildDo(() {
+                      if (FContent().clipboard != null) {
                         Callout.unhide("floating-clipboard");
                       }
                     });
@@ -372,10 +374,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 IconButton(
                   hoverColor: Colors.white30,
                   onPressed: () {
-                    Useful.afterNextBuildDo(() {
+                    FContent().afterNextBuildDo(() {
                       MaterialSPA.capiBloc.add(CAPIEvent.copyNode(node: selectedNode));
-                      Useful.afterNextBuildDo(() {
-                        if (FC().clipboard != null) {
+                      FContent().afterNextBuildDo(() {
+                        if (FContent().clipboard != null) {
                           Callout.unhide("floating-clipboard");
                         }
                       });
@@ -399,10 +401,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     MaterialSPA.capiBloc.add(const CAPIEvent.deleteNodeTapped());
-                    Useful.afterNextBuildDo(() async {
+                    FContent().afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
                       MaterialSPA.capiBloc.add(const CAPIEvent.completeDeletion());
-                      Useful.afterNextBuildDo(() {
+                      FContent().afterNextBuildDo(() {
                         // if was tab or tabview, reset the tab Q and controller
                         SnippetPanelState? spState = SnippetPanel.of(context);
                         spState?.resetTabQandC;
@@ -441,7 +443,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               node: selectedNode,
                               newSnippetName: s,
                             ));
-                            Useful.afterNextBuildDo(() {
+                            FContent().afterNextBuildDo(() {
                               Callout.dismiss(TREENODE_MENU_CALLOUT);
                             });
                           });
@@ -460,10 +462,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 //     if (!selectedNode.canBeDeleted()) return;
                 //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                 //     snippetBloc.add(const CAPIEvent.deleteNodeTapped());
-                //     Useful.afterNextBuildDo(() async {
+                //     FC().afterNextBuildDo(() async {
                 //       await Future.delayed(const Duration(milliseconds: 1000));
                 //       snippetBloc.add(const CAPIEvent.completeDeletion());
-                //       Useful.afterNextBuildDo(() {
+                //       FC().afterNextBuildDo(() {
                 //         // if was tab or tabview, reset the tab Q and controller
                 //         SnippetPanelState? spState = SnippetPanel.of(context);
                 //         spState?.resetTabQandC;
@@ -498,7 +500,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               ),
             ),
           editTreeStructureIconButtons(selectedNode),
-          vspacer(10),
+          Gap(10),
         ],
       ),
     );
@@ -554,7 +556,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           selectedNode.insertItemMenuAnchor(action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
-                          vspacer(12),
+                          Gap(12),
                           // selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
@@ -682,14 +684,14 @@ class SnippetTreePane extends StatelessWidget {
           // TBD ----------------
           // if (parent != null) {
           //   snippetBloc.add(const CAPIEvent.clearNodeSelection());
-          //   Useful.afterNextBuildDo(() {
+          //   FC().afterNextBuildDo(() {
           //     snippetBloc.add(CAPIEvent.selectNode(
           //       node: parent!,
           //       // imageTC: tc,
           //       // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
           //       selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
           //     ));
-          //     Useful.afterNextBuildDo(() {
+          //     FC().afterNextBuildDo(() {
           //       parent?.showNodeWidgetOverlay();
           //       // create selected node's properties tree
           //       // final List<PTreeNode> propertyNodes =
@@ -710,7 +712,7 @@ class SnippetTreePane extends StatelessWidget {
           // }
           // Callout.dismiss(snippetBloc.snippetName);
           // if (parent != null) {
-          //   Useful.afterNextBuildDo(() {
+          //   FC().afterNextBuildDo(() {
           //     MaterialSPAState.pushThenShowNamedSnippetWithNodeSelected(
           //         snippetBloc.snippetName, parent!, selectedNode);
           //   });
@@ -723,7 +725,7 @@ class SnippetTreePane extends StatelessWidget {
           // maximumSize: WidgetStatePropertyAll(Size(40, 36)),
           // minimumSize: WidgetStatePropertyAll(Size(40, 36)),
         ),
-        child: Useful.coloredText("...", color: Colors.white, fontSize: 24),
+        child: FContent().coloredText("...", color: Colors.white, fontSize: 24),
       );
 
   static void navigateUpTree() {
@@ -847,14 +849,14 @@ class VersionsMenuAnchor extends StatefulWidget {
 class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
   @override
   Widget build(BuildContext context) {
-    VersionId? currentVersionId = FC().snippetInfoCache[widget.snippetName]?.editingVersionId;
-    VersionId? publishedVersionId = FC().snippetInfoCache[widget.snippetName]?.publishedVersionId;
+    VersionId? currentVersionId = FContent().snippetInfoCache[widget.snippetName]?.editingVersionId;
+    VersionId? publishedVersionId = FContent().snippetInfoCache[widget.snippetName]?.publishedVersionId;
 
     // REVERT menu items
     List<MenuItemButton> revertMIs = [];
-    for (VersionId versionId in FC().versionIds(widget.snippetName) /*.sublist(0, 10)*/) {
-      bool thisIsBeingEdited = Useful.removeNonNumeric(versionId) == currentVersionId;
-      bool thisIsCurrentlyPublished = Useful.removeNonNumeric(versionId) == publishedVersionId;
+    for (VersionId versionId in FContent().versionIds(widget.snippetName) /*.sublist(0, 10)*/) {
+      bool thisIsBeingEdited = FContent().removeNonNumeric(versionId) == currentVersionId;
+      bool thisIsCurrentlyPublished = FContent().removeNonNumeric(versionId) == publishedVersionId;
       Color itemTextColor = Colors.black;
       if (thisIsCurrentlyPublished) itemTextColor = Colors.blue;
       revertMIs.add(MenuItemButton(
@@ -865,10 +867,10 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
             MaterialSPA.capiBloc.add(
               CAPIEvent.revertSnippet(
                 snippetName: widget.snippetName,
-                versionId: Useful.removeNonNumeric(versionId),
+                versionId: FContent().removeNonNumeric(versionId),
               ),
             );
-            Useful.afterNextBuildDo(() {
+            FContent().afterNextBuildDo(() {
               debugPrint('reverted.');
             });
           }
@@ -876,13 +878,13 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: thisIsBeingEdited ? FUCHSIA_X : Colors.transparent,
+              color: thisIsBeingEdited ? FContent().FUCHSIA_X : Colors.transparent,
               width: thisIsBeingEdited ? 4 : 0,
               style: BorderStyle.solid,
             ),
           ),
           padding: EdgeInsets.all(thisIsBeingEdited ? 4 : 0),
-          child: Useful.coloredText('$versionId ' + Useful.formattedDate(int.tryParse(Useful.removeNonNumeric(versionId)) ?? 0), color: itemTextColor),
+          child: FContent().coloredText('$versionId ' + FContent().formattedDate(int.tryParse(FContent().removeNonNumeric(versionId)) ?? 0), color: itemTextColor),
         ),
       ));
     }
@@ -915,7 +917,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
           onPressed: () {
             MaterialSPA.capiBloc.add(CAPIEvent.toggleAutoPublishingOfSnippet(snippetName: widget.snippetName));
           },
-          child: FC().snippetInfoCache[widget.snippetName]!.autoPublish ?? false
+          child: FContent().snippetInfoCache[widget.snippetName]!.autoPublish ?? false
               ? const Tooltip(message: "don't auto-push changes.", child: Text('stop auto-publishing changes to this snippet'))
               : const Tooltip(message: 'auto push changes as they occur', child: Text('auto-publish changes to this snippet')),
         ),

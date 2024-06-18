@@ -5,8 +5,7 @@ import 'dart:math';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-
-import 'edgeinsets_node_value.dart';
+import 'package:gap/gap.dart';
 
 part 'tabbar_node.mapper.dart';
 
@@ -118,8 +117,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
           child: Row(
             children: [
               const Icon(Icons.error, color: Colors.redAccent),
-              hspacer(10),
-              Useful.coloredText(e.toString()),
+              Gap(10),
+              FContent().coloredText(e.toString()),
             ],
           ),
         ),

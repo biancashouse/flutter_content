@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
@@ -130,7 +131,7 @@ class ChipNode extends CL with ChipNodeMappable {
                 refreshWithUpdate(
                     () => destinationRoutePathSnippetName = newValue);
               },
-              options: FC().pagePaths,
+              options: FContent().pagePaths,
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
@@ -179,7 +180,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
     // possible handler
     void Function(BuildContext)? f =
-        onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
+        onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
     possiblyHighlightSelectedNode();
@@ -199,14 +200,14 @@ class ChipNode extends CL with ChipNodeMappable {
 
   void onPressed(BuildContext context) {
     if (onTapHandlerName != null) {
-      FC().namedVoidCallbacks[onTapHandlerName]?.call();
+      FContent().namedVoidCallbacks[onTapHandlerName]?.call();
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
             () => Callout.showOverlay(
-            targetGkF: () => FC().getCalloutGk(feature),
+            targetGkF: () => FContent().getCalloutGk(feature),
             boxContentF: (_) => SnippetPanel.fromSnippet(
               panelName: calloutConfigGroup!.contentSnippetName!,
               snippetName: BODY_PLACEHOLDER,
@@ -233,7 +234,7 @@ class ChipNode extends CL with ChipNodeMappable {
             )),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      FC().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      FContent().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {

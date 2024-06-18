@@ -1,7 +1,7 @@
 
 
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter_content/flutter_content_typedefs.dart';
+import 'package:flutter_content/src/typedefs.dart';
 
 part 'upto6color_values.mapper.dart';
 

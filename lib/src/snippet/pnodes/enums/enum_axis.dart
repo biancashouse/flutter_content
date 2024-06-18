@@ -52,7 +52,7 @@ enum AxisEnum  {
   //   };
   // }
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static AxisEnum? of(int? index) => index != null ? AxisEnum.values.elementAtOrNull(index) : null;
 }

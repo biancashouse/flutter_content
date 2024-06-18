@@ -30,7 +30,7 @@ class RowNode extends FlexNode with RowNodeMappable {
   //                 Icons.error,
   //                 color: Colors.red,
   //               ),
-  //               hspacer(10),
+  //               Gap(10),
   //               const Text('Row has infinite maxWidth constraint!'),
   //             ],
   //           )

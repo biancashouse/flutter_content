@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -179,7 +179,7 @@ class TargetModel with TargetModelMappable {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? Useful.scrSize;
+    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? FContent().scrSize;
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -234,13 +234,13 @@ class TargetModel with TargetModelMappable {
   }
 
   Offset getCalloutPos() => Offset(
-    Useful.scrW * (calloutLeftPc ?? .5),
-    Useful.scrH * (calloutTopPc ?? .5),
+    FContent().scrW * (calloutLeftPc ?? .5),
+    FContent().scrH * (calloutTopPc ?? .5),
   );
 
   // setTextCalloutPos(Offset newGlobalPos) {
-  //   calloutTopPc = newGlobalPos.dy / Useful.scrH;
-  //   calloutLeftPc = newGlobalPos.dx / Useful.scrW;
+  //   calloutTopPc = newGlobalPos.dy / FC().scrH;
+  //   calloutLeftPc = newGlobalPos.dx / FC().scrW;
   // }
 
   // void init(
@@ -263,7 +263,7 @@ class TargetModel with TargetModelMappable {
   Future<void> onChange() async {
     SnippetRootNode? rootNode = targetsWrapperNode?.rootNodeOfSnippet();
     if (rootNode != null) {
-      FC().possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+      FContent().possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
       // appInfoMap = FC().appInfoAsMap;
       Callout.dismissAll(onlyToasts: true);
       HydratedBloc.storage.write('flutter-content', rootNode.toJson());
@@ -271,7 +271,7 @@ class TargetModel with TargetModelMappable {
         feature: "saving-model",
         msgText: 'saving changes...',
         backgroundColor: Colors.yellow,
-        width: Useful.scrW * .8,
+        width: FContent().scrW * .8,
         height: 40,
         gravity: Alignment.topCenter,
         textColor: Colors.blueAccent,

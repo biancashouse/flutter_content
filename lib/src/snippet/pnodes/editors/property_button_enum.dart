@@ -33,12 +33,12 @@ class PropertyButtonEnum extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                (Useful.coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
-                originalEnumIndex == null ? Useful.coloredText('...', color: Colors.white) : mi,
+                (FContent().coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
+                originalEnumIndex == null ? FContent().coloredText('...', color: Colors.white) : mi,
               ],
             )
           : originalEnumIndex == null
-              ? Useful.coloredText('...', color: Colors.white)
+              ? FContent().coloredText('...', color: Colors.white)
               : mi,
       calloutButtonSize: calloutButtonSize,
       initialCalloutAlignment: Alignment.bottomCenter,
@@ -67,7 +67,7 @@ class PropertyButtonEnum extends StatelessWidget {
   void _changed(int? option) {
     if (option != null) {
       onChangeF.call(option);
-      // Useful.afterMsDelayDo(500, () {
+      // FC().afterMsDelayDo(500, () {
       //   Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
       // });
     }

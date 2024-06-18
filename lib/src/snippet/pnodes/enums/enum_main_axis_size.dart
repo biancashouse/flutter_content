@@ -31,7 +31,7 @@ enum MainAxisSizeEnum {
         },
       );
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static MainAxisSizeEnum? of(int? index) => index != null ? MainAxisSizeEnum.values.elementAtOrNull(index) : null;
 }

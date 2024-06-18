@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
@@ -55,7 +56,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
               onStringChange: (newValue) {
                 refreshWithUpdate(() => destinationRoutePathSnippetName = newValue);
               },
-              options: FC().pagePaths,
+              options: FContent().pagePaths,
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
@@ -111,14 +112,14 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   void onPressed(BuildContext context) {
     if (onTapHandlerName != null) {
-      FC().namedVoidCallbacks[onTapHandlerName]?.call();
+      FContent().namedVoidCallbacks[onTapHandlerName]?.call();
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
         () => Callout.showOverlay(
-            targetGkF: () => FC().getCalloutGk(feature),
+            targetGkF: () => FContent().getCalloutGk(feature),
             boxContentF: (_) => SnippetPanel.fromSnippet(
                   panelName: calloutConfigGroup!.contentSnippetName!,
                   snippetName: BODY_PLACEHOLDER,
@@ -145,7 +146,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
             )),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      FC().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      FContent().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
@@ -240,7 +241,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //               child: InputDecorator(
   //                 decoration: InputDecoration(
   //                   labelText: 'button style',
-  //                   labelStyle: Useful.enclosureLabelTextStyle,
+  //                   labelStyle: FC().enclosureLabelTextStyle,
   //                   border: const OutlineInputBorder(gapPadding: 0.0),
   //                 ), // isDense: false,
   //                 child: Column(
@@ -308,7 +309,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                       child: InputDecorator(
   //                         decoration: InputDecoration(
   //                           labelText: 'border',
-  //                           labelStyle: Useful.enclosureLabelTextStyle,
+  //                           labelStyle: FC().enclosureLabelTextStyle,
   //                           border: const OutlineInputBorder(gapPadding: 0.0),
   //                         ), // isDense: false,
   //                         child: Column(
@@ -383,7 +384,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                 child: InputDecorator(
   //                   decoration: InputDecoration(
   //                     labelText: 'callout',
-  //                     labelStyle: Useful.enclosureLabelTextStyle,
+  //                     labelStyle: FC().enclosureLabelTextStyle,
   //                     border: const OutlineInputBorder(),
   //                     // isDense: false,
   //                   ),
@@ -397,8 +398,8 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //                             calloutConfig ??= NodeCalloutConfig();
   //                             calloutConfig!.contentSnippetName = s;
   //                             bloc.add(CAPIEvent.forceRefresh());
-  //                             Useful.afterNextBuildDo(() {
-  //                               Useful.om.refreshAll();
+  //                             FC().afterNextBuildDo(() {
+  //                               FC().om.refreshAll();
   //                             });
   //                             // bloc.add(const CAPIEvent.forceRefresh());
   //                           }),
@@ -417,7 +418,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //               child: InputDecorator(
   //                 decoration: InputDecoration(
   //                   labelText: 'button minSize',
-  //                   labelStyle: Useful.enclosureLabelTextStyle,
+  //                   labelStyle: FC().enclosureLabelTextStyle,
   //                   border: const OutlineInputBorder(),
   //                   // isDense: false,
   //                 ),
@@ -462,7 +463,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //               child: InputDecorator(
   //                 decoration: InputDecoration(
   //                   labelText: 'button maxSize',
-  //                   labelStyle: Useful.enclosureLabelTextStyle,
+  //                   labelStyle: FC().enclosureLabelTextStyle,
   //                   border: const OutlineInputBorder(),
   //                   // isDense: false,
   //                 ),
@@ -507,7 +508,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //               child: InputDecorator(
   //                 decoration: InputDecoration(
   //                   labelText: 'button fixedSize',
-  //                   labelStyle: Useful.enclosureLabelTextStyle,
+  //                   labelStyle: FC().enclosureLabelTextStyle,
   //                   border: const OutlineInputBorder(),
   //                   // isDense: false,
   //                 ),

@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:gap/gap.dart';
 
 part 'generic_single_child_node.mapper.dart';
 
@@ -16,7 +17,7 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => Useful.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+  Widget toWidget(BuildContext context, STreeNode? parentNode) => FContent().coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   Widget? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
@@ -35,8 +36,8 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
           child: Row(
             children: [
               const Icon(Icons.error, color: Colors.redAccent),
-              hspacer(10),
-              Useful.coloredText(e.toString()),
+              Gap(10),
+              FContent().coloredText(e.toString()),
             ],
           ),
         ),

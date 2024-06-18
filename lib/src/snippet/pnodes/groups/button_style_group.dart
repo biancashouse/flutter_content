@@ -4,8 +4,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
 
-import 'text_style_group.dart';
-
 part 'button_style_group.mapper.dart';
 
 @MappableClass(discriminatorKey: 'bs', includeSubClasses: [])
@@ -54,7 +52,7 @@ class ButtonStyleGroup with ButtonStyleGroupMappable {
 
     // TextStyle? ts = textStyle?.toTextStyle(context);
 
-    return (FC().namedButtonStyles[namedButtonStyle] ?? defaultButtonStyle)?.merge(
+    return (FContent().namedButtonStyles[namedButtonStyle] ?? defaultButtonStyle)?.merge(
       ButtonStyle(
         backgroundColor: WidgetStatePropertyAll<Color?>(bgColorValue != null ? Color(bgColorValue!) : null),
         foregroundColor: WidgetStatePropertyAll<Color?>(fgColorValue != null ? Color(fgColorValue!) : null),

@@ -13,7 +13,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static TargetModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetModelMapper._());
-      DecorationShapeEnumMapper.ensureInitialized();
     }
     return _instance!;
   }

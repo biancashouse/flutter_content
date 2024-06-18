@@ -28,7 +28,7 @@ class _MeasureWidgetRenderObject extends RenderProxyBox {
     debugPrint("performLayout");
     super.performLayout();
 
-    Useful.afterNextBuildDo(() {
+    FContent().afterNextBuildDo(() {
       Size newSize = child!.size;
       if (onPosChange != null) {
         Offset newPos = child!.localToGlobal(Offset.zero);

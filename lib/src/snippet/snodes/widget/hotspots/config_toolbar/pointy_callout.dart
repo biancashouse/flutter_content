@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
 
@@ -29,7 +30,7 @@ class PointyTool extends StatefulWidget {
         // tc.single
         //     ? FC().getSingleTargetGk(tc.wName)
         //     :
-        FC().getTargetGk(tc.uid);
+        FContent().getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
@@ -80,7 +81,7 @@ class _PointyToolState extends State<PointyTool> {
     tc.calloutArrowTypeIndex = t.index;
     // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
     Callout.dismiss("arrow-type");
-    // Useful.afterNextBuildDo(() {
+    // FC().afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
     removeSnippetContentCallout(tc.snippetName);
@@ -93,7 +94,7 @@ class _PointyToolState extends State<PointyTool> {
       // widget.onParentBarrierTappedF,
       wrapperRect: widget.wrapperRect,
     );
-    // Useful.afterNextBuildDo(() {
+    // FC().afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);
     //   showSnippetContentCallout(
     //     twName: widget.twName,
@@ -167,7 +168,7 @@ class _PointyToolState extends State<PointyTool> {
             tc.animateArrow = _animate;
             _onPressed(tc.getArrowType(), tc, tc.animateArrow);
             Callout.dismiss("arrow-type");
-            // Useful.afterNextBuildDo(() {
+            // FC().afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
             // });
           },

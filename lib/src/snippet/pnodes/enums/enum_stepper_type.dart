@@ -27,14 +27,14 @@ enum StepperTypeEnum {
         height: 70,
         child: Column(
           children: [
-            Useful.coloredText('type:', color: Colors.white),
+            FContent().coloredText('type:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Useful.coloredText('horizontal', color: Colors.white),
-                Useful.coloredText('vertical', color: Colors.white),
+                FContent().coloredText('horizontal', color: Colors.white),
+                FContent().coloredText('vertical', color: Colors.white),
               ],
             ),
             StepperTypeEditor(
@@ -47,7 +47,7 @@ enum StepperTypeEnum {
         ),
       );
 
-   Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+   Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static StepperTypeEnum? of(int? index) => index != null ? StepperTypeEnum.values.elementAtOrNull(index) : null;
 }

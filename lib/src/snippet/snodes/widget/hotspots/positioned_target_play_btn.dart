@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
 
 import 'config_toolbar/callout_config_toolbar.dart';
@@ -32,7 +32,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
-    return !FC().canEditContent
+    return !FContent().canEditContent
         ? GestureDetector(
             onTap: () {
               if (tc.targetsWrapperState() == null) return;
@@ -121,13 +121,13 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
               onDoubleTap: () async {
-                if (!FC().canEditContent) return;
+                if (!FContent().canEditContent) return;
 
                 if (tc.targetsWrapperState() == null) return;
 
                 // MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-                // Useful.afterNextBuildDo(() {
+                // FC().afterNextBuildDo(() {
                 // save for use after the refresh
                 // var wrapperPos = parentWrapperState?.wrapperPos;
                 // var wrapperSize = parentWrapperState?.wrapperSize;
@@ -135,7 +135,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
                 // if (wrapperRect == null) return;
 
-                var coverGK = FC().getTargetGk(tc.uid);
+                var coverGK = FContent().getTargetGk(tc.uid);
                 Rect? targetRect = coverGK!.globalPaintBounds();
                 if (targetRect == null) return;
 
@@ -143,8 +143,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
                 // STreeNode.hideAllTargetBtns(except: tc);
                 // FC.forceRefresh();
                 //
-                // Useful.afterNextBuildDo(() {
-                Alignment? ta = Useful.calcTargetAlignmentWithinWrapper(
+                // FC().afterNextBuildDo(() {
+                Alignment? ta = FContent().calcTargetAlignmentWithinWrapper(
                     wrapperRect, targetRect);
 
                 tc
@@ -181,7 +181,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     if (tc.targetsWrapperState() == null) return;
 
     // cover will now have been rendered with its gk
-    var coverGK = FC().getTargetGk(tc.uid);
+    var coverGK = FContent().getTargetGk(tc.uid);
     // debugPrint('getTargetGK: $coverGK');
     if (coverGK == null) return;
     // var cc = coverGK?.currentContext;
@@ -190,7 +190,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     if (targetRect == null) return;
 
     Alignment? ta =
-        Useful.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+        FContent().calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;
@@ -209,7 +209,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         justPlaying: true,
         wrapperRect: wrapperRect,
       );
-      Useful.afterMsDelayDo(tc.calloutDurationMs, () {
+      FContent().afterMsDelayDo(tc.calloutDurationMs, () {
         tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
         });
@@ -231,9 +231,9 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         borderRadius: 16,
         animate: false,
         arrowType: ArrowType.NO_CONNECTOR,
-        initialCalloutPos: FC().calloutConfigToolbarPos(),
+        initialCalloutPos: FContent().calloutConfigToolbarPos(),
         onDragEndedF: (newPos) {
-          FC().setCalloutConfigToolbarPos(newPos);
+          FContent().setCalloutConfigToolbarPos(newPos);
         },
         dragHandleHeight: 30,
       ),

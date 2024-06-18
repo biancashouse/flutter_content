@@ -28,19 +28,19 @@ enum BoxFitEnum {
   decoration: BoxDecoration(color: Colors.purple[700]), child: _toMenuItem(),);
 
   Widget _toMenuItem() => switch (this) {
-        BoxFitEnum.fill => Useful.coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),
-        BoxFitEnum.contain => Useful.coloredText(maxLines:2,'$name - as large as possible while still contained entirely within the box', color: Colors.white),
-        BoxFitEnum.cover => Useful.coloredText(maxLines:2,'$name - as small as possible while still covering the entire box', color: Colors.white),
-        BoxFitEnum.fitWidth => Useful.coloredText(maxLines:3,
+        BoxFitEnum.fill => FContent().coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),
+        BoxFitEnum.contain => FContent().coloredText(maxLines:2,'$name - as large as possible while still contained entirely within the box', color: Colors.white),
+        BoxFitEnum.cover => FContent().coloredText(maxLines:2,'$name - as small as possible while still covering the entire box', color: Colors.white),
+        BoxFitEnum.fitWidth => FContent().coloredText(maxLines:3,
             '$name - takes full width of parent; child overflows inside the parent vertically, maintaining the aspect ratio',
             color: Colors.white),
-        BoxFitEnum.fitHeight => Useful.coloredText(maxLines:3,
+        BoxFitEnum.fitHeight => FContent().coloredText(maxLines:3,
             '$name - takes full height of parent; child overflows inside the parent horizontally, maintaining the aspect ratio',
             color: Colors.white),
-        BoxFitEnum.none => Useful.coloredText(maxLines:3,
+        BoxFitEnum.none => FContent().coloredText(maxLines:3,
             '$name - aligns the child inside the parent (centred by default) and discards any portion that lies outside the bounds of the parent',
             color: Colors.white),
-        BoxFitEnum.scaleDown => Useful.coloredText(maxLines:3,
+        BoxFitEnum.scaleDown => FContent().coloredText(maxLines:3,
             '$name - Similar to none, scales down to fit inside the parent. Same as "contain": shrinks the child to fit inside the parent',
             color: Colors.white),
       };

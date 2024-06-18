@@ -9,6 +9,7 @@ import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_event.dart';
 import 'package:flutter_content/src/bloc/poll_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
+import 'package:gap/gap.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // FlutterPolls widget.
@@ -252,7 +253,7 @@ class FlutterPollState extends State<FlutterPoll> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              if (showTextInputButton) Useful.coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
+                              if (showTextInputButton) FContent().coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
                               Container(
                                 color: showTextInputButton ? Colors.red[900] : Colors.white,
                                 padding: const EdgeInsets.all(4),
@@ -279,21 +280,21 @@ class FlutterPollState extends State<FlutterPoll> {
                               ),
                             ],
                           ),
-                          vspacer(10),
+                          const Gap(10),
                           widget.titleWidget,
                           SizedBox(height: widget.heightBetweenTitleAndOptions),
                           ...widget.children,
-                          vspacer(10),
-                          Useful.coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
-                          vspacer(10),
+                          const Gap(10),
+                          FContent().coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
+                          const Gap(10),
                           Align(
                               alignment: Alignment.centerRight,
                               child: (state.tooEarly())
-                                  ? Useful.coloredText('poll not yet open. begins: ${Useful.formattedDate(state.startDate!)}', fontSize: 12)
+                                  ? FContent().coloredText('poll not yet open. begins: ${FContent().formattedDate(state.startDate!)}', fontSize: 12)
                                   : (state.pollHasEnded())
-                                      ? Useful.coloredText('poll closed. ended: ${Useful.formattedDate(state.startDate!)}', fontSize: 12)
+                                      ? FContent().coloredText('poll closed. ended: ${FContent().formattedDate(state.startDate!)}', fontSize: 12)
                                       : (!state.tooEarly() && !state.pollHasEnded() && state.startDate != null && state.endDate != null)
-                                          ? Useful.coloredText('poll closes: ${Useful.formattedDate(state.endDate!)}', fontSize: 12)
+                                          ? FContent().coloredText('poll closes: ${FContent().formattedDate(state.endDate!)}', fontSize: 12)
                                           : const Offstage()),
                           Expanded(
                             child: widget.metaWidget ?? Container(),

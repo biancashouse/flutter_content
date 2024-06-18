@@ -19,7 +19,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
     try {
       return WidgetSpan(
-        child: child != null ? child!.toWidget(context, this) : boxChild(child: const Text("missing child!"), bgColor: Colors.red),
+        child: child != null ? child!.toWidget(context, this) : FContent().boxChild(child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
@@ -35,7 +35,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     return '''WidgetSpan(
       child: ${child != null}
       ? ${child!.toSource(context)}
-      : ${boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
+      : ${FContent().boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
   )''';
   }
 

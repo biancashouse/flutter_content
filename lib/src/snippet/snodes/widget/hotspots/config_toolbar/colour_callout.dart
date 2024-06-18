@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
@@ -34,7 +35,7 @@ class ColourTool extends StatefulWidget {
         // tc.single
         // ? FC().getSingleTargetGk(tc.wName)
         // :
-        FC().getTargetGk(tc.uid);
+        FContent().getTargetGk(tc.uid);
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -92,7 +93,7 @@ class _ColourToolState extends State<ColourTool> {
               // Callout.refreshOverlay(tc.snippetName);
               // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
               Callout.dismiss('color-picker');
-              // Useful.afterNextBuildDo(() {
+              // FC().afterNextBuildDo(() {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});
               removeSnippetContentCallout(tc.snippetName);
@@ -105,8 +106,8 @@ class _ColourToolState extends State<ColourTool> {
               );
               // });
               //reshowSnippetContentCallout(tc);
-              // Useful.afterMsDelayDo(1000, () {
-              //   Useful.om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);
+              // FC().afterMsDelayDo(1000, () {
+              //   FC().om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);
               // });
             },
           ),

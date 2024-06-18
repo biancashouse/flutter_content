@@ -1,6 +1,8 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:gap/gap.dart';
 
 part 'menu_bar_node.mapper.dart';
 
@@ -38,7 +40,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
             key: createNodeGK(),
             children: super.children.map((child) => child.toWidget(context, this)).toList(),
           ),
-          width ?? Useful.scrW,
+          width ?? FContent().scrW,
           height ?? 60,
         );
       } catch (e) {
@@ -50,8 +52,8 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
             child: Row(
               children: [
                 const Icon(Icons.error, color: Colors.redAccent),
-                hspacer(10),
-                Useful.coloredText(e.toString()),
+                Gap(10),
+                FContent().coloredText(e.toString()),
               ],
             ),
           ),

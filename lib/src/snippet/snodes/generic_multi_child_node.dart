@@ -16,7 +16,7 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => Useful.coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+  Widget toWidget(BuildContext context, STreeNode? parentNode) => FContent().coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);

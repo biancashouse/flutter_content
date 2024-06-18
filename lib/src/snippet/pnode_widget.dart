@@ -77,7 +77,7 @@ class PTreeNodeWidget extends StatelessWidget {
           propertyNode.revertToOriginalValue();
           treeC.rebuild();
         },
-        child: Useful.coloredText(propertyNode.name, color: Colors.purple),
+        child: FContent().coloredText(propertyNode.name, color: Colors.purple),
       );
 
   Widget _propertyButton(context) {

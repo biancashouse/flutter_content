@@ -4,6 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
+import 'package:gap/gap.dart';
 
 part 'flex_node.mapper.dart';
 
@@ -84,7 +85,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
             Icons.error,
             color: Colors.red,
           ),
-          hspacer(10),
+          Gap(10),
           const Text('Row has infinite maxWidth constraint!'),
         ],
       );

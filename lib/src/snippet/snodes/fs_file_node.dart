@@ -4,13 +4,13 @@
 //
 // part 'fs_file_node.mapper.dart';
 //
-// // get googleDocsIconSrc => Useful.asset('lib/assets/images/google-icons/docs.png');
+// // get googleDocsIconSrc => FC().asset('lib/assets/images/google-icons/docs.png');
 // //
-// // get googleSheetsIconSrc => Useful.asset('lib/assets/images/google-icons/sheets.png');
+// // get googleSheetsIconSrc => FC().asset('lib/assets/images/google-icons/sheets.png');
 // //
-// // get googleSlidesIconSrc => Useful.asset('lib/assets/images/google-icons/slides.png');
+// // get googleSlidesIconSrc => FC().asset('lib/assets/images/google-icons/slides.png');
 // //
-// // get googleFormsIconSrc => Useful.asset('lib/assets/images/google-icons/forms.png');
+// // get googleFormsIconSrc => FC().asset('lib/assets/images/google-icons/forms.png');
 //
 // @MappableClass()
 // class FSFileNode extends CL with FSFileNodeMappable {
@@ -64,9 +64,9 @@
 //         mainAxisSize: MainAxisSize.min,
 //         crossAxisAlignment: CrossAxisAlignment.center,
 //         children: [
-//           hspacer(10),
-//           Useful.coloredText(name.isEmpty ? 'filename?' : name, color: Colors.blue),
-//           hspacer(10),
+//           Gap(10),
+//           FC().coloredText(name.isEmpty ? 'filename?' : name, color: Colors.blue),
+//           Gap(10),
 //           driveFileIcon('firebase storage ref'),
 //         ],
 //       ),

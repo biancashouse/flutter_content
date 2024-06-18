@@ -1,7 +1,9 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/iframe.dart';
+import 'package:gap/gap.dart';
 
 // import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -112,9 +114,9 @@ class YTNode extends CL with YTNodeMappable {
   String toString() => 'YT';
 
   @override
-  Widget? logoSrc() => Row(children: [
-        const Icon(Icons.link),
-        hspacer(6),
+  Widget? logoSrc() => const Row(children: [
+        Icon(Icons.link),
+        Gap(6),
       ]);
 
   static const String FLUTTER_TYPE = "YT";

@@ -29,7 +29,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
     //buttonStyle?.toButtonStyle(context);
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? FC().namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
     possiblyHighlightSelectedNode();
@@ -39,7 +39,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
       key: createNodeGK(),
       child: FilledButton(
         // if feature specified, must be a callout
-        key: feature != null ? FC().setCalloutGk(feature!, GlobalKey()) : null,
+        key: feature != null ? FContent().setCalloutGk(feature!, GlobalKey()) : null,
         onPressed: ()=>onPressed(context),
         onLongPress: f != null ? () => f.call(context) : null,
         style: btnStyle,

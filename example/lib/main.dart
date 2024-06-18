@@ -3,7 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 import 'package:example/firebase_options.dart';
 
-enum PageButtonInfo {
+enum PageButtonConfig {
   home(buttonLabel: Text('home'), path: '/home'),
   rowOf2Panels(
     buttonLabel: Text('demo: row of 2 panels'),
@@ -26,7 +26,7 @@ enum PageButtonInfo {
     path: '/editable-rich-text',
   );
 
-  const PageButtonInfo({required this.buttonLabel, required this.path});
+  const PageButtonConfig({required this.buttonLabel, required this.path});
 
   final String path;
   final Widget buttonLabel;
@@ -36,27 +36,27 @@ final _webRoutingConfig = RoutingConfig(
   routes: <RouteBase>[
     GoRoute(
       name: 'home',
-      path: PageButtonInfo.home.path,
+      path: PageButtonConfig.home.path,
       builder: (BuildContext context, GoRouterState state) => const FlutterPageHome(title: 'hello'),
     ),
     GoRoute(
-      path: PageButtonInfo.rowOf2Panels.path,
+      path: PageButtonConfig.rowOf2Panels.path,
       builder: (BuildContext context, GoRouterState state) => const FlutterPageRowOf2Panels(),
     ),
     EditableRoute(
-      path: PageButtonInfo.snippetSandbox.path,
+      path: PageButtonConfig.snippetSandbox.path,
       template: SnippetTemplateEnum.empty,
     ),
     EditableRoute(
-      path: PageButtonInfo.scaffoldWithMenuBar.path,
+      path: PageButtonConfig.scaffoldWithMenuBar.path,
       template: SnippetTemplateEnum.scaffold_with_menubar,
     ),
     EditableRoute(
-      path: PageButtonInfo.scaffoldWithTabBar.path,
+      path: PageButtonConfig.scaffoldWithTabBar.path,
       template: SnippetTemplateEnum.scaffold_with_tabbar,
     ),
     EditableRoute(
-      path: PageButtonInfo.richText.path,
+      path: PageButtonConfig.richText.path,
       template: SnippetTemplateEnum.rich_text,
     ),
   ],
@@ -97,7 +97,7 @@ Future<void> main() async {
     initialRoutePath: '/home',
     materialAppThemeF: () => ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      primaryColor: FUCHSIA_X,
+      primaryColor: FContent().FUCHSIA_X,
       primarySwatch: Colors.purple,
     ),
     fbOptions: DefaultFirebaseOptions.currentPlatform,
@@ -188,45 +188,45 @@ class _FlutterPageHomeState extends State<FlutterPageHome> {
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go(PageButtonInfo.snippetSandbox.path);
+                  context.go(PageButtonConfig.snippetSandbox.path);
                 },
-                child: PageButtonInfo.snippetSandbox.buttonLabel,
+                child: PageButtonConfig.snippetSandbox.buttonLabel,
               ),
             ),
             Flexible(
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go(PageButtonInfo.scaffoldWithMenuBar.path);
+                  context.go(PageButtonConfig.scaffoldWithMenuBar.path);
                 },
-                child: PageButtonInfo.scaffoldWithMenuBar.buttonLabel,
+                child: PageButtonConfig.scaffoldWithMenuBar.buttonLabel,
               ),
             ),
             Flexible(
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go(PageButtonInfo.scaffoldWithTabBar.path);
+                  context.go(PageButtonConfig.scaffoldWithTabBar.path);
                 },
-                child: PageButtonInfo.scaffoldWithTabBar.buttonLabel,
+                child: PageButtonConfig.scaffoldWithTabBar.buttonLabel,
               ),
             ),
             Flexible(
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go(PageButtonInfo.richText.path);
+                  context.go(PageButtonConfig.richText.path);
                 },
-                child: PageButtonInfo.richText.buttonLabel,
+                child: PageButtonConfig.richText.buttonLabel,
               ),
             ),
             Flexible(
               flex: 1,
               child: FilledButton(
                 onPressed: () {
-                  context.go(PageButtonInfo.rowOf2Panels.path);
+                  context.go(PageButtonConfig.rowOf2Panels.path);
                 },
-                child: PageButtonInfo.rowOf2Panels.buttonLabel,
+                child: PageButtonConfig.rowOf2Panels.buttonLabel,
               ),
             ),
           ],

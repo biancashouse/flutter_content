@@ -125,7 +125,7 @@ class TextNode extends CL with TextNodeMappable {
   //         child: InputDecorator(
   //           decoration: InputDecoration(
   //             labelText: 'textStyle',
-  //             labelStyle: Useful.enclosureLabelTextStyle,
+  //             labelStyle: FC().enclosureLabelTextStyle,
   //             border: const OutlineInputBorder(),
   //           ), // isDense: false,
   //           child: IntrinsicHeight(
@@ -170,7 +170,7 @@ class TextNode extends CL with TextNodeMappable {
   //                         child: InputDecorator(
   //                           decoration: InputDecoration(
   //                             labelText: 'italic',
-  //                             labelStyle: Useful.enclosureLabelTextStyle,
+  //                             labelStyle: FC().enclosureLabelTextStyle,
   //                             border: const OutlineInputBorder(),
   //                             // isDense: false,
   //                           ),

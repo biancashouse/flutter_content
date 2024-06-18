@@ -23,6 +23,7 @@ class CLMapper extends SubClassMapperBase<CL> {
       FileNodeMapper.ensureInitialized();
       FirebaseStorageImageNodeMapper.ensureInitialized();
       GapNodeMapper.ensureInitialized();
+      MarkdownNodeMapper.ensureInitialized();
       PollOptionNodeMapper.ensureInitialized();
       StepNodeMapper.ensureInitialized();
       PlaceholderNodeMapper.ensureInitialized();

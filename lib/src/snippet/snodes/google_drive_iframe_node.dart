@@ -161,7 +161,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
     //             mainAxisAlignment: MainAxisAlignment.center,
     //             children: [
     //               const Icon(Icons.code, size: 32, color: Colors.red),
-    //               Useful.coloredText('folder id missing!', color: Colors.red),
+    //               FC().coloredText('folder id missing!', color: Colors.red),
     //             ],
     //           );
   }
@@ -195,7 +195,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 
   @override
   Widget? logoSrc() => Image.asset(
-        Useful.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
+        FContent().asset('lib/assets/images/google-icons/google-drive-icon.webp'),
         width: 24,
       );
 

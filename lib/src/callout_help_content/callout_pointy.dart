@@ -29,7 +29,7 @@
 //         ancestorHScrollController: ancestorHScrollController,
 //         ancestorVScrollController: ancestorVScrollController,
 //       ),
-//       width: Useful.scrW,
+//       width: FC().scrW,
 //       height: 116,
 //       showCloseButton: true,
 //       closeButtonColor: Colors.white,
@@ -90,7 +90,7 @@
 //                                   setState(() => _arrowType = t);
 //                                   widget.selectedTC.arrowType = t.index;
 //                                   removeHelpContentEditorCallout();
-//                                   Useful.afterMsDelayDo(250, () {
+//                                   FC().afterMsDelayDo(250, () {
 //                                     showHelpContentCallout(widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                   });
 //                                 },
@@ -123,7 +123,7 @@
 //                                         setState(() => _arrowType = t);
 //                                         widget.selectedTC.arrowType = t.index;
 //                                         removeHelpContentEditorCallout();
-//                                         Useful.afterMsDelayDo(250, () {
+//                                         FC().afterMsDelayDo(250, () {
 //                                           showHelpContentCallout(
 //                                               widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                         });
@@ -151,7 +151,7 @@
 //                                         setState(() => _arrowType = t);
 //                                         widget.selectedTC.arrowType = t.index;
 //                                         removeHelpContentEditorCallout();
-//                                         Useful.afterMsDelayDo(250, () {
+//                                         FC().afterMsDelayDo(250, () {
 //                                           showHelpContentCallout(
 //                                               widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                         });
@@ -180,7 +180,7 @@
 //                           setState(() => _animate = !_animate);
 //                           widget.selectedTC.animateArrow = _animate;
 //                           removeHelpContentEditorCallout();
-//                           Useful.afterMsDelayDo(250, () {
+//                           FC().afterMsDelayDo(250, () {
 //                             showHelpContentCallout(widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                           });
 //                         },

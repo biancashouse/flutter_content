@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
@@ -17,7 +18,7 @@ class TargetCover extends StatelessWidget {
     // in case initialTC replaced by a build ? huh!
     // if (tc != null) {
     // double radius = tc.radius;
-    return FC().canEditContent
+    return FContent().canEditContent
         ? Draggable<(TargetId,bool)>(
             data: (tc.uid,false),
             feedback: _draggableTarget(tc),
@@ -78,7 +79,7 @@ class _TargetCover extends StatelessWidget {
             num: index + 1,
             bgColor: tc.calloutColor().withOpacity(.5),
             radius: radius,
-            textColor: FC().canEditContent ? Colors.white : Colors.transparent,
+            textColor: FContent().canEditContent ? Colors.white : Colors.transparent,
             fontSize: 14,
           ),
         ),

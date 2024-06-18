@@ -38,7 +38,7 @@ enum FontStyleEnum   {
         calloutSize: const Size(170, 50),
       );
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static FontStyleEnum? of(int? index) => index != null ? FontStyleEnum.values.elementAtOrNull(index) : null;
 

@@ -49,6 +49,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.3"
+  bh_shared:
+    dependency: transitive
+    description:
+      path: "../../bh_shared"
+      relative: true
+    source: path
+    version: "0.0.1"
   bloc:
     dependency: transitive
     description:
@@ -502,6 +509,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.2"
+  flutter_callouts:
+    dependency: transitive
+    description:
+      path: "../../flutter_callouts"
+      relative: true
+    source: path
+    version: "0.1.0"
   flutter_content:
     dependency: "direct main"
     description:
@@ -546,6 +560,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_markdown:
+    dependency: transitive
+    description:
+      name: flutter_markdown
+      sha256: "9921f9deda326f8a885e202b1e35237eadfc1345239a0f6f0f1ff287e047547f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -772,6 +794,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.3"
+  markdown:
+    dependency: transitive
+    description:
+      name: markdown
+      sha256: ef2a1298144e3f985cc736b22e0ccdaf188b5b3970648f2d9dc13efd1d9df051
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.2.2"
   matcher:
     dependency: transitive
     description:
@@ -1410,5 +1440,5 @@ packages:
     source: hosted
     version: "2.1.4"
 sdks:
-  dart: ">=3.4.0 <4.0.0"
+  dart: ">=3.4.1 <4.0.0"
   flutter: ">=3.19.2"

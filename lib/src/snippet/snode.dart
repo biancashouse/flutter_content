@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gap/gap.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'snodes/fs_image_node.dart';
@@ -79,6 +81,7 @@ const List<Type> childlessSubClasses = [
   FirebaseStorageImageNode,
   // SnippetRefNode,
   GapNode,
+  MarkdownNode,
   /* , NetworkImageNode*/
   PollOptionNode,
   StepNode,
@@ -191,7 +194,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   ScrollController propertiesPaneSC() => _propertiesPaneSC ??= ScrollController();
 
-  FC get fc => FC();
+  FContent get fc => FContent();
 
   // ..addListener(() {
   //   propertiesPaneScrollPos =
@@ -219,13 +222,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showTappableNodeWidgetOverlay(RouteName pageName, String nodeTypeName, Rect r) {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
-    Rect restrictedRect = Useful.restrictRectToScreen(r);
+    Rect restrictedRect = FContent().restrictRectToScreen(r);
     // debugPrint("=== showTappableNodeWidgetOverlay =====>\n  feature: $feature\n  r restricted to ${restrictedRect.toString()}");
     const double BORDER = 1;
     double borderLeft = max(restrictedRect.left - BORDER, 0);
     double borderTop = max(restrictedRect.top - BORDER, 0);
-    double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
-    double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+    double borderRight = min(FContent().scrW, restrictedRect.right + BORDER * 2);
+    double borderBottom = min(FContent().scrH, restrictedRect.bottom + BORDER * 2);
     Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
     CalloutConfig cc = CalloutConfig(
       feature: feature,
@@ -250,7 +253,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             hideAllSingleTargetBtns();
 // FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-            FC().currentPageState?.removeAllNodeWidgetOverlays();
+            FContent().currentPageState?.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
             // tapped a real widget with GlobalKey of nodeWidgetGK
             var tappedNodeName = nodeTypeName;
@@ -263,7 +266,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               this,
               this,
             );
-            // Useful.afterNextBuildDo(() {
+            // FC().afterNextBuildDo(() {
             // });
           },
           child: Tooltip(
@@ -304,7 +307,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
               ),
               // alignment: Alignment.bottomLeft,
-              // child: Useful.coloredText(nodeTypeName, color: Colors.purpleAccent),
+              // child: FC().coloredText(nodeTypeName, color: Colors.purpleAccent),
             ),
           ),
         ),
@@ -317,14 +320,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showNodeWidgetOverlay() {
     Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
-      r = Useful.restrictRectToScreen(r);
+      r = FContent().restrictRectToScreen(r);
       // pageState.removeAllNodeWidgetOverlays();
-      Rect restrictedRect = Useful.restrictRectToScreen(r);
+      Rect restrictedRect = FContent().restrictRectToScreen(r);
       const int BORDER = 3;
       double borderLeft = max(restrictedRect.left - 3, 0);
       double borderTop = max(restrictedRect.top - 3, 0);
-      double borderRight = min(Useful.scrW, restrictedRect.right + BORDER * 2);
-      double borderBottom = min(Useful.scrH, restrictedRect.bottom + BORDER * 2);
+      double borderRight = min(FContent().scrW, restrictedRect.right + BORDER * 2);
+      double borderBottom = min(FContent().scrH, restrictedRect.bottom + BORDER * 2);
       Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
       CalloutConfig cc = CalloutConfig(
         feature: 'pink-border-overlay-non-tappable',
@@ -374,26 +377,26 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       snippetName: snippetName,
       visibleDecendantNode: highestNode,
     ));
-    // Useful.afterNextBuildDo(() {
+    // FC().afterNextBuildDo(() {
     // });
     // return;
     // debugPrint('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
-    Useful.afterNextBuildDo(() {
+    FContent().afterNextBuildDo(() {
       var gk = startingAtNode.nodeWidgetGK;
 
       var tappedNodeName = gk;
       var cs = gk?.currentState;
       var cc = gk?.currentContext;
-      bool isMOunted = cc?.mounted ?? false;
+      // bool isMOunted = cc?.mounted ?? false;
       var cw = gk?.currentWidget;
 
       if (MaterialSPA.snippetBeingEdited != null) {
         MaterialSPA.snippetBeingEdited?.treeC.expandAll();
         MaterialSPA.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
-        if (!FC().clipboardIsEmpty) {
-          FC().showFloatingClipboard();
+        if (!FContent().clipboardIsEmpty) {
+          FContent().showFloatingClipboard();
         }
         showSnippetTreeAndPropertiesCallout(
           targetGKF: () => startingAtNode.nodeWidgetGK,
@@ -402,7 +405,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             STreeNode.unhighlightSelectedNode();
             Callout.printFeatures();
             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
-            var currPageState = FC().currentPageState;
+            var currPageState = FContent().currentPageState;
             currPageState?.unhideFAB();
             Callout.dismiss(pinkOverlayFeature);
             Callout.printFeatures();
@@ -410,14 +413,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             showAllTargetCovers();
             // fc.capiBloc.add(const CAPIEvent.popSnippetBloc());
             Callout.dismiss(TREENODE_MENU_CALLOUT);
-            FC().hideClipboard();
+            FContent().hideClipboard();
             // FlutterContentPage.exitEditMode();
             // skip if no change
             String? jsonBeforePush = MaterialSPA.snippetBeingEdited?.jsonBeforePush;
             String? currentJsonS = MaterialSPA.rootNode?.toJson();
             if (jsonBeforePush == currentJsonS) return;
             if (MaterialSPA.rootNode != null) {
-              FC().possiblyCacheAndSaveANewSnippetVersion(
+              FContent().possiblyCacheAndSaveANewSnippetVersion(
                 snippetName: snippetName,
                 rootNode: MaterialSPA.rootNode!,
               );
@@ -439,8 +442,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         //   // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
-        Useful.afterNextBuildDo(() {
-          FC().currentPageState
+        FContent().afterNextBuildDo(() {
+          FContent().currentPageState
             ?..removeAllNodeWidgetOverlays()
             ..showNodeWidgetOverlay(selectedNode);
           // create selected node's properties tree
@@ -471,10 +474,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   void refreshWithUpdate(VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
     assignF.call();
-    FC.forceRefresh();
-    Useful.afterNextBuildDo(() {
+    FContent.forceRefresh();
+    FContent().afterNextBuildDo(() {
       if (MaterialSPA.selectedNode != null) {
-        FC().currentPageState?.showNodeWidgetOverlay((MaterialSPA.selectedNode)!);
+        FContent().currentPageState?.showNodeWidgetOverlay((MaterialSPA.selectedNode)!);
       }
     });
   }
@@ -744,7 +747,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   static List<TargetModel> allTargets() {
-    var fc = FC();
+    var fc = FContent();
     List<TargetModel> foundTargets = [];
     for (SnippetName snippetName in fc.snippetInfoCache.keys) {
       // get published or editing version
@@ -782,7 +785,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                       Icons.error,
                       color: Colors.red,
                     ),
-                    hspacer(10),
+                    const Gap(10),
                     Text('${toString()} has infinite maxHeight constraint!'),
                   ],
                 )
@@ -837,7 +840,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   Future<void> possiblyHighlightSelectedNode() async {
 //     if (fc.selectedNode == this) {
 //       if (true || fc.highlightedNode != fc.selectedNode) {
-//         Useful.afterNextBuildDo(() {
+//         FC().afterNextBuildDo(() {
 // // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
 //           unhighlightSelectedNode();
 // // }
@@ -894,8 +897,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             fc
 //                 .snippetBeingEdited
 //                 ?.add(SnippetEvent.highlightNode(node: this));
-// // Useful.afterMsDelayDo(1000, () {
-// //   Useful.om.moveToTop("TreeNodeMenu".hashCode);
+// // FC().afterMsDelayDo(1000, () {
+// //   FC().om.moveToTop("TreeNodeMenu".hashCode);
 // // });
 //           }
 //         });
@@ -1015,7 +1018,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //         }
 //         Callout.dismiss(TREENODE_MENU_CALLOUT);
 //       },
-//       child: Useful.coloredText('paste from clipboard', color: Colors.blue),
+//       child: FC().coloredText('paste from clipboard', color: Colors.blue),
 //     );
 //   }
 //   return null;
@@ -1050,7 +1053,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //         child: boxChild(
 //           bgColor: Colors.lightBlueAccent,
 //           child: Center(
-//             child: Useful.whiteText(
+//             child: FC().whiteText(
 //               'paste from clipboard',
 //             ),
 //           ),
@@ -1068,50 +1071,50 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // }
 
 // Widget menuItemText(Type type, {Color color = Colors.black, FontWeight? fontWeight}) => switch (type) {
-//       const (AlignNode) => Useful.coloredText("Align", color: color, fontWeight: fontWeight),
-//       const (AspectRatioNode) => Useful.coloredText("AspectRatio", color: color, fontWeight: fontWeight),
-//       const (AssetImageNode) => Useful.coloredText("AssetImage", color: color, fontWeight: fontWeight),
-//       const (CarouselNode) => Useful.coloredText("Carousel", color: color, fontWeight: fontWeight),
-//       const (CenterNode) => Useful.coloredText("Center", color: color, fontWeight: fontWeight),
-//       const (ColumnNode) => Useful.coloredText("Column", color: color, fontWeight: fontWeight),
-//       const (ContainerNode) => Useful.coloredText("Container", color: color, fontWeight: fontWeight),
-//       const (DefaultTextStyleNode) => Useful.coloredText("DefaultTextStyle", color: color, fontWeight: fontWeight),
-//       const (DirectoryNode) => Useful.coloredText("Directory", color: color, fontWeight: fontWeight),
-//       const (ElevatedButtonNode) => Useful.coloredText("ElevatedButton", color: color, fontWeight: fontWeight),
-//       const (ExpandedNode) => Useful.coloredText("Expanded", color: color, fontWeight: fontWeight),
-//       const (FileNode) => Useful.coloredText("File", color: color, fontWeight: fontWeight),
-//       const (FilledButtonNode) => Useful.coloredText("FilledButton", color: color, fontWeight: fontWeight),
-//       const (FlexibleNode) => Useful.coloredText("Flexible", color: color, fontWeight: fontWeight),
-//       const (GapNode) => Useful.coloredText("Gap", color: color, fontWeight: fontWeight),
-//       const (GoogleDriveIFrameNode) => Useful.coloredText("GoogleDriveIFrame", color: color, fontWeight: fontWeight),
-//       const (IconButtonNode) => Useful.coloredText("IconButton", color: color, fontWeight: fontWeight),
-//       const (IFrameNode) => Useful.coloredText("IFrame", color: color, fontWeight: fontWeight),
-//       const (MenuBarNode) => Useful.coloredText("MenuBar", color: color, fontWeight: fontWeight),
-//       const (MenuItemButtonNode) => Useful.coloredText("MenuItemButton", color: color, fontWeight: fontWeight),
-//       // const (NetworkImageNode) =>  Useful.coloredText("NetworkImage", color: color, fontWeight: fontWeight),
-//       const (OutlinedButtonNode) => Useful.coloredText("OutlinedButton", color: color, fontWeight: fontWeight),
-//       const (PaddingNode) => Useful.coloredText("Padding", color: color, fontWeight: fontWeight),
-//       const (PlaceholderNode) => Useful.coloredText("Placeholder", color: color, fontWeight: fontWeight),
-//       const (PollNode) => Useful.coloredText("Poll", color: color, fontWeight: fontWeight),
-//       const (PollOptionNode) => Useful.coloredText("PollOption", color: color, fontWeight: fontWeight),
-//       const (PositionedNode) => Useful.coloredText("Positioned", color: color, fontWeight: fontWeight),
-//       const (RichTextNode) => Useful.coloredText("RichText", color: color, fontWeight: fontWeight),
-//       const (RowNode) => Useful.coloredText("Row", color: color, fontWeight: fontWeight),
-//       const (SizedBoxNode) => Useful.coloredText("SizedBox", color: color, fontWeight: fontWeight),
-//       const (SingleChildScrollViewNode) => Useful.coloredText("SingleChildScrollView", color: color, fontWeight: fontWeight),
-//       const (SnippetRootNode) => Useful.coloredText("Snippet", color: color, fontWeight: fontWeight),
-//       const (SnippetRefNode) => Useful.coloredText("SnippetRef", color: color, fontWeight: fontWeight),
-//       const (SplitViewNode) => Useful.coloredText("SplitView", color: color, fontWeight: fontWeight),
-//       const (StackNode) => Useful.coloredText("Stack", color: color, fontWeight: fontWeight),
-//       const (StepNode) => Useful.coloredText("Step", color: color, fontWeight: fontWeight),
-//       const (StepperNode) => Useful.coloredText("Stepper", color: color, fontWeight: fontWeight),
-//       const (SubmenuButtonNode) => Useful.coloredText("SubmenuButton", color: color, fontWeight: fontWeight),
-//       const (TargetWrapperNode) => Useful.coloredText("TargetWrapper", color: color, fontWeight: fontWeight),
-//       const (TargetGroupWrapperNode) => Useful.coloredText("TargetGroupWrapper", color: color, fontWeight: fontWeight),
-//       const (TextButtonNode) => Useful.coloredText("TextButton", color: color, fontWeight: fontWeight),
-//       const (TextNode) => Useful.coloredText("Text", color: color, fontWeight: fontWeight),
-//       const (TextSpanNode) => Useful.coloredText("TextSpan", color: color, fontWeight: fontWeight),
-//       const (WidgetSpanNode) => Useful.coloredText("WidgetSpan", color: color, fontWeight: fontWeight),
+//       const (AlignNode) => FC().coloredText("Align", color: color, fontWeight: fontWeight),
+//       const (AspectRatioNode) => FC().coloredText("AspectRatio", color: color, fontWeight: fontWeight),
+//       const (AssetImageNode) => FC().coloredText("AssetImage", color: color, fontWeight: fontWeight),
+//       const (CarouselNode) => FC().coloredText("Carousel", color: color, fontWeight: fontWeight),
+//       const (CenterNode) => FC().coloredText("Center", color: color, fontWeight: fontWeight),
+//       const (ColumnNode) => FC().coloredText("Column", color: color, fontWeight: fontWeight),
+//       const (ContainerNode) => FC().coloredText("Container", color: color, fontWeight: fontWeight),
+//       const (DefaultTextStyleNode) => FC().coloredText("DefaultTextStyle", color: color, fontWeight: fontWeight),
+//       const (DirectoryNode) => FC().coloredText("Directory", color: color, fontWeight: fontWeight),
+//       const (ElevatedButtonNode) => FC().coloredText("ElevatedButton", color: color, fontWeight: fontWeight),
+//       const (ExpandedNode) => FC().coloredText("Expanded", color: color, fontWeight: fontWeight),
+//       const (FileNode) => FC().coloredText("File", color: color, fontWeight: fontWeight),
+//       const (FilledButtonNode) => FC().coloredText("FilledButton", color: color, fontWeight: fontWeight),
+//       const (FlexibleNode) => FC().coloredText("Flexible", color: color, fontWeight: fontWeight),
+//       const (GapNode) => FC().coloredText("Gap", color: color, fontWeight: fontWeight),
+//       const (GoogleDriveIFrameNode) => FC().coloredText("GoogleDriveIFrame", color: color, fontWeight: fontWeight),
+//       const (IconButtonNode) => FC().coloredText("IconButton", color: color, fontWeight: fontWeight),
+//       const (IFrameNode) => FC().coloredText("IFrame", color: color, fontWeight: fontWeight),
+//       const (MenuBarNode) => FC().coloredText("MenuBar", color: color, fontWeight: fontWeight),
+//       const (MenuItemButtonNode) => FC().coloredText("MenuItemButton", color: color, fontWeight: fontWeight),
+//       // const (NetworkImageNode) =>  FC().coloredText("NetworkImage", color: color, fontWeight: fontWeight),
+//       const (OutlinedButtonNode) => FC().coloredText("OutlinedButton", color: color, fontWeight: fontWeight),
+//       const (PaddingNode) => FC().coloredText("Padding", color: color, fontWeight: fontWeight),
+//       const (PlaceholderNode) => FC().coloredText("Placeholder", color: color, fontWeight: fontWeight),
+//       const (PollNode) => FC().coloredText("Poll", color: color, fontWeight: fontWeight),
+//       const (PollOptionNode) => FC().coloredText("PollOption", color: color, fontWeight: fontWeight),
+//       const (PositionedNode) => FC().coloredText("Positioned", color: color, fontWeight: fontWeight),
+//       const (RichTextNode) => FC().coloredText("RichText", color: color, fontWeight: fontWeight),
+//       const (RowNode) => FC().coloredText("Row", color: color, fontWeight: fontWeight),
+//       const (SizedBoxNode) => FC().coloredText("SizedBox", color: color, fontWeight: fontWeight),
+//       const (SingleChildScrollViewNode) => FC().coloredText("SingleChildScrollView", color: color, fontWeight: fontWeight),
+//       const (SnippetRootNode) => FC().coloredText("Snippet", color: color, fontWeight: fontWeight),
+//       const (SnippetRefNode) => FC().coloredText("SnippetRef", color: color, fontWeight: fontWeight),
+//       const (SplitViewNode) => FC().coloredText("SplitView", color: color, fontWeight: fontWeight),
+//       const (StackNode) => FC().coloredText("Stack", color: color, fontWeight: fontWeight),
+//       const (StepNode) => FC().coloredText("Step", color: color, fontWeight: fontWeight),
+//       const (StepperNode) => FC().coloredText("Stepper", color: color, fontWeight: fontWeight),
+//       const (SubmenuButtonNode) => FC().coloredText("SubmenuButton", color: color, fontWeight: fontWeight),
+//       const (TargetWrapperNode) => FC().coloredText("TargetWrapper", color: color, fontWeight: fontWeight),
+//       const (TargetGroupWrapperNode) => FC().coloredText("TargetGroupWrapper", color: color, fontWeight: fontWeight),
+//       const (TextButtonNode) => FC().coloredText("TextButton", color: color, fontWeight: fontWeight),
+//       const (TextNode) => FC().coloredText("Text", color: color, fontWeight: fontWeight),
+//       const (TextSpanNode) => FC().coloredText("TextSpan", color: color, fontWeight: fontWeight),
+//       const (WidgetSpanNode) => FC().coloredText("WidgetSpan", color: color, fontWeight: fontWeight),
 //       _ => Text('unknown type'),
 //     };
 
@@ -1240,7 +1243,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Scaffold", ScaffoldNode, action),
         ],
-        child: Useful.coloredText("container", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("container", fontWeight: FontWeight.normal),
       ),
       menuItemButton("SplitView", SplitViewNode, action),
       menuItemButton("Hotspots", HotspotsNode, action),
@@ -1270,7 +1273,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Scaffold", ScaffoldNode, action),
         ],
-        child: Useful.coloredText("container", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1280,7 +1283,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("TextSpan", TextSpanNode, action),
           menuItemButton("WidgetSpan", WidgetSpanNode, action),
         ],
-        child: Useful.coloredText("text", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("text", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1290,14 +1293,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               menuItemButton("SubmenuButton", SubmenuButtonNode, action),
               menuItemButton("MenuBar", MenuBarNode, action),
             ],
-            child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
+            child: FContent().coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
               menuItemButton("TabBar", TabBarNode, action),
               menuItemButton("TabBarView", TabBarViewNode, action),
             ],
-            child: Useful.coloredText("tab bar", fontWeight: FontWeight.normal),
+            child: FContent().coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
@@ -1307,11 +1310,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               menuItemButton("FilledButton", FilledButtonNode, action),
               menuItemButton("IconButton", IconButtonNode, action),
             ],
-            child: Useful.coloredText("button", fontWeight: FontWeight.normal),
+            child: FContent().coloredText("button", fontWeight: FontWeight.normal),
           ),
           menuItemButton("Chip", ChipNode, action),
         ],
-        child: Useful.coloredText("navigation", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("navigation", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1319,7 +1322,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("Firebase Storage Image", FSImageNode, action),
           menuItemButton("Carousel", CarouselNode, action),
         ],
-        child: Useful.coloredText("image", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1328,7 +1331,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("File", FileNode, action),
           menuItemButton("Directory", DirectoryNode, action),
         ],
-        child: Useful.coloredText("file", fontWeight: FontWeight.normal),
+        child: FContent().coloredText("file", fontWeight: FontWeight.normal),
       ),
       menuItemButton("SplitView", SplitViewNode, action),
       menuItemButton("Stepper", StepperNode, action),
@@ -1337,6 +1340,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       menuItemButton("Poll", PollNode, action),
       menuItemButton("Placeholder", PlaceholderNode, action),
       menuItemButton("Youtube", YTNode, action),
+      menuItemButton("Markdown", MarkdownNode, action),
       addSnippetsSubmenu(action),
     ];
   }
@@ -1382,7 +1386,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         width: 200,
         height: 40,
         child: Center(
-          child: Useful.purpleText(action.displayName),
+          child: FContent().purpleText(action.displayName),
         ),
       ),
       pasteMI(action) ?? const Offstage(),
@@ -1408,7 +1412,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             const Divider(),
             menuItemButton("Scaffold", ScaffoldNode, action),
           ],
-          child: Useful.coloredText("container", fontWeight: FontWeight.normal),
+          child: FContent().coloredText("container", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1418,7 +1422,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("TextSpan", TextSpanNode, action),
             menuItemButton("WidgetSpan", WidgetSpanNode, action),
           ],
-          child: Useful.coloredText("text", fontWeight: FontWeight.normal),
+          child: FContent().coloredText("text", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1428,14 +1432,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 menuItemButton("SubmenuButton", SubmenuButtonNode, action),
                 menuItemButton("MenuBar", MenuBarNode, action),
               ],
-              child: Useful.coloredText("menu", fontWeight: FontWeight.normal),
+              child: FContent().coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
                 menuItemButton("TabBar", TabBarNode, action),
                 menuItemButton("TabBarView", TabBarViewNode, action),
               ],
-              child: Useful.coloredText("tab bar", fontWeight: FontWeight.normal),
+              child: FContent().coloredText("tab bar", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
@@ -1445,11 +1449,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 menuItemButton("FilledButton", FilledButtonNode, action),
                 menuItemButton("IconButton", IconButtonNode, action),
               ],
-              child: Useful.coloredText("button", fontWeight: FontWeight.normal),
+              child: FContent().coloredText("button", fontWeight: FontWeight.normal),
             ),
             menuItemButton("Chip", ChipNode, action),
           ],
-          child: Useful.coloredText("navigation", fontWeight: FontWeight.normal),
+          child: FContent().coloredText("navigation", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1457,7 +1461,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("Firebase Storage Image", FSImageNode, action),
             menuItemButton("Carousel", CarouselNode, action),
           ],
-          child: Useful.coloredText("image", fontWeight: FontWeight.normal),
+          child: FContent().coloredText("image", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1466,7 +1470,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("File", FileNode, action),
             menuItemButton("Directory", DirectoryNode, action),
           ],
-          child: Useful.coloredText("file", fontWeight: FontWeight.normal),
+          child: FContent().coloredText("file", fontWeight: FontWeight.normal),
         ),
         menuItemButton("SplitView", SplitViewNode, action),
         menuItemButton("Stepper", StepperNode, action),
@@ -1477,6 +1481,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("PollOption", PollOptionNode, action),
         menuItemButton("Placeholder", PlaceholderNode, action),
         menuItemButton("Youtube", YTNode, action),
+        menuItemButton("Markdown", MarkdownNode, action),
         addSnippetsSubmenu(action),
       ],
     ];
@@ -1489,7 +1494,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         width: 200,
         height: 40,
         child: Center(
-          child: Useful.purpleText(action.displayName),
+          child: FContent().purpleText(action.displayName),
         ),
       ),
       pasteMI(action) ?? const Offstage(),
@@ -1508,7 +1513,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             bool navUp = this == treeC?.roots.firstOrNull;
             MaterialSPA.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
             // in case need to show more of the tree (higher up)
-            Useful.afterNextBuildDo(() {
+            FContent().afterNextBuildDo(() {
               if (navUp) {
                 SnippetTreePane.navigateUpTree();
               }
@@ -1524,19 +1529,19 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               CAPIEvent.addSiblingAfter(type: childType),
             );
           }
-          Useful.afterNextBuildDo(() {
-            Useful.afterMsDelayDo(500, () {
+          FContent().afterNextBuildDo(() {
+            FContent().afterMsDelayDo(500, () {
               EditablePage.refreshSelectedNodeWidgetBorderOverlay();
             });
           });
         },
-        child: Useful.coloredText(label, fontWeight: FontWeight.bold),
+        child: FContent().coloredText(label, fontWeight: FontWeight.bold),
       );
 
   MenuItemButton? pasteMI(
     NodeAction action,
   ) {
-    if (FC().clipboard != null && action != NodeAction.wrapWith) {
+    if (FContent().clipboard != null && action != NodeAction.wrapWith) {
       return MenuItemButton(
         onPressed: () {
           // CAPIBloC bloc = MaterialSPA.capiBloc;
@@ -1558,7 +1563,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           }
           Callout.dismiss(TREENODE_MENU_CALLOUT);
         },
-        child: Useful.coloredText('paste from clipboard', color: Colors.blue),
+        child: FContent().coloredText('paste from clipboard', color: Colors.blue),
       );
     }
     return null;
@@ -1568,7 +1573,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     NodeAction action,
   ) {
     List<MenuItemButton> snippetMIs = [];
-    List<SnippetName> snippetNames = FC().snippetInfoCache.keys.toList()..sort();
+    List<SnippetName> snippetNames = FContent().snippetInfoCache.keys.toList()..sort();
     for (String snippetName in snippetNames) {
       snippetMIs.add(
         MenuItemButton(

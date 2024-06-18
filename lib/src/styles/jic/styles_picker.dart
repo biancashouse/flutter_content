@@ -7,7 +7,7 @@
 // import 'package:flutter_content/src/overlays/callouts/callout_o.dart';
 // import 'package:flutter_content/src/styles/font_color_tool.dart';
 // import 'package:flutter_content/src/styles/target_tool.dart';
-// import 'package:flutter_content/src/useful.dart';
+// import 'package:flutter_content/src/content_useful.dart';
 // import 'package:flutter/material.dart';
 //
 // import 'background_color_tool.dart';
@@ -259,7 +259,7 @@
 // const double MAXIMISED_STYLE_CALLOUT_W = 400;
 // const double MAXIMISED_STYLE_CALLOUT_H = 300;
 //
-// Offset stylesCalloutInitialPos() => Offset(Useful.scrW - MAXIMISED_STYLE_CALLOUT_W, Useful.scrH - MAXIMISED_STYLE_CALLOUT_H);
+// Offset stylesCalloutInitialPos() => Offset(FC().scrW - MAXIMISED_STYLE_CALLOUT_W, FC().scrH - MAXIMISED_STYLE_CALLOUT_H);
 //
 // void showStylesCallout(final TargetModel tc, final ScrollController? ancestorHScrollC, final ScrollController? ancestorVScrollC) {
 //   Callout(
@@ -319,7 +319,7 @@
 //           // parentState.stylesCallout?.refresh(() {});
 //           // rerender text editor callout
 //           removeTextEditorCallout();
-//           Useful.afterMsDelayDo(250, () {
+//           FC().afterMsDelayDo(250, () {
 //             showTextEditorCallout(tc, ancestorHScrollC, ancestorVScrollC);
 //           });
 //         },
@@ -328,7 +328,7 @@
 //           // rerender text editor callout
 //           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           removeTextEditorCallout();
-//           Useful.afterMsDelayDo(50, () {
+//           FC().afterMsDelayDo(50, () {
 //             showTextEditorCallout(tc, ancestorHScrollC, ancestorVScrollC);
 //           });
 //         },
@@ -341,7 +341,7 @@
 //           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           Callout.refreshOverlay(CAPI.TEXT_CALLOUT.feature(), () {});
 //           // removeTextEditorCallout();
-//           // Useful.afterMsDelayDo(50, () {
+//           // FC().afterMsDelayDo(50, () {
 //           //   showTextEditorCallout(tc, ancestorScrollC);
 //           // });
 //         },

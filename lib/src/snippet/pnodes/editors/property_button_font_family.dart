@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PropertyButtonFontFamily extends StatefulWidget {
   final String label;
@@ -17,7 +19,8 @@ class PropertyButtonFontFamily extends StatefulWidget {
   });
 
   @override
-  State<PropertyButtonFontFamily> createState() => _PropertyButtonFontFamilyState();
+  State<PropertyButtonFontFamily> createState() =>
+      _PropertyButtonFontFamilyState();
 }
 
 class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
@@ -32,7 +35,8 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
   @override
   Widget build(BuildContext context) {
     Widget fontFamilyLabel = widget.originalFontFamily != null
-        ? Text('fontFamily: ${widget.originalFontFamily}', style: const TextStyle(color: Colors.white))
+        ? Text('fontFamily: ${widget.originalFontFamily}',
+            style: const TextStyle(color: Colors.white))
         : const Text('fontFamily...', style: TextStyle(color: Colors.white));
     return PropertyCalloutButton(
       feature: 'font-family',
@@ -45,9 +49,10 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
-              children: FC().googleFontNames.map((family) {
+              children: FContent().googleFontNames.map((family) {
                 return RadioListTile<String>(
-                  fillColor: const WidgetStatePropertyAll<Color?>(Colors.purpleAccent),
+                  fillColor:
+                      const WidgetStatePropertyAll<Color?>(Colors.purpleAccent),
                   dense: true,
                   value: family,
                   groupValue: widget.originalFontFamily,
@@ -55,13 +60,14 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
                   title: Text(
                     family,
                     softWrap: false,
-                    style: Useful.googleFontTextStyle(context, fontFamily: family, color: Colors.white),
+                    style: googleFontTextStyle(context,
+                        fontFamily: family, color: Colors.white),
                     overflow: TextOverflow.clip,
                   ),
                   toggleable: true,
                   onChanged: (newFamily) {
                     widget.onChangeF.call(newFamily);
-                    Useful.afterMsDelayDo(500, () {
+                    FContent().afterMsDelayDo(500, () {
                       Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
                     });
                   },
@@ -69,7 +75,30 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
               }).toList()),
         );
       },
-      calloutSize: Size(240, 50.0 * FC().googleFontNames.length),
+      calloutSize: Size(240, 50.0 * FContent().googleFontNames.length),
     );
   }
+
+  TextStyle googleFontTextStyle(
+    context, {
+    required String fontFamily,
+    Color? color,
+    double? fontSize,
+    Material3TextSizeEnum? fontSizeName,
+    FontStyle? fontStyle,
+    FontWeight? fontWeight,
+    double? lineHeight,
+    double? letterSpacing,
+  }) =>
+      GoogleFonts.getFont(
+        fontFamily,
+        color: color,
+        textStyle:
+            fontSizeName?.materialTextStyle(themeData: Theme.of(context)),
+        fontSize: fontSize,
+        fontStyle: fontStyle,
+        fontWeight: fontWeight,
+        height: lineHeight,
+        letterSpacing: letterSpacing,
+      );
 }

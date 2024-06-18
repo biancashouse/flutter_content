@@ -79,7 +79,7 @@ void main() {
   setUp(() {
     return Future(() async {
       mockRepo = setupMockRepo();
-      FC().init(
+      FContent().init(
         modelName: 'flutter-content-test-app',
         testModelRepo: mockRepo,
       );

@@ -28,15 +28,15 @@ enum ClipEnum {
         height: 100,
         child: Column(
           children: [
-            Useful.coloredText('clip:', color: Colors.white),
+            FContent().coloredText('clip:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Useful.coloredText('hardEdge', color: Colors.white),
-                Useful.coloredText('antiAlias', color: Colors.white),
-                Useful.coloredText('antiAlias\nWithSaveLayer', color: Colors.white),
+                FContent().coloredText('hardEdge', color: Colors.white),
+                FContent().coloredText('antiAlias', color: Colors.white),
+                FContent().coloredText('antiAlias\nWithSaveLayer', color: Colors.white),
               ],
             ),
             StackClipEditor(
@@ -58,7 +58,7 @@ enum ClipEnum {
   //   };
   // }
 
-  Widget toMenuItem() => Useful.coloredText(name, color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
 
   static ClipEnum? of(int? index) => index != null ? ClipEnum.values.elementAtOrNull(index) : null;
 }

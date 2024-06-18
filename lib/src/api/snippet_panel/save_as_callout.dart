@@ -1,4 +1,6 @@
+import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -65,7 +67,7 @@ class InputSnippetNameState extends State<InputSnippetName> {
     super.initState();
     _focusNode = FocusNode();
     _txtController = TextEditingController();
-    Useful.afterNextBuildDo(() {
+    FContent().afterNextBuildDo(() {
       Future.delayed(Duration.zero, () {
         _focusNode?.requestFocus();
       });
@@ -121,7 +123,7 @@ class InputSnippetNameState extends State<InputSnippetName> {
             fontSize: 18,
             color: Colors.blue[900],
             fontWeight: FontWeight.w400,
-            background: whiteBgPaint,
+            background: FContent().whiteBgPaint,
           ),
         ),
       );

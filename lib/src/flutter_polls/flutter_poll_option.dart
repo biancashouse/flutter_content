@@ -23,7 +23,7 @@ class FlutterPollOption extends HookWidget {
   Widget build(BuildContext context) {
     FlutterPollState? parentPollState = FlutterPoll.of(context);
 
-    if (parentPollState == null) return Useful.coloredText('Orphan poll option!', color: Colors.red);
+    if (parentPollState == null) return FContent().coloredText('Orphan poll option!', color: Colors.red);
 
     PollBloC pollBloc = parentPollState.pollBloc;
 

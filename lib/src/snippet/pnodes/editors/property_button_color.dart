@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
 
@@ -49,7 +49,7 @@ class PropertyButtonColor extends StatelessWidget {
             onChanged: (color) {
               onChangeF.call(color);
               // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-              // Useful.afterMsDelayDo(1000, () {
+              // FC().afterMsDelayDo(1000, () {
                 Callout.dismiss(feature);
               // });
             },

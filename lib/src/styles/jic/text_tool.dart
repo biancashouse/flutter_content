@@ -115,7 +115,7 @@
 // // Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 // //     Callout.refreshOverlay(CAPI.HELP_CONTENT_TOOLBAR_CALLOUT.feature(), () {});
 // // removeTextEditorCallout();
-// // Useful.afterMsDelayDo(50, () {
+// // FC().afterMsDelayDo(50, () {
 // //   showTextEditorCallout(tc, ancestorScrollC);
 // // });
 //   }

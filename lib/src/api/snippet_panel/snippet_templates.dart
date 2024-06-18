@@ -18,7 +18,7 @@ enum SnippetTemplateEnum {
   rich_text,
   callout_content;
 
-  Widget toMenuItem() => Useful.coloredText(_menuItem(), color: Colors.white);
+  Widget toMenuItem() => FContent().coloredText(_menuItem(), color: Colors.white);
 
   String _menuItem() => switch (this) {
         SnippetTemplateEnum.empty => 'placeholder',
