@@ -199,7 +199,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
       newTC.btnLocalLeftPc = newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
 
-      widget.parentNode.targets = [newTC, ...widget.parentNode.targets];
+      widget.parentNode.targets = [...widget.parentNode.targets, newTC];
       // widget.parentNode.targets.add(newTC);
       FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
@@ -270,7 +270,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           ),
         );
 
-    return Container(color:Colors.lime,
+    return Container(
       child: fco.canEditContent
           ? IgnorePointer(
               ignoring: true,
