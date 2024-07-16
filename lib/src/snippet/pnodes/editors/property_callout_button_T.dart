@@ -110,6 +110,7 @@ class PropertyButton<T> extends StatelessWidget {
                 editedText = s;
                 setState((){});
                 onChangeF(s);
+                Callout.dismiss('te');
               },
               dontAutoFocus: false,
               bgColor: Colors.white,
