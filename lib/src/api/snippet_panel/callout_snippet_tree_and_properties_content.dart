@@ -561,7 +561,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
   bool _canReplace(STreeNode? selectNode) => selectNode?.getParent() != null;
 
   bool _canAddSiblng(STreeNode? selectNodeParent) =>
-      (selectNodeParent is MC || selectNodeParent is TextSpanNode);
+      (selectNodeParent is MC || selectNodeParent is TextSpanNode || selectNodeParent is WidgetSpanNode);
 
   bool _canWrap(STreeNode selectedNode) => (selectedNode
           is! GenericSingleChildNode &&
@@ -578,7 +578,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           // || (selectedNode is! ChildlessNode && !entry.hasChildren))
           // (selectedNode is RichTextNode && selectedNode.text == null) ||
           (selectedNode is SC && selectedNode.child == null) ||
-          (selectedNode is MC || selectedNode is TextSpanNode));
+          (selectedNode is MC || selectedNode is TextSpanNode || selectedNode is WidgetSpanNode));
 
   Widget editTreeStructureIconButtons(STreeNode selectedNode) {
     return Center(

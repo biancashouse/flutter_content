@@ -1368,6 +1368,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("AssetImage", AssetImageNode, action),
         menuItemButton("FirestoreStorageImage", FSImageNode, action),
       ],
+      if (getParent() is TextSpanNode) ...[
+        menuItemButton("TextSpanN", TextSpanNode, action),
+        menuItemButton("WidgetSpan", WidgetSpanNode, action),
+      ],
     ];
   }
 
