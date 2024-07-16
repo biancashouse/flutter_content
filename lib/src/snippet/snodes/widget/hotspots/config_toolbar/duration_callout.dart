@@ -21,13 +21,13 @@ Future<void> showTargetDurationCallout(
 }) async {
   GlobalKey? targetGK =
   // tc.single
-  //     ? FC().getSingleTargetGk(tc.wName)
+  //     ? FCO.getSingleTargetGk(tc.wName)
   //     :
-  FContent().getTargetGk(tc.uid);
+  fco.getTargetGk(tc.uid);
 
   Callout.showOverlay(
       targetGkF: () => targetGK,
-      boxContentF: (_) => NumericKeypad(
+      calloutContent: NumericKeypad(
             label: 'onscreen duration (ms)',
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
@@ -36,7 +36,7 @@ Future<void> showTargetDurationCallout(
             },
           ),
       calloutConfig: CalloutConfig(
-        feature: "duration",
+        cId: "duration",
         hScrollController: ancestorHScrollController,
         vScrollController: ancestorVScrollController,
         initialTargetAlignment: Alignment.centerRight,
@@ -50,8 +50,8 @@ Future<void> showTargetDurationCallout(
         ),
         arrowType: ArrowType.POINTY,
         modal: true,
-        suppliedCalloutW: 400,
-        suppliedCalloutH: 450,
+        initialCalloutW: 400,
+        initialCalloutH: 450,
         draggable: true,
         fillColor: Colors.purpleAccent,
         // showCloseButton: true,

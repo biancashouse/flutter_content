@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:gap/gap.dart';
 
@@ -22,16 +23,16 @@ Widget driveFileIcon(String src) {
 }
 
 get googleDocsIconSrc =>
-    FContent().asset('lib/assets/images/google-icons/docs.png');
+    fco.asset('lib/assets/images/google-icons/docs.png');
 
 get googleSheetsIconSrc =>
-    FContent().asset('lib/assets/images/google-icons/sheets.png');
+    fco.asset('lib/assets/images/google-icons/sheets.png');
 
 get googleSlidesIconSrc =>
-    FContent().asset('lib/assets/images/google-icons/slides.png');
+    fco.asset('lib/assets/images/google-icons/slides.png');
 
 get googleFormsIconSrc =>
-    FContent().asset('lib/assets/images/google-icons/forms.png');
+    fco.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()
 class FileNode extends CL with FileNodeMappable {
@@ -102,7 +103,7 @@ class FileNode extends CL with FileNodeMappable {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Gap(10),
-          FContent().coloredText(name.isEmpty ? 'filename?' : name,
+          fco.coloredText(name.isEmpty ? 'filename?' : name,
               color: Colors.blue),
           Gap(10),
           driveFileIcon(src),

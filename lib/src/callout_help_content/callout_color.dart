@@ -15,7 +15,7 @@
 //   final ScrollController? ancestorVScrollController,
 // ) {
 //   Callout(
-//     feature: CAPI.COLOR_CALLOUT.feature(),
+//     cId: CAPI.COLOR_CALLOUT.feature(),
 //     hScrollController: ancestorHScrollController,
 //     vScrollController: ancestorVScrollController,
 //     targetGKF: () => btnGK,

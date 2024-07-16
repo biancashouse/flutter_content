@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_event.dart';
@@ -23,7 +24,7 @@ class FlutterPollOption extends HookWidget {
   Widget build(BuildContext context) {
     FlutterPollState? parentPollState = FlutterPoll.of(context);
 
-    if (parentPollState == null) return FContent().coloredText('Orphan poll option!', color: Colors.red);
+    if (parentPollState == null) return fco.coloredText('Orphan poll option!', color: Colors.red);
 
     PollBloC pollBloc = parentPollState.pollBloc;
 

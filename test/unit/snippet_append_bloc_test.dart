@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late SnippetBloC snippetBloc;
+  late CAPIBloC CAPIBloC;
   late STreeNode sel;
   late TabBarNode tb1;
   late TabBarViewNode tbv1;
@@ -60,20 +60,20 @@ void main() {
     snippet = snippetWithScaffoldAnd2Tabs..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC);
+    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC);
   }
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'replace 2nd TabBarView child with a Center',
     setUp: () => test_snippet_setup(),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(
+      bloc.add(CAPIEvent.selectNode(
           node: sel,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.replaceSelectionWith(type: CenterNode));
-      bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
+      bloc.add(const CAPIEvent.replaceSelectionWith(type: CenterNode));
+      bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
     skip: 3,
     verify: (bloc) {
@@ -84,17 +84,17 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'append 3rd tab view to the TabBarView',
     setUp: () => test_snippet_setup(),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(
+      bloc.add(CAPIEvent.selectNode(
           node: tbv1,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.appendChild(type: SizedBoxNode));
-      bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
+      bloc.add(const CAPIEvent.appendChild(type: SizedBoxNode));
+      bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
     skip: 3,
     verify: (bloc) {
@@ -108,16 +108,16 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'append 3rd tab to the TabBar',
     setUp: () => test_snippet_setup(),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(
+      bloc.add(CAPIEvent.selectNode(
           node: tb1,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.appendChild(type: TextNode));
+      bloc.add(const CAPIEvent.appendChild(type: TextNode));
     },
     skip: 2,
     verify: (bloc) {

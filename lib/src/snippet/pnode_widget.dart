@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
@@ -18,7 +19,7 @@ class PTreeNodeWidget extends StatelessWidget {
     this.ancestorVScrollController,
   });
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   PTreeNode get propertyNode => entry.node;
 
@@ -40,6 +41,7 @@ class PTreeNodeWidget extends StatelessWidget {
           child: propertyNode is PropertyGroup ? _propertyGroupLabel() : _propertyButton(context),
         ),
         if (entry.hasChildren)
+
           Builder(builder: (context) {
             return ExpandIcon(
               key: GlobalObjectKey(propertyNode),
@@ -77,7 +79,7 @@ class PTreeNodeWidget extends StatelessWidget {
           propertyNode.revertToOriginalValue();
           treeC.rebuild();
         },
-        child: FContent().coloredText(propertyNode.name, color: Colors.purple),
+        child: fco.coloredText(propertyNode.name, color: Colors.purple),
       );
 
   Widget _propertyButton(context) {

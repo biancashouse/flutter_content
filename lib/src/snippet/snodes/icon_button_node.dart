@@ -37,7 +37,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   //       InputDecorator(
   //         decoration: InputDecoration(
   //           labelText: 'button icon',
-  //           labelStyle: FC().enclosureLabelTextStyle,
+  //           labelStyle: FCO.enclosureLabelTextStyle,
   //           border: const OutlineInputBorder(),
   //         ), // isDense: false,
   //         child: Icon(Icons.more_horiz,
@@ -79,14 +79,14 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
 
     ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
 
     IconButton button = IconButton(
       // if feature specified, must be a callout
-      key: feature != null ? FContent().setCalloutGk(feature!, GlobalKey()) : null,
+      key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context),
       style: btnStyle,
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),

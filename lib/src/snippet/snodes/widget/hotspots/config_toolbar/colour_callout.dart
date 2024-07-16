@@ -33,25 +33,25 @@ class ColourTool extends StatefulWidget {
   }) {
     GlobalKey? targetGK =
         // tc.single
-        // ? FC().getSingleTargetGk(tc.wName)
+        // ? FCO.getSingleTargetGk(tc.wName)
         // :
-        FContent().getTargetGk(tc.uid);
+        fco.getTargetGk(tc.uid);
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
-        feature: 'color-picker',
-        suppliedCalloutW: 300,
-        suppliedCalloutH: 160,
+        cId: 'color-picker',
+        initialCalloutW: 300,
+        initialCalloutH: 160,
         fillColor: Colors.purpleAccent,
         borderRadius: 16,
-        arrowType: ArrowType.NO_CONNECTOR,
+        arrowType: ArrowType.NONE,
         barrier: CalloutBarrier(
           opacity: 0.1,
         ),
         notUsingHydratedStorage: true,
       ),
-      boxContentF: (_) => ColourTool(
+      calloutContent: ColourTool(
         tc, wrapperRect,
         onBarrierTappedF,
         ancestorHScrollController: ancestorHScrollController,
@@ -70,7 +70,7 @@ class _ColourToolState extends State<ColourTool> {
 
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
   void initState() {
@@ -93,7 +93,7 @@ class _ColourToolState extends State<ColourTool> {
               // Callout.refreshOverlay(tc.snippetName);
               // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
               Callout.dismiss('color-picker');
-              // FC().afterNextBuildDo(() {
+              // fco.afterNextBuildDo(() {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});
               removeSnippetContentCallout(tc.snippetName);
@@ -106,8 +106,8 @@ class _ColourToolState extends State<ColourTool> {
               );
               // });
               //reshowSnippetContentCallout(tc);
-              // FC().afterMsDelayDo(1000, () {
-              //   FC().om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);
+              // fco.afterMsDelayDo(1000, () {
+              //   FCO.om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);
               // });
             },
           ),

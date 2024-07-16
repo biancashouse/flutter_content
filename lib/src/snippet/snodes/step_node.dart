@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/stepper_with_controller.dart';
 
@@ -27,9 +28,9 @@ class StepNode extends CL with StepNodeMappable {
     possiblyHighlightSelectedNode();
      return Step(
        isActive: parent.currentStep >= index,
-      title: title.toWidgetProperty(context, this) ?? FContent().coloredText('must have a title', color: Colors.red),
+      title: title.toWidgetProperty(context, this) ?? fco.coloredText('must have a title', color: Colors.red),
       subtitle: subtitle?.toWidgetProperty(context, this),
-      content: content.toWidgetProperty(context, this) ?? FContent().coloredText('must have content', color: Colors.red),
+      content: content.toWidgetProperty(context, this) ?? fco.coloredText('must have content', color: Colors.red),
     );
   }
 

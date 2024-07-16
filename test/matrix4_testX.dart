@@ -9,7 +9,7 @@
 // import 'package:flutter_test/flutter_test.dart';
 // import 'package:bloc_test/bloc_test.dart';
 //
-// class MockCAPIBloc extends MockBloc<CAPIEvent, CAPIState> implements CAPIBloc {}
+// class MockCAPIBloC extends MockBloc<CAPIEvent, CAPIState> implements CAPIBloC {}
 //
 // void main() {
 //   targetConfigTests();
@@ -21,7 +21,7 @@
 //   test('target pos % offset getter and setter', () async {
 //     final iwName = 'widget-1';
 //
-//     final capiBloc = MockCAPIBloc();
+//     final CAPIBloC = MockCAPIBloC();
 //
 //     CAPIState initialState = CAPIState(imageTargetListMap: {
 //       "widget-1": [
@@ -50,7 +50,7 @@
 //     });
 //
 //     whenListen(
-//       capiBloc,
+//       CAPIBloC,
 //       Stream.fromIterable([
 //         initialState,
 //       ]),
@@ -58,20 +58,20 @@
 //     );
 //
 //     // Assert that the initial state is correct.
-//     expect(capiBloc.state, equals(initialState));
+//     expect(CAPIBloC.state, equals(initialState));
 //
-//     TargetConfig tc = capiBloc.state.imageTargetListMap["widget-1"]![0];
-//     tc.init(capiBloc, GlobalKey(), FocusNode());
+//     TargetConfig tc = CAPIBloC.state.imageTargetListMap["widget-1"]![0];
+//     tc.init(CAPIBloC, GlobalKey(), FocusNode());
 //
-//     print(capiBloc.toString());
+//     print(CAPIBloC.toString());
 //
-//     capiBloc.add(CAPIEvent.selectTarget(tc: tc));
+//     CAPIBloC.add(CAPIEvent.selectTarget(tc: tc));
 //
 //     // Assert that the stubbed stream is emitted.
-//     // await expectLater(capiBloc.stream, emitsInOrder(<int>[0]));
+//     // await expectLater(CAPIBloC.stream, emitsInOrder(<int>[0]));
 //
 //     // Assert that the current state is in sync with the stubbed stream.
-//     expect(capiBloc.state, equals(initialState));
+//     expect(CAPIBloC.state, equals(initialState));
 //
 //     print(tc.recordedM4list);
 //     print("scale     ${tc.getScale(testing: true)}");

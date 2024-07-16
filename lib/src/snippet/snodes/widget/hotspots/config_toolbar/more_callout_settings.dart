@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;
@@ -31,30 +31,30 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   }) {
     GlobalKey? targetGK =
         // tc.single
-        //     ? FC().getSingleTargetGk(tc.wName)
+        //     ? FCO.getSingleTargetGk(tc.wName)
         //     :
-        FContent().getTargetGk(tc.uid);
+        fco.getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
-        boxContentF: (_) => MoreCalloutConfigSettings(
+        calloutContent: MoreCalloutConfigSettings(
               tc, wrapperRect,
               ancestorHScrollController: ancestorHScrollController,
               ancestorVScrollController: ancestorVScrollController,
             ),
         calloutConfig: CalloutConfig(
-          feature: "more-cc-settings",
-          suppliedCalloutW: 200,
-          suppliedCalloutH: 440,
+          cId: "more-cc-settings",
+          initialCalloutW: 200,
+          initialCalloutH: 440,
           barrier: CalloutBarrier(
             opacity: 0.1,
             // onTappedF: () async {
-            //   // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+            //   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
             //   Callout.dismiss("more-cc-settings");
             //   removeSnippetContentCallout(tc.snippetName);
-            //   FC().parentTW(twName)?.zoomer?.resetTransform();
-            //   MaterialSPA.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-            //   // FC().afterNextBuildDo(() {
+            //   FCO.parentTW(twName)?.zoomer?.resetTransform();
+            //   FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+            //   // fco.afterNextBuildDo(() {
             //   //   showSnippetContentCallout(
             //   //     twName: twName,
             //   //     tc: tc,
@@ -65,7 +65,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           ),
           fillColor: Colors.purpleAccent,
           borderRadius: 16,
-          arrowType: ArrowType.NO_CONNECTOR,
+          arrowType: ArrowType.NONE,
           notUsingHydratedStorage: true,
         ));
   }
@@ -77,7 +77,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
   void initState() {

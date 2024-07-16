@@ -13,6 +13,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static TargetModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TargetModelMapper._());
+      MappableDecorationShapeEnumMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -75,12 +76,12 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
       v.calloutBorderColorValue;
   static const Field<TargetModel, int> _f$calloutBorderColorValue =
       Field('calloutBorderColorValue', _$calloutBorderColorValue, opt: true);
-  static DecorationShapeEnum _$calloutDecorationShape(TargetModel v) =>
+  static MappableDecorationShapeEnum _$calloutDecorationShape(TargetModel v) =>
       v.calloutDecorationShape;
-  static const Field<TargetModel, DecorationShapeEnum>
+  static const Field<TargetModel, MappableDecorationShapeEnum>
       _f$calloutDecorationShape = Field(
           'calloutDecorationShape', _$calloutDecorationShape,
-          opt: true, def: DecorationShapeEnum.rectangle);
+          opt: true, def: MappableDecorationShapeEnum.rectangle);
   static double _$calloutBorderRadius(TargetModel v) => v.calloutBorderRadius;
   static const Field<TargetModel, double> _f$calloutBorderRadius =
       Field('calloutBorderRadius', _$calloutBorderRadius, opt: true, def: 30);
@@ -251,7 +252,7 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       bool? canResizeV,
       int? calloutFillColorValue,
       int? calloutBorderColorValue,
-      DecorationShapeEnum? calloutDecorationShape,
+      MappableDecorationShapeEnum? calloutDecorationShape,
       double? calloutBorderRadius,
       double? calloutBorderThickness,
       int? starPoints,
@@ -291,7 +292,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
           bool? canResizeV,
           Object? calloutFillColorValue = $none,
           Object? calloutBorderColorValue = $none,
-          DecorationShapeEnum? calloutDecorationShape,
+          MappableDecorationShapeEnum? calloutDecorationShape,
           double? calloutBorderRadius,
           double? calloutBorderThickness,
           Object? starPoints = $none,

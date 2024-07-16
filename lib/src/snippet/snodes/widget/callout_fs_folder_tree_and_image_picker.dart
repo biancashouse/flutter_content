@@ -33,7 +33,7 @@ class FSFoldersAndImagePicker extends HookWidget {
     debugPrint('folder+images build');
     // final msvC = useState<MultiSplitViewController>(
     //     MultiSplitViewController(areas: [Area(flex: 7)]));
-    final selectedFolderRef = useState<Reference>(FContent().rootFSFolderNode!.ref);
+    final selectedFolderRef = useState<Reference>(fco.rootFSFolderNode!.ref);
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
       child: Scaffold(
@@ -41,7 +41,7 @@ class FSFoldersAndImagePicker extends HookWidget {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Colors.black,
-          title: FContent().coloredText('Firebase Storage Image Picker', fontSize: 16.0, color: Colors.white),
+          title: fco.coloredText('Firebase Storage Image Picker', fontSize: 16.0, color: Colors.white),
         ),
         body: Padding(
           padding: const EdgeInsets.only(right: 8.0),
@@ -86,14 +86,14 @@ class FSFoldersAndImagePicker extends HookWidget {
   }
 
   Widget fsFolderPane(Reference selectedFolderRef, ValueChanged<Reference> onSelectionF) {
-    if (FContent().rootFSFolderNode == null) {
+    if (fco.rootFSFolderNode == null) {
       return const Icon(
         Icons.warning,
         color: Colors.red,
       );
     }
 
-    FSFolderNode rootNode = FContent().rootFSFolderNode!;
+    FSFolderNode rootNode = fco.rootFSFolderNode!;
     TreeController<FSFolderNode> treeC = TreeController<FSFolderNode>(
       roots: [rootNode],
       childrenProvider: (FSFolderNode node) => node.children,
@@ -132,7 +132,7 @@ class FSFoldersAndImagePicker extends HookWidget {
                       onPressed: () {
                         onSelectionF.call(entry.node.ref);
                       },
-                      child: FContent().coloredText(entry.node.ref.name.isEmpty ? '/' : entry.node.ref.name, color: Colors.white),
+                      child: fco.coloredText(entry.node.ref.name.isEmpty ? '/' : entry.node.ref.name, color: Colors.white),
                     ),
                     if (entry.hasChildren)
                       ExpandIcon(

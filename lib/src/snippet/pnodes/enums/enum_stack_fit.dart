@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -28,15 +29,15 @@ enum StackFitEnum {
         height: 70,
         child: Column(
           children: [
-            FContent().coloredText('fit:', color: Colors.white),
+            fco.coloredText('fit:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                FContent().coloredText('loose', color: Colors.white),
-                FContent().coloredText('expand', color: Colors.white),
-                FContent().coloredText('passthrough', color: Colors.white),
+                fco.coloredText('loose', color: Colors.white),
+                fco.coloredText('expand', color: Colors.white),
+                fco.coloredText('passthrough', color: Colors.white),
               ],
             ),
             StackFitEditor(
@@ -49,7 +50,7 @@ enum StackFitEnum {
         ),
       );
 
-   Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
+   Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
 
   static StackFitEnum? of(int? index) => index != null ? StackFitEnum.values.elementAtOrNull(index) : null;
 }

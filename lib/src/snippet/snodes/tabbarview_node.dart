@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:gap/gap.dart';
 
@@ -43,7 +44,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
             children: [
               const Icon(Icons.error, color: Colors.redAccent),
               Gap(10),
-              FContent().coloredText(e.toString()),
+              fco.coloredText(e.toString()),
             ],
           ),
         ),

@@ -10,7 +10,7 @@ part 'enum_arrow_type.mapper.dart';
 
 @MappableEnum()
 enum ArrowTypeEnum  {
-  NO_CONNECTOR(ArrowType.NO_CONNECTOR),
+  NONE(ArrowType.NONE),
   POINTY(ArrowType.POINTY),
   VERY_THIN(ArrowType.VERY_THIN),
   VERY_THIN_REVERSED(ArrowType.VERY_THIN_REVERSED),
@@ -48,7 +48,7 @@ enum ArrowTypeEnum  {
         calloutSize: Size(260, values.length * 50),
       );
 
-  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
 
   static ArrowTypeEnum? of(int? index) => index != null ? ArrowTypeEnum.values.elementAtOrNull(index) : null;
 }

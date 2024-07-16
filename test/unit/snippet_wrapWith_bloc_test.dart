@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late SnippetBloC snippetBloc;
-  late SnippetState selectedState;
+  late CAPIBloC CAPIBloC;
+  late CAPIState selectedState;
   late STreeNode sel;
   late RichTextNode rtNode;
 
@@ -34,9 +34,9 @@ void main() {
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
     treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
     if (select != null) {
-      selectedState = snippetBloc.state.copyWith(
+      selectedState = CAPIBloC.state.copyWith(
         selectedNode: select,
         showProperties: true,
         selectedWidgetGK: selectedWidgetGK,
@@ -47,7 +47,7 @@ void main() {
   }
 
   /// reusable expected states
-  expectedState_SelectedNode(SnippetBloC bloc, STreeNode node) => bloc.state.copyWith(
+  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) => bloc.state.copyWith(
         selectedNode: node,
         showProperties: true,
         selectedWidgetGK: selectedWidgetGK,
@@ -55,16 +55,16 @@ void main() {
         nodeBeingDeleted: null,
       );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'wrap Expanded with a FlexNode',
     setUp: () => test_snippet_setup(sc1.child = sel = ExpandedNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: RowNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: RowNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent as STreeNode),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, sel.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<RowNode>());
@@ -72,31 +72,31 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'try to wrap Expanded with a non FlexNode',
     setUp: () => test_snippet_setup(sc1.child = sel = ExpandedNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ContainerNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(sel, isA<ExpandedNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'wrap Flexible with a FlexNode',
     setUp: () => test_snippet_setup(sc1.child = sel = FlexibleNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ColumnNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ColumnNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent as STreeNode),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, sel.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<ColumnNode>());
@@ -104,31 +104,31 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'try to wrap Flexible with a non FlexNode',
     setUp: () => test_snippet_setup(sc1.child = sel = FlexibleNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ContainerNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(sel, isA<FlexibleNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'wrap Positioned with a Stack',
     setUp: () => test_snippet_setup(sc1.child = sel = PositionedNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: StackNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: StackNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent as STreeNode),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, sel.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<StackNode>());
@@ -136,31 +136,31 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'try to wrap Positioned with a non Stack',
     setUp: () => test_snippet_setup(sc1.child = sel = PositionedNode(), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ContainerNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(sel, isA<PositionedNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'wrap PollOption with a Poll',
     setUp: () => test_snippet_setup(sc1.child = sel = PollOptionNode(optionId: '1', text: 'option 1'), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: PollNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: PollNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent?.parent as STreeNode),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, sel.parent?.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<PollNode>());
@@ -169,22 +169,22 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'try to wrap PollOption with a non Poll',
     setUp: () => test_snippet_setup(sc1.child = sel = PollOptionNode(optionId: '1', text: 'option 1'), select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ContainerNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(sel, isA<PollOptionNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'wrap Step with a Stepper',
     setUp: () => test_snippet_setup(
         sc1.child = sel = StepNode(
@@ -193,13 +193,13 @@ void main() {
           content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
         ),
         select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: StepperNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: StepperNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, sel.parent as STreeNode),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, sel.parent as STreeNode),
     ],
     verify: (bloc) {
       expect(sel.parent, isA<StepperNode>());
@@ -207,7 +207,7 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'try to wrap Step with a non Stack',
     setUp: () => test_snippet_setup(
         sc1.child = sel = StepNode(
@@ -216,28 +216,28 @@ void main() {
           content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
         ),
         select: sel),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: ContainerNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: ContainerNode));
     },
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(sel, isA<StepNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     "wrap RichText's TextSpan with a TextSpan",
     setUp: () => test_snippet_setup(sc1.child = (rtNode)),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(node: rtNode.text, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.wrapSelectionWith(type: TextSpanNode));
+      bloc.add(CAPIEvent.selectNode(node: rtNode.text, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: TextSpanNode));
     },
-    expect: () => <SnippetState>[
-      expectedState_SelectedNode(snippetBloc, rtNode.text),
+    expect: () => <CAPIState>[
+      expectedState_SelectedNode(CAPIBloC, rtNode.text),
     ],
     skip: 1,
     // can't obtain selection node, because was created by the bloc (type->STreeNode)

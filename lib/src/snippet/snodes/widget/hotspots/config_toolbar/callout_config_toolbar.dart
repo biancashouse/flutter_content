@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
 
 import 'colour_callout.dart';
@@ -62,7 +62,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
-              FContent().coloredText('zoom', color: Colors.white70),
+              fco.coloredText('zoom', color: Colors.white70),
               Tooltip(
                 message: 'edit the zoom...',
                 child: SizedBox(
@@ -95,7 +95,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
-              FContent().coloredText('target size', color: Colors.white70),
+              fco.coloredText('target size', color: Colors.white70),
               Tooltip(
                 message: 'resize the circular target radius...',
                 child: SizedBox(
@@ -113,7 +113,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                         _debounce = Timer(const Duration(milliseconds: 100), () {
                           tc.radiusPc = value / ivSize.width;
                           tc.onChange();
-                          FContent.forceRefresh();
+                          fco.forceRefresh();
                         });
                       },
                       min: 16.0,
@@ -155,7 +155,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               //   bloc.add(CAPIEvent.createdSnippet(
               //     newNode: sNode,
               //   ));
-              //   FC().afterNextBuildDo(() {
+              //   fco.afterNextBuildDo(() {
               //     showHelpContentCallout(tc, tc.snippetName, true, ancestorHScrollController, ancestorVScrollController);
               //   });
               // } else {
@@ -191,10 +191,10 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   .toList(),
               originalEnumIndex: tc.calloutDecorationShape.index,
               onChangeF: (newIndex) {
-                tc.calloutDecorationShape = DecorationShapeEnum.of(newIndex) ??
-                    DecorationShapeEnum.rectangle;
+                tc.calloutDecorationShape = MappableDecorationShapeEnum.of(newIndex) ??
+                    MappableDecorationShapeEnum.rectangle;
                 if (tc.calloutDecorationShape == DecorationShapeEnum.star) {
-                  tc.calloutArrowTypeIndex = ArrowType.NO_CONNECTOR.index;
+                  tc.calloutArrowTypeIndex = ArrowType.NONE.index;
                 }
                 tc.calloutBorderColorValue = Colors.grey.value;
                 tc.calloutBorderThickness = 2;
@@ -207,8 +207,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   justPlaying: false,
                   // widget.onParentBarrierTappedF,
                 );
-                // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-                // FC().afterNextBuildDo(() {
+                // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                // fco.afterNextBuildDo(() {
                 //   removeSnippetContentCallout(tc.snippetName);
                 //   showSnippetContentCallout(
                 //     twName: widget.twName,
@@ -245,7 +245,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               color: Colors.orangeAccent,
             ),
             onPressed: () {
-              //TODO MaterialSPA.capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
+              //TODO FlutterContentApp.capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
               tc.targetsWrapperState()?.widget.parentNode.targets.remove(tc);
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
@@ -253,7 +253,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 afterTransformF: () {
                   STreeNode.showAllTargetCovers();
                   STreeNode.showAllTargetBtns();
-                  FContent.forceRefresh();
+                  fco.forceRefresh();
                 }
               );
             },
@@ -273,7 +273,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   tc.onChange();
                   STreeNode.showAllTargetBtns();
                   STreeNode.showAllTargetCovers();
-                  FContent.forceRefresh();
+                  fco.forceRefresh();
                 }
               );
             },
@@ -290,7 +290,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
 
   @override
   void didChangeDependencies() {
-    // FC().instance.initWithContext(context);
+    // FCO.instance.initWithContext(context);
     updatedContext = context;
     super.didChangeDependencies();
   }

@@ -194,7 +194,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   ScrollController propertiesPaneSC() => _propertiesPaneSC ??= ScrollController();
 
-  FContent get fc => FContent();
+  // FCO get fc => FCO;
 
   // ..addListener(() {
   //   propertiesPaneScrollPos =
@@ -219,29 +219,29 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
-  void showTappableNodeWidgetOverlay(RouteName pageName, String nodeTypeName, Rect r) {
+  void showTappableNodeWidgetOverlay(String nodeTypeName, Rect r) {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
-    Rect restrictedRect = FContent().restrictRectToScreen(r);
-    // debugPrint("=== showTappableNodeWidgetOverlay =====>\n  feature: $feature\n  r restricted to ${restrictedRect.toString()}");
+    Rect restrictedRect = fco.restrictRectToScreen(r);
+    // debugPrint("=== showTappableNodeWidgetOverlay =====>\n  cId: $feature\n  r restricted to ${restrictedRect.toString()}");
     const double BORDER = 1;
     double borderLeft = max(restrictedRect.left - BORDER, 0);
     double borderTop = max(restrictedRect.top - BORDER, 0);
-    double borderRight = min(FContent().scrW, restrictedRect.right + BORDER * 2);
-    double borderBottom = min(FContent().scrH, restrictedRect.bottom + BORDER * 2);
+    double borderRight = min(fco.scrW, restrictedRect.right + BORDER * 2);
+    double borderBottom = min(fco.scrH, restrictedRect.bottom + BORDER * 2);
     Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
     CalloutConfig cc = CalloutConfig(
-      feature: feature,
-      suppliedCalloutW: borderRect.width.abs() + BORDER * 2,
-      suppliedCalloutH: borderRect.height.abs() + BORDER * 2,
+      cId: feature,
+      initialCalloutW: borderRect.width.abs() + BORDER * 2,
+      initialCalloutH: borderRect.height.abs() + BORDER * 2,
       initialCalloutPos: borderRect.topLeft.translate(-BORDER, -BORDER),
       fillColor: Colors.transparent,
-      arrowType: ArrowType.NO_CONNECTOR,
+      arrowType: ArrowType.NONE,
       draggable: false,
     );
     Callout.showOverlay(
       ensureLowestOverlay: false,
-      boxContentF: (context) => PointerInterceptor(
+      calloutContent: PointerInterceptor(
         intercepting: true,
         child: InkWell(
           onTap: () {
@@ -251,9 +251,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // var cc = nodeWidgetGK?.currentContext;
 // edit the root snippet
 //             hideAllSingleTargetBtns();
-// FlutterContent().capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-// FlutterContent().capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-            FContent().currentPageState?.removeAllNodeWidgetOverlays();
+// FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
+// FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
+            fco.currentPageState?.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
             // tapped a real widget with GlobalKey of nodeWidgetGK
             var tappedNodeName = nodeTypeName;
@@ -266,7 +266,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               this,
               this,
             );
-            // FC().afterNextBuildDo(() {
+            // fco.afterNextBuildDo(() {
             // });
           },
           child: Tooltip(
@@ -307,7 +307,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
               ),
               // alignment: Alignment.bottomLeft,
-              // child: FC().coloredText(nodeTypeName, color: Colors.purpleAccent),
+              // child: FCO.coloredText(nodeTypeName, color: Colors.purpleAccent),
             ),
           ),
         ),
@@ -320,27 +320,27 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showNodeWidgetOverlay() {
     Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
-      r = FContent().restrictRectToScreen(r);
+      r = fco.restrictRectToScreen(r);
       // pageState.removeAllNodeWidgetOverlays();
-      Rect restrictedRect = FContent().restrictRectToScreen(r);
+      Rect restrictedRect = fco.restrictRectToScreen(r);
       const int BORDER = 3;
       double borderLeft = max(restrictedRect.left - 3, 0);
       double borderTop = max(restrictedRect.top - 3, 0);
-      double borderRight = min(FContent().scrW, restrictedRect.right + BORDER * 2);
-      double borderBottom = min(FContent().scrH, restrictedRect.bottom + BORDER * 2);
+      double borderRight = min(fco.scrW, restrictedRect.right + BORDER * 2);
+      double borderBottom = min(fco.scrH, restrictedRect.bottom + BORDER * 2);
       Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
       CalloutConfig cc = CalloutConfig(
-        feature: 'pink-border-overlay-non-tappable',
-        suppliedCalloutW: borderRect.width + 6,
-        suppliedCalloutH: borderRect.height + 6,
+        cId: 'pink-border-overlay-non-tappable',
+        initialCalloutW: borderRect.width + 6,
+        initialCalloutH: borderRect.height + 6,
         initialCalloutPos: borderRect.topLeft.translate(-3, -3),
         fillColor: Colors.transparent,
-        arrowType: ArrowType.NO_CONNECTOR,
+        arrowType: ArrowType.NONE,
         draggable: false,
       );
       Callout.showOverlay(
         ensureLowestOverlay: true,
-        boxContentF: (context) => PointerInterceptor(
+        calloutContent: PointerInterceptor(
           child: Container(
             width: cc.calloutW,
             height: cc.calloutH,
@@ -373,16 +373,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
-    MaterialSPA.capiBloc.add(CAPIEvent.pushSnippetEditor(
+    FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(
       snippetName: snippetName,
       visibleDecendantNode: highestNode,
     ));
-    // FC().afterNextBuildDo(() {
+    // fco.afterNextBuildDo(() {
     // });
     // return;
     // debugPrint('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
-    FContent().afterNextBuildDo(() {
+    fco.afterNextBuildDo(() {
       var gk = startingAtNode.nodeWidgetGK;
 
       var tappedNodeName = gk;
@@ -391,43 +391,43 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       // bool isMOunted = cc?.mounted ?? false;
       var cw = gk?.currentWidget;
 
-      if (MaterialSPA.snippetBeingEdited != null) {
-        MaterialSPA.snippetBeingEdited?.treeC.expandAll();
-        MaterialSPA.snippetBeingEdited?.treeC.rebuild();
+      if (FlutterContentApp.snippetBeingEdited != null) {
+        FlutterContentApp.snippetBeingEdited?.treeC.expandAll();
+        FlutterContentApp.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
-        if (!FContent().clipboardIsEmpty) {
-          FContent().showFloatingClipboard();
+        if (!fco.clipboardIsEmpty) {
+          fco.showFloatingClipboard();
         }
         showSnippetTreeAndPropertiesCallout(
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
-            Callout.printFeatures();
+            // Callout.printFeatures();
             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
-            var currPageState = FContent().currentPageState;
+            var currPageState = fco.currentPageState;
             currPageState?.unhideFAB();
             Callout.dismiss(pinkOverlayFeature);
-            Callout.printFeatures();
+            // Callout.printFeatures();
             showAllTargetBtns();
             showAllTargetCovers();
-            // fc.capiBloc.add(const CAPIEvent.popSnippetBloc());
+            // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
             Callout.dismiss(TREENODE_MENU_CALLOUT);
-            FContent().hideClipboard();
+            fco.hideClipboard();
             // FlutterContentPage.exitEditMode();
             // skip if no change
-            String? jsonBeforePush = MaterialSPA.snippetBeingEdited?.jsonBeforePush;
-            String? currentJsonS = MaterialSPA.rootNode?.toJson();
+            String? jsonBeforePush = FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
+            String? currentJsonS = FlutterContentApp.rootNode?.toJson();
             if (jsonBeforePush == currentJsonS) return;
-            if (MaterialSPA.rootNode != null) {
-              FContent().possiblyCacheAndSaveANewSnippetVersion(
+            if (FlutterContentApp.rootNode != null) {
+              fco.possiblyCacheAndSaveANewSnippetVersion(
                 snippetName: snippetName,
-                rootNode: MaterialSPA.rootNode!,
+                rootNode: FlutterContentApp.rootNode!,
               );
             }
-            // fc.capiBloc.add(
+            // FCO.capiBloc.add(
             //       CAPIEvent.saveSnippet(
-            //         snippetRootNode: fc.snippetBeingEdited!.rootNode,
+            //         snippetRootNode: FCO.snippetBeingEdited!.rootNode,
             //         newVersionId: newVersionId,
             //       ),
             //     );
@@ -436,14 +436,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           selectedNode: selectedNode,
         );
 
-        // MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
+        // FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
         //   node: selectedNode,
         //   // imageTC: tc,
         //   // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
-        FContent().afterNextBuildDo(() {
-          FContent().currentPageState
+        fco.afterNextBuildDo(() {
+          fco.currentPageState
             ?..removeAllNodeWidgetOverlays()
             ..showNodeWidgetOverlay(selectedNode);
           // create selected node's properties tree
@@ -474,10 +474,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   void refreshWithUpdate(VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
     assignF.call();
-    FContent.forceRefresh();
-    FContent().afterNextBuildDo(() {
-      if (MaterialSPA.selectedNode != null) {
-        FContent().currentPageState?.showNodeWidgetOverlay((MaterialSPA.selectedNode)!);
+    fco.forceRefresh();
+    fco.afterNextBuildDo(() {
+      if (FlutterContentApp.selectedNode != null) {
+        fco.currentPageState?.showNodeWidgetOverlay((FlutterContentApp.selectedNode)!);
       }
     });
   }
@@ -593,10 +593,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   GlobalKey createNodeGK() {
     // debugPrint('--- createNodeGK --- ${toString()}');
     nodeWidgetGK = GlobalKey(debugLabel: toString());
-    if (fc.gkSTreeNodeMap.containsKey(nodeWidgetGK)) {
+    if (fco.gkSTreeNodeMap.containsKey(nodeWidgetGK)) {
       print('Trying to use GlobalKey twice!');
     }
-    fc.gkSTreeNodeMap[nodeWidgetGK!] = this;
+    fco.gkSTreeNodeMap[nodeWidgetGK!] = this;
     return nodeWidgetGK!;
   }
 
@@ -747,15 +747,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   static List<TargetModel> allTargets() {
-    var fc = FContent();
+    // var fc = FC();
     List<TargetModel> foundTargets = [];
-    for (SnippetName snippetName in fc.snippetInfoCache.keys) {
+    for (SnippetName snippetName in fco.snippetInfoCache.keys) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = fc.snippetInfoCache[snippetName];
+      SnippetInfoModel? snippetInfo = fco.snippetInfoCache[snippetName];
       if (snippetInfo == null) return foundTargets;
-      VersionId? versionId = fc.canEditContent ? snippetInfo.editingVersionId : snippetInfo.publishedVersionId;
+      VersionId? versionId = fco.canEditContent ? snippetInfo.editingVersionId : snippetInfo.publishedVersionId;
       if (versionId == null) return foundTargets;
-      List<STreeNode> tws = fc.versionCache[snippetName]?[versionId]?.findDescendantsOfType(HotspotsNode) ?? [];
+      List<STreeNode> tws = fco.versionCache[snippetName]?[versionId]?.findDescendantsOfType(HotspotsNode) ?? [];
       for (STreeNode tw in tws) {
         foundTargets.addAll((tw as HotspotsNode).targets);
       }
@@ -799,7 +799,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   Future<void> possiblyHighlightSelectedNode() async {
     return;
-    if (MaterialSPA.snippetBeingEdited?.selectedNode == this) {
+    if (FlutterContentApp.snippetBeingEdited?.selectedNode == this) {
       unhighlightSelectedNode();
       var gk = nodeWidgetGK;
       Rect? r = gk?.globalPaintBounds();
@@ -812,16 +812,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         Callout.showOverlay(
           ensureLowestOverlay: true,
           calloutConfig: CalloutConfig(
-            feature: SELECTED_NODE_BORDER_CALLOUT,
+            cId: SELECTED_NODE_BORDER_CALLOUT,
             initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
-            suppliedCalloutW: w,
-            suppliedCalloutH: h,
+            initialCalloutW: w,
+            initialCalloutH: h,
             fillColor: Colors.transparent,
-            arrowType: ArrowType.NO_CONNECTOR,
+            arrowType: ArrowType.NONE,
             draggable: false,
-            transparentPointer: true,
+            // transparentPointer: true,
           ),
-          boxContentF: (context) => InkWell(
+          calloutContent: InkWell(
             child: Container(
               width: w,
               height: h,
@@ -832,19 +832,19 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             ),
           ),
         );
-        // fc.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+        // FCO.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
       }
     }
   }
 
 //   Future<void> possiblyHighlightSelectedNode() async {
-//     if (fc.selectedNode == this) {
-//       if (true || fc.highlightedNode != fc.selectedNode) {
-//         FC().afterNextBuildDo(() {
+//     if (FCO.selectedNode == this) {
+//       if (true || FCO.highlightedNode != FCO.selectedNode) {
+//         fco.afterNextBuildDo(() {
 // // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
 //           unhighlightSelectedNode();
 // // }
-//           SnippetBloC? snippetBloc = fc.snippetBeingEdited;
+//           SnippetBloC? snippetBloc = FCO.snippetBeingEdited;
 //           var gk = snippetBloc?.state.selectedWidgetGK;
 //           Rect? r = gk?.globalPaintBounds();
 //           if (r != null) {
@@ -862,17 +862,17 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             Callout.showOverlay(
 //               ensureLowestOverlay: true,
 //               calloutConfig: CalloutConfig(
-//                 feature: SELECTED_NODE_BORDER_CALLOUT,
+//                 cId: SELECTED_NODE_BORDER_CALLOUT,
 //                 initialCalloutPos:
 //                     r.topLeft.translate(translate.dx, translate.dy),
-//                 suppliedCalloutW: w,
-//                 suppliedCalloutH: h,
+//                 initialCalloutW: w,
+//                 initialCalloutH: h,
 //                 fillColor: Colors.transparent,
-//                 arrowType: ArrowType.NO_CONNECTOR,
+//                 arrowType: ArrowType.NONE,
 //                 draggable: false,
 //                 transparentPointer: true,
 //               ),
-//               boxContentF: (context) => InkWell(
+//               calloutContentF: (context) => InkWell(
 // // onTap: () {
 // //   // removeNodeMenuCallout();
 // //   showNodePropertiesCallout(
@@ -897,8 +897,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             fc
 //                 .snippetBeingEdited
 //                 ?.add(SnippetEvent.highlightNode(node: this));
-// // FC().afterMsDelayDo(1000, () {
-// //   FC().om.moveToTop("TreeNodeMenu".hashCode);
+// // fco.afterMsDelayDo(1000, () {
+// //   FCO.om.moveToTop("TreeNodeMenu".hashCode);
 // // });
 //           }
 //         });
@@ -999,7 +999,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   if (capiBloc.state.jsonClipboard != null && action != AddAction.wrapWith) {
 //     return MenuItemButton(
 //       onPressed: () {
-//         CAPIBloC bloc = FlutterContent().capiBloc;
+//         CAPIBloC bloc = FCO.capiBloc;
 //         String clipboardJson = bloc.state.jsonClipboard!;
 //         STreeNode clipboardNode = STreeNodeMapper.fromJson(clipboardJson);
 //         SnippetBloC? snippetBloc = bloc.state.snippetBeingEdited;
@@ -1018,7 +1018,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //         }
 //         Callout.dismiss(TREENODE_MENU_CALLOUT);
 //       },
-//       child: FC().coloredText('paste from clipboard', color: Colors.blue),
+//       child: FCO.coloredText('paste from clipboard', color: Colors.blue),
 //     );
 //   }
 //   return null;
@@ -1028,7 +1028,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   if (bloc.state.jsonClipboard != null && action != AddAction.wrapWith) {
 //     return MenuItemButton(
 //       onPressed: () {
-//         CAPIBloc bloc = FlutterContent().capiBloc;
+//         CAPIBloc bloc = FCO.capiBloc;
 //         String clipboardJson = bloc.state.jsonClipboard!;
 //         Node clipboardNode = NodeMapper.fromJson(clipboardJson);
 //         switch (action) {
@@ -1053,7 +1053,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //         child: boxChild(
 //           bgColor: Colors.lightBlueAccent,
 //           child: Center(
-//             child: FC().whiteText(
+//             child: FCO.whiteText(
 //               'paste from clipboard',
 //             ),
 //           ),
@@ -1071,50 +1071,50 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // }
 
 // Widget menuItemText(Type type, {Color color = Colors.black, FontWeight? fontWeight}) => switch (type) {
-//       const (AlignNode) => FC().coloredText("Align", color: color, fontWeight: fontWeight),
-//       const (AspectRatioNode) => FC().coloredText("AspectRatio", color: color, fontWeight: fontWeight),
-//       const (AssetImageNode) => FC().coloredText("AssetImage", color: color, fontWeight: fontWeight),
-//       const (CarouselNode) => FC().coloredText("Carousel", color: color, fontWeight: fontWeight),
-//       const (CenterNode) => FC().coloredText("Center", color: color, fontWeight: fontWeight),
-//       const (ColumnNode) => FC().coloredText("Column", color: color, fontWeight: fontWeight),
-//       const (ContainerNode) => FC().coloredText("Container", color: color, fontWeight: fontWeight),
-//       const (DefaultTextStyleNode) => FC().coloredText("DefaultTextStyle", color: color, fontWeight: fontWeight),
-//       const (DirectoryNode) => FC().coloredText("Directory", color: color, fontWeight: fontWeight),
-//       const (ElevatedButtonNode) => FC().coloredText("ElevatedButton", color: color, fontWeight: fontWeight),
-//       const (ExpandedNode) => FC().coloredText("Expanded", color: color, fontWeight: fontWeight),
-//       const (FileNode) => FC().coloredText("File", color: color, fontWeight: fontWeight),
-//       const (FilledButtonNode) => FC().coloredText("FilledButton", color: color, fontWeight: fontWeight),
-//       const (FlexibleNode) => FC().coloredText("Flexible", color: color, fontWeight: fontWeight),
-//       const (GapNode) => FC().coloredText("Gap", color: color, fontWeight: fontWeight),
-//       const (GoogleDriveIFrameNode) => FC().coloredText("GoogleDriveIFrame", color: color, fontWeight: fontWeight),
-//       const (IconButtonNode) => FC().coloredText("IconButton", color: color, fontWeight: fontWeight),
-//       const (IFrameNode) => FC().coloredText("IFrame", color: color, fontWeight: fontWeight),
-//       const (MenuBarNode) => FC().coloredText("MenuBar", color: color, fontWeight: fontWeight),
-//       const (MenuItemButtonNode) => FC().coloredText("MenuItemButton", color: color, fontWeight: fontWeight),
-//       // const (NetworkImageNode) =>  FC().coloredText("NetworkImage", color: color, fontWeight: fontWeight),
-//       const (OutlinedButtonNode) => FC().coloredText("OutlinedButton", color: color, fontWeight: fontWeight),
-//       const (PaddingNode) => FC().coloredText("Padding", color: color, fontWeight: fontWeight),
-//       const (PlaceholderNode) => FC().coloredText("Placeholder", color: color, fontWeight: fontWeight),
-//       const (PollNode) => FC().coloredText("Poll", color: color, fontWeight: fontWeight),
-//       const (PollOptionNode) => FC().coloredText("PollOption", color: color, fontWeight: fontWeight),
-//       const (PositionedNode) => FC().coloredText("Positioned", color: color, fontWeight: fontWeight),
-//       const (RichTextNode) => FC().coloredText("RichText", color: color, fontWeight: fontWeight),
-//       const (RowNode) => FC().coloredText("Row", color: color, fontWeight: fontWeight),
-//       const (SizedBoxNode) => FC().coloredText("SizedBox", color: color, fontWeight: fontWeight),
-//       const (SingleChildScrollViewNode) => FC().coloredText("SingleChildScrollView", color: color, fontWeight: fontWeight),
-//       const (SnippetRootNode) => FC().coloredText("Snippet", color: color, fontWeight: fontWeight),
-//       const (SnippetRefNode) => FC().coloredText("SnippetRef", color: color, fontWeight: fontWeight),
-//       const (SplitViewNode) => FC().coloredText("SplitView", color: color, fontWeight: fontWeight),
-//       const (StackNode) => FC().coloredText("Stack", color: color, fontWeight: fontWeight),
-//       const (StepNode) => FC().coloredText("Step", color: color, fontWeight: fontWeight),
-//       const (StepperNode) => FC().coloredText("Stepper", color: color, fontWeight: fontWeight),
-//       const (SubmenuButtonNode) => FC().coloredText("SubmenuButton", color: color, fontWeight: fontWeight),
-//       const (TargetWrapperNode) => FC().coloredText("TargetWrapper", color: color, fontWeight: fontWeight),
-//       const (TargetGroupWrapperNode) => FC().coloredText("TargetGroupWrapper", color: color, fontWeight: fontWeight),
-//       const (TextButtonNode) => FC().coloredText("TextButton", color: color, fontWeight: fontWeight),
-//       const (TextNode) => FC().coloredText("Text", color: color, fontWeight: fontWeight),
-//       const (TextSpanNode) => FC().coloredText("TextSpan", color: color, fontWeight: fontWeight),
-//       const (WidgetSpanNode) => FC().coloredText("WidgetSpan", color: color, fontWeight: fontWeight),
+//       const (AlignNode) => FCO.coloredText("Align", color: color, fontWeight: fontWeight),
+//       const (AspectRatioNode) => FCO.coloredText("AspectRatio", color: color, fontWeight: fontWeight),
+//       const (AssetImageNode) => FCO.coloredText("AssetImage", color: color, fontWeight: fontWeight),
+//       const (CarouselNode) => FCO.coloredText("Carousel", color: color, fontWeight: fontWeight),
+//       const (CenterNode) => FCO.coloredText("Center", color: color, fontWeight: fontWeight),
+//       const (ColumnNode) => FCO.coloredText("Column", color: color, fontWeight: fontWeight),
+//       const (ContainerNode) => FCO.coloredText("Container", color: color, fontWeight: fontWeight),
+//       const (DefaultTextStyleNode) => FCO.coloredText("DefaultTextStyle", color: color, fontWeight: fontWeight),
+//       const (DirectoryNode) => FCO.coloredText("Directory", color: color, fontWeight: fontWeight),
+//       const (ElevatedButtonNode) => FCO.coloredText("ElevatedButton", color: color, fontWeight: fontWeight),
+//       const (ExpandedNode) => FCO.coloredText("Expanded", color: color, fontWeight: fontWeight),
+//       const (FileNode) => FCO.coloredText("File", color: color, fontWeight: fontWeight),
+//       const (FilledButtonNode) => FCO.coloredText("FilledButton", color: color, fontWeight: fontWeight),
+//       const (FlexibleNode) => FCO.coloredText("Flexible", color: color, fontWeight: fontWeight),
+//       const (GapNode) => FCO.coloredText("Gap", color: color, fontWeight: fontWeight),
+//       const (GoogleDriveIFrameNode) => FCO.coloredText("GoogleDriveIFrame", color: color, fontWeight: fontWeight),
+//       const (IconButtonNode) => FCO.coloredText("IconButton", color: color, fontWeight: fontWeight),
+//       const (IFrameNode) => FCO.coloredText("IFrame", color: color, fontWeight: fontWeight),
+//       const (MenuBarNode) => FCO.coloredText("MenuBar", color: color, fontWeight: fontWeight),
+//       const (MenuItemButtonNode) => FCO.coloredText("MenuItemButton", color: color, fontWeight: fontWeight),
+//       // const (NetworkImageNode) =>  FCO.coloredText("NetworkImage", color: color, fontWeight: fontWeight),
+//       const (OutlinedButtonNode) => FCO.coloredText("OutlinedButton", color: color, fontWeight: fontWeight),
+//       const (PaddingNode) => FCO.coloredText("Padding", color: color, fontWeight: fontWeight),
+//       const (PlaceholderNode) => FCO.coloredText("Placeholder", color: color, fontWeight: fontWeight),
+//       const (PollNode) => FCO.coloredText("Poll", color: color, fontWeight: fontWeight),
+//       const (PollOptionNode) => FCO.coloredText("PollOption", color: color, fontWeight: fontWeight),
+//       const (PositionedNode) => FCO.coloredText("Positioned", color: color, fontWeight: fontWeight),
+//       const (RichTextNode) => FCO.coloredText("RichText", color: color, fontWeight: fontWeight),
+//       const (RowNode) => FCO.coloredText("Row", color: color, fontWeight: fontWeight),
+//       const (SizedBoxNode) => FCO.coloredText("SizedBox", color: color, fontWeight: fontWeight),
+//       const (SingleChildScrollViewNode) => FCO.coloredText("SingleChildScrollView", color: color, fontWeight: fontWeight),
+//       const (SnippetRootNode) => FCO.coloredText("Snippet", color: color, fontWeight: fontWeight),
+//       const (SnippetRefNode) => FCO.coloredText("SnippetRef", color: color, fontWeight: fontWeight),
+//       const (SplitViewNode) => FCO.coloredText("SplitView", color: color, fontWeight: fontWeight),
+//       const (StackNode) => FCO.coloredText("Stack", color: color, fontWeight: fontWeight),
+//       const (StepNode) => FCO.coloredText("Step", color: color, fontWeight: fontWeight),
+//       const (StepperNode) => FCO.coloredText("Stepper", color: color, fontWeight: fontWeight),
+//       const (SubmenuButtonNode) => FCO.coloredText("SubmenuButton", color: color, fontWeight: fontWeight),
+//       const (TargetWrapperNode) => FCO.coloredText("TargetWrapper", color: color, fontWeight: fontWeight),
+//       const (TargetGroupWrapperNode) => FCO.coloredText("TargetGroupWrapper", color: color, fontWeight: fontWeight),
+//       const (TextButtonNode) => FCO.coloredText("TextButton", color: color, fontWeight: fontWeight),
+//       const (TextNode) => FCO.coloredText("Text", color: color, fontWeight: fontWeight),
+//       const (TextSpanNode) => FCO.coloredText("TextSpan", color: color, fontWeight: fontWeight),
+//       const (WidgetSpanNode) => FCO.coloredText("WidgetSpan", color: color, fontWeight: fontWeight),
 //       _ => Text('unknown type'),
 //     };
 
@@ -1243,7 +1243,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Scaffold", ScaffoldNode, action),
         ],
-        child: FContent().coloredText("container", fontWeight: FontWeight.normal),
+        child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
       menuItemButton("SplitView", SplitViewNode, action),
       menuItemButton("Hotspots", HotspotsNode, action),
@@ -1273,7 +1273,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           const Divider(),
           menuItemButton("Scaffold", ScaffoldNode, action),
         ],
-        child: FContent().coloredText("container", fontWeight: FontWeight.normal),
+        child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1283,7 +1283,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("TextSpan", TextSpanNode, action),
           menuItemButton("WidgetSpan", WidgetSpanNode, action),
         ],
-        child: FContent().coloredText("text", fontWeight: FontWeight.normal),
+        child: fco.coloredText("text", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1293,14 +1293,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               menuItemButton("SubmenuButton", SubmenuButtonNode, action),
               menuItemButton("MenuBar", MenuBarNode, action),
             ],
-            child: FContent().coloredText("menu", fontWeight: FontWeight.normal),
+            child: fco.coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
               menuItemButton("TabBar", TabBarNode, action),
               menuItemButton("TabBarView", TabBarViewNode, action),
             ],
-            child: FContent().coloredText("tab bar", fontWeight: FontWeight.normal),
+            child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
@@ -1310,11 +1310,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               menuItemButton("FilledButton", FilledButtonNode, action),
               menuItemButton("IconButton", IconButtonNode, action),
             ],
-            child: FContent().coloredText("button", fontWeight: FontWeight.normal),
+            child: fco.coloredText("button", fontWeight: FontWeight.normal),
           ),
           menuItemButton("Chip", ChipNode, action),
         ],
-        child: FContent().coloredText("navigation", fontWeight: FontWeight.normal),
+        child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1322,7 +1322,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("Firebase Storage Image", FSImageNode, action),
           menuItemButton("Carousel", CarouselNode, action),
         ],
-        child: FContent().coloredText("image", fontWeight: FontWeight.normal),
+        child: fco.coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
@@ -1331,7 +1331,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("File", FileNode, action),
           menuItemButton("Directory", DirectoryNode, action),
         ],
-        child: FContent().coloredText("file", fontWeight: FontWeight.normal),
+        child: fco.coloredText("file", fontWeight: FontWeight.normal),
       ),
       menuItemButton("SplitView", SplitViewNode, action),
       menuItemButton("Stepper", StepperNode, action),
@@ -1386,7 +1386,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         width: 200,
         height: 40,
         child: Center(
-          child: FContent().purpleText(action.displayName),
+          child: fco.purpleText(action.displayName),
         ),
       ),
       pasteMI(action) ?? const Offstage(),
@@ -1412,7 +1412,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             const Divider(),
             menuItemButton("Scaffold", ScaffoldNode, action),
           ],
-          child: FContent().coloredText("container", fontWeight: FontWeight.normal),
+          child: fco.coloredText("container", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1422,7 +1422,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("TextSpan", TextSpanNode, action),
             menuItemButton("WidgetSpan", WidgetSpanNode, action),
           ],
-          child: FContent().coloredText("text", fontWeight: FontWeight.normal),
+          child: fco.coloredText("text", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1432,14 +1432,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 menuItemButton("SubmenuButton", SubmenuButtonNode, action),
                 menuItemButton("MenuBar", MenuBarNode, action),
               ],
-              child: FContent().coloredText("menu", fontWeight: FontWeight.normal),
+              child: fco.coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
                 menuItemButton("TabBar", TabBarNode, action),
                 menuItemButton("TabBarView", TabBarViewNode, action),
               ],
-              child: FContent().coloredText("tab bar", fontWeight: FontWeight.normal),
+              child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
@@ -1449,11 +1449,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 menuItemButton("FilledButton", FilledButtonNode, action),
                 menuItemButton("IconButton", IconButtonNode, action),
               ],
-              child: FContent().coloredText("button", fontWeight: FontWeight.normal),
+              child: fco.coloredText("button", fontWeight: FontWeight.normal),
             ),
             menuItemButton("Chip", ChipNode, action),
           ],
-          child: FContent().coloredText("navigation", fontWeight: FontWeight.normal),
+          child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1461,7 +1461,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("Firebase Storage Image", FSImageNode, action),
             menuItemButton("Carousel", CarouselNode, action),
           ],
-          child: FContent().coloredText("image", fontWeight: FontWeight.normal),
+          child: fco.coloredText("image", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
@@ -1470,7 +1470,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("File", FileNode, action),
             menuItemButton("Directory", DirectoryNode, action),
           ],
-          child: FContent().coloredText("file", fontWeight: FontWeight.normal),
+          child: fco.coloredText("file", fontWeight: FontWeight.normal),
         ),
         menuItemButton("SplitView", SplitViewNode, action),
         menuItemButton("Stepper", StepperNode, action),
@@ -1494,7 +1494,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         width: 200,
         height: 40,
         child: Center(
-          child: FContent().purpleText(action.displayName),
+          child: fco.purpleText(action.displayName),
         ),
       ),
       pasteMI(action) ?? const Offstage(),
@@ -1509,61 +1509,61 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       MenuItemButton(
         onPressed: () {
           if (action == NodeAction.wrapWith) {
-            var treeC = MaterialSPA.snippetBeingEdited?.treeC;
+            var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
             bool navUp = this == treeC?.roots.firstOrNull;
-            MaterialSPA.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+            FlutterContentApp.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
             // in case need to show more of the tree (higher up)
-            FContent().afterNextBuildDo(() {
+            fco.afterNextBuildDo(() {
               if (navUp) {
                 SnippetTreePane.navigateUpTree();
               }
             });
           } else if (action == NodeAction.replaceWith) {
-            MaterialSPA.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+            FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
           } else if (action == NodeAction.addChild) {
-            MaterialSPA.capiBloc.add(CAPIEvent.appendChild(type: childType));
+            FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(type: childType));
           } else if (action == NodeAction.addSiblingBefore) {
-            MaterialSPA.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+            FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
           } else if (action == NodeAction.addSiblingAfter) {
-            MaterialSPA.capiBloc.add(
+            FlutterContentApp.capiBloc.add(
               CAPIEvent.addSiblingAfter(type: childType),
             );
           }
-          FContent().afterNextBuildDo(() {
-            FContent().afterMsDelayDo(500, () {
+          fco.afterNextBuildDo(() {
+            fco.afterMsDelayDo(500, () {
               EditablePage.refreshSelectedNodeWidgetBorderOverlay();
             });
           });
         },
-        child: FContent().coloredText(label, fontWeight: FontWeight.bold),
+        child: fco.coloredText(label, fontWeight: FontWeight.bold),
       );
 
   MenuItemButton? pasteMI(
     NodeAction action,
   ) {
-    if (FContent().clipboard != null && action != NodeAction.wrapWith) {
+    if (fco.clipboard != null && action != NodeAction.wrapWith) {
       return MenuItemButton(
         onPressed: () {
-          // CAPIBloC bloc = MaterialSPA.capiBloc;
+          // CAPIBloC bloc = FlutterContentApp.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              MaterialSPA.capiBloc.add(const CAPIEvent.pasteReplacement());
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteReplacement());
               break;
             case NodeAction.addSiblingBefore:
-              MaterialSPA.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
               break;
             case NodeAction.addSiblingAfter:
-              MaterialSPA.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
               break;
             case NodeAction.addChild:
-              MaterialSPA.capiBloc.add(const CAPIEvent.pasteChild());
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteChild());
               break;
             case NodeAction.wrapWith:
               break;
           }
           Callout.dismiss(TREENODE_MENU_CALLOUT);
         },
-        child: FContent().coloredText('paste from clipboard', color: Colors.blue),
+        child: fco.coloredText('paste from clipboard', color: Colors.blue),
       );
     }
     return null;
@@ -1573,7 +1573,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     NodeAction action,
   ) {
     List<MenuItemButton> snippetMIs = [];
-    List<SnippetName> snippetNames = FContent().snippetInfoCache.keys.toList()..sort();
+    List<SnippetName> snippetNames = fco.snippetInfoCache.keys.toList()..sort();
     for (String snippetName in snippetNames) {
       snippetMIs.add(
         MenuItemButton(
@@ -1581,24 +1581,24 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // make sure snippet actually present
             await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName);
             if (action == NodeAction.replaceWith) {
-              MaterialSPA.capiBloc.add(CAPIEvent.replaceSelectionWith(
+              FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
             } else if (action == NodeAction.addSiblingBefore) {
-              MaterialSPA.capiBloc.add(CAPIEvent.addSiblingBefore(
+              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addSiblingAfter) {
-              MaterialSPA.capiBloc.add(CAPIEvent.addSiblingAfter(
+              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
-              MaterialSPA.capiBloc.add(CAPIEvent.appendChild(
+              FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));

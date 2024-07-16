@@ -8,7 +8,7 @@ void main() {
   late SnippetRootNode emptySnippet;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late SnippetBloC snippetBloc;
+  late CAPIBloC CAPIBloC;
   late STreeNode placeholderNode;
   late STreeNode nodeTBD;
 

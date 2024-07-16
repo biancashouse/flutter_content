@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 part 'generic_multi_child_node.mapper.dart';
@@ -16,7 +17,7 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   List<PTreeNode> properties(BuildContext context) => const [];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => FContent().coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+  Widget toWidget(BuildContext context, STreeNode? parentNode) => fco.coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);

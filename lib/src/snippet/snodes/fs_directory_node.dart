@@ -34,7 +34,7 @@
 //   Widget toWidget(BuildContext context, STreeNode? parentNode) {
 //     return const Icon(Icons.ac_unit);
 //
-//     // TreeController<Node> treeC = FlutterContent().capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
+//     // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
 //     SnippetTreeController treeC = SnippetTreeController(
 //       roots: [this],
 //       childrenProvider: (STreeNode node) {

@@ -21,7 +21,7 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     if (w != null) return w.abs();
 
     // if (root?.child == null) return 190;
-    w = min(MaterialSPA.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
+    w = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
     return w > 0 ? w : 500;
   }
 
@@ -32,14 +32,15 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
 // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-    h = min(MaterialSPA.capiBloc.state.snippetTreeCalloutH ?? 500, FContent().scrH - 50);
+    h = min(
+        FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500, fco.scrH - 50);
     return h > 0 ? h : 500;
   }
 
   return CalloutConfig(
-    feature: MaterialSPA.rootNode!.name,
+    cId: FlutterContentApp.rootNode!.name,
     // frameTarget: true,
-    arrowType: ArrowType.NO_CONNECTOR,
+    arrowType: ArrowType.NONE,
     barrier: CalloutBarrier(
       opacity: .1,
       // closeOnTapped: false,
@@ -48,15 +49,15 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     onDismissedF: onDismissedF,
 // onHiddenF: () {
 //   STreeNode.unhighlightSelectedNode();
-//   FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+//   FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
 //   Callout.dismiss(TREENODE_MENU_CALLOUT);
 //   MaterialAppWrapper.showAllPinkSnippetOverlays();
 //   if (snippetBloc.state.canUndo()) {
-//     FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
+//     FCO.capiBloc.add(const CAPIEvent.saveModel());
 //   }
 // },
-    suppliedCalloutW: width(),
-    suppliedCalloutH: height(),
+    initialCalloutW: width(),
+    initialCalloutH: height(),
 //calloutH ?? 500,
 // barrierOpacity: .1,
 // arrowType: ArrowType.POINTY,
@@ -76,16 +77,16 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     dragHandleHeight: 40,
     resizeableH: true,
     resizeableV: true,
-    onResize: (newSize) {
+    onResizeF: (newSize) {
       // keep size in localstorage for future use
       HydratedBloc.storage.write("snippet-tree-callout-width", newSize.width);
       HydratedBloc.storage.write("snippet-tree-callout-height", newSize.height);
     },
     onDragStartedF: () {
-      MaterialSPA.selectedNode?.hidePropertiesWhileDragging = true;
+      FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = true;
     },
     onDragEndedF: (_) {
-      MaterialSPA.selectedNode?.hidePropertiesWhileDragging = false;
+      FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = false;
     },
   );
 }
@@ -100,7 +101,7 @@ void showSnippetTreeAndPropertiesCallout({
   // required STreeNode tappedNode,
   bool allowButtonCallouts = false,
 }) async {
-  SnippetRootNode? rootNode = MaterialSPA.rootNode;
+  SnippetRootNode? rootNode = FlutterContentApp.rootNode;
   if (rootNode == null) return;
 
   // dismiss any pink border overlays
@@ -111,30 +112,27 @@ void showSnippetTreeAndPropertiesCallout({
   // to check for any change
   // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
   // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  // String? originalClipboardJson = MaterialSPA.capiBloc.state.jsonClipboard;
+  // String? originalClipboardJson = FlutterContentApp.capiBloc.state.jsonClipboard;
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
   CalloutConfig cc = snippetTreeCalloutConfig(onDismissedF);
   Callout.showOverlay(
     calloutConfig: cc,
-    boxContentF: (_) {
-      // debugPrint('+++++++++++++++++++++++++++++ re-build SnippetTreeCalloutContents');
-      return SnippetTreeAndPropertiesCalloutContents(
-          ancestorHScrollController: ancestorHScrollController,
-          ancestorVScrollController: ancestorVScrollController,
-          allowButtonCallouts: allowButtonCallouts,
-      );
-    },
+    calloutContent: SnippetTreeAndPropertiesCalloutContents(
+      ancestorHScrollController: ancestorHScrollController,
+      ancestorVScrollController: ancestorVScrollController,
+      allowButtonCallouts: allowButtonCallouts,
+    ),
     targetGkF: targetGKF,
   );
   // imm select a node
   STreeNode sel = selectedNode ?? startingAtNode;
-  MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
+  FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
     node: sel,
     //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
   ));
-  FContent().afterNextBuildDo(() {
+  fco.afterNextBuildDo(() {
     selectedNode.showNodeWidgetOverlay();
   });
 }
@@ -145,7 +143,7 @@ void showSnippetTreeAndPropertiesCallout({
 //   Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
 //   Callout.removeOverlay(TREENODE_MENU_CALLOUT);
 //   Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
-//   // FC().afterNextBuildDo(() {
+//   // fco.afterNextBuildDo(() {
 //   //   refreshSnippetTreeCallout(snippetName);
 //   // });
 // }

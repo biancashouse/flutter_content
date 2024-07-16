@@ -115,7 +115,7 @@
 // // Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 // //     Callout.refreshOverlay(CAPI.HELP_CONTENT_TOOLBAR_CALLOUT.feature(), () {});
 // // removeTextEditorCallout();
-// // FC().afterMsDelayDo(50, () {
+// // fco.afterMsDelayDo(50, () {
 // //   showTextEditorCallout(tc, ancestorScrollC);
 // // });
 //   }
@@ -144,7 +144,7 @@
 //       child: Column(
 //         children: [
 //           // TextEditor(
-//           //   feature: CAPI.HELP_CONTENT_CALLOUT,
+//           //   cId: CAPI.HELP_CONTENT_CALLOUT,
 //           //   originalS: originalS,
 //           //   onChangedF: onTextChangedF,
 //           //   prefixIcon: prefixIcon,

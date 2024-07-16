@@ -52,7 +52,7 @@ void main() {
   );
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  // final mockCapiBloc = MockCAPIBloC()..add(const CAPIEvent.appStarted());
+  // final mockCAPIBloC = MockCAPIBloC()..add(const CAPIEvent.appStarted());
   // sample data -----------
   setUpAll(() {
     mockRepository = MockModelRepository();
@@ -64,16 +64,16 @@ void main() {
     //   return CAPIModel(
     //       snippetEncodedJsons: {snippetName: modelSnippetJson});
     // });
-    // snippetState = snippetBloc.state;
-    // FC().init(capiBloc: mockCapiBloc, snippetsMap: {snippetName: modelSnippetRoot}, namedStyles: {});
-    // GetIt.I.registerSingleton<CAPIBloC>(mockCapiBloc);
+    // CAPIState = CAPIBloC.state;
+    // FCO.init(CAPIBloC: mockCAPIBloC, snippetsMap: {snippetName: modelSnippetRoot}, namedStyles: {});
+    // GetIt.I.registerSingleton<CAPIBloC>(mockCAPIBloC);
   });
 
   testWidgets('Flutter Content widget test', (WidgetTester tester) async {
     // Create a mock instance https://pub.dev/packages/bloc_test
 
     // whenListen(
-    //   mockCapiBloc,
+    //   mockCAPIBloC,
     //   Stream.fromIterable(
     //     const [
     //      ],
@@ -82,17 +82,17 @@ void main() {
     // );
 
     // // Assert that the initial state is correct.
-    // expect(mockCapiBloc.state, equals(0));
+    // expect(mockCAPIBloC.state, equals(0));
     //
     // // Assert that the stubbed stream is emitted.
-    // await expectLater(mockCapiBloc.stream, emitsInOrder(<int>[0, 1, 2, 3]));
+    // await expectLater(mockCAPIBloC.stream, emitsInOrder(<int>[0, 1, 2, 3]));
     //
     // // Assert that the current state is in sync with the stubbed stream.
-    // expect(mockCapiBloc.state, equals(3));
+    // expect(mockCAPIBloC.state, equals(3));
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(
-      MaterialSPA(
+      FlutterContentApp(
         appName: 'flutter-content-widget-test',
         testModelRepo: mockRepository,
         testWidget: EditablePage(
@@ -106,7 +106,7 @@ void main() {
       ),
     );
 
-    expect(find.byType(MaterialSPA), findsOneWidget);
+    expect(find.byType(FlutterContentApp), findsOneWidget);
     expect(find.byType(EditablePage), findsOneWidget);
 
     BuildContext context = tester.element(find.byType(EditablePage));

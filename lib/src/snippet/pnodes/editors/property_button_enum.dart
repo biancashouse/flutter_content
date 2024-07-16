@@ -26,19 +26,19 @@ class PropertyButtonEnum extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget mi = menuItems[originalEnumIndex ?? 0];
     return PropertyCalloutButton(
-      feature: 'radio-menu',
+      cId: 'radio-menu',
       notifier: ValueNotifier<int>(0),
       labelWidget: label.isNotEmpty
           ? Row(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                (FContent().coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
-                originalEnumIndex == null ? FContent().coloredText('...', color: Colors.white) : mi,
+                (fco.coloredText(label.isNotEmpty ? '$label: ' : '', color: Colors.white)),
+                originalEnumIndex == null ? fco.coloredText('...', color: Colors.white) : mi,
               ],
             )
           : originalEnumIndex == null
-              ? FContent().coloredText('...', color: Colors.white)
+              ? fco.coloredText('...', color: Colors.white)
               : mi,
       calloutButtonSize: calloutButtonSize,
       initialCalloutAlignment: Alignment.bottomCenter,
@@ -67,7 +67,7 @@ class PropertyButtonEnum extends StatelessWidget {
   void _changed(int? option) {
     if (option != null) {
       onChangeF.call(option);
-      // FC().afterMsDelayDo(500, () {
+      // fco.afterMsDelayDo(500, () {
       //   Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
       // });
     }

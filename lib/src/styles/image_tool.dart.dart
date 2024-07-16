@@ -44,7 +44,7 @@ class _ImageToolState extends State<ImageTool> {
   //         FilePickerPopupMenu.pickImage(FileType.image, widget.tc, mounted: mounted,);
   //       } else {
   //         await Callout(
-  //           feature: CAPI.PICK_IMAGE.feature(),
+  //           cId: CAPI.PICK_IMAGE.feature(),
   //           targetGKF: () => _buttonGk,
   //           contents: ()=>FilePickerPopupMenu(
   //             tc:widget.tc,

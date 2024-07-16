@@ -12,7 +12,7 @@ class PointyTool extends StatefulWidget {
 
   const PointyTool(
     this.tc, {
-      required this.wrapperRect,
+    required this.wrapperRect,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     required this.justPlaying,
@@ -28,13 +28,13 @@ class PointyTool extends StatefulWidget {
       required final bool justPlaying}) {
     GlobalKey? targetGK =
         // tc.single
-        //     ? FC().getSingleTargetGk(tc.wName)
+        //     ? FCO.getSingleTargetGk(tc.wName)
         //     :
-        FContent().getTargetGk(tc.uid);
+        fco.getTargetGk(tc.uid);
 
     Callout.showOverlay(
         targetGkF: () => targetGK,
-        boxContentF: (_) => PointyTool(
+        calloutContent: PointyTool(
               tc,
               wrapperRect: wrapperRect,
               ancestorHScrollController: ancestorHScrollController,
@@ -42,9 +42,9 @@ class PointyTool extends StatefulWidget {
               justPlaying: justPlaying,
             ),
         calloutConfig: CalloutConfig(
-          feature: "arrow-type",
-          suppliedCalloutW: 300,
-          suppliedCalloutH: 200,
+          cId: "arrow-type",
+          initialCalloutW: 300,
+          initialCalloutH: 200,
           barrier: CalloutBarrier(
             opacity: 0.1,
             // onTappedF: () async {
@@ -53,7 +53,7 @@ class PointyTool extends StatefulWidget {
           ),
           fillColor: Colors.purpleAccent,
           borderRadius: 16,
-          arrowType: ArrowType.NO_CONNECTOR,
+          arrowType: ArrowType.NONE,
           notUsingHydratedStorage: true,
         ));
   }
@@ -67,7 +67,7 @@ class _PointyToolState extends State<PointyTool> {
 
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
   void initState() {
@@ -81,11 +81,12 @@ class _PointyToolState extends State<PointyTool> {
     tc.calloutArrowTypeIndex = t.index;
     // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
     Callout.dismiss("arrow-type");
-    // FC().afterNextBuildDo(() {
+    // fco.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
     removeSnippetContentCallout(tc.snippetName);
-    tc.targetsWrapperState()
+    tc
+        .targetsWrapperState()
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
@@ -94,7 +95,7 @@ class _PointyToolState extends State<PointyTool> {
       // widget.onParentBarrierTappedF,
       wrapperRect: widget.wrapperRect,
     );
-    // FC().afterNextBuildDo(() {
+    // fco.afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);
     //   showSnippetContentCallout(
     //     twName: widget.twName,
@@ -108,7 +109,7 @@ class _PointyToolState extends State<PointyTool> {
   Widget build(BuildContext context) {
     List<Widget> widgets = [
       ...[
-        ArrowType.NO_CONNECTOR,
+        ArrowType.NONE,
         ArrowType.POINTY,
       ].map((t) => Padding(
             padding: const EdgeInsets.all(3.0),
@@ -150,7 +151,7 @@ class _PointyToolState extends State<PointyTool> {
             ),
           ))
     ];
-    if (tc.calloutArrowTypeIndex != ArrowType.NO_CONNECTOR.index &&
+    if (tc.calloutArrowTypeIndex != ArrowType.NONE.index &&
         tc.calloutArrowTypeIndex != ArrowType.POINTY.index) {
       widgets.add(
         OutlinedButton(
@@ -168,7 +169,7 @@ class _PointyToolState extends State<PointyTool> {
             tc.animateArrow = _animate;
             _onPressed(tc.getArrowType(), tc, tc.animateArrow);
             Callout.dismiss("arrow-type");
-            // FC().afterNextBuildDo(() {
+            // fco.afterNextBuildDo(() {
             //   reshowSnippetContentCallout(tc, widget.allowButtonCallouts, widget.justPlaying, widget.onDiscardedF);
             // });
           },
@@ -209,7 +210,7 @@ class _ArrowTypeOption extends StatelessWidget {
       height: 40,
       child: InkWell(
         onTap: onPressed,
-        child: arrowType == ArrowType.NO_CONNECTOR
+        child: arrowType == ArrowType.NONE
             ? Icon(Icons.rectangle_rounded, color: arrowColor)
             : arrowType == ArrowType.POINTY
                 ? Icon(Icons.messenger, color: arrowColor)

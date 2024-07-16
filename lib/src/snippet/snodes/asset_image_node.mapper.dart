@@ -38,9 +38,9 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static double? _$height(AssetImageNode v) => v.height;
   static const Field<AssetImageNode, double> _f$height =
       Field('height', _$height, opt: true);
-  static double? _$scale(AssetImageNode v) => v.scale;
+  static double _$scale(AssetImageNode v) => v.scale;
   static const Field<AssetImageNode, double> _f$scale =
-      Field('scale', _$scale, opt: true);
+      Field('scale', _$scale, opt: true, def: 1.0);
   static String _$uid(AssetImageNode v) => v.uid;
   static const Field<AssetImageNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -169,14 +169,14 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
           Object? alignment = $none,
           Object? width = $none,
           Object? height = $none,
-          Object? scale = $none}) =>
+          double? scale}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
         if (fit != $none) #fit: fit,
         if (alignment != $none) #alignment: alignment,
         if (width != $none) #width: width,
         if (height != $none) #height: height,
-        if (scale != $none) #scale: scale
+        if (scale != null) #scale: scale
       }));
   @override
   AssetImageNode $make(CopyWithData data) => AssetImageNode(

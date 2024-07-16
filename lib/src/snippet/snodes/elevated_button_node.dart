@@ -28,7 +28,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
     // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
+    void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
     possiblyHighlightSelectedNode();
@@ -38,7 +38,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
       key: createNodeGK(),
       child: ElevatedButton(
         // if feature specified, must be a callout
-        key: feature != null ? FContent().setCalloutGk(feature!, GlobalKey()) : null,
+        key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
         onPressed: ()=>onPressed(context),
         onLongPress: () => f?.call(context),
         style: btnStyle,

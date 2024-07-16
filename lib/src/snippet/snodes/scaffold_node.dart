@@ -45,7 +45,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
    // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    // MaterialSPAState? spaState = MaterialSPA.of(context);
+    // FlutterContentAppState? spaState = FlutterContentApp.of(context);
     return  Scaffold(
       key: createNodeGK(),
       backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,

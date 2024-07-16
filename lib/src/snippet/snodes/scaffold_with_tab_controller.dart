@@ -306,7 +306,7 @@
 //     tabC!.addListener(() {
 //       if (!(tabC?.indexIsChanging ?? true)) {
 //         if (tabBarGK != null) {
-//           TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+//           TabBarNode? tbNode = FCO.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
 //           if (tbNode != null && !(backBtnPressed ?? false)) {
 //             prevTabQ.add(tbNode.selection ?? 0);
 //             tbNode.selection = tabC!.index;
@@ -339,7 +339,7 @@
 //   void resetTabQandC() {
 //     prevTabQ = [];
 //     if (tabBarGK != null) {
-//       TabBarNode? tbNode = FC().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+//       TabBarNode? tbNode = FCO.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
 //       tbNode?.selection = 0;
 //       tabC?.index = 0;
 //     }

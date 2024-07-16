@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
@@ -105,7 +106,7 @@ class PollNode extends MC with PollNodeMappable {
             : FlutterPoll(
               key: createNodeGK(),
               pollName: name,
-              titleWidget: Center(child: FContent().coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
+              titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
               startDate: startDate,
               endDate: endDate,
               children: optionWidgets,

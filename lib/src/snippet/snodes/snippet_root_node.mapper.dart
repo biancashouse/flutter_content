@@ -69,6 +69,8 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   @override
   late final ClassMapperBase superMapper = SCMapper.ensureInitialized();
 
+  @override
+  final MappingHook hook = const SnippetRootNodeHook();
   static SnippetRootNode _instantiate(DecodingData data) {
     return SnippetRootNode(
         name: data.dec(_f$name),

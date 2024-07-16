@@ -113,17 +113,16 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<String?> saveLatestSnippetVersion(
-          {required String? snippetName}) =>
+  _i4.Future<bool> saveLatestSnippetVersion({required String? snippetName}) =>
       (super.noSuchMethod(
         Invocation.method(
           #saveLatestSnippetVersion,
           [],
           {#snippetName: snippetName},
         ),
-        returnValue: _i4.Future<String?>.value(),
-        returnValueForMissingStub: _i4.Future<String?>.value(),
-      ) as _i4.Future<String?>);
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 
   @override
   _i4.Future<void> saveVote({

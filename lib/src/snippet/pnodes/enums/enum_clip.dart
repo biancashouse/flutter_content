@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/stack_clip_editor.dart';
 
@@ -28,15 +29,15 @@ enum ClipEnum {
         height: 100,
         child: Column(
           children: [
-            FContent().coloredText('clip:', color: Colors.white),
+            fco.coloredText('clip:', color: Colors.white),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                FContent().coloredText('hardEdge', color: Colors.white),
-                FContent().coloredText('antiAlias', color: Colors.white),
-                FContent().coloredText('antiAlias\nWithSaveLayer', color: Colors.white),
+                fco.coloredText('hardEdge', color: Colors.white),
+                fco.coloredText('antiAlias', color: Colors.white),
+                fco.coloredText('antiAlias\nWithSaveLayer', color: Colors.white),
               ],
             ),
             StackClipEditor(
@@ -58,7 +59,7 @@ enum ClipEnum {
   //   };
   // }
 
-  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
 
   static ClipEnum? of(int? index) => index != null ? ClipEnum.values.elementAtOrNull(index) : null;
 }

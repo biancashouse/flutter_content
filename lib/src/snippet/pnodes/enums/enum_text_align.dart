@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 
@@ -58,12 +59,12 @@ enum TextAlignEnum   {
 
   Widget _toIcon() {
     return switch (this) {
-      TextAlignEnum.left => FContent().whiteIcon(Icons.format_align_left),
-      TextAlignEnum.start => FContent().whiteIcon(Icons.format_align_left),
-      TextAlignEnum.center => FContent().whiteIcon(Icons.format_align_center),
-      TextAlignEnum.right => FContent().whiteIcon(Icons.format_align_right),
-      TextAlignEnum.end => FContent().whiteIcon(Icons.format_align_right),
-      TextAlignEnum.justify => FContent().whiteIcon(Icons.format_align_justify),
+      TextAlignEnum.left => fco.whiteIcon(Icons.format_align_left),
+      TextAlignEnum.start => fco.whiteIcon(Icons.format_align_left),
+      TextAlignEnum.center => fco.whiteIcon(Icons.format_align_center),
+      TextAlignEnum.right => fco.whiteIcon(Icons.format_align_right),
+      TextAlignEnum.end => fco.whiteIcon(Icons.format_align_right),
+      TextAlignEnum.justify => fco.whiteIcon(Icons.format_align_justify),
     };
   }
 

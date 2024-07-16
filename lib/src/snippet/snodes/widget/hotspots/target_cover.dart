@@ -18,7 +18,7 @@ class TargetCover extends StatelessWidget {
     // in case initialTC replaced by a build ? huh!
     // if (tc != null) {
     // double radius = tc.radius;
-    return FContent().canEditContent
+    return fco.canEditContent
         ? Draggable<(TargetId,bool)>(
             data: (tc.uid,false),
             feedback: _draggableTarget(tc),
@@ -79,7 +79,7 @@ class _TargetCover extends StatelessWidget {
             num: index + 1,
             bgColor: tc.calloutColor().withOpacity(.5),
             radius: radius,
-            textColor: FContent().canEditContent ? Colors.white : Colors.transparent,
+            textColor: fco.canEditContent ? Colors.white : Colors.transparent,
             fontSize: 14,
           ),
         ),

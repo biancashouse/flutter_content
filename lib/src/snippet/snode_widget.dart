@@ -34,8 +34,8 @@ class NodeWidget extends StatelessWidget {
     //   return const Offstage();
     // }
 
-    // bool selected = FlutterContent().capiBloc.selectedNode == entry.node;
-    Color boxColor = MaterialSPA.snippetBeingEdited!.nodeBeingDeleted ==
+    // bool selected = FCO.capiBloc.selectedNode == entry.node;
+    Color boxColor = FlutterContentApp.snippetBeingEdited!.nodeBeingDeleted ==
         entry.node
         ? Colors.red
         : entry.node is GenericSingleChildNode
@@ -50,8 +50,8 @@ class NodeWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                key: MaterialSPA.aNodeIsSelected &&
-                    MaterialSPA.selectedNode == entry.node ? MaterialSPA
+                key: FlutterContentApp.aNodeIsSelected &&
+                    FlutterContentApp.selectedNode == entry.node ? FlutterContentApp
                     .snippetBeingEdited!.selectedTreeNodeGK : null,
                 margin: EdgeInsets.zero,
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -110,7 +110,7 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetRootNode snippet = FContent().currentSnippet(
+        SnippetRootNode snippet = fco.currentSnippet(
             (entry.node as SnippetRootNode).name)!;
 
         STreeNode.pushThenShowNamedSnippetWithNodeSelected(
@@ -126,8 +126,8 @@ class NodeWidget extends StatelessWidget {
         //   return;
         // };
 
-        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected &&
-            entry.node == MaterialSPA.selectedNode) return;
+        if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
+            entry.node == FlutterContentApp.selectedNode) return;
 
         if (!treeController.getExpansionState(entry.node)) {
           treeController.expand(entry.node);
@@ -135,20 +135,20 @@ class NodeWidget extends StatelessWidget {
 
         Callout.dismiss(TREENODE_MENU_CALLOUT);
 
-        bool thisWasAlreadySelected = (entry.node == MaterialSPA.selectedNode);
+        bool thisWasAlreadySelected = (entry.node == FlutterContentApp.selectedNode);
 
-        if (MaterialSPA.snippetBeingEdited!.aNodeIsSelected &&
+        if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
             thisWasAlreadySelected) {
           Callout.hide("floating-clipboard");
           Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-          MaterialSPA.capiBloc.add(const CAPIEvent.clearNodeSelection());
-        } else if (!MaterialSPA.snippetBeingEdited!.aNodeIsSelected ||
+          FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
+        } else if (!FlutterContentApp.snippetBeingEdited!.aNodeIsSelected ||
             !thisWasAlreadySelected) {
-          if (FContent().clipboard != null) {
+          if (fco.clipboard != null) {
             Callout.unhide("floating-clipboard");
           }
-          MaterialSPA.capiBloc.add(const CAPIEvent.clearNodeSelection());
-          FContent().afterNextBuildDo(() {
+          FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
+          fco.afterNextBuildDo(() {
             // final List<PTreeNode> propertyNodes = entry.node.properties(context);
             // get a new treeController only when snippet selected
             // entry.node.pTreeC ??= PTreeNodeTreeController(
@@ -161,14 +161,14 @@ class NodeWidget extends StatelessWidget {
             //   ..addListener(() {
             //     entry.node.propertiesPaneScrollPos = entry.node.propertiesPaneSC?.offset ?? 0.0;
             //   });
-            MaterialSPA.capiBloc.add(CAPIEvent.selectNode(
+            FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
               node: entry.node,
               // imageTC: tc,
               // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
               // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
-            FContent().afterNextBuildDo(() {
-              FContent().currentPageState
+            fco.afterNextBuildDo(() {
+              fco.currentPageState
                 ?..removeAllNodeWidgetOverlays()
                 ..showNodeWidgetOverlay(entry.node);
               // create selected node's properties tree
@@ -178,7 +178,7 @@ class NodeWidget extends StatelessWidget {
 
         // removeNodePropertiesCallout();
         // if ((MediaQuery.of(context).size.width ?? 0) <= 1366) {
-        //   FC().afterNextBuildDo(() {
+        //   fco.afterNextBuildDo(() {
         //     if (context.mounted) {
         //       showTreeNodeMenu(context, () => STreeNode.selectionGK);
         //     } else
@@ -186,7 +186,7 @@ class NodeWidget extends StatelessWidget {
         //   });
         // }
 
-        // FC().afterNextBuildDo(() {
+        // fco.afterNextBuildDo(() {
         //   removeNodeMenuCallout();
         //   showNodeMenuCallout(
         //     context: context,
@@ -197,7 +197,7 @@ class NodeWidget extends StatelessWidget {
         // });
       },
       // onLongPress: () {
-      //   FlutterContent().capiBloc.add(CAPIEvent.selectNode(
+      //   FCO.capiBloc.add(CAPIEvent.selectNode(
       //     node: entry.node,
       //     nodeParent: entry.parent?.node,
       //     nodeRootIndex: treeController.nearestRootIndex(entry),
@@ -205,7 +205,7 @@ class NodeWidget extends StatelessWidget {
       //     showProperties: true,
       //     // imageTC: tc,
       //   ));
-      //   FC().afterNextBuildDo(() {
+      //   fco.afterNextBuildDo(() {
       //     showTreeNodeMenu();
       //   });
       // },
@@ -224,7 +224,7 @@ class NodeWidget extends StatelessWidget {
       //   // imageTC: tc,
       // ));
       //
-      // FC().afterNextBuildDo(() {
+      // fco.afterNextBuildDo(() {
       //   if (entry.node is SnippetRefNode) {
       //     _pushThenEditSnippet();
       //   } else {
@@ -240,7 +240,7 @@ class NodeWidget extends StatelessWidget {
       // onLongPress: () {
       //   Callout(
       //     // context: context,
-      //     feature: CAPI.SOURCE_CODE.index,
+      //     cId: CAPI.SOURCE_CODE.index,
       //     color: Colors.white,
       //     closeButtonColor: Colors.red,
       //     barrierOpacity: .1,
@@ -257,8 +257,8 @@ class NodeWidget extends StatelessWidget {
       //             )
       //           ],
       //         ),
-      //     width: FC().scrW * .9,
-      //     height: FC().scrH * .8,
+      //     width: FCO.scrW * .9,
+      //     height: FCO.scrH * .8,
       //     minHeight: 60,
       //     onBarrierTappedF: () async {
       //       Callout.removeOverlay(CAPI.SOURCE_CODE.index);
@@ -289,14 +289,14 @@ class NodeWidget extends StatelessWidget {
   //     showTreeNodeMenu();
   //   } else if (snippetBloc.state.aNodeIsSelected) {
   //     snippetBloc.add(const SnippetEvent.clearNodeSelection());
-  //     FC().afterNextBuildDo(() {
+  //     fco.afterNextBuildDo(() {
   //       snippetBloc.add(SnippetEvent.selectNode(
   //         node: entry.node,
   //         nodeParent: entry.parent?.node,
   //         showProperties: true,
   //         // imageTC: tc,
   //       ));
-  //       FC().afterNextBuildDo(() {
+  //       fco.afterNextBuildDo(() {
   //         showTreeNodeMenu();
   //       });
   //     });
@@ -307,17 +307,17 @@ class NodeWidget extends StatelessWidget {
   //       showProperties: true,
   //       // imageTC: tc,
   //     ));
-  //     FC().afterNextBuildDo(() {
+  //     fco.afterNextBuildDo(() {
   //       showTreeNodeMenu();
   //     });
   //   }
-  //   if (FlutterContent().capiBloc.state.jsonClipboard != null) {
+  //   if (FCO.capiBloc.state.jsonClipboard != null) {
   //     Callout.unhide("floating-clipboard");
   //   }
   // }
 
   Widget _text() {
-    var selectedNode = MaterialSPA.selectedNode;
+    var selectedNode = FlutterContentApp.selectedNode;
     var node = entry.node;
 
     String displayedNodeName = node is SnippetRootNode && node.name.isNotEmpty
@@ -361,8 +361,8 @@ class NodeWidget extends StatelessWidget {
 // _pushThenEditSnippet() {
 // String refdNodeName = (entry.node as SnippetRefNode).snippetName;
 // // push snippet editor
-// FlutterContent().capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: refdNodeName));
-// FC().afterNextBuildDo(() {
+// FCO.capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: refdNodeName));
+// fco.afterNextBuildDo(() {
 //   SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
 //   if (snippetBeingEdited != null) {
 //     showSnippetTreeCallout(
@@ -372,13 +372,13 @@ class NodeWidget extends StatelessWidget {
 //         // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
 //         STreeNode.unhighlightSelectedNode();
 //         Callout.dismiss('selected-panel-border-overlay');
-//         FlutterContent().capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-//         FlutterContent().capiBloc.add(const CAPIEvent.popSnippetBloc());
+//         FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+//         FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
 //         // removeNodePropertiesCallout();
 //         Callout.dismiss(TREENODE_MENU_CALLOUT);
 //         MaterialAppWrapperState.exitEditMode();
 //         if (snippetBeingEdited.state.canUndo()) {
-//           FlutterContent().capiBloc.add(const CAPIEvent.saveModel());
+//           FCO.capiBloc.add(const CAPIEvent.saveModel());
 //         }
 //       },
 //       allowButtonCallouts: allowButtonCallouts,

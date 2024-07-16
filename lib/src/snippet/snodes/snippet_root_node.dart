@@ -5,7 +5,23 @@ import 'package:gap/gap.dart';
 
 part 'snippet_root_node.mapper.dart';
 
-@MappableClass() //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
+class SnippetRootNodeHook extends MappingHook {
+  const SnippetRootNodeHook();
+
+  @override
+  Object? beforeDecode(Object? value) {
+    debugPrint('before');
+    return value;
+  }
+
+  @override
+  Object? afterDecode(Object? value) {
+    debugPrint('after');
+    return value;
+  }
+
+}
+@MappableClass(hook: SnippetRootNodeHook()) //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
   RoutePath? routePath;
@@ -69,9 +85,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           calloutWidth: 280,
         ),
       ];
-
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    debugPrint("SnippetRootNode.toWidget()...");
     if (findDescendant(SnippetRootNode) != null) {}
     setParent(parentNode);
     return FutureBuilder<void>(
@@ -81,7 +97,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             debugPrint("FutureBuilder<void> Ensuring $name present");
             try {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
-              SnippetRootNode? snippet = FContent().currentSnippet(name);
+              SnippetRootNode? snippet = fco.currentSnippet(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
               return snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
@@ -94,7 +110,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                     children: [
                       const Icon(Icons.error, color: Colors.redAccent),
                       Gap(10),
-                      FContent().coloredText(e.toString()),
+                      fco.coloredText(e.toString()),
                     ],
                   ),
                 ),
@@ -113,11 +129,11 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     SnippetRootNode? snippetRootNode,
     required SnippetName snippetName,
   }) async {
-    AppInfoModel appInfo = FContent().appInfo;
+    AppInfoModel appInfo = fco.appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
     if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
-      await FContent().possiblyCacheAndSaveANewSnippetVersion(
+      await fco.possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,
         publish: true,
@@ -126,15 +142,18 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     }
 
     // snippet was definitely previously created (because snippetName present in appInfo)
-    SnippetInfoModel? snippetInfo = await FContent().modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
+    // may already have a read in progress (app may start with >1 builds!
+    // if (fco.snippetsBeingReadFromFB.contains(snippetName)) return;
+
+    SnippetInfoModel? snippetInfo = await fco.modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     if (snippetInfo != null) {
       VersionId? currentVersionId = snippetInfo.currentVersionId;
       // may already be in snippet cache
-      SnippetRootNode? rootNode = FContent().currentSnippet(snippetName);
+      SnippetRootNode? rootNode = fco.currentSnippet(snippetName);
       //
       if (rootNode == null && currentVersionId != null) {
         // snippet version was not already in cache
-        await FContent().modelRepo.possiblyLoadSnippetIntoCache(
+        await fco.modelRepo.possiblyLoadSnippetIntoCache(
               snippetName: snippetName,
               versionId: currentVersionId,
             );
@@ -146,20 +165,20 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   //   required SnippetName snippetName,
   //   SnippetTemplate fromTemplate = SnippetTemplate.empty_snippet,
   // }) async {
-  //   // var appInfo = FC().appInfoAsMap;
-  //   VersionId? editingOrPublishedVersionId = FC().canEditContent
-  //       ? FC().snippetCache[snippetName]?.editingVersionId
-  //       : FC().snippetCache[snippetName]?.publishedVersionId;
+  //   // var appInfo = FCO.appInfoAsMap;
+  //   VersionId? editingOrPublishedVersionId = FCO.canEditContent
+  //       ? FCO.snippetCache[snippetName]?.editingVersionId
+  //       : FCO.snippetCache[snippetName]?.publishedVersionId;
   //   if (editingOrPublishedVersionId != null) {
   //     // exists in AppInfo, so make sure it has been fetched from FB
-  //     await FC().modelRepo.possiblyLoadSnippetIntoCache(
+  //     await FCO.modelRepo.possiblyLoadSnippetIntoCache(
   //         snippetName: snippetName, versionId: editingOrPublishedVersionId);
-  //     var rootNode = FC().snippetCache[snippetName]?.versions?[editingOrPublishedVersionId];
+  //     var rootNode = FCO.snippetCache[snippetName]?.versions?[editingOrPublishedVersionId];
   //     debugPrint('ensured snippet: ${rootNode?.name} ensured present.');
   //   } else {
   //     // snippet does not yet exist in FB
   //     SnippetRootNode rootNode = SnippetPanel.createSnippetFromTemplate(fromTemplate, snippetName);
-  //     FC().possiblyCacheAndSaveNewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+  //     FCO.possiblyCacheAndSaveNewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
   //   }
   //   // // finally ensure any descendant snippet ref nodes are also loaded
   //   // List<STreeNode> descSnippets = rootNode?.findDescendantsOfType(SnippetRefNode) ?? [];
@@ -174,9 +193,10 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   }
 
   @override
-  SnippetRootNode clone() {
+  /// optional clone name, witha default
+  SnippetRootNode clone({String? cloneName}) {
     SnippetRootNode copiedNode = super.clone() as SnippetRootNode;
-    copiedNode..name = '$name-copy'..nodeWidgetGK = GlobalKey();
+    copiedNode..name = (cloneName??'$name-copy')..nodeWidgetGK = GlobalKey();
     return copiedNode;
   }
 

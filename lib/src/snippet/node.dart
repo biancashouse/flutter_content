@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -97,14 +98,14 @@ abstract class Node extends Object {
   Widget? logoSrc() => Row(
         children: [
           Image.asset(
-            FContent().asset('lib/assets/images/pub.dev.png'),
+            fco.asset('lib/assets/images/pub.dev.png'),
             width: 16,
           ),
           const Gap(8),
         ],
       );
 
-  CAPIBloC get capiBloc => MaterialSPA.capiBloc;
+  CAPIBloC get capiBloc => FlutterContentApp.capiBloc;
 
   Node();
 }

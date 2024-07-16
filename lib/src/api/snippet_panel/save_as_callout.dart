@@ -1,4 +1,3 @@
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -12,16 +11,16 @@ void showSaveAsCallout({
 }) {
   Callout.showOverlay(
       // targetGkF: targetGKF,
-      boxContentF: (_) => InputSnippetName(
+      calloutContent: InputSnippetName(
             selectedNode: selectedNode,
             selectionParentNode: selectionParentNode,
             // targetGKF: targetGKF,
             saveModelF: saveModelF,
           ),
       calloutConfig: CalloutConfig(
-        feature: "input-snippet-name",
-        suppliedCalloutW: 400,
-        suppliedCalloutH: 159,
+        cId: "input-snippet-name",
+        initialCalloutW: 400,
+        initialCalloutH: 159,
         initialTargetAlignment: Alignment.bottomCenter,
         initialCalloutAlignment: Alignment.topCenter,
         arrowType: ArrowType.THIN,
@@ -67,7 +66,7 @@ class InputSnippetNameState extends State<InputSnippetName> {
     super.initState();
     _focusNode = FocusNode();
     _txtController = TextEditingController();
-    FContent().afterNextBuildDo(() {
+    fco.afterNextBuildDo(() {
       Future.delayed(Duration.zero, () {
         _focusNode?.requestFocus();
       });
@@ -123,7 +122,7 @@ class InputSnippetNameState extends State<InputSnippetName> {
             fontSize: 18,
             color: Colors.blue[900],
             fontWeight: FontWeight.w400,
-            background: FContent().whiteBgPaint,
+            background: fco.whiteBgPaint,
           ),
         ),
       );

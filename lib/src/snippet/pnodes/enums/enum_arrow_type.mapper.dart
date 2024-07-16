@@ -25,8 +25,8 @@ class ArrowTypeEnumMapper extends EnumMapper<ArrowTypeEnum> {
   @override
   ArrowTypeEnum decode(dynamic value) {
     switch (value) {
-      case 'NO_CONNECTOR':
-        return ArrowTypeEnum.NO_CONNECTOR;
+      case 'NONE':
+        return ArrowTypeEnum.NONE;
       case 'POINTY':
         return ArrowTypeEnum.POINTY;
       case 'VERY_THIN':
@@ -53,8 +53,8 @@ class ArrowTypeEnumMapper extends EnumMapper<ArrowTypeEnum> {
   @override
   dynamic encode(ArrowTypeEnum self) {
     switch (self) {
-      case ArrowTypeEnum.NO_CONNECTOR:
-        return 'NO_CONNECTOR';
+      case ArrowTypeEnum.NONE:
+        return 'NONE';
       case ArrowTypeEnum.POINTY:
         return 'POINTY';
       case ArrowTypeEnum.VERY_THIN:

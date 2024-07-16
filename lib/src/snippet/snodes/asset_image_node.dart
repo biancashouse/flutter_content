@@ -13,7 +13,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   String? name;
   double? width;
   double? height;
-  double? scale;
+  double scale;
   BoxFitEnum? fit;
   AlignmentEnum? alignment;
 
@@ -27,7 +27,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     this.alignment,
     this.width,
     this.height,
-    this.scale,
+    this.scale = 1.0,
     // this.color,
     // this.opacity,
     // this.blendMode,
@@ -62,7 +62,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           snode: this,
           name: 'scale',
           decimalValue: scale,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => scale = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(() => scale = newValue ?? 1.0),
           calloutButtonSize: const Size(80, 20),
         ),
         EnumPropertyValueNode<BoxFitEnum?>(
@@ -160,20 +160,33 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
     return name?.isNotEmpty ?? false
-        ? SizedBox(
-            key: createNodeGK(),
-            width: width,
-            height: height,
-            child: Image.asset(
-              name!,
-              scale: scale,
-              width: width,
-              height: height,
-              fit: fit?.flutterValue,
-              alignment: alignment?.flutterValue ?? Alignment.center,
-              // package: 'flutter_content',
-            ),
-          )
+        ? LayoutBuilder(
+        key: createNodeGK(),
+          builder: (context, constraints) {
+            double? w = width != null
+                ? width! * scale
+                : constraints.maxWidth != double.infinity
+                ? constraints.maxWidth*scale
+                : null;
+            double? h = height != null
+                ? height! * scale
+                : constraints.maxHeight != double.infinity
+                ? constraints.maxHeight*scale
+                : null;
+          // debugPrint('Constrints: ${constraints.toString()}');
+            return SizedBox(
+              width: w,
+              height: h,
+                child: Image.asset(
+                  name!,
+                  // scale: scale,
+                  fit: fit?.flutterValue,
+                  alignment: alignment?.flutterValue ?? Alignment.center,
+                  // package: 'flutter_content',
+                ),
+              );
+          }
+        )
         : Placeholder(
             key: createNodeGK(),
             color: Colors.purpleAccent,

@@ -29,7 +29,7 @@ class ChipNode extends CL with ChipNodeMappable {
   SnippetTemplateEnum? template;
 
   String?
-      onTapHandlerName; // client supplied onTap (list of handlers supplied to MaterialSPA)
+      onTapHandlerName; // client supplied onTap (list of handlers supplied to FlutterContentApp)
   CalloutConfigGroup? calloutConfigGroup;
 
   ChipNode({
@@ -131,7 +131,7 @@ class ChipNode extends CL with ChipNodeMappable {
                 refreshWithUpdate(
                     () => destinationRoutePathSnippetName = newValue);
               },
-              options: FContent().pagePaths,
+              options: fco.pagePaths,
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
@@ -180,7 +180,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
     // possible handler
     void Function(BuildContext)? f =
-        onTapHandlerName != null ? FContent().namedHandler(onTapHandlerName!) : null;
+        onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
     possiblyHighlightSelectedNode();
@@ -200,28 +200,28 @@ class ChipNode extends CL with ChipNodeMappable {
 
   void onPressed(BuildContext context) {
     if (onTapHandlerName != null) {
-      FContent().namedVoidCallbacks[onTapHandlerName]?.call();
+      fco.namedVoidCallbacks[onTapHandlerName]?.call(context);
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
             () => Callout.showOverlay(
-            targetGkF: () => FContent().getCalloutGk(feature),
-            boxContentF: (_) => SnippetPanel.fromSnippet(
+            targetGkF: () => fco.getCalloutGk(feature),
+            calloutContent: SnippetPanel.fromSnippet(
               panelName: calloutConfigGroup!.contentSnippetName!,
               snippetName: BODY_PLACEHOLDER,
               // allowButtonCallouts: false,
             ),
             calloutConfig: CalloutConfig(
-              feature: feature!,
+              cId: feature!,
               initialTargetAlignment:
               calloutConfigGroup!.targetAlignment != null ? calloutConfigGroup!.targetAlignment!.flutterValue : AlignmentEnum.bottomRight.flutterValue,
               initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
                   ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
                   : AlignmentEnum.topLeft.flutterValue,
-              suppliedCalloutW: 200,
-              suppliedCalloutH: 150,
+              initialCalloutW: 200,
+              initialCalloutH: 150,
               arrowType: calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
               finalSeparation: 100,
               barrier: CalloutBarrier(
@@ -234,7 +234,7 @@ class ChipNode extends CL with ChipNodeMappable {
             )),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      FContent().addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      fco.addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
@@ -248,9 +248,9 @@ class ChipNode extends CL with ChipNodeMappable {
 
   // void onPressed(BuildContext context) {
   //   if (onTapHandlerName != null) {
-  //     FC().namedVoidCallbacks[onTapHandlerName]?.call();
+  //     FCO.namedVoidCallbacks[onTapHandlerName]?.call();
   //   } else if (destinationRoutePathSnippetName != null) {
-  //     FC().addRoute(
+  //     FCO.addRoute(
   //         newPath: destinationRoutePathSnippetName!,
   //         template: SnippetTemplateEnum.empty);
   //     context.go(destinationRoutePathSnippetName!);

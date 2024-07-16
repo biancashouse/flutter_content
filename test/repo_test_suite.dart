@@ -11,7 +11,7 @@ void main() {
   final scaffoldWithTabs = SnippetTemplateEnum.scaffold_with_tabbar.name;
 
   late MockModelRepository mockRepo;
-  late SnippetBloC snippetBloc;
+  late CAPIBloC capiBloc;
   late STreeNode titleTextNode;
   late SnippetTreeController scaffoldWithTabsTreeC;
   late SnippetTreeController emptyTreeC;
@@ -96,7 +96,7 @@ void main() {
 
   test('compare states', () async {
     expect(
-      SnippetBloC(rootNode: emptySnippet, treeC: emptyTreeC,
+      CAPIBloC(rootNode: emptySnippet, treeC: emptyTreeC,
           // treeUR: ur
       )
           .state
@@ -105,7 +105,7 @@ void main() {
             selectedWidgetGK: selectedWidgetGK,
             selectedTreeNodeGK: selectedTreeNodeGK,
           ),
-      SnippetBloC(rootNode: emptySnippet, treeC: emptyTreeC,
+      CAPIBloC(rootNode: emptySnippet, treeC: emptyTreeC,
           // treeUR: ur
       )
           .state
@@ -117,20 +117,20 @@ void main() {
     );
   });
 
-  // blocTest<SnippetBloC, SnippetState>(
+  // blocTest<CAPIBloC, CAPIState>(
   //     'scaffoldWithTabs: select the Title TextNode',
-  //     build: () => snippetBloc = SnippetBloC(
+  //     build: () => CAPIBloC = CAPIBloC(
   //         rootNode: scaffoldWithTabsSnippet,
   //         treeC: scaffoldWithTabsTreeC,
   //         // treeUR: ur
   //     ),
-  //     act: (bloc) => bloc.add(SnippetEvent.selectNode(
+  //     act: (bloc) => bloc.add(CAPIEvent.selectNode(
   //           node: titleTextNode,
   //           selectedWidgetGK: selectedWidgetGK,
   //           selectedTreeNodeGK: selectedTreeNodeGK,
   //         )),
-  //     expect: () => <SnippetState>[
-  //           snippetBloc.state.copyWith(
+  //     expect: () => <CAPIState>[
+  //           CAPIBloC.state.copyWith(
   //             selectedNode: titleTextNode,
   //             selectedWidgetGK: selectedWidgetGK,
   //             selectedTreeNodeGK: selectedTreeNodeGK,

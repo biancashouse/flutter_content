@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/main_axis_size_editor.dart';
 
@@ -31,7 +32,7 @@ enum MainAxisSizeEnum {
         },
       );
 
-  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
 
   static MainAxisSizeEnum? of(int? index) => index != null ? MainAxisSizeEnum.values.elementAtOrNull(index) : null;
 }

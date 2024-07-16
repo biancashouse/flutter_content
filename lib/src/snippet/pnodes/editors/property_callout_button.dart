@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 
 class PropertyCalloutButton extends StatelessWidget {
-  final Feature feature;
+  final Feature cId;
   final Alignment alignment;
   final String? label;
   final String? tooltip;
@@ -17,7 +17,7 @@ class PropertyCalloutButton extends StatelessWidget {
   final ValueNotifier<int> notifier;
 
   const PropertyCalloutButton({
-    required this.feature,
+    required this.cId,
     this.alignment = Alignment.centerLeft,
     this.label,
     this.tooltip,
@@ -36,10 +36,10 @@ class PropertyCalloutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CalloutConfig config = CalloutConfig(
-      feature: feature,
-      suppliedCalloutW: calloutSize.width,
-      suppliedCalloutH: calloutSize.height,
-      arrowType: ArrowType.NO_CONNECTOR,
+      cId: cId,
+      initialCalloutW: calloutSize.width,
+      initialCalloutH: calloutSize.height,
+      arrowType: ArrowType.NONE,
       // arrowColor: Colors.blueAccent,
       fillColor: menuBgColor,
       //alwaysReCalcSize: true,
@@ -47,17 +47,17 @@ class PropertyCalloutButton extends StatelessWidget {
       initialCalloutAlignment: initialCalloutAlignment ?? Alignment.center,
       draggable: draggable ?? true,
       onDragStartedF: () {
-        // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
+        // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
       },
       onDragEndedF: (_) {
-        // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
+        // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
       },
       movedOrResizedNotifier: notifier,
       barrier: CalloutBarrier(
         opacity: .1,
         onTappedF: () async {
-          // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-          Callout.dismiss(feature);
+          // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
+          Callout.dismiss(cId);
         },
       ),
       containsTextField: true,
@@ -65,7 +65,8 @@ class PropertyCalloutButton extends StatelessWidget {
       resizeableV: true,
       borderRadius: 16,
     );
-    return Callout.wrapTarget(
+
+    return WrappedCallout(
       calloutConfig: config,
       calloutBoxContentBuilderF: (ctx) => calloutContents(ctx),
       targetChangedNotifier: notifier,
@@ -73,7 +74,7 @@ class PropertyCalloutButton extends StatelessWidget {
         onTap: (){
           Callout.unhideParentCallout(ctx, animateSeparation: false);
         },
-        child: Tooltip(message: feature,
+        child: Tooltip(message: cId,
           child: Container(
             // key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),

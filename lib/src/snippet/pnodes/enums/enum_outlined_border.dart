@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
@@ -35,7 +36,7 @@ enum OutlinedBorderEnum {
         menuItems: values.map((e) => e.toMenuItem()).toList(),
         originalEnumIndex: enumValueIndex,
         onChangeF: (newIndex) {
-          // FlutterContent().capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
+          // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
           onChangedF?.call(newIndex);
         },
         wrap: true,
@@ -59,7 +60,7 @@ enum OutlinedBorderEnum {
 
   Widget toMenuItem() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: FContent().coloredText(
+        child: fco.coloredText(
           name,
           color: Colors.white,
           fontSize: 14,

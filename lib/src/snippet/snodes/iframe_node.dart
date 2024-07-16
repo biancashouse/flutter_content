@@ -122,7 +122,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
         : (src?.contains('<iframe') ?? false)
             ? extractUrlFromIframe(src!)!
             : src!;
-    return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FlutterContent().capiBloc.state.snippetsBeingEdited.isEmpty
+    return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FCO.capiBloc.state.snippetsBeingEdited.isEmpty
         ? Center(
             key: createNodeGK(),
             child: IFrame(
@@ -136,14 +136,14 @@ class IFrameNode extends CL with IFrameNodeMappable {
             ),
           )
         : const Offstage();
-    // FC().areAnySnippetsBeingEdited
+    // FCO.areAnySnippetsBeingEdited
     //         ? const Placeholder()
     //         : Column(
     //             children: [
     //               const Placeholder(),
     //               Row(key: createNodeGK(), children: [
     //                 const Icon(Icons.code, size: 32, color: Colors.red),
-    //                 FC().coloredText('src missing!', color: Colors.red),
+    //                 FCO.coloredText('src missing!', color: Colors.red),
     //               ]),
     //             ],
     //           );

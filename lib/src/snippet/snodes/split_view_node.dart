@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -44,7 +45,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             FC().coloredText('axis:', color: Colors.white),
+  //             FCO.coloredText('axis:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             AxisEditor(
   //               originalValue: axis,
@@ -82,7 +83,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                 color: Colors.red,
               ),
               Gap(10),
-              FContent().coloredText('MultiSplitView has infinite constraint!',
+              fco.coloredText('MultiSplitView has infinite constraint!',
                   color: Colors.red),
             ],
           );

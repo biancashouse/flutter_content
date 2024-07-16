@@ -10,8 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late SnippetBloC snippetBloc;
-  late SnippetState selectedState;
+  late CAPIBloC CAPIBloC;
+  late CAPIState selectedState;
   late SnippetRootNode snippetWithScaffoldAnd2Tabs;
 
   late TextNode cl1;
@@ -72,10 +72,10 @@ void main() {
       ..validateTree();
     treeC = SnippetTreeController(
         roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    snippetBloc = SnippetBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
-    selectedState = snippetBloc.state;
+    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    selectedState = CAPIBloC.state;
     if (select != null) {
-      selectedState = snippetBloc.state.copyWith(
+      selectedState = CAPIBloC.state.copyWith(
         selectedNode: select,
         showProperties: true,
         selectedWidgetGK: selectedWidgetGK,
@@ -85,86 +85,86 @@ void main() {
     }
   }
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert TextNode before first sibling',
     setUp: () =>
         test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.addSiblingBefore(type: TextNode));
+      bloc.add(const CAPIEvent.addSiblingBefore(type: TextNode));
     },
     skip: 1,
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(mc1.children.first, isA<TextNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert TextNode after first sibling',
     setUp: () =>
         test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl1),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.addSiblingAfter(type: TextNode));
+      bloc.add(const CAPIEvent.addSiblingAfter(type: TextNode));
     },
     skip: 1,
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(mc1.children[1], isA<TextNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert TextNode after last sibling',
     setUp: () =>
         test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.addSiblingAfter(type: TextNode));
+      bloc.add(const CAPIEvent.addSiblingAfter(type: TextNode));
     },
     skip: 1,
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(mc1.children.last, isA<TextNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert TextNode before last sibling',
     setUp: () =>
         test_snippet_setup(mc1..children = [cl1, cl2, cl3], select: cl3),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     seed: () => selectedState,
     act: (bloc) {
-      bloc.add(const SnippetEvent.addSiblingBefore(type: TextNode));
+      bloc.add(const CAPIEvent.addSiblingBefore(type: TextNode));
     },
     skip: 1,
-    expect: () => <SnippetState>[],
+    expect: () => <CAPIState>[],
     verify: (bloc) {
       expect(mc1.children[2], isA<TextNode>());
       expect(snippet.anyMissingParents(), false);
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert a 3rd tab between the 2 existing ones',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     // seed: () => selectedState,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(
+      bloc.add(CAPIEvent.selectNode(
           node: selPl,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.addSiblingBefore(type: SizedBoxNode));
-      bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
+      bloc.add(const CAPIEvent.addSiblingBefore(type: SizedBoxNode));
+      bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
     verify: (bloc) {
       expect(selPl, isA<PlaceholderNode>());
@@ -177,17 +177,17 @@ void main() {
     },
   );
 
-  blocTest<SnippetBloC, SnippetState>(
+  blocTest<CAPIBloC, CAPIState>(
     'insert 3rd tab view after existing ones',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd2Tabs),
-    build: () => snippetBloc,
+    build: () => CAPIBloC,
     act: (bloc) {
-      bloc.add(SnippetEvent.selectNode(
+      bloc.add(CAPIEvent.selectNode(
           node: selPl,
           selectedWidgetGK: selectedWidgetGK,
           selectedTreeNodeGK: selectedTreeNodeGK));
-      bloc.add(const SnippetEvent.addSiblingAfter(type: SizedBoxNode));
-      bloc.add(const SnippetEvent.appendChild(type: ContainerNode));
+      bloc.add(const CAPIEvent.addSiblingAfter(type: SizedBoxNode));
+      bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
     verify: (bloc) {
       expect(selPl, isA<PlaceholderNode>());

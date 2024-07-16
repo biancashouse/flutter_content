@@ -19,7 +19,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     super.key,
   });
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
-    return !FContent().canEditContent
+    return !fco.canEditContent
         ? GestureDetector(
             onTap: () {
               if (tc.targetsWrapperState() == null) return;
@@ -121,13 +121,13 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
               onDoubleTap: () async {
-                if (!FContent().canEditContent) return;
+                if (!fco.canEditContent) return;
 
                 if (tc.targetsWrapperState() == null) return;
 
-                // MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                // FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-                // FC().afterNextBuildDo(() {
+                // fco.afterNextBuildDo(() {
                 // save for use after the refresh
                 // var wrapperPos = parentWrapperState?.wrapperPos;
                 // var wrapperSize = parentWrapperState?.wrapperSize;
@@ -135,7 +135,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
 
                 // if (wrapperRect == null) return;
 
-                var coverGK = FContent().getTargetGk(tc.uid);
+                var coverGK = fco.getTargetGk(tc.uid);
                 Rect? targetRect = coverGK!.globalPaintBounds();
                 if (targetRect == null) return;
 
@@ -143,8 +143,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
                 // STreeNode.hideAllTargetBtns(except: tc);
                 // FC.forceRefresh();
                 //
-                // FC().afterNextBuildDo(() {
-                Alignment? ta = FContent().calcTargetAlignmentWithinWrapper(
+                // fco.afterNextBuildDo(() {
+                Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
                     wrapperRect, targetRect);
 
                 tc
@@ -181,7 +181,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     if (tc.targetsWrapperState() == null) return;
 
     // cover will now have been rendered with its gk
-    var coverGK = FContent().getTargetGk(tc.uid);
+    var coverGK = fco.getTargetGk(tc.uid);
     // debugPrint('getTargetGK: $coverGK');
     if (coverGK == null) return;
     // var cc = coverGK?.currentContext;
@@ -190,7 +190,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     if (targetRect == null) return;
 
     Alignment? ta =
-        FContent().calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+    fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;
@@ -209,7 +209,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         justPlaying: true,
         wrapperRect: wrapperRect,
       );
-      FContent().afterMsDelayDo(tc.calloutDurationMs, () {
+      fco.afterMsDelayDo(tc.calloutDurationMs, () {
         tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
         });
@@ -223,21 +223,21 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     Callout.dismiss('config-toolbar');
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
-        feature: 'config-toolbar',
+        cId: 'config-toolbar',
         fillColor: Colors.purpleAccent,
-        suppliedCalloutW: 800,
-        suppliedCalloutH: 80,
+        initialCalloutW: 800,
+        initialCalloutH: 80,
         decorationShape: DecorationShapeEnum.rounded_rectangle,
         borderRadius: 16,
         animate: false,
-        arrowType: ArrowType.NO_CONNECTOR,
-        initialCalloutPos: FContent().calloutConfigToolbarPos(),
+        arrowType: ArrowType.NONE,
+        initialCalloutPos: fco.calloutConfigToolbarPos(),
         onDragEndedF: (newPos) {
-          FContent().setCalloutConfigToolbarPos(newPos);
+          fco.setCalloutConfigToolbarPos(newPos);
         },
         dragHandleHeight: 30,
       ),
-      boxContentF: (ctx) => CalloutConfigToolbar(
+      calloutContent: CalloutConfigToolbar(
         tc: tc,
         wrapperRect: wrapperRect,
         onCloseF: () {

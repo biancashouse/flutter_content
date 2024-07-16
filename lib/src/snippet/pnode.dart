@@ -29,7 +29,8 @@ import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart'
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
-import 'pnodes/enums/enum_decoration.dart';
+import 'pnodes/enums/mappable_enum_decoration.dart';
+import 'pnodes/enums/enum_flex_fit.dart';
 import 'pnodes/groups/button_style_group.dart';
 import 'pnodes/groups/outlined_border_group.dart';
 import 'snodes/upto6color_values.dart';
@@ -104,7 +105,7 @@ class TextStylePropertyGroup extends PropertyGroup {
         nameOnSeparateLine: true,
         expands: true,
         stringValue: textStyleGroup?.namedTextStyle,
-        options: FContent().namedTextStyles.keys.toList(),
+        options: fco.namedTextStyles.keys.toList(),
         onStringChange: (newValue) {
           textStyleGroup ??= TextStyleGroup();
           textStyleGroup!.namedTextStyle = newValue;
@@ -130,7 +131,7 @@ class TextStylePropertyGroup extends PropertyGroup {
         onFontFamilyChange: (newValue) {
           textStyleGroup ??= TextStyleGroup();
           textStyleGroup!.fontFamily = newValue;
-          FContent.forceRefresh();
+          fco.forceRefresh();
           onGroupChange.call(textStyleGroup!);
         },
       ),
@@ -287,7 +288,7 @@ class ButtonStylePropertyGroup extends PropertyGroup {
         nameOnSeparateLine: true,
         expands: true,
         stringValue: buttonStyleGroup?.namedButtonStyle,
-        options: FContent().namedButtonStyles.keys.toList(),
+        options: fco.namedButtonStyles.keys.toList(),
         onStringChange: (newValue) {
           buttonStyleGroup ??=ButtonStyleGroup();
           buttonStyleGroup!.namedButtonStyle = newValue;
@@ -491,7 +492,7 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //         snode: super.snode,
 //         name: 'name',
 //         stringValue: name,
-//         options: FC().snippetsMap.keys.toList(),
+//         options: FCO.snippetsMap.keys.toList(),
 //         onStringChange: (newValue) {},
 //         calloutButtonSize: const Size(280, 20),
 //         calloutSize: const Size(280, 48),
@@ -631,7 +632,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
 //     // TODO use pushSnippet...
 //     return NodePropertyCalloutButton(
-//       feature: ,
+//       cId: ,
 //       notifier: ValueNotifier<int>(0),
 //       labelWidget: Text(
 //         displayedName,
@@ -735,7 +736,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             //
 //             //   },
 //             //   onDoneF: () {
-//             //     FC().afterMsDelayDo(500, () {
+//             //     fco.afterMsDelayDo(500, () {
 //             //       Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
 //             //     });
 //             //   },
@@ -853,7 +854,7 @@ class StringPropertyValueNode extends PTreeNode {
 //     debugPrint('toPropertyNodeContents');
 //     return PropertyButton<String>(
 //         originalText: stringValue ?? '',
-//         options: FC().snippetInfoCache.keys.toList()..sort(),
+//         options: FCO.snippetInfoCache.keys.toList()..sort(),
 //         label: super.name,
 //         maxLines: numLines,
 //         expands: expands,
@@ -1210,7 +1211,7 @@ class ColorPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) => PropertyButtonColor(
-        feature: 'color',
+        cId: 'color',
         label: name,
         tooltip: tooltip,
         originalColor: colorValue != null ? Color(colorValue!) : null,
@@ -1248,8 +1249,8 @@ class GradientPropertyValueNode extends PTreeNode {
         child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
             return PropertyButtonColor(
-              feature: 'color1',
-              key: GlobalKey(),
+              cId: '$name:1',
+              // key: GlobalKey(),
               label: '',
               originalColor: colorValues?.color1Value != null ? Color(colorValues!.color1Value!) : null,
               onChangeF: (Color? newColor) {
@@ -1272,7 +1273,7 @@ class GradientPropertyValueNode extends PTreeNode {
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return PropertyButtonColor(
-                feature: 'color2',
+                cId: '$name:2',
                 label: '',
                 originalColor: colorValues?.color2Value != null ? Color(colorValues!.color2Value!) : null,
                 onChangeF: (Color? newColor) {
@@ -1296,7 +1297,7 @@ class GradientPropertyValueNode extends PTreeNode {
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return PropertyButtonColor(
-                feature: 'color3',
+                cId: '$name:3',
                 label: '',
                 originalColor: colorValues?.color3Value != null ? Color(colorValues!.color3Value!) : null,
                 onChangeF: (Color? newColor) {
@@ -1320,7 +1321,7 @@ class GradientPropertyValueNode extends PTreeNode {
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return PropertyButtonColor(
-                feature: 'color4',
+                cId: '$name:4',
                 label: '',
                 originalColor: colorValues?.color4Value != null ? Color(colorValues!.color4Value!) : null,
                 onChangeF: (Color? newColor) {
@@ -1344,7 +1345,7 @@ class GradientPropertyValueNode extends PTreeNode {
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return PropertyButtonColor(
-                feature: 'color5',
+                cId: '$name:5',
                 label: '',
                 originalColor: colorValues?.color5Value != null ? Color(colorValues!.color5Value!) : null,
                 onChangeF: (Color? newColor) {
@@ -1368,7 +1369,7 @@ class GradientPropertyValueNode extends PTreeNode {
           StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return PropertyButtonColor(
-                feature: 'color6',
+                cId: '$name:6',
                 label: '',
                 originalColor: colorValues?.color6Value != null ? Color(colorValues!.color6Value!) : null,
                 onChangeF: (Color? newColor) {
@@ -1504,7 +1505,7 @@ class EnumPropertyValueNode<T> extends PTreeNode {
   @override
   Widget toPropertyNodeContents(BuildContext context) {
     // just show name for null property value
-    // if (value == null) return FC().coloredText(name, color:Colors.white);
+    // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
     if (_sameType<T, SnippetTemplateEnum?>()) {
       return SnippetTemplateEnum.propertyNodeContents(
@@ -1560,6 +1561,11 @@ class EnumPropertyValueNode<T> extends PTreeNode {
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // FlexFit -------------
+    if (_sameType<T, FlexFitEnum?>()) {
+      return FlexFitEnum.propertyNodeContents(
+          snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
+    }
+    // TextDirection -------------
     if (_sameType<T, TextDirectionEnum?>()) {
       return TextDirectionEnum.propertyNodeContents(
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));

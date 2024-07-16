@@ -259,11 +259,11 @@
 // const double MAXIMISED_STYLE_CALLOUT_W = 400;
 // const double MAXIMISED_STYLE_CALLOUT_H = 300;
 //
-// Offset stylesCalloutInitialPos() => Offset(FC().scrW - MAXIMISED_STYLE_CALLOUT_W, FC().scrH - MAXIMISED_STYLE_CALLOUT_H);
+// Offset stylesCalloutInitialPos() => Offset(FCO.scrW - MAXIMISED_STYLE_CALLOUT_W, FCO.scrH - MAXIMISED_STYLE_CALLOUT_H);
 //
 // void showStylesCallout(final TargetModel tc, final ScrollController? ancestorHScrollC, final ScrollController? ancestorVScrollC) {
 //   Callout(
-//     feature: CAPI.STYLES_CALLOUT.feature(),
+//     cId: CAPI.STYLES_CALLOUT.feature(),
 //     color: Colors.transparent,
 //     width: MAXIMISED_STYLE_CALLOUT_W,
 //     height: MAXIMISED_STYLE_CALLOUT_H,
@@ -319,7 +319,7 @@
 //           // parentState.stylesCallout?.refresh(() {});
 //           // rerender text editor callout
 //           removeTextEditorCallout();
-//           FC().afterMsDelayDo(250, () {
+//           fco.afterMsDelayDo(250, () {
 //             showTextEditorCallout(tc, ancestorHScrollC, ancestorVScrollC);
 //           });
 //         },
@@ -328,7 +328,7 @@
 //           // rerender text editor callout
 //           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           removeTextEditorCallout();
-//           FC().afterMsDelayDo(50, () {
+//           fco.afterMsDelayDo(50, () {
 //             showTextEditorCallout(tc, ancestorHScrollC, ancestorVScrollC);
 //           });
 //         },
@@ -341,7 +341,7 @@
 //           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           Callout.refreshOverlay(CAPI.TEXT_CALLOUT.feature(), () {});
 //           // removeTextEditorCallout();
-//           // FC().afterMsDelayDo(50, () {
+//           // fco.afterMsDelayDo(50, () {
 //           //   showTextEditorCallout(tc, ancestorScrollC);
 //           // });
 //         },
@@ -358,7 +358,7 @@
 //     ),
 //     initialCalloutPos: stylesCalloutInitialPos(),
 //     ignoreCalloutResult: true,
-//     arrowType: ArrowType.NO_CONNECTOR,
+//     arrowType: ArrowType.NONE,
 //   ).show(
 //     notUsingHydratedStorage: true,
 //   );

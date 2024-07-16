@@ -52,7 +52,7 @@ class ButtonStyleGroup with ButtonStyleGroupMappable {
 
     // TextStyle? ts = textStyle?.toTextStyle(context);
 
-    return (FContent().namedButtonStyles[namedButtonStyle] ?? defaultButtonStyle)?.merge(
+    return (fco.namedButtonStyles[namedButtonStyle] ?? defaultButtonStyle)?.merge(
       ButtonStyle(
         backgroundColor: WidgetStatePropertyAll<Color?>(bgColorValue != null ? Color(bgColorValue!) : null),
         foregroundColor: WidgetStatePropertyAll<Color?>(fgColorValue != null ? Color(fgColorValue!) : null),

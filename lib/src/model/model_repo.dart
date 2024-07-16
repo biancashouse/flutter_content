@@ -20,7 +20,7 @@ abstract class IModelRepository {
     bool? autoPublish,
   });
 
-  Future<VersionId?> saveLatestSnippetVersion({
+  Future<bool> saveLatestSnippetVersion({
     required SnippetName snippetName,
   });
 

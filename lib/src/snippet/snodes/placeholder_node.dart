@@ -3,6 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:gap/gap.dart';
@@ -64,14 +65,14 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
-    if (name != null && !FContent().placeNames.contains(name!)) {
-      FContent().placeNames.add(name!);
+    if (name != null && !fco.placeNames.contains(name!)) {
+      fco.placeNames.add(name!);
     }
 
     // possibly populate with a spnippet
     Widget? childWidget;
-    if (FContent().snippetPlacementMap.containsKey(name)) {
-      String snippetName = FContent().snippetPlacementMap[name]!;
+    if (fco.snippetPlacementMap.containsKey(name)) {
+      String snippetName = fco.snippetPlacementMap[name]!;
       return FutureBuilder<void>(
           future:
               SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
@@ -88,7 +89,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                       // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
                       // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
                       // // var fc = FC();
-                      // SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
+                      // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
                       // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                       // // snippet panel renders a canned snippet or a supplied snippet tree
                       //return _renderSnippet(context);
@@ -96,7 +97,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                       try {
                         // in case did a revert, ignore snapshot data and use the AppInfo instead
                         SnippetRootNode? snippet =
-                            FContent().currentSnippet(snippetName);
+                            fco.currentSnippet(snippetName);
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null
@@ -115,7 +116,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                                 const Icon(Icons.error,
                                     color: Colors.redAccent),
                                 Gap(10),
-                                FContent().coloredText(e.toString()),
+                                fco.coloredText(e.toString()),
                               ],
                             ),
                           ),

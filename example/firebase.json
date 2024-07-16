@@ -1,13 +1,6 @@
 {
   "hosting": {
     "public": "build/web",
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
-    "target": "staging-deploy",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -18,12 +11,22 @@
     "firestore": {
       "port": 8080
     },
-    "hosting": {
-      "port": 5000
+    "storage": {
+      "port": 9199
     },
     "ui": {
       "enabled": true
     },
-    "singleProjectMode": true
+    "singleProjectMode": true,
+    "hosting": {
+      "port": 9000
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "firebase-storage.rules"
   }
 }

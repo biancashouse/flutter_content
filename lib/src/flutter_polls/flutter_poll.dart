@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_event.dart';
@@ -210,12 +211,12 @@ class FlutterPollState extends State<FlutterPoll> {
     voterId = HydratedBloc.storage.read("voter-id");
     if (voterId != null) {
       // firestore
-      OptionCountsAndVoterRecord result = await MaterialSPA.capiBloc.modelRepo.getPollResultsForUser(
+      OptionCountsAndVoterRecord result = await FlutterContentApp.capiBloc.modelRepo.getPollResultsForUser(
             voterId: voterId!,
             pollName: widget.pollName,
           );
       pollBloc = PollBloC(
-        modelRepo: MaterialSPA.capiBloc.modelRepo,
+        modelRepo: FlutterContentApp.capiBloc.modelRepo,
         voterId: voterId!,
         pollName: widget.pollName,
         starts: widget.startDate,
@@ -223,7 +224,7 @@ class FlutterPollState extends State<FlutterPoll> {
         result: result,
       );
     } else {
-      var modelRepo = MaterialSPA.capiBloc.modelRepo;
+      var modelRepo = FlutterContentApp.capiBloc.modelRepo;
       pollBloc = PollBloC(
         modelRepo: modelRepo,
         voterId: null,
@@ -253,7 +254,7 @@ class FlutterPollState extends State<FlutterPoll> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              if (showTextInputButton) FContent().coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
+                              if (showTextInputButton) fco.coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
                               Container(
                                 color: showTextInputButton ? Colors.red[900] : Colors.white,
                                 padding: const EdgeInsets.all(4),
@@ -285,16 +286,16 @@ class FlutterPollState extends State<FlutterPoll> {
                           SizedBox(height: widget.heightBetweenTitleAndOptions),
                           ...widget.children,
                           const Gap(10),
-                          FContent().coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
+                          fco.coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
                           const Gap(10),
                           Align(
                               alignment: Alignment.centerRight,
                               child: (state.tooEarly())
-                                  ? FContent().coloredText('poll not yet open. begins: ${FContent().formattedDate(state.startDate!)}', fontSize: 12)
+                                  ? fco.coloredText('poll not yet open. begins: ${fco.formattedDate(state.startDate!)}', fontSize: 12)
                                   : (state.pollHasEnded())
-                                      ? FContent().coloredText('poll closed. ended: ${FContent().formattedDate(state.startDate!)}', fontSize: 12)
+                                      ? fco.coloredText('poll closed. ended: ${fco.formattedDate(state.startDate!)}', fontSize: 12)
                                       : (!state.tooEarly() && !state.pollHasEnded() && state.startDate != null && state.endDate != null)
-                                          ? FContent().coloredText('poll closes: ${FContent().formattedDate(state.endDate!)}', fontSize: 12)
+                                          ? fco.coloredText('poll closes: ${fco.formattedDate(state.endDate!)}', fontSize: 12)
                                           : const Offstage()),
                           Expanded(
                             child: widget.metaWidget ?? Container(),

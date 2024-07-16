@@ -2,10 +2,11 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 import '../pnodes/groups/outlined_border_group.dart';
@@ -84,6 +85,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
           if (newValues.$2 != height) {
             height = newValues.$2;
           }
+          Callout.dismissTopFeature();
         }),
       ),
       PropertyGroup(
@@ -464,7 +466,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   //       //   child: InputDecorator(
   //       //     decoration: InputDecoration(
   //       //       labelText: 'border',
-  //       //       labelStyle: FC().enclosureLabelTextStyle,
+  //       //       labelStyle: FCO.enclosureLabelTextStyle,
   //       //       border: const OutlineInputBorder(),
   //       //       // isDense: false,
   //       //     ),

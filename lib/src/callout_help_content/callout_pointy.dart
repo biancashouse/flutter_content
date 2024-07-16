@@ -23,13 +23,13 @@
 //     WidgetToast(
 //       gravity: Alignment.bottomCenter,
 //       backgroundColor: Colors.purpleAccent,
-//       feature: CAPI.ARROW_TYPE_CALLOUT.feature(),
+//       cId: CAPI.ARROW_TYPE_CALLOUT.feature(),
 //       contents: () => PointyTool(
 //         selectedTC: selectedTC,
 //         ancestorHScrollController: ancestorHScrollController,
 //         ancestorVScrollController: ancestorVScrollController,
 //       ),
-//       width: FC().scrW,
+//       width: FCO.scrW,
 //       height: 116,
 //       showCloseButton: true,
 //       closeButtonColor: Colors.white,
@@ -77,7 +77,7 @@
 //                 child: Column(
 //                     mainAxisAlignment: MainAxisAlignment.center,
 //                     children: [
-//                       ArrowType.NO_CONNECTOR,
+//                       ArrowType.NONE,
 //                       ArrowType.POINTY,
 //                     ]
 //                         .map((t) => Padding(
@@ -90,7 +90,7 @@
 //                                   setState(() => _arrowType = t);
 //                                   widget.selectedTC.arrowType = t.index;
 //                                   removeHelpContentEditorCallout();
-//                                   FC().afterMsDelayDo(250, () {
+//                                   fco.afterMsDelayDo(250, () {
 //                                     showHelpContentCallout(widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                   });
 //                                 },
@@ -123,7 +123,7 @@
 //                                         setState(() => _arrowType = t);
 //                                         widget.selectedTC.arrowType = t.index;
 //                                         removeHelpContentEditorCallout();
-//                                         FC().afterMsDelayDo(250, () {
+//                                         fco.afterMsDelayDo(250, () {
 //                                           showHelpContentCallout(
 //                                               widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                         });
@@ -151,7 +151,7 @@
 //                                         setState(() => _arrowType = t);
 //                                         widget.selectedTC.arrowType = t.index;
 //                                         removeHelpContentEditorCallout();
-//                                         FC().afterMsDelayDo(250, () {
+//                                         fco.afterMsDelayDo(250, () {
 //                                           showHelpContentCallout(
 //                                               widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                                         });
@@ -165,7 +165,7 @@
 //               ),
 //               Expanded(
 //                 flex: 1,
-//                 child: widget.selectedTC.arrowType == ArrowType.NO_CONNECTOR.index || widget.selectedTC.arrowType == ArrowType.POINTY.index
+//                 child: widget.selectedTC.arrowType == ArrowType.NONE.index || widget.selectedTC.arrowType == ArrowType.POINTY.index
 //                     ? Offstage()
 //                     : OutlinedButton(
 //                         style: OutlinedButton.styleFrom(backgroundColor: widget.selectedTC.animateArrow ? Colors.white : Colors.white60),
@@ -180,7 +180,7 @@
 //                           setState(() => _animate = !_animate);
 //                           widget.selectedTC.animateArrow = _animate;
 //                           removeHelpContentEditorCallout();
-//                           FC().afterMsDelayDo(250, () {
+//                           fco.afterMsDelayDo(250, () {
 //                             showHelpContentCallout(widget.selectedTC, true, widget.ancestorHScrollController, widget.ancestorVScrollController);
 //                           });
 //                         },
@@ -216,7 +216,7 @@
 //       color: isActive ? bgColor : Colors.white54,
 //       child: InkWell(
 //         onTap: onPressed,
-//         child: arrowType == ArrowType.NO_CONNECTOR
+//         child: arrowType == ArrowType.NONE
 //             ? Icon(Icons.rectangle_rounded, color: arrowColor)
 //             : arrowType == ArrowType.POINTY
 //                 ? Icon(Icons.messenger, color: arrowColor)

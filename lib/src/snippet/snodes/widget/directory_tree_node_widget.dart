@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -68,7 +69,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     if (snippet?.mounted ?? false) {
-                      MaterialSPA.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                      FlutterContentApp.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -77,7 +78,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                MaterialSPA.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                FlutterContentApp.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
               child: (entry.node as FileNode).toWidget(context, entry.node),
             ),
@@ -101,7 +102,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
 
     // TreeEntry<Node>? parentEntry = widget.entry.parent;
     // String dirName = (treeController.rootNode(entry) as DirectoryNode).name;
-    return FContent().coloredText(
+    return fco.coloredText(
       displayedNodeName, color:Colors.blue
     );
   }

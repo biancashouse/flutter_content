@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 part 'widgetspan_node.mapper.dart';
@@ -19,7 +20,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
     try {
       return WidgetSpan(
-        child: child != null ? child!.toWidget(context, this) : FContent().boxChild(child: const Text("missing child!"), bgColor: Colors.red),
+        child: child != null ? child!.toWidget(context, this) : fco.boxChild(child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
@@ -35,7 +36,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     return '''WidgetSpan(
       child: ${child != null}
       ? ${child!.toSource(context)}
-      : ${FContent().boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
+      : ${fco.boxChild(child: const Text("missing child!"), bgColor: Colors.red)},
   )''';
   }
 

@@ -60,7 +60,7 @@ MockModelRepository setupMockRepo() {
         ),
       ),
     )..validateTree();
-    FContent().snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
+    fco.snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
   });
   return mockRepository;
 }
@@ -76,7 +76,7 @@ void main() {
   setUp(() {
     mockRepository = setupMockRepo();
 
-    FContent().init(
+    fco.init(
       modelName: 'test-app',
     );
   });
@@ -90,7 +90,7 @@ void main() {
       versionId: TEST_VERSION_ID,
     );
 
-    var snippet = FContent().snippetInfoCache['scaffoldWithTabs']?[TEST_VERSION_ID];
+    var snippet = fco.snippetInfoCache['scaffoldWithTabs']?[TEST_VERSION_ID];
 
     expect(snippet, isNotNull);
   });

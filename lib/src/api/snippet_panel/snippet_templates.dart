@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
@@ -18,7 +19,7 @@ enum SnippetTemplateEnum {
   rich_text,
   callout_content;
 
-  Widget toMenuItem() => FContent().coloredText(_menuItem(), color: Colors.white);
+  Widget toMenuItem() => fco.coloredText(_menuItem(), color: Colors.white);
 
   String _menuItem() => switch (this) {
         SnippetTemplateEnum.empty => 'placeholder',

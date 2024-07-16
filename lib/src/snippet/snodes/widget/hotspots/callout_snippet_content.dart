@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(String snippetName) =>
@@ -27,89 +27,87 @@ Future<void> showSnippetContentCallout({
 }) async {
   // possibly transform before showing callout
 
-  Rect? targetRect = FContent()
+  Rect? targetRect = fco
       .getTargetGk(tc.uid)!
       .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
 
   if (targetRect == null) return;
 
-  // CAPIBloc bloc = FlutterContent().capiBloc;
+  // CAPIBloc bloc = FCO.capiBloc;
   // GlobalKey<TextEditorState> calloutChildGK = GlobalKey<TextEditorState>();
   // bool ignoreBarrierTaps = false;
   double minHeight = 0;
   // int maxLines = 5;
-  // TargetModel? tc; // = tc; //FlutterContent().capiBloc.state.tcByNameOrUid(tc);
-  GlobalKey? targetGK() => FContent().getTargetGk(tc.uid)!;
+  // TargetModel? tc; // = tc; //FCO.capiBloc.state.tcByNameOrUid(tc);
+  GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.snippetName;
-  var snippet = FContent().snippetInfoCache[tc.snippetName];
-  FContent().targetSnippetBeingConfigured = FContent().currentSnippet(tc.snippetName);
-  if (FContent().targetSnippetBeingConfigured == null) {
+  // var snippet = fco.snippetInfoCache[tc.snippetName];
+  fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);
+  if (fco.targetSnippetBeingConfigured == null) {
     var rootNode = SnippetTemplateEnum.callout_content.clone();
-    if (rootNode != null) {
-      SnippetRootNode newSnippet = SnippetPanel.createSnippetFromTemplateNodes(
-          rootNode, tc.snippetName);
-      FContent().possiblyCacheAndSaveANewSnippetVersion(
-          snippetName: tc.snippetName,
-          rootNode: newSnippet);
-      FContent().targetSnippetBeingConfigured = newSnippet;
-    }
+    SnippetRootNode newSnippet =
+        SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.snippetName);
+    fco.possiblyCacheAndSaveANewSnippetVersion(
+        snippetName: tc.snippetName, rootNode: newSnippet);
+    fco.targetSnippetBeingConfigured = newSnippet;
   }
   // snipper may not exist yet
   //  by now should definitely have created the target's snippet
-  if (FContent().targetSnippetBeingConfigured != null) {
+  if (fco.targetSnippetBeingConfigured != null) {
     Callout.showOverlay(
       // zoomer: zoomer,
       targetGkF: targetGK,
-      boxContentF: (boxCtx) => PointerInterceptor(
+      calloutContent: PointerInterceptor(
         child: BlocBuilder<CAPIBloC, CAPIState>(
           builder: (context, state) {
             return const CircularProgressIndicator();
-            return FContent().targetSnippetBeingConfigured!.toWidget(context, null);
+            return fco.targetSnippetBeingConfigured!.toWidget(context, null);
           },
         ),
       ),
       calloutConfig: CalloutConfig(
-        feature: feature,
+        cId: feature,
         // hScrollController: ancestorHScrollController,
         // vScrollController: ancestorVScrollController,
-        scale: tc.transformScale,
+        // scale: tc.transformScale,
         // barrierOpacity: 0.1,
         fillColor: tc.calloutColor(),
-        decorationShape: tc.calloutDecorationShape,
+        decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
         borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
         borderThickness: tc.calloutBorderThickness,
         borderRadius: tc.calloutBorderRadius,
         arrowColor: tc.calloutColor(),
         arrowType: tc.getArrowType(),
-        fromDelta:
-            tc.calloutDecorationShape == MappableDecorationShapeEnum.star ? 60 : null,
+        fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
+            ? 60
+            : null,
         animate: tc.animateArrow,
         initialCalloutPos: tc.getCalloutPos(),
         // initialCalloutAlignment: Alignment.bottomCenter,
         // initialTargetAlignment: Alignment.topCenter,
         modal: false,
-        suppliedCalloutW: tc.calloutWidth,
-        suppliedCalloutH: tc.calloutHeight,
+        initialCalloutW: tc.calloutWidth,
+        initialCalloutH: tc.calloutHeight,
         minHeight: minHeight + 4,
         resizeableH: !justPlaying && tc.canResizeH,
         resizeableV: !justPlaying && tc.canResizeV,
         // containsTextField: true,
         // alwaysReCalcSize: true,
-        onResize: (Size newSize) {
+        onResizeF: (Size newSize) {
           tc
             ..calloutWidth = newSize.width
             ..calloutHeight = newSize.height;
-          // MaterialSPA.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+          // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
         },
         onDragEndedF: (Offset newPos) {
-          if (newPos.dy / FContent().scrH != tc.calloutTopPc ||
-              newPos.dx / FContent().scrW != tc.calloutLeftPc) {
-            tc.calloutTopPc = newPos.dy / FContent().scrH;
-            tc.calloutLeftPc = newPos.dx / FContent().scrW;
+          if (newPos.dy / fco.scrH != tc.calloutTopPc ||
+              newPos.dx / fco.scrW != tc.calloutLeftPc) {
+            tc.calloutTopPc = newPos.dy / fco.scrH;
+            tc.calloutLeftPc = newPos.dx / fco.scrW;
             tc.onChange();
-            // MaterialSPA.capiBloc.add(
+            // FlutterContentApp.capiBloc.add(
             //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
             // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
             // tc.setTextCalloutPos(newPos);
@@ -131,8 +129,8 @@ Future<void> showSnippetContentCallout({
         //     Callout.removeOverlay(feature);
         // }
         onDismissedF: () {
-          // FC().parentTW(twName)?.zoomer?.resetTransform();
-          // MaterialSPA.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+          // FCO.parentTW(twName)?.zoomer?.resetTransform();
+          // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
         },
       ),
       // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
@@ -156,7 +154,7 @@ Future<void> showSnippetContentCallout({
 //   // calc most suitable alignment
 //
 //   Callout txtEditorCallout = Callout(
-//     feature: feature,
+//     cId: feature,
 //     containsTextField: true,
 //     hScrollController: ancestorHScrollController,
 //     vScrollController: ancestorVScrollController,
@@ -195,7 +193,7 @@ Future<void> showSnippetContentCallout({
 //   txtEditorCallout.show(
 //     notUsingHydratedStorage: true,
 //     onReadyF: () {
-//       FC().afterMsDelayDo(500, tc.textFocusNode().requestFocus);
+//       fco.afterMsDelayDo(500, tc.textFocusNode().requestFocus);
 //     },
 //   );
 //

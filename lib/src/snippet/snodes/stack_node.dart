@@ -96,7 +96,7 @@ class StackNode extends MC with StackNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             FC().coloredText('stackFit:', color: Colors.white),
+  //             FCO.coloredText('stackFit:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             StackFitEditor(
   //               originalValue: fit,
@@ -114,7 +114,7 @@ class StackNode extends MC with StackNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             FC().coloredText('clipBehavior:', color: Colors.white),
+  //             FCO.coloredText('clipBehavior:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             StackClipEditor(
   //               originalValue: clipBehavior,

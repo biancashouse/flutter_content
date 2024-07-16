@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -19,8 +21,6 @@ class TargetModel with TargetModelMappable {
   // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
   HotspotsNode? targetsWrapperNode;
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
 
   // bool single;
   double? targetLocalPosLeftPc;
@@ -39,7 +39,7 @@ class TargetModel with TargetModelMappable {
   int calloutDurationMs;
   int? calloutFillColorValue;
   int? calloutBorderColorValue;
-  DecorationShapeEnum calloutDecorationShape;
+  MappableDecorationShapeEnum calloutDecorationShape;
   double calloutBorderRadius;
   double calloutBorderThickness;
   int? starPoints;
@@ -77,7 +77,7 @@ class TargetModel with TargetModelMappable {
     this.canResizeV = true,
     this.calloutFillColorValue,
     this.calloutBorderColorValue,
-    this.calloutDecorationShape = DecorationShapeEnum.rectangle,
+    this.calloutDecorationShape = MappableDecorationShapeEnum.rectangle,
     this.calloutBorderRadius = 30,
     this.calloutBorderThickness = 1,
     this.starPoints,
@@ -179,7 +179,7 @@ class TargetModel with TargetModelMappable {
 
   Offset btnStackPos() {
     // iv rect should always be measured
-    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? FContent().scrSize;
+    Size ivSize = targetsWrapperState()?.wrapperRect.size ?? fco.scrSize;
 
     double stackPosX = (btnLocalLeftPc ?? 0.0) * ivSize.width;
     double stackPosY = (btnLocalTopPc ?? 0.0) * ivSize.height;
@@ -234,13 +234,13 @@ class TargetModel with TargetModelMappable {
   }
 
   Offset getCalloutPos() => Offset(
-    FContent().scrW * (calloutLeftPc ?? .5),
-    FContent().scrH * (calloutTopPc ?? .5),
+    fco.scrW * (calloutLeftPc ?? .5),
+    fco.scrH * (calloutTopPc ?? .5),
   );
 
   // setTextCalloutPos(Offset newGlobalPos) {
-  //   calloutTopPc = newGlobalPos.dy / FC().scrH;
-  //   calloutLeftPc = newGlobalPos.dx / FC().scrW;
+  //   calloutTopPc = newGlobalPos.dy / FCO.scrH;
+  //   calloutLeftPc = newGlobalPos.dx / FCO.scrW;
   // }
 
   // void init(
@@ -263,19 +263,23 @@ class TargetModel with TargetModelMappable {
   Future<void> onChange() async {
     SnippetRootNode? rootNode = targetsWrapperNode?.rootNodeOfSnippet();
     if (rootNode != null) {
-      FContent().possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
-      // appInfoMap = FC().appInfoAsMap;
+      fco.possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+      // appInfoMap = FCO.appInfoAsMap;
       Callout.dismissAll(onlyToasts: true);
       HydratedBloc.storage.write('flutter-content', rootNode.toJson());
-      Callout.showTextToast(
-        feature: "saving-model",
-        msgText: 'saving changes...',
-        backgroundColor: Colors.yellow,
-        width: FContent().scrW * .8,
-        height: 40,
-        gravity: Alignment.topCenter,
-        textColor: Colors.blueAccent,
+      Callout.showToast(
         removeAfterMs: 500,
+        calloutConfig: CalloutConfig(
+          cId: "saving-model",
+          gravity: Alignment.topCenter,
+          fillColor: Colors.yellow,
+          initialCalloutW: fco.scrW * .8,
+          initialCalloutH: 40,
+        ),
+        calloutContent: Padding(
+            padding: const EdgeInsets.all(10),
+            child: fco.coloredText('saving changes...',
+                color: Colors.blueAccent)),
       );
     }
 

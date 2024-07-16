@@ -35,8 +35,8 @@ class TextStyleGroup with TextStyleGroupMappable {
 
   // @override
   // String toSource(BuildContext context, {String? namedTextStyle}) {
-  //   // CAPIBloc bloc = FlutterContent().capiBlocnstance;
-  //   NamedTextStyle? namedStyle = FlutterContent().namedStyles[namedTextStyle];
+  //   // CAPIBloc bloc = FCO.capiBlocnstance;
+  //   NamedTextStyle? namedStyle = FCO.namedStyles[namedTextStyle];
   //   String? fFamily = (namedStyle?.fontFamily ?? fontFamily);
   //   Material3TextSizeEnum? fSizeName = (namedStyle?.fontSizeName ?? fontSizeName);
   //   double? fSize = (namedStyle?.fontSize ?? fontSize);
@@ -81,7 +81,7 @@ class TextStyleGroup with TextStyleGroupMappable {
     // possibly apply named textstyle
     TextStyle? defaultTS;
     if (namedTextStyle != null) {
-      defaultTS = FContent().namedTextStyles[namedTextStyle];
+      defaultTS = fco.namedTextStyles[namedTextStyle];
       if (defaultTS != null) {
         ts = ts.merge(defaultTS);
       }

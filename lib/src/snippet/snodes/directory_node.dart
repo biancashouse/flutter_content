@@ -37,7 +37,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
       return const Icon(Icons.error, color: Colors.red);
     }
 
-    // TreeController<Node> treeC = FlutterContent().capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
+    // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
     SnippetTreeController treeC = SnippetTreeController(
       roots: [this],
       childrenProvider: (STreeNode node) {

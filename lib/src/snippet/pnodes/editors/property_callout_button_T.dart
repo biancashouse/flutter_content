@@ -53,7 +53,7 @@ class PropertyButton<T> extends StatelessWidget {
         onTap: () {
           String inputDecorationLabel() => originalText.isNotEmpty && maxLines < 2 ? '$label: $originalText' : '$label...';
           CalloutConfig teCC = CalloutConfig(
-            feature: 'te',
+            cId: 'te',
             containsTextField: true,
             barrier: CalloutBarrier(
                 opacity: .25,
@@ -64,19 +64,19 @@ class PropertyButton<T> extends StatelessWidget {
             // arrowThickness: ArrowThickness.THIN,
             fillColor: Colors.white,
             // arrowColor: Colors.red,
-            arrowType: ArrowType.NO_CONNECTOR,
+            arrowType: ArrowType.NONE,
             finalSeparation: 0.0,
             initialCalloutAlignment: Alignment.topLeft,
             initialTargetAlignment: Alignment.topLeft,
             modal: false,
-            suppliedCalloutW: calloutSize.width,
-            suppliedCalloutH: calloutSize.height,
+            initialCalloutW: calloutSize.width,
+            initialCalloutH: calloutSize.height,
             resizeableH: maxLines > 1,
             resizeableV: maxLines > 1,
             onDismissedF: () {},
             onAcceptedF: () {},
             // containsTextField: true,
-            onResize: (Size newSize) {},
+            onResizeF: (Size newSize) {},
             onDragF: (Offset newOffset) {},
             targetTranslateX: 0,
             targetTranslateY: 0,
@@ -85,7 +85,7 @@ class PropertyButton<T> extends StatelessWidget {
           );
           Callout.showOverlay(
             calloutConfig: teCC,
-            boxContentF: (_) => FC_TextField(
+            calloutContent: FC_TextField(
               inputType: T,
               // key: calloutChildGK,
               prompt: () => label ?? '',
@@ -160,10 +160,10 @@ class PropertyButton<T> extends StatelessWidget {
     //     )
     //     .toList();
     var matchesMenuCC = CalloutConfig(
-      feature: 'matches',
-      suppliedCalloutW: 240,
-      suppliedCalloutH: 160,
-      arrowType: ArrowType.NO_CONNECTOR,
+      cId: 'matches',
+      initialCalloutW: 240,
+      initialCalloutH: 160,
+      arrowType: ArrowType.NONE,
       fillColor: Colors.white,
       initialTargetAlignment: Alignment.topRight,
       initialCalloutAlignment: Alignment.topLeft,
@@ -198,7 +198,7 @@ class PropertyButton<T> extends StatelessWidget {
 
     Callout.showOverlay(
       calloutConfig: matchesMenuCC,
-      boxContentF: (_) => matchesMenuBoxContent(matches),
+      calloutContent: matchesMenuBoxContent(matches),
       targetGkF: () => propertyBtnGK,
     );
   }

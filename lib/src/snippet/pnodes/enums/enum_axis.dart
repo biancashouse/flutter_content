@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/axis_editor.dart.dart';
 
@@ -52,7 +53,7 @@ enum AxisEnum  {
   //   };
   // }
 
-  Widget toMenuItem() => FContent().coloredText(name, color: Colors.white);
+  Widget toMenuItem() => fco.coloredText(name, color: Colors.white);
 
   static AxisEnum? of(int? index) => index != null ? AxisEnum.values.elementAtOrNull(index) : null;
 }

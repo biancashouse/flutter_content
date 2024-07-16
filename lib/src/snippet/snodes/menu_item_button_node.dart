@@ -2,6 +2,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
@@ -67,7 +68,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
           onPressed(context);
         }
       },
-      style: FContent().buttonStyle(30),
+      style: fco.buttonStyle(30),
       child: child?.toWidget(context, this),
     );
   }

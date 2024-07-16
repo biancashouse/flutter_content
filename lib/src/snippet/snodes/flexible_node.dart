@@ -97,7 +97,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   //         padding: const EdgeInsets.all(8.0),
   //         child: Row(
   //           children: [
-  //             FC().coloredText('fit:', color: Colors.white),
+  //             FCO.coloredText('fit:', color: Colors.white),
   //             const SizedBox(width: 10),
   //             FlexFitEditor(
   //               originalValue: fit,

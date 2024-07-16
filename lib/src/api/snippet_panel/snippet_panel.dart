@@ -1,6 +1,5 @@
 // ignore_for_file: camel_case_types
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +10,7 @@ import 'package:gap/gap.dart';
 const BODY_PLACEHOLDER = 'body-placeholder';
 
 class SnippetPanel extends StatefulWidget {
-  final String panelName;
+  final String? panelName;
 
   // from canned snippet
   final String? snippetName;
@@ -30,7 +29,7 @@ class SnippetPanel extends StatefulWidget {
   final ScrollController? ancestorVScrollController;
 
   SnippetPanel.fromNodes({
-    required this.panelName,
+    this.panelName,
     required this.snippetRootNode,
     this.handlers,
     // this.allowButtonCallouts = true,
@@ -88,9 +87,9 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
   // int countTabs() {
-  //   SnippetRootNode? rootNode = FlutterContent().capiBloc.state.rootNode("root");
+  //   SnippetRootNode? rootNode = FCO.capiBloc.state.rootNode("root");
   //   if (rootNode == null) return 0;
-  //   TabBarNode? tabBarNode = FlutterContent().capiBloc.state.snippetBeingEdited?.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
+  //   TabBarNode? tabBarNode = FCO.capiBloc.state.snippetBeingEdited?.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
   //   return tabBarNode?.children.length ?? 0;
   // }
 
@@ -101,7 +100,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     tabC!.addListener(() {
       if (!(tabC?.indexIsChanging ?? true)) {
         if (tabBarGK != null) {
-          TabBarNode? tbNode = FContent().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+          TabBarNode? tbNode = fco.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
           if (tbNode != null && !(backBtnPressed ?? false)) {
             prevTabQ.add(tbNode.selection ?? 0);
             tbNode.selection = tabC!.index;
@@ -128,12 +127,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     super.initState();
 
     widget.handlers?.forEach((key, value) {
-      FContent().registerHandler(key, value);
+      fco.registerHandler(key, value);
       debugPrint("registered handler '$key'");
     });
 
-    if (!FContent().placeNames.contains(widget.panelName)) {
-      FContent().placeNames.add(widget.panelName);
+    if (widget.panelName != null && !fco.placeNames.contains(widget.panelName)) {
+      fco.placeNames.add(widget.panelName!);
     }
 
     prevTabQ = [];
@@ -142,7 +141,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   void resetTabQandC() {
     prevTabQ = [];
     if (tabBarGK != null) {
-      TabBarNode? tbNode = FContent().gkSTreeNodeMap[tabBarGK] as TabBarNode?;
+      TabBarNode? tbNode = fco.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
       tbNode?.selection = 0;
       tabC?.index = 0;
     }
@@ -161,8 +160,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // panel name is always supplied, but snippet name can be omitted,
     // in which case a default snippet name is used: Snippet[pName].
     // But first, see if there's an entry in the placement map, in which case we use that snippet name.
-    // if (FC().snippetPlacementMap.containsKey(widget.panelName)) {
-    //   snippetNameToUse = FC().snippetPlacementMap[widget.panelName]!;
+    // if (FCO.snippetPlacementMap.containsKey(widget.panelName)) {
+    //   snippetNameToUse = FCO.snippetPlacementMap[widget.panelName]!;
     // }
     return FutureBuilder<void>(
         future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
@@ -173,21 +172,21 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           return snapshot.connectionState != ConnectionState.done
               ? const Center(child: CircularProgressIndicator())
               : BlocBuilder<CAPIBloC, CAPIState>(
-                  key: FContent().panelGkMap[widget.panelName] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]'),
+                  key: widget.panelName != null ? fco.panelGkMap[widget.panelName!] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]') : null,
                   buildWhen: (previous, current) => !current.onlyTargetsWrappers,
                   builder: (blocContext, state) {
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
                     // // var fc = FC();
-                    // SnippetInfoModel? snippetInfo = FC().snippetInfoCache[snippetName()];
+                    // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
                     // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                     // // snippet panel renders a canned snippet or a supplied snippet tree
                     //return _renderSnippet(context);
                     Widget snippetWidget;
                     try {
                       // in case did a revert, ignore snapshot data and use the AppInfo instead
-                      SnippetRootNode? snippet = FContent().currentSnippet(snippetName());
+                      SnippetRootNode? snippet = fco.currentSnippet(snippetName());
                       snippet?.validateTree();
                       // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                       snippetWidget =
@@ -202,7 +201,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                             children: [
                               const Icon(Icons.error, color: Colors.redAccent),
                               Gap(10),
-                              FContent().coloredText(e.toString()),
+                              fco.coloredText(e.toString()),
                             ],
                           ),
                         ),
@@ -222,7 +221,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //         Widget snippetWidget;
   //         try {
   //           // in case did a revert, ignore snapshot data and use the AppInfo instead
-  //           SnippetRootNode? snippet = FC().currentSnippet(snippetName());
+  //           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
   //           snippet?.validateTree();
   //           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
   //           snippetWidget =
@@ -237,7 +236,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //                 children: [
   //                   const Icon(Icons.error, color: Colors.redAccent),
   //                   Gap(10),
-  //                   FC().coloredText(e.toString()),
+  //                   FCO.coloredText(e.toString()),
   //                 ],
   //               ),
   //             ),

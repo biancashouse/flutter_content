@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'dart:ui' as ui;
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +28,7 @@ class FilePickerPopupMenu extends StatefulWidget {
     final TargetModel tc, {
     bool mounted = false,
   }) async {
-    // FC().om.showCircularProgressIndicator(true, reason: 'Picking an Image');
+    // FCO.om.showCircularProgressIndicator(true, reason: 'Picking an Image');
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       type: fType,
@@ -46,8 +45,8 @@ class FilePickerPopupMenu extends StatefulWidget {
       return byteData.buffer.asUint8List();
     }
 
-    // FC().om.showCircularProgressIndicator(false, reason: 'Picking an Image');
-    // FC().om.showCircularProgressIndicator(true, reason: 'Picked an Image');
+    // FCO.om.showCircularProgressIndicator(false, reason: 'Picking an Image');
+    // FCO.om.showCircularProgressIndicator(true, reason: 'Picked an Image');
     if (result != null && result.files.isNotEmpty && mounted) {
       PlatformFile file = result.files.first;
       Uint8List? pickedFileBytes = file.bytes;
@@ -66,7 +65,7 @@ class FilePickerPopupMenu extends StatefulWidget {
         Callout.dismissAll();
       }
     }
-    // FC().om.showCircularProgressIndicator(false, reason: 'Picked an Image');
+    // FCO.om.showCircularProgressIndicator(false, reason: 'Picked an Image');
   }
 
   @override
@@ -105,7 +104,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
     _txtController = TextEditingController();
     _txtController?.text = "http";
 
-    // FC().afterNextBuildDo(() {
+    // fco.afterNextBuildDo(() {
     //   widget.tc.focusNode().requestFocus();
     // });
   }
@@ -150,7 +149,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
         onPressed: () async {
           FilePickerPopupMenu.pickImage(FileType.image, widget.tc, mounted: mounted);
         },
-        label: FContent().text16('pick from the image gallery'),
+        label: fco.text16('pick from the image gallery'),
         icon: const Icon(
           Icons.image,
           size: 28,
@@ -172,7 +171,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
         onPressed: () async {
           FilePickerPopupMenu.pickImage(FileType.any, widget.tc, mounted: mounted);
         },
-        label: FContent().text16('pick from the file system'),
+        label: fco.text16('pick from the file system'),
         icon: const Icon(
           Icons.folder,
           size: 28,

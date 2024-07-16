@@ -30,7 +30,7 @@ class TargetsWrapper extends StatefulWidget {
 //
 //   if (targetRect == null) return null;
 //
-//   return FC().calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+//   return FCO.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 // }
 
 // static void hideAllTargets({required CAPIBloc bloc, required String name, final TargetModel? exception}) {
@@ -99,13 +99,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       tc.targetsWrapperNode = widget.parentNode;
     }
 
-    FContent().afterNextBuildDo(
+    fco.afterNextBuildDo(
       () {
         // if (zoomer?.widget.ancestorHScrollController != null) {
-        //   FC().registerScrollController(zoomer!.widget.ancestorHScrollController!);
+        //   FCO.registerScrollController(zoomer!.widget.ancestorHScrollController!);
         // }
         // if (zoomer?.widget.ancestorVScrollController != null) {
-        //   FC().registerScrollController(zoomer!.widget.ancestorVScrollController!);
+        //   FCO.registerScrollController(zoomer!.widget.ancestorVScrollController!);
         // }
 
         setState(() {});
@@ -130,7 +130,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         Size wrapperSize = newPosAndSize.$2!;
         if (wrapperSize.width == 0 && wrapperSize.height == 0) {
-          wrapperSize = FContent().scrSize;
+          wrapperSize = fco.scrSize;
         }
         wrapperRect = Rect.fromLTWH(
           globalPos.dx,
@@ -162,8 +162,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       // $2 true means target btn rather than target cover
       if (foundTc != null && data.$2) {
         foundTc.setBtnStackPosPc(details.offset.translate(
-          MaterialSPA.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-          MaterialSPA.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
         ));
         foundTc.onChange();
       } else if (foundTc != null) {
@@ -173,12 +173,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         ));
         foundTc.onChange();
       }
-      MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     }
 
     //
-    void longPressedeBarrier(LongPressStartDetails details) {
-      if (!FContent().canEditContent) return;
+    Future<void> longPressedeBarrier(LongPressEndDetails details) async {
+      if (!fco.canEditContent) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
 
@@ -201,9 +201,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
       widget.parentNode.targets = [newTC, ...widget.parentNode.targets];
       // widget.parentNode.targets.add(newTC);
-      MaterialSPA.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-      FContent().possiblyCacheAndSaveANewSnippetVersion(
+      fco.possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: widget.parentNode.rootNodeOfSnippet()!,
       );
@@ -225,7 +225,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     onTap: () {
                       debugPrint('TAP');
                     },
-                    onLongPressStart: longPressedeBarrier,
+                    onLongPressEnd: (LongPressEndDetails details) async => await longPressedeBarrier(details),
                   ),
                 );
               },
@@ -241,8 +241,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 top: tc.targetStackPos().dy - tc.radius,
                 left: tc.targetStackPos().dx - tc.radius,
                 child: Visibility.maintain(
-                  key: FContent().setTargetGk(tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
-                  visible: FContent().canEditContent && (playingTc == null || playingTc == tc),
+                  key: fco.setTargetGk(tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
+                  visible: fco.canEditContent && (playingTc == null || playingTc == tc),
                   child: TargetCover(tc, _targetIndex(tc)),
                 ),
               ),
@@ -270,12 +270,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           ),
         );
 
-    return FContent().canEditContent
-        ? IgnorePointer(
-            ignoring: true,
-            child: child,
-          )
-        : child;
+    return Container(color:Colors.lime,
+      child: fco.canEditContent
+          ? IgnorePointer(
+              ignoring: true,
+              child: child,
+            )
+          : child,
+    );
   }
 }
 
@@ -291,7 +293,7 @@ class IntegerCircleAvatar extends StatelessWidget {
   const IntegerCircleAvatar(this.tc,
       {this.num, required this.textColor, required this.bgColor, required this.radius, required this.fontSize, this.child, super.key});
 
-  CAPIBloC get bloc => MaterialSPA.capiBloc;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
   Widget build(BuildContext context) => CircleAvatar(
