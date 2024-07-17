@@ -60,7 +60,8 @@ abstract class FlexNode extends MC with FlexNodeMappable {
     Widget w;
     try {
       w = LayoutBuilder(builder: (context, constraints) {
-        return (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity)
+        bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
+        return false && constraintsError
             ? _errorWidget()
             : Flex(
           direction: this is RowNode ? Axis.horizontal : Axis.vertical,

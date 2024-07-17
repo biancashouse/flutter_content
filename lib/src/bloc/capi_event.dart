@@ -107,7 +107,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.forceRefresh({
     @Default(false) bool onlyTargetsWrappers,
-}) = ForceRefresh;
+  }) = ForceRefresh;
 
   const factory CAPIEvent.updateClipboard({
     required STreeNode? newContent,
@@ -158,7 +158,6 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.autoPublishDefault({
     required bool b,
   }) = AutoPublishDefault;
-
 
 // const factory CAPIEvent.changedSnippetName({
 //   required TargetModel tc,
@@ -288,11 +287,18 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.pasteSiblingAfter() = PasteSiblingAfter;
 
   const factory CAPIEvent.deleteNodeTapped() = DeleteNodeTapped;
+
   const factory CAPIEvent.completeDeletion() = CompleteDeletion;
 
   // const factory CAPIEvent.addNode({
   //   required STreeNode adder2InsertBefore,
   // }) = AddNode;
+
+  const factory CAPIEvent.copySnippetJsonToClipboard(
+      {required SnippetRootNode rootNode}) = CopySnippetJsonToClipboard;
+
+  const factory CAPIEvent.replaceSnippetFromJson(
+      {String? snippetJson}) = ReplaceSnippetFromJson;
 
   const factory CAPIEvent.copyNode({
     required STreeNode node,

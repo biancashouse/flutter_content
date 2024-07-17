@@ -78,10 +78,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                 constraints.maxWidth == double.infinity)) {
           return Row(
             children: [
-              const Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
+              fco.errorIcon(Colors.red),
               Gap(10),
               fco.coloredText('MultiSplitView has infinite constraint!',
                   color: Colors.red),
@@ -112,7 +109,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
     }
-    return const Icon(Icons.error, color: Colors.redAccent);
+    return fco.errorIcon(Colors.red);
   }
 
   @override

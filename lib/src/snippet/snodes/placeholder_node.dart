@@ -101,7 +101,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null
-                            ? const Icon(Icons.error, color: Colors.redAccent)
+                            ? fco.errorIcon(Colors.red)
                             : snippet.child?.toWidget(futureContext, snippet) ??
                                 const Placeholder();
                       } catch (e) {
@@ -113,8 +113,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                const Icon(Icons.error,
-                                    color: Colors.redAccent),
+                                fco.errorIcon(Colors.red),
                                 Gap(10),
                                 fco.coloredText(e.toString()),
                               ],

@@ -117,7 +117,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              const Icon(Icons.error, color: Colors.redAccent),
+              fco.errorIcon(Colors.red),
               Gap(10),
               fco.coloredText(e.toString()),
             ],

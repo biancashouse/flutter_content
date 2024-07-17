@@ -1,14 +1,16 @@
 import 'dart:async';
 
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
+import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
@@ -142,6 +144,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         (event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
+    on<CopySnippetJsonToClipboard>(
+        (event, emit) => _copySnippetJsonToClipboard(event, emit));
+    on<ReplaceSnippetFromJson>(
+        (event, emit) => _replaceSnippetFromJson(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
   }
@@ -473,11 +479,28 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   }
 // }
 
-  // Future<void> _copyModelToClipboard(event, emit) async {
-  //   // playWhooshSound();
-  //   CAPIModel model = CAPIModel(TargetGroupModels: state.targetGroupMap);
-  //   await Clipboard.setData(ClipboardData(text: jsonEncode(model.toJson())));
-  // }
+  /// copy snippet json to clipboard
+  Future<void> _copySnippetJsonToClipboard(event, emit) async {
+    await FlutterClipboard.copy(event.rootNode.toJson());
+  }
+
+  /// paste clipboard, or supplied json String to form a snippet
+  Future<void> _replaceSnippetFromJson(event, emit) async {
+    SnippetRootNode? rootNode;
+    if (event.snippetJson == null) {
+      var snippetJson = await FlutterClipboard.paste();
+      rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
+    } else {
+      rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson);
+    }
+    debugPrint('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
+    // save the clipboard snippet snippet
+    await fco.possiblyCacheAndSaveANewSnippetVersion(
+      snippetName: snippetName,
+      rootNode: rootNode,
+      publish: true,
+    );
+  }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
     fco.setClipboard(event.newContent);

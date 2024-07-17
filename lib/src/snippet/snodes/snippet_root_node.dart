@@ -99,7 +99,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
               SnippetRootNode? snippet = fco.currentSnippet(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-              return snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+              return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
               debugPrint('snippetRootNode.toWidget() failed!');
               return Material(
@@ -108,7 +108,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Icon(Icons.error, color: Colors.redAccent),
+                      fco.errorIcon(Colors.red),
                       Gap(10),
                       fco.coloredText(e.toString()),
                     ],

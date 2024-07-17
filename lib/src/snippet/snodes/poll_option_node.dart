@@ -41,7 +41,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
             optionId: optionId,
             optionWidget: Text(text),
           )
-        : const Icon(Icons.error_outlined);
+        : fco.errorIcon(Colors.red);
   }
 
   // FlutterPollOption toPollOption(BuildContext context, STreeNode? parentNode) {

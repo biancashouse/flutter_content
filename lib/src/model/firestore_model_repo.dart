@@ -81,20 +81,24 @@ class FireStoreModelRepository implements IModelRepository {
     fco.snippetsBeingReadFromFB.add(snippetName);
 
     DocumentReference snippetInfoDocRef =
-        appDocRef.collection('snippets').doc(snippetName);
+    appDocRef.collection('snippets').doc(snippetName);
     DocumentSnapshot snippetInfoDoc = await snippetInfoDocRef.get();
     if (snippetInfoDoc.exists) {
-      final data = snippetInfoDoc.data() as Map<String, dynamic>;
-      snippetInfo = SnippetInfoModelMapper.fromMap(data);
-      // set or update cache
-      fco.snippetInfoCache[snippetName] = snippetInfo;
+      try {
+        final data = snippetInfoDoc.data() as Map<String, dynamic>;
+        snippetInfo = SnippetInfoModelMapper.fromMap(data);
+        // set or update cache
+        fco.snippetInfoCache[snippetName] = snippetInfo;
+      } catch (e) {
+        print(e);
+      }
       // populate snippetInfo with its version ids
       try {
         final versionsSnapshot =
-            await snippetInfoDocRef.collection('versions').get();
+        await snippetInfoDocRef.collection('versions').get();
         var versionIds = versionsSnapshot.docs.map((doc) => doc.id);
         fco.versionIdCache[snippetName] ??=
-            []; //LinkedList<VersionEntryItem>();
+        []; //LinkedList<VersionEntryItem>();
         fco.versionIdCache[snippetName]?.addAll(versionIds);
         // FCO.versionIdCache[snippetName]?.addAll(
         //       versionIds.map((vId) => VersionEntryItem(vId)),
@@ -131,35 +135,44 @@ class FireStoreModelRepository implements IModelRepository {
 
     // read snippet properties (saving then restoring the transient props)
     DocumentReference snippetInfoDocRef =
-        appDocRef.collection('snippets').doc(snippetName);
+    appDocRef.collection('snippets').doc(snippetName);
     DocumentSnapshot snippetInfoDoc = await snippetInfoDocRef.get();
     if (snippetInfoDoc.exists) {
-      final data = snippetInfoDoc.data() as Map<String, dynamic>;
-      snippetInfo = SnippetInfoModelMapper.fromMap(data);
-      // set or update cache
-      fco.snippetInfoCache[snippetName] = snippetInfo;
-      // read version
-      DocumentReference versionDocRef =
-          snippetInfoDocRef.collection('versions').doc(versionId);
-      DocumentSnapshot versionDoc = await versionDocRef.get();
-      if (versionDoc.exists) {
-        final data = versionDoc.data() as Map<String, dynamic>;
-        version = SnippetRootNodeMapper.fromMap(data);
-        // cache it
-        fco.versionCache[snippetName] ??= {};
-        fco.versionIdCache[snippetName] ??=
+      try {
+        final data = snippetInfoDoc.data() as Map<String, dynamic>;
+        snippetInfo = SnippetInfoModelMapper.fromMap(data);
+        // set or update cache
+        fco.snippetInfoCache[snippetName] = snippetInfo;
+        // read version
+        DocumentReference versionDocRef =
+        snippetInfoDocRef.collection('versions').doc(versionId);
+        DocumentSnapshot versionDoc = await versionDocRef.get();
+        if (versionDoc.exists) {
+          try {
+            final data = versionDoc.data() as Map<String, dynamic>;
+            version = SnippetRootNodeMapper.fromMap(data);
+            // cache it
+            fco.versionCache[snippetName] ??= {};
+            fco.versionIdCache[snippetName] ??=
             []; //LinkedList<VersionEntryItem>();
-        if (!fco.versionCache[snippetName]!.containsKey(versionId)) {
-          fco.versionCache[snippetName]!.addAll({versionId: version});
+            if (!fco.versionCache[snippetName]!.containsKey(versionId)) {
+              fco.versionCache[snippetName]!.addAll({versionId: version});
+            }
+            if (!fco.versionIdCache[snippetName]!.contains(versionId)) {
+              fco.versionIdCache[snippetName]
+                  ?.add(versionId); //.add(VersionEntryItem(versionId));
+            }
+            debugPrint('editing: ${snippetInfo.editingVersionId}');
+            debugPrint('published: ${snippetInfo.publishedVersionId}');
+            debugPrint('versionId: $versionId');
+            debugPrint(
+                '--- LOADED ----------------------------------------------');
+          } catch (e) {
+            print(e);
+          }
         }
-        if (!fco.versionIdCache[snippetName]!.contains(versionId)) {
-          fco.versionIdCache[snippetName]
-              ?.add(versionId); //.add(VersionEntryItem(versionId));
-        }
-        debugPrint('editing: ${snippetInfo.editingVersionId}');
-        debugPrint('published: ${snippetInfo.publishedVersionId}');
-        debugPrint('versionId: $versionId');
-        debugPrint('--- LOADED ----------------------------------------------');
+      } catch (e) {
+        print(e);
       }
     }
   }
@@ -168,8 +181,12 @@ class FireStoreModelRepository implements IModelRepository {
   Future<AppInfoModel?> getAppInfo() async {
     DocumentSnapshot doc = await appDocRef.get();
     if (doc.exists) {
-      final data = doc.data() as Map<String, dynamic>;
-      return AppInfoModelMapper.fromMap(data);
+      try {
+        final data = doc.data() as Map<String, dynamic>;
+        return AppInfoModelMapper.fromMap(data);
+      } catch (e) {
+        print(e);
+      }
     } else {
       debugPrint("getAppInfo doc does not exist.");
       return AppInfoModel();
@@ -204,11 +221,12 @@ class FireStoreModelRepository implements IModelRepository {
     // create the actual version doc
     try {
       DocumentReference snippetInfoDocRef =
-          appDocRef.collection('snippets').doc(snippetName);
+      appDocRef.collection('snippets').doc(snippetName);
       await snippetInfoDocRef
           .collection('versions')
           .doc(latestVersionId)
-          .set(latestVersion.toMap());
+          .set(latestVersion.toMap()
+        ..addAll({'name': snippetName}));
 
       debugPrint(
           '--- SAVED ---------------------------------------------------');
@@ -250,16 +268,19 @@ class FireStoreModelRepository implements IModelRepository {
     if (snippet == null) return;
     // set the snippet properties
     DocumentReference snippetDocRef =
-        appDocRef.collection('snippets').doc(snippetName);
+    appDocRef.collection('snippets').doc(snippetName);
     await snippetDocRef.set({
+      'name': snippetName,
       'editingVersionId': editingVersionId ?? snippet.editingVersionId,
       'publishedVersionId': publishingVersionId ?? snippet.publishedVersionId,
       'autoPublish': autoPublish ?? snippet.autoPublish,
     }, SetOptions(merge: true));
 
     // update local values
-    fco.snippetInfoCache[snippetName]!..editingVersionId = editingVersionId;
-    fco.snippetInfoCache[snippetName]!..publishedVersionId = editingVersionId;
+    fco.snippetInfoCache[snippetName]!
+      ..editingVersionId = editingVersionId;
+    fco.snippetInfoCache[snippetName]!
+      ..publishedVersionId = editingVersionId;
 
     debugPrint('--- UPDATED SNIPPET PROPERTIES ------------------------------');
     debugPrint('wrote snippet ($snippetName) properties to FB:');
@@ -280,7 +301,7 @@ class FireStoreModelRepository implements IModelRepository {
     required String pollName,
   }) async {
     DocumentSnapshot docSnap =
-        await FirebaseFirestore.instance.doc('/polls/$pollName').get();
+    await FirebaseFirestore.instance.doc('/polls/$pollName').get();
     if (docSnap.exists) {
       Map<String, dynamic> pollData = docSnap.data() as Map<String, dynamic>;
       // convert map to <String,int>
@@ -310,19 +331,19 @@ class FireStoreModelRepository implements IModelRepository {
           .get();
       if (voterSnap.exists) {
         Map<String, dynamic> voterData =
-            voterSnap.data() as Map<String, dynamic>;
+        voterSnap.data() as Map<String, dynamic>;
         Timestamp when = voterData['when'];
         PollOptionId votedFor = voterData['option-id'];
         return (
-          optionVoteCountMap: optionCountsMap,
-          userVotedForOptionId: votedFor,
-          when: when.millisecondsSinceEpoch
+        optionVoteCountMap: optionCountsMap,
+        userVotedForOptionId: votedFor,
+        when: when.millisecondsSinceEpoch
         );
       }
       return (
-        optionVoteCountMap: optionCountsMap,
-        userVotedForOptionId: null,
-        when: null
+      optionVoteCountMap: optionCountsMap,
+      userVotedForOptionId: null,
+      when: null
       );
     }
     return (optionVoteCountMap: null, userVotedForOptionId: null, when: null);
@@ -369,7 +390,8 @@ class FireStoreModelRepository implements IModelRepository {
 
     for (PollOptionId pollOptionId in pollOptionIds) {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
-      CollectionReference pollOptionVotes = FirebaseFirestore.instance.collection(
+      CollectionReference pollOptionVotes = FirebaseFirestore.instance
+          .collection(
           '/flutter-content-apps/$modelName/polls/$pollName/options/$pollOptionId/voters');
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
@@ -383,14 +405,13 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-  Future<void> saveVote(
-      {required String pollName,
-      required VoterId voterId,
-      required PollOptionId optionId,
-      required Map<PollOptionId, int> newOptionVoteCountMap}) async {
+  Future<void> saveVote({required String pollName,
+    required VoterId voterId,
+    required PollOptionId optionId,
+    required Map<PollOptionId, int> newOptionVoteCountMap}) async {
     // check whether already voted
     DocumentReference userVoteDocRef =
-        FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId');
+    FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId');
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
       // write the user's vote
@@ -435,7 +456,8 @@ class FireStoreModelRepository implements IModelRepository {
     return result;
   }
 
-  DocumentReference get appDocRef => FirebaseFirestore.instance
-      .collection('/flutter-content-apps')
-      .doc(fco.appName);
+  DocumentReference get appDocRef =>
+      FirebaseFirestore.instance
+          .collection('/flutter-content-apps')
+          .doc(fco.appName);
 }

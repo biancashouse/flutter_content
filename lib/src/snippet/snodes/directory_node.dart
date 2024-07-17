@@ -34,7 +34,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     SnippetPanelState? ss = SnippetPanel.of(context);
     if (!(ss?.mounted ?? false)) {
-      return const Icon(Icons.error, color: Colors.red);
+      return fco.errorIcon(Colors.red);
     }
 
     // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(

@@ -255,7 +255,7 @@ class TextNode extends CL with TextNodeMappable {
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
     }
-    return const Icon(Icons.error, color: Colors.redAccent);
+    return fco.errorIcon(Colors.red);
   }
 
   // @override

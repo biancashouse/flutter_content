@@ -1620,7 +1620,7 @@ class EnumPropertyValueNode<T> extends PTreeNode {
           snode: snode, label: name, enumValueIndex: valueIndex, onChangedF: (newValueIndex) => onIndexChange(valueIndex = newValueIndex));
     }
     // T property not implemented yet
-    return const Icon(Icons.error_outline, color: Colors.blue);
+    return fco.errorIcon(Colors.blue);
   }
 
 }

@@ -55,10 +55,7 @@ class StackNode extends MC with StackNodeMappable {
           return constraints.maxHeight == double.infinity
               ? Row(
                   children: [
-                    const Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    ),
+                    fco.errorIcon(Colors.red),
                     Gap(10),
                     const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
                   ],
@@ -75,7 +72,7 @@ class StackNode extends MC with StackNodeMappable {
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
     }
-    return const Icon(Icons.error, color: Colors.redAccent);
+    return fco.errorIcon(Colors.red);
   }
 
   @override

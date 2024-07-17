@@ -13,7 +13,11 @@ class TargetsWrapper extends StatefulWidget {
   final Widget? child;
   final bool hardEdge;
 
-  const TargetsWrapper({required this.parentNode, this.child, this.hardEdge = true, required super.key});
+  const TargetsWrapper(
+      {required this.parentNode,
+      this.child,
+      this.hardEdge = true,
+      required super.key});
 
   @override
   State<TargetsWrapper> createState() => TargetsWrapperState();
@@ -108,8 +112,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         //   FCO.registerScrollController(zoomer!.widget.ancestorVScrollController!);
         // }
 
-        setState(() {});
-        measureIWPosAndSize();
+        fco.afterMsDelayDo(1000, () {
+          measureIWPosAndSize();
+        });
       },
     );
   }
@@ -173,7 +178,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         ));
         foundTc.onChange();
       }
-      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      FlutterContentApp.capiBloc
+          .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
     }
 
     //
@@ -197,11 +203,13 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       );
       bool onLeft = newTC.targetLocalPosLeftPc! < .5;
       newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
-      newTC.btnLocalLeftPc = newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
+      newTC.btnLocalLeftPc =
+          newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
 
       widget.parentNode.targets = [...widget.parentNode.targets, newTC];
       // widget.parentNode.targets.add(newTC);
-      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      FlutterContentApp.capiBloc
+          .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
       fco.possiblyCacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
@@ -225,7 +233,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     onTap: () {
                       debugPrint('TAP');
                     },
-                    onLongPressEnd: (LongPressEndDetails details) async => await longPressedeBarrier(details),
+                    onLongPressEnd: (LongPressEndDetails details) async =>
+                        await longPressedeBarrier(details),
                   ),
                 );
               },
@@ -241,8 +250,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 top: tc.targetStackPos().dy - tc.radius,
                 left: tc.targetStackPos().dx - tc.radius,
                 child: Visibility.maintain(
-                  key: fco.setTargetGk(tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
-                  visible: fco.canEditContent && (playingTc == null || playingTc == tc),
+                  key: fco.setTargetGk(
+                      tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
+                  visible: fco.canEditContent &&
+                      (playingTc == null || playingTc == tc),
                   child: TargetCover(tc, _targetIndex(tc)),
                 ),
               ),
@@ -266,7 +277,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         const Material(
           child: Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text('Add a Child to the Targets Wrapper; \ne.g. an image over which \nyou will place callout targets'),
+            child: Text(
+                'Add a Child to the Targets Wrapper; \ne.g. an image over which \nyou will place callout targets'),
           ),
         );
 
@@ -291,7 +303,13 @@ class IntegerCircleAvatar extends StatelessWidget {
   final Widget? child;
 
   const IntegerCircleAvatar(this.tc,
-      {this.num, required this.textColor, required this.bgColor, required this.radius, required this.fontSize, this.child, super.key});
+      {this.num,
+      required this.textColor,
+      required this.bgColor,
+      required this.radius,
+      required this.fontSize,
+      this.child,
+      super.key});
 
   CAPIBloC get bloc => FlutterContentApp.capiBloc;
 

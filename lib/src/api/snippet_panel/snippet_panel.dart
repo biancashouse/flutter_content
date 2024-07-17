@@ -186,11 +186,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                     Widget snippetWidget;
                     try {
                       // in case did a revert, ignore snapshot data and use the AppInfo instead
-                      SnippetRootNode? snippet = fco.currentSnippet(snippetName());
+                      String sName = snippetName();
+                      SnippetRootNode? snippet = fco.currentSnippet(sName);
                       snippet?.validateTree();
                       // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                       snippetWidget =
-                      snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+                      snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
                     } catch (e) {
                       debugPrint('snippetRootNode.toWidget() failed!');
                       snippetWidget = Material(
@@ -199,7 +200,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              const Icon(Icons.error, color: Colors.redAccent),
+                              fco.errorIcon(Colors.red),
                               Gap(10),
                               fco.coloredText(e.toString()),
                             ],

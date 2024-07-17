@@ -81,7 +81,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
     } catch (e) {
       debugPrint('cannot render $FLUTTER_TYPE!');
     }
-    return const Icon(Icons.error, color: Colors.redAccent);
+    return fco.errorIcon(Colors.red);
   }
 
   // @override

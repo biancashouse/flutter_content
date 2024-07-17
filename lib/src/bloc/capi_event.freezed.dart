@@ -71,6 +71,9 @@ mixin _$CAPIEvent {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -122,6 +125,8 @@ mixin _$CAPIEvent {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -173,6 +178,8 @@ mixin _$CAPIEvent {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -215,6 +222,10 @@ mixin _$CAPIEvent {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -255,6 +266,9 @@ mixin _$CAPIEvent {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -294,6 +308,9 @@ mixin _$CAPIEvent {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -448,6 +465,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -502,6 +522,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -556,6 +578,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -604,6 +628,10 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -647,6 +675,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -689,6 +720,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -861,6 +895,9 @@ class _$OverrideTargetGKImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -915,6 +952,8 @@ class _$OverrideTargetGKImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -969,6 +1008,8 @@ class _$OverrideTargetGKImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -1017,6 +1058,10 @@ class _$OverrideTargetGKImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -1060,6 +1105,9 @@ class _$OverrideTargetGKImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -1102,6 +1150,9 @@ class _$OverrideTargetGKImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -1259,6 +1310,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -1313,6 +1367,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -1367,6 +1423,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -1415,6 +1473,10 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -1458,6 +1520,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -1500,6 +1565,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -1663,6 +1731,9 @@ class _$UpdateClipboardImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -1717,6 +1788,8 @@ class _$UpdateClipboardImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -1771,6 +1844,8 @@ class _$UpdateClipboardImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -1819,6 +1894,10 @@ class _$UpdateClipboardImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -1862,6 +1941,9 @@ class _$UpdateClipboardImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -1904,6 +1986,9 @@ class _$UpdateClipboardImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -2071,6 +2156,9 @@ class _$PublishSnippetImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -2125,6 +2213,8 @@ class _$PublishSnippetImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -2179,6 +2269,8 @@ class _$PublishSnippetImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -2227,6 +2319,10 @@ class _$PublishSnippetImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -2270,6 +2366,9 @@ class _$PublishSnippetImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -2312,6 +2411,9 @@ class _$PublishSnippetImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -2478,6 +2580,9 @@ class _$RevertSnippetImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -2532,6 +2637,8 @@ class _$RevertSnippetImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -2586,6 +2693,8 @@ class _$RevertSnippetImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -2634,6 +2743,10 @@ class _$RevertSnippetImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -2677,6 +2790,9 @@ class _$RevertSnippetImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -2719,6 +2835,9 @@ class _$RevertSnippetImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -2879,6 +2998,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -2933,6 +3055,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -2987,6 +3111,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -3035,6 +3161,10 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -3078,6 +3208,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -3120,6 +3253,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -3275,6 +3411,9 @@ class _$AutoPublishDefaultImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -3329,6 +3468,8 @@ class _$AutoPublishDefaultImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -3383,6 +3524,8 @@ class _$AutoPublishDefaultImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -3431,6 +3574,10 @@ class _$AutoPublishDefaultImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -3474,6 +3621,9 @@ class _$AutoPublishDefaultImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -3516,6 +3666,9 @@ class _$AutoPublishDefaultImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -3666,6 +3819,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -3720,6 +3876,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -3774,6 +3932,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -3822,6 +3982,10 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -3865,6 +4029,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -3907,6 +4074,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -4072,6 +4242,9 @@ class _$SetPanelSnippetImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -4126,6 +4299,8 @@ class _$SetPanelSnippetImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -4180,6 +4355,8 @@ class _$SetPanelSnippetImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -4228,6 +4405,10 @@ class _$SetPanelSnippetImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -4271,6 +4452,9 @@ class _$SetPanelSnippetImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -4313,6 +4497,9 @@ class _$SetPanelSnippetImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -4481,6 +4668,9 @@ class _$PushSnippetEditorImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -4535,6 +4725,8 @@ class _$PushSnippetEditorImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -4589,6 +4781,8 @@ class _$PushSnippetEditorImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -4637,6 +4831,10 @@ class _$PushSnippetEditorImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -4680,6 +4878,9 @@ class _$PushSnippetEditorImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -4722,6 +4923,9 @@ class _$PushSnippetEditorImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -4878,6 +5082,9 @@ class _$PopSnippetEditorImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -4932,6 +5139,8 @@ class _$PopSnippetEditorImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -4986,6 +5195,8 @@ class _$PopSnippetEditorImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -5034,6 +5245,10 @@ class _$PopSnippetEditorImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -5077,6 +5292,9 @@ class _$PopSnippetEditorImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -5119,6 +5337,9 @@ class _$PopSnippetEditorImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -5242,6 +5463,9 @@ class _$ShowDirectoryTreeImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -5296,6 +5520,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -5350,6 +5576,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -5398,6 +5626,10 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -5441,6 +5673,9 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -5483,6 +5718,9 @@ class _$ShowDirectoryTreeImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -5631,6 +5869,9 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -5685,6 +5926,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -5739,6 +5982,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -5787,6 +6032,10 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -5830,6 +6079,9 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -5872,6 +6124,9 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -6022,6 +6277,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -6076,6 +6334,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -6130,6 +6390,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -6178,6 +6440,10 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -6221,6 +6487,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -6263,6 +6532,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -6386,6 +6658,9 @@ class _$ClearNodeSelectionImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -6440,6 +6715,8 @@ class _$ClearNodeSelectionImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -6494,6 +6771,8 @@ class _$ClearNodeSelectionImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -6542,6 +6821,10 @@ class _$ClearNodeSelectionImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -6585,6 +6868,9 @@ class _$ClearNodeSelectionImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -6627,6 +6913,9 @@ class _$ClearNodeSelectionImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -6785,6 +7074,9 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -6839,6 +7131,8 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -6893,6 +7187,8 @@ class _$SaveNodeAsSnippetImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -6941,6 +7237,10 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -6984,6 +7284,9 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -7026,6 +7329,9 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -7204,6 +7510,9 @@ class _$ReplaceSelectionWithImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -7258,6 +7567,8 @@ class _$ReplaceSelectionWithImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -7312,6 +7623,8 @@ class _$ReplaceSelectionWithImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -7360,6 +7673,10 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -7403,6 +7720,9 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -7445,6 +7765,9 @@ class _$ReplaceSelectionWithImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -7623,6 +7946,9 @@ class _$WrapSelectionWithImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -7677,6 +8003,8 @@ class _$WrapSelectionWithImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -7731,6 +8059,8 @@ class _$WrapSelectionWithImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -7779,6 +8109,10 @@ class _$WrapSelectionWithImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -7822,6 +8156,9 @@ class _$WrapSelectionWithImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -7864,6 +8201,9 @@ class _$WrapSelectionWithImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -8072,6 +8412,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -8127,6 +8470,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -8182,6 +8527,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -8231,6 +8578,10 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -8274,6 +8625,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -8316,6 +8670,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -8498,6 +8855,9 @@ class _$AddSiblingBeforeImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -8552,6 +8912,8 @@ class _$AddSiblingBeforeImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -8606,6 +8968,8 @@ class _$AddSiblingBeforeImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -8654,6 +9018,10 @@ class _$AddSiblingBeforeImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -8697,6 +9065,9 @@ class _$AddSiblingBeforeImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -8739,6 +9110,9 @@ class _$AddSiblingBeforeImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -8917,6 +9291,9 @@ class _$AddSiblingAfterImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -8971,6 +9348,8 @@ class _$AddSiblingAfterImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -9025,6 +9404,8 @@ class _$AddSiblingAfterImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -9073,6 +9454,10 @@ class _$AddSiblingAfterImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -9116,6 +9501,9 @@ class _$AddSiblingAfterImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -9158,6 +9546,9 @@ class _$AddSiblingAfterImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -9317,6 +9708,9 @@ class _$PasteReplacementImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -9371,6 +9765,8 @@ class _$PasteReplacementImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -9425,6 +9821,8 @@ class _$PasteReplacementImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -9473,6 +9871,10 @@ class _$PasteReplacementImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -9516,6 +9918,9 @@ class _$PasteReplacementImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -9558,6 +9963,9 @@ class _$PasteReplacementImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -9725,6 +10133,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -9779,6 +10190,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -9833,6 +10246,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -9881,6 +10296,10 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -9924,6 +10343,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -9966,6 +10388,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -10093,6 +10518,9 @@ class _$PasteSiblingBeforeImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -10147,6 +10575,8 @@ class _$PasteSiblingBeforeImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -10201,6 +10631,8 @@ class _$PasteSiblingBeforeImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -10249,6 +10681,10 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -10292,6 +10728,9 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -10334,6 +10773,9 @@ class _$PasteSiblingBeforeImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -10452,6 +10894,9 @@ class _$PasteSiblingAfterImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -10506,6 +10951,8 @@ class _$PasteSiblingAfterImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -10560,6 +11007,8 @@ class _$PasteSiblingAfterImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -10608,6 +11057,10 @@ class _$PasteSiblingAfterImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -10651,6 +11104,9 @@ class _$PasteSiblingAfterImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -10693,6 +11149,9 @@ class _$PasteSiblingAfterImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -10811,6 +11270,9 @@ class _$DeleteNodeTappedImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -10865,6 +11327,8 @@ class _$DeleteNodeTappedImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -10919,6 +11383,8 @@ class _$DeleteNodeTappedImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -10967,6 +11433,10 @@ class _$DeleteNodeTappedImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -11010,6 +11480,9 @@ class _$DeleteNodeTappedImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11052,6 +11525,9 @@ class _$DeleteNodeTappedImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11170,6 +11646,9 @@ class _$CompleteDeletionImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -11224,6 +11703,8 @@ class _$CompleteDeletionImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -11278,6 +11759,8 @@ class _$CompleteDeletionImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -11326,6 +11809,10 @@ class _$CompleteDeletionImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -11369,6 +11856,9 @@ class _$CompleteDeletionImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11411,6 +11901,9 @@ class _$CompleteDeletionImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11428,6 +11921,835 @@ class _$CompleteDeletionImpl
 
 abstract class CompleteDeletion implements CAPIEvent {
   const factory CompleteDeletion() = _$CompleteDeletionImpl;
+}
+
+/// @nodoc
+abstract class _$$CopySnippetJsonToClipboardImplCopyWith<$Res> {
+  factory _$$CopySnippetJsonToClipboardImplCopyWith(
+          _$CopySnippetJsonToClipboardImpl value,
+          $Res Function(_$CopySnippetJsonToClipboardImpl) then) =
+      __$$CopySnippetJsonToClipboardImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({SnippetRootNode rootNode});
+}
+
+/// @nodoc
+class __$$CopySnippetJsonToClipboardImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$CopySnippetJsonToClipboardImpl>
+    implements _$$CopySnippetJsonToClipboardImplCopyWith<$Res> {
+  __$$CopySnippetJsonToClipboardImplCopyWithImpl(
+      _$CopySnippetJsonToClipboardImpl _value,
+      $Res Function(_$CopySnippetJsonToClipboardImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? rootNode = null,
+  }) {
+    return _then(_$CopySnippetJsonToClipboardImpl(
+      rootNode: null == rootNode
+          ? _value.rootNode
+          : rootNode // ignore: cast_nullable_to_non_nullable
+              as SnippetRootNode,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CopySnippetJsonToClipboardImpl
+    with DiagnosticableTreeMixin
+    implements CopySnippetJsonToClipboard {
+  const _$CopySnippetJsonToClipboardImpl({required this.rootNode});
+
+  @override
+  final SnippetRootNode rootNode;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.copySnippetJsonToClipboard(rootNode: $rootNode)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.copySnippetJsonToClipboard'))
+      ..add(DiagnosticsProperty('rootNode', rootNode));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CopySnippetJsonToClipboardImpl &&
+            (identical(other.rootNode, rootNode) ||
+                other.rootNode == rootNode));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, rootNode);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CopySnippetJsonToClipboardImplCopyWith<_$CopySnippetJsonToClipboardImpl>
+      get copyWith => __$$CopySnippetJsonToClipboardImplCopyWithImpl<
+          _$CopySnippetJsonToClipboardImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(STreeNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(STreeNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
+    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(String snippetName, STreeNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(String name, bool skipRedo) undo,
+    required TResult Function(String name) redo,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return copySnippetJsonToClipboard(rootNode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(STreeNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(String name, bool skipRedo)? undo,
+    TResult? Function(String name)? redo,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return copySnippetJsonToClipboard?.call(rootNode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(STreeNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(String name, bool skipRedo)? undo,
+    TResult Function(String name)? redo,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (copySnippetJsonToClipboard != null) {
+      return copySnippetJsonToClipboard(rootNode);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(Undo value) undo,
+    required TResult Function(Redo value) redo,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return copySnippetJsonToClipboard(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(Undo value)? undo,
+    TResult? Function(Redo value)? redo,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return copySnippetJsonToClipboard?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(Undo value)? undo,
+    TResult Function(Redo value)? redo,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (copySnippetJsonToClipboard != null) {
+      return copySnippetJsonToClipboard(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CopySnippetJsonToClipboard implements CAPIEvent {
+  const factory CopySnippetJsonToClipboard(
+          {required final SnippetRootNode rootNode}) =
+      _$CopySnippetJsonToClipboardImpl;
+
+  SnippetRootNode get rootNode;
+  @JsonKey(ignore: true)
+  _$$CopySnippetJsonToClipboardImplCopyWith<_$CopySnippetJsonToClipboardImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ReplaceSnippetFromJsonImplCopyWith<$Res> {
+  factory _$$ReplaceSnippetFromJsonImplCopyWith(
+          _$ReplaceSnippetFromJsonImpl value,
+          $Res Function(_$ReplaceSnippetFromJsonImpl) then) =
+      __$$ReplaceSnippetFromJsonImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? snippetJson});
+}
+
+/// @nodoc
+class __$$ReplaceSnippetFromJsonImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$ReplaceSnippetFromJsonImpl>
+    implements _$$ReplaceSnippetFromJsonImplCopyWith<$Res> {
+  __$$ReplaceSnippetFromJsonImplCopyWithImpl(
+      _$ReplaceSnippetFromJsonImpl _value,
+      $Res Function(_$ReplaceSnippetFromJsonImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? snippetJson = freezed,
+  }) {
+    return _then(_$ReplaceSnippetFromJsonImpl(
+      snippetJson: freezed == snippetJson
+          ? _value.snippetJson
+          : snippetJson // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ReplaceSnippetFromJsonImpl
+    with DiagnosticableTreeMixin
+    implements ReplaceSnippetFromJson {
+  const _$ReplaceSnippetFromJsonImpl({this.snippetJson});
+
+  @override
+  final String? snippetJson;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.replaceSnippetFromJson(snippetJson: $snippetJson)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.replaceSnippetFromJson'))
+      ..add(DiagnosticsProperty('snippetJson', snippetJson));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReplaceSnippetFromJsonImpl &&
+            (identical(other.snippetJson, snippetJson) ||
+                other.snippetJson == snippetJson));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, snippetJson);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReplaceSnippetFromJsonImplCopyWith<_$ReplaceSnippetFromJsonImpl>
+      get copyWith => __$$ReplaceSnippetFromJsonImplCopyWithImpl<
+          _$ReplaceSnippetFromJsonImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(
+            String snippetName, STreeNode? visibleDecendantNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(STreeNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(STreeNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
+    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(String snippetName, STreeNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(String name, bool skipRedo) undo,
+    required TResult Function(String name) redo,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return replaceSnippetFromJson(snippetJson);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(STreeNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(String name, bool skipRedo)? undo,
+    TResult? Function(String name)? redo,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return replaceSnippetFromJson?.call(snippetJson);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(STreeNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(String name, bool skipRedo)? undo,
+    TResult Function(String name)? redo,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (replaceSnippetFromJson != null) {
+      return replaceSnippetFromJson(snippetJson);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(Undo value) undo,
+    required TResult Function(Redo value) redo,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return replaceSnippetFromJson(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(Undo value)? undo,
+    TResult? Function(Redo value)? redo,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return replaceSnippetFromJson?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(Undo value)? undo,
+    TResult Function(Redo value)? redo,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (replaceSnippetFromJson != null) {
+      return replaceSnippetFromJson(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ReplaceSnippetFromJson implements CAPIEvent {
+  const factory ReplaceSnippetFromJson({final String? snippetJson}) =
+      _$ReplaceSnippetFromJsonImpl;
+
+  String? get snippetJson;
+  @JsonKey(ignore: true)
+  _$$ReplaceSnippetFromJsonImplCopyWith<_$ReplaceSnippetFromJsonImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -11563,6 +12885,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -11617,6 +12942,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -11671,6 +12998,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -11719,6 +13048,10 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -11762,6 +13095,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11804,6 +13140,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -11963,6 +13302,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -12017,6 +13359,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -12071,6 +13415,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -12119,6 +13465,10 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -12162,6 +13512,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -12204,6 +13557,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -12372,6 +13728,9 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -12426,6 +13785,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -12480,6 +13841,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -12528,6 +13891,10 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -12571,6 +13938,9 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -12613,6 +13983,9 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -12775,6 +14148,9 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -12829,6 +14205,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -12883,6 +14261,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -12931,6 +14311,10 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -12974,6 +14358,9 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -13016,6 +14403,9 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -13166,6 +14556,9 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -13220,6 +14613,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -13274,6 +14669,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -13322,6 +14719,10 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -13365,6 +14766,9 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -13407,6 +14811,9 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -13532,6 +14939,9 @@ class _$ForceSnippetRefreshImpl
     required TResult Function() pasteSiblingAfter,
     required TResult Function() deleteNodeTapped,
     required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
     required TResult Function(STreeNode node, dynamic skipSave) copyNode,
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
@@ -13586,6 +14996,8 @@ class _$ForceSnippetRefreshImpl
     TResult? Function()? pasteSiblingAfter,
     TResult? Function()? deleteNodeTapped,
     TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
     TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
@@ -13640,6 +15052,8 @@ class _$ForceSnippetRefreshImpl
     TResult Function()? pasteSiblingAfter,
     TResult Function()? deleteNodeTapped,
     TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
     TResult Function(STreeNode node, dynamic skipSave)? copyNode,
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
@@ -13688,6 +15102,10 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
     required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
     required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
     required TResult Function(CopyNode value) copyNode,
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
@@ -13731,6 +15149,9 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
@@ -13773,6 +15194,9 @@ class _$ForceSnippetRefreshImpl
     TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
     TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
     TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
