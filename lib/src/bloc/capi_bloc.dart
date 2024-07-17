@@ -2007,11 +2007,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       selectedNode.child = newNode;
     } else if (selectedNode is MC) {
       selectedNode.children.add(newNode);
-    } else if (selectedNode is TextSpanNode && newNode is TextSpanNode) {
+    } else if (selectedNode is TextSpanNode && newNode is InlineSpanNode) {
       selectedNode.children ??= [];
       selectedNode.children!.add(newNode);
-    } else if (selectedNode is TextSpanNode && newNode is WidgetSpanNode) {
-      selectedNode.children = [newNode];
     } else if (selectedNode is WidgetSpanNode) {
       selectedNode.child = newNode;
     }
