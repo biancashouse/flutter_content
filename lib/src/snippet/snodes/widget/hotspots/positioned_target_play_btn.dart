@@ -36,8 +36,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         ? GestureDetector(
             onTap: () {
               if (tc.targetsWrapperState() == null) return;
-
-              tc.targetsWrapperState()?.widget.parentNode.playList.add(tc);
+              var list = tc.targetsWrapperState()?.widget.parentNode.playList;
+              list?.add(tc);
               playTarget(tc);
             },
             child: IntegerCircleAvatar(

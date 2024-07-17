@@ -144,7 +144,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.height,
         );
         debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
-        _needToMeasureWrapperRect = false;
+        setState(() {
+          _needToMeasureWrapperRect = false;
+        });
       }
     } catch (e) {
       // ignore but then don't update pos
