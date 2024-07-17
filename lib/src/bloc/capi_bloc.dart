@@ -1521,6 +1521,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         parentNode.child = null;
       } else if (parentNode is MC) {
         parentNode.children.remove(node);
+      } else if (parentNode is TextSpanNode) {
+        parentNode.children?.remove(node);
       }
     }
   }

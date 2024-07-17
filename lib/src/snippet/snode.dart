@@ -1347,6 +1347,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<Widget> menuAnchorWidgets_InsertSibling(NodeAction action, bool? skipHeading) {
     return [
+      if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       if (getParent() is FlexNode) ...[
         menuItemButton("Expanded", ExpandedNode, action),
         menuItemButton("Flexible", FlexibleNode, action),
