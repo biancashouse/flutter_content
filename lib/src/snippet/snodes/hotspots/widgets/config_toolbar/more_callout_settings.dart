@@ -196,6 +196,8 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       tc: tc, wrapperRect: widget.wrapperRect,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
+      ancestorHScrollController: widget.ancestorHScrollController,
+      ancestorVScrollController: widget.ancestorVScrollController,
     );
   }
 }

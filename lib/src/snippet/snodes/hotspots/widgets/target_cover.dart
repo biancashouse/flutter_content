@@ -7,9 +7,14 @@ class TargetCover extends StatelessWidget {
   // final TargetsWrapperState parentWrapperState;
   final TargetModel tc;
   final int index;
+  final ScrollController? ancestorHScrollController;
+  final ScrollController? ancestorVScrollController;
+
   const TargetCover(
     this.tc,
     this.index, {
+    this.ancestorHScrollController,
+    this.ancestorVScrollController,
     super.key,
   });
 
@@ -19,11 +24,11 @@ class TargetCover extends StatelessWidget {
     // if (tc != null) {
     // double radius = tc.radius;
     return fco.canEditContent
-        ? Draggable<(TargetId,bool)>(
-            data: (tc.uid,false),
+        ? Draggable<(TargetId, bool)>(
+            data: (tc.uid, false),
             feedback: _draggableTarget(tc),
             childWhenDragging: const Offstage(),
-               child: _draggableTarget(tc),
+            child: _draggableTarget(tc),
           )
         : CircleAvatar(
             backgroundColor: const Color.fromRGBO(255, 0, 0, .1),

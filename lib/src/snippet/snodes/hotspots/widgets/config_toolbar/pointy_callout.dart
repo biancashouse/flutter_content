@@ -94,6 +94,8 @@ class _PointyToolState extends State<PointyTool> {
       justPlaying: false,
       // widget.onParentBarrierTappedF,
       wrapperRect: widget.wrapperRect,
+      ancestorHScrollController: widget.ancestorHScrollController,
+      ancestorVScrollController: widget.ancestorVScrollController,
     );
     // fco.afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);

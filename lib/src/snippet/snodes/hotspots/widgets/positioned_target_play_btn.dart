@@ -5,17 +5,20 @@ import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snip
 
 import 'config_toolbar/callout_config_toolbar.dart';
 
-
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class PositionedTargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
+  final ScrollController? ancestorHScrollController;
+  final ScrollController? ancestorVScrollController;
 
   const PositionedTargetPlayBtn({
     required this.initialTC,
     required this.index,
     required this.wrapperRect,
+    this.ancestorHScrollController,
+    this.ancestorVScrollController,
     super.key,
   });
 
@@ -121,49 +124,12 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
               onDoubleTap: () async {
-                if (!fco.canEditContent) return;
-
-                if (tc.targetsWrapperState() == null) return;
-
-                // FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-
-                // fco.afterNextBuildDo(() {
-                // save for use after the refresh
-                // var wrapperPos = parentWrapperState?.wrapperPos;
-                // var wrapperSize = parentWrapperState?.wrapperSize;
-                // Rect? wrapperRect = tc.targetsWrapperGK?.globalPaintBounds();
-
-                // if (wrapperRect == null) return;
-
-                var coverGK = fco.getTargetGk(tc.uid);
-                Rect? targetRect = coverGK!.globalPaintBounds();
-                if (targetRect == null) return;
-
-                // STreeNode.hideAllTargetCovers(except: tc);
-                // STreeNode.hideAllTargetBtns(except: tc);
-                // FC.forceRefresh();
-                //
-                // fco.afterNextBuildDo(() {
-                Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-                    wrapperRect, targetRect);
-
-                tc
-                    .targetsWrapperState()
-                    ?.zoomer
-                    ?.applyTransform(tc.transformScale, tc.transformScale, ta,
-                        afterTransformF: () {
-                  showSnippetContentCallout(
-                    tc: tc,
-                    justPlaying: false,
-                    wrapperRect: wrapperRect,
-                  );
-                  // show config toolbar in a toast
-                  tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
-                  showConfigToolbar(tc, wrapperRect);
-                });
-                // });
-
-                // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
+                playBtnDblTappedBtn(
+                  tc,
+                  wrapperRect,
+                  ancestorHScrollController,
+                  ancestorVScrollController,
+                );
               },
               child: IntegerCircleAvatar(
                 tc,
@@ -175,6 +141,38 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               ),
             ),
           );
+  }
+
+  static void playBtnDblTappedBtn(
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollController? ancestorHScrollController,
+    ScrollController? ancestorVScrollController,
+  ) {
+    if (!fco.canEditContent) return;
+
+    if (tc.targetsWrapperState() == null) return;
+
+    var coverGK = fco.getTargetGk(tc.uid);
+    Rect? targetRect = coverGK!.globalPaintBounds();
+    if (targetRect == null) return;
+
+    Alignment? ta =
+        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+
+    tc.targetsWrapperState()?.zoomer?.applyTransform(
+        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+      showSnippetContentCallout(
+        tc: tc,
+        justPlaying: false,
+        wrapperRect: wrapperRect,
+        ancestorHScrollController: ancestorHScrollController,
+        ancestorVScrollController: ancestorVScrollController,
+      );
+      // show config toolbar in a toast
+      tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
+      showConfigToolbar(tc, wrapperRect);
+    });
   }
 
   void playTarget(TargetModel tc) {
@@ -190,7 +188,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     if (targetRect == null) return;
 
     Alignment? ta =
-    fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;
@@ -208,6 +206,8 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         tc: tc,
         justPlaying: true,
         wrapperRect: wrapperRect,
+        ancestorHScrollController: ancestorHScrollController,
+        ancestorVScrollController: ancestorVScrollController,
       );
       fco.afterMsDelayDo(tc.calloutDurationMs, () {
         tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {

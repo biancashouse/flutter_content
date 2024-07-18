@@ -24,6 +24,8 @@ Future<void> showSnippetContentCallout({
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
+  ScrollController? ancestorHScrollController,
+  ScrollController? ancestorVScrollController,
 }) async {
   // possibly transform before showing callout
 

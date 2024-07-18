@@ -7,6 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/positioned_target_play_btn.dart';
 
 import 'colour_callout.dart';
 import 'duration_callout.dart';
@@ -47,7 +48,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   @override
   Widget build(BuildContext context) {
     TargetModel tc = widget.tc;
-    Size ivSize = tc.targetsWrapperState()?.wrapperRect.size ?? MediaQuery.sizeOf(context);
+    Size ivSize = tc.targetsWrapperState()?.wrapperRect.size ??
+        MediaQuery.sizeOf(context);
     return SizedBox(
       width: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_W(tc),
       height: CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc),
@@ -56,8 +58,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Icon(
-              Icons.drag_handle,
-              color: Colors.white70,
+            Icons.drag_handle,
+            color: Colors.white70,
           ),
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
@@ -73,18 +75,29 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       iconSize: 30,
                       color: Colors.white,
                       onDragStartF: () => Callout.dismiss(tc.snippetName),
-                      onDragEndF: () => showSnippetContentCallout(
-                            tc: tc,
-                            // parentTW.widget.ancestorHScrollController,
-                            // parentTW.widget.ancestorVScrollController,
-                            justPlaying: false,
-                        wrapperRect: widget.wrapperRect,
-                          ),
+                      onDragEndF: () {
+                        removeSnippetContentCallout(tc.snippetName);
+                        tc.targetsWrapperState()?.zoomer?.resetTransform(
+                            afterTransformF: () {
+                          tc.onChange();
+                          STreeNode.showAllTargetBtns();
+                          STreeNode.showAllTargetCovers();
+                          Callout.dismiss('config-toolbar');
+                          fco.forceRefresh();
+                          fco.afterMsDelayDo(2000, () {
+                            PositionedTargetPlayBtn.playBtnDblTappedBtn(
+                              tc,
+                              widget.wrapperRect,
+                              widget.ancestorHScrollController,
+                              widget.ancestorVScrollController,
+                            );
+                          });
+                        });
+                      },
                       onChangeF: (value) {
                         tc.transformScale = value;
                         TargetsWrapperState? state = tc.targetsWrapperState();
-                        state?.zoomer
-                            ?.zoomImmediately(value, value);
+                        state?.zoomer?.zoomImmediately(value, value);
                       },
                       min: 1.0,
                       max: 3.0),
@@ -110,7 +123,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                         // Cancel previous debounce timer, if any
                         if (_debounce?.isActive ?? false) _debounce?.cancel();
                         // Set up a new debounce timer
-                        _debounce = Timer(const Duration(milliseconds: 100), () {
+                        _debounce =
+                            Timer(const Duration(milliseconds: 100), () {
                           tc.radiusPc = value / ivSize.width;
                           tc.onChange();
                           fco.forceRefresh();
@@ -142,7 +156,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               ColourTool.show(
-                tc, widget.wrapperRect,
+                tc,
+                widget.wrapperRect,
                 onBarrierTappedF: widget.onCloseF,
                 justPlaying: false,
               );
@@ -191,21 +206,26 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   .toList(),
               originalEnumIndex: tc.calloutDecorationShape.index,
               onChangeF: (newIndex) {
-                tc.calloutDecorationShape = MappableDecorationShapeEnum.of(newIndex) ??
-                    MappableDecorationShapeEnum.rectangle;
+                tc.calloutDecorationShape =
+                    MappableDecorationShapeEnum.of(newIndex) ??
+                        MappableDecorationShapeEnum.rectangle;
                 if (tc.calloutDecorationShape == DecorationShapeEnum.star) {
                   tc.calloutArrowTypeIndex = ArrowType.NONE.index;
                 }
                 tc.calloutBorderColorValue = Colors.grey.value;
                 tc.calloutBorderThickness = 2;
                 removeSnippetContentCallout(tc.snippetName);
-                tc.targetsWrapperState()
+                tc
+                    .targetsWrapperState()
                     ?.zoomer
                     ?.zoomImmediately(tc.transformScale, tc.transformScale);
                 showSnippetContentCallout(
-                  tc: tc, wrapperRect: widget.wrapperRect,
+                  tc: tc,
+                  wrapperRect: widget.wrapperRect,
                   justPlaying: false,
                   // widget.onParentBarrierTappedF,
+                  ancestorHScrollController: widget.ancestorHScrollController,
+                  ancestorVScrollController: widget.ancestorVScrollController,
                 );
                 // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                 // fco.afterNextBuildDo(() {
@@ -214,6 +234,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 //     twName: widget.twName,
                 //     tc:tc,
                 //     justPlaying: false,
+                // ancestorHScrollController: widget.ancestorHScrollController,
+                // ancestorVScrollController: widget.ancestorVScrollController,
                 //   );
                 // });
               },
@@ -230,7 +252,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             ),
             onPressed: () {
               MoreCalloutConfigSettings.show(
-                widget.tc, widget.wrapperRect,
+                widget.tc,
+                widget.wrapperRect,
                 ancestorHScrollController: widget.ancestorHScrollController,
                 ancestorVScrollController: widget.ancestorVScrollController,
                 justPlaying: false,
@@ -250,12 +273,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               tc.targetsWrapperState()?.zoomer?.resetTransform(
-                afterTransformF: () {
-                  STreeNode.showAllTargetCovers();
-                  STreeNode.showAllTargetBtns();
-                  fco.forceRefresh();
-                }
-              );
+                  afterTransformF: () {
+                STreeNode.showAllTargetCovers();
+                STreeNode.showAllTargetBtns();
+                fco.forceRefresh();
+              });
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
@@ -269,13 +291,12 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               Callout.dismiss('config-toolbar');
               removeSnippetContentCallout(tc.snippetName);
               tc.targetsWrapperState()?.zoomer?.resetTransform(
-                afterTransformF: () {
-                  tc.onChange();
-                  STreeNode.showAllTargetBtns();
-                  STreeNode.showAllTargetCovers();
-                  fco.forceRefresh();
-                }
-              );
+                  afterTransformF: () {
+                tc.onChange();
+                STreeNode.showAllTargetBtns();
+                STreeNode.showAllTargetCovers();
+                fco.forceRefresh();
+              });
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
@@ -295,14 +316,14 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     super.didChangeDependencies();
   }
 
-  // Offset _topLeft(TargetModel tc) {
-  //   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
-  //       widget.parent.calloutW!, widget.parent.calloutH!);
-  //   if (widget.side == Side.TOP) {
-  //     return (calloutRect.topLeft
-  //         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
-  //   } else {
-  //     return (calloutRect.bottomLeft.translate(0, 0));
-  //   }
-  // }
+// Offset _topLeft(TargetModel tc) {
+//   Rect calloutRect = Rect.fromLTWH(widget.parent.left!, widget.parent.top!,
+//       widget.parent.calloutW!, widget.parent.calloutH!);
+//   if (widget.side == Side.TOP) {
+//     return (calloutRect.topLeft
+//         .translate(0, -CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR_H(tc)));
+//   } else {
+//     return (calloutRect.bottomLeft.translate(0, 0));
+//   }
+// }
 }
