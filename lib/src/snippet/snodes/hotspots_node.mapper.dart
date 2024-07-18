@@ -23,6 +23,9 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   @override
   final String id = 'HotspotsNode';
 
+  static double? _$aspectRatio(HotspotsNode v) => v.aspectRatio;
+  static const Field<HotspotsNode, double> _f$aspectRatio =
+      Field('aspectRatio', _$aspectRatio, opt: true);
   static List<TargetModel> _$targets(HotspotsNode v) => v.targets;
   static const Field<HotspotsNode, List<TargetModel>> _f$targets =
       Field('targets', _$targets, opt: true, def: const []);
@@ -51,6 +54,7 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
 
   @override
   final MappableFields<HotspotsNode> fields = const {
+    #aspectRatio: _f$aspectRatio,
     #targets: _f$targets,
     #playList: _f$playList,
     #child: _f$child,
@@ -69,6 +73,7 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
 
   static HotspotsNode _instantiate(DecodingData data) {
     return HotspotsNode(
+        aspectRatio: data.dec(_f$aspectRatio),
         targets: data.dec(_f$targets),
         playList: data.dec(_f$playList),
         child: data.dec(_f$child));
@@ -134,7 +139,8 @@ abstract class HotspotsNodeCopyWith<$R, $In extends HotspotsNode, $Out>
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
   $R call(
-      {List<TargetModel>? targets,
+      {double? aspectRatio,
+      List<TargetModel>? targets,
       List<TargetModel>? playList,
       STreeNode? child});
   HotspotsNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -163,16 +169,19 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {List<TargetModel>? targets,
+          {Object? aspectRatio = $none,
+          List<TargetModel>? targets,
           List<TargetModel>? playList,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
+        if (aspectRatio != $none) #aspectRatio: aspectRatio,
         if (targets != null) #targets: targets,
         if (playList != null) #playList: playList,
         if (child != $none) #child: child
       }));
   @override
   HotspotsNode $make(CopyWithData data) => HotspotsNode(
+      aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
       targets: data.get(#targets, or: $value.targets),
       playList: data.get(#playList, or: $value.playList),
       child: data.get(#child, or: $value.child));

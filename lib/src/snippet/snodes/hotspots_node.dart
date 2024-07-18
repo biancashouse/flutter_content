@@ -7,13 +7,13 @@ part 'hotspots_node.mapper.dart';
 
 @MappableClass()
 class HotspotsNode extends SC with HotspotsNodeMappable {
-  // SnippetName name;
 
+  double? aspectRatio;  // every drag end of a cover or play btn updates the aspect ratio
   List<TargetModel> targets;
   List<TargetModel> playList;
 
   HotspotsNode({
-    // required this.name,
+    this.aspectRatio,
     this.targets = const [],
     this.playList = const [],
     super.child,
@@ -47,7 +47,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    return child != null
+    Widget tw = child != null
         ? TargetsWrapper(
             parentNode: this,
             key: createNodeGK(),
@@ -61,6 +61,9 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
             parentNode: this,
             key: createNodeGK(),
             );
+    return aspectRatio != null
+        ? AspectRatio(aspectRatio:aspectRatio!, child: tw)
+        : tw;
   }
 
   @override

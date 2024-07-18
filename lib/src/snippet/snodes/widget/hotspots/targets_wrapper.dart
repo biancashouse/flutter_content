@@ -144,7 +144,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.height,
         );
         debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
+        debugPrint('measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}');
         setState(() {
+          widget.parentNode.aspectRatio ??= wrapperSize.aspectRatio;
           _needToMeasureWrapperRect = false;
         });
       }
