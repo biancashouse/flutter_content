@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
 class ColourTool extends StatefulWidget {
   final TargetModel tc;

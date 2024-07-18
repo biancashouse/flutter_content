@@ -1,7 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/iframe.dart';
+import 'package:flutter_content/src/snippet/snodes/iframe/iframe.dart';
 import 'package:gap/gap.dart';
 
 // import 'package:youtube_player_iframe/youtube_player_iframe.dart';

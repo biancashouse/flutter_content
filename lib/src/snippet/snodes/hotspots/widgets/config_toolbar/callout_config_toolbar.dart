@@ -6,7 +6,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
 import 'colour_callout.dart';
 import 'duration_callout.dart';

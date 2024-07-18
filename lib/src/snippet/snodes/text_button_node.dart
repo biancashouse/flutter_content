@@ -63,5 +63,5 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   @override
   String toString() => FLUTTER_TYPE;
 
-  static const String FLUTTER_TYPE = "Text";
+  static const String FLUTTER_TYPE = "TextButton";
 }

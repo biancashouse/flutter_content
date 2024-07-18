@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/hotspots/callout_snippet_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
 class PointyTool extends StatefulWidget {
   final TargetModel tc;
