@@ -70,18 +70,19 @@ class EasyColorPicker extends StatelessWidget {
     Colors.pink,
     Colors.redAccent,
     Colors.orange,
+    Colors.brown,
+    // ecru - https://www.geeksforgeeks.org/shades-of-brown/
+    Color.fromRGBO(194, 178, 128, 1),
     Colors.amberAccent,
-    Colors.yellow,
     Colors.yellowAccent,
     Colors.green,
-    Colors.lightGreen,
     Colors.lime,
     Colors.lightGreenAccent,
     Colors.greenAccent,
     Colors.lightBlueAccent,
     Colors.cyan,
-    Colors.lightBlue,
     Colors.blue,
+    Colors.teal,
   ];
 
   /// Easy color picker widget

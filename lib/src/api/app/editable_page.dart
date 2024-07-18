@@ -335,7 +335,7 @@ class EditablePageState extends State<EditablePage> {
                       FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(
                           onlyTargetsWrappers: true));
                       setState(() {
-                        enterEditMode();
+                        // enterEditMode();
                       });
                     }
                   },
