@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-
 library flutter_content;
 
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -156,7 +155,7 @@ class FlutterContentMixins
   }
 
   static final FlutterContentMixins _instance =
-      FlutterContentMixins._internal();
+  FlutterContentMixins._internal();
 
   static FlutterContentMixins get instance {
     return _instance;
@@ -169,7 +168,7 @@ class FlutterContentMixins
     bool useEmulator = false,
     bool useFBStorage = false,
     final IModelRepository?
-        testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
+    testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
     List<String> googleFontNames = const [
       'Roboto',
@@ -183,7 +182,7 @@ class FlutterContentMixins
     required RoutingConfig routingConfig,
     required String initialRoutePath,
     bool skipAssetPkgName =
-        false, // would only use true when pkg dir is actually inside current project
+    false, // would only use true when pkg dir is actually inside current project
   }) async {
     _appName = modelName;
     _googleFontNames = googleFontNames;
@@ -199,7 +198,12 @@ class FlutterContentMixins
       initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,
       errorBuilder: (context, state) {
-        return Material(child: Text(state.error?.message ?? 'Unknown go error', textScaler: const TextScaler.linear(2.0),),);
+        return Material(
+          child: Text(
+            state.error?.message ?? 'Unknown go error',
+            textScaler: const TextScaler.linear(2.0),
+          ),
+        );
       },
     );
 
@@ -334,9 +338,11 @@ class FlutterContentMixins
     // hopefully write new version to FB
     versionCache[snippetName] ??= {};
     versionIdCache[snippetName] ??= []; //LinkedList<VersionEntryItem>();
-    versionIdCache[snippetName]?.add(newVersionId); //add(VersionEntryItem(newVersionId));
+    versionIdCache[snippetName]
+        ?.add(newVersionId); //add(VersionEntryItem(newVersionId));
     versionCache[snippetName]?.addAll({newVersionId: rootNode});
-    bool fbSuccess = await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
+    bool fbSuccess =
+    await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
 
     if (!fbSuccess) {
       versionIdCache[snippetName]?.remove(newVersionId);
@@ -356,6 +362,8 @@ class FlutterContentMixins
         //publishImmediately ? newVersionId : null,
         autoPublish: true, //appInfo.autoPublishDefault,
       );
+      await modelRepo.saveAppInfo();
+      await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
     } else {
       // EXISTING snippet - just add new version
       snippetInfo = snippetInfoCache[snippetName]!
@@ -383,9 +391,12 @@ class FlutterContentMixins
   late Map<String, TextStyle> _namedTextStyles;
   late Map<String, ButtonStyle> _namedButtonStyles;
   Offset? _devToolsFABPos;
+  // ---- callout config tool pos -------------------------
   Offset? _calloutConfigToolbarPos;
+  bool calloutConfigToolbarAtTopOfScreen = false;
+  // ---- callout config tool pos -------------------------
   bool skipEditModeEscape =
-      false; // property editors can set this to prevent exit from EditMode
+  false; // property editors can set this to prevent exit from EditMode
 
   final inEditMode = ValueNotifier<bool>(false);
 
@@ -394,17 +405,19 @@ class FlutterContentMixins
     return s != null ? bool.parse(s) : false;
   }
 
-  void forceRefresh() =>
-      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh());
+  void forceRefresh({bool onlyTargetsWrappers = false}) =>
+      FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(
+        onlyTargetsWrappers: onlyTargetsWrappers,
+      ));
 
   void setCanEdit(bool b) => localStorage_write("canEditContent", b.toString());
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
-      Offset(
-        fco.scrW / 2 - 350,
-        fco.scrH / 2 - 40,
-      );
+          Offset(
+            fco.scrW / 2 - 350,
+            calloutConfigToolbarAtTopOfScreen ? 10 : fco.scrH - 90,
+          );
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
@@ -426,7 +439,8 @@ class FlutterContentMixins
   final Map<RouteName, GlobalKey> pageGKs = {};
   String? currentRoute;
 
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap = {}; // every node's toWidget() creates a GK
+  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
+  {}; // every node's toWidget() creates a GK
   // final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final List<SnippetPlaceName> placeNames = [];
   final Map<SnippetPlaceName, SnippetName> snippetPlacementMap = {};
@@ -445,7 +459,8 @@ class FlutterContentMixins
 
   List<String> get googleFontNames => _googleFontNames;
 
-  Map<String, void Function(BuildContext)> get namedVoidCallbacks => _namedVoidCallbacks;
+  Map<String, void Function(BuildContext)> get namedVoidCallbacks =>
+      _namedVoidCallbacks;
 
   Map<String, TextStyle> get namedTextStyles => _namedTextStyles;
 
@@ -579,7 +594,7 @@ class FlutterContentMixins
   Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref(); // .child("/");
     rootFSFolderNode =
-        await modelRepo.createAndPopulateFolderNode(ref: rootRef);
+    await modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 }
 

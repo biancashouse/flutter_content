@@ -220,12 +220,12 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
-    Callout.dismiss('config-toolbar');
+    Callout.dismiss(CalloutConfigToolbar.CID);
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
-        cId: 'config-toolbar',
+        cId: CalloutConfigToolbar.CID,
         fillColor: Colors.purpleAccent,
-        initialCalloutW: 800,
+        initialCalloutW: 820,
         initialCalloutH: 80,
         decorationShape: DecorationShapeEnum.rounded_rectangle,
         borderRadius: 16,
@@ -243,7 +243,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         onCloseF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
           Callout.dismiss(tc.snippetName);
-          // Callout.dismiss('config-toolbar');
+          // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
       ),
     );

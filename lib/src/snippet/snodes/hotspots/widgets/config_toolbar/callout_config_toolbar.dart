@@ -33,6 +33,8 @@ class CalloutConfigToolbar extends StatefulWidget {
     super.key,
   });
 
+  static const CID = 'callout-config-toolbar';
+
   static double CALLOUT_CONFIG_TOOLBAR_W(TargetModel tc) => 700;
 
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
@@ -57,10 +59,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.drag_handle,
-            color: Colors.white70,
-          ),
+          toolbarVFlipIcon(),
           const VerticalDivider(color: Colors.white, width: 2),
           Column(
             children: [
@@ -82,7 +81,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           tc.onChange();
                           STreeNode.showAllTargetBtns();
                           STreeNode.showAllTargetCovers();
-                          Callout.dismiss('config-toolbar');
+                          Callout.dismiss(CalloutConfigToolbar.CID);
                           fco.forceRefresh();
                           fco.afterMsDelayDo(2000, () {
                             PositionedTargetPlayBtn.playBtnDblTappedBtn(
@@ -270,7 +269,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             onPressed: () {
               //TODO FlutterContentApp.capiBloc.add(CAPIEvent.deleteTarget(tc: tc));
               tc.targetsWrapperState()?.widget.parentNode.targets.remove(tc);
-              Callout.dismiss('config-toolbar');
+              Callout.dismiss(CalloutConfigToolbar.CID);
               removeSnippetContentCallout(tc.snippetName);
               tc.targetsWrapperState()?.zoomer?.resetTransform(
                   afterTransformF: () {
@@ -288,7 +287,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               color: Colors.white,
             ),
             onPressed: () {
-              Callout.dismiss('config-toolbar');
+              Callout.dismiss(CalloutConfigToolbar.CID);
               removeSnippetContentCallout(tc.snippetName);
               tc.targetsWrapperState()?.zoomer?.resetTransform(
                   afterTransformF: () {
@@ -300,14 +299,29 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
             },
           ),
           const VerticalDivider(color: Colors.white, width: 2),
-          const Icon(
-            Icons.drag_handle,
-            color: Colors.white70,
-          ),
-        ],
+          toolbarVFlipIcon(),
+        ]
       ),
     );
   }
+
+  Widget toolbarVFlipIcon() => IconButton(
+        onPressed: () {
+          fco.calloutConfigToolbarAtTopOfScreen =
+              !fco.calloutConfigToolbarAtTopOfScreen;
+          Callout.dismiss(CalloutConfigToolbar.CID);
+          PositionedTargetPlayBtn.showConfigToolbar(
+            widget.tc,
+            widget.wrapperRect,
+          );
+        },
+        icon: Icon(
+          fco.calloutConfigToolbarAtTopOfScreen
+              ? Icons.arrow_downward
+              : Icons.arrow_upward,
+          color: Colors.white70,
+        ),
+      );
 
   @override
   void didChangeDependencies() {

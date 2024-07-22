@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class EditablePage extends StatefulWidget {
@@ -150,7 +151,7 @@ class EditablePageState extends State<EditablePage> {
                     IconButton(
                       tooltip: 'sign out',
                       onPressed: () async {
-                        if (!Callout.anyPresent(['config-toolbar'])) _signOut();
+                        if (!Callout.anyPresent([CalloutConfigToolbar.CID])) _signOut();
                       },
                       icon: const Icon(
                         Icons.close,
@@ -174,7 +175,7 @@ class EditablePageState extends State<EditablePage> {
         child: IconButton(
           tooltip: 'exit edit mode',
           onPressed: () async {
-            if (!Callout.anyPresent(['config-toolbar'])) exitEditMode();
+            if (!Callout.anyPresent([CalloutConfigToolbar.CID])) exitEditMode();
           },
           icon: const Icon(
             Icons.close,
@@ -235,7 +236,7 @@ class EditablePageState extends State<EditablePage> {
   void showAllNodeWidgetOverlays() {
     // debugPrint('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
-    // bool configuringATarget = Callout.anyPresent(['config-toolbar']);
+    // bool configuringATarget = Callout.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
     void traverseAndMeasure(BuildContext el) {
       // debugPrint('traverseAndMeasure(${el.toString()})');
 
