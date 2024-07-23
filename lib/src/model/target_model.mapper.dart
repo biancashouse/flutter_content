@@ -93,9 +93,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static int? _$starPoints(TargetModel v) => v.starPoints;
   static const Field<TargetModel, int> _f$starPoints =
       Field('starPoints', _$starPoints, opt: true);
-  static String _$snippetName(TargetModel v) => v.snippetName;
-  static const Field<TargetModel, String> _f$snippetName =
-      Field('snippetName', _$snippetName);
   static int? _$calloutArrowTypeIndex(TargetModel v) => v.calloutArrowTypeIndex;
   static const Field<TargetModel, int> _f$calloutArrowTypeIndex = Field(
       'calloutArrowTypeIndex', _$calloutArrowTypeIndex,
@@ -139,7 +136,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutBorderRadius: _f$calloutBorderRadius,
     #calloutBorderThickness: _f$calloutBorderThickness,
     #starPoints: _f$starPoints,
-    #snippetName: _f$snippetName,
     #calloutArrowTypeIndex: _f$calloutArrowTypeIndex,
     #calloutArrowColorValue: _f$calloutArrowColorValue,
     #animateArrow: _f$animateArrow,
@@ -171,7 +167,6 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         calloutBorderRadius: data.dec(_f$calloutBorderRadius),
         calloutBorderThickness: data.dec(_f$calloutBorderThickness),
         starPoints: data.dec(_f$starPoints),
-        snippetName: data.dec(_f$snippetName),
         calloutArrowTypeIndex: data.dec(_f$calloutArrowTypeIndex),
         calloutArrowColorValue: data.dec(_f$calloutArrowColorValue),
         animateArrow: data.dec(_f$animateArrow),
@@ -252,7 +247,6 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       double? calloutBorderRadius,
       double? calloutBorderThickness,
       int? starPoints,
-      String? snippetName,
       int? calloutArrowTypeIndex,
       int? calloutArrowColorValue,
       bool? animateArrow,
@@ -292,7 +286,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
           double? calloutBorderRadius,
           double? calloutBorderThickness,
           Object? starPoints = $none,
-          String? snippetName,
           Object? calloutArrowTypeIndex = $none,
           Object? calloutArrowColorValue = $none,
           bool? animateArrow,
@@ -327,7 +320,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
         if (calloutBorderThickness != null)
           #calloutBorderThickness: calloutBorderThickness,
         if (starPoints != $none) #starPoints: starPoints,
-        if (snippetName != null) #snippetName: snippetName,
         if (calloutArrowTypeIndex != $none)
           #calloutArrowTypeIndex: calloutArrowTypeIndex,
         if (calloutArrowColorValue != $none)
@@ -367,7 +359,6 @@ class _TargetModelCopyWithImpl<$R, $Out>
       calloutBorderThickness:
           data.get(#calloutBorderThickness, or: $value.calloutBorderThickness),
       starPoints: data.get(#starPoints, or: $value.starPoints),
-      snippetName: data.get(#snippetName, or: $value.snippetName),
       calloutArrowTypeIndex:
           data.get(#calloutArrowTypeIndex, or: $value.calloutArrowTypeIndex),
       calloutArrowColorValue:

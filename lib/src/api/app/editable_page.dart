@@ -53,8 +53,7 @@ class EditablePageState extends State<EditablePage> {
     }
     fco.afterNextBuildDo(() {
       setState(() {
-        fabPosition = Offset(20,
-            fco.scrH - 90); // Initial position of the FAB
+        fabPosition = Offset(20, fco.scrH - 90); // Initial position of the FAB
       });
     });
   }
@@ -128,7 +127,9 @@ class EditablePageState extends State<EditablePage> {
       ),
     );
 
-    return fco.isAndroid ? fco.androidAwareBuild(context, builtWidget) : builtWidget;
+    return fco.isAndroid
+        ? fco.androidAwareBuild(context, builtWidget)
+        : builtWidget;
   }
 
   Widget FAB() => Container(
@@ -151,7 +152,8 @@ class EditablePageState extends State<EditablePage> {
                     IconButton(
                       tooltip: 'sign out',
                       onPressed: () async {
-                        if (!Callout.anyPresent([CalloutConfigToolbar.CID])) _signOut();
+                        if (!Callout.anyPresent([CalloutConfigToolbar.CID]))
+                          _signOut();
                       },
                       icon: const Icon(
                         Icons.close,
@@ -212,15 +214,15 @@ class EditablePageState extends State<EditablePage> {
   }
 
   void exitEditMode() {
-    fco.inEditMode.value = false;
     removeAllNodeWidgetOverlays();
-    String feature = FlutterContentApp.rootNode?.name ?? "snippet name ?!";
-    if (Callout.anyPresent([feature])) {
-      Callout.dismiss(feature);
-    }
-    unhideFAB();
-    Callout.dismiss('exit-editMode');
     FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
+    Callout.dismiss('exit-editMode');
+    unhideFAB();
+    fco.inEditMode.value = false;
+    // String feature = FlutterContentApp.rootNode?.name ?? "snippet name ?!";
+    // if (Callout.anyPresent([feature])) {
+    //   Callout.dismiss(feature);
+    // }
   }
 
   void removeAllNodeWidgetOverlays() {
@@ -333,8 +335,9 @@ class EditablePageState extends State<EditablePage> {
                       //   showDevToolsFAB();
                       // });
                       Callout.dismiss("EditorPassword");
-                      FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(
-                          onlyTargetsWrappers: true));
+                      FlutterContentApp.capiBloc.add(
+                          const CAPIEvent.forceRefresh(
+                              onlyTargetsWrappers: true));
                       setState(() {
                         // enterEditMode();
                       });
@@ -394,5 +397,4 @@ class EditablePageState extends State<EditablePage> {
     FlutterContentApp.capiBloc
         .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
   }
-
 }

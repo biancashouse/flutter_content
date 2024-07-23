@@ -49,6 +49,7 @@ Future<void> showSnippetContentCallout({
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
   Feature feature = tc.uid.toString();
+  String snippetName = feature;
 
   // var snippet = fco.snippetInfoCache[tc.snippetName];
   // fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);

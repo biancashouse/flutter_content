@@ -28,6 +28,7 @@ class SnippetPanel extends StatefulWidget {
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
+  // effectively from a Template
   SnippetPanel.fromNodes({
     this.panelName,
     required this.snippetRootNode,

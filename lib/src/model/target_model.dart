@@ -43,7 +43,7 @@ class TargetModel with TargetModelMappable {
   double calloutBorderRadius;
   double calloutBorderThickness;
   int? starPoints;
-  String snippetName;
+  // String snippetName;
 
   int? calloutArrowTypeIndex;
   int? calloutArrowColorValue;
@@ -81,7 +81,7 @@ class TargetModel with TargetModelMappable {
     this.calloutBorderRadius = 30,
     this.calloutBorderThickness = 1,
     this.starPoints,
-    required this.snippetName,
+    // required this.snippetName,
     this.calloutArrowTypeIndex = 1, // ArrowType.POINTY.index,
     this.calloutArrowColorValue,
     this.animateArrow = false,
@@ -281,7 +281,7 @@ class TargetModel with TargetModelMappable {
             child: fco.coloredText('saving changes...',
                 color: Colors.blueAccent)),
       );
-      await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+      await fco.cacheAndSaveANewSnippetVersion(snippetName: rootNode.name, rootNode: rootNode);
       Callout.dismiss("saving-model");
     }
 

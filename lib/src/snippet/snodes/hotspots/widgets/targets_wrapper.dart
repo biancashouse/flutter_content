@@ -205,8 +205,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
       TargetModel newTC = TargetModel(
         uid: newTargetId, //event.wName.hashCode,
-        snippetName: snippetName,
-        // single: false,
       )..parentHotspotNode = widget.parentNode;
       Offset newGlobalPos = details.globalPosition.translate(
         zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,

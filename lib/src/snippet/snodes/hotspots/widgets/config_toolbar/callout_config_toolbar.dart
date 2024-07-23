@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:math';
 
 import 'package:bh_shared/bh_shared.dart';
@@ -15,8 +14,6 @@ import 'duration_callout.dart';
 import 'more_callout_settings.dart';
 import 'pointy_callout.dart';
 import 'resize_slider.dart';
-
-Timer? _debounce;
 
 class CalloutConfigToolbar extends StatefulWidget {
   final TargetModel tc;
@@ -288,7 +285,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       .targets
                       .remove(tc);
                   fco.cacheAndSaveANewSnippetVersion(
-                    snippetName: tc.snippetName,
+                    snippetName: rootNode.name, // tc.snippetName,
                     rootNode: rootNode,
                   );
                   Callout.dismiss(CalloutConfigToolbar.CID);

@@ -26,6 +26,12 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static double? _$aspectRatio(HotspotsNode v) => v.aspectRatio;
   static const Field<HotspotsNode, double> _f$aspectRatio =
       Field('aspectRatio', _$aspectRatio, opt: true);
+  static double? _$width(HotspotsNode v) => v.width;
+  static const Field<HotspotsNode, double> _f$width =
+      Field('width', _$width, opt: true);
+  static double? _$height(HotspotsNode v) => v.height;
+  static const Field<HotspotsNode, double> _f$height =
+      Field('height', _$height, opt: true);
   static List<TargetModel> _$targets(HotspotsNode v) => v.targets;
   static const Field<HotspotsNode, List<TargetModel>> _f$targets =
       Field('targets', _$targets, opt: true, def: const []);
@@ -55,6 +61,8 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   @override
   final MappableFields<HotspotsNode> fields = const {
     #aspectRatio: _f$aspectRatio,
+    #width: _f$width,
+    #height: _f$height,
     #targets: _f$targets,
     #playList: _f$playList,
     #child: _f$child,
@@ -74,6 +82,8 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static HotspotsNode _instantiate(DecodingData data) {
     return HotspotsNode(
         aspectRatio: data.dec(_f$aspectRatio),
+        width: data.dec(_f$width),
+        height: data.dec(_f$height),
         targets: data.dec(_f$targets),
         playList: data.dec(_f$playList),
         child: data.dec(_f$child));
@@ -140,6 +150,8 @@ abstract class HotspotsNodeCopyWith<$R, $In extends HotspotsNode, $Out>
   @override
   $R call(
       {double? aspectRatio,
+      double? width,
+      double? height,
       List<TargetModel>? targets,
       List<TargetModel>? playList,
       STreeNode? child});
@@ -170,11 +182,15 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? aspectRatio = $none,
+          Object? width = $none,
+          Object? height = $none,
           List<TargetModel>? targets,
           List<TargetModel>? playList,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (aspectRatio != $none) #aspectRatio: aspectRatio,
+        if (width != $none) #width: width,
+        if (height != $none) #height: height,
         if (targets != null) #targets: targets,
         if (playList != null) #playList: playList,
         if (child != $none) #child: child
@@ -182,6 +198,8 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
   @override
   HotspotsNode $make(CopyWithData data) => HotspotsNode(
       aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
+      width: data.get(#width, or: $value.width),
+      height: data.get(#height, or: $value.height),
       targets: data.get(#targets, or: $value.targets),
       playList: data.get(#playList, or: $value.playList),
       child: data.get(#child, or: $value.child));
