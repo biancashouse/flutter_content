@@ -84,7 +84,7 @@ class _PointyToolState extends State<PointyTool> {
     // fco.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   Callout.refreshOverlay(tc.snippetName, f: () {});
-    removeSnippetContentCallout(tc.snippetName);
+    removeSnippetContentCallout(tc);
     tc
         .targetsWrapperState()
         ?.zoomer

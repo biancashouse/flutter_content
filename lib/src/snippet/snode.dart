@@ -420,7 +420,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             String? currentJsonS = FlutterContentApp.rootNode?.toJson();
             if (jsonBeforePush == currentJsonS) return;
             if (FlutterContentApp.rootNode != null) {
-              fco.possiblyCacheAndSaveANewSnippetVersion(
+              fco.cacheAndSaveANewSnippetVersion(
                 snippetName: snippetName,
                 rootNode: FlutterContentApp.rootNode!,
               );

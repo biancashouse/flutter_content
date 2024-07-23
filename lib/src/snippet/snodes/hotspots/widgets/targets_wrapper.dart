@@ -94,13 +94,20 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     return null;
   }
 
+  void refresh(VoidCallback f) {
+    setState(() {
+      f.call();
+      _playingOrEditingTc = null;
+    });
+  }
+
   @override
   void initState() {
     debugPrint('TargetsWrapperState initState');
     super.initState();
 
     for (TargetModel tc in widget.parentNode.targets) {
-      tc.targetsWrapperNode = widget.parentNode;
+      tc.parentHotspotNode = widget.parentNode;
     }
 
     fco.afterNextBuildDo(
@@ -144,7 +151,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.height,
         );
         debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
-        debugPrint('measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}');
+        debugPrint(
+            'measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}');
         setState(() {
           widget.parentNode.aspectRatio ??= wrapperSize.aspectRatio;
           _needToMeasureWrapperRect = false;
@@ -165,25 +173,27 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
-      var data = details.data;
-      TargetId uid = data.$1;
-      TargetModel? foundTc = widget.parentNode.findTarget(uid);
-      // $2 true means target btn rather than target cover
-      if (foundTc != null && data.$2) {
-        foundTc.setBtnStackPosPc(details.offset.translate(
-          FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-          FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-        ));
-        foundTc.onChange();
-      } else if (foundTc != null) {
-        foundTc.setTargetStackPosPc(details.offset.translate(
-          foundTc.radius,
-          foundTc.radius,
-        ));
-        foundTc.onChange();
-      }
-      FlutterContentApp.capiBloc
-          .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      refresh(() {
+        var data = details.data;
+        TargetId uid = data.$1;
+        TargetModel? foundTc = widget.parentNode.findTarget(uid);
+        // $2 true means target btn rather than target cover
+        if (foundTc != null && data.$2) {
+          foundTc.setBtnStackPosPc(details.offset.translate(
+            FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+            FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          ));
+          foundTc.changed_saveRootSnippet();
+        } else if (foundTc != null) {
+          foundTc.setTargetStackPosPc(details.offset.translate(
+            foundTc.radius,
+            foundTc.radius,
+          ));
+          foundTc.changed_saveRootSnippet();
+        }
+        // FlutterContentApp.capiBloc
+        //     .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+      });
     }
 
     //
@@ -197,7 +207,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         uid: newTargetId, //event.wName.hashCode,
         snippetName: snippetName,
         // single: false,
-      )..targetsWrapperNode = widget.parentNode;
+      )..parentHotspotNode = widget.parentNode;
       Offset newGlobalPos = details.globalPosition.translate(
         zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,
         zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
@@ -215,7 +225,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       FlutterContentApp.capiBloc
           .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-      fco.possiblyCacheAndSaveANewSnippetVersion(
+      fco.cacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: widget.parentNode.rootNodeOfSnippet()!,
       );

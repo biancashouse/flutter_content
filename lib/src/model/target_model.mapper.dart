@@ -59,10 +59,10 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
       Field('targetLocalPosTopPc', _$targetLocalPosTopPc, opt: true);
   static bool _$showCover(TargetModel v) => v.showCover;
   static const Field<TargetModel, bool> _f$showCover =
-      Field('showCover', _$showCover, opt: true, def: false);
+      Field('showCover', _$showCover, opt: true, def: true);
   static bool _$showBtn(TargetModel v) => v.showBtn;
   static const Field<TargetModel, bool> _f$showBtn =
-      Field('showBtn', _$showBtn, opt: true, def: false);
+      Field('showBtn', _$showBtn, opt: true, def: true);
   static bool _$canResizeH(TargetModel v) => v.canResizeH;
   static const Field<TargetModel, bool> _f$canResizeH =
       Field('canResizeH', _$canResizeH, opt: true, def: true);
@@ -110,13 +110,10 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$autoPlay(TargetModel v) => v.autoPlay;
   static const Field<TargetModel, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
-  static HotspotsNode? _$targetsWrapperNode(TargetModel v) =>
-      v.targetsWrapperNode;
-  static const Field<TargetModel, HotspotsNode> _f$targetsWrapperNode =
-      Field('targetsWrapperNode', _$targetsWrapperNode, mode: FieldMode.member);
-  static bool _$visible(TargetModel v) => v.visible;
-  static const Field<TargetModel, bool> _f$visible =
-      Field('visible', _$visible, mode: FieldMode.member);
+  static HotspotsNode? _$parentHotspotNode(TargetModel v) =>
+      v.parentHotspotNode;
+  static const Field<TargetModel, HotspotsNode> _f$parentHotspotNode =
+      Field('parentHotspotNode', _$parentHotspotNode, mode: FieldMode.member);
 
   @override
   final MappableFields<TargetModel> fields = const {
@@ -147,8 +144,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutArrowColorValue: _f$calloutArrowColorValue,
     #animateArrow: _f$animateArrow,
     #autoPlay: _f$autoPlay,
-    #targetsWrapperNode: _f$targetsWrapperNode,
-    #visible: _f$visible,
+    #parentHotspotNode: _f$parentHotspotNode,
   };
 
   static TargetModel _instantiate(DecodingData data) {

@@ -495,7 +495,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     debugPrint('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet snippet
-    await fco.possiblyCacheAndSaveANewSnippetVersion(
+    await fco.cacheAndSaveANewSnippetVersion(
       snippetName: snippetName,
       rootNode: rootNode,
       publish: true,
@@ -2288,8 +2288,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SnippetRootNode newRootNode =
         SnippetRootNode(name: event.newSnippetName, child: event.node);
     // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-    await fco.possiblyCacheAndSaveANewSnippetVersion(
-        snippetName: event.newSnippetName, rootNode: newRootNode);
+    await fco.cacheAndSaveANewSnippetVersion(
+      snippetName: event.newSnippetName,
+      rootNode: newRootNode,
+    );
     // FCO.addToSnippetCache(
     //   snippetName: event.newSnippetName,
     //   rootNode: rootNode,

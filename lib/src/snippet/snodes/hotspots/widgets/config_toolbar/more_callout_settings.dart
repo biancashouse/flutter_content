@@ -188,7 +188,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
 
   void _refreshContentCallout() {
     Callout.dismiss("more-cc-settings");
-    removeSnippetContentCallout(tc.snippetName);
+    removeSnippetContentCallout(tc);
     tc.targetsWrapperState()
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);

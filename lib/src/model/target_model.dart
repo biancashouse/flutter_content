@@ -1,12 +1,10 @@
 import 'dart:math';
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'target_model.mapper.dart';
@@ -20,7 +18,7 @@ class TargetModel with TargetModelMappable {
   //
   // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
-  HotspotsNode? targetsWrapperNode;
+  HotspotsNode? parentHotspotNode;
 
   // bool single;
   double? targetLocalPosLeftPc;
@@ -30,7 +28,9 @@ class TargetModel with TargetModelMappable {
   double? btnLocalLeftPc;
   double? calloutTopPc;
   double? calloutLeftPc;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool showCover;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool showBtn;
   bool canResizeH;
   bool canResizeV;
@@ -52,8 +52,8 @@ class TargetModel with TargetModelMappable {
 
   bool autoPlay;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  bool visible = true;
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  // bool visible = true;
 
   TargetModel({
     required this.uid,
@@ -71,8 +71,8 @@ class TargetModel with TargetModelMappable {
     this.btnLocalLeftPc,
     this.targetLocalPosLeftPc,
     this.targetLocalPosTopPc,
-    this.showCover = false,
-    this.showBtn = false,
+    this.showCover = true,
+    this.showBtn = true,
     this.canResizeH = true,
     this.canResizeV = true,
     this.calloutFillColorValue,
@@ -92,8 +92,10 @@ class TargetModel with TargetModelMappable {
     // fontWeightIndex = FontWeight.normal.index;
   }
 
-  GlobalKey? get targetsWrapperGK => targetsWrapperNode?.nodeWidgetGK;
-  TargetsWrapperState? targetsWrapperState() => targetsWrapperNode?.nodeWidgetGK?.currentState as TargetsWrapperState?;
+  GlobalKey? get targetsWrapperGK => parentHotspotNode?.nodeWidgetGK;
+  TargetsWrapperState? targetsWrapperState() {
+    return targetsWrapperGK?.currentState as TargetsWrapperState?;
+  }
 
   /// https://gist.github.com/pskink/aa0b0c80af9a986619845625c0e87a67
   Matrix4 composeMatrix({
@@ -260,13 +262,11 @@ class TargetModel with TargetModelMappable {
 
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
-  Future<void> onChange() async {
-    SnippetRootNode? rootNode = targetsWrapperNode?.rootNodeOfSnippet();
+  Future<void> changed_saveRootSnippet() async {
+    SnippetRootNode? rootNode = parentHotspotNode?.rootNodeOfSnippet();
     if (rootNode != null) {
-      fco.possiblyCacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
-      // appInfoMap = FCO.appInfoAsMap;
       Callout.dismissAll(onlyToasts: true);
-      HydratedBloc.storage.write('flutter-content', rootNode.toJson());
+      // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
       Callout.showToast(
         removeAfterMs: 500,
         calloutConfig: CalloutConfig(
@@ -281,6 +281,8 @@ class TargetModel with TargetModelMappable {
             child: fco.coloredText('saving changes...',
                 color: Colors.blueAccent)),
       );
+      await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: rootNode);
+      Callout.dismiss("saving-model");
     }
 
     // emit(state.copyWith(
@@ -303,16 +305,16 @@ class TargetModel with TargetModelMappable {
     return uid;
   }
 
-  // TargetModel clone() {
-  //   var cloneJson = toJson();
-  //   TargetModel clonedTC = TargetModel.fromJson(cloneJson);
-  //   // clonedTC._bloc = this._bloc;
-  //   // clonedTC._gk = this._gk;
-  //   // clonedTC._textFocusNode = this._textFocusNode;
-  //   // clonedTC._imageUrlFocusNode = this._imageUrlFocusNode;
-  //   // clonedTC._transientMatrix = this._transientMatrix;
-  //   // clonedTC._rect = this._rect;
-  //   clonedTC.visible = visible;
-  //   return clonedTC;
-  // }
+// TargetModel clone() {
+//   var cloneJson = toJson();
+//   TargetModel clonedTC = TargetModel.fromJson(cloneJson);
+//   // clonedTC._bloc = this._bloc;
+//   // clonedTC._gk = this._gk;
+//   // clonedTC._textFocusNode = this._textFocusNode;
+//   // clonedTC._imageUrlFocusNode = this._imageUrlFocusNode;
+//   // clonedTC._transientMatrix = this._transientMatrix;
+//   // clonedTC._rect = this._rect;
+//   clonedTC.visible = visible;
+//   return clonedTC;
+// }
 }

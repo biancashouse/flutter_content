@@ -144,11 +144,11 @@ class PositionedTargetPlayBtn extends StatelessWidget {
   }
 
   static void playBtnDblTappedBtn(
-    TargetModel tc,
-    Rect wrapperRect,
-    ScrollController? ancestorHScrollController,
-    ScrollController? ancestorVScrollController,
-  ) {
+      TargetModel tc,
+      Rect wrapperRect,
+      ScrollController? ancestorHScrollController,
+      ScrollController? ancestorVScrollController,
+      {bool quickly = false}) {
     if (!fco.canEditContent) return;
 
     if (tc.targetsWrapperState() == null) return;
@@ -172,7 +172,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
       // show config toolbar in a toast
       tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
       showConfigToolbar(tc, wrapperRect);
-    });
+    }, quickly: quickly);
   }
 
   void playTarget(TargetModel tc) {
@@ -242,7 +242,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         wrapperRect: wrapperRect,
         onCloseF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
-          Callout.dismiss(tc.snippetName);
+          Callout.dismiss(tc.uid.toString());
           // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
       ),

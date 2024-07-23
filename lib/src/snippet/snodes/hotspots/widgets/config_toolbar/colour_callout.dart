@@ -13,29 +13,31 @@ class ColourTool extends StatefulWidget {
   final bool justPlaying;
 
   const ColourTool(
-    this.tc, this.wrapperRect,
-    this.onParentBarrierTappedF, {
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
-    required this.justPlaying,
-    super.key,
-  });
+      this.tc,
+      this.wrapperRect,
+      this.onParentBarrierTappedF, {
+        this.ancestorHScrollController,
+        this.ancestorVScrollController,
+        required this.justPlaying,
+        super.key,
+      });
 
   @override
   State<ColourTool> createState() => _ColourToolState();
 
   static show(
-    final TargetModel tc, final Rect wrapperRect, {
-    required VoidCallback onBarrierTappedF,
-    final ScrollController? ancestorHScrollController,
-    final ScrollController? ancestorVScrollController,
-    required final bool justPlaying,
-  }) {
+      final TargetModel tc,
+      final Rect wrapperRect, {
+        required VoidCallback onBarrierTappedF,
+        final ScrollController? ancestorHScrollController,
+        final ScrollController? ancestorVScrollController,
+        required final bool justPlaying,
+      }) {
     GlobalKey? targetGK =
-        // tc.single
-        // ? FCO.getSingleTargetGk(tc.wName)
-        // :
-        fco.getTargetGk(tc.uid);
+    // tc.single
+    // ? FCO.getSingleTargetGk(tc.wName)
+    // :
+    fco.getTargetGk(tc.uid);
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
@@ -52,7 +54,8 @@ class ColourTool extends StatefulWidget {
         notUsingHydratedStorage: true,
       ),
       calloutContent: ColourTool(
-        tc, wrapperRect,
+        tc,
+        wrapperRect,
         onBarrierTappedF,
         ancestorHScrollController: ancestorHScrollController,
         ancestorVScrollController: ancestorVScrollController,
@@ -90,27 +93,28 @@ class _ColourToolState extends State<ColourTool> {
             selected: tc.calloutColor(),
             onChanged: (color) {
               tc.setCalloutColor(color);
+              // STreeNode.hideAllTargetCovers();
+              // STreeNode.showAllTargetCovers();
               // Callout.refreshOverlay(tc.snippetName);
               // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
               Callout.dismiss('color-picker');
               // fco.afterNextBuildDo(() {
               //   widget.onParentBarrierTappedF.call();
               //   Callout.refreshOverlay(tc.snippetName, f: () {});
-              removeSnippetContentCallout(tc.snippetName);
-              tc.targetsWrapperState()?.zoomer
+              removeSnippetContentCallout(tc);
+              tc.targetsWrapperState()
+                  ?.zoomer
                   ?.zoomImmediately(tc.transformScale, tc.transformScale);
-              showSnippetContentCallout(
-                tc: tc, wrapperRect: widget.wrapperRect,
-                justPlaying: false,
-                // widget.onParentBarrierTappedF,
-                ancestorHScrollController: widget.ancestorHScrollController,
-                ancestorVScrollController: widget.ancestorVScrollController,
-              );
-              // });
-              //reshowSnippetContentCallout(tc);
-              // fco.afterMsDelayDo(1000, () {
-              //   FCO.om.moveToTop(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.name);
-              // });
+              tc.targetsWrapperState()?.refresh(() {
+                showSnippetContentCallout(
+                  tc: tc,
+                  wrapperRect: widget.wrapperRect,
+                  justPlaying: false,
+                  // widget.onParentBarrierTappedF,
+                  ancestorHScrollController: widget.ancestorHScrollController,
+                  ancestorVScrollController: widget.ancestorVScrollController,
+                );
+              });
             },
           ),
         ],

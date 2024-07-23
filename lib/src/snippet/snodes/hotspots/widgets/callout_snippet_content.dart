@@ -6,17 +6,21 @@ import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
-bool isShowingSnippetCallout(String snippetName) =>
-    Callout.anyPresent([snippetName]);
+bool isShowingSnippetCallout(TargetModel tc) =>
+    Callout.anyPresent([tc.uid.toString()]);
 
-void hideSnippetCallout(String snippetName) => Callout.hide(snippetName);
+void hideSnippetCallout(TargetModel tc) => Callout.hide(tc.uid.toString());
 
-void unhideSnippetCallout(String snippetName) => Callout.unhide(snippetName);
+void unhideSnippetCallout(TargetModel tc) => Callout.unhide(tc.uid.toString());
 
-void removeSnippetContentCallout(String snippetName) {
-  if (Callout.anyPresent([snippetName])) {
-    Callout.dismiss(snippetName);
-  }
+void removeSnippetContentCallout(TargetModel tc) {
+  // if (Callout.anyPresent([tc.uid.toString()])) {
+  Callout.dismiss(tc.uid.toString());
+  // }
+}
+
+void refreshSnippetContentCallout(TargetModel tc) {
+  Callout.rebuild(tc.uid.toString());
 }
 
 /// returning false means user tapped the x
@@ -44,103 +48,110 @@ Future<void> showSnippetContentCallout({
   GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
-  Feature feature = tc.snippetName;
-  // var snippet = fco.snippetInfoCache[tc.snippetName];
-  fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);
-  if (fco.targetSnippetBeingConfigured == null) {
-    var rootNode = SnippetTemplateEnum.callout_content.clone();
-    SnippetRootNode newSnippet =
-        SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.snippetName);
-    fco.possiblyCacheAndSaveANewSnippetVersion(
-        snippetName: tc.snippetName, rootNode: newSnippet);
-    fco.targetSnippetBeingConfigured = newSnippet;
-  }
-  // snipper may not exist yet
-  //  by now should definitely have created the target's snippet
-  if (fco.targetSnippetBeingConfigured != null) {
-    Callout.showOverlay(
-      // zoomer: zoomer,
-      targetGkF: targetGK,
-      calloutContent: PointerInterceptor(
-        child: BlocBuilder<CAPIBloC, CAPIState>(
-          builder: (context, state) {
-            return const CircularProgressIndicator();
-            return fco.targetSnippetBeingConfigured!.toWidget(context, null);
-          },
-        ),
-      ),
-      calloutConfig: CalloutConfig(
-        cId: feature,
-        // hScrollController: ancestorHScrollController,
-        // vScrollController: ancestorVScrollController,
-        // scale: tc.transformScale,
-        // barrierOpacity: 0.1,
-        fillColor: tc.calloutColor(),
-        decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
-        borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
-        borderThickness: tc.calloutBorderThickness,
-        borderRadius: tc.calloutBorderRadius,
-        arrowColor: tc.calloutColor(),
-        arrowType: tc.getArrowType(),
-        fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
-            ? 60
-            : null,
-        animate: tc.animateArrow,
-        initialCalloutPos: tc.getCalloutPos(),
-        // initialCalloutAlignment: Alignment.bottomCenter,
-        // initialTargetAlignment: Alignment.topCenter,
-        modal: false,
-        initialCalloutW: tc.calloutWidth,
-        initialCalloutH: tc.calloutHeight,
-        minHeight: minHeight + 4,
-        resizeableH: !justPlaying && tc.canResizeH,
-        resizeableV: !justPlaying && tc.canResizeV,
-        // containsTextField: true,
-        // alwaysReCalcSize: true,
-        onResizeF: (Size newSize) {
-          tc
-            ..calloutWidth = newSize.width
-            ..calloutHeight = newSize.height;
-          // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-        },
-        onDragEndedF: (Offset newPos) {
-          if (newPos.dy / fco.scrH != tc.calloutTopPc ||
-              newPos.dx / fco.scrW != tc.calloutLeftPc) {
-            tc.calloutTopPc = newPos.dy / fco.scrH;
-            tc.calloutLeftPc = newPos.dx / fco.scrW;
-            tc.onChange();
-            // FlutterContentApp.capiBloc.add(
-            //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
-            // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
-            // tc.setTextCalloutPos(newPos);
-          }
-        },
-        draggable: true,
-        // frameTarget: true,
-        scaleTarget: tc.transformScale,
-        // separation: 100,
-        // barrierOpacity: .1,
-        // onBarrierTappedF: () async {
-        //   onBarrierTappedF?.call();
-        //   Callout.removeOverlay(feature);
-        // },
-        notUsingHydratedStorage: true,
-        // showCloseButton: true,
-        // onTopRightButtonPressF: (){
-        //     onBarrierTappedF?.call();
-        //     Callout.removeOverlay(feature);
-        // }
-        onDismissedF: () {
-          // FCO.parentTW(twName)?.zoomer?.resetTransform();
-          // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-        },
-      ),
-      // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
-      removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
-    );
+  Feature feature = tc.uid.toString();
 
-    // explainPopupsAreDraggable();
-  }
+  // var snippet = fco.snippetInfoCache[tc.snippetName];
+  // fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);
+  // if (fco.targetSnippetBeingConfigured == null) {
+  // var rootNode = SnippetTemplateEnum.callout_content.clone();
+  // SnippetRootNode newSnippet =
+  //     SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.uid.toString());
+  // fco.possiblyCacheAndSaveANewSnippetVersion(
+  //     snippetName: tc.uid.toString(), rootNode: newSnippet);
+  // fco.targetSnippetBeingConfigured = newSnippet;
+  // }
+  // snippet may not exist yet
+  //  by now should definitely have created the target's snippet
+  // if (fco.targetSnippetBeingConfigured != null) {
+
+  Widget content() => SnippetPanel.fromSnippet(
+      panelName: tc.uid.toString(), // never used
+      snippetName: tc.uid.toString());
+
+  Callout.showOverlay(
+    // zoomer: zoomer,
+    targetGkF: targetGK,
+    calloutContent: PointerInterceptor(
+      child: BlocBuilder<CAPIBloC, CAPIState>(
+        builder: (context, state) {
+          // return const CircularProgressIndicator();
+          var contentWidget = content();
+          return contentWidget;
+        },
+      ),
+    ),
+    calloutConfig: CalloutConfig(
+      cId: feature,
+      // hScrollController: ancestorHScrollController,
+      // vScrollController: ancestorVScrollController,
+      // scale: tc.transformScale,
+      // barrierOpacity: 0.1,
+      fillColor: tc.calloutColor(),
+      decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
+      borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
+      borderThickness: tc.calloutBorderThickness,
+      borderRadius: tc.calloutBorderRadius,
+      arrowColor: tc.calloutColor(),
+      arrowType: tc.getArrowType(),
+      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
+          ? 60
+          : null,
+      animate: tc.animateArrow,
+      initialCalloutPos: tc.getCalloutPos(),
+      // initialCalloutAlignment: Alignment.bottomCenter,
+      // initialTargetAlignment: Alignment.topCenter,
+      modal: false,
+      initialCalloutW: tc.calloutWidth,
+      initialCalloutH: tc.calloutHeight,
+      minHeight: minHeight + 4,
+      resizeableH: !justPlaying && tc.canResizeH,
+      resizeableV: !justPlaying && tc.canResizeV,
+      // containsTextField: true,
+      // alwaysReCalcSize: true,
+      onResizeF: (Size newSize) {
+        tc
+          ..calloutWidth = newSize.width
+          ..calloutHeight = newSize.height;
+        // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+      },
+      onDragEndedF: (Offset newPos) {
+        if (newPos.dy / fco.scrH != tc.calloutTopPc ||
+            newPos.dx / fco.scrW != tc.calloutLeftPc) {
+          tc.calloutTopPc = newPos.dy / fco.scrH;
+          tc.calloutLeftPc = newPos.dx / fco.scrW;
+          tc.changed_saveRootSnippet();
+          // FlutterContentApp.capiBloc.add(
+          //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
+          // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
+          // tc.setTextCalloutPos(newPos);
+        }
+      },
+      draggable: true,
+      // frameTarget: true,
+      scaleTarget: tc.transformScale,
+      // separation: 100,
+      // barrierOpacity: .1,
+      // onBarrierTappedF: () async {
+      //   onBarrierTappedF?.call();
+      //   Callout.removeOverlay(feature);
+      // },
+      notUsingHydratedStorage: true,
+      // showCloseButton: true,
+      // onTopRightButtonPressF: (){
+      //     onBarrierTappedF?.call();
+      //     Callout.removeOverlay(feature);
+      // }
+      onDismissedF: () {
+        // FCO.parentTW(twName)?.zoomer?.resetTransform();
+        // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+      },
+    ),
+    // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
+    removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
+  );
+
+  // explainPopupsAreDraggable();
+  // }
 }
 
 // void showHelpContentPlayCallout(

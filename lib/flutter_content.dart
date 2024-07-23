@@ -324,7 +324,7 @@ class FlutterContentMixins
   Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
   // create new snippet version in cache, then write through to FB
-  Future<void> possiblyCacheAndSaveANewSnippetVersion({
+  Future<void> cacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
     String? pagePath,
     required SnippetRootNode rootNode,
