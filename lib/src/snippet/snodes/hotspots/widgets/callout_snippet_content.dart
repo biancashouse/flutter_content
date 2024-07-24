@@ -7,20 +7,20 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(TargetModel tc) =>
-    Callout.anyPresent([tc.uid.toString()]);
+    Callout.anyPresent([tc.contentCId]);
 
-void hideSnippetCallout(TargetModel tc) => Callout.hide(tc.uid.toString());
+void hideSnippetCallout(TargetModel tc) => Callout.hide(tc.contentCId);
 
-void unhideSnippetCallout(TargetModel tc) => Callout.unhide(tc.uid.toString());
+void unhideSnippetCallout(TargetModel tc) => Callout.unhide(tc.contentCId);
 
 void removeSnippetContentCallout(TargetModel tc) {
-  // if (Callout.anyPresent([tc.uid.toString()])) {
-  Callout.dismiss(tc.uid.toString());
+  // if (Callout.anyPresent([tc.contentCId])) {
+  Callout.dismiss(tc.contentCId);
   // }
 }
 
 void refreshSnippetContentCallout(TargetModel tc) {
-  Callout.rebuild(tc.uid.toString());
+  Callout.rebuild(tc.contentCId);
 }
 
 /// returning false means user tapped the x
@@ -48,17 +48,14 @@ Future<void> showSnippetContentCallout({
   GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
-  Feature feature = tc.uid.toString();
-  String snippetName = feature;
 
-  // var snippet = fco.snippetInfoCache[tc.snippetName];
   // fco.targetSnippetBeingConfigured = fco.currentSnippet(tc.snippetName);
   // if (fco.targetSnippetBeingConfigured == null) {
   // var rootNode = SnippetTemplateEnum.callout_content.clone();
   // SnippetRootNode newSnippet =
-  //     SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.uid.toString());
+  //     SnippetPanel.createSnippetFromTemplateNodes(rootNode, tc.contentCId);
   // fco.possiblyCacheAndSaveANewSnippetVersion(
-  //     snippetName: tc.uid.toString(), rootNode: newSnippet);
+  //     snippetName: tc.contentCId, rootNode: newSnippet);
   // fco.targetSnippetBeingConfigured = newSnippet;
   // }
   // snippet may not exist yet
@@ -66,8 +63,8 @@ Future<void> showSnippetContentCallout({
   // if (fco.targetSnippetBeingConfigured != null) {
 
   Widget content() => SnippetPanel.fromSnippet(
-      panelName: tc.uid.toString(), // never used
-      snippetName: tc.uid.toString());
+      panelName: tc.contentCId, // never used
+      snippetName: tc.contentSnippetName);
 
   Callout.showOverlay(
     // zoomer: zoomer,
@@ -82,7 +79,7 @@ Future<void> showSnippetContentCallout({
       ),
     ),
     calloutConfig: CalloutConfig(
-      cId: feature,
+      cId: tc.contentCId,
       // hScrollController: ancestorHScrollController,
       // vScrollController: ancestorVScrollController,
       // scale: tc.transformScale,

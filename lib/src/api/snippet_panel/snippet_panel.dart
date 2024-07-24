@@ -41,7 +41,7 @@ class SnippetPanel extends StatefulWidget {
   }) : snippetName = null;
 
   SnippetPanel.fromSnippet({
-    required this.panelName,
+    this.panelName,
     required this.snippetName,
     this.handlers,
     // this.allowButtonCallouts = true,
@@ -61,11 +61,11 @@ class SnippetPanel extends StatefulWidget {
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
 
-  static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
-    rootNode.validateTree();
-    rootNode.name = snippetName;
-    return rootNode;
-  }
+  // static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
+  //   rootNode.validateTree();
+  //   rootNode.name = snippetName;
+  //   return rootNode;
+  // }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

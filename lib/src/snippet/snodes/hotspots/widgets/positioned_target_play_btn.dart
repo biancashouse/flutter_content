@@ -197,11 +197,12 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
     zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
-        afterTransformF: () {
+        afterTransformF: () async {
       // if (savedKey != tc.targetsWrapperGK) {
       //   debugPrint('doh!');
       // }
       //
+      await tc.ensureContentSnippetPresent();
       showSnippetContentCallout(
         tc: tc,
         justPlaying: true,
@@ -215,8 +216,6 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         });
       });
     });
-    // });
-    // });
   }
 
   static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
@@ -242,7 +241,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         wrapperRect: wrapperRect,
         onCloseF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
-          Callout.dismiss(tc.uid.toString());
+          removeSnippetContentCallout(tc);
           // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
       ),

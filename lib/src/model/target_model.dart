@@ -13,6 +13,7 @@ part 'target_model.mapper.dart';
 class TargetModel with TargetModelMappable {
   TargetId uid;
   double transformScale;
+
   // double transformTranslateX;
   // double transformTranslateY;
   //
@@ -43,6 +44,7 @@ class TargetModel with TargetModelMappable {
   double calloutBorderRadius;
   double calloutBorderThickness;
   int? starPoints;
+
   // String snippetName;
 
   int? calloutArrowTypeIndex;
@@ -93,6 +95,7 @@ class TargetModel with TargetModelMappable {
   }
 
   GlobalKey? get targetsWrapperGK => parentHotspotNode?.nodeWidgetGK;
+
   TargetsWrapperState? targetsWrapperState() {
     return targetsWrapperGK?.currentState as TargetsWrapperState?;
   }
@@ -122,9 +125,12 @@ class TargetModel with TargetModelMappable {
     return Matrix4(c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1);
   }
 
-  bool playingOrSelected() => targetsWrapperState()?.widget.parentNode.playList.isNotEmpty??false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
+  bool playingOrSelected() =>
+      targetsWrapperState()?.widget.parentNode.playList.isNotEmpty ??
+      false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
-  double getScale({bool testing = false}) => playingOrSelected() || testing ? transformScale : 1.0;
+  double getScale({bool testing = false}) =>
+      playingOrSelected() || testing ? transformScale : 1.0;
 
   // Offset getTranslate(CAPIState state, {bool testing = false}) {
   //   Size ivSize = TargetsWrapper.iwSize(wName);
@@ -150,6 +156,17 @@ class TargetModel with TargetModelMappable {
   //
   // FocusNode imageUrlFocusNode() => _imageUrlFocusNode;
 
+  String get contentCId => '$uid';
+
+  String get contentSnippetName => 'T-$uid';
+
+  Future<void> ensureContentSnippetPresent() async =>
+      fco.snippetInfoCache[contentSnippetName] ??
+      await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+        snippetName: contentSnippetName,
+        snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
+      );
+
   Color calloutColor() => calloutFillColorValue == null
       ? Colors.white
       : Color(calloutFillColorValue!);
@@ -157,7 +174,8 @@ class TargetModel with TargetModelMappable {
   void setCalloutColor(Color? newColor) =>
       calloutFillColorValue = newColor?.value;
 
-  Offset targetGlobalPos({required Size wrapperSize, required Offset wrapperPos}) {
+  Offset targetGlobalPos(
+      {required Size wrapperSize, required Offset wrapperPos}) {
     // iv rect should always be measured
     Offset ivTopLeft = wrapperPos;
     Size ivSize = wrapperSize;
@@ -236,9 +254,9 @@ class TargetModel with TargetModelMappable {
   }
 
   Offset getCalloutPos() => Offset(
-    fco.scrW * (calloutLeftPc ?? .5),
-    fco.scrH * (calloutTopPc ?? .5),
-  );
+        fco.scrW * (calloutLeftPc ?? .5),
+        fco.scrH * (calloutTopPc ?? .5),
+      );
 
   // setTextCalloutPos(Offset newGlobalPos) {
   //   calloutTopPc = newGlobalPos.dy / FCO.scrH;
@@ -278,10 +296,11 @@ class TargetModel with TargetModelMappable {
         ),
         calloutContent: Padding(
             padding: const EdgeInsets.all(10),
-            child: fco.coloredText('saving changes...',
-                color: Colors.blueAccent)),
+            child:
+                fco.coloredText('saving changes...', color: Colors.blueAccent)),
       );
-      await fco.cacheAndSaveANewSnippetVersion(snippetName: rootNode.name, rootNode: rootNode);
+      await fco.cacheAndSaveANewSnippetVersion(
+          snippetName: rootNode.name, rootNode: rootNode);
       Callout.dismiss("saving-model");
     }
 

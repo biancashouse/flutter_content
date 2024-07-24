@@ -263,7 +263,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 left: tc.targetStackPos().dx - tc.radius,
                 child: Visibility.maintain(
                   key: fco.setTargetGk(
-                      tc.uid, GlobalKey(debugLabel: tc.uid.toString())),
+                      tc.uid, GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
                   visible: fco.canEditContent &&
                       (playingTc == null || playingTc == tc),
                   child: TargetCover(tc, _targetIndex(tc)),
