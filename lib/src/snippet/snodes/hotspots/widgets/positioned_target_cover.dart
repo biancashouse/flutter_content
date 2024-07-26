@@ -7,12 +7,14 @@ class TargetCover extends StatelessWidget {
   // final TargetsWrapperState parentWrapperState;
   final TargetModel tc;
   final int index;
+  final Rect wrapperRect;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
   const TargetCover(
     this.tc,
     this.index, {
+    required this.wrapperRect,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     super.key,
@@ -26,9 +28,9 @@ class TargetCover extends StatelessWidget {
     return fco.canEditContent
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
-            feedback: _draggableTarget(tc),
+            feedback: _draggableTargetCover(tc),
             childWhenDragging: const Offstage(),
-            child: _draggableTarget(tc),
+            child: _draggableTargetCover(tc),
           )
         : CircleAvatar(
             backgroundColor: const Color.fromRGBO(255, 0, 0, .1),
@@ -37,12 +39,20 @@ class TargetCover extends StatelessWidget {
           );
   }
 
-  Widget _draggableTarget(TargetModel tc) {
+  Widget _draggableTargetCover(TargetModel tc) {
     // debugPrint('_draggableTarget');
-    return SizedBox(
-      width: tc.radius * 2,
-      height: tc.radius * 2,
-      child: _TargetCover(tc, index),
+    return Visibility(visible: FlutterContentApp.snippetBeingEdited == null,
+      child: SizedBox(
+        width: tc.radius * 2,
+        height: tc.radius * 2,
+        child: _TargetCover(
+          tc,
+          index,
+          wrapperRect,
+          ancestorHScrollController,
+          ancestorVScrollController,
+        ),
+      ),
     );
   }
 }
@@ -50,45 +60,64 @@ class TargetCover extends StatelessWidget {
 class _TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
+  final Rect wrapperRect;
+  final ScrollController? ancestorHScrollController;
+  final ScrollController? ancestorVScrollController;
 
-  const _TargetCover(this.tc, this.index);
+  const _TargetCover(
+    this.tc,
+    this.index,
+    this.wrapperRect,
+    this.ancestorHScrollController,
+    this.ancestorVScrollController,
+  );
 
   @override
   Widget build(BuildContext context) {
     // debugPrint('TargetCover');
     double radius = tc.getScale() * tc.radius;
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: 2 * radius,
-            height: 2 * radius,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(.25),
-              shape: BoxShape.circle,
+    return GestureDetector(
+      onDoubleTap: () async {
+        TargetsWrapper.configureTarget(
+          tc,
+          wrapperRect,
+          ancestorHScrollController,
+          ancestorVScrollController,
+        );
+      },
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: 2 * radius,
+              height: 2 * radius,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(.25),
+                shape: BoxShape.circle,
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: CustomPaint(
-            foregroundPainter: TargetPainter(),
-            size: Size(10 + radius * 2, 10 + radius * 2),
+          Align(
+            alignment: Alignment.center,
+            child: CustomPaint(
+              foregroundPainter: TargetPainter(),
+              size: Size(10 + radius * 2, 10 + radius * 2),
+            ),
           ),
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: IntegerCircleAvatar(
-            tc,
-            num: index + 1,
-            bgColor: tc.calloutColor().withOpacity(.5),
-            radius: radius,
-            textColor: fco.canEditContent ? Colors.white : Colors.transparent,
-            fontSize: 14,
+          Align(
+            alignment: Alignment.center,
+            child: IntegerCircleAvatar(
+              tc,
+              num: index + 1,
+              bgColor: tc.calloutColor().withOpacity(.5),
+              radius: radius,
+              textColor: fco.canEditContent ? Colors.white : Colors.transparent,
+              fontSize: 14,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // void removeSnippetTreeCallout(String snippetName) => Callout.removeOverlay(snippetName);
@@ -32,8 +33,8 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
     // if (root?.child == null) return 60;
 // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
 // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-    h = min(
-        FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500, fco.scrH - 50);
+    h = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500,
+        fco.scrH - 50);
     return h > 0 ? h : 500;
   }
 
@@ -100,12 +101,17 @@ void showSnippetTreeAndPropertiesCallout({
   required STreeNode selectedNode,
   // required STreeNode tappedNode,
   bool allowButtonCallouts = false,
+  TargetModel? targetBeingConfigured,
 }) async {
   SnippetRootNode? rootNode = FlutterContentApp.rootNode;
   if (rootNode == null) return;
 
   // dismiss any pink border overlays
-  Callout.dismissAll(exceptFeatures: [rootNode.name]);
+  Callout.dismissAll(exceptFeatures: [
+      rootNode.name,
+      CalloutConfigToolbar.CID,
+      targetBeingConfigured?.contentCId ?? 'n/a'
+      ]);
 
   // if (rootNode == null) return;
 

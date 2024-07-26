@@ -267,9 +267,19 @@ class EditablePageState extends State<EditablePage> {
             // parent = node;
             // debugPrint('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
+            ScrollableState? vScrollableState =
+                Scrollable.maybeOf(context, axis: Axis.vertical);
+            ScrollController? vScrollController =
+                vScrollableState?.widget.controller;
+            ScrollableState? hScrollableState =
+                Scrollable.maybeOf(context, axis: Axis.horizontal);
+            ScrollController? hScrollController =
+                vScrollableState?.widget.controller;
             node.showTappableNodeWidgetOverlay(
               node.toString(),
               r,
+              hScrollController,
+              vScrollController,
             );
           }
         }

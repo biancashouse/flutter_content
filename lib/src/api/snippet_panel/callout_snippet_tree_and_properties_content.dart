@@ -7,6 +7,7 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -830,7 +831,7 @@ class SnippetTreePane extends StatelessWidget {
     }
 
     if (parent != null) {
-      Callout.dismissAll();
+      Callout.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
       STreeNode.pushThenShowNamedSnippetWithNodeSelected(
         parent.rootNodeOfSnippet()!.name,
         parent,

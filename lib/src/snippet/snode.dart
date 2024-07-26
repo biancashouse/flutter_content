@@ -7,6 +7,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
 import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -192,7 +193,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   double propertiesPaneScrollPos() => propertiesPaneSC().offset;
 
-  ScrollController propertiesPaneSC() => _propertiesPaneSC ??= ScrollController();
+  ScrollController propertiesPaneSC() =>
+      _propertiesPaneSC ??= ScrollController();
 
   // FCO get fc => FCO;
 
@@ -206,7 +208,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? nodeWidgetGK; // gets used in toWidget()
 
-  SnippetRootNode? rootNodeOfSnippet() => findNearestAncestor<SnippetRootNode>();
+  SnippetRootNode? rootNodeOfSnippet() =>
+      findNearestAncestor<SnippetRootNode>();
 
   List<PTreeNode> properties(BuildContext context);
 
@@ -219,7 +222,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
-  void showTappableNodeWidgetOverlay(String nodeTypeName, Rect r) {
+  void showTappableNodeWidgetOverlay(
+    String nodeTypeName,
+    Rect r,
+      ScrollController? hScrollController,
+      ScrollController? vScrollController,
+  ) {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     Rect restrictedRect = fco.restrictRectToScreen(r);
@@ -229,7 +237,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     double borderTop = max(restrictedRect.top - BORDER, 0);
     double borderRight = min(fco.scrW, restrictedRect.right + BORDER * 2);
     double borderBottom = min(fco.scrH, restrictedRect.bottom + BORDER * 2);
-    Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+    Rect borderRect =
+        Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
     CalloutConfig cc = CalloutConfig(
       cId: feature,
       initialCalloutW: borderRect.width.abs() + BORDER * 2,
@@ -238,6 +247,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       fillColor: Colors.transparent,
       arrowType: ArrowType.NONE,
       draggable: false,
+      hScrollController: hScrollController,
+      vScrollController: vScrollController,
     );
     Callout.showOverlay(
       ensureLowestOverlay: false,
@@ -304,7 +315,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               height: borderRect.height.abs(),
               decoration: BoxDecoration(
                 //color: Colors.purpleAccent.withOpacity(.1),
-                border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
+                border: Border.all(
+                    width: 2,
+                    color: Colors.purpleAccent,
+                    style: BorderStyle.solid),
               ),
               // alignment: Alignment.bottomLeft,
               // child: FCO.coloredText(nodeTypeName, color: Colors.purpleAccent),
@@ -318,7 +332,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   void showNodeWidgetOverlay() {
-    Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    Rect? r = nodeWidgetGK?.globalPaintBounds(
+        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       r = fco.restrictRectToScreen(r);
       // pageState.removeAllNodeWidgetOverlays();
@@ -328,7 +343,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       double borderTop = max(restrictedRect.top - 3, 0);
       double borderRight = min(fco.scrW, restrictedRect.right + BORDER * 2);
       double borderBottom = min(fco.scrH, restrictedRect.bottom + BORDER * 2);
-      Rect borderRect = Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
+      Rect borderRect =
+          Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
       CalloutConfig cc = CalloutConfig(
         cId: 'pink-border-overlay-non-tappable',
         initialCalloutW: borderRect.width + 6,
@@ -346,7 +362,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             height: cc.calloutH,
             decoration: BoxDecoration(
 //color: Colors.purpleAccent.withOpacity(.1),
-              border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
+              border: Border.all(
+                  width: 2,
+                  color: Colors.purpleAccent,
+                  style: BorderStyle.solid),
             ),
           ),
         ),
@@ -361,8 +380,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static void pushThenShowNamedSnippetWithNodeSelected(
     SnippetName snippetName,
     STreeNode startingAtNode,
-    STreeNode selectedNode,
-  ) {
+    STreeNode selectedNode, {
+    TargetModel? targetBeingConfigured,
+  }) {
     STreeNode? highestNode;
     if (startingAtNode is SnippetRootNode) {
       highestNode = startingAtNode.child; //JIC
@@ -398,6 +418,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         if (!fco.clipboardIsEmpty) {
           fco.showFloatingClipboard();
         }
+        Callout.hide(CalloutConfigToolbar.CID);
         showSnippetTreeAndPropertiesCallout(
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
@@ -411,12 +432,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // Callout.printFeatures();
             showAllTargetBtns();
             showAllTargetCovers();
+            Callout.unhide(CalloutConfigToolbar.CID);
             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             fco.hideClipboard();
+            FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
             // FlutterContentPage.exitEditMode();
             // skip if no change
-            String? jsonBeforePush = FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
+            String? jsonBeforePush =
+                FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
             String? currentJsonS = FlutterContentApp.rootNode?.toJson();
             if (jsonBeforePush == currentJsonS) return;
             if (FlutterContentApp.rootNode != null) {
@@ -434,6 +458,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           },
           startingAtNode: startingAtNode,
           selectedNode: selectedNode,
+          targetBeingConfigured: targetBeingConfigured,
         );
 
         // FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
@@ -472,12 +497,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     });
   }
 
-  void refreshWithUpdate(VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
+  void refreshWithUpdate(VoidCallback assignF,
+      {bool alsoRefreshPropertiesView = false}) {
     assignF.call();
     fco.forceRefresh();
     fco.afterNextBuildDo(() {
       if (FlutterContentApp.selectedNode != null) {
-        fco.currentPageState?.showNodeWidgetOverlay((FlutterContentApp.selectedNode)!);
+        fco.currentPageState
+            ?.showNodeWidgetOverlay((FlutterContentApp.selectedNode)!);
       }
     });
   }
@@ -586,7 +613,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool hasChildren() =>
       (this is SC && (this as SC).child != null) ||
       (this is MC && (this as MC).children.isNotEmpty) ||
-      (this is TextSpanNode && ((this as TextSpanNode).children?.length ?? 0) > 0);
+      (this is TextSpanNode &&
+          ((this as TextSpanNode).children?.length ?? 0) > 0);
 
   // List<String> sensibleParents() => const [];
 
@@ -603,15 +631,19 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void validateTree() {
     _setParents(null);
     //ensure no tabs have empty text
-    if (this is TextNode && (this as TextNode).text.isEmpty && getParent() is TabBarNode) {
+    if (this is TextNode &&
+        (this as TextNode).text.isEmpty &&
+        getParent() is TabBarNode) {
       (this as TextNode).text = 'new tab';
     }
     // ensure No. tabs matches No. tab views
     TabBarNode? tabBar = findDescendant(TabBarNode) as TabBarNode?;
-    TabBarViewNode? tabBarView = findDescendant(TabBarViewNode) as TabBarViewNode?;
+    TabBarViewNode? tabBarView =
+        findDescendant(TabBarViewNode) as TabBarViewNode?;
     if ((tabBar?.children.length ?? 0) > (tabBarView?.children.length ?? 0)) {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
-    } else if ((tabBar?.children.length ?? 0) < (tabBarView?.children.length ?? 0)) {
+    } else if ((tabBar?.children.length ?? 0) <
+        (tabBarView?.children.length ?? 0)) {
       tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
@@ -632,7 +664,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool anyMissingParents() {
     var children = Node.snippetTreeChildrenProvider(this);
     for (STreeNode child in children) {
-      bool foundAMissingParent = child.getParent() != this || child.anyMissingParents();
+      bool foundAMissingParent =
+          child.getParent() != this || child.anyMissingParents();
       if (foundAMissingParent) {
         return true;
       }
@@ -643,13 +676,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool isAScaffoldTabWidget() {
     return getParent() is TabBarNode &&
         getParent()?.getParent() is GenericSingleChildNode &&
-        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'bottom';
+        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
+            'bottom';
   }
 
   bool isAScaffoldTabViewWidget() =>
       getParent() is TabBarViewNode &&
       getParent()?.getParent() is GenericSingleChildNode &&
-      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'body';
+      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
+          'body';
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
     var node = getParent()?.getParent();
@@ -753,9 +788,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       // get published or editing version
       SnippetInfoModel? snippetInfo = fco.snippetInfoCache[snippetName];
       if (snippetInfo == null) return foundTargets;
-      VersionId? versionId = fco.canEditContent ? snippetInfo.editingVersionId : snippetInfo.publishedVersionId;
+      VersionId? versionId = fco.canEditContent
+          ? snippetInfo.editingVersionId
+          : snippetInfo.publishedVersionId;
       if (versionId == null) return foundTargets;
-      List<STreeNode> tws = fco.versionCache[snippetName]?[versionId]?.findDescendantsOfType(HotspotsNode) ?? [];
+      List<STreeNode> tws = fco.versionCache[snippetName]?[versionId]
+              ?.findDescendantsOfType(HotspotsNode) ??
+          [];
       for (STreeNode tw in tws) {
         foundTargets.addAll((tw as HotspotsNode).targets);
       }
@@ -766,9 +805,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // check nodes are identical
   bool isSame(STreeNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => const Placeholder();
+  Widget toWidget(BuildContext context, STreeNode? parentNode) =>
+      const Placeholder();
 
-  Widget possiblyCheckHeightConstraint(STreeNode? parentNode, Widget actualWidget) {
+  Widget possiblyCheckHeightConstraint(
+      STreeNode? parentNode, Widget actualWidget) {
     /*
       use LayoutBuilder to check for infinite maxHeight error.
       skip the check if parent is a SizedBox or a SingleChildScrollView.
@@ -795,7 +836,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
   }
 
-  static void unhighlightSelectedNode() => Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+  static void unhighlightSelectedNode() =>
+      Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
   Future<void> possiblyHighlightSelectedNode() async {
     return;
@@ -827,7 +869,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               height: h,
               decoration: BoxDecoration(
                 color: Colors.transparent,
-                border: Border.all(color: Colors.purpleAccent.withOpacity(.5), width: thickness),
+                border: Border.all(
+                    color: Colors.purpleAccent.withOpacity(.5),
+                    width: thickness),
               ),
             ),
           ),
@@ -1120,7 +1164,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   bool canRemove() => true;
 
-  Widget insertItemMenuAnchor({required NodeAction action, String? label, Color? bgColor, String? tooltip, key}) {
+  Widget insertItemMenuAnchor(
+      {required NodeAction action,
+      String? label,
+      Color? bgColor,
+      String? tooltip,
+      key}) {
     var title = action == NodeAction.replaceWith
         ? 'replace with...'
         : action == NodeAction.wrapWith
@@ -1134,7 +1183,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     List<Widget> menuChildren = menuAnchorWidgets(action);
     return MenuAnchor(
       menuChildren: menuChildren,
-      builder: (BuildContext context, MenuController controller, Widget? child) {
+      builder:
+          (BuildContext context, MenuController controller, Widget? child) {
         return label != null
             ? TextButton.icon(
                 key: key,
@@ -1148,7 +1198,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 icon: const Icon(Icons.add),
                 label: Text(title),
                 style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(bgColor ?? Colors.white.withOpacity(.9)),
+                  backgroundColor: WidgetStatePropertyAll(
+                      bgColor ?? Colors.white.withOpacity(.9)),
                   //padding: WidgetStatePropertyAll(EdgeInsets.zero),
                 ),
               )
@@ -1189,7 +1240,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     if (action == NodeAction.addChild) {
       mis.addAll(menuAnchorWidgets_Append(action, false));
     }
-    if (action == NodeAction.addSiblingBefore || action == NodeAction.addSiblingAfter) {
+    if (action == NodeAction.addSiblingBefore ||
+        action == NodeAction.addSiblingAfter) {
       mis.addAll(menuAnchorWidgets_InsertSibling(action, false));
     }
     if (action == NodeAction.replaceWith) {
@@ -1221,7 +1273,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<Type> insertSiblingRecommendations() => [];
 
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+      NodeAction action, bool? skipHeading) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       SubmenuButton(
@@ -1231,7 +1284,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("Container", ContainerNode, action),
           menuItemButton("Padding", PaddingNode, action),
           menuItemButton("SizedBox", SizedBoxNode, action),
-          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
+          menuItemButton(
+              "SingleChildScrollView", SingleChildScrollViewNode, action),
           const Divider(),
           menuItemButton("Column", ColumnNode, action),
           menuItemButton("Row", RowNode, action),
@@ -1264,7 +1318,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           // _addChildMenuItemButton("IntrinsicWidth", IntrinsicWidthNode, action),
           menuItemButton("Padding", PaddingNode, action),
           menuItemButton("SizedBox", SizedBoxNode, action),
-          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
+          menuItemButton(
+              "SingleChildScrollView", SingleChildScrollViewNode, action),
           const Divider(),
           menuItemButton("Column", ColumnNode, action),
           menuItemButton("Row", RowNode, action),
@@ -1345,7 +1400,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_InsertSibling(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_InsertSibling(
+      NodeAction action, bool? skipHeading) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       if (getParent() is FlexNode) ...[
@@ -1353,7 +1409,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("Flexible", FlexibleNode, action),
       ],
       if (getParent() is StepperNode) menuItemButton("Step", StepNode, action),
-      if (getParent() is StackNode) menuItemButton("Positioned", PositionedNode, action),
+      if (getParent() is StackNode)
+        menuItemButton("Positioned", PositionedNode, action),
       if (getParent() is DirectoryNode) ...[
         menuItemButton("Directory", DirectoryNode, action),
         menuItemButton("File", FileNode, action),
@@ -1376,7 +1433,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_ReplaceWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_ReplaceWith(
+      NodeAction action, bool? skipHeading) {
     bool skipTheRest = false;
     List<Type> replaceTypes = replaceWithOnly();
     if (replaceWithOnly().isEmpty) {
@@ -1396,7 +1454,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ),
       pasteMI(action) ?? const Offstage(),
 
-      for (Type type in replaceTypes) menuItemButton(type.toString(), type, action),
+      for (Type type in replaceTypes)
+        menuItemButton(type.toString(), type, action),
       if (!skipTheRest) ...[
         SubmenuButton(
           menuChildren: [
@@ -1405,7 +1464,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("Container", ContainerNode, action),
             menuItemButton("Padding", PaddingNode, action),
             menuItemButton("SizedBox", SizedBoxNode, action),
-            menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action),
+            menuItemButton(
+                "SingleChildScrollView", SingleChildScrollViewNode, action),
             const Divider(),
             menuItemButton("Column", ColumnNode, action),
             menuItemButton("Row", RowNode, action),
@@ -1471,7 +1531,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         SubmenuButton(
           menuChildren: [
             menuItemButton("ifrane", IFrameNode, action),
-            menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action),
+            menuItemButton(
+                "Google Drive iframe", GoogleDriveIFrameNode, action),
             menuItemButton("File", FileNode, action),
             menuItemButton("Directory", DirectoryNode, action),
           ],
@@ -1516,7 +1577,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           if (action == NodeAction.wrapWith) {
             var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
             bool navUp = this == treeC?.roots.firstOrNull;
-            FlutterContentApp.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+            FlutterContentApp.capiBloc
+                .add(CAPIEvent.wrapSelectionWith(type: childType));
             // in case need to show more of the tree (higher up)
             fco.afterNextBuildDo(() {
               if (navUp) {
@@ -1524,11 +1586,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               }
             });
           } else if (action == NodeAction.replaceWith) {
-            FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+            FlutterContentApp.capiBloc
+                .add(CAPIEvent.replaceSelectionWith(type: childType));
           } else if (action == NodeAction.addChild) {
-            FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(type: childType));
+            FlutterContentApp.capiBloc
+                .add(CAPIEvent.appendChild(type: childType));
           } else if (action == NodeAction.addSiblingBefore) {
-            FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+            FlutterContentApp.capiBloc
+                .add(CAPIEvent.addSiblingBefore(type: childType));
           } else if (action == NodeAction.addSiblingAfter) {
             FlutterContentApp.capiBloc.add(
               CAPIEvent.addSiblingAfter(type: childType),
@@ -1552,13 +1617,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           // CAPIBloC bloc = FlutterContentApp.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteReplacement());
+              FlutterContentApp.capiBloc
+                  .add(const CAPIEvent.pasteReplacement());
               break;
             case NodeAction.addSiblingBefore:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+              FlutterContentApp.capiBloc
+                  .add(const CAPIEvent.pasteSiblingBefore());
               break;
             case NodeAction.addSiblingAfter:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+              FlutterContentApp.capiBloc
+                  .add(const CAPIEvent.pasteSiblingAfter());
               break;
             case NodeAction.addChild:
               FlutterContentApp.capiBloc.add(const CAPIEvent.pasteChild());
@@ -1584,7 +1652,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         MenuItemButton(
           onPressed: () async {
             // make sure snippet actually present
-            await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName);
+            await SnippetRootNode
+                .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                    snippetName: snippetName);
             if (action == NodeAction.replaceWith) {
               FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(
                 type: SnippetRootNode,
@@ -1614,7 +1684,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         ),
       );
     }
-    return SubmenuButton(menuChildren: snippetMIs, child: const Text('snippet'));
+    return SubmenuButton(
+        menuChildren: snippetMIs, child: const Text('snippet'));
   }
 
   STreeNode clone() {

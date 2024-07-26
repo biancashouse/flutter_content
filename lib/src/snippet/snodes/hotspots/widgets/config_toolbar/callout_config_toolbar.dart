@@ -124,7 +124,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           tc.changed_saveRootSnippet();
                           STreeNode.showAllTargetBtns();
                           STreeNode.showAllTargetCovers();
-                          PositionedTargetPlayBtn.playBtnDblTappedBtn(
+                          TargetsWrapper.configureTarget(
                             tc,
                             widget.wrapperRect,
                             widget.ancestorHScrollController,
@@ -317,6 +317,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     // tc.changed_saveRootSnippet();
                     STreeNode.showAllTargetBtns();
                     STreeNode.showAllTargetCovers();
+                    fco.currentPageState?.unhideFAB();
                   });
                 });
               },
@@ -332,9 +333,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           fco.calloutConfigToolbarAtTopOfScreen =
               !fco.calloutConfigToolbarAtTopOfScreen;
           Callout.dismiss(CalloutConfigToolbar.CID);
-          PositionedTargetPlayBtn.showConfigToolbar(
+          TargetsWrapper.showConfigToolbar(
             widget.tc,
             widget.wrapperRect,
+            widget.ancestorHScrollController,
+            widget.ancestorVScrollController,
           );
         },
         icon: Icon(

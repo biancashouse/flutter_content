@@ -3,17 +3,15 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
-import 'config_toolbar/callout_config_toolbar.dart';
-
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
-class PositionedTargetPlayBtn extends StatelessWidget {
+class TargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
-  const PositionedTargetPlayBtn({
+  const TargetPlayBtn({
     required this.initialTC,
     required this.index,
     required this.wrapperRect,
@@ -22,14 +20,11 @@ class PositionedTargetPlayBtn extends StatelessWidget {
     super.key,
   });
 
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
-
   @override
   Widget build(BuildContext context) {
     TargetModel? tc = initialTC; //bloc.state.tcByUid(initialTC);
-    return Positioned(
-      top: tc.btnStackPos().dy - bloc.state.CAPI_TARGET_BTN_RADIUS,
-      left: tc.btnStackPos().dx - bloc.state.CAPI_TARGET_BTN_RADIUS,
+    return Visibility(
+      visible: FlutterContentApp.snippetBeingEdited == null,
       child: _draggableSelectTargetBtn(tc),
     );
   }
@@ -47,7 +42,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               tc,
               num: index + 1,
               bgColor: tc.calloutColor(),
-              radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
+              radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               textColor: Colors.white,
               fontSize: 14,
             ),
@@ -59,7 +54,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               tc,
               num: index + 1,
               bgColor: tc.calloutColor(),
-              radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
+              radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               textColor: Color(Colors.white.value),
               fontSize: 14,
             ),
@@ -124,7 +119,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
               onDoubleTap: () async {
-                playBtnDblTappedBtn(
+                TargetsWrapper.configureTarget(
                   tc,
                   wrapperRect,
                   ancestorHScrollController,
@@ -135,7 +130,7 @@ class PositionedTargetPlayBtn extends StatelessWidget {
                 tc,
                 num: index + 1,
                 bgColor: tc.calloutColor(),
-                radius: bloc.state.CAPI_TARGET_BTN_RADIUS,
+                radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                 textColor: Colors.white,
                 fontSize: 14,
               ),
@@ -143,37 +138,40 @@ class PositionedTargetPlayBtn extends StatelessWidget {
           );
   }
 
-  static void playBtnDblTappedBtn(
-      TargetModel tc,
-      Rect wrapperRect,
-      ScrollController? ancestorHScrollController,
-      ScrollController? ancestorVScrollController,
-      {bool quickly = false}) {
-    if (!fco.canEditContent) return;
-
-    if (tc.targetsWrapperState() == null) return;
-
-    var coverGK = fco.getTargetGk(tc.uid);
-    Rect? targetRect = coverGK!.globalPaintBounds();
-    if (targetRect == null) return;
-
-    Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
-
-    tc.targetsWrapperState()?.zoomer?.applyTransform(
-        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
-      showSnippetContentCallout(
-        tc: tc,
-        justPlaying: false,
-        wrapperRect: wrapperRect,
-        ancestorHScrollController: ancestorHScrollController,
-        ancestorVScrollController: ancestorVScrollController,
-      );
-      // show config toolbar in a toast
-      tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
-      showConfigToolbar(tc, wrapperRect);
-    }, quickly: quickly);
-  }
+  // static void configureTarget(
+  //     TargetModel tc,
+  //     Rect wrapperRect,
+  //     ScrollController? ancestorHScrollController,
+  //     ScrollController? ancestorVScrollController,
+  //     {bool quickly = false}) {
+  //   if (!fco.canEditContent) return;
+  //
+  //   if (tc.targetsWrapperState() == null) return;
+  //
+  //   var coverGK = fco.getTargetGk(tc.uid);
+  //   Rect? targetRect = coverGK!.globalPaintBounds();
+  //   if (targetRect == null) return;
+  //
+  //   Alignment? ta =
+  //       fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+  //
+  //   tc.targetsWrapperState()?.zoomer?.applyTransform(
+  //       tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+  //     showSnippetContentCallout(
+  //       tc: tc,
+  //       justPlaying: false,
+  //       wrapperRect: wrapperRect,
+  //       ancestorHScrollController: ancestorHScrollController,
+  //       ancestorVScrollController: ancestorVScrollController,
+  //     );
+  //     // show config toolbar in a toast
+  //     tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
+  //     showConfigToolbar(tc, wrapperRect);
+  //
+  //      fco.currentPageState?.hideFAB();
+  //
+  //   }, quickly: quickly);
+  // }
 
   void playTarget(TargetModel tc) {
     if (tc.targetsWrapperState() == null) return;
@@ -216,35 +214,5 @@ class PositionedTargetPlayBtn extends StatelessWidget {
         });
       });
     });
-  }
-
-  static void showConfigToolbar(TargetModel tc, Rect wrapperRect) {
-    Callout.dismiss(CalloutConfigToolbar.CID);
-    Callout.showOverlay(
-      calloutConfig: CalloutConfig(
-        cId: CalloutConfigToolbar.CID,
-        fillColor: Colors.purpleAccent,
-        initialCalloutW: 820,
-        initialCalloutH: 80,
-        decorationShape: DecorationShapeEnum.rounded_rectangle,
-        borderRadius: 16,
-        animate: false,
-        arrowType: ArrowType.NONE,
-        initialCalloutPos: fco.calloutConfigToolbarPos(),
-        onDragEndedF: (newPos) {
-          fco.setCalloutConfigToolbarPos(newPos);
-        },
-        dragHandleHeight: 30,
-      ),
-      calloutContent: CalloutConfigToolbar(
-        tc: tc,
-        wrapperRect: wrapperRect,
-        onCloseF: () {
-          tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
-          removeSnippetContentCallout(tc);
-          // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
-        },
-      ),
-    );
   }
 }

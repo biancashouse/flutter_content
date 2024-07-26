@@ -104,7 +104,6 @@ class NodeWidget extends StatelessWidget {
       onDoubleTap: () {
         if (entry.node is! SnippetRootNode) return;
 
-        // change tree to snippet
         Callout.dismissAll();
 
         // instead of using the embedded snippet node, which has no child,

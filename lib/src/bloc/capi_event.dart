@@ -297,8 +297,8 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.copySnippetJsonToClipboard(
       {required SnippetRootNode rootNode}) = CopySnippetJsonToClipboard;
 
-  const factory CAPIEvent.replaceSnippetFromJson(
-      {String? snippetJson}) = ReplaceSnippetFromJson;
+  const factory CAPIEvent.replaceSnippetFromJson({String? snippetJson}) =
+      ReplaceSnippetFromJson;
 
   const factory CAPIEvent.copyNode({
     required STreeNode node,

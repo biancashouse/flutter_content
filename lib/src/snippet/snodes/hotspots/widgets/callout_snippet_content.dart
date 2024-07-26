@@ -66,6 +66,31 @@ Future<void> showSnippetContentCallout({
       panelName: tc.contentCId, // never used
       snippetName: tc.contentSnippetName);
 
+  Widget editableContent() => GestureDetector(
+        onTap: () {
+          SnippetRootNode? snippet = fco.currentSnippet(tc.contentSnippetName);
+          STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+            tc.contentSnippetName,
+            snippet!,
+            snippet.child ?? snippet,
+            targetBeingConfigured: tc,
+          );
+        },
+        child: Container(
+            // width: cc.calloutW,
+            // height: cc.calloutH,
+            decoration: BoxDecoration(
+              border: Border.all(
+                  width: 2,
+                  color: Colors.purpleAccent,
+                  style: BorderStyle.solid),
+            ),
+            child: content()),
+      );
+
+  Widget _possiblyEditableContent() =>
+      fco.canEditContent ? editableContent() : content();
+
   Callout.showOverlay(
     // zoomer: zoomer,
     targetGkF: targetGK,
@@ -73,7 +98,7 @@ Future<void> showSnippetContentCallout({
       child: BlocBuilder<CAPIBloC, CAPIState>(
         builder: (context, state) {
           // return const CircularProgressIndicator();
-          var contentWidget = content();
+          var contentWidget = _possiblyEditableContent();
           return contentWidget;
         },
       ),

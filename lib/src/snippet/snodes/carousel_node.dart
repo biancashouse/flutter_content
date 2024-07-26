@@ -1,7 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
+import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
 part 'carousel_node.mapper.dart';
 

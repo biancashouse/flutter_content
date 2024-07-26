@@ -5,8 +5,10 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 
+import 'callout_snippet_content.dart';
+import 'config_toolbar/callout_config_toolbar.dart';
 import 'positioned_target_play_btn.dart';
-import 'target_cover.dart';
+import 'positioned_target_cover.dart';
 
 class TargetsWrapper extends StatefulWidget {
   final HotspotsNode parentNode;
@@ -54,6 +56,80 @@ class TargetsWrapper extends StatefulWidget {
 //     }
 //   }
 // }
+
+  static void configureTarget(
+      TargetModel tc,
+      Rect wrapperRect,
+      ScrollController? ancestorHScrollController,
+      ScrollController? ancestorVScrollController,
+      {bool quickly = false}) {
+    if (!fco.canEditContent) return;
+
+    if (tc.targetsWrapperState() == null) return;
+
+    var coverGK = fco.getTargetGk(tc.uid);
+    Rect? targetRect = coverGK!.globalPaintBounds();
+    if (targetRect == null) return;
+
+    Alignment? ta =
+        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+
+    tc.targetsWrapperState()?.zoomer?.applyTransform(
+        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+      showSnippetContentCallout(
+        tc: tc,
+        justPlaying: false,
+        wrapperRect: wrapperRect,
+        ancestorHScrollController: ancestorHScrollController,
+        ancestorVScrollController: ancestorVScrollController,
+      );
+      // show config toolbar in a toast
+      tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
+      showConfigToolbar(
+        tc,
+        wrapperRect,
+        ancestorHScrollController,
+        ancestorVScrollController,
+      );
+
+      fco.currentPageState?.hideFAB();
+    }, quickly: quickly);
+  }
+
+  static void showConfigToolbar(
+    TargetModel tc,
+    Rect wrapperRect,
+    final ScrollController? ancestorHScrollController,
+    final ScrollController? ancestorVScrollController,
+  ) {
+    Callout.dismiss(CalloutConfigToolbar.CID);
+    Callout.showOverlay(
+      calloutConfig: CalloutConfig(
+        cId: CalloutConfigToolbar.CID,
+        fillColor: Colors.purpleAccent,
+        initialCalloutW: 820,
+        initialCalloutH: 80,
+        decorationShape: DecorationShapeEnum.rounded_rectangle,
+        borderRadius: 16,
+        animate: false,
+        arrowType: ArrowType.NONE,
+        initialCalloutPos: fco.calloutConfigToolbarPos(),
+        onDragEndedF: (newPos) {
+          fco.setCalloutConfigToolbarPos(newPos);
+        },
+        dragHandleHeight: 30,
+      ),
+      calloutContent: CalloutConfigToolbar(
+        tc: tc,
+        wrapperRect: wrapperRect,
+        onCloseF: () {
+          tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
+          removeSnippetContentCallout(tc);
+          // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
+        },
+      ),
+    );
+  }
 }
 
 class TargetsWrapperState extends State<TargetsWrapper> {
@@ -197,7 +273,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     //
-    Future<void> longPressedeBarrier(LongPressEndDetails details) async {
+    Future<void> _createTarget(TapDownDetails details) async {
       if (!fco.canEditContent) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
@@ -245,8 +321,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     onTap: () {
                       debugPrint('TAP');
                     },
-                    onLongPressEnd: (LongPressEndDetails details) async =>
-                        await longPressedeBarrier(details),
+                    onDoubleTapDown: (TapDownDetails details) async =>
+                        await _createTarget(details),
+                    // onLongPressEnd: (LongPressEndDetails details) async =>
+                    //     await longPressedeBarrier(details),
                   ),
                 );
               },
@@ -262,21 +340,31 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 top: tc.targetStackPos().dy - tc.radius,
                 left: tc.targetStackPos().dx - tc.radius,
                 child: Visibility.maintain(
-                  key: fco.setTargetGk(
-                      tc.uid, GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
+                  key: fco.setTargetGk(tc.uid,
+                      GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
                   visible: fco.canEditContent &&
                       (playingTc == null || playingTc == tc),
-                  child: TargetCover(tc, _targetIndex(tc)),
+                  child: TargetCover(
+                    tc,
+                    _targetIndex(tc),
+                    wrapperRect: wrapperRect,
+                  ),
                 ),
               ),
 
             // TARGET BUTTONS
             for (TargetModel tc in tcs)
               if (playingTc == null)
-                PositionedTargetPlayBtn(
-                  initialTC: tc,
-                  index: _targetIndex(tc),
-                  wrapperRect: wrapperRect,
+                Positioned(
+                  top: tc.btnStackPos().dy -
+                      FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                  left: tc.btnStackPos().dx -
+                      FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                  child: TargetPlayBtn(
+                    initialTC: tc,
+                    index: _targetIndex(tc),
+                    wrapperRect: wrapperRect,
+                  ),
                 ),
           ],
         ));
