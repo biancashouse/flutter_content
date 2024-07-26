@@ -29,6 +29,8 @@ class EditablePage extends StatefulWidget {
 class EditablePageState extends State<EditablePage> {
   final focusNode = FocusNode();
   final GlobalKey _lockIconGK = GlobalKey();
+  final ScrollController hSc = ScrollController();
+  final ScrollController vSc = ScrollController();
 
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
@@ -268,13 +270,13 @@ class EditablePageState extends State<EditablePage> {
             // debugPrint('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             ScrollableState? vScrollableState =
-                Scrollable.maybeOf(context, axis: Axis.vertical);
+                Scrollable.maybeOf(el, axis: Axis.vertical);
             ScrollController? vScrollController =
                 vScrollableState?.widget.controller;
             ScrollableState? hScrollableState =
-                Scrollable.maybeOf(context, axis: Axis.horizontal);
+                Scrollable.maybeOf(el, axis: Axis.horizontal);
             ScrollController? hScrollController =
-                vScrollableState?.widget.controller;
+                hScrollableState?.widget.controller;
             node.showTappableNodeWidgetOverlay(
               node.toString(),
               r,
