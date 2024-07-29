@@ -8,16 +8,14 @@ class ColourTool extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
   final bool justPlaying;
 
   const ColourTool(
       this.tc,
       this.wrapperRect,
       this.onParentBarrierTappedF, {
-        this.ancestorHScrollController,
-        this.ancestorVScrollController,
+        this.scrollControllerName,
         required this.justPlaying,
         super.key,
       });
@@ -29,8 +27,7 @@ class ColourTool extends StatefulWidget {
       final TargetModel tc,
       final Rect wrapperRect, {
         required VoidCallback onBarrierTappedF,
-        final ScrollController? ancestorHScrollController,
-        final ScrollController? ancestorVScrollController,
+        final String? scrollControllerName,
         required final bool justPlaying,
       }) {
     GlobalKey? targetGK =
@@ -57,8 +54,7 @@ class ColourTool extends StatefulWidget {
         tc,
         wrapperRect,
         onBarrierTappedF,
-        ancestorHScrollController: ancestorHScrollController,
-        ancestorVScrollController: ancestorVScrollController,
+        scrollControllerName: scrollControllerName,
         justPlaying: justPlaying,
       ),
     );
@@ -111,8 +107,7 @@ class _ColourToolState extends State<ColourTool> {
                   wrapperRect: widget.wrapperRect,
                   justPlaying: false,
                   // widget.onParentBarrierTappedF,
-                  ancestorHScrollController: widget.ancestorHScrollController,
-                  ancestorVScrollController: widget.ancestorVScrollController,
+                  scrollControllerName: widget.scrollControllerName,
                 );
               });
             },

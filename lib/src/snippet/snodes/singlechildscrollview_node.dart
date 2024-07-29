@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
 
@@ -9,9 +8,6 @@ part 'singlechildscrollview_node.mapper.dart';
 class SingleChildScrollViewNode extends SC
     with SingleChildScrollViewNodeMappable {
   EdgeInsetsValue? padding;
-
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  double? scrollOffset;
 
   SingleChildScrollViewNode({
     this.padding,
@@ -42,12 +38,15 @@ class SingleChildScrollViewNode extends SC
     //var targetGK = nodeWidgetGK;
 
     // maintain offset between instantiations
-    final sC = ScrollController(
-      initialScrollOffset: scrollOffset ?? 0.0,
-    );
-    sC.addListener(() {
-      scrollOffset = sC.offset;
-    });
+    ScrollController sC;
+    if (EditablePage.of(context) != null) {
+      String editablePageName = EditablePage.name(context);
+      sC = ScrollController(
+          initialScrollOffset: fco.scrollOffset(editablePageName)??0.0);
+      fco.registerScrollController(editablePageName, sC, Axis.vertical);
+    } else {
+      sC = ScrollController();
+    }
 
     return SingleChildScrollView(
       key: createNodeGK(),

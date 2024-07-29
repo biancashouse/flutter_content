@@ -8,6 +8,7 @@ part 'hotspots_node.mapper.dart';
 @MappableClass()
 class HotspotsNode extends SC with HotspotsNodeMappable {
   double? aspectRatio;
+
   // every drag end of a cover or play btn updates the aspect ratio
   double? width;
   double? height;
@@ -25,20 +26,22 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
-    DecimalPropertyValueNode(
-      snode: this,
-      name: 'width',
-      decimalValue: width,
-      onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
-      calloutButtonSize: const Size(80, 20),
-    ),
-    DecimalPropertyValueNode(
-      snode: this,
-      name: 'height',
-      decimalValue: height,
-      onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
-      calloutButtonSize: const Size(80, 20),
-    ),
+        DecimalPropertyValueNode(
+          snode: this,
+          name: 'width',
+          decimalValue: width,
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => width = newValue),
+          calloutButtonSize: const Size(80, 20),
+        ),
+        DecimalPropertyValueNode(
+          snode: this,
+          name: 'height',
+          decimalValue: height,
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => height = newValue),
+          calloutButtonSize: const Size(80, 20),
+        ),
         // StringPropertyValueNode(
         //   snode: this,
         //   name: 'wrapper name',
@@ -67,18 +70,20 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
     setParent(parentNode);
     Widget tw = child != null
         ? TargetsWrapper(
-          parentNode: this,
-          key: createNodeGK(),
-          child: super.child?.toWidget(context, this) ??
-              const Icon(
-                Icons.question_mark,
-                color: Colors.orangeAccent,
-              ),
-        )
+            parentNode: this,
+            key: createNodeGK(),
+            scrollControllerName: EditablePage.name(context),
+            child: super.child?.toWidget(context, this) ??
+                const Icon(
+                  Icons.question_mark,
+                  color: Colors.orangeAccent,
+                ),
+          )
         : TargetsWrapper(
-          parentNode: this,
-          key: createNodeGK(),
-        );
+            parentNode: this,
+            key: createNodeGK(),
+            scrollControllerName: EditablePage.name(context),
+          );
     return SizedBox(
       width: width,
       height: height,

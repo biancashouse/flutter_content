@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
@@ -8,15 +9,13 @@ class TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const TargetCover(
     this.tc,
     this.index, {
     required this.wrapperRect,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     super.key,
   });
 
@@ -49,8 +48,7 @@ class TargetCover extends StatelessWidget {
           tc,
           index,
           wrapperRect,
-          ancestorHScrollController,
-          ancestorVScrollController,
+          scrollControllerName,
         ),
       ),
     );
@@ -61,15 +59,13 @@ class _TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const _TargetCover(
     this.tc,
     this.index,
     this.wrapperRect,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
   );
 
   @override
@@ -81,8 +77,7 @@ class _TargetCover extends StatelessWidget {
         TargetsWrapper.configureTarget(
           tc,
           wrapperRect,
-          ancestorHScrollController,
-          ancestorVScrollController,
+          scrollControllerName,
         );
       },
       child: Stack(

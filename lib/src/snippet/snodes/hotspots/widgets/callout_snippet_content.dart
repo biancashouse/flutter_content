@@ -28,8 +28,7 @@ Future<void> showSnippetContentCallout({
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
-  ScrollController? ancestorHScrollController,
-  ScrollController? ancestorVScrollController,
+  String? scrollControllerName,
 }) async {
   // possibly transform before showing callout
 
@@ -105,8 +104,7 @@ Future<void> showSnippetContentCallout({
     ),
     calloutConfig: CalloutConfig(
       cId: tc.contentCId,
-      // hScrollController: ancestorHScrollController,
-      // vScrollController: ancestorVScrollController,
+      scrollControllerName: scrollControllerName,
       // scale: tc.transformScale,
       // barrierOpacity: 0.1,
       fillColor: tc.calloutColor(),

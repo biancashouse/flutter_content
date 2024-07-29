@@ -225,8 +225,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showTappableNodeWidgetOverlay(
     String nodeTypeName,
     Rect r,
-      ScrollController? hScrollController,
-      ScrollController? vScrollController,
+    String? scrollControllerName,
   ) {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
@@ -247,8 +246,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       fillColor: Colors.transparent,
       arrowType: ArrowType.NONE,
       draggable: false,
-      hScrollController: hScrollController,
-      vScrollController: vScrollController,
+      scrollControllerName: scrollControllerName,
     );
     Callout.showOverlay(
       ensureLowestOverlay: false,

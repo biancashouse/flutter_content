@@ -8,15 +8,13 @@ class TargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const TargetPlayBtn({
     required this.initialTC,
     required this.index,
     required this.wrapperRect,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     super.key,
   });
 
@@ -122,8 +120,7 @@ class TargetPlayBtn extends StatelessWidget {
                 TargetsWrapper.configureTarget(
                   tc,
                   wrapperRect,
-                  ancestorHScrollController,
-                  ancestorVScrollController,
+                  scrollControllerName,
                 );
               },
               child: IntegerCircleAvatar(
@@ -205,8 +202,7 @@ class TargetPlayBtn extends StatelessWidget {
         tc: tc,
         justPlaying: true,
         wrapperRect: wrapperRect,
-        ancestorHScrollController: ancestorHScrollController,
-        ancestorVScrollController: ancestorVScrollController,
+        scrollControllerName: scrollControllerName,
       );
       fco.afterMsDelayDo(tc.calloutDurationMs, () {
         tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {

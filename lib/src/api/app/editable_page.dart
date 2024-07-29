@@ -8,13 +8,13 @@ import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolb
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class EditablePage extends StatefulWidget {
-  final String? routePath;
-  final WidgetBuilder builder;
+  final String routePath;
+  final Widget child;
 
   const EditablePage({
-    this.routePath,
-    required this.builder,
-    required super.key, // provides access to state later
+    required this.routePath,
+    required this.child,
+    required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
   static void refreshSelectedNodeWidgetBorderOverlay() {
@@ -22,15 +22,28 @@ class EditablePage extends StatefulWidget {
     FlutterContentApp.selectedNode?.showNodeWidgetOverlay();
   }
 
+  // allow a page widget to find its parent EditablePage
+  static EditablePageState? of(BuildContext context) =>
+      context.findAncestorStateOfType<EditablePageState>();
+
+  static String name(context) =>
+      of(context)?.widget.routePath ?? 'no ancestor EditablePage!';
+
+  static ScrollController? ancestorSc(BuildContext context, Axis axis) {
+    ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
+    return scrollableState?.widget.controller;
+  }
+
   @override
   State<EditablePage> createState() => EditablePageState();
 }
 
 class EditablePageState extends State<EditablePage> {
+  // for use by child widget
+  // ScrollController? sC;
+
   final focusNode = FocusNode();
   final GlobalKey _lockIconGK = GlobalKey();
-  final ScrollController hSc = ScrollController();
-  final ScrollController vSc = ScrollController();
 
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
@@ -50,15 +63,29 @@ class EditablePageState extends State<EditablePage> {
   @override
   void initState() {
     super.initState();
-    if (widget.routePath != null) {
-      fco.pageGKs[widget.routePath!] = widget.key as GlobalKey;
-    }
+
+    // sC = ScrollController(
+    //   initialScrollOffset: fco.scrollControllerOffsets[widget.routePath] ?? 0.0,
+    // );
+    // // maintain offset between instantiations
+    // sC!.addListener(() {
+    //   fco.scrollControllerOffsets[widget.routePath] = sC!.offset;
+    // });
+
+    fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
+
     fco.afterNextBuildDo(() {
       setState(() {
         fabPosition = Offset(20, fco.scrH - 90); // Initial position of the FAB
       });
     });
   }
+
+  // @override
+  // void dispose() {
+  //   sC?.dispose();
+  //   super.dispose();
+  // }
 
   @override
   void didChangeDependencies() {
@@ -71,6 +98,15 @@ class EditablePageState extends State<EditablePage> {
   @override
   Widget build(BuildContext context) {
     // FCO.initWithContext(context);
+
+    // // maintain scroll pos
+    // if (sC?.hasClients??false && fco.scrollControllerOffsets[widget.routePath] != sC?.offset) {
+    //   fco.afterNextBuildDo(() {
+    //     sC?.jumpTo(fco.scrollControllerOffsets[widget.routePath] ?? 0.0);
+    //   });
+    // }
+
+    // fco.refreshScrollController(widget.routePath);
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -104,7 +140,7 @@ class EditablePageState extends State<EditablePage> {
                 child: Stack(
                   children: [
                     Zoomer(
-                      child: widget.builder(context),
+                      child: widget.child,
                     ),
                     if (fabPosition != null && isFABVisible)
                       Positioned(
@@ -269,19 +305,11 @@ class EditablePageState extends State<EditablePage> {
             // parent = node;
             // debugPrint('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
-            ScrollableState? vScrollableState =
-                Scrollable.maybeOf(el, axis: Axis.vertical);
-            ScrollController? vScrollController =
-                vScrollableState?.widget.controller;
-            ScrollableState? hScrollableState =
-                Scrollable.maybeOf(el, axis: Axis.horizontal);
-            ScrollController? hScrollController =
-                hScrollableState?.widget.controller;
+            // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
               node.toString(),
               r,
-              hScrollController,
-              vScrollController,
+              widget.routePath,
             );
           }
         }

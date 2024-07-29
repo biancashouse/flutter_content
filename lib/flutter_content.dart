@@ -2,8 +2,7 @@
 
 library flutter_content;
 
-import 'package:flutter_web_plugins/url_strategy.dart';
-
+import 'package:url_strategy/url_strategy.dart';
 import 'package:bh_shared/bh_shared.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,14 +19,15 @@ import 'src/bloc/capi_event.dart';
 import 'src/model/model_repo.dart';
 
 export 'src/api/app/editable_page.dart';
+export 'src/api/app/editable_page_route.dart';
 export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/fc_app.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
+export 'src/api/app/zoomer.dart';
 
 // callouts
 export 'src/bloc/capi_bloc.dart';
-export 'src/content_useful.dart';
 
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
@@ -144,6 +144,7 @@ class FlutterContentMixins
     with
         MeasuringMixin,
         CalloutMixin,
+        ScrollingMixin,
         RootContextMixin,
         MQMixin,
         SystemMixin,
@@ -192,7 +193,7 @@ class FlutterContentMixins
     Bloc.observer = MyGlobalObserver();
 
     // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
-    usePathUrlStrategy();
+    setPathUrlStrategy();
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
       initialLocation: initialRoutePath,
@@ -437,6 +438,8 @@ class FlutterContentMixins
 
   // each snippet panel has a gk, a last selected node, and a ur
   final Map<RouteName, GlobalKey> pageGKs = {};
+  // if a page has a scrollable, its offset can be stored in this map to avoid rebuild losing it
+  final Map<String, double> scrollControllerOffsets = {};
   String? currentRoute;
 
   final Map<GlobalKey, STreeNode> gkSTreeNodeMap =

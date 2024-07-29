@@ -20,6 +20,8 @@ class Page_Home extends StatefulWidget {
 class _Page_HomeState extends State<Page_Home> {
   int _counter = 0;
 
+  // ScrollController? sC(context) => EditablePage.of(context)?.sC;
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -40,62 +42,58 @@ class _Page_HomeState extends State<Page_Home> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-    return EditablePage(
-      key: GlobalKey(), // provides access to state later
-      // routePath: '/home',
-      builder: (context) => Scaffold(
-        appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          title: const Text('flutter_content demo'),
-        ),
-        body: Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              Flexible(
-                flex: 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'You have pushed the button this many times:',
-                    ),
-                    Text(
-                      '$_counter',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 4,
-                child: SnippetPanel.fromNodes(
-                  // panelName: 'demo-buttons',
-                  snippetRootNode: SnippetTemplateEnum.empty
-                      .templateSnippet()
-                      .clone(cloneName: 'demo-buttons'),
-                  // snippetRootNode: SnippetRootNode(
-                  //   name: 'we-create-flutter-apps-and-packages',
-                  //   child: PlaceholderNode()
-                  // ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: const Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+    return Scaffold(
+      appBar: AppBar(
+        // TRY THIS: Try changing the color here to a specific color (to
+        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+        // change color while the other colors stay the same.
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: const Text('flutter_content demo'),
       ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Flexible(
+              flex: 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'You have pushed the button this many times:',
+                  ),
+                  Text(
+                    '$_counter',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 4,
+              child: SnippetPanel.fromNodes(
+                // panelName: 'demo-buttons',
+                snippetRootNode: SnippetTemplateEnum.empty
+                    .templateSnippet()
+                    .clone(cloneName: 'demo-buttons'),
+                // snippetRootNode: SnippetRootNode(
+                //   name: 'we-create-flutter-apps-and-packages',
+                //   child: PlaceholderNode()
+                // ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

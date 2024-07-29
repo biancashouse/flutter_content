@@ -6,15 +6,13 @@ import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snip
 class PointyTool extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
   final bool justPlaying;
 
   const PointyTool(
     this.tc, {
     required this.wrapperRect,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     required this.justPlaying,
     super.key,
   });
@@ -23,8 +21,7 @@ class PointyTool extends StatefulWidget {
   State<PointyTool> createState() => _PointyToolState();
 
   static show(final TargetModel tc, final Rect wrapperRect,
-      {final ScrollController? ancestorHScrollController,
-      final ScrollController? ancestorVScrollController,
+      {final String? scrollControllerName,
       required final bool justPlaying}) {
     GlobalKey? targetGK =
         // tc.single
@@ -37,8 +34,7 @@ class PointyTool extends StatefulWidget {
         calloutContent: PointyTool(
               tc,
               wrapperRect: wrapperRect,
-              ancestorHScrollController: ancestorHScrollController,
-              ancestorVScrollController: ancestorVScrollController,
+              scrollControllerName: scrollControllerName,
               justPlaying: justPlaying,
             ),
         calloutConfig: CalloutConfig(
@@ -94,8 +90,7 @@ class _PointyToolState extends State<PointyTool> {
       justPlaying: false,
       // widget.onParentBarrierTappedF,
       wrapperRect: widget.wrapperRect,
-      ancestorHScrollController: widget.ancestorHScrollController,
-      ancestorVScrollController: widget.ancestorVScrollController,
+      scrollControllerName: widget.scrollControllerName,
     );
     // fco.afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);

@@ -19,15 +19,13 @@ class CalloutConfigToolbar extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const CalloutConfigToolbar({
     required this.tc,
     required this.wrapperRect,
     required this.onCloseF,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     super.key,
   });
 
@@ -82,10 +80,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                             tc: tc,
                             justPlaying: false,
                             wrapperRect: widget.wrapperRect,
-                            ancestorHScrollController:
-                                widget.ancestorHScrollController,
-                            ancestorVScrollController:
-                                widget.ancestorVScrollController,
+                            scrollControllerName: widget.scrollControllerName,
                           );
                         },
                         onChangeF: (value) {
@@ -127,8 +122,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           TargetsWrapper.configureTarget(
                             tc,
                             widget.wrapperRect,
-                            widget.ancestorHScrollController,
-                            widget.ancestorVScrollController,
+                            widget.scrollControllerName,
                           );
                         },
                         onChangeF: (value) {
@@ -198,8 +192,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 PointyTool.show(
                   tc, widget.wrapperRect,
                   // onBarrierTappedF: onParentBarrierTappedF,
-                  ancestorHScrollController: widget.ancestorHScrollController,
-                  ancestorVScrollController: widget.ancestorVScrollController,
+                  scrollControllerName: widget.scrollControllerName,
                   justPlaying: false,
                 );
               },
@@ -231,8 +224,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     wrapperRect: widget.wrapperRect,
                     justPlaying: false,
                     // widget.onParentBarrierTappedF,
-                    ancestorHScrollController: widget.ancestorHScrollController,
-                    ancestorVScrollController: widget.ancestorVScrollController,
+                    scrollControllerName: widget.scrollControllerName,
                   );
                   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                   // fco.afterNextBuildDo(() {
@@ -261,8 +253,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 MoreCalloutConfigSettings.show(
                   widget.tc,
                   widget.wrapperRect,
-                  ancestorHScrollController: widget.ancestorHScrollController,
-                  ancestorVScrollController: widget.ancestorVScrollController,
+                  scrollControllerName: widget.scrollControllerName,
                   justPlaying: false,
                 );
               },
@@ -336,8 +327,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           TargetsWrapper.showConfigToolbar(
             widget.tc,
             widget.wrapperRect,
-            widget.ancestorHScrollController,
-            widget.ancestorVScrollController,
+            widget.scrollControllerName,
           );
         },
         icon: Icon(

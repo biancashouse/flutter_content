@@ -94,8 +94,7 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
 
 void showSnippetTreeAndPropertiesCallout({
   required TargetKeyFunc targetGKF,
-  ScrollController? ancestorHScrollController,
-  ScrollController? ancestorVScrollController,
+  String? scrollControllerName,
   required VoidCallback onDismissedF,
   required STreeNode startingAtNode,
   required STreeNode selectedNode,
@@ -125,8 +124,7 @@ void showSnippetTreeAndPropertiesCallout({
   Callout.showOverlay(
     calloutConfig: cc,
     calloutContent: SnippetTreeAndPropertiesCalloutContents(
-      ancestorHScrollController: ancestorHScrollController,
-      ancestorVScrollController: ancestorVScrollController,
+      scrollControllerName:   scrollControllerName,
       allowButtonCallouts: allowButtonCallouts,
     ),
     targetGkF: targetGKF,

@@ -13,16 +13,14 @@ import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
   final bool allowButtonCallouts;
 
   const SnippetTreeAndPropertiesCalloutContents({
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     // required this.onChangedF,
     // required this.onExpiredF,
     this.allowButtonCallouts = false,
@@ -842,16 +840,14 @@ class SnippetTreePane extends StatelessWidget {
 }
 
 class SnippetTreeView extends StatelessWidget {
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
   final bool allowButtonCallouts;
 
   const SnippetTreeView({
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     // required this.onChangedF,
     // required this.onExpiredF,
     this.allowButtonCallouts = false,

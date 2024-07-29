@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
@@ -7,16 +6,14 @@ class PTreeNodeWidget extends StatelessWidget {
   // final STreeNode sNode;
   final PTreeNodeTreeController treeC;
   final TreeEntry<PTreeNode> entry;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const PTreeNodeWidget({
     super.key,
     // required this.sNode,
     required this.treeC,
     required this.entry,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
   });
 
   CAPIBloC get bloc => FlutterContentApp.capiBloc;

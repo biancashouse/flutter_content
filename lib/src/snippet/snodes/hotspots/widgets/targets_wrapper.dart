@@ -14,11 +14,13 @@ class TargetsWrapper extends StatefulWidget {
   final HotspotsNode parentNode;
   final Widget? child;
   final bool hardEdge;
+  final String? scrollControllerName;
 
   const TargetsWrapper(
       {required this.parentNode,
       this.child,
       this.hardEdge = true,
+      this.scrollControllerName,
       required super.key});
 
   @override
@@ -58,10 +60,7 @@ class TargetsWrapper extends StatefulWidget {
 // }
 
   static void configureTarget(
-      TargetModel tc,
-      Rect wrapperRect,
-      ScrollController? ancestorHScrollController,
-      ScrollController? ancestorVScrollController,
+      TargetModel tc, Rect wrapperRect, String? scrollControllerName,
       {bool quickly = false}) {
     if (!fco.canEditContent) return;
 
@@ -80,16 +79,14 @@ class TargetsWrapper extends StatefulWidget {
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
-        ancestorHScrollController: ancestorHScrollController,
-        ancestorVScrollController: ancestorVScrollController,
+        scrollControllerName: scrollControllerName,
       );
       // show config toolbar in a toast
       tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
       showConfigToolbar(
         tc,
         wrapperRect,
-        ancestorHScrollController,
-        ancestorVScrollController,
+        scrollControllerName,
       );
 
       fco.currentPageState?.hideFAB();
@@ -99,13 +96,13 @@ class TargetsWrapper extends StatefulWidget {
   static void showConfigToolbar(
     TargetModel tc,
     Rect wrapperRect,
-    final ScrollController? ancestorHScrollController,
-    final ScrollController? ancestorVScrollController,
+    final String? scrollControllerName,
   ) {
     Callout.dismiss(CalloutConfigToolbar.CID);
     Callout.showOverlay(
       calloutConfig: CalloutConfig(
         cId: CalloutConfigToolbar.CID,
+        scrollControllerName: scrollControllerName,
         fillColor: Colors.purpleAccent,
         initialCalloutW: 820,
         initialCalloutH: 80,
@@ -209,8 +206,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     Offset? globalPos;
     try {
       globalPos = newPosAndSize.$1?.translate(
-        zoomer?.widget.ancestorHScrollController?.offset ?? 0,
-        zoomer?.widget.ancestorVScrollController?.offset ?? 0,
+        fco.hScrollOffset(widget.scrollControllerName),
+        fco.vScrollOffset(widget.scrollControllerName),
       );
       if (globalPos != null) {
         // debugPrint('globalPos != null');
@@ -249,22 +246,30 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
+      // get current scrollOffset
+      String? editablePageName = EditablePage.name(context);
+      double hOffset = fco.hScrollOffset(editablePageName);
+      double vOffset = fco.vScrollOffset(editablePageName);
       refresh(() {
         var data = details.data;
         TargetId uid = data.$1;
         TargetModel? foundTc = widget.parentNode.findTarget(uid);
         // $2 true means target btn rather than target cover
         if (foundTc != null && data.$2) {
-          foundTc.setBtnStackPosPc(details.offset.translate(
-            FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-            FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-          ));
+          foundTc.setBtnStackPosPc(details.offset
+              .translate(
+                FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+              )
+              .translate(hOffset, vOffset));
           foundTc.changed_saveRootSnippet();
         } else if (foundTc != null) {
-          foundTc.setTargetStackPosPc(details.offset.translate(
-            foundTc.radius,
-            foundTc.radius,
-          ));
+          foundTc.setTargetStackPosPc(details.offset
+              .translate(
+                foundTc.radius,
+                foundTc.radius,
+              )
+              .translate(hOffset, vOffset));
           foundTc.changed_saveRootSnippet();
         }
         // FlutterContentApp.capiBloc
@@ -283,8 +288,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         uid: newTargetId, //event.wName.hashCode,
       )..parentHotspotNode = widget.parentNode;
       Offset newGlobalPos = details.globalPosition.translate(
-        zoomer?.widget.ancestorHScrollController?.offset ?? 0.0,
-        zoomer?.widget.ancestorVScrollController?.offset ?? 0.0,
+        fco.hScrollOffset(widget.scrollControllerName),
+        fco.vScrollOffset(widget.scrollControllerName),
       );
       newTC.setTargetStackPosPc(
         newGlobalPos,
@@ -348,6 +353,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     tc,
                     _targetIndex(tc),
                     wrapperRect: wrapperRect,
+                    scrollControllerName: widget.scrollControllerName,
                   ),
                 ),
               ),
@@ -364,6 +370,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     initialTC: tc,
                     index: _targetIndex(tc),
                     wrapperRect: wrapperRect,
+                    scrollControllerName: widget.scrollControllerName,
                   ),
                 ),
           ],

@@ -9,13 +9,11 @@ import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snip
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
 
   const MoreCalloutConfigSettings(
     this.tc, this.wrapperRect, {
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     super.key,
   });
 
@@ -25,8 +23,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
 
   static show(
     final TargetModel tc, final Rect wrapperRect, {
-    final ScrollController? ancestorHScrollController,
-    final ScrollController? ancestorVScrollController,
+    String? scrollControllerName,
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -39,8 +36,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
               tc, wrapperRect,
-              ancestorHScrollController: ancestorHScrollController,
-              ancestorVScrollController: ancestorVScrollController,
+              scrollControllerName: scrollControllerName,
             ),
         calloutConfig: CalloutConfig(
           cId: "more-cc-settings",
@@ -196,8 +192,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       tc: tc, wrapperRect: widget.wrapperRect,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
-      ancestorHScrollController: widget.ancestorHScrollController,
-      ancestorVScrollController: widget.ancestorVScrollController,
+      scrollControllerName: widget.scrollControllerName,
     );
   }
 }

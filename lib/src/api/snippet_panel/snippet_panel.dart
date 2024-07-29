@@ -25,8 +25,8 @@ class SnippetPanel extends StatefulWidget {
   // final double? iconSize;
   // final VoidCallback? onPressed;
   // final VoidCallback? onLongPress;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  // parent widget may be scrollable
+  final ScrollController? scrollController;
 
   // effectively from a Template
   SnippetPanel.fromNodes({
@@ -35,8 +35,7 @@ class SnippetPanel extends StatefulWidget {
     this.handlers,
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollController,
     super.key,
   }) : snippetName = null;
 
@@ -51,8 +50,7 @@ class SnippetPanel extends StatefulWidget {
     // this.icon,
     // this.iconColor,
     // this.iconSize,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollController,
     super.key,
   }) : snippetRootNode = null;
 

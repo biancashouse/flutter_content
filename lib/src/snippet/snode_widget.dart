@@ -13,8 +13,7 @@ class NodeWidget extends StatelessWidget {
   final SnippetTreeController treeController;
   final TreeEntry<STreeNode> entry;
   final bool onClipboard;
-  final ScrollController? ancestorHScrollController;
-  final ScrollController? ancestorVScrollController;
+  final String? scrollControllerName;
   final bool allowButtonCallouts;
 
   const NodeWidget({
@@ -23,8 +22,7 @@ class NodeWidget extends StatelessWidget {
     required this.treeController,
     required this.entry,
     this.onClipboard = false,
-    this.ancestorHScrollController,
-    this.ancestorVScrollController,
+    this.scrollControllerName,
     this.allowButtonCallouts = false,
   });
 
