@@ -24,10 +24,11 @@ class TargetCover extends StatelessWidget {
     // in case initialTC replaced by a build ? huh!
     // if (tc != null) {
     // double radius = tc.radius;
+    bool preventDrag = Callout.anyPresent([CalloutConfigToolbar.CID]);
     return fco.canEditContent
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
-            feedback: _draggableTargetCover(tc),
+            feedback: preventDrag ? const Offstage() : _draggableTargetCover(tc),
             childWhenDragging: const Offstage(),
             child: _draggableTargetCover(tc),
           )
@@ -40,7 +41,7 @@ class TargetCover extends StatelessWidget {
 
   Widget _draggableTargetCover(TargetModel tc) {
     // debugPrint('_draggableTarget');
-    return Visibility(visible: FlutterContentApp.snippetBeingEdited == null,
+    return Visibility(visible: true,//FlutterContentApp.snippetBeingEdited == null,
       child: SizedBox(
         width: tc.radius * 2,
         height: tc.radius * 2,

@@ -246,7 +246,14 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
-      // get current scrollOffset
+
+        // ignore drags when toolbar showing
+        if (Callout.anyPresent([CalloutConfigToolbar.CID])) {
+          refresh(() {});
+          return;
+        };
+
+        // get current scrollOffset
       String? editablePageName = EditablePage.name(context);
       double hOffset = fco.hScrollOffset(editablePageName);
       double vOffset = fco.vScrollOffset(editablePageName);
@@ -333,7 +340,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   ),
                 );
               },
-              onAcceptWithDetails: droppedBtnOrCover,
+              onAcceptWithDetails: Callout.anyPresent([CalloutConfigToolbar.CID])
+              ? null: droppedBtnOrCover,
             ),
 
             // CHILD, typically an image

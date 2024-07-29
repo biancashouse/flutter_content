@@ -25,8 +25,10 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.empty => 'placeholder',
         SnippetTemplateEnum.scaffold_with_tabbar => 'scaffold with a tab bar',
         SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
-        SnippetTemplateEnum.splitview_with_2_placeholders => 'splitview with 2 placeholders',
-        SnippetTemplateEnum.column_with_2_placeholders => 'column with 2 placeholders',
+        SnippetTemplateEnum.splitview_with_2_placeholders =>
+          'splitview with 2 placeholders',
+        SnippetTemplateEnum.column_with_2_placeholders =>
+          'column with 2 placeholders',
         SnippetTemplateEnum.rich_text => 'rich text',
         SnippetTemplateEnum.callout_content => 'callout contents'
       };
@@ -51,14 +53,18 @@ enum SnippetTemplateEnum {
 
   SnippetRootNode templateSnippet() => switch (this) {
         //
-        SnippetTemplateEnum.empty => SnippetRootNode(name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
+        SnippetTemplateEnum.empty => SnippetRootNode(
+            name: SnippetTemplateEnum.empty.name,
+            child: PlaceholderNode(),
+          ),
         //
         SnippetTemplateEnum.scaffold_with_tabbar => SnippetRootNode(
             name: SnippetTemplateEnum.scaffold_with_tabbar.name,
             child: ScaffoldNode(
               appBar: AppBarNode(
                 bgColorValue: Colors.grey.value,
-                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                title: GenericSingleChildNode(
+                    propertyName: 'title', child: TextNode(text: 'my title')),
                 bottom: GenericSingleChildNode(
                   propertyName: 'bottom',
                   child: TabBarNode(
@@ -86,13 +92,14 @@ enum SnippetTemplateEnum {
             child: ScaffoldNode(
               appBar: AppBarNode(
                 bgColorValue: Colors.grey.value,
-                title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'my title')),
+                title: GenericSingleChildNode(
+                    propertyName: 'title', child: TextNode(text: 'my title')),
                 bottom: GenericSingleChildNode(
                   propertyName: 'bottom',
                   child: MenuBarNode(children: [
-                    MenuItemButtonNode(child: TextNode(text:'item 1')),
-                    MenuItemButtonNode(child: TextNode(text:'item 2')),
-                    MenuItemButtonNode(child: TextNode(text:'item 3')),
+                    MenuItemButtonNode(child: TextNode(text: 'item 1')),
+                    MenuItemButtonNode(child: TextNode(text: 'item 2')),
+                    MenuItemButtonNode(child: TextNode(text: 'item 3')),
                   ]),
                 ),
               ),
@@ -121,13 +128,15 @@ enum SnippetTemplateEnum {
               children: [
                 SizedBoxNode(
                   child: CenterNode(
-                    child: AssetImageNode(name: 'assets/images/bridging-the-gap-logo.jpeg'),
+                    child: AssetImageNode(
+                        name: 'assets/images/bridging-the-gap-logo.jpeg'),
                   ),
                 ),
                 SizedBoxNode(
                   child: CenterNode(
                     child: HotspotsNode(
-                      child: AssetImageNode(name: 'assets/images/top-cat-gang.png'),
+                      child: AssetImageNode(
+                          name: 'assets/images/top-cat-gang.png'),
                     ),
                   ),
                 ),
@@ -145,7 +154,8 @@ enum SnippetTemplateEnum {
             ),
           ),
         //
-        SnippetTemplateEnum.callout_content => SnippetRootNode(name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
+        SnippetTemplateEnum.callout_content => SnippetRootNode(
+            name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
       };
 
   List<Widget> get allItems => values.map((e) => e.toMenuItem()).toList();

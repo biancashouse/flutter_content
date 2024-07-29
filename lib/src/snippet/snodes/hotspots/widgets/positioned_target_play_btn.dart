@@ -3,6 +3,8 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
+import 'config_toolbar/callout_config_toolbar.dart';
+
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
@@ -21,13 +23,20 @@ class TargetPlayBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TargetModel? tc = initialTC; //bloc.state.tcByUid(initialTC);
+    //   bool toolbarPresent = Callout.anyPresent([CalloutConfigToolbar.CID]);
+    //   if (toolbarPresent) {
+    //     hideAllTargetBtns();
+    //     hideAllTargetCovers();
+    //   }
+
     return Visibility(
-      visible: FlutterContentApp.snippetBeingEdited == null,
+      visible: FlutterContentApp.snippetBeingEdited == null && !Callout.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
       child: _draggableSelectTargetBtn(tc),
     );
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
+    bool preventDrag = Callout.anyPresent([CalloutConfigToolbar.CID]);
     return !fco.canEditContent
         ? GestureDetector(
             onTap: () {
@@ -48,14 +57,17 @@ class TargetPlayBtn extends StatelessWidget {
         : Draggable<(TargetId, bool)>(
             data: (tc.uid, true),
             childWhenDragging: const Offstage(),
-            feedback: IntegerCircleAvatar(
-              tc,
-              num: index + 1,
-              bgColor: tc.calloutColor(),
-              radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-              textColor: Color(Colors.white.value),
-              fontSize: 14,
-            ),
+            feedback: preventDrag
+                ? const Offstage()
+                : IntegerCircleAvatar(
+                    tc,
+                    num: index + 1,
+                    bgColor: tc.calloutColor(),
+                    radius:
+                        FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                    textColor: Color(Colors.white.value),
+                    fontSize: 14,
+                  ),
             // onDragUpdate: (DragUpdateDetails details) {
             //   debugPrint("${details.globalPosition}");
             //   Offset newGlobalPos =

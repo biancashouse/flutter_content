@@ -1054,7 +1054,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
-    SnippetRootNode? rootNode = fco.currentSnippet(event.snippetName);
+    SnippetRootNode? rootNode = fco.currentSnippetVersion(event.snippetName);
     if (rootNode == null) return;
 
     SnippetTreeController newTreeC() => SnippetTreeController(

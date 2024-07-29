@@ -427,10 +427,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             var currPageState = fco.currentPageState;
             currPageState?.unhideFAB();
             Callout.dismiss(pinkOverlayFeature);
-            // Callout.printFeatures();
-            showAllTargetBtns();
-            showAllTargetCovers();
+            // unhide if present
             Callout.unhide(CalloutConfigToolbar.CID);
+            // Callout.printFeatures();
             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
             Callout.dismiss(TREENODE_MENU_CALLOUT);
             fco.hideClipboard();
@@ -453,6 +452,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             //         newVersionId: newVersionId,
             //       ),
             //     );
+            //  fco.afterMsDelayDo(2000, (){
+            //   bool toolbarPresent = Callout.anyPresent([CalloutConfigToolbar.CID]);
+            //   if (toolbarPresent) {
+            //     hideAllTargetBtns();
+            //     hideAllTargetCovers();
+            //   }
+            // });
           },
           startingAtNode: startingAtNode,
           selectedNode: selectedNode,

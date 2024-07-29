@@ -97,7 +97,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             debugPrint("FutureBuilder<void> Ensuring $name present");
             try {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
-              SnippetRootNode? snippet = fco.currentSnippet(name);
+              SnippetRootNode? snippet = fco.currentSnippetVersion(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
               return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
@@ -149,7 +149,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     if (snippetInfo != null) {
       VersionId? currentVersionId = snippetInfo.currentVersionId;
       // may already be in snippet cache
-      SnippetRootNode? rootNode = fco.currentSnippet(snippetName);
+      SnippetRootNode? rootNode = fco.currentSnippetVersion(snippetName);
       //
       if (rootNode == null && currentVersionId != null) {
         // snippet version was not already in cache

@@ -97,7 +97,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                       try {
                         // in case did a revert, ignore snapshot data and use the AppInfo instead
                         SnippetRootNode? snippet =
-                            fco.currentSnippet(snippetName);
+                            fco.currentSnippetVersion(snippetName);
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null

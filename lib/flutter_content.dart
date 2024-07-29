@@ -524,7 +524,7 @@ class FlutterContentMixins
 
   // FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
 
-  SnippetRootNode? currentSnippet(SnippetName snippetName) {
+  SnippetRootNode? currentSnippetVersion(SnippetName snippetName) {
     SnippetRootNode? rootNode;
     SnippetInfoModel? snippetInfo = snippetInfoCache[snippetName];
     VersionId? currentVersionId = snippetInfo?.currentVersionId;

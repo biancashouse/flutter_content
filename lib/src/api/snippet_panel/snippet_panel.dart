@@ -186,7 +186,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                     try {
                       // in case did a revert, ignore snapshot data and use the AppInfo instead
                       String sName = snippetName();
-                      SnippetRootNode? snippet = fco.currentSnippet(sName);
+                      SnippetRootNode? snippet = fco.currentSnippetVersion(sName);
                       snippet?.validateTree();
                       // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                       snippetWidget =

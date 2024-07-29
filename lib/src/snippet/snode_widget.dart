@@ -107,7 +107,7 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetRootNode snippet = fco.currentSnippet(
+        SnippetRootNode snippet = fco.currentSnippetVersion(
             (entry.node as SnippetRootNode).name)!;
 
         STreeNode.pushThenShowNamedSnippetWithNodeSelected(

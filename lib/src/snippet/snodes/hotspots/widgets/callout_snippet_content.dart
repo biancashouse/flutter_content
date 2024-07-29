@@ -62,18 +62,22 @@ Future<void> showSnippetContentCallout({
   // if (fco.targetSnippetBeingConfigured != null) {
 
   Widget content() => SnippetPanel.fromSnippet(
-      panelName: tc.contentCId, // never used
-      snippetName: tc.contentSnippetName);
+        panelName: tc.contentCId, // never used
+        snippetName: tc.contentSnippetName,
+      );
 
   Widget editableContent() => GestureDetector(
         onTap: () {
-          SnippetRootNode? snippet = fco.currentSnippet(tc.contentSnippetName);
+          SnippetRootNode? snippet = fco.currentSnippetVersion(tc.contentSnippetName);
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
             tc.contentSnippetName,
             snippet!,
             snippet.child ?? snippet,
             targetBeingConfigured: tc,
           );
+          fco.afterMsDelayDo(2000, (){
+            Callout.refresh(tc.contentCId);
+          });
         },
         child: Container(
             // width: cc.calloutW,

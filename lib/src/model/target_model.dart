@@ -164,7 +164,11 @@ class TargetModel with TargetModelMappable {
       fco.snippetInfoCache[contentSnippetName] ??
       await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
         snippetName: contentSnippetName,
-        snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
+        snippetRootNode: SnippetRootNode(
+          name: contentCId,
+          child: CenterNode(child: TextNode(text: contentCId)),
+        ),
+        // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
 
   Color calloutColor() => calloutFillColorValue == null
