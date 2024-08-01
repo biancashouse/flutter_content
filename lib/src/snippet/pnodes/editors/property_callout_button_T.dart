@@ -34,15 +34,16 @@ class PropertyButton<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(builder: (BuildContext context, StateSetter setState){
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
       String editedText = originalText;
       // print('editedText: $editedText');
       // print('label: $label');
       String textLabel() => skipLabelText
           ? editedText ?? ''
           : (editedText ?? '').isNotEmpty
-          ? '$label: $editedText'
-          : '$label...';
+              ? '$label: $editedText'
+              : '$label...';
       Widget labelWidget = Text(
         textLabel(),
         style: const TextStyle(color: Colors.white),
@@ -51,7 +52,10 @@ class PropertyButton<T> extends StatelessWidget {
       // print('labelWidget: $labelWidget');
       return GestureDetector(
         onTap: () {
-          String inputDecorationLabel() => originalText.isNotEmpty && maxLines < 2 ? '$label: $originalText' : '$label...';
+          String inputDecorationLabel() =>
+              originalText.isNotEmpty && maxLines < 2
+                  ? '$label: $originalText'
+                  : '$label...';
           CalloutConfig teCC = CalloutConfig(
             cId: 'te',
             containsTextField: true,
@@ -83,47 +87,61 @@ class PropertyButton<T> extends StatelessWidget {
             draggable: false,
             notUsingHydratedStorage: true,
           );
+          Widget teContent = FC_TextField(
+            inputType: T,
+            // key: calloutChildGK,
+            prompt: () => label ?? '',
+            inputDecorationLabel: inputDecorationLabel,
+            originalS: editedText ?? '',
+            onTextChangedF: (s) {
+              editedText = s;
+              Callout.dismiss('matches');
+              // possibly show matching options
+              if ((options?.isNotEmpty ?? false) &&
+                  _matches(options, editedText).isNotEmpty) {
+                _showOptionMatches(
+                  options!,
+                  editedText ?? '',
+                  (s) {
+                    editedText = s;
+                    onChangeF(s);
+                  },
+                );
+              }
+            },
+            onEditingCompleteF: (s) {
+              editedText = s;
+              setState(() {});
+              onChangeF(s);
+              Callout.dismiss('te');
+            },
+            dontAutoFocus: false,
+            bgColor: Colors.white,
+            maxLines: maxLines,
+          );
+          if (teCC.calloutH != null && teCC.calloutH! > 400) {
+            teCC.initialCalloutH = teCC.calloutH = 200;
+          }
           Callout.showOverlay(
             calloutConfig: teCC,
-            calloutContent: FC_TextField(
-              inputType: T,
-              // key: calloutChildGK,
-              prompt: () => label ?? '',
-              inputDecorationLabel: inputDecorationLabel,
-              originalS: editedText ?? '',
-              onTextChangedF: (s) {
-                editedText = s;
-                Callout.dismiss('matches');
-                // possibly show matching options
-                if ((options?.isNotEmpty ?? false) && _matches(options, editedText).isNotEmpty) {
-                  _showOptionMatches(
-                    options!,
-                    editedText ?? '',
-                        (s) {
-                      editedText = s;
-                      onChangeF(s);
-                    },
-                  );
-                }
-              },
-              onEditingCompleteF: (s) {
-                editedText = s;
-                setState((){});
-                onChangeF(s);
-                Callout.dismiss('te');
-              },
-              dontAutoFocus: false,
-              bgColor: Colors.white,
-              maxLines: maxLines,
-            ),
+            calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
+                ? Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: ListView(
+                      padding: EdgeInsets.all(10),
+                      children: [teContent],
+                    ),
+                )
+                : teContent,
             targetGkF: () => propertyBtnGK,
           );
           // show options, if any
-          if ((options?.isNotEmpty ?? false) && _matches(options, editedText).isNotEmpty) {
+          if ((options?.isNotEmpty ?? false) &&
+              _matches(options, editedText).isNotEmpty) {
             _showOptionMatches(
               options!,
               editedText ?? '',
-                  (s) {
+              (s) {
                 editedText = s;
                 onChangeF(s);
               },
@@ -146,7 +164,8 @@ class PropertyButton<T> extends StatelessWidget {
     });
   }
 
-  void _showOptionMatches(List<String> options, String editedText, ValueChanged<String> tappedAMatchF) {
+  void _showOptionMatches(List<String> options, String editedText,
+      ValueChanged<String> tappedAMatchF) {
     Callout.dismiss('matches');
     // List<Widget> chips = matches
     //     .map(

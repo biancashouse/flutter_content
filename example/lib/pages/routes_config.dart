@@ -33,6 +33,14 @@ final webRoutingConfig = RoutingConfig(
       path: '/editable-rich-text',
       template: SnippetTemplateEnum.rich_text,
     ),
+    DynamicPageRoute(
+      path: '/md-example',
+      template: SnippetTemplateEnum.markdown,
+    ),
+    DynamicPageRoute(
+      path: '/md-example',
+      template: SnippetTemplateEnum.markdown,
+    ),
   ],
 );
 

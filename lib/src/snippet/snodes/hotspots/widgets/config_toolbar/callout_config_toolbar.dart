@@ -156,7 +156,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 color: Colors.white,
               ),
               onPressed: () {
-                ColourTool.show(
+                TargetColourTool.show(
                   tc,
                   widget.wrapperRect,
                   onBarrierTappedF: widget.onCloseF,

@@ -24,7 +24,7 @@ void disableOverflowErrors() {
 }
 
 // main when using the flutter_content package
-Future<void> main() async {
+Future<void> main({bool useEmulator = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   disableOverflowErrors();
@@ -40,7 +40,7 @@ Future<void> main() async {
       primarySwatch: Colors.purple,
     ),
     fbOptions: DefaultFirebaseOptions.currentPlatform,
-    useEmulator: true,
+    useEmulator: useEmulator,
     useFBStorage: true,
     namedVoidCallbacks: {
       // used by button tap handlers

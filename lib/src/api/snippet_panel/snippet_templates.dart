@@ -12,6 +12,8 @@ part 'snippet_templates.mapper.dart';
 @MappableEnum()
 enum SnippetTemplateEnum {
   empty,
+  drive_iframe,
+  markdown,
   scaffold_with_tabbar,
   scaffold_with_menubar,
   splitview_with_2_placeholders,
@@ -23,6 +25,8 @@ enum SnippetTemplateEnum {
 
   String _menuItem() => switch (this) {
         SnippetTemplateEnum.empty => 'placeholder',
+        SnippetTemplateEnum.drive_iframe => 'google drive doc',
+        SnippetTemplateEnum.markdown => 'markdown',
         SnippetTemplateEnum.scaffold_with_tabbar => 'scaffold with a tab bar',
         SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
         SnippetTemplateEnum.splitview_with_2_placeholders =>
@@ -56,6 +60,16 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.empty => SnippetRootNode(
             name: SnippetTemplateEnum.empty.name,
             child: PlaceholderNode(),
+          ),
+        //
+        SnippetTemplateEnum.drive_iframe => SnippetRootNode(
+            name: SnippetTemplateEnum.drive_iframe.name,
+            child: IFrameNode(),
+          ),
+        //
+        SnippetTemplateEnum.markdown => SnippetRootNode(
+            name: SnippetTemplateEnum.markdown.name,
+            child: MarkdownNode(),
           ),
         //
         SnippetTemplateEnum.scaffold_with_tabbar => SnippetRootNode(

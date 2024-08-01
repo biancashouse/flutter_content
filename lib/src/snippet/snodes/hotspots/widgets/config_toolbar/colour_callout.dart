@@ -1,47 +1,120 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/easy_color_picker.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
-class ColourTool extends StatefulWidget {
+class TargetColourTool extends StatelessWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
   final String? scrollControllerName;
   final bool justPlaying;
 
-  const ColourTool(
-      this.tc,
-      this.wrapperRect,
-      this.onParentBarrierTappedF, {
-        this.scrollControllerName,
-        required this.justPlaying,
-        super.key,
-      });
+  const TargetColourTool(
+    this.tc,
+    this.wrapperRect,
+    this.onParentBarrierTappedF, {
+    this.scrollControllerName,
+    required this.justPlaying,
+    super.key,
+  });
+
+  // late ArrowType _arrowType;
+  CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
-  State<ColourTool> createState() => _ColourToolState();
+  Widget build(BuildContext context) {
+
+    void colorPicked(Color pickedColor) {
+      tc.setCalloutColor(pickedColor);
+      // STreeNode.hideAllTargetCovers();
+      // STreeNode.showAllTargetCovers();
+      // Callout.refreshOverlay(tc.snippetName);
+      // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+      // fco.afterNextBuildDo(() {
+      //   widget.onParentBarrierTappedF.call();
+      //   Callout.refreshOverlay(tc.snippetName, f: () {});
+      removeSnippetContentCallout(tc);
+      tc
+          .targetsWrapperState()
+          ?.zoomer
+          ?.zoomImmediately(tc.transformScale, tc.transformScale);
+      tc.targetsWrapperState()?.refresh(() {
+        showSnippetContentCallout(
+          tc: tc,
+          wrapperRect: wrapperRect,
+          justPlaying: false,
+          // widget.onParentBarrierTappedF,
+          scrollControllerName: scrollControllerName,
+        );
+      });
+    }
+
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.black),
+                ),
+                onPressed: () => colorPicked(Colors.black),
+                child: fco.coloredText('black', color: Colors.white),
+              ),
+              TextButton(
+                onPressed: () => colorPicked(Colors.transparent),
+                child: const Text('transparent'),
+              ),
+              TextButton(
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                ),
+                onPressed: () => colorPicked(Colors.white),
+                child: const Text('white'),
+              ),
+            ],
+          ),
+          ColorPicker(
+            // Use the screenPickerColor as color.
+            color: tc.calloutColor(),
+            // Update the screenPickerColor using the callback.
+            onColorChanged: (Color color) => colorPicked(color),
+            // onCompleted: () => Callout.dismiss(cId),
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            subheading: const Divider(height: 30),
+          ),
+        ],
+      ),
+    );
+  }
 
   static show(
-      final TargetModel tc,
-      final Rect wrapperRect, {
-        required VoidCallback onBarrierTappedF,
-        final String? scrollControllerName,
-        required final bool justPlaying,
-      }) {
+    final TargetModel tc,
+    final Rect wrapperRect, {
+    required VoidCallback onBarrierTappedF,
+    final String? scrollControllerName,
+    required final bool justPlaying,
+  }) {
     GlobalKey? targetGK =
-    // tc.single
-    // ? FCO.getSingleTargetGk(tc.wName)
-    // :
-    fco.getTargetGk(tc.uid);
+        // tc.single
+        // ? FCO.getSingleTargetGk(tc.wName)
+        // :
+        fco.getTargetGk(tc.uid);
 
     Callout.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
         cId: 'color-picker',
-        initialCalloutW: 300,
-        initialCalloutH: 160,
+        initialCalloutW: 320,
+        initialCalloutH: 380,
         fillColor: Colors.purpleAccent,
         borderRadius: 16,
         arrowType: ArrowType.NONE,
@@ -50,7 +123,7 @@ class ColourTool extends StatefulWidget {
         ),
         notUsingHydratedStorage: true,
       ),
-      calloutContent: ColourTool(
+      calloutContent: TargetColourTool(
         tc,
         wrapperRect,
         onBarrierTappedF,
@@ -61,59 +134,4 @@ class ColourTool extends StatefulWidget {
   }
 
   static bool isShowing() => Callout.anyPresent(["arrow-type"]);
-}
-
-class _ColourToolState extends State<ColourTool> {
-  // late ArrowType _arrowType;
-  // late bool _animate;
-
-  TargetModel get tc => widget.tc;
-
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    // _arrowType = tc.getArrowType();
-    // _animate = tc.animateArrow;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          EasyColorPicker(
-            selected: tc.calloutColor(),
-            onChanged: (color) {
-              tc.setCalloutColor(color);
-              // STreeNode.hideAllTargetCovers();
-              // STreeNode.showAllTargetCovers();
-              // Callout.refreshOverlay(tc.snippetName);
-              // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-              Callout.dismiss('color-picker');
-              // fco.afterNextBuildDo(() {
-              //   widget.onParentBarrierTappedF.call();
-              //   Callout.refreshOverlay(tc.snippetName, f: () {});
-              removeSnippetContentCallout(tc);
-              tc.targetsWrapperState()
-                  ?.zoomer
-                  ?.zoomImmediately(tc.transformScale, tc.transformScale);
-              tc.targetsWrapperState()?.refresh(() {
-                showSnippetContentCallout(
-                  tc: tc,
-                  wrapperRect: widget.wrapperRect,
-                  justPlaying: false,
-                  // widget.onParentBarrierTappedF,
-                  scrollControllerName: widget.scrollControllerName,
-                );
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
 }

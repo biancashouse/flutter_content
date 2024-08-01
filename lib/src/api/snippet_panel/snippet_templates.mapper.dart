@@ -27,6 +27,10 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
     switch (value) {
       case 'empty':
         return SnippetTemplateEnum.empty;
+      case 'drive_iframe':
+        return SnippetTemplateEnum.drive_iframe;
+      case 'markdown':
+        return SnippetTemplateEnum.markdown;
       case 'scaffold_with_tabbar':
         return SnippetTemplateEnum.scaffold_with_tabbar;
       case 'scaffold_with_menubar':
@@ -49,6 +53,10 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
     switch (self) {
       case SnippetTemplateEnum.empty:
         return 'empty';
+      case SnippetTemplateEnum.drive_iframe:
+        return 'drive_iframe';
+      case SnippetTemplateEnum.markdown:
+        return 'markdown';
       case SnippetTemplateEnum.scaffold_with_tabbar:
         return 'scaffold_with_tabbar';
       case SnippetTemplateEnum.scaffold_with_menubar:

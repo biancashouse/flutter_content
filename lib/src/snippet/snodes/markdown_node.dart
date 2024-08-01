@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 part 'markdown_node.mapper.dart';
 
@@ -9,8 +10,8 @@ part 'markdown_node.mapper.dart';
 class MarkdownNode extends CL with MarkdownNodeMappable {
   String data;
 
-  MarkdownNode({
-    this.data = """
+  MarkdownNode(
+      {this.data = """
 # Markdown Example
 Markdown allows you to easily include formatted text, images, and even formatted
 Dart code in your app.
@@ -124,25 +125,24 @@ line 2
 
 
 line 3
-"""
-  });
+"""});
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
-    StringPropertyValueNode(
-      snode: this,
-      name: 'data',
-      nameOnSeparateLine: true,
-      expands: true,
-      numLines: 3,
-      stringValue: data,
-      onStringChange: (newValue) {
-        refreshWithUpdate(() => data = newValue??'');
-      },
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 300,
-    ),
-  ];
+        StringPropertyValueNode(
+          snode: this,
+          name: 'data',
+          nameOnSeparateLine: true,
+          expands: true,
+          numLines: 9999,
+          stringValue: data,
+          onStringChange: (newValue) {
+            refreshWithUpdate(() => data = newValue ?? '');
+          },
+          calloutButtonSize: const Size(280, 70),
+          calloutWidth: 300,
+        ),
+      ];
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
@@ -157,7 +157,21 @@ line 3
         a: TextStyle(color: Colors.blue),
         codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
         code: TextStyle(color: Colors.purple),
-      ),  );
+      ),
+      onTapLink: (String text, String? href, String title) async {
+        if (href != null) {
+          try {
+            Uri url = Uri.parse(href);
+            if (!await launchUrl(url)) {
+              throw Exception('Could not launch $href');
+            }
+          } catch (e) {
+            print('Following exception ignored:');
+            print(e);
+          }
+        }
+      },
+    );
   }
 
   @override
