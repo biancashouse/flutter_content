@@ -438,12 +438,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // skip if no change
             String? jsonBeforePush =
                 FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
-            String? currentJsonS = FlutterContentApp.rootNode?.toJson();
+            String? currentJsonS = FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
             if (jsonBeforePush == currentJsonS) return;
-            if (FlutterContentApp.rootNode != null) {
+            if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
               fco.cacheAndSaveANewSnippetVersion(
                 snippetName: snippetName,
-                rootNode: FlutterContentApp.rootNode!,
+                rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
               );
             }
             // FCO.capiBloc.add(

@@ -39,7 +39,7 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
   }
 
   return CalloutConfig(
-    cId: FlutterContentApp.rootNode!.name,
+    cId: FlutterContentApp.snippetBeingEdited!.rootNode.name,
     // frameTarget: true,
     arrowType: ArrowType.NONE,
     barrier: CalloutBarrier(
@@ -102,7 +102,7 @@ void showSnippetTreeAndPropertiesCallout({
   bool allowButtonCallouts = false,
   TargetModel? targetBeingConfigured,
 }) async {
-  SnippetRootNode? rootNode = FlutterContentApp.rootNode;
+  SnippetRootNode? rootNode = FlutterContentApp.snippetBeingEdited?.rootNode;
   if (rootNode == null) return;
 
   // dismiss any pink border overlays

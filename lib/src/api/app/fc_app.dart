@@ -47,8 +47,6 @@ class FlutterContentApp extends StatefulWidget {
 
   static STreeNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
-  static SnippetRootNode? get rootNode => snippetBeingEdited?.rootNode;
-
   static bool get showProperties => snippetBeingEdited?.showProperties ?? false;
 
   static bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;

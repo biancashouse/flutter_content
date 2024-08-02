@@ -64,7 +64,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     //   });
     // }
     // for the prev and next icons
-    SnippetName? snippetName = FlutterContentApp.rootNode?.name;
+    SnippetName? snippetName = FlutterContentApp.snippetBeingEdited?.rootNode.name;
     if (snippetName == null) return fco.errorIcon(Colors.red);
     VersionId? currentEditingVersionId =
         fco.snippetInfoCache[snippetName]?.editingVersionId;
@@ -81,7 +81,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           title: Tooltip(
             message: 'snippet name',
             child: fco.coloredText(
-              FlutterContentApp.rootNode?.name ?? 'snippet name?',
+              FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name?',
               fontSize: 16.0,
               color: Colors.white,
             ),
@@ -158,7 +158,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               onPressed: () async {},
               icon: VersionsMenuAnchor(
                   snippetName:
-                      FlutterContentApp.rootNode?.name ?? 'snippet name ?'),
+                      FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name ?'),
               tooltip: 'version...',
             ),
             // if (selectedNode is! SnippetRefNode)
@@ -684,9 +684,9 @@ class SnippetTreePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (FlutterContentApp.rootNode?.child == null) {
+    if (FlutterContentApp.snippetBeingEdited?.rootNode.child == null) {
       List<Widget> menuChildren =
-          FlutterContentApp.rootNode?.menuAnchorWidgets(NodeAction.addChild) ??
+          FlutterContentApp.snippetBeingEdited?.rootNode.menuAnchorWidgets(NodeAction.addChild) ??
               [];
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
@@ -740,7 +740,7 @@ class SnippetTreePane extends StatelessWidget {
                         null) {
                   canShowNavigateUpBtn = false;
                 }
-                if (FlutterContentApp.rootNode !=
+                if (FlutterContentApp.snippetBeingEdited?.rootNode !=
                         FlutterContentApp
                             .snippetBeingEdited?.treeC.roots.first &&
                     FlutterContentApp.snippetBeingEdited?.treeC.roots.first
@@ -868,7 +868,7 @@ class SnippetTreeView extends StatelessWidget {
       nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
         // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // debugPrint("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
-        if (FlutterContentApp.rootNode == entry.node) return const Offstage();
+        if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node) return const Offstage();
         if (entry.node == FlutterContentApp.selectedNode)
           debugPrint(
               'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
@@ -885,7 +885,7 @@ class SnippetTreeView extends StatelessWidget {
                 entry: entry,
                 child: NodeWidget(
                   snippetName:
-                      FlutterContentApp.rootNode?.name ?? 'snippet name ?',
+                      FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name ?',
                   treeController: treeC,
                   entry: entry,
                   allowButtonCallouts: allowButtonCallouts,
@@ -1047,7 +1047,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
         MenuItemButton(
           onPressed: () async {
             FlutterContentApp.capiBloc.add(CAPIEvent.copySnippetJsonToClipboard(
-              rootNode: FlutterContentApp.rootNode!,
+              rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
             ));
           },
           child: const Text('copy snippet JSON to clipboard'),

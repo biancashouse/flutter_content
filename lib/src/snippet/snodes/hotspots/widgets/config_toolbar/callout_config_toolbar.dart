@@ -7,7 +7,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/positioned_target_play_btn.dart';
 
 import 'colour_callout.dart';
 import 'duration_callout.dart';
@@ -300,8 +299,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Callout.dismiss(CalloutConfigToolbar.CID);
-                removeSnippetContentCallout(tc);
                 tc.targetsWrapperState()?.refresh(() {
                   tc.targetsWrapperState()?.zoomer?.resetTransform(
                       afterTransformF: () {
@@ -309,6 +306,20 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     STreeNode.showAllTargetBtns();
                     STreeNode.showAllTargetCovers();
                     fco.currentPageState?.unhideFAB();
+                    Callout.dismiss(CalloutConfigToolbar.CID);
+                    removeSnippetContentCallout(tc);
+                    fco.afterNextBuildDo(() {
+                      // save hotspot's parent snippet
+                      var rootNode = tc.parentHotspotNode?.rootNodeOfSnippet();
+                      if (rootNode != null) {
+                        fco
+                            .cacheAndSaveANewSnippetVersion(
+                              snippetName: rootNode.name,
+                              rootNode: rootNode,
+                            )
+                            .then((_) {});
+                      }
+                    });
                   });
                 });
               },
