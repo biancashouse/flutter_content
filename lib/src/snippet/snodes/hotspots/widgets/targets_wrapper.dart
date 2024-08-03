@@ -7,8 +7,8 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 
 import 'callout_snippet_content.dart';
 import 'config_toolbar/callout_config_toolbar.dart';
-import 'positioned_target_play_btn.dart';
 import 'positioned_target_cover.dart';
+import 'positioned_target_play_btn.dart';
 
 class TargetsWrapper extends StatefulWidget {
   final HotspotsNode parentNode;

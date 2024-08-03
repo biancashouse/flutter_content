@@ -299,6 +299,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 color: Colors.white,
               ),
               onPressed: () {
+                Callout.dismiss(CalloutConfigToolbar.CID);
                 tc.targetsWrapperState()?.refresh(() {
                   tc.targetsWrapperState()?.zoomer?.resetTransform(
                       afterTransformF: () {
@@ -306,7 +307,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     STreeNode.showAllTargetBtns();
                     STreeNode.showAllTargetCovers();
                     fco.currentPageState?.unhideFAB();
-                    Callout.dismiss(CalloutConfigToolbar.CID);
                     removeSnippetContentCallout(tc);
                     fco.afterNextBuildDo(() {
                       // save hotspot's parent snippet
