@@ -99,7 +99,7 @@ class TargetsWrapper extends StatefulWidget {
     final String? scrollControllerName,
   ) {
     Callout.dismiss(CalloutConfigToolbar.CID);
-    Callout.showOverlay(
+    fca.showOverlay(
       calloutConfig: CalloutConfig(
         cId: CalloutConfigToolbar.CID,
         scrollControllerName: scrollControllerName,
@@ -206,8 +206,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     Offset? globalPos;
     try {
       globalPos = newPosAndSize.$1?.translate(
-        fco.hScrollOffset(widget.scrollControllerName),
-        fco.vScrollOffset(widget.scrollControllerName),
+        NamedScrollController.hScrollOffset(widget.scrollControllerName),
+        NamedScrollController.vScrollOffset(widget.scrollControllerName),
       );
       if (globalPos != null) {
         // debugPrint('globalPos != null');
@@ -255,8 +255,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
         // get current scrollOffset
       String? editablePageName = EditablePage.name(context);
-      double hOffset = fco.hScrollOffset(editablePageName);
-      double vOffset = fco.vScrollOffset(editablePageName);
+      double hOffset = NamedScrollController.hScrollOffset(editablePageName);
+      double vOffset = NamedScrollController.vScrollOffset(editablePageName);
       refresh(() {
         var data = details.data;
         TargetId uid = data.$1;
@@ -295,8 +295,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         uid: newTargetId, //event.wName.hashCode,
       )..parentHotspotNode = widget.parentNode;
       Offset newGlobalPos = details.globalPosition.translate(
-        fco.hScrollOffset(widget.scrollControllerName),
-        fco.vScrollOffset(widget.scrollControllerName),
+        NamedScrollController.hScrollOffset(widget.scrollControllerName),
+        NamedScrollController.vScrollOffset(widget.scrollControllerName),
       );
       newTC.setTargetStackPosPc(
         newGlobalPos,

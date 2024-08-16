@@ -958,7 +958,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
       revertMIs.add(MenuItemButton(
         onPressed: () async {
           if (versionId == currentVersionId) {
-            Callout.showToast(
+            fca.showToast(
               calloutConfig: CalloutConfig(
                 cId: "cannot-revert-to-current-version",
                 gravity: Alignment.topCenter,

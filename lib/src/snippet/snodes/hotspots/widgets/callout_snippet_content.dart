@@ -94,7 +94,7 @@ Future<void> showSnippetContentCallout({
   Widget _possiblyEditableContent() =>
       fco.canEditContent && !justPlaying ? editableContent() : content();
 
-  Callout.showOverlay(
+  fca.showOverlay(
     // zoomer: zoomer,
     targetGkF: targetGK,
     calloutContent: PointerInterceptor(

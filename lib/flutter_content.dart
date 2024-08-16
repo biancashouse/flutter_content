@@ -144,7 +144,6 @@ class FlutterContentMixins
     with
         MeasuringMixin,
         CalloutMixin,
-        ScrollingMixin,
         RootContextMixin,
         MQMixin,
         SystemMixin,
@@ -536,22 +535,11 @@ class FlutterContentMixins
 
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 
-  //  Future<bool> canInformUserOfNewVersion() async {
-  //   // decide whether new version loaded
-  //   String? storedVersionAndBuild = await HydratedBloc.storage.read("versionAndBuild");
-  //   String latestVersionAndBuild = '${yamlVersion}-${yamlBuildNumber}';
-  //   if (latestVersionAndBuild != (storedVersionAndBuild ?? '')) {
-  //     await HydratedBloc.storage.write('versionAndBuild', latestVersionAndBuild);
-  //     if (storedVersionAndBuild != null) return true;
-  //   }
-  //   return false;
-  // }
-
   void hideClipboard() => Callout.dismiss("floating-clipboard");
 
   void showFloatingClipboard() {
     Callout.dismiss("floating-clipboard");
-    Callout.showOverlay(
+    fca.showOverlay(
         calloutContent: const ClipboardView(),
         calloutConfig: CalloutConfig(
           cId: "floating-clipboard",

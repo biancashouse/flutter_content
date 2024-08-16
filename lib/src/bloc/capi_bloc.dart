@@ -358,7 +358,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
-    Callout.showToast(
+    fca.showToast(
       calloutConfig: CalloutConfig(
         cId: "reverting-model",
         gravity: Alignment.topCenter,
@@ -392,7 +392,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
-    Callout.showToast(
+    fca.showToast(
       calloutConfig: CalloutConfig(
         cId: "publishing-version",
         gravity: Alignment.topCenter,

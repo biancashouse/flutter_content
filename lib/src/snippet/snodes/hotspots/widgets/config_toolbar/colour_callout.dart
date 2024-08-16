@@ -109,7 +109,7 @@ class TargetColourTool extends StatelessWidget {
         // :
         fco.getTargetGk(tc.uid);
 
-    Callout.showOverlay(
+    fca.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
         cId: 'color-picker',

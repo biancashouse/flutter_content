@@ -206,7 +206,7 @@ class EditablePageState extends State<EditablePage> {
       );
 
   void showExitEditModeCallout() {
-    Callout.showOverlay(
+    fca.showOverlay(
       calloutContent: Container(
         decoration: const BoxDecoration(
           color: Colors.orange,
@@ -345,7 +345,7 @@ class EditablePageState extends State<EditablePage> {
     return IconButton(
       key: _lockIconGK,
       onPressed: () {
-        Callout.showOverlay(
+        fca.showOverlay(
           targetGkF: () => _lockIconGK,
           calloutContent: Column(
             mainAxisSize: MainAxisSize.max,

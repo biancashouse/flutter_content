@@ -29,7 +29,7 @@ class PointyTool extends StatefulWidget {
         //     :
         fco.getTargetGk(tc.uid);
 
-    Callout.showOverlay(
+    fca.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: PointyTool(
               tc,

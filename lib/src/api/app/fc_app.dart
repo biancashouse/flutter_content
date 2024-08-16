@@ -97,7 +97,7 @@ class FlutterContentApp extends StatefulWidget {
   //   if (rect != null) {
   //     debugPrint('$panelName ${rect.toString()}');
   //     // overlay rect with a transparent pink rect, and a 3px surround
-  //     Callout.showOverlay(
+  //     fca.showOverlay(
   //       ensureLowestOverlay: true,
   //       calloutContentF: (context) => InkWell(
   //         onTap: () {
@@ -154,7 +154,7 @@ class FlutterContentApp extends StatefulWidget {
   //     }
   //     String? rootSnippetName = CAPIState.snippetPlacementMap[panelName];
   //     if (rootSnippetName != null) {
-  //       Callout.showOverlay(
+  //       fca.showOverlay(
   //         ensureLowestOverlay: true,
   //         calloutContentF: (context) => InkWell(
   //           onTap: () {

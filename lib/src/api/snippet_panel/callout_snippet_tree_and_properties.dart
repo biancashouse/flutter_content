@@ -121,7 +121,7 @@ void showSnippetTreeAndPropertiesCallout({
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
   CalloutConfig cc = snippetTreeCalloutConfig(onDismissedF);
-  Callout.showOverlay(
+  fca.showOverlay(
     calloutConfig: cc,
     calloutContent: SnippetTreeAndPropertiesCalloutContents(
       scrollControllerName:   scrollControllerName,

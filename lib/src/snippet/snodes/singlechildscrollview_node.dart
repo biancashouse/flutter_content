@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
@@ -38,14 +39,16 @@ class SingleChildScrollViewNode extends SC
     //var targetGK = nodeWidgetGK;
 
     // maintain offset between instantiations
-    ScrollController sC;
+    NamedScrollController? sC;
     if (EditablePage.of(context) != null) {
       String editablePageName = EditablePage.name(context);
-      sC = ScrollController(
-          initialScrollOffset: fco.scrollOffset(editablePageName)??0.0);
-      fco.registerScrollController(editablePageName, sC, Axis.vertical);
-    } else {
-      sC = ScrollController();
+      sC = NamedScrollController(
+        editablePageName,
+        Axis.vertical,
+        initialScrollOffset:
+            NamedScrollController.vScrollOffset(editablePageName),
+      );
+      sC.listenToOffset();
     }
 
     return SingleChildScrollView(

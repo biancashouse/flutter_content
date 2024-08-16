@@ -32,7 +32,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         //     :
         fco.getTargetGk(tc.uid);
 
-    Callout.showOverlay(
+    fca.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
               tc, wrapperRect,
