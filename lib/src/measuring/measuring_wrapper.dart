@@ -25,7 +25,7 @@ class _MeasureWidgetRenderObject extends RenderProxyBox {
 
   @override
   void performLayout() {
-    debugPrint("performLayout");
+    fco.logi("performLayout");
     super.performLayout();
 
     fco.afterNextBuildDo(() {

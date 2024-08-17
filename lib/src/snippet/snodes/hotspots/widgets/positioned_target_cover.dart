@@ -40,7 +40,7 @@ class TargetCover extends StatelessWidget {
   }
 
   Widget _draggableTargetCover(TargetModel tc) {
-    // debugPrint('_draggableTarget');
+    // fco.logi('_draggableTarget');
     return Visibility(visible: true,//FlutterContentApp.snippetBeingEdited == null,
       child: SizedBox(
         width: tc.radius * 2,
@@ -71,7 +71,7 @@ class _TargetCover extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('TargetCover');
+    // fco.logi('TargetCover');
     double radius = tc.getScale() * tc.radius;
     return GestureDetector(
       onDoubleTap: () async {
@@ -123,7 +123,7 @@ class TargetPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // debugPrint('TargetPainter');
+    // fco.logi('TargetPainter');
 
     double radius = size.width / 2;
     Paint paintWhite() => Paint()

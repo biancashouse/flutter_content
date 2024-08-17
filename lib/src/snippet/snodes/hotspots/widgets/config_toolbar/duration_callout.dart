@@ -9,7 +9,7 @@ bool isShowingTargetDurationCallout() => Callout.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
   if (Callout.anyPresent(["duration"])) {
-    debugPrint("removeStartTimeCallout");
+    fco.logi("removeStartTimeCallout");
     Callout.dismiss("duration");
   }
 }
@@ -54,7 +54,7 @@ Future<void> showTargetDurationCallout(
         fillColor: Colors.purpleAccent,
         // showCloseButton: true,
         // onTopRightButtonPressF: () {
-        //   debugPrint("closed");
+        //   fco.logi("closed");
         // },
         // closeButtonColor: Colors.white,
         scaleTarget: tc.transformScale,

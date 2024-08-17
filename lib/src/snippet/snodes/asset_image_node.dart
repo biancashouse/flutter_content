@@ -173,7 +173,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                 : constraints.maxHeight != double.infinity
                 ? constraints.maxHeight*scale
                 : null;
-          // debugPrint('Constrints: ${constraints.toString()}');
+          // fco.logi('Constrints: ${constraints.toString()}');
             return SizedBox(
               width: w,
               height: h,

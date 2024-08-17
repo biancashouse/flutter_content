@@ -40,7 +40,7 @@ enum WrapCrossAlignmentEnum  {
       );
 
   Widget toMenuItem(bool isRow) {
-    // debugPrint("isRow:$isRow WrapCrossAlignment toWidget ${name}");
+    // fco.logi("isRow:$isRow WrapCrossAlignment toWidget ${name}");
     return Container(
       padding: const EdgeInsets.all(8),
       height: 50,

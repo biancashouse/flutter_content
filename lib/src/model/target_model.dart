@@ -254,7 +254,7 @@ class TargetModel with TargetModelMappable {
     btnLocalLeftPc = max(0, btnLocalLeftPc!);
     btnLocalLeftPc = min(btnLocalLeftPc!, 1);
 
-    // debugPrint("${btnLocalLeftPc}, ${btnLocalTopPc}");
+    // fco.logi("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
   Offset getCalloutPos() => Offset(

@@ -95,7 +95,7 @@ class FlutterContentApp extends StatefulWidget {
   //       // skipHeightConstraintWarning: skipHeightConstraintWarning,
   //       ); //Measuring.findGlobalRect(_offstageGK!);
   //   if (rect != null) {
-  //     debugPrint('$panelName ${rect.toString()}');
+  //     fco.logi('$panelName ${rect.toString()}');
   //     // overlay rect with a transparent pink rect, and a 3px surround
   //     fca.showOverlay(
   //       ensureLowestOverlay: true,
@@ -234,7 +234,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
 
   // @override
   // void didChangeDependencies() {
-  //   debugPrint("didChangeDependencies");
+  //   fco.logi("didChangeDependencies");
   //   // FCO.refreshMQ(context);
   //   if (FCO.showingNodeOBoundaryOverlays??false) {
   //     FlutterContentAppState.removeAllNodeWidgetOverlays();
@@ -269,9 +269,9 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
     // trigger another build
     fco.afterNextBuildDo(() {
       fco.afterMsDelayDo(1000, () async {
-        debugPrint('============================================================================');
-        debugPrint('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
-        debugPrint('============================================================================');
+        fco.logi('============================================================================');
+        fco.logi('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
+        fco.logi('============================================================================');
         fco.forceRefresh();
       });
     });

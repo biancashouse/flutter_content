@@ -178,7 +178,7 @@ class TextNode extends CL with TextNodeMappable {
   //                             value: textStyle?.fontStyle == FontStyleEnum.italic,
   //                             fillColor: const WidgetStatePropertyAll(Colors.purple),
   //                             onChanged: (bool? isChecked) {
-  //                               debugPrint("checked: $isChecked");
+  //                               fco.logi("checked: $isChecked");
   //                               textStyle ??= TextStyleNodeProperty();
   //                               textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
   //                               bloc.add(const CAPIEvent.forceRefresh());
@@ -253,7 +253,7 @@ class TextNode extends CL with TextNodeMappable {
       );
       return t;
     } catch (e) {
-      debugPrint('cannot render $FLUTTER_TYPE!');
+      fco.logi('cannot render $FLUTTER_TYPE!');
     }
     return fco.errorIcon(Colors.red);
   }

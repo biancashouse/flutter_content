@@ -56,7 +56,7 @@ abstract class PTreeNode extends Node {
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
     if (_selectedPropertyGK.currentState == null) return _selectedPropertyGK;
-    debugPrint("_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
+    fco.logi("_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }
 
@@ -629,7 +629,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             ? '$name: \n$snippetName'
 //             : '$name: $snippetName'
 //         : '$name...';
-//     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
+//     // fco.logi('stringValue: $stringValue, displayedname: $displayedname');
 //     // TODO use pushSnippet...
 //     return NodePropertyCalloutButton(
 //       cId: ,
@@ -698,7 +698,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             ? '$name: \n$stringValue'
 //             : '$name: $stringValue'
 //         : '$name...';
-//     // debugPrint('stringValue: $stringValue, displayedname: $displayedname');
+//     // fco.logi('stringValue: $stringValue, displayedname: $displayedname');
 //     return NodePropertyCalloutButton(
 //       labelWidget: Text(
 //         displayedName,
@@ -792,7 +792,7 @@ class StringPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    // debugPrint('toPropertyNodeContents');
+    // fco.logi('toPropertyNodeContents');
     return PropertyButton<String>(
         // originalText: (stringValue??'').isNotEmpty
         //     ? nameOnSeparateLine
@@ -851,7 +851,7 @@ class StringPropertyValueNode extends PTreeNode {
 //
 //   @override
 //   Widget toPropertyNodeContents(BuildContext context) {
-//     debugPrint('toPropertyNodeContents');
+//     fco.logi('toPropertyNodeContents');
 //     return PropertyButton<String>(
 //         originalText: stringValue ?? '',
 //         options: FCO.snippetInfoCache.keys.toList()..sort(),

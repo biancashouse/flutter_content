@@ -142,7 +142,7 @@ void showSnippetTreeAndPropertiesCallout({
 }
 
 // void _clearSelection() {
-//   debugPrint("clear selection");
+//   fco.logi("clear selection");
 //   snippetBloc.add(const SnippetEvent.clearNodeSelection());
 //   Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
 //   Callout.removeOverlay(TREENODE_MENU_CALLOUT);

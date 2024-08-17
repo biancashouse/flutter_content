@@ -104,7 +104,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             prevTabQ.add(tbNode.selection ?? 0);
             tbNode.selection = tabC!.index;
             prevTabQSize.value = prevTabQ.length;
-            debugPrint("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+            fco.logi("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
           } else {
             tbNode?.selection = tabC!.index;
             backBtnPressed = false;
@@ -127,7 +127,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
     widget.handlers?.forEach((key, value) {
       fco.registerHandler(key, value);
-      debugPrint("registered handler '$key'");
+      fco.logi("registered handler '$key'");
     });
 
     if (widget.panelName != null && !fco.placeNames.contains(widget.panelName)) {
@@ -174,12 +174,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                   key: widget.panelName != null ? fco.panelGkMap[widget.panelName!] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]') : null,
                   buildWhen: (previous, current) => !current.onlyTargetsWrappers,
                   builder: (blocContext, state) {
-                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
-                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState>");
+                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
                     // // var fc = FC();
                     // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
-                    // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                     // // snippet panel renders a canned snippet or a supplied snippet tree
                     //return _renderSnippet(context);
                     Widget snippetWidget;
@@ -192,7 +192,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                       snippetWidget =
                       snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
                     } catch (e) {
-                      debugPrint('snippetRootNode.toWidget() failed!');
+                      fco.logi('snippetRootNode.toWidget() failed!');
                       snippetWidget = Material(
                         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
                         child: SingleChildScrollView(
@@ -227,7 +227,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //           snippetWidget =
   //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
   //         } catch (e) {
-  //           debugPrint('snippetRootNode.toWidget() failed!');
+  //           fco.logi('snippetRootNode.toWidget() failed!');
   //           snippetWidget = Material(
   //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
   //             child: SingleChildScrollView(

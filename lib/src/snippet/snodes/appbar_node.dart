@@ -26,7 +26,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) {
-    // debugPrint("ContainerNode.properties()...");
+    // fco.logi("ContainerNode.properties()...");
     return [
       ColorPropertyValueNode(
         snode: this,
@@ -64,7 +64,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
                 spState.backBtnPressed = true;
                 spState.tabC?.index = prev;
                 spState.prevTabQSize.value = spState.prevTabQ.length;
-                debugPrint("back to tab: $prev,  ${spState.prevTabQ.toString()}");
+                fco.logi("back to tab: $prev,  ${spState.prevTabQ.toString()}");
               }
             },
             icon: const Icon(Icons.arrow_back),
@@ -79,7 +79,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
     var bottomWidget = bottom?.toWidgetProperty(context, this);
     if (bottomWidget is! PreferredSizeWidget?) {
-      debugPrint("Oops.");
+      fco.logi("Oops.");
     }
     var actionWidgets = actions?.toWidgetProperty(context, this);
     var titleWidget = title?.toWidgetProperty(context, this);
@@ -95,7 +95,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
         foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
       );
     } catch (e) {
-      debugPrint('AppBarNode.toWidget() failed!');
+      fco.logi('AppBarNode.toWidget() failed!');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

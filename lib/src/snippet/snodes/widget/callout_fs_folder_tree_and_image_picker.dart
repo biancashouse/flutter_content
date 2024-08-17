@@ -30,7 +30,7 @@ class FSFoldersAndImagePicker extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('folder+images build');
+    fco.logi('folder+images build');
     // final msvC = useState<MultiSplitViewController>(
     //     MultiSplitViewController(areas: [Area(flex: 7)]));
     final selectedFolderRef = useState<Reference>(fco.rootFSFolderNode!.ref);
@@ -169,7 +169,7 @@ class FolderImagesGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('fsFoldersImagesPane(${selectedFolderRef.name})');
+    fco.logi('fsFoldersImagesPane(${selectedFolderRef.name})');
 
     return Container(
       color: Colors.purple,

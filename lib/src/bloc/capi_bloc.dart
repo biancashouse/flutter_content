@@ -281,7 +281,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   if (!event.force && currentJsonS == jsonBeforePush) return;
   //
   //   final stopwatch = Stopwatch()..start();
-  //   // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+  //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
   //   Callout.showTextToast(
   //     cId: "saving-model",
   //     msgText: 'saving changes...',
@@ -333,7 +333,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   // Future<void> _switchBranch(SwitchBranch event, emit) async {
   //   final stopwatch = Stopwatch()..start();
-  //   // debugPrint('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
+  //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
   //   Callout.showTextToast(
   //     cId: "saving-model",
   //     msgText: 'saving changes...',
@@ -425,7 +425,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _forceRefresh(ForceRefresh event, emit) {
-    debugPrint(
+    fco.logi(
         "forceRefresh --------------------------------------------------------");
     emit(state.copyWith(
       force: state.force + 1,
@@ -493,7 +493,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     } else {
       rootNode = SnippetRootNodeMapper.fromJson(event.snippetJson);
     }
-    debugPrint('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
+    fco.logi('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet snippet
     await fco.cacheAndSaveANewSnippetVersion(
       snippetName: snippetName,
@@ -614,7 +614,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //     ));
   //     _saveModel(event, emit);
   //   } catch (e) {
-  //     debugPrint("\nUnable to remove tc !\n");
+  //     fco.logi("\nUnable to remove tc !\n");
   //   }
   // }
 
@@ -704,15 +704,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //       Callout? targetCallout = FCO.om.findCallout(CAPI.TARGET_CALLOUT.feature((featureSeed), selectedTargetIndex));
 //       if (targetCallout != null) {
 //         selectedTarget!.setTargetLocalPosPc(Offset(targetCallout.left!, targetCallout.top!));
-//         debugPrint("final callout pos (${targetCallout.left},${targetCallout.top})");
-//         debugPrint("targetGlobalPos now: ${selectedTarget!.targetGlobalPos()}");
+//         fco.logi("final callout pos (${targetCallout.left},${targetCallout.top})");
+//         fco.logi("targetGlobalPos now: ${selectedTarget!.targetGlobalPos()}");
 //       }
 //       ivScale = 1.0;
 //       ivTranslate = Offset.zero;
-//       debugPrint("new child local pos (${selectedTarget!.childLocalPosLeftPc},${selectedTarget!.childLocalPosTopPc})");
+//       fco.logi("new child local pos (${selectedTarget!.childLocalPosLeftPc},${selectedTarget!.childLocalPosTopPc})");
 //       // selectedTarget!.childLocalPosLeftPc = savedChildLocalPosPc!.dx;
 //       // selectedTarget!.childLocalPosTopPc = savedChildLocalPosPc!.dy;
-//       debugPrint("previous child local pos (${savedChildLocalPosPc!.dx},${savedChildLocalPosPc!.dy})");
+//       fco.logi("previous child local pos (${savedChildLocalPosPc!.dx},${savedChildLocalPosPc!.dy})");
 //       int saveSelection = selectedTargetIndex;
 //       selectedTargetIndex = -1;
 //       transformationController.value = Matrix4.identity();
@@ -896,7 +896,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //       targetMap[name] = tc;
 //     }
 //   } catch (e) {
-//     debugPrint("_parseImageTargets(): ${e.toString()}");
+//     fco.logi("_parseImageTargets(): ${e.toString()}");
 //     rethrow;
 //   }
 //   return targetMap;
@@ -1149,7 +1149,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 // }
 
 // void _changedSnippetPropertiesCalloutSize(ChangedSnippetPropertiesCalloutSize event, emit) {
-//   // debugPrint('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
+//   // fco.logi('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
 //   emit(state.copyWith(
 //     force: state.force + 1,
 //     snippetPropertiesCalloutW: event.newW,
@@ -1221,7 +1221,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
   void _forceSnippetRefresh(event, emit) {
-    debugPrint("forceSnippetRefresh");
+    fco.logi("forceSnippetRefresh");
     emit(state.copyWith(
       force: state.force + 1,
     ));
@@ -1312,8 +1312,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       );
     }
     possiblyNewTreeC.rebuild();
-    // debugPrint("--------------");
-    // debugPrint(state.snippetTreeC.roots.first.toMap());
+    // fco.logi("--------------");
+    // fco.logi(state.snippetTreeC.roots.first.toMap());
     state.snippetBeingEdited!.treeC = possiblyNewTreeC;
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.selectedNode = newSel;
@@ -1497,7 +1497,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //     }
   //   }
   //   } catch (e) {
-  //     debugPrint("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
+  //     fco.logi("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
   //     rethrow;
   //   }
   // }
@@ -1815,7 +1815,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         force: state.force + 1,
       ));
     } catch (e) {
-      debugPrint("\n ***  _wrapWith() - failed!  ***");
+      fco.logi("\n ***  _wrapWith() - failed!  ***");
       rethrow;
     }
   }
@@ -1914,7 +1914,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         }
       }
     } catch (e) {
-      debugPrint("\n ***  _replaceWithNewNodeOrClipboard() - failed!  ***");
+      fco.logi("\n ***  _replaceWithNewNodeOrClipboard() - failed!  ***");
       rethrow;
     }
 

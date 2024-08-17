@@ -74,9 +74,9 @@ class FireStoreModelRepository implements IModelRepository {
       return snippetInfo;
     }
 
-    debugPrint('--- LOADING SNIPPET INFO FROM FB ----------');
-    debugPrint('--- snippet ($snippetName)  ---------------');
-    debugPrint('-------------------------------------------');
+    fco.logi('--- LOADING SNIPPET INFO FROM FB ----------');
+    fco.logi('--- snippet ($snippetName)  ---------------');
+    fco.logi('-------------------------------------------');
 
     fco.snippetsBeingReadFromFB.add(snippetName);
 
@@ -123,15 +123,15 @@ class FireStoreModelRepository implements IModelRepository {
 
     if (version != null) {
       // ALREADY IN CACHE
-      debugPrint(
+      fco.logi(
           '--- snippet ($snippetName) version $versionId ---------------');
-      debugPrint('--- Already in Cache. -------------------------------------');
+      fco.logi('--- Already in Cache. -------------------------------------');
       return;
     }
 
-    debugPrint('--- LOADING SNIPPET INTO CACHE ------------------------------');
-    debugPrint('--- snippet ($snippetName) version $versionId ---------------');
-    debugPrint('-------------------------------------------------------------');
+    fco.logi('--- LOADING SNIPPET INTO CACHE ------------------------------');
+    fco.logi('--- snippet ($snippetName) version $versionId ---------------');
+    fco.logi('-------------------------------------------------------------');
 
     // read snippet properties (saving then restoring the transient props)
     DocumentReference snippetInfoDocRef =
@@ -162,10 +162,10 @@ class FireStoreModelRepository implements IModelRepository {
               fco.versionIdCache[snippetName]
                   ?.add(versionId); //.add(VersionEntryItem(versionId));
             }
-            debugPrint('editing: ${snippetInfo.editingVersionId}');
-            debugPrint('published: ${snippetInfo.publishedVersionId}');
-            debugPrint('versionId: $versionId');
-            debugPrint(
+            fco.logi('editing: ${snippetInfo.editingVersionId}');
+            fco.logi('published: ${snippetInfo.publishedVersionId}');
+            fco.logi('versionId: $versionId');
+            fco.logi(
                 '--- LOADED ----------------------------------------------');
           } catch (e) {
             print(e);
@@ -188,7 +188,7 @@ class FireStoreModelRepository implements IModelRepository {
         print(e);
       }
     } else {
-      debugPrint("getAppInfo doc does not exist.");
+      fco.logi("getAppInfo doc does not exist.");
       return AppInfoModel();
     }
   }
@@ -228,12 +228,12 @@ class FireStoreModelRepository implements IModelRepository {
           .set(latestVersion.toMap()
         ..addAll({'name': snippetName}));
 
-      debugPrint(
+      fco.logi(
           '--- SAVED ---------------------------------------------------');
-      debugPrint('wrote latest snippet ($snippetName) version to FB:');
-      debugPrint('versionId: $latestVersionId');
-      // debugPrint('prepended versionId: $latestVersionId to AppInfo');
-      debugPrint(
+      fco.logi('wrote latest snippet ($snippetName) version to FB:');
+      fco.logi('versionId: $latestVersionId');
+      // fco.logi('prepended versionId: $latestVersionId to AppInfo');
+      fco.logi(
           '-------------------------------------------------------------');
 
       // set the snippet properties
@@ -282,12 +282,12 @@ class FireStoreModelRepository implements IModelRepository {
     fco.snippetInfoCache[snippetName]!
       ..publishedVersionId = editingVersionId;
 
-    debugPrint('--- UPDATED SNIPPET PROPERTIES ------------------------------');
-    debugPrint('wrote snippet ($snippetName) properties to FB:');
-    debugPrint('editing: ${snippet.editingVersionId}');
-    debugPrint('published: ${snippet.publishedVersionId}');
-    debugPrint('autoPublish: ${snippet.autoPublish}');
-    debugPrint('-------------------------------------------------------------');
+    fco.logi('--- UPDATED SNIPPET PROPERTIES ------------------------------');
+    fco.logi('wrote snippet ($snippetName) properties to FB:');
+    fco.logi('editing: ${snippet.editingVersionId}');
+    fco.logi('published: ${snippet.publishedVersionId}');
+    fco.logi('autoPublish: ${snippet.autoPublish}');
+    fco.logi('-------------------------------------------------------------');
   }
 
   @override
@@ -315,14 +315,14 @@ class FireStoreModelRepository implements IModelRepository {
             optionCountsMap[key] = intValue;
           } else {
             // Handle the case where the value cannot be converted to int
-            debugPrint(
+            fco.logi(
                 "Warning: Value for key '$key' cannot be converted to int.");
           }
         } else if (value is double) {
           optionCountsMap[key] = value.toInt();
         } else {
           // Handle the case where the value is of an unsupported type
-          debugPrint("Warning: Value for key '$key' is of unsupported type.");
+          fco.logi("Warning: Value for key '$key' is of unsupported type.");
         }
       });
       // get user's vote (if exists)
@@ -365,7 +365,7 @@ class FireStoreModelRepository implements IModelRepository {
     //   DocumentSnapshot snap = await voterDocRef.get();
     //   if (snap.exists) {
     //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-    //     debugPrint("user voted ${data['when']}");
+    //     fco.logi("user voted ${data['when']}");
     //     userVotedForOption = pollOptionId;
     //   }
     // }
@@ -429,7 +429,7 @@ class FireStoreModelRepository implements IModelRepository {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
       Timestamp when = voterData['when'];
       PollOptionId votedFor = voterData['option-id'];
-      debugPrint('already voted for option $votedFor,  $when');
+      fco.logi('already voted for option $votedFor,  $when');
     }
   }
 

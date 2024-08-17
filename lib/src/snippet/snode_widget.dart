@@ -119,7 +119,7 @@ class NodeWidget extends StatelessWidget {
       onTap: () {
         if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
         // if (entry.node is TextSpanNode) {
-        //   debugPrint('TextSpan cannot be selected (has no key property!)');
+        //   fco.logi('TextSpan cannot be selected (has no key property!)');
         //   return;
         // };
 
@@ -179,7 +179,7 @@ class NodeWidget extends StatelessWidget {
         //     if (context.mounted) {
         //       showTreeNodeMenu(context, () => STreeNode.selectionGK);
         //     } else
-        //       debugPrint("context fucked.");
+        //       fco.logi("context fucked.");
         //   });
         // }
 
@@ -333,8 +333,8 @@ class NodeWidget extends StatelessWidget {
 
     // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
     // if (badParent) {
-    //   debugPrint("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
-    //   debugPrint("sensible parents: ${selectedNode.sensibleParents().toString()}");
+    //   fco.logi("bad ${selectedNode.toString()}, parent: ${selectNodeParent?.toString()}");
+    //   fco.logi("sensible parents: ${selectedNode.sensibleParents().toString()}");
     // }
 
     Color textColor = node == selectedNode ? Colors.black : Colors.grey;

@@ -37,7 +37,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
         child: child?.toWidget(context, this),
       );
     } catch (e) {
-      debugPrint('cannot render $FLUTTER_TYPE!');
+      fco.logi('cannot render $FLUTTER_TYPE!');
     }
     return fco.errorIcon(Colors.red);
   }

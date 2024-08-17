@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 import 'package:intl/intl.dart';
 
 class DateRange {
@@ -51,7 +52,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
 
   @override
   void dispose() {
-    debugPrint('*** disposing DateRangeButton');
+    fco.logi('*** disposing DateRangeButton');
     super.dispose();
   }
   @override
@@ -245,7 +246,7 @@ class _DateRangeButtonState extends State<DateRangeButton> {
               },
               onValueChanged: (List<DateTime?> newDTs) {
                 // ignore: avoid_print
-                debugPrint(_getValueText(
+                fco.logi(_getValueText(
                   config.calendarType,
                   newDTs,
                 ));

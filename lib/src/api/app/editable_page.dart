@@ -110,7 +110,7 @@ class EditablePageState extends State<EditablePage> {
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
-        debugPrint("FlutterContentApp SizeChangedLayoutNotification}");
+        fco.logi("FlutterContentApp SizeChangedLayoutNotification}");
         Callout.dismissAll(exceptFeatures: ["FAB"]);
         fco.afterMsDelayDo(300, () {
           // FCO.refreshMQ(context);
@@ -264,46 +264,46 @@ class EditablePageState extends State<EditablePage> {
   }
 
   void removeAllNodeWidgetOverlays() {
-    // debugPrint('removeAllNodeWidgetOverlays - start');
+    // fco.logi('removeAllNodeWidgetOverlays - start');
     for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
       Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
-    // debugPrint('removeAllNodeWidgetOverlays - ended');
+    // fco.logi('removeAllNodeWidgetOverlays - ended');
     fco.showingNodeBoundaryOverlays = false;
   }
 
   // only called with MaterialAppWrapper context
   void showAllNodeWidgetOverlays() {
-    // debugPrint('showAllNodeWidgetOverlays...');
+    // fco.logi('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
     // bool configuringATarget = Callout.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
     void traverseAndMeasure(BuildContext el) {
-      // debugPrint('traverseAndMeasure(${el.toString()})');
+      // fco.logi('traverseAndMeasure(${el.toString()})');
 
       if ((fco.gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
         STreeNode? node = fco.gkSTreeNodeMap[gk];
-        // debugPrint("traverseAndMeasure: ${node.toString()}");
+        // fco.logi("traverseAndMeasure: ${node.toString()}");
         if (node != null && node.canShowTappableNodeWidgetOverlay) {
           // if (node.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured) {
-          // debugPrint("targetSnippetBeingConfigured: ${node.toString()}");
+          // fco.logi("targetSnippetBeingConfigured: ${node.toString()}");
           // }
-          // debugPrint('Rect? r = gk.globalPaintBounds...');
+          // fco.logi('Rect? r = gk.globalPaintBounds...');
 // measure node
           Rect? r = gk.globalPaintBounds(
               skipWidthConstraintWarning: true,
               skipHeightConstraintWarning: true);
           // if (node is PlaceholderNode) {
-          //   debugPrint('PlaceholderNode');
+          //   fco.logi('PlaceholderNode');
           // }
           if (r != null) {
             r = fco.restrictRectToScreen(r);
-            // debugPrint("========>  r restricted to ${r.toString()}");
-            // debugPrint('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+            // fco.logi("========>  r restricted to ${r.toString()}");
+            // fco.logi('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
             // node.setParent(parent);
             // parent = node;
-            // debugPrint('_showNodeWidgetOverlay...');
+            // fco.logi('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
@@ -322,7 +322,7 @@ class EditablePageState extends State<EditablePage> {
     var pageContext = context;
     traverseAndMeasure(pageContext);
     fco.showingNodeBoundaryOverlays = true;
-    // debugPrint('traverseAndMeasure(context) finished.');
+    // fco.logi('traverseAndMeasure(context) finished.');
   }
 
   // only called with MaterialAppWrapper context
@@ -335,7 +335,7 @@ class EditablePageState extends State<EditablePage> {
     // Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     // if (r != null) {
     //   r = FCO.restrictRectToScreen(r);
-    //   // debugPrint("========>  r restricted to ${r.toString()}");
+    //   // fco.logi("========>  r restricted to ${r.toString()}");
     //   Callout.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
     //   node.showNodeWidgetOverlay();
     // }

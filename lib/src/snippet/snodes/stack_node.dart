@@ -70,7 +70,7 @@ class StackNode extends MC with StackNodeMappable {
         },
       );
     } catch (e) {
-      debugPrint('cannot render $FLUTTER_TYPE!');
+      fco.logi('cannot render $FLUTTER_TYPE!');
     }
     return fco.errorIcon(Colors.red);
   }

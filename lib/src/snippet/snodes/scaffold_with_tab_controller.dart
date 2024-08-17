@@ -311,14 +311,14 @@
 //             prevTabQ.add(tbNode.selection ?? 0);
 //             tbNode.selection = tabC!.index;
 //             prevTabQSize.value = prevTabQ.length;
-//             debugPrint("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+//             fco.logi("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
 //           } else {
 //             tbNode?.selection = tabC!.index;
 //             backBtnPressed = false;
 //           }
 //         }
 //       }
-//       debugPrint("*** started listening to tab controller");
+//       fco.logi("*** started listening to tab controller");
 //     });
 //
 //     // tabC!.addListener(() {

@@ -89,7 +89,7 @@ abstract class Node extends Object {
   // Node? findNearestAncestorOfType(Type type) {
   //   Node? node = this;
   //   while (node != null && node.runtimeType != type) {
-  //     debugPrint(node.toString());
+  //     fco.logi(node.toString());
   //     node = node.parent;
   //   }
   //   return node;
@@ -179,7 +179,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
       descendCondition: (_) => true,
       returnCondition: (node) => node.runtimeType == type,
       // onxTraverse: (node) {
-      //   debugPrint(node.toString());
+      //   fco.logi(node.toString());
       // },
     );
     return foundNode;

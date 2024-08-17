@@ -195,7 +195,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                     onChangedF: (s) {
                       double? newBottom = double.tryParse(s);
                       if (newBottom != null) {
-                        // debugPrint(inputMode.name);
+                        // fco.logi(inputMode.name);
                         if (inputMode.value == EdgeInsetsInputModeEnum.all) {
                           ei.value = EdgeInsetsValue(top: newBottom, left: newBottom, bottom: newBottom, right: newBottom);
                         } else if (inputMode.value == EdgeInsetsInputModeEnum.symmetrical) {

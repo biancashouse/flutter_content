@@ -35,7 +35,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
         );
       }
     } catch (e) {
-      debugPrint('TabBarViewNode.toWidget() failed!');
+      fco.logi('TabBarViewNode.toWidget() failed!');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

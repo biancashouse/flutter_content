@@ -162,7 +162,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     if (context.mounted) {
       return Zoomer.of(context)!;
     } else {
-      debugPrint('zoomer context NOT MOUNTED!');
+      fco.logi('zoomer context NOT MOUNTED!');
     }
     return null;
   }
@@ -176,7 +176,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   @override
   void initState() {
-    debugPrint('TargetsWrapperState initState');
+    fco.logi('TargetsWrapperState initState');
     super.initState();
 
     for (TargetModel tc in widget.parentNode.targets) {
@@ -200,7 +200,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   }
 
   void measureIWPosAndSize() {
-    // debugPrint('measureIWPosAndSize');
+    // fco.logi('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
 
     Offset? globalPos;
@@ -210,9 +210,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         NamedScrollController.vScrollOffset(widget.scrollControllerName),
       );
       if (globalPos != null) {
-        // debugPrint('globalPos != null');
-        // debugPrint('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
-        // debugPrint('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
+        // fco.logi('globalPos != null');
+        // fco.logi('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
+        // fco.logi('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         Size wrapperSize = newPosAndSize.$2!;
         if (wrapperSize.width == 0 && wrapperSize.height == 0) {
           wrapperSize = fco.scrSize;
@@ -223,8 +223,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.width,
           wrapperSize.height,
         );
-        debugPrint('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
-        debugPrint(
+        fco.logi('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
+        fco.logi(
             'measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}');
         setState(() {
           widget.parentNode.aspectRatio ??= wrapperSize.aspectRatio;
@@ -233,7 +233,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       }
     } catch (e) {
       // ignore but then don't update pos
-      debugPrint('measureIWPosAndSize! ${e.toString()}');
+      fco.logi('measureIWPosAndSize! ${e.toString()}');
     }
   }
 
@@ -331,7 +331,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   size: wrapperRect.size,
                   child: GestureDetector(
                     onTap: () {
-                      debugPrint('TAP');
+                      fco.logi('TAP');
                     },
                     onDoubleTapDown: (TapDownDetails details) async =>
                         await _createTarget(details),

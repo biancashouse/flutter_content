@@ -44,7 +44,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
           height ?? 60,
         );
       } catch (e) {
-        debugPrint('MenuBarNode.toWidget() failed!');
+        fco.logi('MenuBarNode.toWidget() failed!');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(

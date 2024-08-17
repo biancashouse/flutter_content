@@ -85,12 +85,12 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                     buildWhen: (previous, current) =>
                         !current.onlyTargetsWrappers,
                     builder: (blocContext, state) {
-                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState>");
-                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState>");
+                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
                       // // var fc = FC();
                       // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
-                      // debugPrint("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                       // // snippet panel renders a canned snippet or a supplied snippet tree
                       //return _renderSnippet(context);
                       Widget snippetWidget;
@@ -105,7 +105,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                             : snippet.child?.toWidget(futureContext, snippet) ??
                                 const Placeholder();
                       } catch (e) {
-                        debugPrint('snippetRootNode.toWidget() failed!');
+                        fco.logi('snippetRootNode.toWidget() failed!');
                         snippetWidget = Material(
                           textStyle: const TextStyle(
                               fontFamily: 'monospace', fontSize: 12),

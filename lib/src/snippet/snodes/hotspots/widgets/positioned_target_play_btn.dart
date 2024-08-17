@@ -70,7 +70,7 @@ class TargetPlayBtn extends StatelessWidget {
                     fontSize: 14,
                   ),
             // onDragUpdate: (DragUpdateDetails details) {
-            //   debugPrint("${details.globalPosition}");
+            //   fco.logi("${details.globalPosition}");
             //   Offset newGlobalPos =
             //       details.globalPosition; //.translate(iwPos.dx, iwPos.dy);
             //   tc.setBtnStackPosPc(
@@ -88,14 +88,14 @@ class TargetPlayBtn extends StatelessWidget {
             //         //       0.0,
             //         // ),
             //   );
-            //   debugPrint("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
+            //   fco.logi("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
             // },
             // onDragStarted: () {
-            //   debugPrint("drag started");
+            //   fco.logi("drag started");
             //   //bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
             // },
             // onDraggableCanceled: (_, offset) {
-            //   debugPrint("drag ended");
+            //   fco.logi("drag ended");
             //   Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
             //   tc.setBtnStackPosPc(
             //     newGlobalPos
@@ -188,7 +188,7 @@ class TargetPlayBtn extends StatelessWidget {
 
     // cover will now have been rendered with its gk
     var coverGK = fco.getTargetGk(tc.uid);
-    // debugPrint('getTargetGK: $coverGK');
+    // fco.logi('getTargetGK: $coverGK');
     if (coverGK == null) return;
     // var cc = coverGK?.currentContext;
     // bool mounted = cc?.mounted??false;
@@ -207,7 +207,7 @@ class TargetPlayBtn extends StatelessWidget {
     zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
         afterTransformF: () async {
       // if (savedKey != tc.targetsWrapperGK) {
-      //   debugPrint('doh!');
+      //   fco.logi('doh!');
       // }
       //
       await tc.ensureContentSnippetPresent();

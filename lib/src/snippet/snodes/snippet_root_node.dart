@@ -10,13 +10,13 @@ class SnippetRootNodeHook extends MappingHook {
 
   @override
   Object? beforeDecode(Object? value) {
-    debugPrint('before');
+    fco.logi('before');
     return value;
   }
 
   @override
   Object? afterDecode(Object? value) {
-    debugPrint('after');
+    fco.logi('after');
     return value;
   }
 
@@ -87,21 +87,21 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       ];
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    debugPrint("SnippetRootNode.toWidget()...");
+    fco.logi("SnippetRootNode.toWidget()...");
     if (findDescendant(SnippetRootNode) != null) {}
     setParent(parentNode);
     return FutureBuilder<void>(
         future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
         builder: (futureContext, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            debugPrint("FutureBuilder<void> Ensuring $name present");
+            fco.logi("FutureBuilder<void> Ensuring $name present");
             try {
               // in case did a revert, ignore snapshot data and use the AppInfo instead
               SnippetRootNode? snippet = fco.currentSnippetVersion(name);
               // SnippetRootNode? snippetRoot = cache?[editingVersionId];
               return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
             } catch (e) {
-              debugPrint('snippetRootNode.toWidget() failed!');
+              fco.logi('snippetRootNode.toWidget() failed!');
               return Material(
                 textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
                 child: SingleChildScrollView(
@@ -174,7 +174,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   //     await FCO.modelRepo.possiblyLoadSnippetIntoCache(
   //         snippetName: snippetName, versionId: editingOrPublishedVersionId);
   //     var rootNode = FCO.snippetCache[snippetName]?.versions?[editingOrPublishedVersionId];
-  //     debugPrint('ensured snippet: ${rootNode?.name} ensured present.');
+  //     fco.logi('ensured snippet: ${rootNode?.name} ensured present.');
   //   } else {
   //     // snippet does not yet exist in FB
   //     SnippetRootNode rootNode = SnippetPanel.createSnippetFromTemplate(fromTemplate, snippetName);

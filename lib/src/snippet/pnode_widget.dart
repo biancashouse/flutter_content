@@ -22,7 +22,7 @@ class PTreeNodeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint("PTreeNodeWidget.build");
+    // fco.logi("PTreeNodeWidget.build");
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -60,15 +60,15 @@ class PTreeNodeWidget extends StatelessWidget {
 
   Widget _propertyGroupLabel() => InkWell(
         onTap: () {
-          // debugPrint('propertyNode.key: ${propertyNode.key.toString()}');
-          // debugPrint('expanded nodes: ${treeC.expandedNodes.toString()}');
+          // fco.logi('propertyNode.key: ${propertyNode.key.toString()}');
+          // fco.logi('expanded nodes: ${treeC.expandedNodes.toString()}');
           if (entry.isExpanded) {
             treeC.toggleExpansion(propertyNode);
             treeC.rebuild();
           } else {
             // instead of expanding current node, do a cascading expand
             treeC.expandCascading([propertyNode]);
-            debugPrint('expanded nodes: ${treeC.expandedNodes.toString()}');
+            fco.logi('expanded nodes: ${treeC.expandedNodes.toString()}');
           }
         },
         onDoubleTap: () {
@@ -82,10 +82,10 @@ class PTreeNodeWidget extends StatelessWidget {
   Widget _propertyButton(context) {
     return GestureDetector(
       onTap: () {
-        debugPrint('_propertyButton.tap');
+        fco.logi('_propertyButton.tap');
       },
       onDoubleTap: () {
-        debugPrint('_propertyButton.double-tap');
+        fco.logi('_propertyButton.double-tap');
         // revert to original value
         propertyNode.revertToOriginalValue();
         treeC.rebuild();

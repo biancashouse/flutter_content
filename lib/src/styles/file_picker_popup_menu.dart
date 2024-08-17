@@ -81,8 +81,8 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
 
     // TODO
     // widget.tc.imageUrlFocusNode().addListener(() {
-    //   debugPrint("Has focus: ${widget.tc.imageUrlFocusNode().hasFocus}");
-    //   // debugPrint("Callout.anyPresent([-4] is ${Callout.anyPresent([-4])}");
+    //   fco.logi("Has focus: ${widget.tc.imageUrlFocusNode().hasFocus}");
+    //   // fco.logi("Callout.anyPresent([-4] is ${Callout.anyPresent([-4])}");
     // });
     //
     // widget.tc.imageUrlFocusNode().onKey = (node, event) {

@@ -2,6 +2,7 @@
 
 import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class Zoomer extends StatefulWidget {
   final Widget child;
@@ -18,11 +19,11 @@ class Zoomer extends StatefulWidget {
 
   static ZoomerState? of(BuildContext context) {
     if (!context.mounted) {
-      debugPrint('context not mounted!');
+      fco.logi('context not mounted!');
     }
     var result = context.findAncestorStateOfType<ZoomerState>();
     if (result == null) {
-      debugPrint('Zoomer not found!');
+      fco.logi('Zoomer not found!');
     }
     return result;
   }
@@ -105,7 +106,7 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
 
     currentScale = 1.0;
 
-    // debugPrint('*** Zoomer() ***');
+    // fco.logi('*** Zoomer() ***');
 
     // parentAppState =
     //     MaterialSPA.of(context.mounted ? context : updatedContext!);
@@ -124,11 +125,11 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
     _transformAlignment = Alignment.center;
 
     // _aController.addListener(() {
-    //   debugPrint("_aController: ${_aController.toStringDetails()}");
+    //   fco.logi("_aController: ${_aController.toStringDetails()}");
     // });
     //
     // _aController.addStatusListener((status) {
-    //   debugPrint("_aController status: $status");
+    //   fco.logi("_aController status: $status");
     // });
 
     // _aController.forward();

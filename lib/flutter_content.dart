@@ -151,7 +151,7 @@ class FlutterContentMixins
         LocalStorageMixin {
   FlutterContentMixins._internal() // Private constructor
   {
-    debugPrint('FlutterContent._internal()');
+    fco.logi('FlutterContent._internal()');
   }
 
   static final FlutterContentMixins _instance =
@@ -217,9 +217,9 @@ class FlutterContentMixins
 
     parseRouteConfig(pagePaths, List.from(router.configuration.routes));
 
-    debugPrint('Routes--------------------------');
-    debugPrint(pagePaths.toString());
-    debugPrint('--------------------------------');
+    fco.logi('Routes--------------------------');
+    fco.logi(pagePaths.toString());
+    fco.logi('--------------------------------');
 
     localStorage_init();
 
@@ -246,7 +246,7 @@ class FlutterContentMixins
         await loadFirebaseStorageFolders();
       }
 
-      debugPrint('FlutterContent init() finished.');
+      fco.logi('FlutterContent init() finished.');
     }
 
     // FutureBuilder requires this return
@@ -330,7 +330,7 @@ class FlutterContentMixins
     required SnippetRootNode rootNode,
     bool? publish,
   }) async {
-    debugPrint('newSnippetVersion($snippetName)');
+    fco.logi('newSnippetVersion($snippetName)');
     SnippetInfoModel snippetInfo;
     // snippet has changed
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -476,7 +476,7 @@ class FlutterContentMixins
   //     _snippetsBeingEdited.addFirst(snippetBloc);
   //
   //   }
-  //   debugPrint("snippetBeingEdited is $snippetBeingEdited");
+  //   fco.logi("snippetBeingEdited is $snippetBeingEdited");
   //   return;
   // }
 
@@ -510,7 +510,7 @@ class FlutterContentMixins
 
   GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
     // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
-    //   debugPrint('target changed.');
+    //   fco.logi('target changed.');
     // }
     _targetGK[targetId] = gk;
     return gk;
@@ -563,7 +563,7 @@ class FlutterContentMixins
   //         }
   //       }
   //     } catch (e) {
-  //       debugPrint("_parseImageTargets(): ${e.toString()}");
+  //       fco.logi("_parseImageTargets(): ${e.toString()}");
   //       rethrow;
   //     }
   //   }
@@ -607,8 +607,8 @@ class FlutterContentMixins
 //         snippetMap[rootNode.name] = rootNode..validateTree();
 //       }
 //     } catch (e) {
-//       debugPrint("parseSnippetJsons(): ${e.toString()}");
-//       debugPrint(snippetJson);
+//       fco.logi("parseSnippetJsons(): ${e.toString()}");
+//       fco.logi(snippetJson);
 //       // rethrow;
 //     }
 //     return snippetMap;

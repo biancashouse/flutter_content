@@ -37,7 +37,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // debugPrint('SnippetTreeAndPropertiesCalloutContents tree build');
+    // fco.logi('SnippetTreeAndPropertiesCalloutContents tree build');
     // final snippetBloc = context.watch<SnippetBloC>();
     // final STreeNode? selectedNode = selectedNode;
     // get parent callout config
@@ -49,11 +49,11 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     // pTreeC?.addListener(() {
     //   // may have toggled an expansion
     //   CAPIState.expandedNodes[state.selectedNode!] = pTreeC.expandedNodes;
-    //   debugPrint('expanded: ${CAPIState.expandedNodes.length}');
+    //   fco.logi('expanded: ${CAPIState.expandedNodes.length}');
     // });
     // GlobalKey snippetNodeAddChildBtnGK = GlobalKey();
-    // debugPrint("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
-    // debugPrint('${FCO.capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
+    // fco.logi("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
+    // fco.logi('${FCO.capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
     // restore scrollPos
     // STreeNode? selectedNode = ;
     // if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
@@ -122,7 +122,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     ),
                   );
                   fco.afterNextBuildDo(() {
-                    debugPrint('reverted to previous version.');
+                    fco.logi('reverted to previous version.');
                   });
                 }
               },
@@ -143,7 +143,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     ),
                   );
                   fco.afterNextBuildDo(() {
-                    debugPrint('reverted to next version.');
+                    fco.logi('reverted to next version.');
                   });
                 }
               },
@@ -267,7 +267,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       },
                       child: BlocBuilder<CAPIBloC, CAPIState>(
                           builder: (context, state) {
-                        debugPrint('Area: SnippetTreePane');
+                        fco.logi('Area: SnippetTreePane');
                         state.snippetBeingEdited?.treeC.rebuild();
                         return SnippetTreePane();
                       }),
@@ -755,7 +755,7 @@ class SnippetTreePane extends StatelessWidget {
                     ],
                   );
                 }
-                debugPrint('SnippetTreeView...');
+                fco.logi('SnippetTreeView...');
                 return SnippetTreeView();
               }),
             ),
@@ -857,7 +857,7 @@ class SnippetTreeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var snippetBeingEdited = FlutterContentApp.snippetBeingEdited;
-    debugPrint(
+    fco.logi(
         "snippetBeingEdited is ${snippetBeingEdited != null ? 'not null' : 'null'}");
     SnippetTreeController? treeC = snippetBeingEdited?.treeC;
     if (treeC == null) return fco.errorIcon(Colors.red);
@@ -867,10 +867,10 @@ class SnippetTreeView extends StatelessWidget {
       // filter or all
       nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
         // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
-        // debugPrint("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
+        // fco.logi("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node) return const Offstage();
         if (entry.node == FlutterContentApp.selectedNode)
-          debugPrint(
+          fco.logi(
               'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
         // never show the tree root node
         return true //entry.node is! SnippetRootNode && entry.node != treeC.roots.firstOrNull
@@ -980,7 +980,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
               ),
             );
             fco.afterNextBuildDo(() {
-              debugPrint('reverted.');
+              fco.logi('reverted.');
             });
           }
         },

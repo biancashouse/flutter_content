@@ -175,7 +175,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   PTreeNodeTreeController pTreeC(BuildContext context) {
     // var prevExpansions = _pTreeC?.expandedNodes;
     // for (PTreeNode node in prevExpansions??[]) {
-    //   debugPrint(node.name);
+    //   fco.logi(node.name);
     // }
     _pTreeC ??= PTreeNodeTreeController(
       roots: _properties ??= properties(context),
@@ -216,7 +216,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // // selection always uses this gk
   // static GlobalKey get selectedWidgetGK {
   //   if (_selectedWidgetGK.currentState == null) return _selectedWidgetGK;
-  //   debugPrint("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
+  //   fco.logi("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
   //   return GlobalKey(debugLabel: 'selectionGK was in use');
   // }
   //
@@ -230,7 +230,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     Rect restrictedRect = fco.restrictRectToScreen(r);
-    // debugPrint("=== showTappableNodeWidgetOverlay =====>\n  cId: $feature\n  r restricted to ${restrictedRect.toString()}");
+    // fco.logi("=== showTappableNodeWidgetOverlay =====>\n  cId: $feature\n  r restricted to ${restrictedRect.toString()}");
     const double BORDER = 1;
     double borderLeft = max(restrictedRect.left - BORDER, 0);
     double borderTop = max(restrictedRect.top - BORDER, 0);
@@ -254,7 +254,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         intercepting: true,
         child: InkWell(
           onTap: () {
-            // debugPrint("${toString()} tapped");
+            // fco.logi("${toString()} tapped");
             SnippetName? snippetName = rootNodeOfSnippet()?.name;
             if (snippetName == null) return;
             // var cc = nodeWidgetGK?.currentContext;
@@ -398,7 +398,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // fco.afterNextBuildDo(() {
     // });
     // return;
-    // debugPrint('after pushSnippetBloc');
+    // fco.logi('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     fco.afterNextBuildDo(() {
       var gk = startingAtNode.nodeWidgetGK;
@@ -623,7 +623,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // List<String> sensibleParents() => const [];
 
   GlobalKey createNodeGK() {
-    // debugPrint('--- createNodeGK --- ${toString()}');
+    // fco.logi('--- createNodeGK --- ${toString()}');
     nodeWidgetGK = GlobalKey(debugLabel: toString());
     if (fco.gkSTreeNodeMap.containsKey(nodeWidgetGK)) {
       print('Trying to use GlobalKey twice!');
@@ -651,9 +651,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
-    // debugPrint("missing parents: $doubleCheck");
+    // fco.logi("missing parents: $doubleCheck");
     // if (tabBar != null) {
-    //   debugPrint("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
+    //   fco.logi("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
     // }
   }
 
@@ -746,7 +746,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       } else {
         return null;
       }
-      // debugPrint(node.runtimeType.toString());
+      // fco.logi(node.runtimeType.toString());
       // if (node.runtimeType == FSBucketNode) {
       //   print('x');
       // }
@@ -854,7 +854,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         double w = r.width + thickness * 2;
         double h = r.height + thickness * 2;
         Offset translate = Offset(-thickness, -thickness);
-        // debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
+        // fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
         fca.showOverlay(
           ensureLowestOverlay: true,
           calloutConfig: CalloutConfig(
@@ -906,7 +906,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // //   thickness = 10;
 // //   translate = Offset.zero;
 // // }
-//             debugPrint("Showing $SELECTED_NODE_BORDER_CALLOUT");
+//             fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
 //             fca.showOverlay(
 //               ensureLowestOverlay: true,
 //               calloutConfig: CalloutConfig(
@@ -960,7 +960,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   MenuItemButton? pasteMI,
 //   ValueChanged<Type>? onPressedF,
 // }) {
-//   // debugPrint(nodeTypeCandidates.toString());
+//   // fco.logi(nodeTypeCandidates.toString());
 //   List<Widget> widgets = [];
 //   //
 //   if (pasteMI != null) widgets.add(pasteMI);
@@ -1114,7 +1114,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
 // Text menuItemText(Type type) {
 //   String typeString = type.toString();
-//   debugPrint(typeString);
+//   fco.logi(typeString);
 //   return Text(typeString.substring(0, typeString.length - 4));
 // }
 

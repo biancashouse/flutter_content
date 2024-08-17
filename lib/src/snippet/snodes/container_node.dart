@@ -126,7 +126,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
               fillColorValues = newValues;
               // var oes = Callout.OEs;
               // for (var oe in oes) {
-              //   debugPrint(oe.calloutConfig.feature);
+              //   fco.logi(oe.calloutConfig.feature);
               // }
               // Callout.hide('easy-color-picker');
               // Callout.hideOP('easy-color-picker');
@@ -270,7 +270,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         // );
       }
     } catch (e) {
-      debugPrint('cannot render $FLUTTER_TYPE!');
+      fco.logi('cannot render $FLUTTER_TYPE!');
     }
     return fco.errorIcon(Colors.red);
   }

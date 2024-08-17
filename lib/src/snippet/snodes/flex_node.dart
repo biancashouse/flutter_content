@@ -75,7 +75,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       });
     } catch(e) {
       w = _errorWidget();
-      debugPrint('Flex() failed to render properly. ===============================================');
+      fco.logi('Flex() failed to render properly. ===============================================');
     }
     return w;
   }

@@ -29,7 +29,7 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
       if (childWidget == null) throw(Exception('Failed to create widget for property: $propertyName'));
       return childWidget;
     } catch (e) {
-      debugPrint('snippetRoot.toWidget() failed!');
+      fco.logi('snippetRoot.toWidget() failed!');
       return Material(
         textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
         child: SingleChildScrollView(

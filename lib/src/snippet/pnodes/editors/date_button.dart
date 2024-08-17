@@ -1,5 +1,6 @@
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DateButton extends HookWidget {
@@ -147,7 +148,7 @@ class DateButton extends HookWidget {
           );
           if (values != null) {
             // ignore: avoid_print
-            debugPrint(_getValueText(
+            fco.logi(_getValueText(
               config.calendarType,
               values,
             ));

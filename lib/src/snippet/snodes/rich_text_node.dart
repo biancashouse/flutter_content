@@ -79,7 +79,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       );
       return rt;
     } catch (e) {
-      debugPrint('cannot render $FLUTTER_TYPE!');
+      fco.logi('cannot render $FLUTTER_TYPE!');
     }
     return fco.errorIcon(Colors.red);
   }
