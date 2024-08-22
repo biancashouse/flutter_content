@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class ResizeSlider extends StatefulWidget {
   final double value;
@@ -62,11 +62,11 @@ class _ResizeSliderState extends State<ResizeSlider> {
                 widget.onChangeF(value);
               },
               onChangeStart: (_) {
-                Callout.preventParentCalloutDrag(context);
+                fco.preventParentCalloutDrag(context);
                 widget.onDragStartF?.call();
               },
               onChangeEnd: (_) {
-                Callout.allowParentCalloutDrag(context);
+                fco.allowParentCalloutDrag(context);
                 widget.onDragEndF?.call();
               },
               min: widget.min!,

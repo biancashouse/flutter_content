@@ -30,11 +30,11 @@ class TargetColourTool extends StatelessWidget {
       tc.setCalloutColor(pickedColor);
       // STreeNode.hideAllTargetCovers();
       // STreeNode.showAllTargetCovers();
-      // Callout.refreshOverlay(tc.snippetName);
+      // fco.refreshOverlay(tc.snippetName);
       // // bloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
       // fco.afterNextBuildDo(() {
       //   widget.onParentBarrierTappedF.call();
-      //   Callout.refreshOverlay(tc.snippetName, f: () {});
+      //   fco.refreshOverlay(tc.snippetName, f: () {});
       removeSnippetContentCallout(tc);
       tc
           .targetsWrapperState()
@@ -85,7 +85,7 @@ class TargetColourTool extends StatelessWidget {
             color: tc.calloutColor(),
             // Update the screenPickerColor using the callback.
             onColorChanged: (Color color) => colorPicked(color),
-            // onCompleted: () => Callout.dismiss(cId),
+            // onCompleted: () => fco.dismiss(cId),
             width: 32,
             height: 32,
             borderRadius: 16,
@@ -109,7 +109,7 @@ class TargetColourTool extends StatelessWidget {
         // :
         fco.getTargetGk(tc.uid);
 
-    fca.showOverlay(
+    fco.showOverlay(
       targetGkF: () => targetGK,
       calloutConfig: CalloutConfig(
         cId: 'color-picker',
@@ -133,5 +133,5 @@ class TargetColourTool extends StatelessWidget {
     );
   }
 
-  static bool isShowing() => Callout.anyPresent(["arrow-type"]);
+  static bool isShowing() => fco.anyPresent(["arrow-type"]);
 }

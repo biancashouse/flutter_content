@@ -254,7 +254,7 @@
 //   }
 // }
 //
-// void removeStylesCallout() => Callout.removeOverlay(CAPI.STYLES_CALLOUT.feature(), true);
+// void removeStylesCallout() => fco.removeOverlay(CAPI.STYLES_CALLOUT.feature(), true);
 //
 // const double MAXIMISED_STYLE_CALLOUT_W = 400;
 // const double MAXIMISED_STYLE_CALLOUT_H = 300;
@@ -315,7 +315,7 @@
 //         ],
 //         onArrowTypePicked: (ArrowType newAT) {
 //           tc.arrowType = newAT.index;
-//           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
+//           fco.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           // parentState.stylesCallout?.refresh(() {});
 //           // rerender text editor callout
 //           removeTextEditorCallout();
@@ -326,7 +326,7 @@
 //         onAnimateArrowToggled: (bool newBool) {
 //           tc.animateArrow = newBool;
 //           // rerender text editor callout
-//           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
+//           fco.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //           removeTextEditorCallout();
 //           fco.afterMsDelayDo(50, () {
 //             showTextEditorCallout(tc, ancestorHScrollC, ancestorVScrollC);
@@ -334,12 +334,12 @@
 //         },
 //         onTextAlignEdited: (TextAlign newTA) {
 //           tc.setTextAlign(newTA);
-//           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
+//           fco.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
 //         },
 //         onTextStyleEdited: (TextStyle newTS) {
 //           tc.setTextStyle(newTS);
-//           Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
-//           Callout.refreshOverlay(CAPI.TEXT_CALLOUT.feature(), () {});
+//           fco.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
+//           fco.refreshOverlay(CAPI.TEXT_CALLOUT.feature(), () {});
 //           // removeTextEditorCallout();
 //           // fco.afterMsDelayDo(50, () {
 //           //   showTextEditorCallout(tc, ancestorScrollC);

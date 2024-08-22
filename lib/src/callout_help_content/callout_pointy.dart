@@ -6,12 +6,12 @@
 // import 'package:flutter_content/src/model/model.dart';
 //
 //
-// bool isShowingPointyCallout() => Callout.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()]);
+// bool isShowingPointyCallout() => fco.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()]);
 //
 // void removePointyCallout() {
-//   if (Callout.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()])) {
+//   if (fco.anyPresent([CAPI.ARROW_TYPE_CALLOUT.feature()])) {
 //     fco.logi("removePointyCallout");
-//     Callout.removeOverlay(CAPI.ARROW_TYPE_CALLOUT.feature(), true);
+//     fco.removeOverlay(CAPI.ARROW_TYPE_CALLOUT.feature(), true);
 //   }
 // }
 //

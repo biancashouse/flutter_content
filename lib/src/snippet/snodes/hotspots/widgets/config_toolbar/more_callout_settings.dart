@@ -32,7 +32,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         //     :
         fco.getTargetGk(tc.uid);
 
-    fca.showOverlay(
+    fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
               tc, wrapperRect,
@@ -46,7 +46,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
             opacity: 0.1,
             // onTappedF: () async {
             //   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-            //   Callout.dismiss("more-cc-settings");
+            //   fco.dismiss("more-cc-settings");
             //   removeSnippetContentCallout(tc.snippetName);
             //   FCO.parentTW(twName)?.zoomer?.resetTransform();
             //   FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
@@ -67,7 +67,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   }
 
   static bool isShowing() =>
-      Callout.anyPresent(["more-cc-settings"]);
+      fco.anyPresent(["more-cc-settings"]);
 }
 
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
@@ -183,7 +183,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   }
 
   void _refreshContentCallout() {
-    Callout.dismiss("more-cc-settings");
+    fco.dismiss("more-cc-settings");
     removeSnippetContentCallout(tc);
     tc.targetsWrapperState()
         ?.zoomer

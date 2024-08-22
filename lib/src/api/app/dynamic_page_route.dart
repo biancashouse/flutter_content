@@ -12,7 +12,7 @@ class DynamicPageRoute extends GoRoute {
     required this.template,
   }) : super(
           onExit: (BuildContext context, GoRouterState state) async {
-            Callout.dismissAll();
+            fco.dismissAll();
             return true;
           },
           builder: (BuildContext context, GoRouterState state) {

@@ -18,7 +18,7 @@ class EditablePage extends StatefulWidget {
   });
 
   static void refreshSelectedNodeWidgetBorderOverlay() {
-    Callout.dismiss('pink-border-overlay-non-tappable');
+    fco.dismiss('pink-border-overlay-non-tappable');
     FlutterContentApp.selectedNode?.showNodeWidgetOverlay();
   }
 
@@ -111,7 +111,7 @@ class EditablePageState extends State<EditablePage> {
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
         fco.logi("FlutterContentApp SizeChangedLayoutNotification}");
-        Callout.dismissAll(exceptFeatures: ["FAB"]);
+        fco.dismissAll(exceptFeatures: ["FAB"]);
         fco.afterMsDelayDo(300, () {
           // FCO.refreshMQ(context);
           if (fco.showingNodeBoundaryOverlays ?? false) {
@@ -190,7 +190,7 @@ class EditablePageState extends State<EditablePage> {
                     IconButton(
                       tooltip: 'sign out',
                       onPressed: () async {
-                        if (!Callout.anyPresent([CalloutConfigToolbar.CID]))
+                        if (!fco.anyPresent([CalloutConfigToolbar.CID]))
                           _signOut();
                       },
                       icon: const Icon(
@@ -206,7 +206,7 @@ class EditablePageState extends State<EditablePage> {
       );
 
   void showExitEditModeCallout() {
-    fca.showOverlay(
+    fco.showOverlay(
       calloutContent: Container(
         decoration: const BoxDecoration(
           color: Colors.orange,
@@ -215,7 +215,7 @@ class EditablePageState extends State<EditablePage> {
         child: IconButton(
           tooltip: 'exit edit mode',
           onPressed: () async {
-            if (!Callout.anyPresent([CalloutConfigToolbar.CID])) exitEditMode();
+            if (!fco.anyPresent([CalloutConfigToolbar.CID])) exitEditMode();
           },
           icon: const Icon(
             Icons.close,
@@ -240,7 +240,7 @@ class EditablePageState extends State<EditablePage> {
     fco.inEditMode.value = true;
     showAllNodeWidgetOverlays();
     showExitEditModeCallout();
-    // Callout.showTextToast(
+    // fco.showTextToast(
     //   cId: 'tap-a-widget',
     //   backgroundColor: Colors.red,
     //   textColor: Colors.white,
@@ -254,19 +254,19 @@ class EditablePageState extends State<EditablePage> {
   void exitEditMode() {
     removeAllNodeWidgetOverlays();
     FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
-    Callout.dismiss('exit-editMode');
+    fco.dismiss('exit-editMode');
     unhideFAB();
     fco.inEditMode.value = false;
     // String feature = FlutterContentApp.rootNode?.name ?? "snippet name ?!";
-    // if (Callout.anyPresent([feature])) {
-    //   Callout.dismiss(feature);
+    // if (fco.anyPresent([feature])) {
+    //   fco.dismiss(feature);
     // }
   }
 
   void removeAllNodeWidgetOverlays() {
     // fco.logi('removeAllNodeWidgetOverlays - start');
     for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
-      Callout.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
+      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
     // fco.logi('removeAllNodeWidgetOverlays - ended');
     fco.showingNodeBoundaryOverlays = false;
@@ -276,7 +276,7 @@ class EditablePageState extends State<EditablePage> {
   void showAllNodeWidgetOverlays() {
     // fco.logi('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
-    // bool configuringATarget = Callout.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
+    // bool configuringATarget = fco.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
     void traverseAndMeasure(BuildContext el) {
       // fco.logi('traverseAndMeasure(${el.toString()})');
 
@@ -327,7 +327,7 @@ class EditablePageState extends State<EditablePage> {
 
   // only called with MaterialAppWrapper context
   void showNodeWidgetOverlay(STreeNode node) {
-    Callout.dismiss('pink-border-overlay-non-tappable');
+    fco.dismiss('pink-border-overlay-non-tappable');
     fco.afterNextBuildDo(() {
       node.showNodeWidgetOverlay();
     });
@@ -336,7 +336,7 @@ class EditablePageState extends State<EditablePage> {
     // if (r != null) {
     //   r = FCO.restrictRectToScreen(r);
     //   // fco.logi("========>  r restricted to ${r.toString()}");
-    //   Callout.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
+    //   fco.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
     //   node.showNodeWidgetOverlay();
     // }
   }
@@ -345,7 +345,7 @@ class EditablePageState extends State<EditablePage> {
     return IconButton(
       key: _lockIconGK,
       onPressed: () {
-        fca.showOverlay(
+        fco.showOverlay(
           targetGkF: () => _lockIconGK,
           calloutContent: Column(
             mainAxisSize: MainAxisSize.max,
@@ -364,7 +364,7 @@ class EditablePageState extends State<EditablePage> {
                   originalS: '',
                   onTextChangedF: (s) async {
                     if (s == (kDebugMode ? " " : "lakebeachocean")) {
-                      Callout.dismiss("EditorPassword");
+                      fco.dismiss("EditorPassword");
                       fco.setCanEdit(true);
                       // await FC.loadLatestSnippetMap();
                       // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
@@ -374,7 +374,7 @@ class EditablePageState extends State<EditablePage> {
                       //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
                       //   showDevToolsFAB();
                       // });
-                      Callout.dismiss("EditorPassword");
+                      fco.dismiss("EditorPassword");
                       FlutterContentApp.capiBloc.add(
                           const CAPIEvent.forceRefresh(
                               onlyTargetsWrappers: true));
@@ -405,7 +405,7 @@ class EditablePageState extends State<EditablePage> {
             barrier: CalloutBarrier(
               opacity: .5,
               onTappedF: () async {
-                Callout.dismiss("EditorPassword");
+                fco.dismiss("EditorPassword");
               },
             ),
             initialCalloutW: 240,

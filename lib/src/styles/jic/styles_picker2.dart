@@ -91,7 +91,7 @@
 //
 // }
 //
-// void removeStylesCallout() => Callout.removeOverlay(CAPI.STYLES_CALLOUT.feature(), true);
+// void removeStylesCallout() => fco.removeOverlay(CAPI.STYLES_CALLOUT.feature(), true);
 //
 // const double MAXIMISED_STYLE_CALLOUT_W = 400;
 // const double MAXIMISED_STYLE_CALLOUT_H = 300;

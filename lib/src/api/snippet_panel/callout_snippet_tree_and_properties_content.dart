@@ -89,7 +89,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           // title: GestureDetector(
           //   onTap: () {
           //     snippetBloc.add(const CAPIEvent.clearNodeSelection());
-          //     Callout.hide("floating-clipboard");
+          //     fco.hide("floating-clipboard");
           //     fco.afterNextBuildDo(() {
           //       snippetBloc.add(CAPIEvent.selectNode(
           //         node: snippetBloc.state.rootNode!,
@@ -167,10 +167,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             //     snippetBloc.add(CAPIEvent.cutNode(node: selectedNode!));
             //     fco.afterNextBuildDo(() {
             //       if (FCO.capiBloc.state.jsonClipboard != null) {
-            //         Callout.unhide("floating-clipboard");
+            //         fco.unhide("floating-clipboard");
             //       }
             //     });
-            //     Callout.hide("TreeNodeMenu");
+            //     fco.hide("TreeNodeMenu");
             //   },
             //   icon: Icon(
             //     Icons.cut,
@@ -186,11 +186,11 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             //       snippetBloc.add(CAPIEvent.copyNode(node: selectedNode!));
             //       fco.afterNextBuildDo(() {
             //         if (FCO.capiBloc.state.jsonClipboard != null) {
-            //           Callout.unhide("floating-clipboard");
+            //           fco.unhide("floating-clipboard");
             //         }
             //       });
             //     });
-            //     Callout.hide("TreeNodeMenu");
+            //     fco.hide("TreeNodeMenu");
             //   },
             //   icon: Icon(
             //     Icons.copy,
@@ -201,11 +201,11 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             // ),
             // IconButton(
             //   onPressed: () {
-            //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+            //     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
             //     if (selectedNode is! RichTextNode) {
             //       snippetBloc.add(const CAPIEvent.deleteNodeTapped());
             //     }
-            //     Callout.dismiss("TreeNodeMenu");
+            //     fco.dismiss("TreeNodeMenu");
             //   },
             //   icon: Icon(Icons.delete,
             //       color:
@@ -225,11 +225,11 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             //     FCO.capiBloc.add(const CAPIEvent.popSnippetTree());
             //
             //     //removeSnippetTreeCallout(snippetBloc.snippetName);
-            //     CalloutState? state = Callout.of(context);
+            //     CalloutState? state = fco.of(context);
             //     state?.toggle();
             //
             //     // removeNodePropertiesCallout();
-            //     Callout.removeOverlay(TREENODE_MENU_CALLOUT);
+            //     fco.removeOverlay(TREENODE_MENU_CALLOUT);
             //     FCO.capiBloc.add(const CAPIEvent.saveModel());
             //   },
             // ),
@@ -263,7 +263,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       onTap: () {
                         FlutterContentApp.capiBloc
                             .add(const CAPIEvent.clearNodeSelection());
-                        Callout.hide("floating-clipboard");
+                        fco.hide("floating-clipboard");
                       },
                       child: BlocBuilder<CAPIBloC, CAPIState>(
                           builder: (context, state) {
@@ -389,10 +389,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         .add(CAPIEvent.cutNode(node: selectedNode));
                     fco.afterNextBuildDo(() {
                       if (fco.clipboard != null) {
-                        Callout.unhide("floating-clipboard");
+                        fco.unhide("floating-clipboard");
                       }
                     });
-                    Callout.hide("TreeNodeMenu");
+                    fco.hide("TreeNodeMenu");
                   },
                   icon: Icon(Icons.cut,
                       color: Colors.orange.withOpacity(
@@ -415,11 +415,11 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                           .add(CAPIEvent.copyNode(node: selectedNode));
                       fco.afterNextBuildDo(() {
                         if (fco.clipboard != null) {
-                          Callout.unhide("floating-clipboard");
+                          fco.unhide("floating-clipboard");
                         }
                       });
                     });
-                    Callout.hide("TreeNodeMenu");
+                    fco.hide("TreeNodeMenu");
                   },
                   icon: Icon(
                     Icons.copy,
@@ -440,7 +440,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     STreeNode node = selectedNode;
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
-                    Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                    fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                     FlutterContentApp.capiBloc
                         .add(const CAPIEvent.deleteNodeTapped());
                     fco.afterNextBuildDo(() async {
@@ -463,7 +463,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         }
                       });
                     });
-                    // Callout.dismiss("TreeNodeMenu");
+                    // fco.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
                       color: Colors.red.withOpacity(
@@ -493,7 +493,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               newSnippetName: s,
                             ));
                             fco.afterNextBuildDo(() {
-                              Callout.dismiss(TREENODE_MENU_CALLOUT);
+                              fco.dismiss(TREENODE_MENU_CALLOUT);
                             });
                           });
                     },
@@ -509,7 +509,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 //     // some properties cannot be deleted!selectedNode.canBeDeleted()
                 //     // some properties cannot be deleted
                 //     if (!selectedNode.canBeDeleted()) return;
-                //     Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                //     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
                 //     snippetBloc.add(const CAPIEvent.deleteNodeTapped());
                 //     fco.afterNextBuildDo(() async {
                 //       await Future.delayed(const Duration(milliseconds: 1000));
@@ -520,7 +520,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 //         spState?.resetTabQandC;
                 //       });
                 //     });
-                //     Callout.dismiss("TreeNodeMenu");
+                //     fco.dismiss("TreeNodeMenu");
                 //   },
                 //   icon: Icon(Icons.delete,
                 //       color: Colors.red.withOpacity(
@@ -799,7 +799,7 @@ class SnippetTreePane extends StatelessWidget {
           //     });
           //   });
           // }
-          // Callout.dismiss(snippetBloc.snippetName);
+          // fco.dismiss(snippetBloc.snippetName);
           // if (parent != null) {
           //   fco.afterNextBuildDo(() {
           //     FlutterContentAppState.pushThenShowNamedSnippetWithNodeSelected(
@@ -829,7 +829,7 @@ class SnippetTreePane extends StatelessWidget {
     }
 
     if (parent != null) {
-      Callout.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
+      fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
       STreeNode.pushThenShowNamedSnippetWithNodeSelected(
         parent.rootNodeOfSnippet()!.name,
         parent,
@@ -958,7 +958,7 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
       revertMIs.add(MenuItemButton(
         onPressed: () async {
           if (versionId == currentVersionId) {
-            fca.showToast(
+            fco.showToast(
               calloutConfig: CalloutConfig(
                 cId: "cannot-revert-to-current-version",
                 gravity: Alignment.topCenter,

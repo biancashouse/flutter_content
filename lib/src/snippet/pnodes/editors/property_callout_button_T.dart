@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 
 class PropertyButton<T> extends StatelessWidget {
@@ -62,8 +63,8 @@ class PropertyButton<T> extends StatelessWidget {
             barrier: CalloutBarrier(
                 opacity: .25,
                 onTappedF: () {
-                  Callout.dismiss('matches');
-                  Callout.dismiss('te');
+                  fco.dismiss('matches');
+                  fco.dismiss('te');
                 }),
             // arrowThickness: ArrowThickness.THIN,
             fillColor: Colors.white,
@@ -95,7 +96,7 @@ class PropertyButton<T> extends StatelessWidget {
             originalS: editedText ?? '',
             onTextChangedF: (s) {
               editedText = s;
-              Callout.dismiss('matches');
+              fco.dismiss('matches');
               // possibly show matching options
               if ((options?.isNotEmpty ?? false) &&
                   _matches(options, editedText).isNotEmpty) {
@@ -113,7 +114,7 @@ class PropertyButton<T> extends StatelessWidget {
               editedText = s;
               setState(() {});
               onChangeF(s);
-              Callout.dismiss('te');
+              fco.dismiss('te');
             },
             dontAutoFocus: false,
             bgColor: Colors.white,
@@ -122,7 +123,7 @@ class PropertyButton<T> extends StatelessWidget {
           if (teCC.calloutH != null && teCC.calloutH! > 400) {
             teCC.initialCalloutH = teCC.calloutH = 200;
           }
-          fca.showOverlay(
+          fco.showOverlay(
             calloutConfig: teCC,
             calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
                 ? Padding(
@@ -166,12 +167,12 @@ class PropertyButton<T> extends StatelessWidget {
 
   void _showOptionMatches(List<String> options, String editedText,
       ValueChanged<String> tappedAMatchF) {
-    Callout.dismiss('matches');
+    fco.dismiss('matches');
     // List<Widget> chips = matches
     //     .map(
     //       (m) => InkWell(
     //           onTap: () {
-    //             Callout.dismiss('matches');
+    //             fco.dismiss('matches');
     //             tappedAMatchF(m);
     //           },
     //           child: Chip(
@@ -208,7 +209,7 @@ class PropertyButton<T> extends StatelessWidget {
               title: Text(matches[index]),
               onTap: () {
                 tappedAMatchF(matches[index]);
-                Callout.dismiss('matches');
+                fco.dismiss('matches');
               },
             ),
           );
@@ -216,7 +217,7 @@ class PropertyButton<T> extends StatelessWidget {
       );
     }
 
-    fca.showOverlay(
+    fco.showOverlay(
       calloutConfig: matchesMenuCC,
       calloutContent: matchesMenuBoxContent(matches),
       targetGkF: () => propertyBtnGK,

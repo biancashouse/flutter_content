@@ -23,7 +23,7 @@ class TargetPlayBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TargetModel? tc = initialTC; //bloc.state.tcByUid(initialTC);
-    //   bool toolbarPresent = Callout.anyPresent([CalloutConfigToolbar.CID]);
+    //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
     //   if (toolbarPresent) {
     //     hideAllTargetBtns();
     //     hideAllTargetCovers();
@@ -31,13 +31,13 @@ class TargetPlayBtn extends StatelessWidget {
 
 
     return Visibility(
-      visible: FlutterContentApp.snippetBeingEdited == null && !Callout.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
+      visible: FlutterContentApp.snippetBeingEdited == null && !fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
       child: _draggableSelectTargetBtn(tc),
     );
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
-    bool preventDrag = Callout.anyPresent([CalloutConfigToolbar.CID]);
+    bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
     return !fco.canEditContent
         ? GestureDetector(
             onTap: () {

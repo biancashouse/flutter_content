@@ -248,7 +248,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       draggable: false,
       scrollControllerName: scrollControllerName,
     );
-    fca.showOverlay(
+    fco.showOverlay(
       ensureLowestOverlay: false,
       calloutContent: PointerInterceptor(
         intercepting: true,
@@ -352,7 +352,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         arrowType: ArrowType.NONE,
         draggable: false,
       );
-      fca.showOverlay(
+      fco.showOverlay(
         ensureLowestOverlay: true,
         calloutContent: PointerInterceptor(
           child: Container(
@@ -416,22 +416,22 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         if (!fco.clipboardIsEmpty) {
           fco.showFloatingClipboard();
         }
-        Callout.hide(CalloutConfigToolbar.CID);
+        fco.hide(CalloutConfigToolbar.CID);
         showSnippetTreeAndPropertiesCallout(
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
             STreeNode.unhighlightSelectedNode();
-            // Callout.printFeatures();
+            // fco.printFeatures();
             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
             var currPageState = fco.currentPageState;
             currPageState?.unhideFAB();
-            Callout.dismiss(pinkOverlayFeature);
+            fco.dismiss(pinkOverlayFeature);
             // unhide if present
-            Callout.unhide(CalloutConfigToolbar.CID);
-            // Callout.printFeatures();
+            fco.unhide(CalloutConfigToolbar.CID);
+            // fco.printFeatures();
             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
-            Callout.dismiss(TREENODE_MENU_CALLOUT);
+            fco.dismiss(TREENODE_MENU_CALLOUT);
             fco.hideClipboard();
             FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
             // FlutterContentPage.exitEditMode();
@@ -453,7 +453,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             //       ),
             //     );
             //  fco.afterMsDelayDo(2000, (){
-            //   bool toolbarPresent = Callout.anyPresent([CalloutConfigToolbar.CID]);
+            //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
             //   if (toolbarPresent) {
             //     hideAllTargetBtns();
             //     hideAllTargetCovers();
@@ -841,7 +841,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   static void unhighlightSelectedNode() =>
-      Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
   Future<void> possiblyHighlightSelectedNode() async {
     return;
@@ -855,7 +855,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         double h = r.height + thickness * 2;
         Offset translate = Offset(-thickness, -thickness);
         // fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
-        fca.showOverlay(
+        fco.showOverlay(
           ensureLowestOverlay: true,
           calloutConfig: CalloutConfig(
             cId: SELECTED_NODE_BORDER_CALLOUT,
@@ -889,7 +889,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //     if (FCO.selectedNode == this) {
 //       if (true || FCO.highlightedNode != FCO.selectedNode) {
 //         fco.afterNextBuildDo(() {
-// // if (Callout.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
+// // if (fco.anyPresent([SELECTED_NODE_BORDER_CALLOUT])) {
 //           unhighlightSelectedNode();
 // // }
 //           SnippetBloC? snippetBloc = FCO.snippetBeingEdited;
@@ -907,7 +907,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // //   translate = Offset.zero;
 // // }
 //             fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
-//             fca.showOverlay(
+//             fco.showOverlay(
 //               ensureLowestOverlay: true,
 //               calloutConfig: CalloutConfig(
 //                 cId: SELECTED_NODE_BORDER_CALLOUT,
@@ -977,7 +977,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //     if (nodeTypeTagMap[t]!.contains("mi")) {
 //       widgets.add(MenuItemButton(
 //         onPressed: () {
-//           Callout.dismiss(TREENODE_MENU_CALLOUT);
+//           fco.dismiss(TREENODE_MENU_CALLOUT);
 //           onPressedF?.call(t);
 //         },
 //         child: menuItemText(t, fontWeight: FontWeight.bold),
@@ -1064,7 +1064,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //           case AddAction.wrapWith:
 //             break;
 //         }
-//         Callout.dismiss(TREENODE_MENU_CALLOUT);
+//         fco.dismiss(TREENODE_MENU_CALLOUT);
 //       },
 //       child: FCO.coloredText('paste from clipboard', color: Colors.blue),
 //     );
@@ -1092,7 +1092,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //           case AddAction.wrapWith:
 //             break;
 //         }
-//         //Callout.removeOverlayParentCallout(context, true);
+//         //fco.removeOverlayParentCallout(context, true);
 //       },
 //       child: Container(
 //         margin: EdgeInsets.all(10),
@@ -1638,7 +1638,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             case NodeAction.wrapWith:
               break;
           }
-          Callout.dismiss(TREENODE_MENU_CALLOUT);
+          fco.dismiss(TREENODE_MENU_CALLOUT);
         },
         child: fco.coloredText('paste from clipboard', color: Colors.blue),
       );

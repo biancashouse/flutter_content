@@ -2,7 +2,6 @@
 
 library flutter_content;
 
-import 'package:url_strategy/url_strategy.dart';
 import 'package:bh_shared/bh_shared.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,23 +11,22 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/model_repo.dart';
 
+export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/editable_page.dart';
 export 'src/api/app/editable_page_route.dart';
-export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/fc_app.dart';
+export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
-export 'src/api/app/zoomer.dart';
-
 // callouts
 export 'src/bloc/capi_bloc.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -37,7 +35,6 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -75,6 +72,7 @@ export 'src/snippet/snodes/generic_multi_child_node.dart';
 export 'src/snippet/snodes/generic_single_child_node.dart';
 export 'src/snippet/snodes/google_drive_iframe_node.dart';
 export 'src/snippet/snodes/hotspots/hotspots_node.dart';
+export 'src/snippet/snodes/hotspots/widgets/targets_wrapper.dart';
 export 'src/snippet/snodes/icon_button_node.dart';
 export 'src/snippet/snodes/iframe_node.dart';
 export 'src/snippet/snodes/inlinespan_node.dart';
@@ -84,7 +82,6 @@ export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
 export 'src/snippet/snodes/network_image_node.dart';
-
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -111,11 +108,9 @@ export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
-export 'src/snippet/snodes/hotspots/widgets/targets_wrapper.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -145,19 +140,23 @@ class FlutterContentMixins
         MeasuringMixin,
         CalloutMixin,
         RootContextMixin,
-        MQMixin,
         SystemMixin,
         WidgetHelperMixin,
+        CanvasMixin,
+        RootContextMixin,
+        MQMixin,
+        GotitsMixin,
+        CanvasMixin,
         LocalStorageMixin {
   FlutterContentMixins._internal() // Private constructor
   {
-    fco.logi('FlutterContent._internal()');
+    logi('FlutterContent._internal()');
   }
 
-  static final FlutterContentMixins _instance =
-  FlutterContentMixins._internal();
+  static final FlutterContentMixins _instance = FlutterContentMixins._internal();
 
   static FlutterContentMixins get instance {
+    FlutterCalloutMixins.instance;
     return _instance;
   }
 
@@ -184,6 +183,7 @@ class FlutterContentMixins
     bool skipAssetPkgName =
     false, // would only use true when pkg dir is actually inside current project
   }) async {
+    debugPrint('init()');
     _appName = modelName;
     _googleFontNames = googleFontNames;
     _namedVoidCallbacks = namedVoidCallbacks;
@@ -192,7 +192,7 @@ class FlutterContentMixins
     Bloc.observer = MyGlobalObserver();
 
     // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
-    setPathUrlStrategy();
+    // setPathUrlStrategy();
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
       initialLocation: initialRoutePath,
@@ -217,9 +217,9 @@ class FlutterContentMixins
 
     parseRouteConfig(pagePaths, List.from(router.configuration.routes));
 
-    fco.logi('Routes--------------------------');
-    fco.logi(pagePaths.toString());
-    fco.logi('--------------------------------');
+    logi('Routes--------------------------');
+    logi(pagePaths.toString());
+    logi('--------------------------------');
 
     localStorage_init();
 
@@ -246,7 +246,7 @@ class FlutterContentMixins
         await loadFirebaseStorageFolders();
       }
 
-      fco.logi('FlutterContent init() finished.');
+      logi('FlutterContent init() finished.');
     }
 
     // FutureBuilder requires this return
@@ -330,10 +330,13 @@ class FlutterContentMixins
     required SnippetRootNode rootNode,
     bool? publish,
   }) async {
-    fco.logi('newSnippetVersion($snippetName)');
+    logi('newSnippetVersion($snippetName)');
     SnippetInfoModel snippetInfo;
     // snippet has changed
-    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+    VersionId newVersionId = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
 
     // hopefully write new version to FB
     versionCache[snippetName] ??= {};
@@ -391,9 +394,11 @@ class FlutterContentMixins
   late Map<String, TextStyle> _namedTextStyles;
   late Map<String, ButtonStyle> _namedButtonStyles;
   Offset? _devToolsFABPos;
+
   // ---- callout config tool pos -------------------------
   Offset? _calloutConfigToolbarPos;
   bool calloutConfigToolbarAtTopOfScreen = false;
+
   // ---- callout config tool pos -------------------------
   bool skipEditModeEscape =
   false; // property editors can set this to prevent exit from EditMode
@@ -415,15 +420,17 @@ class FlutterContentMixins
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
           Offset(
-            fco.scrW / 2 - 350,
-            calloutConfigToolbarAtTopOfScreen ? 10 : fco.scrH - 90,
+            scrW / 2 - 350,
+            calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
           );
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
 
   Offset devToolsFABPos(context) =>
-      _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
+      _devToolsFABPos ?? Offset(40, MediaQuery
+          .sizeOf(context)
+          .height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
@@ -437,6 +444,7 @@ class FlutterContentMixins
 
   // each snippet panel has a gk, a last selected node, and a ur
   final Map<RouteName, GlobalKey> pageGKs = {};
+
   // if a page has a scrollable, its offset can be stored in this map to avoid rebuild losing it
   final Map<String, double> scrollControllerOffsets = {};
   String? currentRoute;
@@ -476,7 +484,7 @@ class FlutterContentMixins
   //     _snippetsBeingEdited.addFirst(snippetBloc);
   //
   //   }
-  //   fco.logi("snippetBeingEdited is $snippetBeingEdited");
+  //   logi("snippetBeingEdited is $snippetBeingEdited");
   //   return;
   // }
 
@@ -510,7 +518,7 @@ class FlutterContentMixins
 
   GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
     // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
-    //   fco.logi('target changed.');
+    //   logi('target changed.');
     // }
     _targetGK[targetId] = gk;
     return gk;
@@ -535,17 +543,17 @@ class FlutterContentMixins
 
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 
-  void hideClipboard() => Callout.dismiss("floating-clipboard");
+  void hideClipboard() => dismiss("floating-clipboard");
 
   void showFloatingClipboard() {
-    Callout.dismiss("floating-clipboard");
-    fca.showOverlay(
+    dismiss("floating-clipboard");
+    fco.showOverlay(
         calloutContent: const ClipboardView(),
         calloutConfig: CalloutConfig(
           cId: "floating-clipboard",
           initialCalloutW: 300,
           initialCalloutH: 180,
-          initialCalloutPos: Offset(fco.scrW - 400, 0),
+          initialCalloutPos: Offset(scrW - 400, 0),
           fillColor: Colors.transparent,
           arrowType: ArrowType.NONE,
           borderRadius: 16,
@@ -563,7 +571,7 @@ class FlutterContentMixins
   //         }
   //       }
   //     } catch (e) {
-  //       fco.logi("_parseImageTargets(): ${e.toString()}");
+  //       logi("_parseImageTargets(): ${e.toString()}");
   //       rethrow;
   //     }
   //   }
@@ -607,8 +615,8 @@ class FlutterContentMixins
 //         snippetMap[rootNode.name] = rootNode..validateTree();
 //       }
 //     } catch (e) {
-//       fco.logi("parseSnippetJsons(): ${e.toString()}");
-//       fco.logi(snippetJson);
+//       logi("parseSnippetJsons(): ${e.toString()}");
+//       logi(snippetJson);
 //       // rethrow;
 //     }
 //     return snippetMap;

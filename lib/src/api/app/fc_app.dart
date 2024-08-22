@@ -82,8 +82,8 @@ class FlutterContentApp extends StatefulWidget {
   // static void removeAllPinkSnippetOverlays() {
   //   return;
   // for (String panelName in CAPIState.snippetPanelGkMap.keys) {
-  //   Callout.dismiss('$panelName-pink-overlay');
-  //   Callout.dismiss('$panelName-panel-name-callout');
+  //   fco.dismiss('$panelName-pink-overlay');
+  //   fco.dismiss('$panelName-panel-name-callout');
   // }
   // }
 
@@ -97,7 +97,7 @@ class FlutterContentApp extends StatefulWidget {
   //   if (rect != null) {
   //     fco.logi('$panelName ${rect.toString()}');
   //     // overlay rect with a transparent pink rect, and a 3px surround
-  //     fca.showOverlay(
+  //     fco.showOverlay(
   //       ensureLowestOverlay: true,
   //       calloutContentF: (context) => InkWell(
   //         onTap: () {
@@ -154,7 +154,7 @@ class FlutterContentApp extends StatefulWidget {
   //     }
   //     String? rootSnippetName = CAPIState.snippetPlacementMap[panelName];
   //     if (rootSnippetName != null) {
-  //       fca.showOverlay(
+  //       fco.showOverlay(
   //         ensureLowestOverlay: true,
   //         calloutContentF: (context) => InkWell(
   //           onTap: () {
@@ -251,6 +251,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
 
     // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
+    debugPrint("_initApp() before init()");
     CAPIBloC capiBloc = await fco.init(
       modelName: widget.appName,
       fbOptions: widget.fbOptions,
@@ -265,6 +266,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
       ),
       initialRoutePath: widget.initialRoutePath,
     );
+    debugPrint("_initApp() after");
     STreeNode.hideAllTargetCovers();
     // trigger another build
     fco.afterNextBuildDo(() {
@@ -295,6 +297,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
               child: MaterialApp.router(
                 routerConfig: fco.router,
                 theme: widget.materialAppThemeF(),
+                darkTheme: ThemeData.dark(),
+                // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
                 debugShowCheckedModeBanner: false,
                 title: widget.title,
                 scrollBehavior: ConstantScrollBehavior(),

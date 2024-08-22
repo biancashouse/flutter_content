@@ -24,7 +24,7 @@ class TargetCover extends StatelessWidget {
     // in case initialTC replaced by a build ? huh!
     // if (tc != null) {
     // double radius = tc.radius;
-    bool preventDrag = Callout.anyPresent([CalloutConfigToolbar.CID]);
+    bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
     return fco.canEditContent
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),

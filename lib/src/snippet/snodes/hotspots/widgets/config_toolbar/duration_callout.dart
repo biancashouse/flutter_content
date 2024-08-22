@@ -5,12 +5,12 @@ import 'package:flutter_content/flutter_content.dart';
 import 'numberic_keypad.dart';
 
 
-bool isShowingTargetDurationCallout() => Callout.anyPresent(["duration"]);
+bool isShowingTargetDurationCallout() => fco.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
-  if (Callout.anyPresent(["duration"])) {
+  if (fco.anyPresent(["duration"])) {
     fco.logi("removeStartTimeCallout");
-    Callout.dismiss("duration");
+    fco.dismiss("duration");
   }
 }
 
@@ -24,14 +24,14 @@ Future<void> showTargetDurationCallout(
   //     :
   fco.getTargetGk(tc.uid);
 
-  fca.showOverlay(
+  fco.showOverlay(
       targetGkF: () => targetGK,
       calloutContent: NumericKeypad(
             label: 'onscreen duration (ms)',
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
               tc.calloutDurationMs = int.tryParse(s)??0;
-              Callout.dismiss("duration");
+              fco.dismiss("duration");
             },
           ),
       calloutConfig: CalloutConfig(

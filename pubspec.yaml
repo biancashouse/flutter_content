@@ -30,7 +30,7 @@ dependencies:
   json_annotation: ^4.8.1
   cupertino_icons: ^1.0.2
   freezed: ^2.5.2
-  freezed_annotation: ^2.2.0
+  freezed_annotation: ^2.4.4
   transparent_pointer: ^1.0.0
   dotted_border: ^2.0.0+2
   image_network: ^2.5.1
@@ -53,7 +53,7 @@ dependencies:
   pointer_interceptor: ^0.10.1
   multi_split_view: ^3.1.0
   # compals
-  url_launcher: ^6.2.5
+  url_launcher: ^6.3.0
 #  intl: 0.19.0
 #  timeago: ^3.6.1
   #flutter_polls: ^0.1.5
@@ -107,7 +107,7 @@ dev_dependencies:
   vector_math: ^2.1.2
   text_editor: ^0.7.0
   bloc_test: ^9.1.1
-  flutter_lints: ^4.0.0
+  flutter_lints: any
   build_runner: ^2.4.9
   json_serializable: ^6.5.3
   dart_mappable_builder: ^4.2.2

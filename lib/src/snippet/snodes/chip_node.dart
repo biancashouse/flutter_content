@@ -206,7 +206,7 @@ class ChipNode extends CL with ChipNodeMappable {
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
-            () => fca.showOverlay(
+            () => fco.showOverlay(
             targetGkF: () => fco.getCalloutGk(feature),
             calloutContent: SnippetPanel.fromSnippet(
               panelName: calloutConfigGroup!.contentSnippetName!,
@@ -227,7 +227,7 @@ class ChipNode extends CL with ChipNodeMappable {
               barrier: CalloutBarrier(
                 opacity: 0.1,
                 onTappedF: () async {
-                  Callout.dismiss(feature!);
+                  fco.dismiss(feature!);
                 },
               ),
               fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,

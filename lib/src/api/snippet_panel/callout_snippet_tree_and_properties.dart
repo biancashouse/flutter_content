@@ -8,13 +8,13 @@ import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-// void removeSnippetTreeCallout(String snippetName) => Callout.removeOverlay(snippetName);
+// void removeSnippetTreeCallout(String snippetName) => fco.removeOverlay(snippetName);
 //
-// void hideSnippetTreeCallout(String snippetName) => Callout.hideOverlay(snippetName);
+// void hideSnippetTreeCallout(String snippetName) => fco.hideOverlay(snippetName);
 //
-// void unhideSnippetTreeCallout(String snippetName) => Callout.unhideOverlay(snippetName);
+// void unhideSnippetTreeCallout(String snippetName) => fco.unhideOverlay(snippetName);
 //
-// void refreshSnippetTreeCallout(String snippetName) => Callout.refreshOverlay(snippetName);
+// void refreshSnippetTreeCallout(String snippetName) => fco.refreshOverlay(snippetName);
 
 CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
   double width() {
@@ -51,7 +51,7 @@ CalloutConfig snippetTreeCalloutConfig(VoidCallback onDismissedF) {
 // onHiddenF: () {
 //   STreeNode.unhighlightSelectedNode();
 //   FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-//   Callout.dismiss(TREENODE_MENU_CALLOUT);
+//   fco.dismiss(TREENODE_MENU_CALLOUT);
 //   MaterialAppWrapper.showAllPinkSnippetOverlays();
 //   if (snippetBloc.state.canUndo()) {
 //     FCO.capiBloc.add(const CAPIEvent.saveModel());
@@ -106,7 +106,7 @@ void showSnippetTreeAndPropertiesCallout({
   if (rootNode == null) return;
 
   // dismiss any pink border overlays
-  Callout.dismissAll(exceptFeatures: [
+  fco.dismissAll(exceptFeatures: [
       rootNode.name,
       CalloutConfigToolbar.CID,
       targetBeingConfigured?.contentCId ?? 'n/a'
@@ -121,7 +121,7 @@ void showSnippetTreeAndPropertiesCallout({
   // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
   CalloutConfig cc = snippetTreeCalloutConfig(onDismissedF);
-  fca.showOverlay(
+  fco.showOverlay(
     calloutConfig: cc,
     calloutContent: SnippetTreeAndPropertiesCalloutContents(
       scrollControllerName:   scrollControllerName,
@@ -144,9 +144,9 @@ void showSnippetTreeAndPropertiesCallout({
 // void _clearSelection() {
 //   fco.logi("clear selection");
 //   snippetBloc.add(const SnippetEvent.clearNodeSelection());
-//   Callout.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
-//   Callout.removeOverlay(TREENODE_MENU_CALLOUT);
-//   Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
+//   fco.removeOverlay(SELECTED_NODE_BORDER_CALLOUT);
+//   fco.removeOverlay(TREENODE_MENU_CALLOUT);
+//   fco.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
 //   // fco.afterNextBuildDo(() {
 //   //   refreshSnippetTreeCallout(snippetName);
 //   // });

@@ -68,7 +68,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
                   onChanged: (newFamily) {
                     widget.onChangeF.call(newFamily);
                     fco.afterMsDelayDo(500, () {
-                      Callout.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+                      fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
                     });
                   },
                 );

@@ -74,7 +74,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           tc.changed_saveRootSnippet();
                           STreeNode.showAllTargetBtns();
                           STreeNode.showAllTargetCovers();
-                          // Callout.dismiss(CalloutConfigToolbar.CID);
+                          // fco.dismiss(CalloutConfigToolbar.CID);
                           showSnippetContentCallout(
                             tc: tc,
                             justPlaying: false,
@@ -278,7 +278,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     snippetName: rootNode.name, // tc.snippetName,
                     rootNode: rootNode,
                   );
-                  Callout.dismiss(CalloutConfigToolbar.CID);
+                  fco.dismiss(CalloutConfigToolbar.CID);
                   removeSnippetContentCallout(tc);
                   tc.targetsWrapperState()?.zoomer?.resetTransform(
                       afterTransformF: () {
@@ -299,7 +299,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 color: Colors.white,
               ),
               onPressed: () {
-                Callout.dismiss(CalloutConfigToolbar.CID);
+                fco.dismiss(CalloutConfigToolbar.CID);
                 tc.targetsWrapperState()?.refresh(() {
                   tc.targetsWrapperState()?.zoomer?.resetTransform(
                       afterTransformF: () {
@@ -334,7 +334,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         onPressed: () {
           fco.calloutConfigToolbarAtTopOfScreen =
               !fco.calloutConfigToolbarAtTopOfScreen;
-          Callout.dismiss(CalloutConfigToolbar.CID);
+          fco.dismiss(CalloutConfigToolbar.CID);
           TargetsWrapper.showConfigToolbar(
             widget.tc,
             widget.wrapperRect,

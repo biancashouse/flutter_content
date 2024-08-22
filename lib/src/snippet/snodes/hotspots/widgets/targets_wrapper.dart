@@ -98,8 +98,8 @@ class TargetsWrapper extends StatefulWidget {
     Rect wrapperRect,
     final String? scrollControllerName,
   ) {
-    Callout.dismiss(CalloutConfigToolbar.CID);
-    fca.showOverlay(
+    fco.dismiss(CalloutConfigToolbar.CID);
+    fco.showOverlay(
       calloutConfig: CalloutConfig(
         cId: CalloutConfigToolbar.CID,
         scrollControllerName: scrollControllerName,
@@ -122,7 +122,7 @@ class TargetsWrapper extends StatefulWidget {
         onCloseF: () {
           tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
           removeSnippetContentCallout(tc);
-          // Callout.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
+          // fco.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
       ),
     );
@@ -248,7 +248,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
 
         // ignore drags when toolbar showing
-        if (Callout.anyPresent([CalloutConfigToolbar.CID])) {
+        if (fco.anyPresent([CalloutConfigToolbar.CID])) {
           refresh(() {});
           return;
         };
@@ -340,7 +340,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   ),
                 );
               },
-              onAcceptWithDetails: Callout.anyPresent([CalloutConfigToolbar.CID])
+              onAcceptWithDetails: fco.anyPresent([CalloutConfigToolbar.CID])
               ? null: droppedBtnOrCover,
             ),
 

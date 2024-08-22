@@ -7,20 +7,20 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(TargetModel tc) =>
-    Callout.anyPresent([tc.contentCId]);
+    fco.anyPresent([tc.contentCId]);
 
-void hideSnippetCallout(TargetModel tc) => Callout.hide(tc.contentCId);
+void hideSnippetCallout(TargetModel tc) => fco.hide(tc.contentCId);
 
-void unhideSnippetCallout(TargetModel tc) => Callout.unhide(tc.contentCId);
+void unhideSnippetCallout(TargetModel tc) => fco.unhide(tc.contentCId);
 
 void removeSnippetContentCallout(TargetModel tc) {
-  // if (Callout.anyPresent([tc.contentCId])) {
-  Callout.dismiss(tc.contentCId);
+  // if (fco.anyPresent([tc.contentCId])) {
+  fco.dismiss(tc.contentCId);
   // }
 }
 
 void refreshSnippetContentCallout(TargetModel tc) {
-  Callout.rebuild(tc.contentCId);
+  fco.rebuild(tc.contentCId);
 }
 
 /// returning false means user tapped the x
@@ -76,7 +76,7 @@ Future<void> showSnippetContentCallout({
             targetBeingConfigured: tc,
           );
           fco.afterMsDelayDo(2000, (){
-            Callout.refresh(tc.contentCId);
+            fco.refresh(tc.contentCId);
           });
         },
         child: Container(
@@ -94,7 +94,7 @@ Future<void> showSnippetContentCallout({
   Widget _possiblyEditableContent() =>
       fco.canEditContent && !justPlaying ? editableContent() : content();
 
-  fca.showOverlay(
+  fco.showOverlay(
     // zoomer: zoomer,
     targetGkF: targetGK,
     calloutContent: PointerInterceptor(
@@ -158,13 +158,13 @@ Future<void> showSnippetContentCallout({
       // barrierOpacity: .1,
       // onBarrierTappedF: () async {
       //   onBarrierTappedF?.call();
-      //   Callout.removeOverlay(feature);
+      //   fco.removeOverlay(feature);
       // },
       notUsingHydratedStorage: true,
       // showCloseButton: true,
       // onTopRightButtonPressF: (){
       //     onBarrierTappedF?.call();
-      //     Callout.removeOverlay(feature);
+      //     fco.removeOverlay(feature);
       // }
       onDismissedF: () {
         // FCO.parentTW(twName)?.zoomer?.resetTransform();

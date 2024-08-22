@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 
 class PropertyCalloutButton extends StatelessWidget {
   final Feature cId;
@@ -57,7 +58,7 @@ class PropertyCalloutButton extends StatelessWidget {
         opacity: .1,
         onTappedF: () async {
           // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
-          Callout.dismiss(cId);
+          fco.dismiss(cId);
         },
       ),
       containsTextField: true,
@@ -72,7 +73,7 @@ class PropertyCalloutButton extends StatelessWidget {
       targetChangedNotifier: notifier,
       targetBuilderF: (ctx) => GestureDetector(
         onTap: (){
-          Callout.unhideParentCallout(ctx, animateSeparation: false);
+          fco.unhideParentCallout(ctx, animateSeparation: false);
         },
         child: Tooltip(message: cId,
           child: Container(

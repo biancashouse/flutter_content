@@ -62,7 +62,7 @@ class FilePickerPopupMenu extends StatefulWidget {
         // } else {
         //   widget.flowchart.editingPageState?.editorBloc.add(EditorEvent.flowchartImageChanged(newBytes: file.bytes, skipUndoCreation: true));
         // }
-        Callout.dismissAll();
+        fco.dismissAll();
       }
     }
     // FCO.om.showCircularProgressIndicator(false, reason: 'Picked an Image');
@@ -82,18 +82,18 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
     // TODO
     // widget.tc.imageUrlFocusNode().addListener(() {
     //   fco.logi("Has focus: ${widget.tc.imageUrlFocusNode().hasFocus}");
-    //   // fco.logi("Callout.anyPresent([-4] is ${Callout.anyPresent([-4])}");
+    //   // fco.logi("fco.anyPresent([-4] is ${fco.anyPresent([-4])}");
     // });
     //
     // widget.tc.imageUrlFocusNode().onKey = (node, event) {
     //   if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
     //     node.unfocus();
-    //     Callout.removeOverlay(CAPI.PICK_IMAGE.feature(), true);
+    //     fco.removeOverlay(CAPI.PICK_IMAGE.feature(), true);
     //     return KeyEventResult.handled;
     //   }
     //   if (event.isKeyPressed(LogicalKeyboardKey.escape)) {
     //     node.unfocus();
-    //     Callout.removeOverlay(CAPI.PICK_IMAGE.feature(), false);
+    //     fco.removeOverlay(CAPI.PICK_IMAGE.feature(), false);
     //     // Do something
     //     // Next 2 line needed If you don't want to update the text field with new line.
     //     return KeyEventResult.handled;

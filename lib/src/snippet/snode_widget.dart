@@ -102,7 +102,7 @@ class NodeWidget extends StatelessWidget {
       onDoubleTap: () {
         if (entry.node is! SnippetRootNode) return;
 
-        Callout.dismissAll();
+        fco.dismissAll();
 
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
@@ -130,19 +130,19 @@ class NodeWidget extends StatelessWidget {
           treeController.expand(entry.node);
         }
 
-        Callout.dismiss(TREENODE_MENU_CALLOUT);
+        fco.dismiss(TREENODE_MENU_CALLOUT);
 
         bool thisWasAlreadySelected = (entry.node == FlutterContentApp.selectedNode);
 
         if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
             thisWasAlreadySelected) {
-          Callout.hide("floating-clipboard");
-          Callout.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+          fco.hide("floating-clipboard");
+          fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
           FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
         } else if (!FlutterContentApp.snippetBeingEdited!.aNodeIsSelected ||
             !thisWasAlreadySelected) {
           if (fco.clipboard != null) {
-            Callout.unhide("floating-clipboard");
+            fco.unhide("floating-clipboard");
           }
           FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
           fco.afterNextBuildDo(() {
@@ -212,7 +212,7 @@ class NodeWidget extends StatelessWidget {
       // if (onClipboard) return;
       //
       // // removeNodePropertiesCallout();
-      // Callout.dismiss(TREENODE_MENU_CALLOUT);
+      // fco.dismiss(TREENODE_MENU_CALLOUT);
       //
       // snippetBloc.add(SnippetEvent.selectNode(
       //   node: entry.node,
@@ -258,7 +258,7 @@ class NodeWidget extends StatelessWidget {
       //     height: FCO.scrH * .8,
       //     minHeight: 60,
       //     onBarrierTappedF: () async {
-      //       Callout.removeOverlay(CAPI.SOURCE_CODE.index);
+      //       fco.removeOverlay(CAPI.SOURCE_CODE.index);
       //     },
       //   ).show();
       // },
@@ -309,7 +309,7 @@ class NodeWidget extends StatelessWidget {
   //     });
   //   }
   //   if (FCO.capiBloc.state.jsonClipboard != null) {
-  //     Callout.unhide("floating-clipboard");
+  //     fco.unhide("floating-clipboard");
   //   }
   // }
 
@@ -368,11 +368,11 @@ class NodeWidget extends StatelessWidget {
 //       onDismissedF: () {
 //         // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
 //         STreeNode.unhighlightSelectedNode();
-//         Callout.dismiss('selected-panel-border-overlay');
+//         fco.dismiss('selected-panel-border-overlay');
 //         FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
 //         FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
 //         // removeNodePropertiesCallout();
-//         Callout.dismiss(TREENODE_MENU_CALLOUT);
+//         fco.dismiss(TREENODE_MENU_CALLOUT);
 //         MaterialAppWrapperState.exitEditMode();
 //         if (snippetBeingEdited.state.canUndo()) {
 //           FCO.capiBloc.add(const CAPIEvent.saveModel());

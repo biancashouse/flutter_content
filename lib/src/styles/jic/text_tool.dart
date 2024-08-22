@@ -112,8 +112,8 @@
 //
 //   void onTextStyleEdited(TextStyle newTS) {
 //     widget.tc.setTextStyle(newTS);
-// // Callout.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
-// //     Callout.refreshOverlay(CAPI.HELP_CONTENT_TOOLBAR_CALLOUT.feature(), () {});
+// // fco.refreshOverlay(CAPI.STYLES_CALLOUT.feature(), () {});
+// //     fco.refreshOverlay(CAPI.HELP_CONTENT_TOOLBAR_CALLOUT.feature(), () {});
 // // removeTextEditorCallout();
 // // fco.afterMsDelayDo(50, () {
 // //   showTextEditorCallout(tc, ancestorScrollC);

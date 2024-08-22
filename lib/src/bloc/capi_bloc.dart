@@ -282,7 +282,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //
   //   final stopwatch = Stopwatch()..start();
   //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-  //   Callout.showTextToast(
+  //   fco.showTextToast(
   //     cId: "saving-model",
   //     msgText: 'saving changes...',
   //     backgroundColor: Colors.yellow,
@@ -321,7 +321,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //     await Future.delayed(
   //         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
   //   }
-  //   Callout.dismissAll(onlyToasts: true);
+  //   fco.dismissAll(onlyToasts: true);
   //   // update last value
   //   if (!event.dontEmit) {
   //     emit(state.copyWith(
@@ -334,7 +334,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // Future<void> _switchBranch(SwitchBranch event, emit) async {
   //   final stopwatch = Stopwatch()..start();
   //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-  //   Callout.showTextToast(
+  //   fco.showTextToast(
   //     cId: "saving-model",
   //     msgText: 'saving changes...',
   //     backgroundColor: Colors.yellow,
@@ -352,13 +352,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //     await Future.delayed(
   //         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
   //   }
-  //   Callout.dismissAll(onlyToasts: true);
+  //   fco.dismissAll(onlyToasts: true);
   //   // update last value
   // }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
-    fca.showToast(
+    fco.showToast(
       calloutConfig: CalloutConfig(
         cId: "reverting-model",
         gravity: Alignment.topCenter,
@@ -383,7 +383,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     }
 
-    Callout.dismissAll(onlyToasts: true);
+    fco.dismissAll(onlyToasts: true);
 
     emit(state.copyWith(
       force: state.force + 1,
@@ -392,7 +392,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
-    fca.showToast(
+    fco.showToast(
       calloutConfig: CalloutConfig(
         cId: "publishing-version",
         gravity: Alignment.topCenter,
@@ -416,7 +416,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     }
 
-    Callout.dismissAll(onlyToasts: true);
+    fco.dismissAll(onlyToasts: true);
     // await FC.loadLatestSnippetMap();
     //
     // emit(state.copyWith(
@@ -698,7 +698,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 //   bloc.add(CAPIEvent.clearSelection());
 //   if (aTargetIsSelected(widget.name)) {
 //     transformationController.removeListener(_onChangeTransformation);
-//     Callout.removeOverlayCalloutByFeature(CAPI.ANY_TOAST.feature(featureSeed), true);
+//     fco.removeOverlayCalloutByFeature(CAPI.ANY_TOAST.feature(featureSeed), true);
 //     targetListGK.currentState?.setState(() {
 //       //measureIVchild();
 //       Callout? targetCallout = FCO.om.findCallout(CAPI.TARGET_CALLOUT.feature((featureSeed), selectedTargetIndex));
@@ -874,12 +874,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // }
 
 // void _refreshToolCallouts() {
-//   // Callout.moveToByFeature(CAPI.BUTTONS_CALLOUT.feature(), buttonsCalloutInitialPos());
+//   // fco.moveToByFeature(CAPI.BUTTONS_CALLOUT.feature(), buttonsCalloutInitialPos());
 //   Callout? listViewCallout = FCO.om.findCallout(CAPI.TARGET_LISTVIEW_CALLOUT.feature());
-//   Callout.moveToByFeature(
+//   fco.moveToByFeature(
 //       CAPI.TARGET_LISTVIEW_CALLOUT.feature(), targetListCalloutInitialPos(widget.child is Scaffold, listViewCallout?.calloutH ?? 200));
 //   bool? b = tseGK.currentState?.minimise;
-//   Callout.moveToByFeature(CAPI.STYLES_CALLOUT.feature(), stylesCalloutInitialPos(b ?? true));
+//   fco.moveToByFeature(CAPI.STYLES_CALLOUT.feature(), stylesCalloutInitialPos(b ?? true));
 // }
 
 // Map<String, TargetModel> _parseTargets(CAPIModel model) {

@@ -1,7 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
@@ -29,8 +28,8 @@ import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart'
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
-import 'pnodes/enums/mappable_enum_decoration.dart';
 import 'pnodes/enums/enum_flex_fit.dart';
+import 'pnodes/enums/mappable_enum_decoration.dart';
 import 'pnodes/groups/button_style_group.dart';
 import 'pnodes/groups/outlined_border_group.dart';
 import 'snodes/upto6color_values.dart';
@@ -60,11 +59,11 @@ abstract class PTreeNode extends Node {
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }
 
-  static Callout get selectedPropertyWidget => _selectedPropertyWidget;
+  // static Callout get selectedPropertyWidget => _selectedPropertyWidget;
 
-  static set selectedPropertyWidget(Callout newObj) => _selectedPropertyWidget = newObj;
+  // static set selectedPropertyWidget(Callout newObj) => _selectedPropertyWidget = newObj;
 
-  static late Callout _selectedPropertyWidget;
+  // static late Callout _selectedPropertyWidget;
   static final GlobalKey _selectedPropertyGK = GlobalKey(debugLabel: "PTreeNode.selectionGK");
 }
 
@@ -716,7 +715,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //               label: name,
 //               onDoneF: (s) {
 //                 if (stringValue != s) onStringChange.call(stringValue = s);
-//                 Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
+//                 fco.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
 //               },
 //               skipLabelText: skipLabelText,
 //               skipHelperText: skipHelperText,
@@ -737,7 +736,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             //   },
 //             //   onDoneF: () {
 //             //     fco.afterMsDelayDo(500, () {
-//             //       Callout.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
+//             //       fco.removeOverlay(NODE_PROPERTY_CALLOUT_BUTTON);
 //             //     });
 //             //   },
 //             // ),
@@ -812,8 +811,8 @@ class StringPropertyValueNode extends PTreeNode {
         // calloutSize: calloutSize,
         propertyBtnGK: GlobalKey(debugLabel: ''),
         onChangeF: (s) {
-          Callout.dismiss('matches');
-          Callout.dismiss('te');
+          fco.dismiss('matches');
+          fco.dismiss('te');
           onStringChange(stringValue = s);
         });
   }
@@ -865,8 +864,8 @@ class StringPropertyValueNode extends PTreeNode {
 //         calloutSize: Size(calloutWidth, numLines * 28 + 52),
 //         propertyBtnGK: GlobalKey(debugLabel: 'snippetName property'),
 //         onChangeF: (s) {
-//           Callout.dismiss('matches');
-//           Callout.dismiss('te');
+//           fco.dismiss('matches');
+//           fco.dismiss('te');
 //           onStringChange(stringValue = s);
 //         });
 //   }

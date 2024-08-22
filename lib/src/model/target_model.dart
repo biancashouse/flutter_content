@@ -287,9 +287,9 @@ class TargetModel with TargetModelMappable {
   Future<void> changed_saveRootSnippet() async {
     SnippetRootNode? rootNode = parentHotspotNode?.rootNodeOfSnippet();
     if (rootNode != null) {
-      Callout.dismissAll(onlyToasts: true);
+      fco.dismissAll(onlyToasts: true);
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
-      fca.showToast(
+      fco.showToast(
         removeAfterMs: 500,
         calloutConfig: CalloutConfig(
           cId: "saving-model",
@@ -305,7 +305,7 @@ class TargetModel with TargetModelMappable {
       );
       await fco.cacheAndSaveANewSnippetVersion(
           snippetName: rootNode.name, rootNode: rootNode);
-      Callout.dismiss("saving-model");
+      fco.dismiss("saving-model");
     }
 
     // emit(state.copyWith(
