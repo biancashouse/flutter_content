@@ -190,8 +190,9 @@ class EditablePageState extends State<EditablePage> {
                     IconButton(
                       tooltip: 'sign out',
                       onPressed: () async {
-                        if (!fco.anyPresent([CalloutConfigToolbar.CID]))
+                        if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
                           _signOut();
+                        }
                       },
                       icon: const Icon(
                         Icons.close,
@@ -307,9 +308,9 @@ class EditablePageState extends State<EditablePage> {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
-              node.toString(),
-              r,
-              widget.routePath,
+              nodeTypeName: node.toString(),
+              r: r,
+              scrollControllerName: widget.routePath,
             );
           }
         }

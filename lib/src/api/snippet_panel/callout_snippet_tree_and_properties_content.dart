@@ -269,7 +269,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                           builder: (context, state) {
                         fco.logi('Area: SnippetTreePane');
                         state.snippetBeingEdited?.treeC.rebuild();
-                        return SnippetTreePane();
+                        return const SnippetTreePane();
                       }),
                     );
                   },
@@ -550,7 +550,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               ),
             ),
           editTreeStructureIconButtons(selectedNode),
-          Gap(10),
+          const Gap(10),
         ],
       ),
     );
@@ -616,7 +616,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               action: NodeAction.addSiblingBefore,
                               tooltip: 'Insert sibling before...',
                               bgColor: Colors.blue),
-                          Gap(12),
+                          const Gap(12),
                           // selectedNode is RowNode
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
@@ -680,7 +680,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 }
 
 class SnippetTreePane extends StatelessWidget {
-  SnippetTreePane({super.key});
+  const SnippetTreePane({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -751,12 +751,12 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (canShowNavigateUpBtn) navigateUpTreeButton(context),
-                      Expanded(child: SnippetTreeView()),
+                      const Expanded(child: SnippetTreeView()),
                     ],
                   );
                 }
                 fco.logi('SnippetTreeView...');
-                return SnippetTreeView();
+                return const SnippetTreeView();
               }),
             ),
           ),
@@ -869,9 +869,10 @@ class SnippetTreeView extends StatelessWidget {
         // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // fco.logi("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node) return const Offstage();
-        if (entry.node == FlutterContentApp.selectedNode)
+        if (entry.node == FlutterContentApp.selectedNode) {
           fco.logi(
               'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
+        }
         // never show the tree root node
         return true //entry.node is! SnippetRootNode && entry.node != treeC.roots.firstOrNull
             ? TreeIndentation(

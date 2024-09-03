@@ -307,12 +307,12 @@ class FCStepper extends StatefulWidget {
   /// Customize connected lines colors.
   ///
   /// Resolves in the following states:
-  ///  * [MaterialState.selected].
-  ///  * [MaterialState.disabled].
+  ///  * [WidgetState.selected].
+  ///  * [WidgetState.disabled].
   ///
   /// If not set then the widget will use default colors, primary for selected state
   /// and grey.shade400 for disabled state.
-  final MaterialStateProperty<Color>? connectorColor;
+  final WidgetStateProperty<Color>? connectorColor;
 
   /// The thickness of the connecting lines.
   final double? connectorThickness;
@@ -383,8 +383,8 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
 
   Color _connectorColor(bool isActive) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Set<MaterialState> states = <MaterialState>{
-      if (isActive) MaterialState.selected else MaterialState.disabled,
+    final Set<WidgetState> states = <WidgetState>{
+      if (isActive) WidgetState.selected else WidgetState.disabled,
     };
     final Color? resolvedConnectorColor = widget.connectorColor?.resolve(states);
     if (resolvedConnectorColor != null) {
@@ -435,8 +435,8 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
   Color _circleColor(int index) {
     final bool isActive = widget.steps[index].isActive;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Set<MaterialState> states = <MaterialState>{
-      if (isActive) MaterialState.selected else MaterialState.disabled,
+    final Set<WidgetState> states = <WidgetState>{
+      if (isActive) WidgetState.selected else WidgetState.disabled,
     };
     final Color? resolvedConnectorColor = widget.connectorColor?.resolve(states);
     if (resolvedConnectorColor != null) {
@@ -445,7 +445,7 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
     if (!_isDark()) {
       return isActive ? colorScheme.primary : colorScheme.onSurface.withOpacity(0.38);
     } else {
-      return isActive ? colorScheme.secondary : colorScheme.background;
+      return isActive ? colorScheme.secondary : colorScheme.surface;
     }
   }
 
@@ -552,11 +552,11 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
               TextButton(
                 onPressed: widget.onStepContinue,
                 style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    return states.contains(MaterialState.disabled) ? null : (_isDark() ? colorScheme.onSurface : colorScheme.onPrimary);
+                  foregroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                    return states.contains(WidgetState.disabled) ? null : (_isDark() ? colorScheme.onSurface : colorScheme.onPrimary);
                   }),
-                  backgroundColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    return _isDark() || states.contains(MaterialState.disabled) ? null : colorScheme.primary;
+                  backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+                    return _isDark() || states.contains(WidgetState.disabled) ? null : colorScheme.primary;
                   }),
                   padding: const WidgetStatePropertyAll<EdgeInsetsGeometry>(buttonPadding),
                   shape: const WidgetStatePropertyAll<OutlinedBorder>(buttonShape),

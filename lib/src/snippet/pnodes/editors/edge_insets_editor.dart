@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -95,7 +94,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: PropertyButtonNumber<double>(
                     originalValue: ei.value.top,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'top: ', style: TextStyle(color: Colors.white), children: [
+                      text: TextSpan(text: 'top: ', style: const TextStyle(color: Colors.white), children: [
                         TextSpan(
                           text: '${ei.value.top}',
                           style: const TextStyle(color: Colors.cyanAccent),
@@ -125,7 +124,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: PropertyButtonNumber<double>(
                     originalValue: ei.value.left,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'left: ', style: TextStyle(color: Colors.white), children: [
+                      text: TextSpan(text: 'left: ', style: const TextStyle(color: Colors.white), children: [
                         TextSpan(
                           text: '${ei.value.left}',
                           style: const TextStyle(color: Colors.cyanAccent),
@@ -155,7 +154,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: PropertyButtonNumber<double>(
                     originalValue: ei.value.right,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'right: ', style: TextStyle(color: Colors.white), children: [
+                      text: TextSpan(text: 'right: ', style: const TextStyle(color: Colors.white), children: [
                         TextSpan(
                           text: '${ei.value.right}',
                           style: const TextStyle(color: Colors.cyanAccent),
@@ -185,7 +184,7 @@ class EdgeInsetsPropertyEditor extends HookWidget {
                   child: PropertyButtonNumber<double>(
                     originalValue: ei.value.bottom,
                     labelWidget: RichText(
-                      text: TextSpan(text: 'bottom: ', style: TextStyle(color: Colors.white), children: [
+                      text: TextSpan(text: 'bottom: ', style: const TextStyle(color: Colors.white), children: [
                         TextSpan(
                           text: '${ei.value.bottom}',
                           style: const TextStyle(color: Colors.cyanAccent),

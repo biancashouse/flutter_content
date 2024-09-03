@@ -34,7 +34,6 @@ dependencies:
   transparent_pointer: ^1.0.0
   dotted_border: ^2.0.0+2
   image_network: ^2.5.1
-  #hydrated_bloc: ^9.0.0
   #package_info_plus: ^8.0.0
   #device_info_plus: ^10.1.0
   #universal_platform: ^1.0.0+1
@@ -60,7 +59,7 @@ dependencies:
   flutter_hooks: ^0.20.3
   calendar_date_picker2: ^1.0.1
   auto_size_text_field: ^2.2.2
-#  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   flutter_fancy_tree_view: ^1.4.1
   webview_flutter: ^4.7.0
   webview_flutter_android: ^3.15.0
@@ -89,9 +88,14 @@ dependencies:
   clipboard: ^0.1.3
   url_strategy: 0.2.0
   flex_color_picker: ^3.5.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
   bh_shared:
     path: ../bh_shared
+
+  routing_config_provider:
+    path: ../routing_config_provider
 
   flutter_callouts:
     path: ../flutter_callouts

@@ -251,7 +251,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         if (fco.anyPresent([CalloutConfigToolbar.CID])) {
           refresh(() {});
           return;
-        };
+        }
 
         // get current scrollOffset
       String? editablePageName = EditablePage.name(context);
@@ -285,7 +285,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     //
-    Future<void> _createTarget(TapDownDetails details) async {
+    Future<void> createTarget(TapDownDetails details) async {
       if (!fco.canEditContent) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
@@ -334,7 +334,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                       fco.logi('TAP');
                     },
                     onDoubleTapDown: (TapDownDetails details) async =>
-                        await _createTarget(details),
+                        await createTarget(details),
                     // onLongPressEnd: (LongPressEndDetails details) async =>
                     //     await longPressedeBarrier(details),
                   ),

@@ -129,7 +129,7 @@ class PropertyButton<T> extends StatelessWidget {
                 ? Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: ListView(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       children: [teContent],
                     ),
                 )

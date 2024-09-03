@@ -56,7 +56,7 @@ class StackNode extends MC with StackNodeMappable {
               ? Row(
                   children: [
                     fco.errorIcon(Colors.red),
-                    Gap(10),
+                    const Gap(10),
                     const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
                   ],
                 )

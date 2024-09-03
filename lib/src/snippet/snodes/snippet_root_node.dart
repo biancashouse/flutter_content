@@ -109,7 +109,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                   child: Row(
                     children: [
                       fco.errorIcon(Colors.red),
-                      Gap(10),
+                      const Gap(10),
                       fco.coloredText(e.toString()),
                     ],
                   ),

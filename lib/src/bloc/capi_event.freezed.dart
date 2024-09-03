@@ -35,7 +35,7 @@ mixin _$CAPIEvent {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -98,7 +98,8 @@ mixin _$CAPIEvent {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -151,7 +152,7 @@ mixin _$CAPIEvent {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -429,7 +430,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -495,7 +496,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -551,7 +553,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -859,7 +861,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -925,7 +927,8 @@ class _$OverrideTargetGKImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -981,7 +984,7 @@ class _$OverrideTargetGKImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -1274,7 +1277,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -1340,7 +1343,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -1396,7 +1400,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -1695,7 +1699,7 @@ class _$UpdateClipboardImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -1761,7 +1765,8 @@ class _$UpdateClipboardImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -1817,7 +1822,7 @@ class _$UpdateClipboardImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -2120,7 +2125,7 @@ class _$PublishSnippetImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -2186,7 +2191,8 @@ class _$PublishSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -2242,7 +2248,7 @@ class _$PublishSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -2544,7 +2550,7 @@ class _$RevertSnippetImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -2610,7 +2616,8 @@ class _$RevertSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -2666,7 +2673,7 @@ class _$RevertSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -2962,7 +2969,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -3028,7 +3035,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -3084,7 +3092,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -3375,7 +3383,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -3441,7 +3449,8 @@ class _$AutoPublishDefaultImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -3497,7 +3506,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -3783,7 +3792,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -3849,7 +3858,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -3905,7 +3915,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -4206,7 +4216,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -4272,7 +4282,8 @@ class _$SetPanelSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -4328,7 +4339,7 @@ class _$SetPanelSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -4533,7 +4544,7 @@ abstract class _$$PushSnippetEditorImplCopyWith<$Res> {
           $Res Function(_$PushSnippetEditorImpl) then) =
       __$$PushSnippetEditorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String snippetName, STreeNode? visibleDecendantNode});
+  $Res call({SnippetRootNode rootNode, STreeNode? visibleDecendantNode});
 }
 
 /// @nodoc
@@ -4547,14 +4558,14 @@ class __$$PushSnippetEditorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? snippetName = null,
+    Object? rootNode = null,
     Object? visibleDecendantNode = freezed,
   }) {
     return _then(_$PushSnippetEditorImpl(
-      snippetName: null == snippetName
-          ? _value.snippetName
-          : snippetName // ignore: cast_nullable_to_non_nullable
-              as String,
+      rootNode: null == rootNode
+          ? _value.rootNode
+          : rootNode // ignore: cast_nullable_to_non_nullable
+              as SnippetRootNode,
       visibleDecendantNode: freezed == visibleDecendantNode
           ? _value.visibleDecendantNode
           : visibleDecendantNode // ignore: cast_nullable_to_non_nullable
@@ -4569,16 +4580,16 @@ class _$PushSnippetEditorImpl
     with DiagnosticableTreeMixin
     implements PushSnippetEditor {
   const _$PushSnippetEditorImpl(
-      {required this.snippetName, this.visibleDecendantNode});
+      {required this.rootNode, this.visibleDecendantNode});
 
   @override
-  final String snippetName;
+  final SnippetRootNode rootNode;
   @override
   final STreeNode? visibleDecendantNode;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.pushSnippetEditor(snippetName: $snippetName, visibleDecendantNode: $visibleDecendantNode)';
+    return 'CAPIEvent.pushSnippetEditor(rootNode: $rootNode, visibleDecendantNode: $visibleDecendantNode)';
   }
 
   @override
@@ -4586,7 +4597,7 @@ class _$PushSnippetEditorImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.pushSnippetEditor'))
-      ..add(DiagnosticsProperty('snippetName', snippetName))
+      ..add(DiagnosticsProperty('rootNode', rootNode))
       ..add(DiagnosticsProperty('visibleDecendantNode', visibleDecendantNode));
   }
 
@@ -4595,15 +4606,14 @@ class _$PushSnippetEditorImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PushSnippetEditorImpl &&
-            (identical(other.snippetName, snippetName) ||
-                other.snippetName == snippetName) &&
+            (identical(other.rootNode, rootNode) ||
+                other.rootNode == rootNode) &&
             (identical(other.visibleDecendantNode, visibleDecendantNode) ||
                 other.visibleDecendantNode == visibleDecendantNode));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, snippetName, visibleDecendantNode);
+  int get hashCode => Object.hash(runtimeType, rootNode, visibleDecendantNode);
 
   @JsonKey(ignore: true)
   @override
@@ -4632,7 +4642,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -4679,7 +4689,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return pushSnippetEditor(snippetName, visibleDecendantNode);
+    return pushSnippetEditor(rootNode, visibleDecendantNode);
   }
 
   @override
@@ -4698,7 +4708,8 @@ class _$PushSnippetEditorImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -4735,7 +4746,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return pushSnippetEditor?.call(snippetName, visibleDecendantNode);
+    return pushSnippetEditor?.call(rootNode, visibleDecendantNode);
   }
 
   @override
@@ -4754,7 +4765,7 @@ class _$PushSnippetEditorImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -4793,7 +4804,7 @@ class _$PushSnippetEditorImpl
     required TResult orElse(),
   }) {
     if (pushSnippetEditor != null) {
-      return pushSnippetEditor(snippetName, visibleDecendantNode);
+      return pushSnippetEditor(rootNode, visibleDecendantNode);
     }
     return orElse();
   }
@@ -4943,10 +4954,10 @@ class _$PushSnippetEditorImpl
 
 abstract class PushSnippetEditor implements CAPIEvent {
   const factory PushSnippetEditor(
-      {required final String snippetName,
+      {required final SnippetRootNode rootNode,
       final STreeNode? visibleDecendantNode}) = _$PushSnippetEditorImpl;
 
-  String get snippetName;
+  SnippetRootNode get rootNode;
   STreeNode? get visibleDecendantNode;
   @JsonKey(ignore: true)
   _$$PushSnippetEditorImplCopyWith<_$PushSnippetEditorImpl> get copyWith =>
@@ -5046,7 +5057,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -5112,7 +5123,8 @@ class _$PopSnippetEditorImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -5168,7 +5180,7 @@ class _$PopSnippetEditorImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -5427,7 +5439,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -5493,7 +5505,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -5549,7 +5562,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -5833,7 +5846,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -5899,7 +5912,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -5955,7 +5969,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -6241,7 +6255,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -6307,7 +6321,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -6363,7 +6378,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -6622,7 +6637,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -6688,7 +6703,8 @@ class _$ClearNodeSelectionImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -6744,7 +6760,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -7038,7 +7054,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -7104,7 +7120,8 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -7160,7 +7177,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -7474,7 +7491,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -7540,7 +7557,8 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -7596,7 +7614,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -7910,7 +7928,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -7976,7 +7994,8 @@ class _$WrapSelectionWithImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -8032,7 +8051,7 @@ class _$WrapSelectionWithImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -8376,7 +8395,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -8443,7 +8462,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -8500,7 +8520,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -8819,7 +8839,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -8885,7 +8905,8 @@ class _$AddSiblingBeforeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -8941,7 +8962,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -9255,7 +9276,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -9321,7 +9342,8 @@ class _$AddSiblingAfterImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -9377,7 +9399,7 @@ class _$AddSiblingAfterImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -9672,7 +9694,7 @@ class _$PasteReplacementImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -9738,7 +9760,8 @@ class _$PasteReplacementImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -9794,7 +9817,7 @@ class _$PasteReplacementImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -10097,7 +10120,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -10163,7 +10186,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -10219,7 +10243,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -10482,7 +10506,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -10548,7 +10572,8 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -10604,7 +10629,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -10858,7 +10883,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -10924,7 +10949,8 @@ class _$PasteSiblingAfterImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -10980,7 +11006,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -11234,7 +11260,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -11300,7 +11326,8 @@ class _$DeleteNodeTappedImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -11356,7 +11383,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -11610,7 +11637,7 @@ class _$CompleteDeletionImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -11676,7 +11703,8 @@ class _$CompleteDeletionImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -11732,7 +11760,7 @@ class _$CompleteDeletionImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -12018,7 +12046,7 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -12084,7 +12112,8 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -12140,7 +12169,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -12433,7 +12462,7 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -12499,7 +12528,8 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -12555,7 +12585,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -12849,7 +12879,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -12915,7 +12945,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -12971,7 +13002,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -13266,7 +13297,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -13332,7 +13363,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -13388,7 +13420,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -13692,7 +13724,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -13758,7 +13790,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -13814,7 +13847,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -14112,7 +14145,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -14178,7 +14211,8 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -14234,7 +14268,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -14520,7 +14554,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -14586,7 +14620,8 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -14642,7 +14677,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,
@@ -14903,7 +14938,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
     required TResult Function(
-            String snippetName, STreeNode? visibleDecendantNode)
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
     required TResult Function() showDirectoryTree,
@@ -14969,7 +15004,8 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult? Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
     TResult? Function()? showDirectoryTree,
@@ -15025,7 +15061,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
-    TResult Function(String snippetName, STreeNode? visibleDecendantNode)?
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
     TResult Function()? showDirectoryTree,

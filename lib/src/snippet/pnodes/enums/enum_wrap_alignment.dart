@@ -36,8 +36,8 @@ enum WrapAlignmentEnum {
           onChangedF?.call(newIndex);
         },
         wrap: true,
-        calloutButtonSize: Size(260, 60),
-        calloutSize: Size(140, 380),
+        calloutButtonSize: const Size(260, 60),
+        calloutSize: const Size(140, 380),
       );
 
   List<Widget> allItems(w) => values.map((e) => e.toMenuItem()).toList();

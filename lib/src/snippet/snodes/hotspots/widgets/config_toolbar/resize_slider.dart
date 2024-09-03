@@ -49,10 +49,10 @@ class _ResizeSliderState extends State<ResizeSlider> {
         Expanded(
           child: SliderTheme(
             data: SliderThemeData(
-              activeTrackColor: widget.color ?? Theme.of(context).colorScheme.background,
-              inactiveTrackColor: widget.color ?? Theme.of(context).colorScheme.background,
-              thumbColor: widget.color ?? Theme.of(context).colorScheme.background,
-              overlayColor: widget.color ?? Theme.of(context).colorScheme.background.withOpacity(0.2),
+              activeTrackColor: widget.color ?? Theme.of(context).colorScheme.surface,
+              inactiveTrackColor: widget.color ?? Theme.of(context).colorScheme.surface,
+              thumbColor: widget.color ?? Theme.of(context).colorScheme.surface,
+              overlayColor: widget.color ?? Theme.of(context).colorScheme.surface.withOpacity(0.2),
               trackHeight: 2,
             ),
             child: Slider(

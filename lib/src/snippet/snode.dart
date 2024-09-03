@@ -4,10 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties.dart';
-import 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -222,11 +219,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
-  void showTappableNodeWidgetOverlay(
-    String nodeTypeName,
-    Rect r,
+  void showTappableNodeWidgetOverlay({
+    required String nodeTypeName,
+    required Rect r,
     String? scrollControllerName,
-  ) {
+  }) {
 // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     Rect restrictedRect = fco.restrictRectToScreen(r);
@@ -391,8 +388,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
+    SnippetRootNode? rootNode = fco.currentSnippetVersion(snippetName);
+    if (rootNode == null) return;
     FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(
-      snippetName: snippetName,
+      rootNode: rootNode,
       visibleDecendantNode: highestNode,
     ));
     // fco.afterNextBuildDo(() {
@@ -417,7 +416,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           fco.showFloatingClipboard();
         }
         fco.hide(CalloutConfigToolbar.CID);
-        showSnippetTreeAndPropertiesCallout(
+        fco.showSnippetTreeAndPropertiesCallout(
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
@@ -438,7 +437,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // skip if no change
             String? jsonBeforePush =
                 FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
-            String? currentJsonS = FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
+            String? currentJsonS =
+                FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
             if (jsonBeforePush == currentJsonS) return;
             if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
               fco.cacheAndSaveANewSnippetVersion(

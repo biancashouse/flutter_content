@@ -29,7 +29,7 @@ class SnippetPanel extends StatefulWidget {
   final ScrollController? scrollController;
 
   // effectively from a Template
-  SnippetPanel.fromNodes({
+  const SnippetPanel.fromNodes({
     this.panelName,
     required this.snippetRootNode,
     this.handlers,
@@ -39,7 +39,7 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   }) : snippetName = null;
 
-  SnippetPanel.fromSnippet({
+  const SnippetPanel.fromSnippet({
     this.panelName,
     required this.snippetName,
     this.handlers,
@@ -200,7 +200,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                           child: Row(
                             children: [
                               fco.errorIcon(Colors.red),
-                              Gap(10),
+                              const Gap(10),
                               fco.coloredText(e.toString()),
                             ],
                           ),

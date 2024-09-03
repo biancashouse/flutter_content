@@ -24,11 +24,11 @@ class _PropertyEditorBoolState extends State<PropertyEditorBool> {
 
   @override
   Widget build(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.hovered,
-        MaterialState.focused,
+    Color getColor(Set<WidgetState> states) {
+      const Set<WidgetState> interactiveStates = <WidgetState>{
+        WidgetState.pressed,
+        WidgetState.hovered,
+        WidgetState.focused,
       };
       if (states.any(interactiveStates.contains)) {
         return Colors.orange;
@@ -46,7 +46,7 @@ class _PropertyEditorBoolState extends State<PropertyEditorBool> {
         Checkbox(
           value: isSelected,
           checkColor: Colors.white,
-          fillColor: MaterialStateProperty.resolveWith(getColor),
+          fillColor: WidgetStateProperty.resolveWith(getColor),
           onChanged: (bool? value) {
             setState(() {
               isSelected = value!;

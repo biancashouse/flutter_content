@@ -53,6 +53,16 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<_i5.SnippetInfoModel?>);
 
   @override
+  _i4.Future<void> migrateCollection() => (super.noSuchMethod(
+        Invocation.method(
+          #migrateCollection,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
   _i4.Future<void> possiblyLoadSnippetIntoCache({
     required String? snippetName,
     required String? versionId,

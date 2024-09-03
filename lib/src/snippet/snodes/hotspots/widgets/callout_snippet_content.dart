@@ -91,7 +91,7 @@ Future<void> showSnippetContentCallout({
             child: content()),
       );
 
-  Widget _possiblyEditableContent() =>
+  Widget possiblyEditableContent() =>
       fco.canEditContent && !justPlaying ? editableContent() : content();
 
   fco.showOverlay(
@@ -101,7 +101,7 @@ Future<void> showSnippetContentCallout({
       child: BlocBuilder<CAPIBloC, CAPIState>(
         builder: (context, state) {
           // return const CircularProgressIndicator();
-          var contentWidget = _possiblyEditableContent();
+          var contentWidget = possiblyEditableContent();
           return contentWidget;
         },
       ),

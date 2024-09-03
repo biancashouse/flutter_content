@@ -2,7 +2,6 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 part 'submenu_button_node.mapper.dart';
@@ -59,9 +58,9 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
       key: createNodeGK(),
       style: fco.buttonStyle(36),
       menuStyle: MenuStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.focused)) {
+        backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.focused)) {
               return Theme.of(context).colorScheme.primary.withOpacity(0.5);
             }
             return null; // Use the component's default.

@@ -35,8 +35,8 @@ enum WrapCrossAlignmentEnum  {
           
         },
         wrap: true,
-        calloutButtonSize: Size(260, 70),
-        calloutSize: Size(140, 20),
+        calloutButtonSize: const Size(260, 70),
+        calloutSize: const Size(140, 20),
       );
 
   Widget toMenuItem(bool isRow) {

@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:gap/gap.dart';
 
@@ -102,10 +101,10 @@ class FileNode extends CL with FileNodeMappable {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Gap(10),
+          const Gap(10),
           fco.coloredText(name.isEmpty ? 'filename?' : name,
               color: Colors.blue),
-          Gap(10),
+          const Gap(10),
           driveFileIcon(src),
         ],
       ),

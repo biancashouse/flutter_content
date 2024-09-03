@@ -55,8 +55,8 @@ class GapNode extends CL with GapNodeMappable {
   String toString() => 'gap';
 
   @override
-  Widget? logoSrc() => Row(children: [
-        const Icon(Icons.square_outlined),
+  Widget? logoSrc() => const Row(children: [
+        Icon(Icons.square_outlined),
         Gap(6),
       ]);
 

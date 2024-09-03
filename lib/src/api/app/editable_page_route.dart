@@ -14,12 +14,22 @@ class EditablePageRoute extends GoRoute {
             return true;
           },
           builder: (BuildContext context, GoRouterState state) {
-            String routePath = state.path ?? 'missing route path!';
-            fco.currentRoute = routePath;
-            return EditablePage(
-              key: GlobalKey(), // provides access to state later
-              routePath: state.path!,
-              child: child,
+            return FutureBuilder<void>(
+              future: fco.initLocalStorage(),
+              builder: (ctx, snap) {
+                if (snap.connectionState != ConnectionState.done &&
+                    !snap.hasData) {
+                  return const CircularProgressIndicator();
+                } else {
+                  String routePath = state.path ?? 'missing route path!';
+                  fco.currentRoute = routePath;
+                  return EditablePage(
+                    key: GlobalKey(), // provides access to state later
+                    routePath: state.path!,
+                    child: child,
+                  );
+                }
+              },
             );
           },
         );

@@ -11,6 +11,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
+import 'package:routing_config_provider/routing_config_provider.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
@@ -267,16 +268,17 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
       initialRoutePath: widget.initialRoutePath,
     );
     debugPrint("_initApp() after");
+
     STreeNode.hideAllTargetCovers();
     // trigger another build
-    fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(1000, () async {
-        fco.logi('============================================================================');
-        fco.logi('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
-        fco.logi('============================================================================');
-        fco.forceRefresh();
-      });
-    });
+    // fco.afterNextBuildDo(() {
+    //   fco.afterMsDelayDo(1000, () async {
+    //     fco.logi('============================================================================');
+    //     fco.logi('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
+    //     fco.logi('============================================================================');
+    //     fco.forceRefresh();
+    //   });
+    // });
     return FlutterContentApp._singletonBloc = capiBloc;
   }
 
@@ -301,7 +303,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
                 // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
                 debugShowCheckedModeBanner: false,
                 title: widget.title,
-                scrollBehavior: ConstantScrollBehavior(),
+                scrollBehavior: const ConstantScrollBehavior(),
               ),
             );
           } else {

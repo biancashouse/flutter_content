@@ -2,7 +2,6 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
@@ -93,14 +92,14 @@ class PollNode extends MC with PollNodeMappable {
           optionWidgets.add(optionNode.toWidget(context, this));
         }
         return constraints.maxHeight == double.infinity
-            ? Row(
+            ? const Row(
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.error,
                     color: Colors.red,
                   ),
                   Gap(10),
-                  const Text('Poll has infinite maxHeight constraint!'),
+                  Text('Poll has infinite maxHeight constraint!'),
                 ],
               )
             : FlutterPoll(

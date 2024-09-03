@@ -4,14 +4,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_event.dart';
 import 'package:flutter_content/src/bloc/poll_state.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
 import 'package:gap/gap.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+// import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // FlutterPolls widget.
 // This widget is used to display a poll.
@@ -208,7 +207,7 @@ class FlutterPollState extends State<FlutterPoll> {
 
   Future<PollBloC> _initPoll() async {
     // localstorage
-    voterId = HydratedBloc.storage.read("voter-id");
+    voterId = fco.hiveBox.get("voter-id");
     if (voterId != null) {
       // firestore
       OptionCountsAndVoterRecord result = await FlutterContentApp.capiBloc.modelRepo.getPollResultsForUser(

@@ -2,7 +2,6 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -79,7 +78,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
           return Row(
             children: [
               fco.errorIcon(Colors.red),
-              Gap(10),
+              const Gap(10),
               fco.coloredText('MultiSplitView has infinite constraint!',
                   color: Colors.red),
             ],

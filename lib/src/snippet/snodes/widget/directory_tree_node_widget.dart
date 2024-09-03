@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
@@ -87,7 +86,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
 
   Widget _text() {
     String displayedNodeName = entry.node is SnippetRootNode && ((entry.node as SnippetRootNode).name.isNotEmpty ?? true)
-        ? (entry.node as SnippetRootNode).name!
+        ? (entry.node as SnippetRootNode).name
         : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isNotEmpty ?? true
             ? (entry.node as DirectoryNode).name!
             : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isEmpty ?? true

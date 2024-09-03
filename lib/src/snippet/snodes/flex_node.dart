@@ -80,14 +80,14 @@ abstract class FlexNode extends MC with FlexNodeMappable {
     return w;
   }
 
-  Widget _errorWidget() => Row(
+  Widget _errorWidget() => const Row(
         children: [
-          const Icon(
+          Icon(
             Icons.error,
             color: Colors.red,
           ),
           Gap(10),
-          const Text('Row has infinite maxWidth constraint!'),
+          Text('Row has infinite maxWidth constraint!'),
         ],
       );
 

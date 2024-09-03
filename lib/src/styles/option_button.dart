@@ -21,8 +21,8 @@ class OptionButton extends StatelessWidget {
     return RawMaterialButton(
       constraints: BoxConstraints.tight(size ?? const Size(45, 45)),
       fillColor: fillColor,
-      highlightColor: Theme.of(context).colorScheme.background,
-      splashColor: Theme.of(context).colorScheme.background,
+      highlightColor: Theme.of(context).colorScheme.surface,
+      splashColor: Theme.of(context).colorScheme.surface,
       // fillColor: isActive ? Colors.white:null,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

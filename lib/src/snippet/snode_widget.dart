@@ -1,7 +1,5 @@
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/bloc/capi_state.dart';
@@ -269,7 +267,7 @@ class NodeWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Icon(Icons.folder, size: 30, color: Colors.amber),
-          Gap(6),
+          const Gap(6),
           _text(),
         ],
       )

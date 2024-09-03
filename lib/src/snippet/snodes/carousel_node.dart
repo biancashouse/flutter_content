@@ -1,8 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
-import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
+// import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
+// import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
 part 'carousel_node.mapper.dart';
 
@@ -42,33 +43,38 @@ class CarouselNode extends MC with CarouselNodeMappable {
           snode: this,
           name: 'aspectRatio',
           decimalValue: aspectRatio,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => aspectRatio = newValue ?? 1.0),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => aspectRatio = newValue ?? 1.0),
           calloutButtonSize: const Size(130, 30),
         ),
         IntPropertyValueNode(
             snode: this,
             name: 'autoPlayInterval (secs)',
             intValue: autoPlayIntervalSecs,
-            onIntChange: (newValue) => refreshWithUpdate(() => autoPlayIntervalSecs = newValue ?? 2),
+            onIntChange: (newValue) =>
+                refreshWithUpdate(() => autoPlayIntervalSecs = newValue ?? 2),
             calloutButtonSize: const Size(180, 30),
             viaButton: false),
         BoolPropertyValueNode(
           snode: this,
           name: 'autoPlay',
           boolValue: autoPlay,
-          onBoolChange: (newValue) => refreshWithUpdate(() => autoPlay = newValue ?? true),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => autoPlay = newValue ?? true),
         ),
         BoolPropertyValueNode(
           snode: this,
           name: 'enlargeCenterPage',
           boolValue: enlargeCenterPage,
-          onBoolChange: (newValue) => refreshWithUpdate(() => enlargeCenterPage = newValue ?? true),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => enlargeCenterPage = newValue ?? true),
         ),
         EnumPropertyValueNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
       ];
 
@@ -91,7 +97,8 @@ class CarouselNode extends MC with CarouselNodeMappable {
                       boxShadow: kElevationToShadow[2],
                       image: DecorationImage(
                           image: AssetImage(
-                            name, package:'flutter_content',
+                            name,
+                            package: 'flutter_content',
                           ),
                           fit: BoxFit.fill),
                     ),
@@ -103,13 +110,34 @@ class CarouselNode extends MC with CarouselNodeMappable {
             .map((STreeNode node) => node is AssetImageNode
                 ? node.toWidget(context, this)
                 : node is FirebaseStorageImageNode
-        ? node.toWidget(context, this)
-        : const Placeholder(
-                    child: Text('not an asset image!'),
-                  ))
+                    ? node.toWidget(context, this)
+                    : const Placeholder(
+                        child: Text('not an asset image!'),
+                      ))
             .toList();
 
     possiblyHighlightSelectedNode();
+
+    // SnippetPanelState? spState = SnippetPanel.of(context);  // vsync
+    // if (spState == null) return fco.errorIcon(Colors.red);
+    //
+    // int i=0;
+    // final AnimationController aC = AnimationController(
+    //   duration: Duration(seconds: images.length*2),
+    //   vsync: spState,
+    // )..repeat();
+    // final Animation<int> animation = IntTween(begin: 0, end: images.length-1).animate(aC);
+    // return StatefulBuilder(
+    //   builder: (context, StateSetter setState) {
+    //     return CarouselView(
+    //       controller: CarouselController(initialItem: animation.value),
+    //       itemExtent: 300,
+    //       itemSnapping: true,
+    //       children: images,
+    //     );
+    //   }
+    // );
+
     return CarouselSlider.builder(
       key: createNodeGK(),
       itemCount: images.length,

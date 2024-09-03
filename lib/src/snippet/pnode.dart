@@ -1210,7 +1210,7 @@ class ColorPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) => PropertyButtonColor(
-        cId: '$name',
+        cId: name,
         label: name,
         tooltip: tooltip,
         originalColor: colorValue != null ? Color(colorValue!) : null,

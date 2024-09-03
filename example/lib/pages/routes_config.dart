@@ -37,10 +37,6 @@ final webRoutingConfig = RoutingConfig(
       path: '/md-example',
       template: SnippetTemplateEnum.markdown,
     ),
-    DynamicPageRoute(
-      path: '/md-example',
-      template: SnippetTemplateEnum.markdown,
-    ),
   ],
 );
 

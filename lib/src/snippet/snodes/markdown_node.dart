@@ -152,11 +152,11 @@ line 3
       key: createNodeGK(),
       data: data,
       styleSheet: MarkdownStyleSheet(
-        h1: TextStyle(color: Colors.red),
-        p: TextStyle(color: Colors.black),
-        a: TextStyle(color: Colors.blue),
+        h1: const TextStyle(color: Colors.red),
+        p: const TextStyle(color: Colors.black),
+        a: const TextStyle(color: Colors.blue),
         codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
-        code: TextStyle(color: Colors.purple),
+        code: const TextStyle(color: Colors.purple),
       ),
       onTapLink: (String text, String? href, String title) async {
         if (href != null) {

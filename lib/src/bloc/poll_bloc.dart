@@ -1,6 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+// import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'poll_event.dart';
 import 'poll_state.dart';
@@ -40,7 +41,7 @@ class PollBloC extends Bloc<PollEvent, PollState> {
 
   void _voterIdCreated(VoterIdCreated event, emit) {
     if (event.newVoterId.isNotEmpty) {
-      HydratedBloc.storage.write("voter-id", event.newVoterId);
+      fco.hiveBox.put("voter-id", event.newVoterId);
     }
     emit(state.copyWith(
       voterId: event.newVoterId,

@@ -7,6 +7,8 @@ import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 abstract class IModelRepository {
   Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB({required SnippetName snippetName});
 
+  Future<void> migrateCollection();
+
   Future<void> possiblyLoadSnippetIntoCache({required SnippetName snippetName, required VersionId versionId});
 
   Future<AppInfoModel?> getAppInfo();

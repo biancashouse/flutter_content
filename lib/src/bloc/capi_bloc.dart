@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+// import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'capi_event.dart';
 import 'capi_state.dart';
@@ -1054,19 +1053,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
-    SnippetRootNode? rootNode = fco.currentSnippetVersion(event.snippetName);
-    if (rootNode == null) return;
 
     SnippetTreeController newTreeC() => SnippetTreeController(
           roots: event.visibleDecendantNode != null
               ? [event.visibleDecendantNode!]
-              : [rootNode],
+              : [event.rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
         );
 
     SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
-      rootNode: rootNode,
-      jsonBeforePush: rootNode.toJson(),
+      rootNode: event.rootNode,
+      jsonBeforePush: event.rootNode.toJson(),
       treeC: newTreeC()..expandAll(),
     );
 
@@ -1733,7 +1730,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
 
     STreeNode wChild = state.snippetBeingEdited!.selectedNode!;
-    STreeNode parent = wChild.getParent() as STreeNode;
+    STreeNode? parent = wChild.getParent() as STreeNode?;
     STreeNode w = event.type != null
         ? _typeAsATreeNode(
             event.type!,
@@ -1753,16 +1750,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
     if (wChild is InlineSpanNode &&
-        wChild.getParent() is RichTextNode &&
+        parent is RichTextNode &&
         w is RichTextNode) return;
     if (wChild is InlineSpanNode &&
-        wChild.getParent() is! RichTextNode &&
+        parent is! RichTextNode &&
         w is! InlineSpanNode) return;
 
     try {
       //_createSnippetUndo();
 
-      w.setParent(wChild.getParent());
+      w.setParent(parent);
       wChild.setParent(w);
 
       if (w is SC) {
@@ -1798,12 +1795,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
       // update treeC if rootNode changed (that's the Snippet's child)
       SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-      if (w.getParent() is SnippetRootNode) {
-        possiblyNewTreeC = SnippetTreeController(
-          roots: [w],
-          childrenProvider: Node.snippetTreeChildrenProvider,
-        );
-      }
+      // if (true || w.getParent() is SnippetRootNode) {
+      //   possiblyNewTreeC = SnippetTreeController(
+      //     roots: [w],
+      //     childrenProvider: Node.snippetTreeChildrenProvider,
+      //   );
+      // }
 
       possiblyNewTreeC.expand(w);
       possiblyNewTreeC.rebuild();
@@ -1878,7 +1875,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel is PollOptionNode && r is! PollOptionNode) return;
     if (sel is StepNode && r is! StepNode) return;
 
-    STreeNode parent = sel.getParent() as STreeNode;
+    STreeNode? parent = sel.getParent() as STreeNode?;
 
     try {
       //_createSnippetUndo();
@@ -1920,7 +1917,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // update treeC if rootNode changed (that's the Snippet's child)
     SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-    if (r.getParent() is SnippetRootNode) {
+    if (false && r.getParent() is SnippetRootNode) {
       possiblyNewTreeC = SnippetTreeController(
         roots: [r],
         childrenProvider: Node.snippetTreeChildrenProvider,
