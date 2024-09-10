@@ -196,7 +196,10 @@ class FlutterContentMixins
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
-    debugPrint('init()');
+    stopwatch.start();
+
+    debugPrint('init() ${stopwatch.elapsedMilliseconds}');
+
     _appName = modelName;
     _googleFontNames = googleFontNames;
     _namedVoidCallbacks = namedVoidCallbacks;
@@ -237,16 +240,19 @@ class FlutterContentMixins
     logi('--------------------------------');
 
     if (fbOptions != null) {
+      fco.logi('init 1. ${fco.stopwatch.elapsedMilliseconds}');
+
       modelRepo = FireStoreModelRepository(fbOptions);
       await (modelRepo as FireStoreModelRepository)
           .possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
 
-      // rename collection
-      // await modelRepo.migrateCollection();
+      fco.logi('init 2. ${fco.stopwatch.elapsedMilliseconds}');
 
       // fetch model
       AppInfoModel? fbAppInfo = await modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
+
+      fco.logi('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
       // add any snippet names that start with /, because they are also page pathnames
       for (String snippetName in _appInfo.snippetNames) {
@@ -258,20 +264,25 @@ class FlutterContentMixins
 
       // await loadLatestSnippetMap();
 
-      if (useFBStorage) {
-        await loadFirebaseStorageFolders();
-      }
+      fco.logi('init 4. ${fco.stopwatch.elapsedMilliseconds}');
 
-      logi('FlutterContent init() finished.');
+      if (useFBStorage) {
+        loadFirebaseStorageFolders();
+      }
     }
 
+    fco.logi('init 5. ${fco.stopwatch.elapsedMilliseconds}');
     await initLocalStorage();
+    fco.logi('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
     // FutureBuilder requires this return
     CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
 
+    fco.logi('init 7. ${fco.stopwatch.elapsedMilliseconds}');
     return capiBloc;
   }
+
+  final stopwatch = Stopwatch();
 
   late IModelRepository modelRepo;
 

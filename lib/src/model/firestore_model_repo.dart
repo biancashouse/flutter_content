@@ -18,10 +18,11 @@ class FireStoreModelRepository implements IModelRepository {
   FireStoreModelRepository(this.fbOptions);
 
   Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs({bool useEmulator = false}) async {
+    fco.logi('possiblyInitFireStoreRelatedAPIs start. ${fco.stopwatch.elapsedMilliseconds}');
     try {
-      fco.logi('init FB...');
+      fco.logi('init FB... ${fco.stopwatch.elapsedMilliseconds}');
       fbApp = await Firebase.initializeApp(options: fbOptions);
-      fco.logi('init FB done.');
+      fco.logi('init FB done. ${fco.stopwatch.elapsedMilliseconds}');
       // emulator if in non-prod mode
       if (useEmulator) {
         FirebaseFirestore.instance.settings = Settings(
@@ -41,6 +42,7 @@ class FireStoreModelRepository implements IModelRepository {
       storage: fbStorage,
     );
     await FirebaseUIStorage.configure(config);
+    fco.logi('possiblyInitFireStoreRelatedAPIs end. ${fco.stopwatch.elapsedMilliseconds}');
     return fbApp;
   }
 
@@ -216,7 +218,7 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     // var fc = FC();
 
-    var snippetInfo = fco.snippetInfoCache[snippetName];
+    // var snippetInfo = fco.snippetInfoCache[snippetName];
     var latestVersionId = fco.versionIdCache[snippetName]?.lastOrNull;
     var latestVersion = latestVersionId == null
         ? null
@@ -392,7 +394,7 @@ class FireStoreModelRepository implements IModelRepository {
     for (PollOptionId pollOptionId in pollOptionIds) {
       // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
       CollectionReference pollOptionVotes = FirebaseFirestore.instance.collection(
-          '/flutter-content-apps/$modelName/polls/$pollName/options/$pollOptionId/voters');
+          '/apps/$modelName/polls/$pollName/options/$pollOptionId/voters');
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
       for (var doc in snap.docs) {
@@ -458,25 +460,128 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   DocumentReference get appDocRef => FirebaseFirestore.instance
-      .collection('/flutter-content-apps')
+      .collection('/apps')
       .doc(fco.appName);
 
-  Future<void> migrateCollection() async {
-    final db = FirebaseFirestore.instance;
-    final oldCollectionRef = db.collection('/flutter-content-models');
-    final newCollectionRef = db.collection('/flutter-content-apps');
+  // @override
+  // Future<void> copyCollectionBetweenProjects() async {
+  //
+  //   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
+  //   await Firebase.initializeApp(options: OLD_DefaultFirebaseOptions.currentPlatform, name: 'OLD');
+  //
+  //   // FirebaseApp algcApp = Firebase.app();
+  //   FirebaseApp bhApp = Firebase.app('BH');
+  //
+  //   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
+  //   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
+  //
+  //
+  //   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
+  //   final toCollectionRef = bhFs.collection('/apps/algc/fs-users');
+  //
+  //   try {
+  //     final usersSnapshot = await fromUsersRef.get();
+  //     for (final document in usersSnapshot.docs) {
+  //       await toCollectionRef.doc(document.id).set(document.data());
+  //       print('Document ${document.id} migrated successfully');
+  //     }
+  //     // Optionally delete the old collection after migration
+  //     // await oldCollectionRef.doc(document.id).delete();
+  //   } catch (e) {
+  //     print('Error during migration: $e');
+  //     // Handle errors appropriately
+  //   }
+  // }
 
-    try {
-      final querySnapshot =await oldCollectionRef.get();
-      for (final document in querySnapshot.docs) {
-        await newCollectionRef.doc(document.id).set(document.data());
-        print('Document ${document.id} migrated successfully');
-      }
-      // Optionally delete the old collection after migration
-      // await oldCollectionRef.doc(document.id).delete();
-    } catch (e) {
-      print('Error during migration: $e');
-      // Handle errors appropriately
-    }
-  }
+  // copy collection /fs-users from one firestore project (flowchart_studio) to another (biancashouse)
+  // Future<void> copyFlowchartsBetweenProjects() async {
+  //
+  //   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
+  //   await Firebase.initializeApp(options: BH_DefaultFirebaseOptions.currentPlatform, name: 'BH');
+  //
+  //   // FirebaseApp algcApp = Firebase.app();
+  //   FirebaseApp bhApp = Firebase.app('BH');
+  //
+  //   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
+  //   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
+  //
+  //
+  //   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
+  //
+  //   try {
+  //     final usersSnapshot = await fromUsersRef.get();
+  //     for (final fromUserDoc in usersSnapshot.docs) {
+  //       final fromUserFlowchartsRef =
+  //       FirebaseFirestore.instance.collection('/fs-users/${fromUserDoc.id}/flowcharts');
+  //       final userFlowchartsSnapshot = await fromUserFlowchartsRef.get();
+  //       for (final fromFlowchartDoc in userFlowchartsSnapshot.docs) {
+  //         // final toUserFlowchartsRef = toUsersRef.collection('flowcharts');
+  //         final toUserFlowchartsRef =
+  //         bhFs.collection('/apps/algc/fs-users/${fromUserDoc.id}/flowcharts');
+  //         await toUserFlowchartsRef.doc(fromFlowchartDoc.id).set(fromFlowchartDoc.data());
+  //       }
+  //       print('Document ${fromUserDoc.id} migrated successfully');
+  //     }
+  //     // Optionally delete the old collection after migration
+  //     // await oldCollectionRef.doc(document.id).delete();
+  //   } catch (e) {
+  //     print('Error during migration: $e');
+  //     // Handle errors appropriately
+  //   }
+  // }
+
+  // @override
+  // Future<void> copyFlowchartDocBetweenUsersInSameProject(
+  //     String fromUserId, String toUserId) async {
+  //
+  //   CollectionReference fromUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$fromUserId');
+  //   CollectionReference toUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$toUserId');
+  //
+  //   try {
+  //     final flowchartsSnapshot = await fromUserFlowchartsRef.get();
+  //     for (final flowchartDoc in flowchartsSnapshot.docs) {
+  //       await toUserFlowchartsRef.doc(flowchartDoc.id).set(flowchartDoc.data());
+  //       print('Flowchart Document ${flowchartDoc.id} copied successfully');
+  //     }
+  //     // Optionally delete the old collection after migration
+  //     // await oldCollectionRef.doc(document.id).delete();
+  //   } catch (e) {
+  //     print('Error during migration: $e');
+  //     // Handle errors appropriately
+  //   }
+  // }
+
+// Future<void> copyUsersProjects() async {
+//   final admin = FirebaseAdminApp.initializeApp(
+//     'flowchart-studio',
+//     Credential.fromApplicationDefaultCredentials(),
+//   );
+//   final firestore = admin_firestore.Firestore(admin);
+//   final users = firestore.collection('users');
+//   // final adults = collection.where('age', WhereFilter.greaterThan, 18);
+//   final usersSnapshot = await users.get();
+//
+//   for (final user in usersSnapshot.docs) {
+//     print(user.data());
+//   }
+// }
+
+// Future<void> migrateCollection() async {
+//   final db = FirebaseFirestore.instance;
+//   final oldCollectionRef = db.collection('/flutter-content-models');
+//   final newCollectionRef = db.collection('/flutter-content-apps');
+//
+//   try {
+//     final querySnapshot =await oldCollectionRef.get();
+//     for (final document in querySnapshot.docs) {
+//       await newCollectionRef.doc(document.id).set(document.data());
+//       print('Document ${document.id} migrated successfully');
+//     }
+//     // Optionally delete the old collection after migration
+//     // await oldCollectionRef.doc(document.id).delete();
+//   } catch (e) {
+//     print('Error during migration: $e');
+//     // Handle errors appropriately
+//   }
+// }
 }

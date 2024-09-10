@@ -36,6 +36,7 @@ class FlutterContentApp extends StatefulWidget {
   final Map<String, TextStyle> namedTextStyles;
   final Map<String, ButtonStyle> namedButtonStyles;
   final bool hideStatusBar;
+  final VoidCallback? onReadyF;
 
   // --- globally available -----------------------------------------------------
   static CAPIBloC? _singletonBloc;
@@ -78,6 +79,7 @@ class FlutterContentApp extends StatefulWidget {
     this.hideStatusBar = true,
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
+    this.onReadyF,
   });
 
   // static void removeAllPinkSnippetOverlays() {
@@ -268,6 +270,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
       initialRoutePath: widget.initialRoutePath,
     );
     debugPrint("_initApp() after");
+
+    widget.onReadyF?.call();
 
     STreeNode.hideAllTargetCovers();
     // trigger another build

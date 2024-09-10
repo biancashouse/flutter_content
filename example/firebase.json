@@ -1,4 +1,8 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
     "public": "build/web",
     "ignore": [
@@ -6,27 +10,5 @@
       "**/.*",
       "**/node_modules/**"
     ]
-  },
-  "emulators": {
-    "firestore": {
-      "port": 8080
-    },
-    "storage": {
-      "port": 9199
-    },
-    "ui": {
-      "enabled": true
-    },
-    "singleProjectMode": true,
-    "hosting": {
-      "port": 9000
-    }
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  },
-  "storage": {
-    "rules": "firebase-storage.rules"
   }
 }

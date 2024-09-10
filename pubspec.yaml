@@ -84,9 +84,8 @@ dependencies:
   google_sign_in: ^6.2.1
   flutter_markdown: ^0.7.3
   gap: ^3.0.1
-  go_router: ^14.1.4
+  go_router: ^14.2.7
   clipboard: ^0.1.3
-  url_strategy: 0.2.0
   flex_color_picker: ^3.5.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -99,6 +98,7 @@ dependencies:
 
   flutter_callouts:
     path: ../flutter_callouts
+  dart_firebase_admin: ^0.3.1
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

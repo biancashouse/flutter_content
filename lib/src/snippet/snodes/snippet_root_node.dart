@@ -10,13 +10,13 @@ class SnippetRootNodeHook extends MappingHook {
 
   @override
   Object? beforeDecode(Object? value) {
-    fco.logi('before');
+    // fco.logi('before');
     return value;
   }
 
   @override
   Object? afterDecode(Object? value) {
-    fco.logi('after');
+    // fco.logi('after');
     return value;
   }
 
