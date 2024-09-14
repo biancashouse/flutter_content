@@ -9,6 +9,7 @@ part 'appbar_node.mapper.dart';
 class AppBarNode extends STreeNode with AppBarNodeMappable {
   int? bgColorValue;
   int? fgColorValue;
+  double? height;
   GenericSingleChildNode? leading;
   GenericSingleChildNode? title;
   GenericSingleChildNode? bottom;
@@ -17,6 +18,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   AppBarNode({
     this.bgColorValue,
     this.fgColorValue,
+    this.height,
     this.leading,
     this.title,
     this.bottom,
@@ -32,7 +34,8 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
         name: 'bg color',
         tooltip: "The fill color to use for an app bar's Material.",
         colorValue: bgColorValue,
-        onColorIntChange: (newValue) => refreshWithUpdate(() => bgColorValue = newValue),
+        onColorIntChange: (newValue) =>
+            refreshWithUpdate(() => bgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPropertyValueNode(
@@ -40,7 +43,8 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
         name: 'fg color',
         tooltip: 'The default color for Text and Icons within the app bar.',
         colorValue: fgColorValue,
-        onColorIntChange: (newValue) => refreshWithUpdate(() => fgColorValue = newValue),
+        onColorIntChange: (newValue) =>
+            refreshWithUpdate(() => fgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
     ];
@@ -84,15 +88,23 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
     var titleWidget = title?.toWidgetProperty(context, this);
 
     try {
-      return AppBar(
+      var appBar = AppBar(
         key: createNodeGK(),
-        leading: ListenableBuilder(listenable: spState!.prevTabQSize, builder: (_, __) => leadingWidget()),
+        leading: leading != null
+            ? ListenableBuilder(
+            listenable: spState!.prevTabQSize,
+            builder: (_, __) => leadingWidget())
+            : null,
         title: titleWidget,
+        toolbarHeight: 220,
         bottom: bottomWidget as PreferredSizeWidget?,
         actions: actionWidgets,
         backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
         foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
       );
+      return height != null
+          ? PreferredSize(preferredSize: Size.fromHeight(height!), child: appBar)
+          : appBar;
     } catch (e) {
       fco.logi('AppBarNode.toWidget() failed!');
       return Material(
@@ -112,13 +124,17 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   }
 
   @override
-  bool canBeDeleted() => (leading == null && title == null && bottom == null && actions == null);
+  bool canBeDeleted() =>
+      (leading == null && title == null && bottom == null && actions == null);
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+      NodeAction action, bool? skipHeading) {
     return [
-      if (getParent() is! ScaffoldNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! ScaffoldNode) menuItemButton("Scaffold", ScaffoldNode, action),
+      if (getParent() is! ScaffoldNode)
+        ...super.menuAnchorWidgets_Heading(action),
+      if (getParent() is! ScaffoldNode)
+        menuItemButton("Scaffold", ScaffoldNode, action),
     ];
   }
 

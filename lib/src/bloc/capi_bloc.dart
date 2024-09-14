@@ -1715,6 +1715,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         // const (TargetButtonNode) =>
         //   TargetButtonNode(name: 'no name!', child: childNode),
         const (HotspotsNode) => HotspotsNode(child: childNode),
+        const (TabBarNode) => TabBarNode(children: childNode != null ? [childNode] : []),
+        const (TabBarViewNode) => TabBarViewNode(children: childNode != null ? [childNode] : []),
         const (TextButtonNode) =>
           TextButtonNode(child: TextNode(text: 'some-text')),
         const (TextNode) => TextNode(text: 'some-text'),

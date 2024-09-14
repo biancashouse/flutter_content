@@ -27,7 +27,7 @@ final webRoutingConfig = RoutingConfig(
     ),
     DynamicPageRoute(
       path: '/editable-scaffold-with-tabbar',
-      template: SnippetTemplateEnum.scaffold_with_tabbar,
+      template: SnippetTemplateEnum.scaffold_with_tabs,
     ),
     DynamicPageRoute(
       path: '/editable-rich-text',

@@ -29,27 +29,29 @@ class TabBarNode extends MC with TabBarNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) =>
-      [
+  List<PTreeNode> properties(BuildContext context) => [
         ColorPropertyValueNode(
           snode: this,
           name: 'selected label Color',
           colorValue: selectedLabelColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => selectedLabelColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => selectedLabelColorValue = newValue),
           calloutButtonSize: const Size(160, 20),
         ),
         ColorPropertyValueNode(
           snode: this,
           name: 'unselected label Color',
           colorValue: unselectedLabelColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => unselectedLabelColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => unselectedLabelColorValue = newValue),
           calloutButtonSize: const Size(180, 20),
         ),
         ColorPropertyValueNode(
           snode: this,
           name: 'indicatorColor',
           colorValue: indicatorColorValue,
-          onColorIntChange: (newValue) => refreshWithUpdate(() => indicatorColorValue = newValue),
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => indicatorColorValue = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
         PropertyGroup(
@@ -60,7 +62,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
               snode: this,
               name: 'padding',
               eiValue: padding,
-              onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+              onEIChangedF: (newValue) =>
+                  refreshWithUpdate(() => padding = newValue),
             ),
           ],
         ),
@@ -68,10 +71,9 @@ class TabBarNode extends MC with TabBarNodeMappable {
           snode: this,
           name: 'indicatorWeight',
           decimalValue: indicatorWeight,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(() {
-                if (newValue != indicatorWeight) indicatorWeight = newValue;
-              }),
+          onDoubleChange: (newValue) => refreshWithUpdate(() {
+            if (newValue != indicatorWeight) indicatorWeight = newValue;
+          }),
           calloutButtonSize: const Size(130, 20),
         ),
       ];
@@ -88,25 +90,34 @@ class TabBarNode extends MC with TabBarNodeMappable {
     List<Widget> tabs = [];
     for (STreeNode node in children) {
       tabs.add(Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: node.toWidget(context, this),
       ));
     }
-    spState?.tabC?.index = min(selection ?? 0, children.length-1);
+    spState?.tabC?.index = min(selection ?? 0, children.length - 1);
     try {
-      return TabBar(
-        key: spState?.tabBarGK = createNodeGK(),
-        controller: spState?.tabC,
-        tabs: tabs,
-        labelColor: selectedLabelColorValue != null ? Color(selectedLabelColorValue!) : null,
-        unselectedLabelColor: unselectedLabelColorValue != null ? Color(unselectedLabelColorValue!) : null,
-        indicatorColor: indicatorColorValue != null ? Color(indicatorColorValue!) : null,
-        indicatorWeight: indicatorWeight = 2.0,
-        indicator: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
+      return ColoredTabBar(
+        Colors.grey,
+        TabBar(
+          key: spState?.tabBarGK = createNodeGK(),
+          controller: spState?.tabC,
+          tabs: tabs,
+          labelColor: selectedLabelColorValue != null
+              ? Color(selectedLabelColorValue!)
+              : null,
+          unselectedLabelColor: unselectedLabelColorValue != null
+              ? Color(unselectedLabelColorValue!)
+              : null,
+          indicatorColor:
+              indicatorColorValue != null ? Color(indicatorColorValue!) : null,
+          indicatorWeight: indicatorWeight = 2.0,
+          indicator: BoxDecoration(
+            //color: Colors.white,
+            border: Border.all(color: Colors.white, width: 2),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
         ),
-        padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
       );
     } catch (e) {
       fco.logi('TabBarNode.toWidget() failed! ${e.toString()}');
@@ -133,4 +144,20 @@ class TabBarNode extends MC with TabBarNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "TabBar";
+}
+
+class ColoredTabBar extends Container implements PreferredSizeWidget {
+  ColoredTabBar(this.color, this.tabBar);
+
+  final Color color;
+  final TabBar tabBar;
+
+  @override
+  Size get preferredSize => tabBar.preferredSize;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        color: color,
+        child: tabBar,
+      );
 }

@@ -79,7 +79,7 @@ class _Page_HomeState extends State<Page_Home> {
                 // panelName: 'demo-buttons',
                 snippetRootNode: SnippetTemplateEnum.empty
                     .templateSnippet()
-                    .clone(cloneName: 'demo-buttons'),
+                    .clone(cloneName: /*'demo-buttons'*/'sandbox3'),
                 // snippetRootNode: SnippetRootNode(
                 //   name: 'we-create-flutter-apps-and-packages',
                 //   child: PlaceholderNode()

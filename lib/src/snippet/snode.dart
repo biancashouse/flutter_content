@@ -1306,6 +1306,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       menuItemButton("SplitView", SplitViewNode, action),
       menuItemButton("Hotspots", HotspotsNode, action),
       menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
+      menuItemButton("Aspect Ratio", AspectRatioNode, action),
     ];
   }
 
@@ -1380,6 +1381,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuItemButton("Asset Image", AssetImageNode, action),
           menuItemButton("Firebase Storage Image", FSImageNode, action),
           menuItemButton("Carousel", CarouselNode, action),
+          menuItemButton("Aspect Ratio", AspectRatioNode, action),
         ],
         child: fco.coloredText("image", fontWeight: FontWeight.normal),
       ),
@@ -1434,6 +1436,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("TextSpanN", TextSpanNode, action),
         menuItemButton("WidgetSpan", WidgetSpanNode, action),
       ],
+      ...menuAnchorWidgets_Append(action, skipHeading),
     ];
   }
 
@@ -1529,6 +1532,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             menuItemButton("Asset Image", AssetImageNode, action),
             menuItemButton("Firebase Storage Image", FSImageNode, action),
             menuItemButton("Carousel", CarouselNode, action),
+            menuItemButton("Aspect Ratio", AspectRatioNode, action),
           ],
           child: fco.coloredText("image", fontWeight: FontWeight.normal),
         ),

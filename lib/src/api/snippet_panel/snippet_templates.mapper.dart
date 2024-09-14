@@ -32,7 +32,7 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
       case 'markdown':
         return SnippetTemplateEnum.markdown;
       case 'scaffold_with_tabbar':
-        return SnippetTemplateEnum.scaffold_with_tabbar;
+        return SnippetTemplateEnum.scaffold_with_tabs;
       case 'scaffold_with_menubar':
         return SnippetTemplateEnum.scaffold_with_menubar;
       case 'splitview_with_2_placeholders':
@@ -57,7 +57,7 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
         return 'drive_iframe';
       case SnippetTemplateEnum.markdown:
         return 'markdown';
-      case SnippetTemplateEnum.scaffold_with_tabbar:
+      case SnippetTemplateEnum.scaffold_with_tabs:
         return 'scaffold_with_tabbar';
       case SnippetTemplateEnum.scaffold_with_menubar:
         return 'scaffold_with_menubar';

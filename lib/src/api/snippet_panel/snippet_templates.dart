@@ -13,7 +13,7 @@ enum SnippetTemplateEnum {
   empty,
   drive_iframe,
   markdown,
-  scaffold_with_tabbar,
+  scaffold_with_tabs,
   scaffold_with_menubar,
   splitview_with_2_placeholders,
   column_with_2_placeholders,
@@ -26,7 +26,7 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.empty => 'placeholder',
         SnippetTemplateEnum.drive_iframe => 'google drive doc',
         SnippetTemplateEnum.markdown => 'markdown',
-        SnippetTemplateEnum.scaffold_with_tabbar => 'scaffold with a tab bar',
+        SnippetTemplateEnum.scaffold_with_tabs => 'scaffold with tabs',
         SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
         SnippetTemplateEnum.splitview_with_2_placeholders =>
           'splitview with 2 placeholders',
@@ -71,8 +71,8 @@ enum SnippetTemplateEnum {
             child: MarkdownNode(),
           ),
         //
-        SnippetTemplateEnum.scaffold_with_tabbar => SnippetRootNode(
-            name: SnippetTemplateEnum.scaffold_with_tabbar.name,
+        SnippetTemplateEnum.scaffold_with_tabs => SnippetRootNode(
+            name: SnippetTemplateEnum.scaffold_with_tabs.name,
             child: ScaffoldNode(
               appBar: AppBarNode(
                 bgColorValue: Colors.grey.value,
@@ -170,6 +170,11 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.callout_content => SnippetRootNode(
             name: SnippetTemplateEnum.empty.name, child: PlaceholderNode()),
       };
+
+  /// in the case of scaffold with tabs, can pass in the
+  Widget toWidget(BuildContext context, STreeNode? parentNode,
+          {double? appBarHeight}) =>
+      templateSnippet().toWidget(context, parentNode);
 
   List<Widget> get allItems => values.map((e) => e.toMenuItem()).toList();
 

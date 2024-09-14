@@ -10,10 +10,12 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 class EditablePage extends StatefulWidget {
   final String routePath;
   final Widget child;
+  final bool dontShowLockIcon;
 
   const EditablePage({
     required this.routePath,
     required this.child,
+    this.dontShowLockIcon = false,
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
@@ -203,7 +205,7 @@ class EditablePageState extends State<EditablePage> {
                   ],
                 ),
               )
-            : _lockIconButton(context),
+            : lockIconButton(context),
       );
 
   void showExitEditModeCallout() {
@@ -342,79 +344,12 @@ class EditablePageState extends State<EditablePage> {
     // }
   }
 
-  Widget _lockIconButton(context) {
+  Widget lockIconButton(context) {
+    if (!widget.dontShowLockIcon) return Offstage();
     return IconButton(
       key: _lockIconGK,
       onPressed: () {
-        fco.showOverlay(
-          targetGkF: () => _lockIconGK,
-          calloutContent: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              fco.purpleText("Editor Access",
-                  fontSize: 24, family: 'Merriweather'),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                width: 240,
-                height: 100,
-                child: FC_TextField(
-                  inputType: String,
-                  prompt: () => 'password',
-                  originalS: '',
-                  onTextChangedF: (s) async {
-                    if (s == (kDebugMode ? " " : "lakebeachocean")) {
-                      fco.dismiss("EditorPassword");
-                      fco.setCanEdit(true);
-                      // await FC.loadLatestSnippetMap();
-                      // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
-                      // fco.afterNextBuildDo(() {
-                      //   FC()
-                      //       .capiBloc
-                      //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
-                      //   showDevToolsFAB();
-                      // });
-                      fco.dismiss("EditorPassword");
-                      FlutterContentApp.capiBloc.add(
-                          const CAPIEvent.forceRefresh(
-                              onlyTargetsWrappers: true));
-                      setState(() {
-                        // enterEditMode();
-                      });
-                    }
-                  },
-                  dontAutoFocus: false,
-                  isPassword: true,
-                  onEditingCompleteF: (s) {
-                    // if (s == "lakebeachocean") {
-                    //   FCO.om.remove("TrainerPassword".hashCode);
-                    //   setState(() {
-                    //     HydratedBloc.storage.write("trainerIsSignedIn", true);
-                    //   });
-                    // }
-                  },
-                ),
-              ),
-            ],
-          ),
-          calloutConfig: CalloutConfig(
-            cId: "EditorPassword",
-            initialTargetAlignment: Alignment.topRight,
-            initialCalloutAlignment: Alignment.bottomLeft,
-            finalSeparation: 150,
-            barrier: CalloutBarrier(
-              opacity: .5,
-              onTappedF: () async {
-                fco.dismiss("EditorPassword");
-              },
-            ),
-            initialCalloutW: 240,
-            initialCalloutH: 150,
-            borderRadius: 12,
-            fillColor: Colors.white,
-          ),
-        );
+        lockIconTapped();
       },
       icon: const Icon(
         Icons.lock,
@@ -422,6 +357,78 @@ class EditablePageState extends State<EditablePage> {
       ),
       iconSize: 36,
       tooltip: 'editor login...',
+    );
+  }
+
+  void lockIconTapped() {
+    fco.showOverlay(
+      targetGkF: () => _lockIconGK,
+      calloutContent: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          fco.purpleText("Editor Access",
+              fontSize: 24, family: 'Merriweather'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            width: 240,
+            height: 100,
+            child: FC_TextField(
+              inputType: String,
+              prompt: () => 'password',
+              originalS: '',
+              onTextChangedF: (s) async {
+                if (s == (kDebugMode ? " " : "lakebeachocean")) {
+                  fco.dismiss("EditorPassword");
+                  fco.setCanEdit(true);
+                  // await FC.loadLatestSnippetMap();
+                  // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+                  // fco.afterNextBuildDo(() {
+                  //   FC()
+                  //       .capiBloc
+                  //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
+                  //   showDevToolsFAB();
+                  // });
+                  fco.dismiss("EditorPassword");
+                  FlutterContentApp.capiBloc.add(
+                      const CAPIEvent.forceRefresh(
+                          onlyTargetsWrappers: true));
+                  setState(() {
+                    // enterEditMode();
+                  });
+                }
+              },
+              dontAutoFocus: false,
+              isPassword: true,
+              onEditingCompleteF: (s) {
+                // if (s == "lakebeachocean") {
+                //   FCO.om.remove("TrainerPassword".hashCode);
+                //   setState(() {
+                //     HydratedBloc.storage.write("trainerIsSignedIn", true);
+                //   });
+                // }
+              },
+            ),
+          ),
+        ],
+      ),
+      calloutConfig: CalloutConfig(
+        cId: "EditorPassword",
+        initialTargetAlignment: Alignment.topRight,
+        initialCalloutAlignment: Alignment.bottomLeft,
+        finalSeparation: 150,
+        barrier: CalloutBarrier(
+          opacity: .5,
+          onTappedF: () async {
+            fco.dismiss("EditorPassword");
+          },
+        ),
+        initialCalloutW: 240,
+        initialCalloutH: 150,
+        borderRadius: 12,
+        fillColor: Colors.white,
+      ),
     );
   }
 

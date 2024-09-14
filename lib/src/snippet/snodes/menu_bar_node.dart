@@ -29,36 +29,35 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    List<Widget> menuBarChildren = super.children.map((child) => child.toWidget(context, this)).toList();
-    if (menuBarChildren.isEmpty) {
-      return const Text('new MenuBar');
-    } else {
-      try {
-        return PreferredSizeMenuBar(
-          MenuBar(
-            key: createNodeGK(),
-            children: super.children.map((child) => child.toWidget(context, this)).toList(),
+    List<Widget> menuBarChildren = super.children.map((child) =>
+        child.toWidget(context, this)).toList();
+    try {
+      return PreferredSizeMenuBar(
+        MenuBar(
+          key: createNodeGK(),
+          children: super.children.map((child) =>
+              child.toWidget(context, this)).toList(),
+        ),
+        width ?? fco.scrW,
+        height ?? 60,
+      );
+    } catch (e) {
+      fco.logi('MenuBarNode.toWidget() failed!');
+      return Material(
+        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              fco.errorIcon(Colors.red),
+              const Gap(10),
+              fco.coloredText(e.toString()),
+            ],
           ),
-          width ?? fco.scrW,
-          height ?? 60,
-        );
-      } catch (e) {
-        fco.logi('MenuBarNode.toWidget() failed!');
-        return Material(
-          textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                fco.errorIcon(Colors.red),
-                const Gap(10),
-                fco.coloredText(e.toString()),
-              ],
-            ),
-          ),
-        );
-      }
+        ),
+      );
     }
+    return Placeholder();
   }
 
   @override
@@ -70,11 +69,14 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   static const String FLUTTER_TYPE = "MenuBar";
 }
 
-class PreferredSizeMenuBar extends StatelessWidget implements PreferredSizeWidget {
+class PreferredSizeMenuBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final double width;
   final double height;
   final MenuBar menuBar;
-  const PreferredSizeMenuBar(this.menuBar, this.width, this.height, {super.key});
+
+  const PreferredSizeMenuBar(this.menuBar, this.width, this.height,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,5 +84,5 @@ class PreferredSizeMenuBar extends StatelessWidget implements PreferredSizeWidge
   }
 
   @override
-  Size get preferredSize => Size(width,height );
+  Size get preferredSize => Size(width, height);
 }
