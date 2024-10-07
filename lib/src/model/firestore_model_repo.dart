@@ -17,8 +17,10 @@ class FireStoreModelRepository implements IModelRepository {
 
   FireStoreModelRepository(this.fbOptions);
 
-  Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs({bool useEmulator = false}) async {
-    fco.logi('possiblyInitFireStoreRelatedAPIs start. ${fco.stopwatch.elapsedMilliseconds}');
+  Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs(
+      {bool useEmulator = false}) async {
+    fco.logi(
+        'possiblyInitFireStoreRelatedAPIs start. ${fco.stopwatch.elapsedMilliseconds}');
     try {
       fco.logi('init FB... ${fco.stopwatch.elapsedMilliseconds}');
       fbApp = await Firebase.initializeApp(options: fbOptions);
@@ -42,7 +44,8 @@ class FireStoreModelRepository implements IModelRepository {
       storage: fbStorage,
     );
     await FirebaseUIStorage.configure(config);
-    fco.logi('possiblyInitFireStoreRelatedAPIs end. ${fco.stopwatch.elapsedMilliseconds}');
+    fco.logi(
+        'possiblyInitFireStoreRelatedAPIs end. ${fco.stopwatch.elapsedMilliseconds}');
     return fbApp;
   }
 
@@ -71,6 +74,7 @@ class FireStoreModelRepository implements IModelRepository {
   //   }
   //   return null;
   // }
+
   @override
   Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
       {required SnippetName snippetName}) async {
@@ -294,17 +298,12 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
-
-  /// returns a Record containing: totalVotes for each Option, optionUserVotedFor (or null if not voted yet)
-  /// Does 2 firestore reads:
-  /// 1. poll record in the /polls collection, which could have a vote count for each option (map)
-  /// 2. user's entry in /polls/{pollId}/voters collection, which would have a timestamp and which option was voted for
-  Future<OptionCountsAndVoterRecord> getPollResultsForUser({
-    required VoterId voterId,
+  Future<OptionVoteCountMap> getPollOptionVoteCounts({
     required String pollName,
   }) async {
-    DocumentSnapshot docSnap =
-        await FirebaseFirestore.instance.doc('/polls/$pollName').get();
+    DocumentSnapshot docSnap = await FirebaseFirestore.instance
+        .doc('/apps/${fco.appName}/polls/$pollName')
+        .get();
     if (docSnap.exists) {
       Map<String, dynamic> pollData = docSnap.data() as Map<String, dynamic>;
       // convert map to <String,int>
@@ -328,77 +327,87 @@ class FireStoreModelRepository implements IModelRepository {
           fco.logi("Warning: Value for key '$key' is of unsupported type.");
         }
       });
-      // get user's vote (if exists)
-      DocumentSnapshot voterSnap = await FirebaseFirestore.instance
-          .doc('/polls/$pollName/voters/$voterId')
-          .get();
-      if (voterSnap.exists) {
-        Map<String, dynamic> voterData =
-            voterSnap.data() as Map<String, dynamic>;
-        Timestamp when = voterData['when'];
-        PollOptionId votedFor = voterData['option-id'];
-        return (
-          optionVoteCountMap: optionCountsMap,
-          userVotedForOptionId: votedFor,
-          when: when.millisecondsSinceEpoch
-        );
-      }
+      return optionCountsMap;
+    }
+    return {};
+  }
+
+  // @override
+
+  /// returns a Record containing: totalVotes for each Option, optionUserVotedFor (or null if not voted yet)
+  /// Does 2 firestore reads:
+  /// 1. poll record in the /polls collection, which could have a vote count for each option (map)
+  /// 2. user's entry in /polls/{pollId}/voters collection, which would have a timestamp and which option was voted for
+
+//   //
+//   // int pollVoteCount = 0;
+//   // Map<PollOptionId, int> optionVoteCountMap = {};
+//   // PollOptionId? userVotedForOption;
+//   //
+//   // for (PollOptionId pollOptionId in pollOptionIds) {
+//   //   // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
+//   //   CollectionReference pollOptionVotes =
+//   //       FirebaseFirestore.instance.collection('/flutter-content-apps/$appName/polls/$pollName/options/$pollOptionId/voters');
+//   //   var optionVoteCountSnap = await pollOptionVotes.count().get();
+//   //   int optionVoteCount = optionVoteCountSnap.count;
+//   //   optionVoteCountMap[pollOptionId] = optionVoteCount;
+//   //   pollVoteCount += optionVoteCount;
+//   //   // check for presence of this user in this options voters collection
+//   //   DocumentReference voterDocRef = pollOptionVotes.doc(voterId);
+//   //   DocumentSnapshot snap = await voterDocRef.get();
+//   //   if (snap.exists) {
+//   //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
+//   //     fco.logi("user voted ${data['when']}");
+//   //     userVotedForOption = pollOptionId;
+//   //   }
+//   // }
+//   //
+//   // OptionCountsAndVoterRecord result = (
+//   //   voterId: voterId,
+//   //   pollVoteCount: pollVoteCount,
+//   //   optionVoteCountMap: optionVoteCountMap,
+//   //   userVotedForOptionId: userVotedForOption,
+//   // );
+//   //
+//   // return result;
+// }
+
+  @override
+  Future<UserVoterRecord?> getUsersVote({
+    required String pollName,
+    required VoterId voterId,
+  }) async {
+    // get user's vote in this poll (if exists)
+    DocumentSnapshot voterSnap = await FirebaseFirestore.instance
+        .doc('/apps/${fco.appName}/polls/$pollName/voters/$voterId')
+        .get();
+    if (voterSnap.exists) {
+      Map<String, dynamic> voterData = voterSnap.data() as Map<String, dynamic>;
+      Timestamp when = voterData['when'];
+      PollOptionId votedFor = voterData['option-id'];
       return (
-        optionVoteCountMap: optionCountsMap,
-        userVotedForOptionId: null,
-        when: null
+        optionId: votedFor,
+        when: when.millisecondsSinceEpoch
       );
     }
-    return (optionVoteCountMap: null, userVotedForOptionId: null, when: null);
-    //
-    // int pollVoteCount = 0;
-    // Map<PollOptionId, int> optionVoteCountMap = {};
-    // PollOptionId? userVotedForOption;
-    //
-    // for (PollOptionId pollOptionId in pollOptionIds) {
-    //   // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
-    //   CollectionReference pollOptionVotes =
-    //       FirebaseFirestore.instance.collection('/flutter-content-apps/$appName/polls/$pollName/options/$pollOptionId/voters');
-    //   var optionVoteCountSnap = await pollOptionVotes.count().get();
-    //   int optionVoteCount = optionVoteCountSnap.count;
-    //   optionVoteCountMap[pollOptionId] = optionVoteCount;
-    //   pollVoteCount += optionVoteCount;
-    //   // check for presence of this user in this options voters collection
-    //   DocumentReference voterDocRef = pollOptionVotes.doc(voterId);
-    //   DocumentSnapshot snap = await voterDocRef.get();
-    //   if (snap.exists) {
-    //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-    //     fco.logi("user voted ${data['when']}");
-    //     userVotedForOption = pollOptionId;
-    //   }
-    // }
-    //
-    // OptionCountsAndVoterRecord result = (
-    //   voterId: voterId,
-    //   pollVoteCount: pollVoteCount,
-    //   optionVoteCountMap: optionVoteCountMap,
-    //   userVotedForOptionId: userVotedForOption,
-    // );
-    //
-    // return result;
+    return null;
   }
 
   @override
   Future<Map<PollOptionId, List<EmailAddress>>> getVotersByOption({
-    required String modelName,
     required String pollName,
     required List<PollOptionId> pollOptionIds,
   }) async {
     Map<PollOptionId, List<EmailAddress>> optionVotersMap = {};
 
     for (PollOptionId pollOptionId in pollOptionIds) {
-      // each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
+// each document in the voter collection represents a user who voted. The doc cannot be empty, so its id is the EmailAddress a property is time of vote.
       CollectionReference pollOptionVotes = FirebaseFirestore.instance.collection(
-          '/apps/$modelName/polls/$pollName/options/$pollOptionId/voters');
+          '/apps/${fco.appName}/polls/$pollName/options/$pollOptionId/voters');
       QuerySnapshot snap = await pollOptionVotes.get();
       List<EmailAddress> optionVoters = [];
       for (var doc in snap.docs) {
-        // Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+// Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         optionVoters.add(doc.id);
       }
       optionVotersMap[pollOptionId] = optionVoters;
@@ -412,21 +421,21 @@ class FireStoreModelRepository implements IModelRepository {
       required VoterId voterId,
       required PollOptionId optionId,
       required Map<PollOptionId, int> newOptionVoteCountMap}) async {
-    // check whether already voted
-    DocumentReference userVoteDocRef =
-        FirebaseFirestore.instance.doc('/polls/$pollName/voters/$voterId');
+// check whether already voted
+    final docPath = '/apps/${fco.appName}/polls/$pollName/voters/${voterId}';
+    DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc(docPath);
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {
-      // write the user's vote
+// write the user's vote
       await userVoteDocRef.set(
         {
           "when": Timestamp.now(),
           "option-id": optionId,
         },
       );
-      // update the poll's record
+// update the poll's record
       await FirebaseFirestore.instance
-          .doc('/polls/$pollName')
+          .doc('/apps/${fco.appName}/polls/$pollName')
           .set({"option-vote-counts": newOptionVoteCountMap});
     } else {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
@@ -459,97 +468,103 @@ class FireStoreModelRepository implements IModelRepository {
     return result;
   }
 
-  DocumentReference get appDocRef => FirebaseFirestore.instance
-      .collection('/apps')
-      .doc(fco.appName);
+  @override
+  Future<bool> tokenConfirmed(String token) async {
+    DocumentReference tokenDocRef = FirebaseFirestore.instance.collection('/confirmed-tokens').doc(token);
+    DocumentSnapshot doc = await tokenDocRef.get();
+    return doc.exists;
+  }
 
-  // @override
-  // Future<void> copyCollectionBetweenProjects() async {
-  //
-  //   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
-  //   await Firebase.initializeApp(options: OLD_DefaultFirebaseOptions.currentPlatform, name: 'OLD');
-  //
-  //   // FirebaseApp algcApp = Firebase.app();
-  //   FirebaseApp bhApp = Firebase.app('BH');
-  //
-  //   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
-  //   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
-  //
-  //
-  //   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
-  //   final toCollectionRef = bhFs.collection('/apps/algc/fs-users');
-  //
-  //   try {
-  //     final usersSnapshot = await fromUsersRef.get();
-  //     for (final document in usersSnapshot.docs) {
-  //       await toCollectionRef.doc(document.id).set(document.data());
-  //       print('Document ${document.id} migrated successfully');
-  //     }
-  //     // Optionally delete the old collection after migration
-  //     // await oldCollectionRef.doc(document.id).delete();
-  //   } catch (e) {
-  //     print('Error during migration: $e');
-  //     // Handle errors appropriately
-  //   }
-  // }
+  DocumentReference get appDocRef =>
+      FirebaseFirestore.instance.collection('/apps').doc(fco.appName);
 
-  // copy collection /fs-users from one firestore project (flowchart_studio) to another (biancashouse)
-  // Future<void> copyFlowchartsBetweenProjects() async {
-  //
-  //   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
-  //   await Firebase.initializeApp(options: BH_DefaultFirebaseOptions.currentPlatform, name: 'BH');
-  //
-  //   // FirebaseApp algcApp = Firebase.app();
-  //   FirebaseApp bhApp = Firebase.app('BH');
-  //
-  //   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
-  //   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
-  //
-  //
-  //   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
-  //
-  //   try {
-  //     final usersSnapshot = await fromUsersRef.get();
-  //     for (final fromUserDoc in usersSnapshot.docs) {
-  //       final fromUserFlowchartsRef =
-  //       FirebaseFirestore.instance.collection('/fs-users/${fromUserDoc.id}/flowcharts');
-  //       final userFlowchartsSnapshot = await fromUserFlowchartsRef.get();
-  //       for (final fromFlowchartDoc in userFlowchartsSnapshot.docs) {
-  //         // final toUserFlowchartsRef = toUsersRef.collection('flowcharts');
-  //         final toUserFlowchartsRef =
-  //         bhFs.collection('/apps/algc/fs-users/${fromUserDoc.id}/flowcharts');
-  //         await toUserFlowchartsRef.doc(fromFlowchartDoc.id).set(fromFlowchartDoc.data());
-  //       }
-  //       print('Document ${fromUserDoc.id} migrated successfully');
-  //     }
-  //     // Optionally delete the old collection after migration
-  //     // await oldCollectionRef.doc(document.id).delete();
-  //   } catch (e) {
-  //     print('Error during migration: $e');
-  //     // Handle errors appropriately
-  //   }
-  // }
+// @override
+// Future<void> copyCollectionBetweenProjects() async {
+//
+//   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
+//   await Firebase.initializeApp(options: OLD_DefaultFirebaseOptions.currentPlatform, name: 'OLD');
+//
+//   // FirebaseApp algcApp = Firebase.app();
+//   FirebaseApp bhApp = Firebase.app('BH');
+//
+//   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
+//   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
+//
+//
+//   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
+//   final toCollectionRef = bhFs.collection('/apps/algc/fs-users');
+//
+//   try {
+//     final usersSnapshot = await fromUsersRef.get();
+//     for (final document in usersSnapshot.docs) {
+//       await toCollectionRef.doc(document.id).set(document.data());
+//       print('Document ${document.id} migrated successfully');
+//     }
+//     // Optionally delete the old collection after migration
+//     // await oldCollectionRef.doc(document.id).delete();
+//   } catch (e) {
+//     print('Error during migration: $e');
+//     // Handle errors appropriately
+//   }
+// }
 
-  // @override
-  // Future<void> copyFlowchartDocBetweenUsersInSameProject(
-  //     String fromUserId, String toUserId) async {
-  //
-  //   CollectionReference fromUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$fromUserId');
-  //   CollectionReference toUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$toUserId');
-  //
-  //   try {
-  //     final flowchartsSnapshot = await fromUserFlowchartsRef.get();
-  //     for (final flowchartDoc in flowchartsSnapshot.docs) {
-  //       await toUserFlowchartsRef.doc(flowchartDoc.id).set(flowchartDoc.data());
-  //       print('Flowchart Document ${flowchartDoc.id} copied successfully');
-  //     }
-  //     // Optionally delete the old collection after migration
-  //     // await oldCollectionRef.doc(document.id).delete();
-  //   } catch (e) {
-  //     print('Error during migration: $e');
-  //     // Handle errors appropriately
-  //   }
-  // }
+// copy collection /fs-users from one firestore project (flowchart_studio) to another (biancashouse)
+// Future<void> copyFlowchartsBetweenProjects() async {
+//
+//   // await Firebase.initializeApp(options: Algc_DefaultFirebaseOptions.currentPlatform);
+//   await Firebase.initializeApp(options: BH_DefaultFirebaseOptions.currentPlatform, name: 'BH');
+//
+//   // FirebaseApp algcApp = Firebase.app();
+//   FirebaseApp bhApp = Firebase.app('BH');
+//
+//   // FirebaseFirestore algcFs = FirebaseFirestore.instance;
+//   FirebaseFirestore bhFs = FirebaseFirestore.instanceFor(app: bhApp);
+//
+//
+//   final fromUsersRef = FirebaseFirestore.instance.collection('/fs-users');
+//
+//   try {
+//     final usersSnapshot = await fromUsersRef.get();
+//     for (final fromUserDoc in usersSnapshot.docs) {
+//       final fromUserFlowchartsRef =
+//       FirebaseFirestore.instance.collection('/fs-users/${fromUserDoc.id}/flowcharts');
+//       final userFlowchartsSnapshot = await fromUserFlowchartsRef.get();
+//       for (final fromFlowchartDoc in userFlowchartsSnapshot.docs) {
+//         // final toUserFlowchartsRef = toUsersRef.collection('flowcharts');
+//         final toUserFlowchartsRef =
+//         bhFs.collection('/apps/algc/fs-users/${fromUserDoc.id}/flowcharts');
+//         await toUserFlowchartsRef.doc(fromFlowchartDoc.id).set(fromFlowchartDoc.data());
+//       }
+//       print('Document ${fromUserDoc.id} migrated successfully');
+//     }
+//     // Optionally delete the old collection after migration
+//     // await oldCollectionRef.doc(document.id).delete();
+//   } catch (e) {
+//     print('Error during migration: $e');
+//     // Handle errors appropriately
+//   }
+// }
+
+// @override
+// Future<void> copyFlowchartDocBetweenUsersInSameProject(
+//     String fromUserId, String toUserId) async {
+//
+//   CollectionReference fromUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$fromUserId');
+//   CollectionReference toUserFlowchartsRef = FirebaseFirestore.instance.collection('/fs-users/$toUserId');
+//
+//   try {
+//     final flowchartsSnapshot = await fromUserFlowchartsRef.get();
+//     for (final flowchartDoc in flowchartsSnapshot.docs) {
+//       await toUserFlowchartsRef.doc(flowchartDoc.id).set(flowchartDoc.data());
+//       print('Flowchart Document ${flowchartDoc.id} copied successfully');
+//     }
+//     // Optionally delete the old collection after migration
+//     // await oldCollectionRef.doc(document.id).delete();
+//   } catch (e) {
+//     print('Error during migration: $e');
+//     // Handle errors appropriately
+//   }
+// }
 
 // Future<void> copyUsersProjects() async {
 //   final admin = FirebaseAdminApp.initializeApp(

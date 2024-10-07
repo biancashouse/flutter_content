@@ -18,8 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CAPIState {
 // required bool useFirebase,
 // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-  String? get initialValueJsonAssetPath =>
-      throw _privateConstructorUsedError; // both come from MaterialAppWrapper widget constructor
+// String?
+// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
 // required ModelUR modelUR,
   bool get hideIframes => throw _privateConstructorUsedError;
   bool get hideSnippetPencilIcons =>
@@ -64,7 +64,9 @@ mixin _$CAPIState {
       throw _privateConstructorUsedError;
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CAPIStateCopyWith<CAPIState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -75,8 +77,7 @@ abstract class $CAPIStateCopyWith<$Res> {
       _$CAPIStateCopyWithImpl<$Res, CAPIState>;
   @useResult
   $Res call(
-      {String? initialValueJsonAssetPath,
-      bool hideIframes,
+      {bool hideIframes,
       bool hideSnippetPencilIcons,
       double? snippetTreeCalloutW,
       double? snippetTreeCalloutH,
@@ -105,10 +106,11 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CAPIState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? initialValueJsonAssetPath = freezed,
     Object? hideIframes = null,
     Object? hideSnippetPencilIcons = null,
     Object? snippetTreeCalloutW = freezed,
@@ -128,10 +130,6 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? ONLY_TESTING = null,
   }) {
     return _then(_value.copyWith(
-      initialValueJsonAssetPath: freezed == initialValueJsonAssetPath
-          ? _value.initialValueJsonAssetPath
-          : initialValueJsonAssetPath // ignore: cast_nullable_to_non_nullable
-              as String?,
       hideIframes: null == hideIframes
           ? _value.hideIframes
           : hideIframes // ignore: cast_nullable_to_non_nullable
@@ -213,8 +211,7 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? initialValueJsonAssetPath,
-      bool hideIframes,
+      {bool hideIframes,
       bool hideSnippetPencilIcons,
       double? snippetTreeCalloutW,
       double? snippetTreeCalloutH,
@@ -241,10 +238,11 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
       _$CAPIStateImpl _value, $Res Function(_$CAPIStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? initialValueJsonAssetPath = freezed,
     Object? hideIframes = null,
     Object? hideSnippetPencilIcons = null,
     Object? snippetTreeCalloutW = freezed,
@@ -264,10 +262,6 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? ONLY_TESTING = null,
   }) {
     return _then(_$CAPIStateImpl(
-      initialValueJsonAssetPath: freezed == initialValueJsonAssetPath
-          ? _value.initialValueJsonAssetPath
-          : initialValueJsonAssetPath // ignore: cast_nullable_to_non_nullable
-              as String?,
       hideIframes: null == hideIframes
           ? _value.hideIframes
           : hideIframes // ignore: cast_nullable_to_non_nullable
@@ -344,8 +338,7 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
 
 class _$CAPIStateImpl extends _CAPIState {
   _$CAPIStateImpl(
-      {this.initialValueJsonAssetPath,
-      this.hideIframes = false,
+      {this.hideIframes = false,
       this.hideSnippetPencilIcons = false,
       this.snippetTreeCalloutW = 400,
       this.snippetTreeCalloutH = 600,
@@ -366,9 +359,8 @@ class _$CAPIStateImpl extends _CAPIState {
 
 // required bool useFirebase,
 // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-  @override
-  final String? initialValueJsonAssetPath;
-// both come from MaterialAppWrapper widget constructor
+// String?
+// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
 // required ModelUR modelUR,
   @override
   @JsonKey()
@@ -444,7 +436,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(initialValueJsonAssetPath: $initialValueJsonAssetPath, hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -452,9 +444,6 @@ class _$CAPIStateImpl extends _CAPIState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CAPIStateImpl &&
-            (identical(other.initialValueJsonAssetPath,
-                    initialValueJsonAssetPath) ||
-                other.initialValueJsonAssetPath == initialValueJsonAssetPath) &&
             (identical(other.hideIframes, hideIframes) ||
                 other.hideIframes == hideIframes) &&
             (identical(other.hideSnippetPencilIcons, hideSnippetPencilIcons) ||
@@ -495,7 +484,6 @@ class _$CAPIStateImpl extends _CAPIState {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      initialValueJsonAssetPath,
       hideIframes,
       hideSnippetPencilIcons,
       snippetTreeCalloutW,
@@ -514,7 +502,9 @@ class _$CAPIStateImpl extends _CAPIState {
       snippetBeingEdited,
       ONLY_TESTING);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CAPIStateImplCopyWith<_$CAPIStateImpl> get copyWith =>
@@ -523,8 +513,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
 abstract class _CAPIState extends CAPIState {
   factory _CAPIState(
-      {final String? initialValueJsonAssetPath,
-      final bool hideIframes,
+      {final bool hideIframes,
       final bool hideSnippetPencilIcons,
       final double? snippetTreeCalloutW,
       final double? snippetTreeCalloutH,
@@ -543,15 +532,17 @@ abstract class _CAPIState extends CAPIState {
       final bool ONLY_TESTING}) = _$CAPIStateImpl;
   _CAPIState._() : super._();
 
-  @override // required bool useFirebase,
+// required bool useFirebase,
 // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-  String? get initialValueJsonAssetPath;
-  @override // both come from MaterialAppWrapper widget constructor
+// String?
+// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
 // required ModelUR modelUR,
+  @override
   bool get hideIframes;
   @override
-  bool get hideSnippetPencilIcons;
-  @override // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
+  bool
+      get hideSnippetPencilIcons; // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
+  @override
   double? get snippetTreeCalloutW;
   @override
   double? get snippetTreeCalloutH;
@@ -560,8 +551,8 @@ abstract class _CAPIState extends CAPIState {
   @override
   double? get directoryTreeCalloutW;
   @override
-  double? get directoryTreeCalloutH;
-  @override // @Default(600) double? snippetPropertiesCalloutW,
+  double?
+      get directoryTreeCalloutH; // @Default(600) double? snippetPropertiesCalloutW,
 // @Default(600) double? snippetPropertiesCalloutH,
 // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
 // @Default([]) List<TargetModel> playList,
@@ -572,34 +563,39 @@ abstract class _CAPIState extends CAPIState {
 // @Default(false) bool hideAllTargetCovers,
 // @Default(false) bool hideAllTargetBtns,
 //
+  @override
   TargetModel? get newestTarget;
   @override
-  TargetModel? get selectedTarget;
-  @override //
-  String? get selectedPanel;
-  @override //
+  TargetModel? get selectedTarget; //
+  @override
+  String? get selectedPanel; //
 // content
-  bool get trainerIsSignedn;
-  @override // String? jsonRootDirectoryNode,
+  @override
+  bool get trainerIsSignedn; // String? jsonRootDirectoryNode,
 // EncodedJson? jsonClipboardForMove,
+  @override
   bool get showClipboardContent;
   @override
-  int get force;
-  @override // hacky way to force a transition
-  bool get onlyTargetsWrappers;
-  @override // hacky way to force a transition
+  int get force; // hacky way to force a transition
+  @override
+  bool get onlyTargetsWrappers; // hacky way to force a transition
 //==========================================================================================
 //====  PAGE ROUTE NAME  ===================================================================
 //==========================================================================================
-  String? get routeName;
-  @override //==========================================================================================
+  @override
+  String?
+      get routeName; //==========================================================================================
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
+  @override
   SnippetBeingEdited? get snippetBeingEdited;
   @override
   bool get ONLY_TESTING;
+
+  /// Create a copy of CAPIState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CAPIStateImplCopyWith<_$CAPIStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

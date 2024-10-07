@@ -40,6 +40,9 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static List<String> _$voterPool(PollNode v) => v.voterPool;
   static const Field<PollNode, List<String>> _f$voterPool =
       Field('voterPool', _$voterPool, opt: true, def: const []);
+  static bool _$locked(PollNode v) => v.locked;
+  static const Field<PollNode, bool> _f$locked =
+      Field('locked', _$locked, opt: true, def: false);
   static List<STreeNode> _$children(PollNode v) => v.children;
   static const Field<PollNode, List<STreeNode>> _f$children =
       Field('children', _$children);
@@ -68,6 +71,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #endDate: _f$endDate,
     #createdBy: _f$createdBy,
     #voterPool: _f$voterPool,
+    #locked: _f$locked,
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -90,6 +94,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
         endDate: data.dec(_f$endDate),
         createdBy: data.dec(_f$createdBy),
         voterPool: data.dec(_f$voterPool),
+        locked: data.dec(_f$locked),
         children: data.dec(_f$children));
   }
 
@@ -154,6 +159,7 @@ abstract class PollNodeCopyWith<$R, $In extends PollNode, $Out>
       int? endDate,
       String? createdBy,
       List<String>? voterPool,
+      bool? locked,
       List<STreeNode>? children});
   PollNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -182,6 +188,7 @@ class _PollNodeCopyWithImpl<$R, $Out>
           Object? endDate = $none,
           Object? createdBy = $none,
           List<String>? voterPool,
+          bool? locked,
           List<STreeNode>? children}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
@@ -190,6 +197,7 @@ class _PollNodeCopyWithImpl<$R, $Out>
         if (endDate != $none) #endDate: endDate,
         if (createdBy != $none) #createdBy: createdBy,
         if (voterPool != null) #voterPool: voterPool,
+        if (locked != null) #locked: locked,
         if (children != null) #children: children
       }));
   @override
@@ -200,6 +208,7 @@ class _PollNodeCopyWithImpl<$R, $Out>
       endDate: data.get(#endDate, or: $value.endDate),
       createdBy: data.get(#createdBy, or: $value.createdBy),
       voterPool: data.get(#voterPool, or: $value.voterPool),
+      locked: data.get(#locked, or: $value.locked),
       children: data.get(#children, or: $value.children));
 
   @override

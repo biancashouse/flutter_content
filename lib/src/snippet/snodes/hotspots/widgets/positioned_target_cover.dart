@@ -25,7 +25,7 @@ class TargetCover extends StatelessWidget {
     // if (tc != null) {
     // double radius = tc.radius;
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    return fco.canEditContent
+    return fco.canEditContent.value
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
             feedback: preventDrag ? const Offstage() : _draggableTargetCover(tc),
@@ -108,7 +108,7 @@ class _TargetCover extends StatelessWidget {
               num: index + 1,
               bgColor: tc.calloutColor().withOpacity(.5),
               radius: radius,
-              textColor: fco.canEditContent ? Colors.white : Colors.transparent,
+              textColor: fco.canEditContent.value ? Colors.white : Colors.transparent,
               fontSize: 14,
             ),
           ),

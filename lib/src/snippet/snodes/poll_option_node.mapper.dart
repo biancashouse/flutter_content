@@ -21,9 +21,6 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   @override
   final String id = 'PollOptionNode';
 
-  static String _$optionId(PollOptionNode v) => v.optionId;
-  static const Field<PollOptionNode, String> _f$optionId =
-      Field('optionId', _$optionId);
   static String _$text(PollOptionNode v) => v.text;
   static const Field<PollOptionNode, String> _f$text = Field('text', _$text);
   static String _$uid(PollOptionNode v) => v.uid;
@@ -45,7 +42,6 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
 
   @override
   final MappableFields<PollOptionNode> fields = const {
-    #optionId: _f$optionId,
     #text: _f$text,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -61,8 +57,7 @@ class PollOptionNodeMapper extends SubClassMapperBase<PollOptionNode> {
   late final ClassMapperBase superMapper = CLMapper.ensureInitialized();
 
   static PollOptionNode _instantiate(DecodingData data) {
-    return PollOptionNode(
-        optionId: data.dec(_f$optionId), text: data.dec(_f$text));
+    return PollOptionNode(text: data.dec(_f$text));
   }
 
   @override
@@ -119,7 +114,7 @@ extension PollOptionNodeValueCopy<$R, $Out>
 abstract class PollOptionNodeCopyWith<$R, $In extends PollOptionNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? optionId, String? text});
+  $R call({String? text});
   PollOptionNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -133,14 +128,11 @@ class _PollOptionNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PollOptionNode> $mapper =
       PollOptionNodeMapper.ensureInitialized();
   @override
-  $R call({String? optionId, String? text}) => $apply(FieldCopyWithData({
-        if (optionId != null) #optionId: optionId,
-        if (text != null) #text: text
-      }));
+  $R call({String? text}) =>
+      $apply(FieldCopyWithData({if (text != null) #text: text}));
   @override
-  PollOptionNode $make(CopyWithData data) => PollOptionNode(
-      optionId: data.get(#optionId, or: $value.optionId),
-      text: data.get(#text, or: $value.text));
+  PollOptionNode $make(CopyWithData data) =>
+      PollOptionNode(text: data.get(#text, or: $value.text));
 
   @override
   PollOptionNodeCopyWith<$R2, PollOptionNode, $Out2> $chain<$R2, $Out2>(

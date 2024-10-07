@@ -24,9 +24,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static String? _$name(PlaceholderNode v) => v.name;
   static const Field<PlaceholderNode, String> _f$name =
       Field('name', _$name, opt: true);
-  static int? _$colorValue(PlaceholderNode v) => v.colorValue;
-  static const Field<PlaceholderNode, int> _f$colorValue =
-      Field('colorValue', _$colorValue, opt: true);
   static double? _$width(PlaceholderNode v) => v.width;
   static const Field<PlaceholderNode, double> _f$width =
       Field('width', _$width, opt: true);
@@ -53,7 +50,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   @override
   final MappableFields<PlaceholderNode> fields = const {
     #name: _f$name,
-    #colorValue: _f$colorValue,
     #width: _f$width,
     #height: _f$height,
     #uid: _f$uid,
@@ -72,7 +68,6 @@ class PlaceholderNodeMapper extends SubClassMapperBase<PlaceholderNode> {
   static PlaceholderNode _instantiate(DecodingData data) {
     return PlaceholderNode(
         name: data.dec(_f$name),
-        colorValue: data.dec(_f$colorValue),
         width: data.dec(_f$width),
         height: data.dec(_f$height));
   }
@@ -131,7 +126,7 @@ extension PlaceholderNodeValueCopy<$R, $Out>
 abstract class PlaceholderNodeCopyWith<$R, $In extends PlaceholderNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, int? colorValue, double? width, double? height});
+  $R call({String? name, double? width, double? height});
   PlaceholderNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -147,19 +142,16 @@ class _PlaceholderNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? name = $none,
-          Object? colorValue = $none,
           Object? width = $none,
           Object? height = $none}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
-        if (colorValue != $none) #colorValue: colorValue,
         if (width != $none) #width: width,
         if (height != $none) #height: height
       }));
   @override
   PlaceholderNode $make(CopyWithData data) => PlaceholderNode(
       name: data.get(#name, or: $value.name),
-      colorValue: data.get(#colorValue, or: $value.colorValue),
       width: data.get(#width, or: $value.width),
       height: data.get(#height, or: $value.height));
 

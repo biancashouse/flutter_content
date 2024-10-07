@@ -84,17 +84,15 @@ class FSImageNode extends CL with FSImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
-    return StorageImage(
+    Widget widget = StorageImage(
       fit: fit?.flutterValue,
       width: width,
       height: height,
       scale: scale??1.0,
       alignment: alignment?.flutterValue ?? Alignment.center,
-      ref: FirebaseStorage.instance.ref(
-        fsFullPath ??
-            'gs://flutter-content-2dc30.appspot.com/missing-image.PNG',
-      ),
+      ref: FirebaseStorage.instance.ref(fsFullPath ?? 'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
     );
+    return widget;
   }
 
   @override

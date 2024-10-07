@@ -1,16 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/bloc/snippet_state.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../unit_test.dart';
 
 void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late CAPIBloC CAPIBloC;
+  late CAPIBloC capiBloc;
   late CAPIState selectedState;
   late STreeNode sel;
   late RichTextNode rt2;
@@ -18,17 +18,16 @@ void main() {
   late TextNode cl1;
   late CenterNode sc1;
 
-  final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
-  final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  final ur = SnippetTreeUR();
-
   /// reusable expected states
-  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) => bloc.state.copyWith(
-        selectedNode: node,
-        showProperties: true,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
-        nodeBeingDeleted: null,
+  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) =>
+      bloc.state.copyWith(
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: node,
+          nodeBeingDeleted: null,
+          rootNode: bloc.state.snippetBeingEdited!.rootNode,
+          treeC: bloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: bloc.state.snippetBeingEdited!.jsonBeforePush,
+        ),
       );
 
   // setupAll() runs once before any test in the suite
@@ -43,16 +42,29 @@ void main() {
   });
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
-    snippet = SnippetRootNode(name: 'test-snippet', child: child)..validateTree();
-    treeC = SnippetTreeController(roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC, treeUR: ur);
+    snippet = SnippetRootNode(name: 'test-snippet', child: child)
+      ..validateTree();
+    treeC = SnippetTreeController(
+      roots: [snippet],
+      childrenProvider: Node.snippetTreeChildrenProvider,
+      parentProvider: Node.snippetTreeParentProvider,
+    );
+    capiBloc = CAPIBloC(
+        modelRepo: setupMockRepo(),
+        mockSnippetBeingEdited: SnippetBeingEdited(
+          rootNode: snippet,
+          treeC: treeC,
+          jsonBeforePush: '',
+        ));
     if (select != null) {
-      selectedState = CAPIBloC.state.copyWith(
-        selectedNode: select,
-        showProperties: true,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
-        nodeBeingDeleted: null,
+      selectedState = capiBloc.state.copyWith(
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: select,
+          nodeBeingDeleted: null,
+          rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+          treeC: capiBloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: capiBloc.state.snippetBeingEdited!.jsonBeforePush,
+        ),
       );
     }
   }
@@ -60,7 +72,7 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'try to replace type with same type',
     setUp: () => test_snippet_setup(sc1..child = cl1, select: cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: TextNode));
@@ -75,7 +87,7 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'replace CL with a SC',
     setUp: () => test_snippet_setup(sc1..child = cl1, select: cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: ContainerNode));
@@ -90,7 +102,7 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     "try to replace RichText's InlineSpan child with with a non-InlineSpan",
     setUp: () => test_snippet_setup(sc1..child = rt2, select: rt2.text),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: ContainerNode));
@@ -106,7 +118,7 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     "try to replace a non-InlineSpan with an InlineSpan",
     setUp: () => test_snippet_setup(sc1..child = cl1, select: cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: TextSpanNode));
@@ -120,8 +132,10 @@ void main() {
 
   blocTest<CAPIBloC, CAPIState>(
     "try to replace a PollOption with a non-PollOption",
-    setUp: () => test_snippet_setup(sc1..child = (PollNode(children: [sel = PollOptionNode(optionId: 'optionId', text: 'text')])), select: sel),
-    build: () => CAPIBloC,
+    setUp: () => test_snippet_setup(
+        sc1..child = (PollNode(children: [sel = PollOptionNode(text: 'text')])),
+        select: sel),
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: TextNode));
@@ -140,13 +154,16 @@ void main() {
         sc1
           ..child = (StepperNode(children: [
             sel = StepNode(
-              title: GenericSingleChildNode(propertyName: 'title', child: TextNode()),
-              subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode()),
-              content: GenericSingleChildNode(propertyName: 'content', child: TextNode()),
+              title: GenericSingleChildNode(
+                  propertyName: 'title', child: TextNode()),
+              subtitle: GenericSingleChildNode(
+                  propertyName: 'subtitle', child: TextNode()),
+              content: GenericSingleChildNode(
+                  propertyName: 'content', child: TextNode()),
             )
           ])),
         select: sel),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: TextNode));
@@ -162,18 +179,21 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     "replace a TextNode with a Container",
     setUp: () => test_snippet_setup(cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     // seed: () => selectedState,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(node: cl1, selectedWidgetGK: selectedWidgetGK, selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: cl1));
       bloc.add(const CAPIEvent.replaceSelectionWith(type: ContainerNode));
     },
     expect: () => [
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', cl1),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode type', cl1),
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', isA<ContainerNode>())
-        ..having((state) => state.selectedNode?.parent, 'parent', cl1.parent)
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode type', isA<ContainerNode>())
+        ..having((state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+            'parent', cl1.getParent())
     ],
     verify: (bloc) {
       // expect(sc1.child, isA<StepperNode>());
@@ -185,17 +205,21 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     "replace a SizedBox containing a Poll with a Container",
     setUp: () => test_snippet_setup(
-        sc1..child = (sel = SizedBoxNode(child: PollNode(children: [PollOptionNode(optionId: 'optionId', text: 'text')]))),
+        sc1
+          ..child = (sel = SizedBoxNode(
+              child: PollNode(children: [PollOptionNode(text: 'text')]))),
         select: sel),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     seed: () => selectedState,
     act: (bloc) {
       bloc.add(const CAPIEvent.replaceSelectionWith(type: ContainerNode));
     },
     expect: () => [
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', isA<ContainerNode>())
-        ..having((state) => state.selectedNode?.parent, 'parent', sc1)
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode type', isA<ContainerNode>())
+        ..having((state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+            'parent', sc1)
     ],
     verify: (bloc) {
       expect(sc1.child, isA<ContainerNode>());

@@ -8,44 +8,58 @@ import 'poll_state.dart';
 
 class PollBloC extends Bloc<PollEvent, PollState> {
   final IModelRepository modelRepo;
+
   PollBloC({
     required this.modelRepo,
-    required VoterId? voterId,
+    required VoterId voterId,
     required String pollName,
-    int? starts, int? ends,
-    required OptionCountsAndVoterRecord result,
+    int? starts,
+    int? ends,
+    required OptionVoteCountMap optionCountsMap,
+    UserVoterRecord? userVote,
   }) : super(PollState(
-          voterId: voterId,
           pollName: pollName,
-          startDate: starts, endDate: ends,
-          optionVoteCounts: result.optionVoteCountMap ?? {},
-          idUserVotedFor: result.userVotedForOptionId,
+          startDate: starts,
+          endDate: ends,
+          optionVoteCounts: optionCountsMap,
+          userVote: userVote,
         )) {
     on<UserVoted>((event, emit) => _userVoted(event, emit));
-    on<VoterIdCreated>((event, emit) => _voterIdCreated(event, emit));
+    // on<VoterIdCreated>((event, emit) => _voterIdCreated(event, emit));
   }
 
-   _userVoted(UserVoted event, emit) async {
-    Map<PollOptionId, int> newMap = Map<PollOptionId, int>.of(state.optionVoteCounts);
-    newMap[event.optionId] = (newMap[event.optionId] ?? 0) + 1;
+  _userVoted(UserVoted event, emit) async {
+    event.poll.locked = true;
+    Map<PollOptionId, int> newMap =
+        Map<PollOptionId, int>.of(state.optionVoteCounts);
+    newMap[event.optionId] = state.optionVoteCount(event.optionId) + 1;
 
+    final voterId = fco.hiveBox.get('vea') ?? 'anon';
     // save to firestore
-    modelRepo.saveVote(pollName: state.pollName, voterId: state.voterId??'anon', optionId: event.optionId, newOptionVoteCountMap: newMap);
+    modelRepo.saveVote(
+      pollName: state.pollName,
+      voterId: voterId,
+      optionId: event.optionId,
+      newOptionVoteCountMap: newMap,
+    );
+
+    UserVoterRecord voteRecord = (optionId: event.optionId, when: DateTime.now().millisecondsSinceEpoch);
 
     emit(state.copyWith(
       optionVoteCounts: newMap,
-      idUserVotedFor: event.optionId,
+      userVote: voteRecord,
+      locked: true,
     ));
     // }
   }
 
-  void _voterIdCreated(VoterIdCreated event, emit) {
-    if (event.newVoterId.isNotEmpty) {
-      fco.hiveBox.put("voter-id", event.newVoterId);
-    }
-    emit(state.copyWith(
-      voterId: event.newVoterId,
-    ));
-    // }
-  }
+  // void _voterIdCreated(VoterIdCreated event, emit) {
+  //   if (event.newVoterId.isNotEmpty) {
+  //     fco.hiveBox.put("voter-id", event.newVoterId);
+  //   }
+  //   emit(state.copyWith(
+  //     voterId: event.newVoterId,
+  //   ));
+  //   // }
+  // }
 }

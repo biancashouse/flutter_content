@@ -13,10 +13,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
-// import 'package:hydrated_bloc/hydrated_bloc.dart';
-
-import 'capi_event.dart';
-import 'capi_state.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   final IModelRepository modelRepo;
@@ -25,11 +21,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   CAPIBloC({
     required this.modelRepo,
+    SnippetBeingEdited? mockSnippetBeingEdited,  // for testing
     // bool useFirebase = false,
     // required bool localTestingFilePaths,
     // required Map<String, TargetGroupModel> targetGroupMap,
     // required Map<String, TargetModel> singleTargetMap,
-    EncodedJson? jsonRootDirectoryNode,
+    // EncodedJson? jsonRootDirectoryNode,
     // required Map<SnippetName, SnippetRootNode> snippetsMap,
     Offset? snippetTreeCalloutInitialPos,
     double? snippetTreeCalloutW,
@@ -37,6 +34,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double? snippetPropertiesCalloutW,
     // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
+          snippetBeingEdited: mockSnippetBeingEdited,  // testing usage only
           // useFirebase: useFirebase,
           // localTestingFilePaths: localTestingFilePaths,
           // targetGroupMap: targetGroupMap,
@@ -142,6 +140,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<SelectedDirectoryOrNode>(
         (event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
+    // on<RemoveSiblingForReinsertion>(
+    //     (event, emit) => _removeSiblingForReinsertion(event, emit));
+    // on<ReinsertSibling>((event, emit) => _reinsertSibling(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
     on<CopySnippetJsonToClipboard>(
         (event, emit) => _copySnippetJsonToClipboard(event, emit));
@@ -1053,12 +1054,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
-
     SnippetTreeController newTreeC() => SnippetTreeController(
           roots: event.visibleDecendantNode != null
               ? [event.visibleDecendantNode!]
               : [event.rootNode],
           childrenProvider: Node.snippetTreeChildrenProvider,
+          parentProvider: Node.snippetTreeParentProvider,
         );
 
     SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
@@ -1264,6 +1265,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       possiblyNewTreeC = SnippetTreeController(
         roots: [event.node],
         childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider: Node.snippetTreeParentProvider,
       ); //..expandAll();
     }
     state.snippetBeingEdited!.treeC = possiblyNewTreeC;
@@ -1306,6 +1308,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       possiblyNewTreeC = SnippetTreeController(
         roots: [newSel],
         childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider: Node.snippetTreeParentProvider,
       );
     }
     possiblyNewTreeC.rebuild();
@@ -1524,6 +1527,34 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
+  // void _removeSiblingForReinsertion(RemoveSiblingForReinsertion event, emit) {
+  //   int fromPos = event.parentNode.children.indexOf(event.node);
+  //   // remove node from children
+  //   event.parentNode.children.remove(event.node);
+  //   state.snippetBeingEdited!.treeC.rebuild();
+  //   // emit(state.copyWith(
+  //   //   force: state.force + 1,
+  //   // ));
+  //   // side effect : will effectively cause a replacement node to be appended
+  //   add(
+  //     CAPIEvent.reinsertSibling(
+  //       parentNode: event.parentNode,
+  //       node: event.node,
+  //       atPos: event.atPos,
+  //     ),
+  //   );
+  // }
+  //
+  // void _reinsertSibling(ReinsertSibling event, emit) {
+  //   event.parentNode.children.insert(event.atPos, event.node);
+  //   // remove last (dummy) child
+  //   event.parentNode.children.removeLast();
+  //   state.snippetBeingEdited!.treeC.rebuild();
+  //   emit(state.copyWith(
+  //     force: state.force + 1,
+  //   ));
+  // }
+
   // Future<void> _cutNode(CutNode event, emit) async {
   //   //_createSnippetUndo();
   //   STreeNode selectedNode = event.node;
@@ -1630,13 +1661,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
             name: 'sample-poll',
             title: 'Sample Poll',
             children: [
-              PollOptionNode(optionId: 'a', text: 'option 1 text?'),
-              PollOptionNode(optionId: 'b', text: 'option 2 text?'),
-              PollOptionNode(optionId: 'c', text: 'option 3 text?'),
+              PollOptionNode(text: 'option 1 text?'),
+              PollOptionNode(text: 'option 2 text?'),
+              PollOptionNode(text: 'option 3 text?'),
             ],
           ),
         const (PollOptionNode) =>
-          PollOptionNode(optionId: 'id?', text: 'new option text?'),
+          PollOptionNode(text: 'new option text?'),
         const (PositionedNode) =>
           PositionedNode(top: 0, left: 0, child: childNode),
         const (RichTextNode) => RichTextNode(
@@ -1653,6 +1684,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           ),
         const (RowNode) =>
           RowNode(children: childNode != null ? [childNode] : []),
+        const (ScaffoldNode) => ScaffoldNode(
+            appBar: AppBarNode(
+              bgColorValue: Colors.grey.value,
+              title: GenericSingleChildNode(
+                propertyName: 'title',
+                child: TextNode(text: 'my title'),
+              ),
+            ),
+            body:
+                GenericSingleChildNode(propertyName: 'body', child: childNode),
+          ),
         const (SingleChildScrollViewNode) =>
           SingleChildScrollViewNode(child: childNode),
         const (SizedBoxNode) => SizedBoxNode(child: childNode),
@@ -1715,8 +1757,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         // const (TargetButtonNode) =>
         //   TargetButtonNode(name: 'no name!', child: childNode),
         const (HotspotsNode) => HotspotsNode(child: childNode),
-        const (TabBarNode) => TabBarNode(children: childNode != null ? [childNode] : []),
-        const (TabBarViewNode) => TabBarViewNode(children: childNode != null ? [childNode] : []),
+        const (TabBarNode) =>
+          TabBarNode(children: childNode != null ? [childNode] : []),
+        const (TabBarViewNode) =>
+          TabBarViewNode(children: childNode != null ? [childNode] : []),
         const (TextButtonNode) =>
           TextButtonNode(child: TextNode(text: 'some-text')),
         const (TextNode) => TextNode(text: 'some-text'),
@@ -1751,9 +1795,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (wChild is ExpandedNode && w is! FlexNode) return;
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
-    if (wChild is InlineSpanNode &&
-        parent is RichTextNode &&
-        w is RichTextNode) return;
+    if (wChild is InlineSpanNode && parent is RichTextNode && w is RichTextNode)
+      return;
     if (wChild is InlineSpanNode &&
         parent is! RichTextNode &&
         w is! InlineSpanNode) return;
@@ -1923,6 +1966,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       possiblyNewTreeC = SnippetTreeController(
         roots: [r],
         childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider: Node.snippetTreeParentProvider,
       );
     }
     possiblyNewTreeC.roots.first.validateTree();

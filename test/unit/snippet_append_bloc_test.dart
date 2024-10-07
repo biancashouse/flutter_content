@@ -1,23 +1,20 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/bloc/snippet_state.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../unit_test.dart';
 
 void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late CAPIBloC CAPIBloC;
+  late CAPIBloC capiBloc;
   late STreeNode sel;
   late TabBarNode tb1;
   late TabBarViewNode tbv1;
   late SnippetRootNode snippetWithScaffoldAnd2Tabs;
-
-  final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
-  final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -45,10 +42,8 @@ void main() {
           propertyName: 'body',
           child: tbv1 = TabBarViewNode(
             children: [
-              PlaceholderNode(
-                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              sel = PlaceholderNode(
-                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              PlaceholderNode(),
+              sel = PlaceholderNode(),
             ],
           ),
         ),
@@ -59,19 +54,29 @@ void main() {
   void test_snippet_setup() {
     snippet = snippetWithScaffoldAnd2Tabs..validateTree();
     treeC = SnippetTreeController(
-        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC);
+      roots: [snippet],
+      childrenProvider: Node.snippetTreeChildrenProvider,
+      parentProvider: Node.snippetTreeParentProvider,
+    );
+    capiBloc = CAPIBloC(
+      modelRepo: setupMockRepo(),
+      mockSnippetBeingEdited: SnippetBeingEdited(
+        selectedNode: null,
+        showProperties: false,
+        nodeBeingDeleted: null,
+        rootNode: snippet,
+        treeC: treeC,
+        jsonBeforePush: '',
+      ),
+    );
   }
 
   blocTest<CAPIBloC, CAPIState>(
     'replace 2nd TabBarView child with a Center',
     setUp: () => test_snippet_setup(),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sel,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sel));
       bloc.add(const CAPIEvent.replaceSelectionWith(type: CenterNode));
       bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
@@ -87,12 +92,9 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'append 3rd tab view to the TabBarView',
     setUp: () => test_snippet_setup(),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: tbv1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: tbv1));
       bloc.add(const CAPIEvent.appendChild(type: SizedBoxNode));
       bloc.add(const CAPIEvent.appendChild(type: ContainerNode));
     },
@@ -102,7 +104,7 @@ void main() {
       expect(tbv1.children[0], isA<PlaceholderNode>());
       expect(tbv1.children[1], isA<PlaceholderNode>());
       expect(tbv1.children[2], isA<SizedBoxNode>());
-      expect(bloc.state.selectedNode, isA<ContainerNode>());
+      expect(bloc.state.snippetBeingEdited?.selectedNode, isA<ContainerNode>());
       expect(tb1.children.length, 3);
       expect(snippet.anyMissingParents(), false);
     },
@@ -111,12 +113,9 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'append 3rd tab to the TabBar',
     setUp: () => test_snippet_setup(),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: tb1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: tb1));
       bloc.add(const CAPIEvent.appendChild(type: TextNode));
     },
     skip: 2,
@@ -125,7 +124,7 @@ void main() {
       expect(tbv1.children[0], isA<PlaceholderNode>());
       expect(tbv1.children[1], isA<PlaceholderNode>());
       expect(tbv1.children[2], isA<PlaceholderNode>());
-      expect(bloc.state.selectedNode, isA<TextNode>());
+      expect(bloc.state.snippetBeingEdited?.selectedNode, isA<TextNode>());
       expect(tbv1.children.length, 3);
       expect(snippet.anyMissingParents(), false);
     },

@@ -9,11 +9,13 @@ import 'package:flutter_content/src/snippet/snode.dart';
 import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
 
 typedef VoterId = String;
-typedef PollOptionId = String; // 'a', 'b', 'c' etc.
-typedef OptionCountsAndVoterRecord = ({
-  Map<PollOptionId, int>? optionVoteCountMap,
-  PollOptionId? userVotedForOptionId,
-  int? when
+typedef PollOptionId = String;
+typedef OptionVoteCountMap = Map<PollOptionId, int>;
+typedef UserVoterRecord = ({PollOptionId? optionId, int? when});
+
+typedef UnconfirmedEaRecord = ({
+  String ea,
+  String token,
 });
 
 typedef TextStyleName = String;
@@ -27,7 +29,7 @@ typedef SnippetPlaceName = String; // panel or placeholder name
 typedef RoutePath = String; // Go Route Path
 // typedef TargetId = int;
 typedef EmailAddress = String;
-typedef RouteName = String;  // Go Route Page Name
+typedef RouteName = String; // Go Route Page Name
 // typedef BucketName = String;
 // typedef TextStyleName = String;
 typedef VersionId = String;
@@ -59,8 +61,6 @@ typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
 // typedef DoubleFunc = double Function();
 
 // typedef CalloutConfigChangedF = void Function(AlignmentEnum newTA, ArrowTypeEnum newAT);
-
-
 
 typedef CalloutConfigChangedF = void Function(
     AlignmentEnum newTA, ArrowTypeEnum newAT);

@@ -78,6 +78,7 @@ mixin _$CAPIEvent {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -132,6 +133,7 @@ mixin _$CAPIEvent {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -185,6 +187,7 @@ mixin _$CAPIEvent {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -231,6 +234,7 @@ mixin _$CAPIEvent {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -273,6 +277,7 @@ mixin _$CAPIEvent {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -315,6 +320,7 @@ mixin _$CAPIEvent {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -338,6 +344,9 @@ class _$CAPIEventCopyWithImpl<$Res, $Val extends CAPIEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -357,6 +366,8 @@ class __$$SelectPanelImplCopyWithImpl<$Res>
       _$SelectPanelImpl _value, $Res Function(_$SelectPanelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -404,7 +415,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
   @override
   int get hashCode => Object.hash(runtimeType, panelName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectPanelImplCopyWith<_$SelectPanelImpl> get copyWith =>
@@ -473,6 +486,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -530,6 +544,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -586,6 +601,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -638,6 +654,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -683,6 +700,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -728,6 +746,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -745,7 +764,10 @@ abstract class SelectPanel implements CAPIEvent {
       _$SelectPanelImpl;
 
   String? get panelName;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectPanelImplCopyWith<_$SelectPanelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -767,6 +789,8 @@ class __$$OverrideTargetGKImplCopyWithImpl<$Res>
       $Res Function(_$OverrideTargetGKImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -834,7 +858,9 @@ class _$OverrideTargetGKImpl
   @override
   int get hashCode => Object.hash(runtimeType, wName, index, gk);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$OverrideTargetGKImplCopyWith<_$OverrideTargetGKImpl> get copyWith =>
@@ -904,6 +930,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -961,6 +988,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -1017,6 +1045,7 @@ class _$OverrideTargetGKImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -1069,6 +1098,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -1114,6 +1144,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -1159,6 +1190,7 @@ class _$OverrideTargetGKImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -1181,7 +1213,10 @@ abstract class OverrideTargetGK implements CAPIEvent {
   String get wName;
   int get index;
   GlobalKey<State<StatefulWidget>> get gk;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OverrideTargetGKImplCopyWith<_$OverrideTargetGKImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1203,6 +1238,8 @@ class __$$ForceRefreshImplCopyWithImpl<$Res>
       _$ForceRefreshImpl _value, $Res Function(_$ForceRefreshImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1251,7 +1288,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
   @override
   int get hashCode => Object.hash(runtimeType, onlyTargetsWrappers);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ForceRefreshImplCopyWith<_$ForceRefreshImpl> get copyWith =>
@@ -1320,6 +1359,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -1377,6 +1417,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -1433,6 +1474,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -1485,6 +1527,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -1530,6 +1573,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -1575,6 +1619,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -1592,7 +1637,10 @@ abstract class ForceRefresh implements CAPIEvent {
       _$ForceRefreshImpl;
 
   bool get onlyTargetsWrappers;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ForceRefreshImplCopyWith<_$ForceRefreshImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1614,6 +1662,8 @@ class __$$UpdateClipboardImplCopyWithImpl<$Res>
       _$UpdateClipboardImpl _value, $Res Function(_$UpdateClipboardImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1672,7 +1722,9 @@ class _$UpdateClipboardImpl
   int get hashCode => Object.hash(
       runtimeType, newContent, const DeepCollectionEquality().hash(skipSave));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateClipboardImplCopyWith<_$UpdateClipboardImpl> get copyWith =>
@@ -1742,6 +1794,7 @@ class _$UpdateClipboardImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -1799,6 +1852,7 @@ class _$UpdateClipboardImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -1855,6 +1909,7 @@ class _$UpdateClipboardImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -1907,6 +1962,7 @@ class _$UpdateClipboardImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -1952,6 +2008,7 @@ class _$UpdateClipboardImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -1997,6 +2054,7 @@ class _$UpdateClipboardImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -2016,7 +2074,10 @@ abstract class UpdateClipboard implements CAPIEvent {
 
   STreeNode? get newContent;
   dynamic get skipSave;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateClipboardImplCopyWith<_$UpdateClipboardImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2038,6 +2099,8 @@ class __$$PublishSnippetImplCopyWithImpl<$Res>
       _$PublishSnippetImpl _value, $Res Function(_$PublishSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2098,7 +2161,9 @@ class _$PublishSnippetImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetName, versionId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PublishSnippetImplCopyWith<_$PublishSnippetImpl> get copyWith =>
@@ -2168,6 +2233,7 @@ class _$PublishSnippetImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -2225,6 +2291,7 @@ class _$PublishSnippetImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -2281,6 +2348,7 @@ class _$PublishSnippetImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -2333,6 +2401,7 @@ class _$PublishSnippetImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -2378,6 +2447,7 @@ class _$PublishSnippetImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -2423,6 +2493,7 @@ class _$PublishSnippetImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -2442,7 +2513,10 @@ abstract class PublishSnippet implements CAPIEvent {
 
   String get snippetName;
   String get versionId;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PublishSnippetImplCopyWith<_$PublishSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2464,6 +2538,8 @@ class __$$RevertSnippetImplCopyWithImpl<$Res>
       _$RevertSnippetImpl _value, $Res Function(_$RevertSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2524,7 +2600,9 @@ class _$RevertSnippetImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetName, versionId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
@@ -2593,6 +2671,7 @@ class _$RevertSnippetImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -2650,6 +2729,7 @@ class _$RevertSnippetImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -2706,6 +2786,7 @@ class _$RevertSnippetImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -2758,6 +2839,7 @@ class _$RevertSnippetImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -2803,6 +2885,7 @@ class _$RevertSnippetImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -2848,6 +2931,7 @@ class _$RevertSnippetImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -2867,7 +2951,10 @@ abstract class RevertSnippet implements CAPIEvent {
 
   String get snippetName;
   String get versionId;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2891,6 +2978,8 @@ class __$$ToggleAutoPublishingOfSnippetImplCopyWithImpl<$Res>
       $Res Function(_$ToggleAutoPublishingOfSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2941,7 +3030,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ToggleAutoPublishingOfSnippetImplCopyWith<
@@ -3012,6 +3103,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -3069,6 +3161,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -3125,6 +3218,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -3177,6 +3271,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -3222,6 +3317,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -3267,6 +3363,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -3285,7 +3382,10 @@ abstract class ToggleAutoPublishingOfSnippet implements CAPIEvent {
       _$ToggleAutoPublishingOfSnippetImpl;
 
   String get snippetName;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ToggleAutoPublishingOfSnippetImplCopyWith<
           _$ToggleAutoPublishingOfSnippetImpl>
       get copyWith => throw _privateConstructorUsedError;
@@ -3308,6 +3408,8 @@ class __$$AutoPublishDefaultImplCopyWithImpl<$Res>
       $Res Function(_$AutoPublishDefaultImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3356,7 +3458,9 @@ class _$AutoPublishDefaultImpl
   @override
   int get hashCode => Object.hash(runtimeType, b);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AutoPublishDefaultImplCopyWith<_$AutoPublishDefaultImpl> get copyWith =>
@@ -3426,6 +3530,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -3483,6 +3588,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -3539,6 +3645,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -3591,6 +3698,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -3636,6 +3744,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -3681,6 +3790,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -3698,7 +3808,10 @@ abstract class AutoPublishDefault implements CAPIEvent {
       _$AutoPublishDefaultImpl;
 
   bool get b;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AutoPublishDefaultImplCopyWith<_$AutoPublishDefaultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3720,6 +3833,8 @@ class __$$HideIframesImplCopyWithImpl<$Res>
       _$HideIframesImpl _value, $Res Function(_$HideIframesImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3766,7 +3881,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
   @override
   int get hashCode => Object.hash(runtimeType, hide);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HideIframesImplCopyWith<_$HideIframesImpl> get copyWith =>
@@ -3835,6 +3952,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -3892,6 +4010,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -3948,6 +4067,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -4000,6 +4120,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -4045,6 +4166,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4090,6 +4212,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4106,7 +4229,10 @@ abstract class HideIframes implements CAPIEvent {
   const factory HideIframes({required final bool hide}) = _$HideIframesImpl;
 
   bool get hide;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HideIframesImplCopyWith<_$HideIframesImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4128,6 +4254,8 @@ class __$$SetPanelSnippetImplCopyWithImpl<$Res>
       _$SetPanelSnippetImpl _value, $Res Function(_$SetPanelSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4189,7 +4317,9 @@ class _$SetPanelSnippetImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetName, panelName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SetPanelSnippetImplCopyWith<_$SetPanelSnippetImpl> get copyWith =>
@@ -4259,6 +4389,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -4316,6 +4447,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -4372,6 +4504,7 @@ class _$SetPanelSnippetImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -4424,6 +4557,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -4469,6 +4603,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4514,6 +4649,7 @@ class _$SetPanelSnippetImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4533,7 +4669,10 @@ abstract class SetPanelSnippet implements CAPIEvent {
 
   String get snippetName;
   String get panelName;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetPanelSnippetImplCopyWith<_$SetPanelSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4555,6 +4694,8 @@ class __$$PushSnippetEditorImplCopyWithImpl<$Res>
       $Res Function(_$PushSnippetEditorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -4615,7 +4756,9 @@ class _$PushSnippetEditorImpl
   @override
   int get hashCode => Object.hash(runtimeType, rootNode, visibleDecendantNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PushSnippetEditorImplCopyWith<_$PushSnippetEditorImpl> get copyWith =>
@@ -4685,6 +4828,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -4742,6 +4886,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -4798,6 +4943,7 @@ class _$PushSnippetEditorImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -4850,6 +4996,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -4895,6 +5042,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4940,6 +5088,7 @@ class _$PushSnippetEditorImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -4959,7 +5108,10 @@ abstract class PushSnippetEditor implements CAPIEvent {
 
   SnippetRootNode get rootNode;
   STreeNode? get visibleDecendantNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PushSnippetEditorImplCopyWith<_$PushSnippetEditorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -4981,6 +5133,8 @@ class __$$PopSnippetEditorImplCopyWithImpl<$Res>
       $Res Function(_$PopSnippetEditorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5030,7 +5184,9 @@ class _$PopSnippetEditorImpl
   @override
   int get hashCode => Object.hash(runtimeType, save);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PopSnippetEditorImplCopyWith<_$PopSnippetEditorImpl> get copyWith =>
@@ -5100,6 +5256,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -5157,6 +5314,7 @@ class _$PopSnippetEditorImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -5213,6 +5371,7 @@ class _$PopSnippetEditorImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -5265,6 +5424,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -5310,6 +5470,7 @@ class _$PopSnippetEditorImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -5355,6 +5516,7 @@ class _$PopSnippetEditorImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -5371,7 +5533,10 @@ abstract class PopSnippetEditor implements CAPIEvent {
   const factory PopSnippetEditor({final bool save}) = _$PopSnippetEditorImpl;
 
   bool get save;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PopSnippetEditorImplCopyWith<_$PopSnippetEditorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -5390,6 +5555,9 @@ class __$$ShowDirectoryTreeImplCopyWithImpl<$Res>
   __$$ShowDirectoryTreeImplCopyWithImpl(_$ShowDirectoryTreeImpl _value,
       $Res Function(_$ShowDirectoryTreeImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -5482,6 +5650,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -5539,6 +5708,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -5595,6 +5765,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -5647,6 +5818,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -5692,6 +5864,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -5737,6 +5910,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -5770,6 +5944,8 @@ class __$$RemoveDirectoryTreeImplCopyWithImpl<$Res>
       $Res Function(_$RemoveDirectoryTreeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -5819,7 +5995,9 @@ class _$RemoveDirectoryTreeImpl
   @override
   int get hashCode => Object.hash(runtimeType, save);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RemoveDirectoryTreeImplCopyWith<_$RemoveDirectoryTreeImpl> get copyWith =>
@@ -5889,6 +6067,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -5946,6 +6125,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -6002,6 +6182,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -6054,6 +6235,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -6099,6 +6281,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6144,6 +6327,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6161,7 +6345,10 @@ abstract class RemoveDirectoryTree implements CAPIEvent {
       _$RemoveDirectoryTreeImpl;
 
   bool get save;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RemoveDirectoryTreeImplCopyWith<_$RemoveDirectoryTreeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6183,6 +6370,8 @@ class __$$SelectNodeImplCopyWithImpl<$Res>
       _$SelectNodeImpl _value, $Res Function(_$SelectNodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -6229,7 +6418,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
   @override
   int get hashCode => Object.hash(runtimeType, node);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectNodeImplCopyWith<_$SelectNodeImpl> get copyWith =>
@@ -6298,6 +6489,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -6355,6 +6547,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -6411,6 +6604,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -6463,6 +6657,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -6508,6 +6703,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6553,6 +6749,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6569,7 +6766,10 @@ abstract class SelectNode implements CAPIEvent {
   const factory SelectNode({required final STreeNode node}) = _$SelectNodeImpl;
 
   STreeNode get node;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectNodeImplCopyWith<_$SelectNodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -6588,6 +6788,9 @@ class __$$ClearNodeSelectionImplCopyWithImpl<$Res>
   __$$ClearNodeSelectionImplCopyWithImpl(_$ClearNodeSelectionImpl _value,
       $Res Function(_$ClearNodeSelectionImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -6680,6 +6883,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -6737,6 +6941,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -6793,6 +6998,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -6845,6 +7051,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -6890,6 +7097,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6935,6 +7143,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -6968,6 +7177,8 @@ class __$$SaveNodeAsSnippetImplCopyWithImpl<$Res>
       $Res Function(_$SaveNodeAsSnippetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7027,7 +7238,9 @@ class _$SaveNodeAsSnippetImpl
   @override
   int get hashCode => Object.hash(runtimeType, node, newSnippetName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SaveNodeAsSnippetImplCopyWith<_$SaveNodeAsSnippetImpl> get copyWith =>
@@ -7097,6 +7310,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -7154,6 +7368,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -7210,6 +7425,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -7262,6 +7478,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -7307,6 +7524,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -7352,6 +7570,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -7371,7 +7590,10 @@ abstract class SaveNodeAsSnippet implements CAPIEvent {
 
   STreeNode get node;
   String get newSnippetName;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SaveNodeAsSnippetImplCopyWith<_$SaveNodeAsSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -7393,6 +7615,8 @@ class __$$ReplaceSelectionWithImplCopyWithImpl<$Res>
       $Res Function(_$ReplaceSelectionWithImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7463,7 +7687,9 @@ class _$ReplaceSelectionWithImpl
   @override
   int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReplaceSelectionWithImplCopyWith<_$ReplaceSelectionWithImpl>
@@ -7534,6 +7760,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -7591,6 +7818,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -7647,6 +7875,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -7699,6 +7928,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -7744,6 +7974,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -7789,6 +8020,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -7810,7 +8042,10 @@ abstract class ReplaceSelectionWith implements CAPIEvent {
   Type? get type;
   String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReplaceSelectionWithImplCopyWith<_$ReplaceSelectionWithImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -7832,6 +8067,8 @@ class __$$WrapSelectionWithImplCopyWithImpl<$Res>
       $Res Function(_$WrapSelectionWithImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -7901,7 +8138,9 @@ class _$WrapSelectionWithImpl
   @override
   int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$WrapSelectionWithImplCopyWith<_$WrapSelectionWithImpl> get copyWith =>
@@ -7971,6 +8210,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -8028,6 +8268,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -8084,6 +8325,7 @@ class _$WrapSelectionWithImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -8136,6 +8378,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -8181,6 +8424,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -8226,6 +8470,7 @@ class _$WrapSelectionWithImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -8247,7 +8492,10 @@ abstract class WrapSelectionWith implements CAPIEvent {
   Type? get type;
   String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$WrapSelectionWithImplCopyWith<_$WrapSelectionWithImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -8274,6 +8522,8 @@ class __$$AppendChildImplCopyWithImpl<$Res>
       _$AppendChildImpl _value, $Res Function(_$AppendChildImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8369,7 +8619,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
   int get hashCode => Object.hash(runtimeType, type, testNode, snippetName,
       widgetSpanChildType, testWidgetSpanChildNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AppendChildImplCopyWith<_$AppendChildImpl> get copyWith =>
@@ -8438,6 +8690,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -8496,6 +8749,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -8553,6 +8807,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -8606,6 +8861,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -8651,6 +8907,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -8696,6 +8953,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -8721,7 +8979,10 @@ abstract class AppendChild implements CAPIEvent {
   String? get snippetName; // only used when type is SnippetRefNode
   Type? get widgetSpanChildType;
   STreeNode? get testWidgetSpanChildNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AppendChildImplCopyWith<_$AppendChildImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -8743,6 +9004,8 @@ class __$$AddSiblingBeforeImplCopyWithImpl<$Res>
       $Res Function(_$AddSiblingBeforeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -8812,7 +9075,9 @@ class _$AddSiblingBeforeImpl
   @override
   int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddSiblingBeforeImplCopyWith<_$AddSiblingBeforeImpl> get copyWith =>
@@ -8882,6 +9147,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -8939,6 +9205,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -8995,6 +9262,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -9047,6 +9315,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -9092,6 +9361,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -9137,6 +9407,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -9158,7 +9429,10 @@ abstract class AddSiblingBefore implements CAPIEvent {
   Type? get type;
   String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddSiblingBeforeImplCopyWith<_$AddSiblingBeforeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -9180,6 +9454,8 @@ class __$$AddSiblingAfterImplCopyWithImpl<$Res>
       _$AddSiblingAfterImpl _value, $Res Function(_$AddSiblingAfterImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -9249,7 +9525,9 @@ class _$AddSiblingAfterImpl
   @override
   int get hashCode => Object.hash(runtimeType, type, snippetName, testNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AddSiblingAfterImplCopyWith<_$AddSiblingAfterImpl> get copyWith =>
@@ -9319,6 +9597,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -9376,6 +9655,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -9432,6 +9712,7 @@ class _$AddSiblingAfterImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -9484,6 +9765,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -9529,6 +9811,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -9574,6 +9857,7 @@ class _$AddSiblingAfterImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -9595,7 +9879,10 @@ abstract class AddSiblingAfter implements CAPIEvent {
   Type? get type;
   String? get snippetName; // only used when type is SnippetRefNode
   STreeNode? get testNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AddSiblingAfterImplCopyWith<_$AddSiblingAfterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -9617,6 +9904,8 @@ class __$$PasteReplacementImplCopyWithImpl<$Res>
       $Res Function(_$PasteReplacementImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -9667,7 +9956,9 @@ class _$PasteReplacementImpl
   @override
   int get hashCode => Object.hash(runtimeType, widgetSpanChildType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PasteReplacementImplCopyWith<_$PasteReplacementImpl> get copyWith =>
@@ -9737,6 +10028,7 @@ class _$PasteReplacementImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -9794,6 +10086,7 @@ class _$PasteReplacementImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -9850,6 +10143,7 @@ class _$PasteReplacementImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -9902,6 +10196,7 @@ class _$PasteReplacementImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -9947,6 +10242,7 @@ class _$PasteReplacementImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -9992,6 +10288,7 @@ class _$PasteReplacementImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -10010,7 +10307,10 @@ abstract class PasteReplacement implements CAPIEvent {
 
 // required STreeNode clipboardNode,
   Type? get widgetSpanChildType;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PasteReplacementImplCopyWith<_$PasteReplacementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -10032,6 +10332,8 @@ class __$$PasteChildImplCopyWithImpl<$Res>
       _$PasteChildImpl _value, $Res Function(_$PasteChildImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -10094,7 +10396,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
   int get hashCode =>
       Object.hash(runtimeType, widgetSpanChildType, testWidgetSpanChildNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PasteChildImplCopyWith<_$PasteChildImpl> get copyWith =>
@@ -10163,6 +10467,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -10220,6 +10525,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -10276,6 +10582,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -10328,6 +10635,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -10373,6 +10681,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -10418,6 +10727,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -10438,7 +10748,10 @@ abstract class PasteChild implements CAPIEvent {
 // required STreeNode clipboardNode,
   Type? get widgetSpanChildType;
   STreeNode? get testWidgetSpanChildNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PasteChildImplCopyWith<_$PasteChildImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -10457,6 +10770,9 @@ class __$$PasteSiblingBeforeImplCopyWithImpl<$Res>
   __$$PasteSiblingBeforeImplCopyWithImpl(_$PasteSiblingBeforeImpl _value,
       $Res Function(_$PasteSiblingBeforeImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -10549,6 +10865,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -10606,6 +10923,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -10662,6 +10980,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -10714,6 +11033,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -10759,6 +11079,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -10804,6 +11125,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -10834,6 +11156,9 @@ class __$$PasteSiblingAfterImplCopyWithImpl<$Res>
   __$$PasteSiblingAfterImplCopyWithImpl(_$PasteSiblingAfterImpl _value,
       $Res Function(_$PasteSiblingAfterImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -10926,6 +11251,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -10983,6 +11309,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -11039,6 +11366,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -11091,6 +11419,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -11136,6 +11465,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11181,6 +11511,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11211,6 +11542,9 @@ class __$$DeleteNodeTappedImplCopyWithImpl<$Res>
   __$$DeleteNodeTappedImplCopyWithImpl(_$DeleteNodeTappedImpl _value,
       $Res Function(_$DeleteNodeTappedImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -11303,6 +11637,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -11360,6 +11695,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -11416,6 +11752,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -11468,6 +11805,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -11513,6 +11851,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11558,6 +11897,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11588,6 +11928,9 @@ class __$$CompleteDeletionImplCopyWithImpl<$Res>
   __$$CompleteDeletionImplCopyWithImpl(_$CompleteDeletionImpl _value,
       $Res Function(_$CompleteDeletionImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -11680,6 +12023,7 @@ class _$CompleteDeletionImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -11737,6 +12081,7 @@ class _$CompleteDeletionImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -11793,6 +12138,7 @@ class _$CompleteDeletionImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -11845,6 +12191,7 @@ class _$CompleteDeletionImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -11890,6 +12237,7 @@ class _$CompleteDeletionImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11935,6 +12283,7 @@ class _$CompleteDeletionImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -11970,6 +12319,8 @@ class __$$CopySnippetJsonToClipboardImplCopyWithImpl<$Res>
       $Res Function(_$CopySnippetJsonToClipboardImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -12019,7 +12370,9 @@ class _$CopySnippetJsonToClipboardImpl
   @override
   int get hashCode => Object.hash(runtimeType, rootNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CopySnippetJsonToClipboardImplCopyWith<_$CopySnippetJsonToClipboardImpl>
@@ -12089,6 +12442,7 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -12146,6 +12500,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -12202,6 +12557,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -12254,6 +12610,7 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -12299,6 +12656,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -12344,6 +12702,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -12362,7 +12721,10 @@ abstract class CopySnippetJsonToClipboard implements CAPIEvent {
       _$CopySnippetJsonToClipboardImpl;
 
   SnippetRootNode get rootNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CopySnippetJsonToClipboardImplCopyWith<_$CopySnippetJsonToClipboardImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -12386,6 +12748,8 @@ class __$$ReplaceSnippetFromJsonImplCopyWithImpl<$Res>
       $Res Function(_$ReplaceSnippetFromJsonImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -12435,7 +12799,9 @@ class _$ReplaceSnippetFromJsonImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetJson);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ReplaceSnippetFromJsonImplCopyWith<_$ReplaceSnippetFromJsonImpl>
@@ -12505,6 +12871,7 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -12562,6 +12929,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -12618,6 +12986,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -12670,6 +13039,7 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -12715,6 +13085,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -12760,6 +13131,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -12777,7 +13149,10 @@ abstract class ReplaceSnippetFromJson implements CAPIEvent {
       _$ReplaceSnippetFromJsonImpl;
 
   String? get snippetJson;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ReplaceSnippetFromJsonImplCopyWith<_$ReplaceSnippetFromJsonImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -12799,6 +13174,8 @@ class __$$CopyNodeImplCopyWithImpl<$Res>
       _$CopyNodeImpl _value, $Res Function(_$CopyNodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -12853,7 +13230,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
   int get hashCode => Object.hash(
       runtimeType, node, const DeepCollectionEquality().hash(skipSave));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CopyNodeImplCopyWith<_$CopyNodeImpl> get copyWith =>
@@ -12922,6 +13301,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -12979,6 +13359,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -13035,6 +13416,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -13087,6 +13469,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -13132,6 +13515,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -13177,6 +13561,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -13195,7 +13580,10 @@ abstract class CopyNode implements CAPIEvent {
 
   STreeNode get node;
   dynamic get skipSave;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CopyNodeImplCopyWith<_$CopyNodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -13217,6 +13605,8 @@ class __$$CutNodeImplCopyWithImpl<$Res>
       _$CutNodeImpl _value, $Res Function(_$CutNodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -13271,7 +13661,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
   int get hashCode => Object.hash(
       runtimeType, node, const DeepCollectionEquality().hash(skipSave));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CutNodeImplCopyWith<_$CutNodeImpl> get copyWith =>
@@ -13340,6 +13732,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -13397,6 +13790,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -13453,6 +13847,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -13505,6 +13900,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -13550,6 +13946,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -13595,6 +13992,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -13613,7 +14011,10 @@ abstract class CutNode implements CAPIEvent {
 
   STreeNode get node;
   dynamic get skipSave;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CutNodeImplCopyWith<_$CutNodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -13637,6 +14038,8 @@ class __$$SelectedDirectoryOrNodeImplCopyWithImpl<$Res>
       $Res Function(_$SelectedDirectoryOrNodeImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -13697,7 +14100,9 @@ class _$SelectedDirectoryOrNodeImpl
   @override
   int get hashCode => Object.hash(runtimeType, snippetName, selectedNode);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectedDirectoryOrNodeImplCopyWith<_$SelectedDirectoryOrNodeImpl>
@@ -13767,6 +14172,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -13824,6 +14230,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -13880,6 +14287,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -13932,6 +14340,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -13977,6 +14386,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14022,6 +14432,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14041,9 +14452,434 @@ abstract class SelectedDirectoryOrNode implements CAPIEvent {
 
   String get snippetName;
   STreeNode? get selectedNode;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SelectedDirectoryOrNodeImplCopyWith<_$SelectedDirectoryOrNodeImpl>
       get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ImageChangedImplCopyWith<$Res> {
+  factory _$$ImageChangedImplCopyWith(
+          _$ImageChangedImpl value, $Res Function(_$ImageChangedImpl) then) =
+      __$$ImageChangedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Uint8List? newBytes});
+}
+
+/// @nodoc
+class __$$ImageChangedImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$ImageChangedImpl>
+    implements _$$ImageChangedImplCopyWith<$Res> {
+  __$$ImageChangedImplCopyWithImpl(
+      _$ImageChangedImpl _value, $Res Function(_$ImageChangedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? newBytes = freezed,
+  }) {
+    return _then(_$ImageChangedImpl(
+      newBytes: freezed == newBytes
+          ? _value.newBytes
+          : newBytes // ignore: cast_nullable_to_non_nullable
+              as Uint8List?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
+  const _$ImageChangedImpl({this.newBytes});
+
+  @override
+  final Uint8List? newBytes;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.imageChanged(newBytes: $newBytes)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.imageChanged'))
+      ..add(DiagnosticsProperty('newBytes', newBytes));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ImageChangedImpl &&
+            const DeepCollectionEquality().equals(other.newBytes, newBytes));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(newBytes));
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ImageChangedImplCopyWith<_$ImageChangedImpl> get copyWith =>
+      __$$ImageChangedImplCopyWithImpl<_$ImageChangedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(STreeNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(STreeNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
+    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(String snippetName, STreeNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
+    required TResult Function(String name, bool skipRedo) undo,
+    required TResult Function(String name) redo,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return imageChanged(newBytes);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(STreeNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
+    TResult? Function(String name, bool skipRedo)? undo,
+    TResult? Function(String name)? redo,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return imageChanged?.call(newBytes);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(STreeNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
+    TResult Function(String name, bool skipRedo)? undo,
+    TResult Function(String name)? redo,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (imageChanged != null) {
+      return imageChanged(newBytes);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
+    required TResult Function(Undo value) undo,
+    required TResult Function(Redo value) redo,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return imageChanged(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
+    TResult? Function(Undo value)? undo,
+    TResult? Function(Redo value)? redo,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return imageChanged?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
+    TResult Function(Undo value)? undo,
+    TResult Function(Redo value)? redo,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (imageChanged != null) {
+      return imageChanged(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ImageChanged implements CAPIEvent {
+  const factory ImageChanged({final Uint8List? newBytes}) = _$ImageChangedImpl;
+
+  Uint8List? get newBytes;
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ImageChangedImplCopyWith<_$ImageChangedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -14062,6 +14898,8 @@ class __$$UndoImplCopyWithImpl<$Res>
   __$$UndoImplCopyWithImpl(_$UndoImpl _value, $Res Function(_$UndoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -14119,7 +14957,9 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
   @override
   int get hashCode => Object.hash(runtimeType, name, skipRedo);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UndoImplCopyWith<_$UndoImpl> get copyWith =>
@@ -14188,6 +15028,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -14245,6 +15086,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -14301,6 +15143,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -14353,6 +15196,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -14398,6 +15242,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14443,6 +15288,7 @@ class _$UndoImpl with DiagnosticableTreeMixin implements Undo {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14461,7 +15307,10 @@ abstract class Undo implements CAPIEvent {
 
   String get name;
   bool get skipRedo;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UndoImplCopyWith<_$UndoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -14482,6 +15331,8 @@ class __$$RedoImplCopyWithImpl<$Res>
   __$$RedoImplCopyWithImpl(_$RedoImpl _value, $Res Function(_$RedoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -14528,7 +15379,9 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
   @override
   int get hashCode => Object.hash(runtimeType, name);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$RedoImplCopyWith<_$RedoImpl> get copyWith =>
@@ -14597,6 +15450,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -14654,6 +15508,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -14710,6 +15565,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -14762,6 +15618,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -14807,6 +15664,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14852,6 +15710,7 @@ class _$RedoImpl with DiagnosticableTreeMixin implements Redo {
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -14868,7 +15727,10 @@ abstract class Redo implements CAPIEvent {
   const factory Redo({required final String name}) = _$RedoImpl;
 
   String get name;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RedoImplCopyWith<_$RedoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -14887,6 +15749,9 @@ class __$$ForceSnippetRefreshImplCopyWithImpl<$Res>
   __$$ForceSnippetRefreshImplCopyWithImpl(_$ForceSnippetRefreshImpl _value,
       $Res Function(_$ForceSnippetRefreshImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -14981,6 +15846,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(STreeNode node, dynamic skipSave) cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function(String name, bool skipRedo) undo,
     required TResult Function(String name) redo,
     required TResult Function() forceSnippetRefresh,
@@ -15038,6 +15904,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function(String name, bool skipRedo)? undo,
     TResult? Function(String name)? redo,
     TResult? Function()? forceSnippetRefresh,
@@ -15094,6 +15961,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(STreeNode node, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
     TResult Function(String name, bool skipRedo)? undo,
     TResult Function(String name)? redo,
     TResult Function()? forceSnippetRefresh,
@@ -15146,6 +16014,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(CutNode value) cutNode,
     required TResult Function(SelectedDirectoryOrNode value)
         selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
     required TResult Function(Undo value) undo,
     required TResult Function(Redo value) redo,
     required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
@@ -15191,6 +16060,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(CopyNode value)? copyNode,
     TResult? Function(CutNode value)? cutNode,
     TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
     TResult? Function(Undo value)? undo,
     TResult? Function(Redo value)? redo,
     TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
@@ -15236,6 +16106,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(CopyNode value)? copyNode,
     TResult Function(CutNode value)? cutNode,
     TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
     TResult Function(Undo value)? undo,
     TResult Function(Redo value)? redo,
     TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,

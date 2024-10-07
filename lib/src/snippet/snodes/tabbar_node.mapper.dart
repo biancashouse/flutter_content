@@ -14,6 +14,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TabBarNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
+      TextStyleGroupMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
@@ -23,6 +24,12 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   @override
   final String id = 'TabBarNode';
 
+  static int? _$bgColorValue(TabBarNode v) => v.bgColorValue;
+  static const Field<TabBarNode, int> _f$bgColorValue =
+      Field('bgColorValue', _$bgColorValue, opt: true);
+  static TextStyleGroup? _$labelStyleGroup(TabBarNode v) => v.labelStyleGroup;
+  static const Field<TabBarNode, TextStyleGroup> _f$labelStyleGroup =
+      Field('labelStyleGroup', _$labelStyleGroup, opt: true);
   static int? _$selectedLabelColorValue(TabBarNode v) =>
       v.selectedLabelColorValue;
   static const Field<TabBarNode, int> _f$selectedLabelColorValue =
@@ -66,6 +73,8 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
 
   @override
   final MappableFields<TabBarNode> fields = const {
+    #bgColorValue: _f$bgColorValue,
+    #labelStyleGroup: _f$labelStyleGroup,
     #selectedLabelColorValue: _f$selectedLabelColorValue,
     #unselectedLabelColorValue: _f$unselectedLabelColorValue,
     #indicatorColorValue: _f$indicatorColorValue,
@@ -88,6 +97,8 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
 
   static TabBarNode _instantiate(DecodingData data) {
     return TabBarNode(
+        bgColorValue: data.dec(_f$bgColorValue),
+        labelStyleGroup: data.dec(_f$labelStyleGroup),
         selectedLabelColorValue: data.dec(_f$selectedLabelColorValue),
         unselectedLabelColorValue: data.dec(_f$unselectedLabelColorValue),
         indicatorColorValue: data.dec(_f$indicatorColorValue),
@@ -148,13 +159,17 @@ extension TabBarNodeValueCopy<$R, $Out>
 
 abstract class TabBarNodeCopyWith<$R, $In extends TabBarNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
+  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
+      get labelStyleGroup;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   @override
   ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
       get children;
   @override
   $R call(
-      {int? selectedLabelColorValue,
+      {int? bgColorValue,
+      TextStyleGroup? labelStyleGroup,
+      int? selectedLabelColorValue,
       int? unselectedLabelColorValue,
       int? indicatorColorValue,
       EdgeInsetsValue? padding,
@@ -173,6 +188,10 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TabBarNode> $mapper =
       TabBarNodeMapper.ensureInitialized();
   @override
+  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
+      get labelStyleGroup => $value.labelStyleGroup?.copyWith
+          .$chain((v) => call(labelStyleGroup: v));
+  @override
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding =>
       $value.padding?.copyWith.$chain((v) => call(padding: v));
   @override
@@ -181,7 +200,9 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
           (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
   @override
   $R call(
-          {Object? selectedLabelColorValue = $none,
+          {Object? bgColorValue = $none,
+          Object? labelStyleGroup = $none,
+          Object? selectedLabelColorValue = $none,
           Object? unselectedLabelColorValue = $none,
           Object? indicatorColorValue = $none,
           Object? padding = $none,
@@ -189,6 +210,8 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
           Object? selection = $none,
           List<STreeNode>? children}) =>
       $apply(FieldCopyWithData({
+        if (bgColorValue != $none) #bgColorValue: bgColorValue,
+        if (labelStyleGroup != $none) #labelStyleGroup: labelStyleGroup,
         if (selectedLabelColorValue != $none)
           #selectedLabelColorValue: selectedLabelColorValue,
         if (unselectedLabelColorValue != $none)
@@ -202,6 +225,8 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
       }));
   @override
   TabBarNode $make(CopyWithData data) => TabBarNode(
+      bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
+      labelStyleGroup: data.get(#labelStyleGroup, or: $value.labelStyleGroup),
       selectedLabelColorValue: data.get(#selectedLabelColorValue,
           or: $value.selectedLabelColorValue),
       unselectedLabelColorValue: data.get(#unselectedLabelColorValue,

@@ -1,5 +1,19 @@
 {
   "projects": {
     "default": "flutter-content-2dc30"
-  }
+  },
+  "targets": {
+    "flutter-content-2dc30": {
+      "hosting": {
+        "flutter-content-2dc30": [
+          "flutter-content-example"
+        ],
+        "flutter-content-example": [
+          "flutter-content-2dc30"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

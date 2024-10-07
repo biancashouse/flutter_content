@@ -1,68 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <!--
-      If you are serving your web app in a path other than the root, change the
-      href value below to reflect the base path you are serving from.
-
-      The path provided below has to start and end with a slash "/" in order for
-      it to work correctly.
-
-      For more details:
-      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-      This is a placeholder for base href that will be replaced by the value of
-      the `--base-href` argument provided to `flutter build`.
-    -->
     <base href="$FLUTTER_BASE_HREF">
 
     <meta charset="UTF-8">
     <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="A new Flutter project.">
+    <meta name="description" content="flutter_content package demo">
 
-    <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="flutter_content">
-    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    <link rel="icon" href="favicon.ico" sizes="any">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png"/>
-
-    <title>flutter_content</title>
+    <title>Package Demo: flutter_content</title>
     <link rel="manifest" href="manifest.json">
 
-    <style>
-        .container {
-          width: 100vw;
-          height: 100vh;
-          display: flex; /* Default Axis is X*/
-          justify-content: center; /* Main Axis */
-          align-items: center; /* Cross Axis */
-        }
-        .indicator{
-          width: 50vw;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="splash/style.css">
+    <script src="splash/splash.js"></script>
 
+    <style>
+        .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    }
+
+        .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border: 15px solid ;
+    border-top: 16px solid grey;
+    border-right: 16px solid white;
+    border-bottom: 16px solid grey;
+    border-left: 16px solid white;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+    0% {
+    -webkit-transform: rotate(0deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    }
+    }
+
+    @keyframes spin {
+    0% {
+    transform: rotate(0deg);
+    }
+    100% {
+    transform: rotate(360deg);
+    }
+    }
+
+    </style>
 </head>
 <body style="overflow: hidden">
-
-<div id="loading_indicator" class="container">
-    <img class="indicator" src="/assets/packages/bh_shared/assets/images/loading-icon-512x512.gif" alt=''/>
+<div style="margin: 0 auto;" class="loading_text">
+    <h3>Loading <b>flutter_content demo</b> version: 2.0.0</h3>
 </div>
-
-<script src="flutter_bootstrap.js" async></script>
-
+<div class="loading">
+    <h1 class="loader"></h1>
+</div>
+<picture id="splash">
+    <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x"
+            media="(prefers-color-scheme: light)">
+    <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x"
+            media="(prefers-color-scheme: dark)">
+    <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
+</picture>
 <script>
-    window.onload = function () {
-        setTimeout(function () {
-          var loadingIndicator =                 document.getElementById("loading_indicator");
-          if (loadingIndicator) {
-            loadingIndicator.remove();
-          }
-        }, 10000);
-};
+    {{flutter_js}}
+    {{flutter_build_config}}
+
+    const loading = document.createElement('div');
+    document.body.appendChild(loading);
+    loading.textContent = "Loading Entrypoint...";
+
+    _flutter.loader.load({onEntrypointLoaded: async function(engineInitializer) {
+    loading.textContent = "Initializing engine...";
+    const appRunner = await engineInitializer.initializeEngine();
+
+    loading.textContent = "Running app...";
+    await appRunner.runApp();
+    }});
+
 </script>
 
 </body>

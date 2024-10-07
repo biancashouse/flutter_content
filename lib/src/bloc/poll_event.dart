@@ -8,11 +8,13 @@ part 'poll_event.freezed.dart';
 class PollEvent with _$PollEvent {
 
   const factory PollEvent.userVoted({
+    required VoterId voterId,
+    required PollNode poll,
     required PollOptionId optionId,
   }) = UserVoted;
 
-  const factory PollEvent.voterIdCreated({
-    required VoterId newVoterId,
-  }) = VoterIdCreated;
+  // const factory PollEvent.voterIdCreated({
+  //   required VoterId newVoterId,
+  // }) = VoterIdCreated;
 
 }

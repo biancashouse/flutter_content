@@ -33,13 +33,15 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
+    final gk = createNodeGK();
+
     return Container(
       // container only for possble selection gk
-      key: createNodeGK(),
+      key: gk,
       child: ElevatedButton(
         // if feature specified, must be a callout
         key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: ()=>onPressed(context),
+        onPressed: ()=>onPressed(context, gk),
         onLongPress: () => f?.call(context),
         style: btnStyle,
         child: child?.toWidget(context, this),

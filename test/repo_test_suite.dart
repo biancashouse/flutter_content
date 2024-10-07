@@ -7,8 +7,7 @@ import 'unit_test.mocks.dart';
 const VersionId TEST_VERSION_ID = '1700000000000';
 
 void main() {
-  const appName = 'flutter-content-test-app';
-  final scaffoldWithTabs = SnippetTemplateEnum.scaffold_with_tabbar.name;
+  const appName = 'flutter-content-example';
 
   late MockModelRepository mockRepo;
   late CAPIBloC capiBloc;
@@ -17,11 +16,11 @@ void main() {
   late SnippetTreeController emptyTreeC;
   // late SnippetTreeUR ur;
 
-  final SnippetRootNode emptySnippet = SnippetPanel.createSnippetFromTemplateNodes(
-      SnippetTemplateEnum.empty, 'empty_snippet');
+  final SnippetRootNode emptySnippet =
+      SnippetTemplateEnum.empty.templateSnippet();
+
   final SnippetRootNode scaffoldWithTabsSnippet =
-      SnippetPanel.createSnippetFromTemplateNodes(
-          SnippetTemplateEnum.scaffold_with_tabbar, 'scaffold_with_tabs');
+      SnippetTemplateEnum.scaffold_with_tabs.templateSnippet();
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
@@ -34,88 +33,21 @@ void main() {
     // print('Setting up resources for a test...\n\n');
     mockRepo = MockModelRepository();
 
-    // when(mockRepo.getVersionsInfo()).thenAnswer((_) async {
-    //   BranchModel branch = BranchModel(
-    //     name: 'staging',
-    //     latestVersionId: TEST_VERSION_ID,
-    //     undos: [INITIAL_VERSION],
-    //   );
-    //   AppModel appInfo = AppModel(branches: {'staging': branch});
-    //   return appInfo;
-    // });
-
     emptyTreeC = SnippetTreeController(
         roots: [emptySnippet],
-        childrenProvider: Node.snippetTreeChildrenProvider);
+        childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider:Node.snippetTreeParentProvider);
+
     scaffoldWithTabsTreeC = SnippetTreeController(
         roots: [scaffoldWithTabsSnippet],
-        childrenProvider: Node.snippetTreeChildrenProvider);
-    // titleTextNode = scaffoldWithTabsTreeC.findNodeTypeInTree(
-    //     FC.parseSnippetJsons(model!).values.first, TextNode) as TextNode;
-    // ur = SnippetTreeUR();
+        childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider:Node.snippetTreeParentProvider);
+
   });
 
   GlobalKey selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   GlobalKey selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
 
-  // Test cases
-  //...
-  // test('read the model from the repo, and find 1st TextNode (title)', () async {
-  //   model = await mockRepo.getCAPIModel(
-  //     branchName: 'testing',
-  //     modelVersion: TEST_VERSION_ID,
-  //   );
-  //   Map<String, SnippetRootNode> snippetsMap = FC.parseSnippetJsons(model!);
-  //   SnippetRootNode rootNode = snippetsMap.values.first;
-  //   expect(rootNode.name, scaffoldWithTabs);
-  //   SnippetTreeController treeC = SnippetTreeController(
-  //       roots: [scaffoldWithTabsSnippet],
-  //       childrenProvider: Node.snippetTreeChildrenProvider);
-  //   STreeNode? searchResult = treeC.findNodeTypeInTree(rootNode, TextNode);
-  //   expect(searchResult, isNotNull);
-  //   expect(searchResult is TextNode, isTrue);
-  //   expect((searchResult as TextNode?)?.text, 'my title');
-  //   // printPrettyJson(rootNode.toMap(), indent: 2);
-  // });
-  //
-  // test('read the model from the repo, and set all parent pointers in tree',
-  //     () async {
-  //   model = await mockRepo.getCAPIModel(
-  //     branchName: 'testing',
-  //     modelVersion: TEST_VERSION_ID,
-  //   );
-  //   Map<String, SnippetRootNode> snippetsMap = FC.parseSnippetJsons(model!);
-  //   SnippetRootNode rootNode = snippetsMap.values.first;
-  //   expect(rootNode.name, scaffoldWithTabs);
-  //   expect(rootNode.child, isA<ScaffoldNode>());
-  //   expect(rootNode.child!.parent, rootNode);
-  //   expect(rootNode.anyMissingParents(), false);
-  //
-  //   // printPrettyJson(rootNode.toMap(), indent: 2);
-  // });
-
-  test('compare states', () async {
-    expect(
-      CAPIBloC(rootNode: emptySnippet, treeC: emptyTreeC,
-          // treeUR: ur
-      )
-          .state
-          .copyWith(
-            selectedNode: emptySnippet,
-            selectedWidgetGK: selectedWidgetGK,
-            selectedTreeNodeGK: selectedTreeNodeGK,
-          ),
-      CAPIBloC(rootNode: emptySnippet, treeC: emptyTreeC,
-          // treeUR: ur
-      )
-          .state
-          .copyWith(
-            selectedNode: emptySnippet,
-            selectedWidgetGK: selectedWidgetGK,
-            selectedTreeNodeGK: selectedTreeNodeGK,
-          ),
-    );
-  });
 
   // blocTest<CAPIBloC, CAPIState>(
   //     'scaffoldWithTabs: select the Title TextNode',

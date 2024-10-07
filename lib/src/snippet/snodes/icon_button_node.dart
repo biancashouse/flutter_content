@@ -82,12 +82,14 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
 
+    final gk = createNodeGK();
+
     ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
 
     IconButton button = IconButton(
       // if feature specified, must be a callout
       key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-      onPressed: ()=>onPressed(context),
+      onPressed: ()=>onPressed(context, gk),
       style: btnStyle,
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
@@ -96,7 +98,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
     return Container(
       // container only for possble selection gk
-      key: createNodeGK(),
+      key: gk,
       child: kDebugMode
           ? GestureDetector(
               onLongPress: f != null

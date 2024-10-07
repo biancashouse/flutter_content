@@ -32,6 +32,11 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static GenericSingleChildNode? _$body(ScaffoldNode v) => v.body;
   static const Field<ScaffoldNode, GenericSingleChildNode> _f$body =
       Field('body', _$body);
+  static bool _$canShowEditorLoginBtn(ScaffoldNode v) =>
+      v.canShowEditorLoginBtn;
+  static const Field<ScaffoldNode, bool> _f$canShowEditorLoginBtn = Field(
+      'canShowEditorLoginBtn', _$canShowEditorLoginBtn,
+      opt: true, def: false);
   static String _$uid(ScaffoldNode v) => v.uid;
   static const Field<ScaffoldNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -54,6 +59,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     #bgColorValue: _f$bgColorValue,
     #appBar: _f$appBar,
     #body: _f$body,
+    #canShowEditorLoginBtn: _f$canShowEditorLoginBtn,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -71,7 +77,8 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     return ScaffoldNode(
         bgColorValue: data.dec(_f$bgColorValue),
         appBar: data.dec(_f$appBar),
-        body: data.dec(_f$body));
+        body: data.dec(_f$body),
+        canShowEditorLoginBtn: data.dec(_f$canShowEditorLoginBtn));
   }
 
   @override
@@ -131,7 +138,10 @@ abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
       GenericSingleChildNode>? get body;
   @override
   $R call(
-      {int? bgColorValue, AppBarNode? appBar, GenericSingleChildNode? body});
+      {int? bgColorValue,
+      AppBarNode? appBar,
+      GenericSingleChildNode? body,
+      bool? canShowEditorLoginBtn});
   ScaffoldNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -154,17 +164,22 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
   $R call(
           {Object? bgColorValue = $none,
           Object? appBar = $none,
-          Object? body = $none}) =>
+          Object? body = $none,
+          bool? canShowEditorLoginBtn}) =>
       $apply(FieldCopyWithData({
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
         if (appBar != $none) #appBar: appBar,
-        if (body != $none) #body: body
+        if (body != $none) #body: body,
+        if (canShowEditorLoginBtn != null)
+          #canShowEditorLoginBtn: canShowEditorLoginBtn
       }));
   @override
   ScaffoldNode $make(CopyWithData data) => ScaffoldNode(
       bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
       appBar: data.get(#appBar, or: $value.appBar),
-      body: data.get(#body, or: $value.body));
+      body: data.get(#body, or: $value.body),
+      canShowEditorLoginBtn:
+          data.get(#canShowEditorLoginBtn, or: $value.canShowEditorLoginBtn));
 
   @override
   ScaffoldNodeCopyWith<$R2, ScaffoldNode, $Out2> $chain<$R2, $Out2>(

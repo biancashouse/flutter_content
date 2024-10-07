@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
@@ -28,8 +27,8 @@ class ChipNode extends CL with ChipNodeMappable {
   String? destinationRoutePathSnippetName;
   SnippetTemplateEnum? template;
 
-  String?
-      onTapHandlerName; // client supplied onTap (list of handlers supplied to FlutterContentApp)
+  // client supplied onTap (list of handlers supplied to FlutterContentApp)
+  String? onTapHandlerName;
   CalloutConfigGroup? calloutConfigGroup;
 
   ChipNode({
@@ -185,10 +184,12 @@ class ChipNode extends CL with ChipNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
+    GlobalKey gk = createNodeGK();
+
     return InkWell(
-      onTap: () => onPressed(context),
+      onTap: () => onPressed(context, gk),
       child: Chip(
-        key: createNodeGK(),
+        key: gk,
         label: Text(label),
         // onLongPress: f != null ? () => f.call(context) : null,
         labelStyle: ts,
@@ -198,9 +199,9 @@ class ChipNode extends CL with ChipNodeMappable {
 
   Feature? get feature => calloutConfigGroup?.contentSnippetName;
 
-  void onPressed(BuildContext context) {
+  void onPressed(BuildContext context, GlobalKey gk) {
     if (onTapHandlerName != null) {
-      fco.namedVoidCallbacks[onTapHandlerName]?.call(context);
+      fco.getNamedCallback(onTapHandlerName!)?.call(context, gk);
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);

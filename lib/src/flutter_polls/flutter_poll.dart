@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
-import 'package:flutter_content/src/bloc/poll_event.dart';
 import 'package:flutter_content/src/bloc/poll_state.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button_T.dart';
 import 'package:gap/gap.dart';
+import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
 // import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 // FlutterPolls widget.
 // This widget is used to display a poll.
 // It can be used in any way and also in a [ListView] or [Column].
 class FlutterPoll extends StatefulWidget {
-  final String pollName;
+  final PollNode poll;
 
   /// The [optionId] of each poll option is used to identify the option when the user votes.
   /// The [title] of each poll option is displayed to the user.
   /// [title] can be any widget with a bounded size.
-  /// The [optionVotes] of each poll option is the number of votes that the option has received.
+  /// The [optionVoteCount] of each poll option is the number of votes that the option has received.
   final List<Widget> children;
 
   /// The title of the poll. Can be any widget with a bounded size.
@@ -159,7 +159,7 @@ class FlutterPoll extends StatefulWidget {
 
   const FlutterPoll({
     super.key,
-    required this.pollName,
+    required this.poll,
     this.loadingWidget,
     required this.titleWidget,
     this.heightBetweenTitleAndOptions = 10,
@@ -188,14 +188,15 @@ class FlutterPoll extends StatefulWidget {
     required this.children,
   });
 
-  static FlutterPollState? of(BuildContext context) => context.findAncestorStateOfType<FlutterPollState>();
+  static FlutterPollState? of(BuildContext context) =>
+      context.findAncestorStateOfType<FlutterPollState>();
 
   @override
   State<FlutterPoll> createState() => FlutterPollState();
 }
 
 class FlutterPollState extends State<FlutterPoll> {
-  late String? voterId;
+  late String voterId;
   late Future<PollBloC> fInitPoll;
   late PollBloC pollBloc;
 
@@ -207,30 +208,26 @@ class FlutterPollState extends State<FlutterPoll> {
 
   Future<PollBloC> _initPoll() async {
     // localstorage
-    voterId = fco.hiveBox.get("voter-id");
-    if (voterId != null) {
-      // firestore
-      OptionCountsAndVoterRecord result = await FlutterContentApp.capiBloc.modelRepo.getPollResultsForUser(
-            voterId: voterId!,
-            pollName: widget.pollName,
-          );
-      pollBloc = PollBloC(
-        modelRepo: FlutterContentApp.capiBloc.modelRepo,
-        voterId: voterId!,
-        pollName: widget.pollName,
-        starts: widget.startDate,
-        ends: widget.endDate,
-        result: result,
-      );
-    } else {
-      var modelRepo = FlutterContentApp.capiBloc.modelRepo;
-      pollBloc = PollBloC(
-        modelRepo: modelRepo,
-        voterId: null,
-        pollName: widget.pollName,
-        result: (optionVoteCountMap: {}, userVotedForOptionId: null, when: 0),
-      );
-    }
+    voterId = fco.hiveBox.get("vea") ?? 'anon';
+    // firestore
+    OptionVoteCountMap counts =
+        await FlutterContentApp.capiBloc.modelRepo.getPollOptionVoteCounts(
+      pollName: widget.poll.name,
+    );
+    UserVoterRecord? usersVote =
+        await FlutterContentApp.capiBloc.modelRepo.getUsersVote(
+      pollName: widget.poll.name,
+      voterId: voterId!,
+    );
+    pollBloc = PollBloC(
+      modelRepo: FlutterContentApp.capiBloc.modelRepo,
+      voterId: voterId!,
+      pollName: widget.poll.name,
+      starts: widget.startDate,
+      ends: widget.endDate,
+      optionCountsMap: counts,
+      userVote: usersVote,
+    );
     return pollBloc;
   }
 
@@ -245,56 +242,60 @@ class FlutterPollState extends State<FlutterPoll> {
                   create: (context) => snapshot.data!,
                   child: BlocBuilder<PollBloC, PollState>(
                     builder: (context, state) {
-                      bool showTextInputButton = (state.voterId ?? '').isEmpty;
+                      // bool showTextInputButton = (state.voterId ?? '').isEmpty;
+                      bool showDates =
+                          widget.startDate != null && widget.endDate != null;
+                      String? dates;
+                      if (showDates) {
+                        final now = DateTime.now().millisecondsSinceEpoch;
+                        final startDT = DateTime.fromMillisecondsSinceEpoch(
+                            widget.startDate!);
+                        String starts = widget.startDate! > now
+                            ? DateFormat('MMMMd').format(startDT)
+                            : timeago.format(startDT);
+                        // debugPrint(timeago.format(startDT));
+                        final endDT = DateTime.fromMillisecondsSinceEpoch(
+                            widget.endDate!);
+                        String ends = now < widget.endDate!
+                            ? DateFormat('MMMMd').format(endDT)
+                            : timeago.format(endDT, allowFromNow: true);
+                        // debugPrint(timeago.format(endDT));
+                        dates =
+                            'poll ${widget.startDate! < now ? 'started' : 'starts'}: '
+                            '$starts, and '
+                            '${now < widget.endDate! ? 'ends' : 'ended'}: '
+                            '$ends';
+                      }
                       return Column(
-                        key: ValueKey(widget.pollName),
+                        key: ValueKey(widget.poll.name),
                         children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              if (showTextInputButton) fco.coloredText("Please tap here, so we\nknow who's voting? -->  ", color: Colors.red),
-                              Container(
-                                color: showTextInputButton ? Colors.red[900] : Colors.white,
-                                padding: const EdgeInsets.all(4),
-                                child: showTextInputButton
-                                    ? PropertyButton<String>(
-                                        originalText: voterId ?? '',
-                                        label: 'email address',
-                                        maxLines: 1,
-                                        expands: false,
-                                        skipLabelText: true,
-                                        skipHelperText: true,
-                                        calloutButtonSize: const Size(110, 20),
-                                        calloutSize: const Size(300, 80),
-                                        propertyBtnGK: GlobalKey(debugLabel: 'ea'),
-                                        onChangeF: (userEA) {
-                                          snapshot.data!.add(PollEvent.voterIdCreated(newVoterId: userEA));
-                                        })
-                                    : InkWell(
-                                        onTap: () {
-                                          snapshot.data!.add(const PollEvent.voterIdCreated(newVoterId: ''));
-                                        },
-                                        child: Text('${state.voterId}'),
-                                      ),
-                              ),
-                            ],
-                          ),
-                          const Gap(10),
                           widget.titleWidget,
+                          if (dates != null) Text(dates),
                           SizedBox(height: widget.heightBetweenTitleAndOptions),
                           ...widget.children,
                           const Gap(10),
-                          fco.coloredText('${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}', color: Colors.blue[900], fontSize: 14),
+                          fco.coloredText(
+                              '${widget.votesText} ${snapshot.data!.state.totalPollVoteCount()}',
+                              color: Colors.blue[900],
+                              fontSize: 14),
                           const Gap(10),
                           Align(
                               alignment: Alignment.centerRight,
                               child: (state.tooEarly())
-                                  ? fco.coloredText('poll not yet open. begins: ${fco.formattedDate(state.startDate!)}', fontSize: 12)
+                                  ? fco.coloredText(
+                                      'poll not yet open. begins: ${fco.formattedDate(state.startDate!)}',
+                                      fontSize: 12)
                                   : (state.pollHasEnded())
-                                      ? fco.coloredText('poll closed. ended: ${fco.formattedDate(state.startDate!)}', fontSize: 12)
-                                      : (!state.tooEarly() && !state.pollHasEnded() && state.startDate != null && state.endDate != null)
-                                          ? fco.coloredText('poll closes: ${fco.formattedDate(state.endDate!)}', fontSize: 12)
+                                      ? fco.coloredText(
+                                          'poll closed. ended: ${fco.formattedDate(state.startDate!)}',
+                                          fontSize: 12)
+                                      : (!state.tooEarly() &&
+                                              !state.pollHasEnded() &&
+                                              state.startDate != null &&
+                                              state.endDate != null)
+                                          ? fco.coloredText(
+                                              'poll closes: ${fco.formattedDate(state.endDate!)}',
+                                              fontSize: 12)
                                           : const Offstage()),
                           Expanded(
                             child: widget.metaWidget ?? Container(),
@@ -307,4 +308,34 @@ class FlutterPollState extends State<FlutterPoll> {
               : const CircularProgressIndicator();
         });
   }
+
+  // called by pollOption(s) when tapped
+  // void voterEmailAddressDlg(gk, VoidCallback onGotEa) => fco.showOverlay(
+  //       targetGkF: () => gk,
+  //       calloutContent: InputEa(
+  //         onValidEmailF: (ea) {
+  //           pollBloc.add(PollEvent.voterIdCreated(newVoterId: ea));
+  //           fco.afterNextBuildDo(() {
+  //             onGotEa();
+  //             fco.dismiss("voter-ea");
+  //           });
+  //         },
+  //       ),
+  //       calloutConfig: CalloutConfig(
+  //         cId: "voter-ea",
+  //         initialTargetAlignment: Alignment.topLeft,
+  //         initialCalloutAlignment: Alignment.bottomRight,
+  //         finalSeparation: 60,
+  //         barrier: CalloutBarrier(
+  //           opacity: .5,
+  //           onTappedF: () async {
+  //             fco.dismiss("voter-ea");
+  //           },
+  //         ),
+  //         initialCalloutW: 400,
+  //         initialCalloutH: 180,
+  //         borderRadius: 12,
+  //         fillColor: Colors.white,
+  //       ),
+  //     );
 }

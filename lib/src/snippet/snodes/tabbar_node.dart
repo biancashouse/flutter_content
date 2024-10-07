@@ -5,12 +5,15 @@ import 'dart:math';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:gap/gap.dart';
 
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
 class TabBarNode extends MC with TabBarNodeMappable {
+  int? bgColorValue;
+  TextStyleGroup? labelStyleGroup;
   int? selectedLabelColorValue;
   int? unselectedLabelColorValue;
   int? indicatorColorValue;
@@ -19,6 +22,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
   int? selection;
 
   TabBarNode({
+    this.bgColorValue,
+    this.labelStyleGroup,
     this.selectedLabelColorValue,
     this.unselectedLabelColorValue,
     this.indicatorColorValue,
@@ -30,6 +35,21 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
+        ColorPropertyValueNode(
+          snode: this,
+          name: 'b/g Color',
+          colorValue: bgColorValue,
+          onColorIntChange: (newValue) =>
+              refreshWithUpdate(() => bgColorValue = newValue),
+          calloutButtonSize: const Size(160, 20),
+        ),
+        TextStylePropertyGroup(
+          snode: this,
+          name: 'labelStyle',
+          textStyleGroup: labelStyleGroup,
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => labelStyleGroup = newValue),
+        ),
         ColorPropertyValueNode(
           snode: this,
           name: 'selected label Color',
@@ -91,32 +111,40 @@ class TabBarNode extends MC with TabBarNodeMappable {
     for (STreeNode node in children) {
       tabs.add(Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: node.toWidget(context, this),
+        // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
+        child: node is TextNode
+            ? Tab(text: (node as TextNode).text)
+            : Tab(child: node.toWidget(context, parentNode)),
       ));
     }
+    final tabBar = TabBar(
+      key: spState?.tabBarGK = createNodeGK(),
+      controller: spState?.tabC,
+      tabs: tabs,
+      labelColor: selectedLabelColorValue != null
+          ? Color(selectedLabelColorValue!)
+          : null,
+      unselectedLabelColor: unselectedLabelColorValue != null
+          ? Color(unselectedLabelColorValue!)
+          : null,
+      labelPadding: EdgeInsets.all(10),
+      labelStyle: labelStyleGroup?.toTextStyle(context),
+      indicatorColor:
+          indicatorColorValue != null ? Color(indicatorColorValue!) : null,
+      indicatorWeight: indicatorWeight = 2.0,
+      indicator: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 2),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(10),
+    );
     spState?.tabC?.index = min(selection ?? 0, children.length - 1);
     try {
-      return ColoredTabBar(
-        Colors.grey,
-        TabBar(
-          key: spState?.tabBarGK = createNodeGK(),
-          controller: spState?.tabC,
-          tabs: tabs,
-          labelColor: selectedLabelColorValue != null
-              ? Color(selectedLabelColorValue!)
-              : null,
-          unselectedLabelColor: unselectedLabelColorValue != null
-              ? Color(unselectedLabelColorValue!)
-              : null,
-          indicatorColor:
-              indicatorColorValue != null ? Color(indicatorColorValue!) : null,
-          indicatorWeight: indicatorWeight = 2.0,
-          indicator: BoxDecoration(
-            //color: Colors.white,
-            border: Border.all(color: Colors.white, width: 2),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
+      return PreferredSize(
+        preferredSize: Size.fromHeight(100), //tabBar.preferredSize,
+        child: Container(
+          color: bgColorValue != null ? Color(bgColorValue!) : Colors.grey,
+          child: tabBar,
         ),
       );
     } catch (e) {
@@ -146,18 +174,18 @@ class TabBarNode extends MC with TabBarNodeMappable {
   static const String FLUTTER_TYPE = "TabBar";
 }
 
-class ColoredTabBar extends Container implements PreferredSizeWidget {
-  ColoredTabBar(this.color, this.tabBar);
-
-  final Color color;
-  final TabBar tabBar;
-
-  @override
-  Size get preferredSize => tabBar.preferredSize;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        color: color,
-        child: tabBar,
-      );
-}
+// class ColoredTabBar extends Container implements PreferredSizeWidget {
+//   ColoredTabBar(this.color, this.tabBar);
+//
+//   final Color color;
+//   final TabBar tabBar;
+//
+//   @override
+//   Size get preferredSize => tabBar.preferredSize;
+//
+//   @override
+//   Widget build(BuildContext context) => Container(
+//         color: color,
+//         child: tabBar,
+//       );
+// }

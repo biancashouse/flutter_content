@@ -10,12 +10,12 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 class EditablePage extends StatefulWidget {
   final String routePath;
   final Widget child;
-  final bool dontShowLockIcon;
+  // final bool dontShowLockIcon;
 
   const EditablePage({
     required this.routePath,
     required this.child,
-    this.dontShowLockIcon = false,
+    // this.dontShowLockIcon = false,
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
@@ -174,10 +174,10 @@ class EditablePageState extends State<EditablePage> {
 
   Widget FAB() => Container(
         decoration: BoxDecoration(
-          color: !fco.canEditContent ? Colors.green : Colors.blue,
+          color: !fco.canEditContent.value ? Colors.green : Colors.blue,
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
         ),
-        child: fco.canEditContent
+        child: fco.canEditContent.value
             ? PointerInterceptor(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -205,7 +205,7 @@ class EditablePageState extends State<EditablePage> {
                   ],
                 ),
               )
-            : lockIconButton(context),
+            : const Offstage(), //lockIconButton(context),
       );
 
   void showExitEditModeCallout() {
@@ -344,23 +344,23 @@ class EditablePageState extends State<EditablePage> {
     // }
   }
 
-  Widget lockIconButton(context) {
-    if (!widget.dontShowLockIcon) return Offstage();
-    return IconButton(
-      key: _lockIconGK,
-      onPressed: () {
-        lockIconTapped();
-      },
-      icon: const Icon(
-        Icons.lock,
-        color: Colors.white,
-      ),
-      iconSize: 36,
-      tooltip: 'editor login...',
-    );
-  }
+  // Widget lockIconButton(context) {
+  //   if (!widget.dontShowLockIcon) return Offstage();
+  //   return IconButton(
+  //     key: _lockIconGK,
+  //     onPressed: () {
+  //       editorPasswordDialog();
+  //     },
+  //     icon: const Icon(
+  //       Icons.lock,
+  //       color: Colors.white,
+  //     ),
+  //     iconSize: 36,
+  //     tooltip: 'editor login...',
+  //   );
+  // }
 
-  void lockIconTapped() {
+  void editorPasswordDialog() {
     fco.showOverlay(
       targetGkF: () => _lockIconGK,
       calloutContent: Column(
@@ -379,9 +379,9 @@ class EditablePageState extends State<EditablePage> {
               prompt: () => 'password',
               originalS: '',
               onTextChangedF: (s) async {
-                if (s == (kDebugMode ? " " : "lakebeachocean")) {
+                if (s == (kDebugMode ? " " : fco.editorPassword)) {
                   fco.dismiss("EditorPassword");
-                  fco.setCanEdit(true);
+                  fco.setCanEditContent(true);
                   // await FC.loadLatestSnippetMap();
                   // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
                   // fco.afterNextBuildDo(() {
@@ -390,7 +390,7 @@ class EditablePageState extends State<EditablePage> {
                   //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
                   //   showDevToolsFAB();
                   // });
-                  fco.dismiss("EditorPassword");
+                  // fco.dismiss("EditorPassword");
                   FlutterContentApp.capiBloc.add(
                       const CAPIEvent.forceRefresh(
                           onlyTargetsWrappers: true));
@@ -434,7 +434,7 @@ class EditablePageState extends State<EditablePage> {
 
   void _signOut() {
     setState(() {
-      fco.setCanEdit(false);
+      fco.setCanEditContent(false);
     });
 
     // // if auto-publishing, make sure publishing version == editing version

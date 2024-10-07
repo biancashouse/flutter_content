@@ -22,6 +22,7 @@ import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_w
 /// the app's overlay and not in your widget tree as you might have expected.
 class FlutterContentApp extends StatefulWidget {
   final String appName;
+  final String editorPassword;
   final String title;
 
   // final SnippetName pageSnippetName;
@@ -32,7 +33,7 @@ class FlutterContentApp extends StatefulWidget {
   final FirebaseOptions? fbOptions;
   final bool useEmulator;
   final bool useFBStorage;
-  final Map<String, void Function(BuildContext)> namedVoidCallbacks;
+  final Map<String, void Function(BuildContext)> namedVoidCallbacks = {};
   final Map<String, TextStyle> namedTextStyles;
   final Map<String, ButtonStyle> namedButtonStyles;
   final bool hideStatusBar;
@@ -60,9 +61,10 @@ class FlutterContentApp extends StatefulWidget {
 
   // final bool localTestingFilePaths;
 
-  const FlutterContentApp({
+  FlutterContentApp({
     super.key,
     required this.appName,
+    required this.editorPassword,
     this.title = '',
     // required this.pageSnippetName,
     // this.localTestingFilePaths = false,
@@ -73,7 +75,6 @@ class FlutterContentApp extends StatefulWidget {
     this.fbOptions,
     this.useEmulator = false,
     this.useFBStorage = false,
-    this.namedVoidCallbacks = const {},
     this.namedTextStyles = const {},
     this.namedButtonStyles = const {},
     this.hideStatusBar = true,
@@ -255,12 +256,13 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
     // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
     debugPrint("_initApp() before init()");
+
     CAPIBloC capiBloc = await fco.init(
-      modelName: widget.appName,
+      appName: widget.appName,
+      editorPassword: widget.editorPassword,
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
       useFBStorage: widget.useFBStorage,
-      namedVoidCallbacks: widget.namedVoidCallbacks,
       namedTextStyles: widget.namedTextStyles,
       namedButtonStyles: widget.namedButtonStyles,
       routingConfig: RoutingConfigProvider().getWebOrMobileRoutingConfig(

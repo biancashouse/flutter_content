@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:example/bh-apps.firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'bh-apps.firebase_options.dart';
-import 'old.firebase_options.dart';
 
+// import 'old.firebase_options.dart';
 import 'pages/routes_config.dart';
 
 // original main
@@ -52,6 +51,7 @@ Future<void> main({bool useEmulator = false}) async {
 
     runApp(FlutterContentApp(
       appName: 'flutter-content-example',
+      editorPassword: 'pigsinspace',
       webRoutingConfig: webRoutingConfig,
       mobileRoutingConfig: mobileRoutingConfig,
       initialRoutePath: '/home',
@@ -60,20 +60,9 @@ Future<void> main({bool useEmulator = false}) async {
         primaryColor: fco.FUCHSIA_X,
         primarySwatch: Colors.purple,
       ),
-      fbOptions: OLD_DefaultFirebaseOptions.currentPlatform,
+      fbOptions: BH_APPS_DefaultFirebaseOptions.currentPlatform,
       useEmulator: useEmulator,
       useFBStorage: true,
-      namedVoidCallbacks: {
-        // used by button tap handlers
-        'goto-row-of-2-panels': (context) => context.go('/row-of-2-panels'),
-        'goto-snippet-sandbox': (context) => context.go('/snippet-sandbox'),
-        'goto-editable-scaffold-with-menubar': (context) =>
-            context.go('/editable-scaffold-with-menubar'),
-        'goto-editable-scaffold-with-tabbar': (context) =>
-            context.go('/editable-scaffold-with-tabbar'),
-        'goto-editable-rich-text': (context) =>
-            context.go('/editable-rich-text'),
-      },
       namedTextStyles: const {
         "purple24": TextStyle(color: Colors.purpleAccent, fontSize: 24),
         "white30": TextStyle(color: Colors.white, fontSize: 30),
@@ -96,7 +85,7 @@ Future<void> main({bool useEmulator = false}) async {
 Future<void> copyCollectionBetweenProjects() async {
   return;
   await Firebase.initializeApp(
-      options: OLD_DefaultFirebaseOptions.currentPlatform, name: 'OLD');
+      options: BH_APPS_DefaultFirebaseOptions.currentPlatform, name: 'OLD');
 
   FirebaseApp oldApp = Firebase.app('OLD');
 

@@ -53,8 +53,9 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode); // propagating parents down from root
     possiblyHighlightSelectedNode();
+    final gk = createNodeGK();
     return MenuItemButton(
-      key: createNodeGK(),
+      key: gk,
       onPressed: () {
         if (destinationPanelOrPlaceholderName != null) {
           destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
@@ -64,7 +65,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
           ));
         } else if (destinationRoutePathSnippetName != null) {
           //context.goNamed(destinationRoutePathSnippetName!);
-          onPressed(context);
+          onPressed(context, gk);
         }
       },
       style: fco.buttonStyle(30),

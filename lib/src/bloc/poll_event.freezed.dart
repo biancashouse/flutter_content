@@ -16,43 +16,48 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PollEvent {
+  String get voterId => throw _privateConstructorUsedError;
+  PollNode get poll => throw _privateConstructorUsedError;
+  String get optionId => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String optionId) userVoted,
-    required TResult Function(String newVoterId) voterIdCreated,
+    required TResult Function(String voterId, PollNode poll, String optionId)
+        userVoted,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String optionId)? userVoted,
-    TResult? Function(String newVoterId)? voterIdCreated,
+    TResult? Function(String voterId, PollNode poll, String optionId)?
+        userVoted,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String optionId)? userVoted,
-    TResult Function(String newVoterId)? voterIdCreated,
+    TResult Function(String voterId, PollNode poll, String optionId)? userVoted,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserVoted value) userVoted,
-    required TResult Function(VoterIdCreated value) voterIdCreated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UserVoted value)? userVoted,
-    TResult? Function(VoterIdCreated value)? voterIdCreated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserVoted value)? userVoted,
-    TResult Function(VoterIdCreated value)? voterIdCreated,
     required TResult orElse(),
   }) =>
+      throw _privateConstructorUsedError;
+
+  /// Create a copy of PollEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $PollEventCopyWith<PollEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -60,6 +65,8 @@ mixin _$PollEvent {
 abstract class $PollEventCopyWith<$Res> {
   factory $PollEventCopyWith(PollEvent value, $Res Function(PollEvent) then) =
       _$PollEventCopyWithImpl<$Res, PollEvent>;
+  @useResult
+  $Res call({String voterId, PollNode poll, String optionId});
 }
 
 /// @nodoc
@@ -71,15 +78,42 @@ class _$PollEventCopyWithImpl<$Res, $Val extends PollEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PollEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? voterId = null,
+    Object? poll = null,
+    Object? optionId = null,
+  }) {
+    return _then(_value.copyWith(
+      voterId: null == voterId
+          ? _value.voterId
+          : voterId // ignore: cast_nullable_to_non_nullable
+              as String,
+      poll: null == poll
+          ? _value.poll
+          : poll // ignore: cast_nullable_to_non_nullable
+              as PollNode,
+      optionId: null == optionId
+          ? _value.optionId
+          : optionId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$UserVotedImplCopyWith<$Res> {
+abstract class _$$UserVotedImplCopyWith<$Res>
+    implements $PollEventCopyWith<$Res> {
   factory _$$UserVotedImplCopyWith(
           _$UserVotedImpl value, $Res Function(_$UserVotedImpl) then) =
       __$$UserVotedImplCopyWithImpl<$Res>;
+  @override
   @useResult
-  $Res call({String optionId});
+  $Res call({String voterId, PollNode poll, String optionId});
 }
 
 /// @nodoc
@@ -90,12 +124,24 @@ class __$$UserVotedImplCopyWithImpl<$Res>
       _$UserVotedImpl _value, $Res Function(_$UserVotedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PollEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? voterId = null,
+    Object? poll = null,
     Object? optionId = null,
   }) {
     return _then(_$UserVotedImpl(
+      voterId: null == voterId
+          ? _value.voterId
+          : voterId // ignore: cast_nullable_to_non_nullable
+              as String,
+      poll: null == poll
+          ? _value.poll
+          : poll // ignore: cast_nullable_to_non_nullable
+              as PollNode,
       optionId: null == optionId
           ? _value.optionId
           : optionId // ignore: cast_nullable_to_non_nullable
@@ -107,14 +153,19 @@ class __$$UserVotedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
-  const _$UserVotedImpl({required this.optionId});
+  const _$UserVotedImpl(
+      {required this.voterId, required this.poll, required this.optionId});
 
+  @override
+  final String voterId;
+  @override
+  final PollNode poll;
   @override
   final String optionId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PollEvent.userVoted(optionId: $optionId)';
+    return 'PollEvent.userVoted(voterId: $voterId, poll: $poll, optionId: $optionId)';
   }
 
   @override
@@ -122,6 +173,8 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'PollEvent.userVoted'))
+      ..add(DiagnosticsProperty('voterId', voterId))
+      ..add(DiagnosticsProperty('poll', poll))
       ..add(DiagnosticsProperty('optionId', optionId));
   }
 
@@ -130,14 +183,18 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserVotedImpl &&
+            (identical(other.voterId, voterId) || other.voterId == voterId) &&
+            (identical(other.poll, poll) || other.poll == poll) &&
             (identical(other.optionId, optionId) ||
                 other.optionId == optionId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, optionId);
+  int get hashCode => Object.hash(runtimeType, voterId, poll, optionId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PollEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$UserVotedImplCopyWith<_$UserVotedImpl> get copyWith =>
@@ -146,30 +203,29 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String optionId) userVoted,
-    required TResult Function(String newVoterId) voterIdCreated,
+    required TResult Function(String voterId, PollNode poll, String optionId)
+        userVoted,
   }) {
-    return userVoted(optionId);
+    return userVoted(voterId, poll, optionId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String optionId)? userVoted,
-    TResult? Function(String newVoterId)? voterIdCreated,
+    TResult? Function(String voterId, PollNode poll, String optionId)?
+        userVoted,
   }) {
-    return userVoted?.call(optionId);
+    return userVoted?.call(voterId, poll, optionId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String optionId)? userVoted,
-    TResult Function(String newVoterId)? voterIdCreated,
+    TResult Function(String voterId, PollNode poll, String optionId)? userVoted,
     required TResult orElse(),
   }) {
     if (userVoted != null) {
-      return userVoted(optionId);
+      return userVoted(voterId, poll, optionId);
     }
     return orElse();
   }
@@ -178,7 +234,6 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserVoted value) userVoted,
-    required TResult Function(VoterIdCreated value) voterIdCreated,
   }) {
     return userVoted(this);
   }
@@ -187,7 +242,6 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UserVoted value)? userVoted,
-    TResult? Function(VoterIdCreated value)? voterIdCreated,
   }) {
     return userVoted?.call(this);
   }
@@ -196,7 +250,6 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserVoted value)? userVoted,
-    TResult Function(VoterIdCreated value)? voterIdCreated,
     required TResult orElse(),
   }) {
     if (userVoted != null) {
@@ -207,156 +260,22 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
 }
 
 abstract class UserVoted implements PollEvent {
-  const factory UserVoted({required final String optionId}) = _$UserVotedImpl;
+  const factory UserVoted(
+      {required final String voterId,
+      required final PollNode poll,
+      required final String optionId}) = _$UserVotedImpl;
 
+  @override
+  String get voterId;
+  @override
+  PollNode get poll;
+  @override
   String get optionId;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PollEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UserVotedImplCopyWith<_$UserVotedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$VoterIdCreatedImplCopyWith<$Res> {
-  factory _$$VoterIdCreatedImplCopyWith(_$VoterIdCreatedImpl value,
-          $Res Function(_$VoterIdCreatedImpl) then) =
-      __$$VoterIdCreatedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String newVoterId});
-}
-
-/// @nodoc
-class __$$VoterIdCreatedImplCopyWithImpl<$Res>
-    extends _$PollEventCopyWithImpl<$Res, _$VoterIdCreatedImpl>
-    implements _$$VoterIdCreatedImplCopyWith<$Res> {
-  __$$VoterIdCreatedImplCopyWithImpl(
-      _$VoterIdCreatedImpl _value, $Res Function(_$VoterIdCreatedImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? newVoterId = null,
-  }) {
-    return _then(_$VoterIdCreatedImpl(
-      newVoterId: null == newVoterId
-          ? _value.newVoterId
-          : newVoterId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$VoterIdCreatedImpl
-    with DiagnosticableTreeMixin
-    implements VoterIdCreated {
-  const _$VoterIdCreatedImpl({required this.newVoterId});
-
-  @override
-  final String newVoterId;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PollEvent.voterIdCreated(newVoterId: $newVoterId)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'PollEvent.voterIdCreated'))
-      ..add(DiagnosticsProperty('newVoterId', newVoterId));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$VoterIdCreatedImpl &&
-            (identical(other.newVoterId, newVoterId) ||
-                other.newVoterId == newVoterId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, newVoterId);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$VoterIdCreatedImplCopyWith<_$VoterIdCreatedImpl> get copyWith =>
-      __$$VoterIdCreatedImplCopyWithImpl<_$VoterIdCreatedImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String optionId) userVoted,
-    required TResult Function(String newVoterId) voterIdCreated,
-  }) {
-    return voterIdCreated(newVoterId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String optionId)? userVoted,
-    TResult? Function(String newVoterId)? voterIdCreated,
-  }) {
-    return voterIdCreated?.call(newVoterId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String optionId)? userVoted,
-    TResult Function(String newVoterId)? voterIdCreated,
-    required TResult orElse(),
-  }) {
-    if (voterIdCreated != null) {
-      return voterIdCreated(newVoterId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(UserVoted value) userVoted,
-    required TResult Function(VoterIdCreated value) voterIdCreated,
-  }) {
-    return voterIdCreated(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(UserVoted value)? userVoted,
-    TResult? Function(VoterIdCreated value)? voterIdCreated,
-  }) {
-    return voterIdCreated?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserVoted value)? userVoted,
-    TResult Function(VoterIdCreated value)? voterIdCreated,
-    required TResult orElse(),
-  }) {
-    if (voterIdCreated != null) {
-      return voterIdCreated(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class VoterIdCreated implements PollEvent {
-  const factory VoterIdCreated({required final String newVoterId}) =
-      _$VoterIdCreatedImpl;
-
-  String get newVoterId;
-  @JsonKey(ignore: true)
-  _$$VoterIdCreatedImplCopyWith<_$VoterIdCreatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

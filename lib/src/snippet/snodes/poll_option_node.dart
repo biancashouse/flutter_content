@@ -9,15 +9,11 @@ part 'poll_option_node.mapper.dart';
 
 @MappableClass()
 class PollOptionNode extends CL with PollOptionNodeMappable {
-  String optionId;
   String text;
 
   PollOptionNode({
-    required this.optionId,
     required this.text,
   });
-
-  String get id => text;
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
@@ -35,13 +31,17 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
-    return getParent() is PollNode
-        ? FlutterPollOption(
-            key: createNodeGK(),
-            optionId: optionId,
-            optionWidget: Text(text),
-          )
-        : fco.errorIcon(Colors.red);
+    if (getParent() is PollNode) {
+      PollNode parentPoll = getParent() as PollNode;
+      int pos = parentPoll.children.indexOf(this);
+      return FlutterPollOption(
+        key: createNodeGK(),
+        optionId: pos.toString(),
+        optionWidget: Text(text),
+      );
+    } else {
+      return fco.errorIcon(Colors.red);
+    }
   }
 
   // FlutterPollOption toPollOption(BuildContext context, STreeNode? parentNode) {

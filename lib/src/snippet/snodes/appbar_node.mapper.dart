@@ -29,6 +29,9 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   static int? _$fgColorValue(AppBarNode v) => v.fgColorValue;
   static const Field<AppBarNode, int> _f$fgColorValue =
       Field('fgColorValue', _$fgColorValue, opt: true);
+  static double? _$height(AppBarNode v) => v.height;
+  static const Field<AppBarNode, double> _f$height =
+      Field('height', _$height, opt: true);
   static GenericSingleChildNode? _$leading(AppBarNode v) => v.leading;
   static const Field<AppBarNode, GenericSingleChildNode> _f$leading =
       Field('leading', _$leading, opt: true);
@@ -62,6 +65,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   final MappableFields<AppBarNode> fields = const {
     #bgColorValue: _f$bgColorValue,
     #fgColorValue: _f$fgColorValue,
+    #height: _f$height,
     #leading: _f$leading,
     #title: _f$title,
     #bottom: _f$bottom,
@@ -83,6 +87,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     return AppBarNode(
         bgColorValue: data.dec(_f$bgColorValue),
         fgColorValue: data.dec(_f$fgColorValue),
+        height: data.dec(_f$height),
         leading: data.dec(_f$leading),
         title: data.dec(_f$title),
         bottom: data.dec(_f$bottom),
@@ -152,6 +157,7 @@ abstract class AppBarNodeCopyWith<$R, $In extends AppBarNode, $Out>
   $R call(
       {int? bgColorValue,
       int? fgColorValue,
+      double? height,
       GenericSingleChildNode? leading,
       GenericSingleChildNode? title,
       GenericSingleChildNode? bottom,
@@ -187,6 +193,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
   $R call(
           {Object? bgColorValue = $none,
           Object? fgColorValue = $none,
+          Object? height = $none,
           Object? leading = $none,
           Object? title = $none,
           Object? bottom = $none,
@@ -194,6 +201,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
         if (fgColorValue != $none) #fgColorValue: fgColorValue,
+        if (height != $none) #height: height,
         if (leading != $none) #leading: leading,
         if (title != $none) #title: title,
         if (bottom != $none) #bottom: bottom,
@@ -203,6 +211,7 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
   AppBarNode $make(CopyWithData data) => AppBarNode(
       bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
       fgColorValue: data.get(#fgColorValue, or: $value.fgColorValue),
+      height: data.get(#height, or: $value.height),
       leading: data.get(#leading, or: $value.leading),
       title: data.get(#title, or: $value.title),
       bottom: data.get(#bottom, or: $value.bottom),

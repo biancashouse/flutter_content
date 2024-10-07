@@ -18,6 +18,7 @@ class PollNode extends MC with PollNodeMappable {
   int? endDate;
   EmailAddress? createdBy;
   List<EmailAddress> voterPool;
+  bool locked;
 
   PollNode({
     this.name = '',
@@ -26,6 +27,7 @@ class PollNode extends MC with PollNodeMappable {
     this.endDate,
     this.createdBy,
     this.voterPool = const [],
+    this.locked = false,
     required super.children,
   });
 
@@ -60,8 +62,21 @@ class PollNode extends MC with PollNodeMappable {
           untilValue: endDate,
           onRangeChange: (DateRange? newValues) => refreshWithUpdate(() {
             if (newValues != null) {
-              startDate = newValues.from;
-              endDate = newValues.until;
+              DateTime startDT = DateTime.fromMillisecondsSinceEpoch(newValues.from!);
+              DateTime startDTMorning = DateTime(
+                startDT.year,
+                startDT.month,
+                startDT.day,
+              );
+              startDate = startDTMorning.millisecondsSinceEpoch;
+              DateTime endDT = DateTime.fromMillisecondsSinceEpoch(newValues.until!);
+              DateTime untilDTMidnight = DateTime(
+                endDT.year,
+                endDT.month,
+                endDT.day,
+                23,59,59
+              );
+              endDate = untilDTMidnight.millisecondsSinceEpoch;
             } else {
               startDate = null;
               endDate = null;
@@ -88,7 +103,8 @@ class PollNode extends MC with PollNodeMappable {
     return LayoutBuilder(
       builder: (context, constraints) {
         List<Widget> optionWidgets = [];
-        for (STreeNode optionNode in children) {
+        for (int i=0; i<children.length; i++) {
+          PollOptionNode optionNode = children[i] as PollOptionNode;
           optionWidgets.add(optionNode.toWidget(context, this));
         }
         return constraints.maxHeight == double.infinity
@@ -102,13 +118,15 @@ class PollNode extends MC with PollNodeMappable {
                   Text('Poll has infinite maxHeight constraint!'),
                 ],
               )
-            : FlutterPoll(
-              key: createNodeGK(),
-              pollName: name,
-              titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
-              startDate: startDate,
-              endDate: endDate,
-              children: optionWidgets,
+            : Container(width: 300, height:100.0 + 60.0*(children.length),
+              child: FlutterPoll(
+                key: createNodeGK(),
+                poll: this,
+                titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
+                startDate: startDate,
+                endDate: endDate,
+                children: optionWidgets,
+              ),
             );
       },
     );

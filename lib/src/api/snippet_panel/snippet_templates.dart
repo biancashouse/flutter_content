@@ -77,7 +77,9 @@ enum SnippetTemplateEnum {
               appBar: AppBarNode(
                 bgColorValue: Colors.grey.value,
                 title: GenericSingleChildNode(
-                    propertyName: 'title', child: TextNode(text: 'my title')),
+                  propertyName: 'title',
+                  child: TextNode(text: 'my title'),
+                ),
                 bottom: GenericSingleChildNode(
                   propertyName: 'bottom',
                   child: TabBarNode(

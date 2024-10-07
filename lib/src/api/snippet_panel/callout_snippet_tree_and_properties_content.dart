@@ -64,7 +64,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     //   });
     // }
     // for the prev and next icons
-    SnippetName? snippetName = FlutterContentApp.snippetBeingEdited?.rootNode.name;
+    SnippetName? snippetName =
+        FlutterContentApp.snippetBeingEdited?.rootNode.name;
     if (snippetName == null) return fco.errorIcon(Colors.red);
     VersionId? currentEditingVersionId =
         fco.snippetInfoCache[snippetName]?.editingVersionId;
@@ -81,7 +82,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           title: Tooltip(
             message: 'snippet name',
             child: fco.coloredText(
-              FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name?',
+              FlutterContentApp.snippetBeingEdited?.rootNode.name ??
+                  'snippet name?',
               fontSize: 16.0,
               color: Colors.white,
             ),
@@ -158,7 +160,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               onPressed: () async {},
               icon: VersionsMenuAnchor(
                   snippetName:
-                      FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name ?'),
+                      FlutterContentApp.snippetBeingEdited?.rootNode.name ??
+                          'snippet name ?'),
               tooltip: 'version...',
             ),
             // if (selectedNode is! SnippetRefNode)
@@ -493,7 +496,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               newSnippetName: s,
                             ));
                             fco.afterNextBuildDo(() {
-                              fco.dismiss(TREENODE_MENU_CALLOUT);
+                              fco.dismiss("input-snippet-name");
                             });
                           });
                     },
@@ -501,7 +504,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       Icons.link,
                       color: Colors.blue,
                     ),
-                    tooltip: 'Save a a new Snippet...',
+                    tooltip: 'Save as a new Snippet...',
                   ),
                 // IconButton(
                 //   hoverColor: Colors.white30,
@@ -685,9 +688,9 @@ class SnippetTreePane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (FlutterContentApp.snippetBeingEdited?.rootNode.child == null) {
-      List<Widget> menuChildren =
-          FlutterContentApp.snippetBeingEdited?.rootNode.menuAnchorWidgets(NodeAction.addChild) ??
-              [];
+      List<Widget> menuChildren = FlutterContentApp.snippetBeingEdited?.rootNode
+              .menuAnchorWidgets(NodeAction.addChild) ??
+          [];
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
         menuChildren: menuChildren,
@@ -868,34 +871,35 @@ class SnippetTreeView extends StatelessWidget {
       nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
         // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // fco.logi("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
-        if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node) return const Offstage();
-        if (entry.node == FlutterContentApp.selectedNode) {
-          fco.logi(
-              'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
-        }
         // never show the tree root node
-        return true //entry.node is! SnippetRootNode && entry.node != treeC.roots.firstOrNull
-            ? TreeIndentation(
-                guide: IndentGuide.connectingLines(
-                  color: FlutterContentApp.aNodeIsSelected &&
-                          entry.node == FlutterContentApp.selectedNode
-                      ? Colors.green
-                      : Colors.white,
-                  indent: 40.0,
-                ),
-                entry: entry,
-                child: NodeWidget(
-                  snippetName:
-                      FlutterContentApp.snippetBeingEdited?.rootNode.name ?? 'snippet name ?',
-                  treeController: treeC,
-                  entry: entry,
-                  allowButtonCallouts: allowButtonCallouts,
-                ),
-              )
-            : const Offstage();
+        if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node)
+          return const Offstage();
+        // if (entry.node == FlutterContentApp.selectedNode) {
+        //   fco.logi(
+        //       'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
+        // }
+        return _treeIndentation(entry, treeC);
       },
     );
   }
+
+  TreeIndentation _treeIndentation(entry, treeC) => TreeIndentation(
+        guide: IndentGuide.connectingLines(
+          color: FlutterContentApp.aNodeIsSelected &&
+                  entry.node == FlutterContentApp.selectedNode
+              ? Colors.green
+              : Colors.white,
+          indent: 40.0,
+        ),
+        entry: entry,
+        child: NodeWidget(
+          snippetName: FlutterContentApp.snippetBeingEdited?.rootNode.name ??
+              'snippet name ?',
+          treeController: treeC,
+          entry: entry,
+          allowButtonCallouts: allowButtonCallouts,
+        ),
+      );
 }
 
 class PropertiesTreeView extends StatelessWidget {
@@ -1055,7 +1059,8 @@ class _VersionsMenuAnchorState extends State<VersionsMenuAnchor> {
         ),
         MenuItemButton(
           onPressed: () async {
-            FlutterContentApp.capiBloc.add(const CAPIEvent.replaceSnippetFromJson());
+            FlutterContentApp.capiBloc
+                .add(const CAPIEvent.replaceSnippetFromJson());
           },
           child: const Text('save snippet JSON from clipboard'),
         ),

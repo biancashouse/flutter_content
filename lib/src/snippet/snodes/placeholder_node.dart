@@ -14,14 +14,12 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   String? name;
 
   // String? centredLabel;
-  int? colorValue;
   double? width;
   double? height;
 
   PlaceholderNode({
     this.name,
     // this.centredLabel,
-    this.colorValue,
     this.width,
     this.height,
   });

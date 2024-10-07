@@ -3,19 +3,18 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_event.dart';
-import 'package:flutter_content/src/bloc/snippet_state.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 import '../unit_test.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
   late MockModelRepository mockRepo;
-  late CAPIBloC CAPIBloC;
+  late CAPIBloC capiBloc;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late CAPIBloC CAPIBloC;
   late SnippetRootNode snippetWithScaffoldAnd3Tabs;
   late STreeNode nodeTBD;
   late RichTextNode rtNode;
@@ -61,10 +60,8 @@ void main() {
         propertyName: 'body',
         child: TabBarViewNode(
           children: [
-            PlaceholderNode(
-                centredLabel: 'page 1', colorValue: Colors.yellow.value),
-            PlaceholderNode(
-                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            PlaceholderNode(),
+            PlaceholderNode(),
           ],
         ),
       ),
@@ -80,7 +77,10 @@ void main() {
     return Future(() async {
       mockRepo = setupMockRepo();
       fco.init(
-        modelName: 'flutter-content-test-app',
+        appName: 'test-app',
+        editorPassword: 'pigsinspace',
+        routingConfig: RoutingConfig(routes: []),
+        initialRoutePath: '',
         testModelRepo: mockRepo,
       );
       cl1 = TextNode(text: 'cl1');
@@ -111,9 +111,7 @@ void main() {
             child: tbv1 = TabBarViewNode(
               children: [
                 tbView1 = CenterNode(child: container1 = ContainerNode()),
-                sel = PlaceholderNode(
-                    centredLabel: 'page 2',
-                    colorValue: Colors.blueAccent.value),
+                sel = PlaceholderNode(),
                 StepperNode(children: [
                   StepNode(
                     title: stepTitleProperty = GenericSingleChildNode(
@@ -137,51 +135,72 @@ void main() {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
     treeC = SnippetTreeController(
-        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    CAPIBloC = CAPIBloC(rootNode: snippet, treeC: treeC);
+      roots: [snippet],
+      childrenProvider: Node.snippetTreeChildrenProvider,
+      parentProvider: Node.snippetTreeParentProvider,
+    );
+    capiBloc = CAPIBloC(
+      modelRepo: setupMockRepo(),
+      mockSnippetBeingEdited: SnippetBeingEdited(
+        nodeBeingDeleted: null,
+        rootNode: snippet,
+        treeC: treeC,
+        jsonBeforePush: '',
+      ),
+    );
   }
 
   /// reusable expected states
   expectedState_NoSelection(CAPIBloC bloc) => bloc.state.copyWith(
-        selectedNode: null,
-        showProperties: false,
-        nodeBeingDeleted: null,
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: null,
+          showProperties: false,
+          nodeBeingDeleted: null,
+          rootNode: bloc.state.snippetBeingEdited!.rootNode,
+          treeC: bloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: '',
+        ),
       );
 
   expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) =>
       bloc.state.copyWith(
-        selectedNode: node,
-        showProperties: true,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
-        nodeBeingDeleted: null,
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: node,
+          showProperties: false,
+          nodeBeingDeleted: null,
+          rootNode: bloc.state.snippetBeingEdited!.rootNode,
+          treeC: bloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: '',
+        ),
       );
 
   expectedState_NodeBeingDeleted(CAPIBloC bloc, STreeNode node) =>
       bloc.state.copyWith(
-        nodeBeingDeleted: node,
-        selectedNode: node,
-        showProperties: true,
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: node,
+          showProperties: true,
+          nodeBeingDeleted: node,
+          rootNode: bloc.state.snippetBeingEdited!.rootNode,
+          treeC: bloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: '',
+        ),
       );
 
   blocTest<CAPIBloC, CAPIState>(
     'delete only child (a CL) in snippet',
     setUp: () => test_snippet_setup(cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: cl1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: cl1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, cl1),
-      expectedState_NodeBeingDeleted(CAPIBloC, cl1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, cl1),
+      expectedState_NodeBeingDeleted(capiBloc, cl1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, isA<PlaceholderNode>());
@@ -192,21 +211,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete only child (SC) in snippet',
     setUp: () => test_snippet_setup(sc1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc1),
+      expectedState_NodeBeingDeleted(capiBloc, sc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, isA<PlaceholderNode>());
@@ -217,12 +233,9 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     "delete step's title property",
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: stepTitleProperty.child!,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: stepTitleProperty.child!));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
@@ -240,21 +253,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an SC node having a child (*)',
     setUp: () => test_snippet_setup(sc1..child = cl1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc1),
+      expectedState_NodeBeingDeleted(capiBloc, sc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, cl1);
@@ -265,21 +275,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete only child (MC) in snippet',
     setUp: () => test_snippet_setup(mc1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, isA<PlaceholderNode>());
@@ -290,21 +297,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an MC node having a single child (*)',
     setUp: () => test_snippet_setup(mc1..children = [cl1]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, cl1);
@@ -315,21 +319,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an MC node having >1 child (*)',
     setUp: () => test_snippet_setup(mc1..children = [cl1, cl2]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, mc1);
@@ -341,21 +342,18 @@ void main() {
     'delete only child (RichText) in snippet',
     setUp: () => test_snippet_setup(
         nodeTBD = RichTextNode(text: TextSpanNode(text: 'rich text span'))),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(snippet.child, isA<PlaceholderNode>());
@@ -366,21 +364,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an empty SC node having an SC parent',
     setUp: () => test_snippet_setup(sc1..child = sc2),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc2,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc2));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc2),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc2),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc2),
+      expectedState_NodeBeingDeleted(capiBloc, sc2),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(sc1.child, isNull);
@@ -391,21 +386,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an SC node having an SC parent and a child (*)',
     setUp: () => test_snippet_setup(sc1..child = (sc2..child = cl1)),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc2,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc2));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc2),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc2),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc2),
+      expectedState_NodeBeingDeleted(capiBloc, sc2),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(sc1.child, cl1);
@@ -416,21 +408,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an MC node having no children',
     setUp: () => test_snippet_setup(sc1..child = mc1),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(sc1.child, isNull);
@@ -441,21 +430,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an MC node having a single child',
     setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1])),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(sc1.child, cl1);
@@ -466,21 +452,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an MC node a with >1 child',
     setUp: () => test_snippet_setup(sc1..child = (mc1..children = [cl1, cl2])),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(sc1.child, mc1);
@@ -491,21 +474,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an SC node with MC parent',
     setUp: () => test_snippet_setup(mc1..children = [sc1]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc1),
+      expectedState_NodeBeingDeleted(capiBloc, sc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.isEmpty, true);
@@ -516,21 +496,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an SC node having (*) child, and having MC parent',
     setUp: () => test_snippet_setup(mc1..children = [sc1..child = cl1]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, sc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, sc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, sc1),
+      expectedState_NodeBeingDeleted(capiBloc, sc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.first, cl1);
@@ -541,21 +518,18 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete an empty MC node with MC parent',
     setUp: () => test_snippet_setup(mc1..children = [mc2]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc2,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc2));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc2),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc2),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc2),
+      expectedState_NodeBeingDeleted(capiBloc, mc2),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.isEmpty, true);
@@ -569,21 +543,18 @@ void main() {
       ..children = [
         mc2..children = [cl1]
       ]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc2,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc2));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc2),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc2),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc2),
+      expectedState_NodeBeingDeleted(capiBloc, mc2),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.first, cl1);
@@ -597,21 +568,18 @@ void main() {
       ..children = [
         mc2..children = [cl1, cl2]
       ]),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: mc1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: mc1));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, mc1),
-      expectedState_NodeBeingDeleted(CAPIBloC, mc1),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, mc1),
+      expectedState_NodeBeingDeleted(capiBloc, mc1),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.first, mc2);
@@ -623,21 +591,18 @@ void main() {
     "delete a RichText's childless TextSpan",
     setUp: () => test_snippet_setup(
         rtNode = RichTextNode(text: nodeTBD = TextSpanNode(text: 'monkey'))),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(rtNode.text, isA<TextSpanNode>());
@@ -650,21 +615,18 @@ void main() {
     "delete a RichText's TextSpan that itself has a WidgetSpan",
     setUp: () => test_snippet_setup(rtNode = RichTextNode(
         text: nodeTBD = TextSpanNode(children: [WidgetSpanNode()]))),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(rtNode.text, isA<WidgetSpanNode>());
@@ -677,21 +639,18 @@ void main() {
     setUp: () => test_snippet_setup(rtNode = RichTextNode(
         text: nodeTBD = TextSpanNode(
             text: 'tbd', children: [TextSpanNode(text: 'monkey')]))),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(rtNode.text, isA<TextSpanNode>());
@@ -706,21 +665,18 @@ void main() {
         text: nodeTBD = TextSpanNode(
             text: 'AAA',
             children: [TextSpanNode(text: 'TTT'), WidgetSpanNode()]))),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(rtNode.text, isA<TextSpanNode>());
@@ -738,21 +694,18 @@ void main() {
             TextNode(text: '222'),
             TextNode(text: '333'),
           ])),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.length, 2);
@@ -771,21 +724,18 @@ void main() {
             nodeTBD = TextNode(text: '222'),
             TextNode(text: '333'),
           ])),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.length, 2);
@@ -804,21 +754,18 @@ void main() {
             TextNode(text: '222'),
             nodeTBD = TextNode(text: '333'),
           ])),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: nodeTBD,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: nodeTBD));
       // don't delete yet - just set nodeBeingDeleted
       bloc.add(const CAPIEvent.deleteNodeTapped());
       // // delete the textNode, which will cause a Placeholder to be appended to the root (root must always have a child)
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(CAPIBloC, nodeTBD),
-      expectedState_NodeBeingDeleted(CAPIBloC, nodeTBD),
-      expectedState_NoSelection(CAPIBloC),
+      expectedState_SelectedNode(capiBloc, nodeTBD),
+      expectedState_NodeBeingDeleted(capiBloc, nodeTBD),
+      expectedState_NoSelection(capiBloc),
     ],
     tearDown: () {
       expect(mc1.children.length, 2);
@@ -831,25 +778,20 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete 1st of 3 tabs - leaving 2 tabs',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: container1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: container1));
       bloc.add(const CAPIEvent.deleteNodeTapped());
       bloc.add(const CAPIEvent.completeDeletion());
-      bloc.add(CAPIEvent.selectNode(
-          node: text1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: text1));
       bloc.add(const CAPIEvent.deleteNodeTapped());
       bloc.add(const CAPIEvent.completeDeletion());
     },
     skip: 3,
     expect: () => [
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode', isNull),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode', isNull),
       const TypeMatcher<CAPIState>()
         ..having((state) => tb1.children.length, '#tabs', tbv1.children.length)
         ..having((state) => tb1.children.length, '#tabs', 3),
@@ -864,52 +806,51 @@ void main() {
   blocTest<CAPIBloC, CAPIState>(
     'delete 1st of 3 tabs - deletes but retains 3 tabs',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: tbView1,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: tbView1));
       bloc.add(const CAPIEvent.deleteNodeTapped());
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => [
       const TypeMatcher<CAPIState>()
-        ..having(
-            (state) => state.selectedNode, 'selectedNode', isA<CenterNode>()),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode', isA<CenterNode>()),
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode', tbView1)
-        ..having((state) => state.nodeBeingDeleted, 'selectedNode', tbView1),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode', tbView1)
+        ..having((state) => state.snippetBeingEdited?.nodeBeingDeleted,
+            'selectedNode', tbView1),
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode', isNull)
-        ..having((state) => state.nodeBeingDeleted, 'nodeBeingDeleted', isNull),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode', isNull)
+        ..having((state) => state.snippetBeingEdited?.nodeBeingDeleted,
+            'nodeBeingDeleted', isNull),
     ],
   );
 
   blocTest<CAPIBloC, CAPIState>(
     'delete 2nd tab view',
     setUp: () => test_snippet_setup(snippetWithScaffoldAnd3Tabs),
-    build: () => CAPIBloC,
+    build: () => capiBloc,
     act: (bloc) {
-      bloc.add(CAPIEvent.selectNode(
-          node: sel,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK));
+      bloc.add(CAPIEvent.selectNode(node: sel));
       bloc.add(const CAPIEvent.deleteNodeTapped());
       bloc.add(const CAPIEvent.completeDeletion());
     },
     expect: () => [
-      expectedState_SelectedNode(CAPIBloC, sel),
+      expectedState_SelectedNode(capiBloc, sel),
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode type',
-            isA<PlaceholderNode>())
-        ..having((state) => state.selectedNode?.parent, 'parent',
-            isA<TabBarViewNode>()),
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode type', isA<PlaceholderNode>())
+        ..having((state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+            'parent', isA<TabBarViewNode>()),
       const TypeMatcher<CAPIState>()
-        ..having((state) => state.selectedNode, 'selectedNode type', isNull)
+        ..having((state) => state.snippetBeingEdited?.selectedNode,
+            'selectedNode type', isNull)
     ],
     verify: (bloc) {
-      expect(tbv1.parent, isA<GenericSingleChildNode>());
+      expect(tbv1.getParent(), isA<GenericSingleChildNode>());
       expect(tb1.children.length, 2);
       expect(tbv1.children.length, tb1.children.length);
       expect(snippet.anyMissingParents(), false);

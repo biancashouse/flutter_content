@@ -8,7 +8,7 @@ void main() {
   late SnippetRootNode emptySnippet;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
-  late CAPIBloC CAPIBloC;
+  late CAPIBloC capiBloc;
   late STreeNode placeholderNode;
   late STreeNode nodeTBD;
 
@@ -23,7 +23,7 @@ void main() {
   });
 
   test('snippet comprises just a placeholder node', () async {
-    expect(SnippetPanel.createSnippetFromTemplateNodes(SnippetTemplateEnum.empty, 'empty_snippet').child, isA<PlaceholderNode>());
+    expect(SnippetTemplateEnum.empty.templateSnippet().child, isA<PlaceholderNode>());
     // printPrettyJson(rootNode.toMap(), indent: 2);
   });
 

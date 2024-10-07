@@ -648,7 +648,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
     } else if ((tabBar?.children.length ?? 0) <
         (tabBarView?.children.length ?? 0)) {
-      tabBar?.children.add(TextNode(text: 'fixed tab')..setParent(tabBar));
+      tabBar?.children.add(TextNode(text: ' fixed tab')..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
     // fco.logi("missing parents: $doubleCheck");
@@ -792,7 +792,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       // get published or editing version
       SnippetInfoModel? snippetInfo = fco.snippetInfoCache[snippetName];
       if (snippetInfo == null) return foundTargets;
-      VersionId? versionId = fco.canEditContent
+      VersionId? versionId = fco.canEditContent.value
           ? snippetInfo.editingVersionId
           : snippetInfo.publishedVersionId;
       if (versionId == null) return foundTargets;
@@ -1436,7 +1436,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("TextSpanN", TextSpanNode, action),
         menuItemButton("WidgetSpan", WidgetSpanNode, action),
       ],
-      ...menuAnchorWidgets_Append(action, skipHeading),
+      ...menuAnchorWidgets_Append(action, true),
     ];
   }
 

@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
 import 'package:go_router/go_router.dart';
@@ -110,9 +109,9 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   Feature? get feature => calloutConfigGroup?.contentSnippetName;
 
-  void onPressed(BuildContext context) {
+  void onPressed(BuildContext context, GlobalKey gk) {
     if (onTapHandlerName != null) {
-      fco.namedVoidCallbacks[onTapHandlerName]?.call(context);
+      fco.getNamedCallback(onTapHandlerName!)?.call(context, gk);
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);

@@ -8,10 +8,14 @@ abstract class Node extends Object {
   @JsonKey(includeFromJson: false, includeToJson: false)
   Node? _parent;
 
+
   Node? getParent() => _parent;
   void setParent(Node? parentNode) => _parent = parentNode;
 
+  static STreeNode? snippetTreeParentProvider(Node node) => node.getParent() as STreeNode?;
+
   static Iterable<STreeNode> snippetTreeChildrenProvider(STreeNode node) {
+    node.getParent();
     Iterable<STreeNode> children = [];
 
     if (node is SnippetRootNode && node.getParent() != null) {
@@ -115,7 +119,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
   SnippetTreeController({
     required super.roots,
     required super.childrenProvider,
-    super.parentProvider,
+    required super.parentProvider,
   });
 
   Set<STreeNode> get expandedNodes => _expandedNodesCache ??= <STreeNode>{};

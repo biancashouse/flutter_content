@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,11 +19,7 @@ MockModelRepository setupMockRepo() {
   // AppInfo
   when(mockRepository.getAppInfo()).thenAnswer((_) async {
     AppInfoModel appInfo = AppInfoModel(
-      editingVersionIds: {'scaffoldWithTabs': TEST_VERSION_ID},
-      publishedVersionIds: {'scaffoldWithTabs': TEST_VERSION_ID},
-      versionIds: {
-        'scaffoldWithTabs': [TEST_VERSION_ID]
-      },
+     snippetNames: []
     );
     return appInfo;
   });
@@ -51,16 +48,14 @@ MockModelRepository setupMockRepo() {
           propertyName: 'body',
           child: TabBarViewNode(
             children: [
-              PlaceholderNode(
-                  centredLabel: 'page 1', colorValue: Colors.yellow.value),
-              PlaceholderNode(
-                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              PlaceholderNode(),
+              PlaceholderNode(),
             ],
           ),
         ),
       ),
     )..validateTree();
-    fco.snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
+    // fco.snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
   });
   return mockRepository;
 }
@@ -77,7 +72,11 @@ void main() {
     mockRepository = setupMockRepo();
 
     fco.init(
-      modelName: 'test-app',
+      appName: 'test-app',
+      editorPassword: 'pigsinspace',
+      routingConfig: RoutingConfig(routes: []),
+      initialRoutePath: '',
+      testModelRepo: mockRepository,
     );
   });
 
@@ -90,7 +89,7 @@ void main() {
       versionId: TEST_VERSION_ID,
     );
 
-    var snippet = fco.snippetInfoCache['scaffoldWithTabs']?[TEST_VERSION_ID];
+    var snippet = fco.snippetInfoCache['scaffoldWithTabs'];
 
     expect(snippet, isNotNull);
   });

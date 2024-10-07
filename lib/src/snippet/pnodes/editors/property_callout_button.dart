@@ -15,6 +15,7 @@ class PropertyCalloutButton extends StatelessWidget {
   final bool? draggable;
   final Size calloutButtonSize;
   final Size calloutSize;
+  final VoidCallback? onDismissedF;
   final ValueNotifier<int> notifier;
 
   const PropertyCalloutButton({
@@ -30,6 +31,7 @@ class PropertyCalloutButton extends StatelessWidget {
     this.initialCalloutAlignment,
     this.menuBgColor = Colors.purpleAccent,
     this.draggable,
+    this.onDismissedF,
     required this.notifier,
     super.key,
   });
@@ -65,6 +67,7 @@ class PropertyCalloutButton extends StatelessWidget {
       resizeableH: true,
       resizeableV: true,
       borderRadius: 16,
+      onDismissedF: onDismissedF,
     );
 
     return WrappedCallout(

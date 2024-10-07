@@ -18,8 +18,8 @@ class CAPIState with _$CAPIState {
   factory CAPIState({
     // required bool useFirebase,
     // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-    String?
-    initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+    // String?
+    // initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
     // required ModelUR modelUR,
     @Default(false) bool hideIframes,
     @Default(false) bool hideSnippetPencilIcons,

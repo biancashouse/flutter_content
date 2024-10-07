@@ -147,48 +147,40 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<
-      ({
-        Map<String, int>? optionVoteCountMap,
-        String? userVotedForOptionId,
-        int? when
-      })> getPollResultsForUser({
-    required String? voterId,
+  _i4.Future<Map<String, int>> getPollOptionVoteCounts(
+          {required String? pollName}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getPollOptionVoteCounts,
+          [],
+          {#pollName: pollName},
+        ),
+        returnValue: _i4.Future<Map<String, int>>.value(<String, int>{}),
+        returnValueForMissingStub:
+            _i4.Future<Map<String, int>>.value(<String, int>{}),
+      ) as _i4.Future<Map<String, int>>);
+
+  @override
+  _i4.Future<({String? optionId, int? when})?> getUsersVote({
     required String? pollName,
+    required String? voterId,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getPollResultsForUser,
+          #getUsersVote,
           [],
           {
-            #voterId: voterId,
             #pollName: pollName,
+            #voterId: voterId,
           },
         ),
-        returnValue: _i4.Future<
-                ({
-                  Map<String, int>? optionVoteCountMap,
-                  String? userVotedForOptionId,
-                  int? when
-                })>.value(
-            (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-        returnValueForMissingStub: _i4.Future<
-                ({
-                  Map<String, int>? optionVoteCountMap,
-                  String? userVotedForOptionId,
-                  int? when
-                })>.value(
-            (optionVoteCountMap: null, userVotedForOptionId: null, when: null)),
-      ) as _i4.Future<
-          ({
-            Map<String, int>? optionVoteCountMap,
-            String? userVotedForOptionId,
-            int? when
-          })>);
+        returnValue: _i4.Future<({String? optionId, int? when})?>.value(),
+        returnValueForMissingStub:
+            _i4.Future<({String? optionId, int? when})?>.value(),
+      ) as _i4.Future<({String? optionId, int? when})?>);
 
   @override
   _i4.Future<Map<String, List<String>>> getVotersByOption({
-    required String? modelName,
     required String? pollName,
     required List<String>? pollOptionIds,
   }) =>
@@ -197,7 +189,6 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           #getVotersByOption,
           [],
           {
-            #modelName: modelName,
             #pollName: pollName,
             #pollOptionIds: pollOptionIds,
           },
@@ -246,4 +237,14 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
           ),
         )),
       ) as _i4.Future<_i2.FSFolderNode>);
+
+  @override
+  _i4.Future<bool> tokenConfirmed(String? token) => (super.noSuchMethod(
+        Invocation.method(
+          #tokenConfirmed,
+          [token],
+        ),
+        returnValue: _i4.Future<bool>.value(false),
+        returnValueForMissingStub: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }

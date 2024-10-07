@@ -62,7 +62,7 @@ class TargetsWrapper extends StatefulWidget {
   static void configureTarget(
       TargetModel tc, Rect wrapperRect, String? scrollControllerName,
       {bool quickly = false}) {
-    if (!fco.canEditContent) return;
+    if (!fco.canEditContent.value) return;
 
     if (tc.targetsWrapperState() == null) return;
 
@@ -286,7 +286,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     //
     Future<void> createTarget(TapDownDetails details) async {
-      if (!fco.canEditContent) return;
+      if (!fco.canEditContent.value) return;
       SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
       if (snippetName == null) return;
 
@@ -355,7 +355,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 child: Visibility.maintain(
                   key: fco.setTargetGk(tc.uid,
                       GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
-                  visible: fco.canEditContent &&
+                  visible: fco.canEditContent.value &&
                       (playingTc == null || playingTc == tc),
                   child: TargetCover(
                     tc,
@@ -398,7 +398,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         );
 
     return Container(
-      child: fco.canEditContent
+      child: fco.canEditContent.value
           ? IgnorePointer(
               ignoring: true,
               child: child,

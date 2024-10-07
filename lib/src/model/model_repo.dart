@@ -5,7 +5,8 @@ import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 // enum FSAction { undo, redo }
 
 abstract class IModelRepository {
-  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB({required SnippetName snippetName});
+  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
+      {required SnippetName snippetName});
 
   // Future<void> migrateCollection();
   // Future<void> copyUsersBetweenProjects();
@@ -13,7 +14,8 @@ abstract class IModelRepository {
   // Future<void> copyFlowchartDocBetweenUsersInSameProject(String fromUserId, String toUserId);
   // Future<void> copyUsersProjects();
 
-  Future<void> possiblyLoadSnippetIntoCache({required SnippetName snippetName, required VersionId versionId});
+  Future<void> possiblyLoadSnippetIntoCache(
+      {required SnippetName snippetName, required VersionId versionId});
 
   Future<AppInfoModel?> getAppInfo();
 
@@ -37,18 +39,26 @@ abstract class IModelRepository {
     required Map<PollOptionId, int> newOptionVoteCountMap,
   });
 
-  Future<OptionCountsAndVoterRecord> getPollResultsForUser({
-    required VoterId voterId,
+  Future<OptionVoteCountMap> getPollOptionVoteCounts({
     required String pollName,
   });
 
+  Future<UserVoterRecord?> getUsersVote({
+    required String pollName,
+    required VoterId voterId,
+  }
+  );
+
   Future<Map<PollOptionId, List<EmailAddress>>> getVotersByOption({
-    required String modelName,
     required String pollName,
     required List<PollOptionId> pollOptionIds,
   });
 
   // Future<void> createAndPopulateRootFSStorageNode();
 
-  Future<FSFolderNode> createAndPopulateFolderNode({required Reference ref, FSFolderNode? parentNode});
+  Future<FSFolderNode> createAndPopulateFolderNode(
+      {required Reference ref, FSFolderNode? parentNode});
+
+  Future<bool> tokenConfirmed(String token);
+
 }

@@ -9,7 +9,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   int? bgColorValue;
   AppBarNode? appBar;
   GenericSingleChildNode? body;
-  double? tabLabelFontSize;
+  bool canShowEditorLoginBtn;
 
   // int numTabs;
 
@@ -18,6 +18,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
     this.appBar,
     required this.body,
     // this.numTabs = 0,
+    this.canShowEditorLoginBtn = false,
   });
 
   @override
@@ -49,56 +50,38 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
     possiblyHighlightSelectedNode();
 
     late Widget scaffold;
-    bool usingTabs = appBar?.bottom?.child is TabBarNode;
+    // bool usingTabs = appBar?.bottom?.child is TabBarNode;
     int? numTabs;
-    if (usingTabs) {
-      TabBarNode tabBarNode = appBar?.bottom?.child as TabBarNode;
-      numTabs = tabBarNode.children.length;
-      SnippetPanelState? spState = SnippetPanel.of(context);
-      spState?.createTabController(numTabs);
-      scaffold = Theme(
-        data: ThemeData(
-          // brightness: Brightness.light,
-          tabBarTheme: TabBarTheme(
-            labelStyle: TextStyle(fontSize: tabLabelFontSize),
-            // indicator: UnderlineTabIndicator(
-            //     // color for indicator (underline)
-            //     borderSide: BorderSide(color: Colors.black, width: 3)),
-          ),
-        ),
-        child: Scaffold(
-          key: createNodeGK(),
-          backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
-          appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
-          // guaranteed the widget is actually an AppBar
-          body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
-        ),
-      );
-    } else {
-      scaffold = Scaffold(
-        key: createNodeGK(),
-        backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
-        appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
-        // guaranteed the widget is actually an AppBar
-        body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
-      );
-    }
+    scaffold = Scaffold(
+      key: createNodeGK(),
+      backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
+      appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
+      // guaranteed the widget is actually an AppBar
+      body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
+    );
 
-    // FlutterContentAppState? spaState = FlutterContentApp.of(context);
-    return Stack(
-      children: [
-        scaffold,
-        if (!fco.canEditContent)
-          Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                onPressed: () {
-                  // ask user to sign in as editor
-                  EditablePage.of(context)?.lockIconTapped();
-                },
-                icon: Icon(Icons.edit, color: bgColorValue == Colors.black.value ? Colors.white : Colors.black,),
-              )),
-      ],
+    return ValueListenableBuilder<bool>(
+      valueListenable: fco.canEditContent,
+      builder: (context, value, child) {
+        bool showPencil = !value;
+        return Stack(
+          children: [
+            scaffold,
+            if (showPencil && canShowEditorLoginBtn)
+              Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      // ask user to sign in as editor
+                      EditablePage.of(context)
+                          ?.editorPasswordDialog();
+                    },
+                    icon: Icon(Icons.edit, color: Colors.white),
+                  )),
+          ],
+        );
+      },
+      child: scaffold,
     );
   }
 

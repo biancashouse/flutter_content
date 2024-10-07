@@ -270,6 +270,20 @@ class CAPIEvent with _$CAPIEvent {
     STreeNode? testNode,
   }) = AddSiblingAfter;
 
+  // // reorder sibling in 2 actions: remove, then insert
+  // const factory CAPIEvent.moveSibling({
+  //   required MC parentNode,
+  //   required STreeNode node,
+  //   required int atPos,
+  // }) = MoveSibling;
+  //
+  // const factory CAPIEvent.reinsertSibling({
+  //   required MC parentNode,
+  //   required STreeNode node,
+  //   required int atPos,
+  // }) = ReinsertSibling;
+  // // reorder sibling in 2 actions: remove, then insert
+
   const factory CAPIEvent.pasteReplacement({
     // required STreeNode clipboardNode,
     Type? widgetSpanChildType,
@@ -322,6 +336,10 @@ class CAPIEvent with _$CAPIEvent {
   //   required FSBucketNode bucket,
   //   required STreeNode? selectedNode, // null means clear selection
   // }) = SelectedFSDirectoryOrNode;
+
+  const factory CAPIEvent.imageChanged({
+    Uint8List? newBytes,
+  }) = ImageChanged;
 
   const factory CAPIEvent.undo({
     required String name,

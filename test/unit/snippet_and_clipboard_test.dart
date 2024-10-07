@@ -2,13 +2,14 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../unit_test.dart';
 import '../unit_test.mocks.dart';
 
 void main() {
-  late MockModelRepository mockRepository;
+  late MockModelRepository mockRepo;
   late CAPIBloC capiBloc;
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
@@ -23,15 +24,9 @@ void main() {
   late StepperNode stepper1;
   late StepNode step1, step2, step3;
 
-  final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
-  final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
-  // final ur = SnippetTreeUR();
-
   // sample data -----------
-  SnippetRootNode emptySnippetRoot = SnippetPanel.createSnippetFromTemplateNodes(
-    SnippetTemplateEnum.empty,
-    'some-name',
-  );
+  SnippetRootNode emptySnippetRoot =
+      SnippetTemplateEnum.empty.templateSnippet();
   late STreeNode firstTabViewNode;
   late STreeNode? columnNode;
   STreeNode? paddingNode = PaddingNode();
@@ -61,10 +56,8 @@ void main() {
         propertyName: 'body',
         child: TabBarViewNode(
           children: [
-            firstTabViewNode = PlaceholderNode(
-                centredLabel: 'page 1', colorValue: Colors.yellow.value),
-            PlaceholderNode(
-                centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+            firstTabViewNode = PlaceholderNode(),
+            PlaceholderNode(),
           ],
         ),
       ),
@@ -76,27 +69,28 @@ void main() {
       SnippetTreeController(
         roots: [rootNode],
         childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider: Node.snippetTreeParentProvider,
       );
 
   void test_snippet_setup(STreeNode child, {STreeNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
-    treeC = SnippetTreeController(
-        roots: [snippet], childrenProvider: Node.snippetTreeChildrenProvider);
-    CAPIBloC = CAPIBloC(
-      rootNode: snippet, treeC: treeC,
-      // treeUR: ur
-    );
-    selectedState = CAPIBloC.state;
-    if (select != null) {
-      selectedState = CAPIBloC.state.copyWith(
+
+    capiBloc = CAPIBloC(
+      modelRepo: setupMockRepo(),
+      mockSnippetBeingEdited: SnippetBeingEdited(
+        rootNode: snippet,
+        treeC: SnippetTreeController(
+          roots: [snippet],
+          childrenProvider: Node.snippetTreeChildrenProvider,
+          parentProvider: Node.snippetTreeParentProvider,
+        ),
         selectedNode: select,
-        showProperties: true,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
         nodeBeingDeleted: null,
-      );
-    }
+        jsonBeforePush: '{}',
+      ),
+    );
+    selectedState = capiBloc.state;
   }
 
   setUp(() {
@@ -148,8 +142,7 @@ void main() {
                       child: ContainerNode(),
                     )),
               ]),
-              PlaceholderNode(
-                  centredLabel: 'page 2', colorValue: Colors.blueAccent.value),
+              PlaceholderNode(),
             ],
           ),
         ),
@@ -160,7 +153,6 @@ void main() {
   group("Test tree structure changes to snippet 'scaffold-with-tabs'", () {
     // --- repo test
     test('read the model from the repo, and find 1st TextNode', () async {
-
       SnippetRootNode rootNode = modelSnippetRoot;
       expect(rootNode.name, snippetName);
 
@@ -175,39 +167,50 @@ void main() {
     // --- selection node test
     blocTest<CAPIBloC, CAPIState>(
       'select a node',
-      build: () => CAPIBloC = CAPIBloC(
-        rootNode: modelSnippetRoot,
-        treeC: newTreeC(modelSnippetRoot),
-        // treeUR: SnippetTreeUR()
+      build: () => capiBloc = CAPIBloC(
+        modelRepo: setupMockRepo(),
+        mockSnippetBeingEdited: SnippetBeingEdited(
+          rootNode: modelSnippetRoot,
+          treeC: newTreeC(modelSnippetRoot),
+          selectedNode: null,
+          nodeBeingDeleted: null,
+          jsonBeforePush: '{}',
+        ),
       ),
       act: (bloc) => bloc.add(CAPIEvent.selectNode(
         node: firstTabViewNode,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
       )),
       //skip: 1,
       expect: () => <CAPIState>[
-        CAPIBloC.state.copyWith(
-          selectedNode: firstTabViewNode,
-          selectedWidgetGK: selectedWidgetGK,
-          selectedTreeNodeGK: selectedTreeNodeGK,
+        capiBloc.state.copyWith(
+          snippetBeingEdited: SnippetBeingEdited(
+            selectedNode: firstTabViewNode,
+            showProperties: false,
+            nodeBeingDeleted: null,
+            rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+            treeC: capiBloc.state.snippetBeingEdited!.treeC,
+            jsonBeforePush: '',
+          ),
         ),
       ],
     );
     // --- append TextNode to snippet root
     blocTest<CAPIBloC, CAPIState>(
       'append a child ColumnNode to a TabViewNode',
-      build: () => CAPIBloC(
-        rootNode: emptySnippetRoot,
-        treeC: newTreeC(emptySnippetRoot),
-        // treeUR: SnippetTreeUR()
+      build: () => capiBloc = CAPIBloC(
+        modelRepo: setupMockRepo(),
+        mockSnippetBeingEdited: SnippetBeingEdited(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          selectedNode: null,
+          nodeBeingDeleted: null,
+          jsonBeforePush: '{}',
+        ),
       ),
       act: (bloc) {
         bloc.add(
           CAPIEvent.selectNode(
             node: emptySnippetRoot,
-            selectedWidgetGK: selectedWidgetGK,
-            selectedTreeNodeGK: selectedTreeNodeGK,
           ),
         );
         bloc.add(const CAPIEvent.appendChild(type: TextNode));
@@ -215,25 +218,40 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<CAPIState>()
-          ..having((state) => state.selectedNode, 'selectedNode type',
-              isA<TextNode>())
-          ..having((state) => state.selectedNode?.parent, 'parent', isNotNull)
-          ..having((state) => state.selectedNode?.parent, 'parent',
+          ..having((state) => state.snippetBeingEdited?.selectedNode,
+              'selectedNode type', isA<TextNode>())
+          ..having(
+              (state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+              'parent',
+              isNotNull)
+          ..having(
+              (state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+              'parent',
               equals(firstTabViewNode))
       ],
     );
     // --- append node test to a ColumnNode
     blocTest<CAPIBloC, CAPIState>(
       'append a TextNode to columnNode',
-      build: () => CAPIBloC(
-        rootNode: emptySnippetRoot,
-        treeC: newTreeC(emptySnippetRoot),
-        // treeUR: SnippetTreeUR()
+      build: () => capiBloc = CAPIBloC(
+        modelRepo: setupMockRepo(),
+        mockSnippetBeingEdited: SnippetBeingEdited(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          selectedNode: null,
+          nodeBeingDeleted: null,
+          jsonBeforePush: '{}',
+        ),
       ),
-      seed: () => CAPIBloC.state.copyWith(
-        selectedNode: firstTabViewNode,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
+      seed: () => capiBloc.state.copyWith(
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: firstTabViewNode,
+          showProperties: false,
+          nodeBeingDeleted: null,
+          rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+          treeC: capiBloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: '',
+        ),
       ),
       act: (bloc) {
         bloc.add(const CAPIEvent.appendChild(
@@ -252,9 +270,11 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<CAPIState>()
-          ..having((state) => state.selectedNode, 'selectedNode type',
-              isA<TextNode>())
-          ..having((state) => state.selectedNode?.parent, 'parent',
+          ..having((state) => state.snippetBeingEdited?.selectedNode,
+              'selectedNode type', isA<TextNode>())
+          ..having(
+              (state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+              'parent',
               isA<ColumnNode>())
       ],
     );
@@ -264,15 +284,25 @@ void main() {
     // --- append node test to a ColumnNode
     blocTest<CAPIBloC, CAPIState>(
       'append a TextNode to columnNode',
-      build: () => CAPIBloC(
-        rootNode: emptySnippetRoot,
-        treeC: newTreeC(emptySnippetRoot),
-        // treeUR: SnippetTreeUR()
+      build: () => capiBloc = CAPIBloC(
+        modelRepo: setupMockRepo(),
+        mockSnippetBeingEdited: SnippetBeingEdited(
+          rootNode: emptySnippetRoot,
+          treeC: newTreeC(emptySnippetRoot),
+          selectedNode: null,
+          nodeBeingDeleted: null,
+          jsonBeforePush: '{}',
+        ),
       ),
-      seed: () => CAPIBloC.state.copyWith(
-        selectedNode: firstTabViewNode,
-        selectedWidgetGK: selectedWidgetGK,
-        selectedTreeNodeGK: selectedTreeNodeGK,
+      seed: () => capiBloc.state.copyWith(
+        snippetBeingEdited: SnippetBeingEdited(
+          selectedNode: firstTabViewNode,
+          showProperties: false,
+          nodeBeingDeleted: null,
+          rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+          treeC: capiBloc.state.snippetBeingEdited!.treeC,
+          jsonBeforePush: '',
+        ),
       ),
       act: (bloc) {
         bloc.add(const CAPIEvent.appendChild(
@@ -291,9 +321,11 @@ void main() {
       skip: 1,
       expect: () => [
         const TypeMatcher<CAPIState>()
-          ..having((state) => state.selectedNode, 'selectedNode type',
-              isA<TextNode>())
-          ..having((state) => state.selectedNode?.parent, 'parent',
+          ..having((state) => state.snippetBeingEdited?.selectedNode,
+              'selectedNode type', isA<TextNode>())
+          ..having(
+              (state) => state.snippetBeingEdited?.selectedNode?.getParent(),
+              'parent',
               isA<ColumnNode>())
       ],
     );
@@ -301,27 +333,23 @@ void main() {
     blocTest<CAPIBloC, CAPIState>(
       'cut 3rd step and insert as first step',
       setUp: () => test_snippet_setup(scaffoldAnd2TabsAndStepper),
-      build: () => CAPIBloC,
+      build: () => capiBloc,
       act: (bloc) {
         bloc.add(CAPIEvent.cutNode(
           node: step3,
-          CAPIBloC: getMockCAPIBloC(repo),
           skipSave: true,
         ));
-        bloc.add(CAPIEvent.selectNode(
-            node: step1,
-            selectedWidgetGK: selectedWidgetGK,
-            selectedTreeNodeGK: selectedTreeNodeGK));
+        bloc.add(CAPIEvent.selectNode(node: step1));
         bloc.add(const CAPIEvent.pasteSiblingBefore());
       },
       skip: 3,
       verify: (bloc) {
         expect((stepper1.children[0] as StepNode).title.propertyName, "title3");
-        expect((stepper1.children[0] as StepNode).parent, isNotNull);
+        expect((stepper1.children[0] as StepNode).getParent(), isNotNull);
         expect((stepper1.children[1] as StepNode).title.propertyName, "title1");
-        expect((stepper1.children[1] as StepNode).parent, isNotNull);
+        expect((stepper1.children[1] as StepNode).getParent(), isNotNull);
         expect((stepper1.children[2] as StepNode).title.propertyName, "title2");
-        expect((stepper1.children[2] as StepNode).parent, isNotNull);
+        expect((stepper1.children[2] as StepNode).getParent(), isNotNull);
         expect(stepper1.children.length, 3);
         expect(snippet.anyMissingParents(), false);
       },

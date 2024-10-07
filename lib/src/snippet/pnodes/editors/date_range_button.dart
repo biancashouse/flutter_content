@@ -86,8 +86,8 @@ class _DateRangeButtonState extends State<DateRangeButton> {
           child: widget.from != widget.until
               // ? Text('From ${timeago.format(dialogCalendarPickerValue.value[0]!)} ${dialogCalendarPickerValue.value[0]!} \nUntil ${timeago.format(dialogCalendarPickerValue.value[1]!)} ${dialogCalendarPickerValue.value[1]!}')
               ? Text(
-                  '${DateFormat('hh:mm dd-MMM-yyyy').format(startOfPeriod)}\n'
-                  '${DateFormat('hh:mm dd-MMM-yyyy').format(endOfPeriod)}',
+                  '${DateFormat('MMMMd').format(startOfPeriod)}\n'
+                  '${DateFormat('MMMMd').format(endOfPeriod)}',
                 )
               : const Text('polling period'),
         ),

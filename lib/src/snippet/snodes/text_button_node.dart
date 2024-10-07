@@ -31,16 +31,17 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
     void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
     setParent(parentNode);
-
     possiblyHighlightSelectedNode();
+
+    final gk = createNodeGK();
 
     return Container(
       // container only for possble selection gk
-      key: createNodeGK(),
+      key: gk,
       child: TextButton(
         // if feature specified, must be a callout
         key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: ()=>onPressed(context),
+        onPressed: ()=>onPressed(context, gk),
         onLongPress: ()=>f?.call(context),
         style: btnStyle,
         child: child?.toWidget(context, this) ?? const Text('empty'),

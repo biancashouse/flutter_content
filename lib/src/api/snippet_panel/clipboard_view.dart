@@ -20,6 +20,7 @@ class ClipboardView extends StatelessWidget {
     SnippetTreeController clipboardTreeC = SnippetTreeController(
       roots: [clipboard],
       childrenProvider: Node.snippetTreeChildrenProvider,
+      parentProvider: Node.snippetTreeParentProvider,
     );
     clipboardTreeC.expandCascading([clipboard]);
 

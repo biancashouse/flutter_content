@@ -29,6 +29,13 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   List<PTreeNode> properties(BuildContext context) {
     // fco.logi("ContainerNode.properties()...");
     return [
+      DecimalPropertyValueNode(
+        snode: this,
+        name: 'height',
+        decimalValue: height,
+        onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
+        calloutButtonSize: const Size(90, 20),
+      ),
       ColorPropertyValueNode(
         snode: this,
         name: 'bg color',
@@ -96,7 +103,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
             builder: (_, __) => leadingWidget())
             : null,
         title: titleWidget,
-        toolbarHeight: 220,
+        toolbarHeight: height,
         bottom: bottomWidget as PreferredSizeWidget?,
         actions: actionWidgets,
         backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,

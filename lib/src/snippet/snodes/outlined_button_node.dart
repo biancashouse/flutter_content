@@ -38,13 +38,15 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
 
+    final gk = createNodeGK();
+
     return Container(
       // container only for possble selection gk
-      key: createNodeGK(),
+      key: gk,
       child: OutlinedButton(
         // if feature specified, must be a callout
         key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: ()=>onPressed(context),
+        onPressed: ()=>onPressed(context, gk),
         onLongPress: f != null ? () => f.call(context) : null,
         style: btnStyle,
         child: child?.toWidget(context, this),

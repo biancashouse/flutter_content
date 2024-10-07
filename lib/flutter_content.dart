@@ -4,12 +4,16 @@ library flutter_content;
 
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:bh_shared/bh_shared.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/crop_or_resize/crop_image.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
@@ -122,6 +126,7 @@ export 'src/snippet/snodes/title_snippet_root_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+export 'src/passwordless/passwordless_mixin.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -159,6 +164,8 @@ class FlutterContentMixins
         MQMixin,
         CanvasMixin,
         GotitsMixin,
+        PasswordlessMixin,
+        // ImageCaptureMixin,
         LocalStorageMixin {
   FlutterContentMixins._internal() // Private constructor
   {
@@ -175,7 +182,8 @@ class FlutterContentMixins
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> init({
-    required String modelName,
+    required String appName,
+    required String editorPassword,
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
     bool useFBStorage = false,
@@ -188,7 +196,7 @@ class FlutterContentMixins
       'Merriweather',
       'Merriweather Sans',
     ],
-    Map<String, void Function(BuildContext)> namedVoidCallbacks = const {},
+    Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     Map<String, TextStyle> namedTextStyles = const {},
     Map<String, ButtonStyle> namedButtonStyles = const {},
     required RoutingConfig routingConfig,
@@ -200,9 +208,9 @@ class FlutterContentMixins
 
     debugPrint('init() ${stopwatch.elapsedMilliseconds}');
 
-    _appName = modelName;
+    _appName = appName;
+    _editorPassword = editorPassword;
     _googleFontNames = googleFontNames;
-    _namedVoidCallbacks = namedVoidCallbacks;
     _namedTextStyles = namedTextStyles;
     _namedButtonStyles = namedButtonStyles;
     Bloc.observer = MyGlobalObserver();
@@ -275,12 +283,17 @@ class FlutterContentMixins
     await initLocalStorage();
     fco.logi('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
+    bool b = hiveBox.get("canEditContent") ?? false;
+    canEditContent = ValueNotifier<bool>(b);
+
     // FutureBuilder requires this return
     CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
 
     fco.logi('init 7. ${fco.stopwatch.elapsedMilliseconds}');
     return capiBloc;
   }
+
+  bool emailIsValid(String theEA) => EmailValidator.validate(theEA);
 
   final stopwatch = Stopwatch();
 
@@ -289,7 +302,10 @@ class FlutterContentMixins
   // set by .init()
   String get appName => _appName;
 
+  String get editorPassword => _editorPassword;
+
   late String _appName;
+  late String _editorPassword;
 
   late AppInfoModel _appInfo; // must be instantiated in init()
   AppInfoModel get appInfo => _appInfo;
@@ -297,6 +313,8 @@ class FlutterContentMixins
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
+
+  late ValueNotifier<bool> canEditContent;
 
   late GoRouter router;
 
@@ -418,7 +436,8 @@ class FlutterContentMixins
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
   late List<String> _googleFontNames;
-  late Map<String, void Function(BuildContext)> _namedVoidCallbacks;
+  final Map<String, void Function(BuildContext, GlobalKey)> _namedCallbacks =
+      {};
   late Map<String, TextStyle> _namedTextStyles;
   late Map<String, ButtonStyle> _namedButtonStyles;
   Offset? _devToolsFABPos;
@@ -433,18 +452,15 @@ class FlutterContentMixins
 
   final inEditMode = ValueNotifier<bool>(false);
 
-  bool get canEditContent {
-    var s = hiveBox.get("canEditContent");
-    return s != null ? bool.parse(s) : false;
-  }
-
   void forceRefresh({bool onlyTargetsWrappers = false}) =>
       FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(
         onlyTargetsWrappers: onlyTargetsWrappers,
       ));
 
-  Future<void> setCanEdit(bool b) async =>
-      hiveBox.put("canEditContent", b.toString());
+  Future<void> setCanEditContent(bool b) async {
+    canEditContent.value = b;
+    return hiveBox.put("canEditContent", b);
+  }
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
@@ -496,8 +512,13 @@ class FlutterContentMixins
 
   List<String> get googleFontNames => _googleFontNames;
 
-  Map<String, void Function(BuildContext)> get namedVoidCallbacks =>
-      _namedVoidCallbacks;
+  void Function(BuildContext, GlobalKey)? getNamedCallback(
+          String callbackName) =>
+      _namedCallbacks[callbackName];
+
+  void setNamedCallback(String callbackName,
+          void Function(BuildContext, GlobalKey) callback) =>
+      _namedCallbacks[callbackName] = callback;
 
   Map<String, TextStyle> get namedTextStyles => _namedTextStyles;
 
@@ -618,9 +639,8 @@ class FlutterContentMixins
   // }
 
   Future<void> loadFirebaseStorageFolders() async {
-    var rootRef = fbStorage.ref(); // .child("/");
-    rootFSFolderNode =
-        await modelRepo.createAndPopulateFolderNode(ref: rootRef);
+    var rootRef = fbStorage.ref('/$appName'); // .child("/");
+    rootFSFolderNode = await modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 
   // snippet editing
