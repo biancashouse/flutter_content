@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
@@ -16,6 +18,12 @@ typedef UserVoterRecord = ({PollOptionId? optionId, int? when});
 typedef UnconfirmedEaRecord = ({
   String ea,
   String token,
+});
+
+typedef UMLRecord = ({
+  String? text,
+  String? encodedText,
+  Uint8List? bytes,
 });
 
 typedef TextStyleName = String;

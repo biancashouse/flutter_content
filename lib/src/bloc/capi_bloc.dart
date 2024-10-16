@@ -1612,6 +1612,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           AlignNode(child: childNode, alignment: AlignmentEnum.topLeft),
         const (AspectRatioNode) => AspectRatioNode(child: childNode),
         const (AssetImageNode) => AssetImageNode(),
+        const (UMLImageNode) => UMLImageNode(),
         const (FSImageNode) => FSImageNode(),
         const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
         const (CarouselNode) =>

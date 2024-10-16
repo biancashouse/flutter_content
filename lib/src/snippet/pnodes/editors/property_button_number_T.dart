@@ -42,7 +42,7 @@ class PropertyButtonNumber<T> extends HookWidget {
           ), // Adjust radius as needed
           color: Colors.white, // Set your desired background color
         ),
-        child: FC_TextField(
+        child: StringEditor_T(
           inputType: T,
           originalS: originalValue.toString(),
           onTextChangedF: (String value) {},

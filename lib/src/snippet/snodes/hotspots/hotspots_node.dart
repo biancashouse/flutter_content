@@ -87,9 +87,10 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
     return SizedBox(
       width: width,
       height: height,
-      child: aspectRatio != null
-          ? AspectRatio(aspectRatio: aspectRatio!, child: tw)
-          : tw,
+      child: tw,
+      // child: aspectRatio != null
+      //     ? AspectRatio(aspectRatio: aspectRatio!, child: tw)
+      //     : tw,
     );
   }
 

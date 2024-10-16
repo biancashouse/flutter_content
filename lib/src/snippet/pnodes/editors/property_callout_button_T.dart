@@ -88,7 +88,7 @@ class PropertyButton<T> extends StatelessWidget {
             draggable: false,
             notUsingHydratedStorage: true,
           );
-          Widget teContent = FC_TextField(
+          Widget teContent = StringEditor_T(
             inputType: T,
             // key: calloutChildGK,
             prompt: () => label ?? '',

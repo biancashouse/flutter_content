@@ -94,6 +94,7 @@ dependencies:
 #  google_secret_manager: ^1.1.0
   http: ^1.2.2
   image: 4.2.0
+  interactive_viewer_2: ^0.0.10
 
   bh_shared:
     path: ../bh_shared

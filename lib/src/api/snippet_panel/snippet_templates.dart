@@ -16,7 +16,7 @@ enum SnippetTemplateEnum {
   scaffold_with_tabs,
   scaffold_with_menubar,
   splitview_with_2_placeholders,
-  column_with_2_placeholders,
+  hotspotDemo,
   rich_text,
   callout_content;
 
@@ -30,7 +30,7 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
         SnippetTemplateEnum.splitview_with_2_placeholders =>
           'splitview with 2 placeholders',
-        SnippetTemplateEnum.column_with_2_placeholders =>
+        SnippetTemplateEnum.hotspotDemo =>
           'column with 2 placeholders',
         SnippetTemplateEnum.rich_text => 'rich text',
         SnippetTemplateEnum.callout_content => 'callout contents'
@@ -136,8 +136,8 @@ enum SnippetTemplateEnum {
             ),
           ),
         //
-        SnippetTemplateEnum.column_with_2_placeholders => SnippetRootNode(
-            name: SnippetTemplateEnum.column_with_2_placeholders.name,
+        SnippetTemplateEnum.hotspotDemo => SnippetRootNode(
+            name: SnippetTemplateEnum.hotspotDemo.name,
             child: ColumnNode(
               mainAxisSize: MainAxisSizeEnum.max,
               children: [

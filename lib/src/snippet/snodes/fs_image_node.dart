@@ -37,7 +37,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
           stringValue: fsFullPath,
           onPathChange: (newValue) => refreshWithUpdate(() => fsFullPath =
               newValue ??
-                  'gs://flutter-content-2dc30.appspot.com/missing-image.PNG'),
+                  'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
           calloutButtonSize: const Size(280, 70),
         ),
         DecimalPropertyValueNode(

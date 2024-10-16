@@ -4,8 +4,6 @@ library flutter_content;
 
 import 'dart:math';
 
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:bh_shared/bh_shared.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,14 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/crop_or_resize/crop_image.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
 import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
-import 'src/bloc/capi_event.dart';
 import 'src/model/model_repo.dart';
 
 export 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
@@ -32,12 +28,10 @@ export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
-
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -46,11 +40,11 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
+export 'src/passwordless/passwordless_mixin.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
@@ -95,8 +89,6 @@ export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
-export 'src/snippet/snodes/network_image_node.dart';
-
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -123,11 +115,10 @@ export 'src/snippet/snodes/text_button_node.dart';
 export 'src/snippet/snodes/text_node.dart';
 export 'src/snippet/snodes/textspan_node.dart';
 export 'src/snippet/snodes/title_snippet_root_node.dart';
+export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-export 'src/passwordless/passwordless_mixin.dart';
-
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -187,8 +178,8 @@ class FlutterContentMixins
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
     bool useFBStorage = false,
-    final IModelRepository?
-        testModelRepo, // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
+    final IModelRepository? testModelRepo,
+    // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
     List<String> googleFontNames = const [
       'Roboto',

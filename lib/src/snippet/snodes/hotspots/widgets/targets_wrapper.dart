@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:interactive_viewer_2/interactive_viewer_2.dart';
 
 import 'callout_snippet_content.dart';
 import 'config_toolbar/callout_config_toolbar.dart';
@@ -333,8 +334,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     onTap: () {
                       fco.logi('TAP');
                     },
-                    onDoubleTapDown: (TapDownDetails details) async =>
-                        await createTarget(details),
+                    onDoubleTapDown: (TapDownDetails details) async {
+                      fco.logi('DOUBLE TAP');
+                      await createTarget(details);
+                    },
                     // onLongPressEnd: (LongPressEndDetails details) async =>
                     //     await longPressedeBarrier(details),
                   ),
@@ -397,13 +400,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           ),
         );
 
-    return Container(
-      child: fco.canEditContent.value
-          ? IgnorePointer(
-              ignoring: true,
+    // return child;
+    return InteractiveViewer2(
+      child: IgnorePointer(
+              ignoring: fco.canEditContent.value,
               child: child,
             )
-          : child,
     );
   }
 }

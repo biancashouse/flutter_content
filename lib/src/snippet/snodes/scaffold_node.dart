@@ -51,7 +51,6 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
     late Widget scaffold;
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
-    int? numTabs;
     scaffold = Scaffold(
       key: createNodeGK(),
       backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,

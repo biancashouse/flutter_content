@@ -5,7 +5,7 @@ import 'package:example/bh-apps.firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:url_strategy/url_strategy.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 // import 'old.firebase_options.dart';
 import 'pages/routes_config.dart';
@@ -36,7 +36,8 @@ Future<void> main({bool useEmulator = false}) async {
     WidgetsFlutterBinding.ensureInitialized();
     // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-    setPathUrlStrategy();
+    usePathUrlStrategy();
+
     //
     // try {
     //   await Firebase.initializeApp(
@@ -54,7 +55,7 @@ Future<void> main({bool useEmulator = false}) async {
       editorPassword: 'pigsinspace',
       webRoutingConfig: webRoutingConfig,
       mobileRoutingConfig: mobileRoutingConfig,
-      initialRoutePath: '/home',
+      initialRoutePath: '/',
       materialAppThemeF: () => ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         primaryColor: fco.FUCHSIA_X,

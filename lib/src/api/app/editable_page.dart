@@ -374,7 +374,7 @@ class EditablePageState extends State<EditablePage> {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             width: 240,
             height: 100,
-            child: FC_TextField(
+            child: StringEditor_T(
               inputType: String,
               prompt: () => 'password',
               originalS: '',

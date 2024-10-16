@@ -38,7 +38,7 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
       case 'splitview_with_2_placeholders':
         return SnippetTemplateEnum.splitview_with_2_placeholders;
       case 'column_with_2_placeholders':
-        return SnippetTemplateEnum.column_with_2_placeholders;
+        return SnippetTemplateEnum.hotspotDemo;
       case 'rich_text':
         return SnippetTemplateEnum.rich_text;
       case 'callout_content':
@@ -63,7 +63,7 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
         return 'scaffold_with_menubar';
       case SnippetTemplateEnum.splitview_with_2_placeholders:
         return 'splitview_with_2_placeholders';
-      case SnippetTemplateEnum.column_with_2_placeholders:
+      case SnippetTemplateEnum.hotspotDemo:
         return 'column_with_2_placeholders';
       case SnippetTemplateEnum.rich_text:
         return 'rich_text';

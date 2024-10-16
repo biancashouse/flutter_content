@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 const cloudRunAPIVersion = 'v4';
 const cloudRunServerHost =
-    'gcr-bh-apps-188627927914.australia-southeast1.run.app/$cloudRunAPIVersion';
+    'gcr-dart-bh-apps-188627927914.australia-southeast1.run.app/$cloudRunAPIVersion';
 
 mixin PasswordlessMixin {
 

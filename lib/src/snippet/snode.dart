@@ -71,6 +71,7 @@ const List<Type> childlessSubClasses = [
   TextNode,
   RichTextNode,
   AssetImageNode,
+  UMLImageNode,
   FSImageNode,
   IFrameNode,
   GoogleDriveIFrameNode,
@@ -1379,6 +1380,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       SubmenuButton(
         menuChildren: [
           menuItemButton("Asset Image", AssetImageNode, action),
+          menuItemButton("UML Image", UMLImageNode, action),
           menuItemButton("Firebase Storage Image", FSImageNode, action),
           menuItemButton("Carousel", CarouselNode, action),
           menuItemButton("Aspect Ratio", AspectRatioNode, action),
@@ -1430,6 +1432,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ],
       if (getParent() is CarouselNode) ...[
         menuItemButton("AssetImage", AssetImageNode, action),
+        menuItemButton("UMLImage", UMLImageNode, action),
         menuItemButton("FirestoreStorageImage", FSImageNode, action),
       ],
       if (getParent() is TextSpanNode) ...[
@@ -1530,6 +1533,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         SubmenuButton(
           menuChildren: [
             menuItemButton("Asset Image", AssetImageNode, action),
+            menuItemButton("UML Image", UMLImageNode, action),
             menuItemButton("Firebase Storage Image", FSImageNode, action),
             menuItemButton("Carousel", CarouselNode, action),
             menuItemButton("Aspect Ratio", AspectRatioNode, action),
