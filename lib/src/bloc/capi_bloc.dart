@@ -11,6 +11,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
+import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
@@ -1612,6 +1613,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           AlignNode(child: childNode, alignment: AlignmentEnum.topLeft),
         const (AspectRatioNode) => AspectRatioNode(child: childNode),
         const (AssetImageNode) => AssetImageNode(),
+        const (AlgCNode) => AlgCNode(),
         const (UMLImageNode) => UMLImageNode(),
         const (FSImageNode) => FSImageNode(),
         const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),

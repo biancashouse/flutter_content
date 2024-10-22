@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
+// ignore_for_file: unused_element, unnecessary_cast
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'snippet_templates.dart';
@@ -37,8 +37,6 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
         return SnippetTemplateEnum.scaffold_with_menubar;
       case 'splitview_with_2_placeholders':
         return SnippetTemplateEnum.splitview_with_2_placeholders;
-      case 'column_with_2_placeholders':
-        return SnippetTemplateEnum.hotspotDemo;
       case 'rich_text':
         return SnippetTemplateEnum.rich_text;
       case 'callout_content':
@@ -63,8 +61,6 @@ class SnippetTemplateEnumMapper extends EnumMapper<SnippetTemplateEnum> {
         return 'scaffold_with_menubar';
       case SnippetTemplateEnum.splitview_with_2_placeholders:
         return 'splitview_with_2_placeholders';
-      case SnippetTemplateEnum.hotspotDemo:
-        return 'column_with_2_placeholders';
       case SnippetTemplateEnum.rich_text:
         return 'rich_text';
       case SnippetTemplateEnum.callout_content:

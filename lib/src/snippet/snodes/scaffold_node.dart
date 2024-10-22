@@ -59,29 +59,39 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
       body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
     );
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: fco.canEditContent,
-      builder: (context, value, child) {
-        bool showPencil = !value;
-        return Stack(
-          children: [
-            scaffold,
-            if (showPencil && canShowEditorLoginBtn)
-              Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      // ask user to sign in as editor
-                      EditablePage.of(context)
-                          ?.editorPasswordDialog();
-                    },
-                    icon: Icon(Icons.edit, color: Colors.white),
-                  )),
-          ],
-        );
-      },
-      child: scaffold,
-    );
+    try {
+      return ValueListenableBuilder<bool>(
+            valueListenable: fco.canEditContent,
+            builder: (context, value, child) {
+              bool showPencil = !value;
+              return Stack(
+                children: [
+                  scaffold,
+                  if (showPencil && canShowEditorLoginBtn)
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                          onPressed: () {
+                            // ask user to sign in as editor
+                            EditablePage.of(context)
+                                ?.editorPasswordDialog();
+                          },
+                          icon: Icon(Icons.edit, color: Colors.white),
+                        )),
+                ],
+              );
+            },
+            child: scaffold,
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
+// ignore_for_file: unused_element, unnecessary_cast
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'target_model.dart';
@@ -96,7 +96,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static int? _$calloutArrowTypeIndex(TargetModel v) => v.calloutArrowTypeIndex;
   static const Field<TargetModel, int> _f$calloutArrowTypeIndex = Field(
       'calloutArrowTypeIndex', _$calloutArrowTypeIndex,
-      opt: true, def: 1);
+      opt: true, def: 4);
   static int? _$calloutArrowColorValue(TargetModel v) =>
       v.calloutArrowColorValue;
   static const Field<TargetModel, int> _f$calloutArrowColorValue =

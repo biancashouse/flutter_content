@@ -32,26 +32,36 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
-    // possible handler
-    void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    try {
+      ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
+      // possible handler
+      void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
 
-    final gk = createNodeGK();
+      final gk = createNodeGK();
 
-    return Container(
-      // container only for possble selection gk
-      key: gk,
-      child: OutlinedButton(
-        // if feature specified, must be a callout
-        key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-        onPressed: ()=>onPressed(context, gk),
-        onLongPress: f != null ? () => f.call(context) : null,
-        style: btnStyle,
-        child: child?.toWidget(context, this),
-      ),
-    );
+      return Container(
+            // container only for possble selection gk
+            key: gk,
+            child: OutlinedButton(
+              // if feature specified, must be a callout
+              key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
+              onPressed: ()=>onPressed(context, gk),
+              onLongPress: f != null ? () => f.call(context) : null,
+              style: btnStyle,
+              child: child?.toWidget(context, this),
+            ),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   // @override

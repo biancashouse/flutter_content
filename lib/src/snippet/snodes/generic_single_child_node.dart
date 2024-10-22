@@ -20,27 +20,37 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) => fco.coloredText('GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   Widget? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    if (child == null) return null;
     try {
-      Widget? childWidget = child?.toWidget(context, this);
-      if (childWidget == null) throw(Exception('Failed to create widget for property: $propertyName'));
-      return childWidget;
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      if (child == null) return null;
+      try {
+            Widget? childWidget = child?.toWidget(context, this);
+            if (childWidget == null) throw(Exception('Failed to create widget for property: $propertyName'));
+            return childWidget;
+          } catch (e) {
+            fco.logi('snippetRoot.toWidget() failed!');
+            return Material(
+              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    fco.errorIcon(Colors.red),
+                    const Gap(10),
+                    fco.coloredText(e.toString()),
+                  ],
+                ),
+              ),
+            );
+          }
     } catch (e) {
-      fco.logi('snippetRoot.toWidget() failed!');
-      return Material(
-        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              fco.errorIcon(Colors.red),
-              const Gap(10),
-              fco.coloredText(e.toString()),
-            ],
-          ),
-        ),
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
     }
   }

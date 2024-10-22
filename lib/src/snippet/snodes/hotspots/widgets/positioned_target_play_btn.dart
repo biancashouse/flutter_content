@@ -120,7 +120,8 @@ class TargetPlayBtn extends StatelessWidget {
               onTap: () {
                 if (tc.targetsWrapperState() == null) return;
 
-                tc.targetsWrapperState()!.widget.parentNode.playList.add(tc);
+                final playList = tc.targetsWrapperState()!.widget.parentNode.playList;
+                playList.add(tc);
                 playTarget(tc);
               },
               // onLongPress: () {

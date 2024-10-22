@@ -10,6 +10,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 class EditablePage extends StatefulWidget {
   final String routePath;
   final Widget child;
+
   // final bool dontShowLockIcon;
 
   const EditablePage({
@@ -45,7 +46,6 @@ class EditablePageState extends State<EditablePage> {
   // ScrollController? sC;
 
   final focusNode = FocusNode();
-  final GlobalKey _lockIconGK = GlobalKey();
 
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
@@ -144,21 +144,28 @@ class EditablePageState extends State<EditablePage> {
                     Zoomer(
                       child: widget.child,
                     ),
-                    if (fabPosition != null && isFABVisible)
-                      Positioned(
-                        left: fabPosition!.dx,
-                        top: fabPosition!.dy,
-                        child: Draggable(
-                          feedback: FAB(),
-                          child: FAB(),
-                          //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
-                          onDragEnd: (details) {
-                            setState(() {
-                              fabPosition = details
-                                  .offset; // Update FAB position when dragged
-                            });
-                          },
-                        ),
+                    if (fabPosition != null)
+                      ValueListenableBuilder<bool>(
+                        valueListenable: fco.canEditContent,
+                        builder: (context, value, child) {
+                          return isFABVisible
+                              ? Positioned(
+                                  left: fabPosition!.dx,
+                                  top: fabPosition!.dy,
+                                  child: Draggable(
+                                    feedback: FAB(),
+                                    child: FAB(),
+                                    //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
+                                    onDragEnd: (details) {
+                                      setState(() {
+                                        fabPosition = details
+                                            .offset; // Update FAB position when dragged
+                                      });
+                                    },
+                                  ),
+                                )
+                              : Offstage();
+                        },
                       ),
                   ],
                 ),
@@ -360,16 +367,14 @@ class EditablePageState extends State<EditablePage> {
   //   );
   // }
 
-  void editorPasswordDialog() {
+   void editorPasswordDialog() {
     fco.showOverlay(
-      targetGkF: () => _lockIconGK,
       calloutContent: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          fco.purpleText("Editor Access",
-              fontSize: 24, family: 'Merriweather'),
+          fco.purpleText("Editor Access", fontSize: 24, family: 'Merriweather'),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             width: 240,
@@ -392,11 +397,7 @@ class EditablePageState extends State<EditablePage> {
                   // });
                   // fco.dismiss("EditorPassword");
                   FlutterContentApp.capiBloc.add(
-                      const CAPIEvent.forceRefresh(
-                          onlyTargetsWrappers: true));
-                  setState(() {
-                    // enterEditMode();
-                  });
+                      const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                 }
               },
               dontAutoFocus: false,

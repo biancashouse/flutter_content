@@ -66,29 +66,39 @@ class YTNode extends CL with YTNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    // final ytId = getIdFromUrl(ytUrl??'') ?? 'zWh3CShX_do';
-    // final controller = YoutubePlayerController.fromVideoId(
-    //   videoId: ytId,
-    //   autoPlay: false,
-    //   params: const YoutubePlayerParams(showFullscreenButton: true),
-    // );
-    String embedUrl = extractUrlFromIframe(ytUrl)??'https://www.youtube.com/embed/u1FAoLEG16c?si=gNKISAxvqR4Bto9k&amp;start=26&amp;end=70&amp;rel=0';
-    if (startAtSecs!=null) embedUrl += "&amp;start=$startAtSecs";
-    if (endAtSecs!=null) embedUrl += "&amp;end=$endAtSecs";
-    embedUrl += '&amp;rel=0';
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      // final ytId = getIdFromUrl(ytUrl??'') ?? 'zWh3CShX_do';
+      // final controller = YoutubePlayerController.fromVideoId(
+      //   videoId: ytId,
+      //   autoPlay: false,
+      //   params: const YoutubePlayerParams(showFullscreenButton: true),
+      // );
+      String embedUrl = extractUrlFromIframe(ytUrl)??'https://www.youtube.com/embed/u1FAoLEG16c?si=gNKISAxvqR4Bto9k&amp;start=26&amp;end=70&amp;rel=0';
+      if (startAtSecs!=null) embedUrl += "&amp;start=$startAtSecs";
+      if (endAtSecs!=null) embedUrl += "&amp;end=$endAtSecs";
+      embedUrl += '&amp;rel=0';
       return SizedBox(width: iframeWidth, height: iframeHeight,
-        child: AspectRatio(aspectRatio: 16/9,
-        child: IFrame(
-          key: createNodeGK(),
-          src: embedUrl,
-          iframeW: iframeWidth,
-          iframeH: iframeHeight,
-          forceRefresh: true,
-        ),
-      ),
-    );
+              child: AspectRatio(aspectRatio: 16/9,
+              child: IFrame(
+                key: createNodeGK(),
+                src: embedUrl,
+                iframeW: iframeWidth,
+                iframeH: iframeHeight,
+                forceRefresh: true,
+              ),
+            ),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
 
     // YoutubePlayer(
       // key: createNodeGK(),

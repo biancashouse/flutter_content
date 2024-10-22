@@ -19,10 +19,15 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) => fco.coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
   List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    List<Widget> childWidgets = children.map((node) => node.toWidget(context, this)).toList();
-    return childWidgets;
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      List<Widget> childWidgets = children.map((node) => node.toWidget(context, this)).toList();
+      return childWidgets;
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 
   @override

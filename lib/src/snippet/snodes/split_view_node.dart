@@ -106,9 +106,13 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
         }
       });
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
     }
-    return fco.errorIcon(Colors.red);
   }
 
   @override

@@ -210,7 +210,8 @@ class FlutterContentMixins
     // setPathUrlStrategy();
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
-      initialLocation: initialRoutePath,
+      debugLogDiagnostics: true,
+      // initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,
       errorBuilder: (context, state) {
         return Material(
@@ -250,6 +251,8 @@ class FlutterContentMixins
       // fetch model
       AppInfoModel? fbAppInfo = await modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
+
+      _gcrServerUrl = await modelRepo.getGcrServerUrl();
 
       fco.logi('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -299,7 +302,10 @@ class FlutterContentMixins
   late String _editorPassword;
 
   late AppInfoModel _appInfo; // must be instantiated in init()
+  late String? _gcrServerUrl;
   AppInfoModel get appInfo => _appInfo;
+
+  String? get gcrServerUrl => _gcrServerUrl;
 
   Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
 

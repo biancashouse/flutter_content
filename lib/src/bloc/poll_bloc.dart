@@ -30,8 +30,7 @@ class PollBloC extends Bloc<PollEvent, PollState> {
 
   _userVoted(UserVoted event, emit) async {
     event.poll.locked = true;
-    Map<PollOptionId, int> newMap =
-        Map<PollOptionId, int>.of(state.optionVoteCounts);
+    Map<PollOptionId, int> newMap = Map<PollOptionId, int>.of(state.optionVoteCounts);
     newMap[event.optionId] = state.optionVoteCount(event.optionId) + 1;
 
     final voterId = fco.hiveBox.get('vea') ?? 'anon';

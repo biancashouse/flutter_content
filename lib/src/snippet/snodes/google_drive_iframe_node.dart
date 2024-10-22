@@ -31,7 +31,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -39,7 +40,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'folderId',
           stringValue: folderId,
-          onStringChange: (newValue) => refreshWithUpdate(() => folderId = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => folderId = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -47,7 +49,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'resourceKey',
           stringValue: resourceKey,
-          onStringChange: (newValue) => refreshWithUpdate(() => resourceKey = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => resourceKey = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -55,14 +58,16 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           snode: this,
           name: 'iframeWidth',
           decimalValue: iframeWidth,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeWidth = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => iframeWidth = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'iframeHeight',
           decimalValue: iframeHeight,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => iframeHeight = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => iframeHeight = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
       ];
@@ -133,39 +138,36 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    String src = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false';
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      String src =
+              'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false';
 //        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
-    return true //|| folderId.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && !FCO.areAnySnippetsBeingEdited
-        ? SizedBox(
+      return SizedBox(
             key: createNodeGK(),
             width: iframeWidth,
             height: iframeHeight,
             child: IFrame(
               // name: name,
-              src: extractUrlFromIframe(src)
-                  ?? '<iframe src="https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"></iframe>',
+              src: extractUrlFromIframe(src) ??
+                  '<iframe src="https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"></iframe>',
               iframeW: iframeWidth ?? double.infinity,
               iframeH: iframeHeight ?? double.infinity,
               forceRefresh: true,
             ),
-          )
-        :
-    const Offstage();
-    // FCO.areAnySnippetsBeingEdited
-    //         ? const Placeholder()
-    //         : Row(
-    //             key: createNodeGK(),
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               const Icon(Icons.code, size: 32, color: Colors.red),
-    //               FCO.coloredText('folder id missing!', color: Colors.red),
-    //             ],
-    //           );
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
-
 
   String? extractUrlFromIframe(String iframeTag) {
     RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
@@ -195,7 +197,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 
   @override
   Widget? logoSrc() => Image.asset(
-    fco.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
+        fco.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
         width: 24,
       );
 

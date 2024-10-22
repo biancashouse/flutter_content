@@ -188,6 +188,25 @@ class FireStoreModelRepository implements IModelRepository {
   }
 
   @override
+  Future<String?> getGcrServerUrl() async {
+    DocumentReference docRef =
+      FirebaseFirestore.instance.collection('/apps').doc('gcr-bh-apps-dart');
+    DocumentSnapshot doc = await docRef.get();
+    if (doc.exists) {
+      try {
+        final data = doc.data() as Map<String, dynamic>;
+        return data['latest'];
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      fco.logi("gcr-bh-apps-dart doc does not exist.");
+      return null;
+    }
+    return null;
+  }
+
+  @override
   Future<AppInfoModel?> getAppInfo() async {
     DocumentReference ref = appDocRef;
     DocumentSnapshot doc = await ref.get();

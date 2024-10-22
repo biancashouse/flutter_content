@@ -114,40 +114,37 @@ class IFrameNode extends CL with IFrameNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
-    String resourceKey = '';
-    String iframeSrc = src == null
-        ? "https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"
-        : (src?.contains('<iframe') ?? false)
-            ? extractUrlFromIframe(src!)!
-            : src!;
-    return true //src.isNotEmpty && iframeWidth > 0 && iframeHeight > 0 && FCO.capiBloc.state.snippetsBeingEdited.isEmpty
-        ? Center(
-            key: createNodeGK(),
-            child: IFrame(
-              //name: name,
-              // src: src ??
-              //     'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
-              src: iframeSrc,
-              iframeW: iframeWidth,
-              iframeH: iframeHeight,
-              forceRefresh: true,
-            ),
-          )
-        : const Offstage();
-    // FCO.areAnySnippetsBeingEdited
-    //         ? const Placeholder()
-    //         : Column(
-    //             children: [
-    //               const Placeholder(),
-    //               Row(key: createNodeGK(), children: [
-    //                 const Icon(Icons.code, size: 32, color: Colors.red),
-    //                 FCO.coloredText('src missing!', color: Colors.red),
-    //               ]),
-    //             ],
-    //           );
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
+      String resourceKey = '';
+      String iframeSrc = src == null
+              ? "https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"
+              : (src?.contains('<iframe') ?? false)
+                  ? extractUrlFromIframe(src!)!
+                  : src!;
+      return Center(
+                  key: createNodeGK(),
+                  child: IFrame(
+                    //name: name,
+                    // src: src ??
+                    //     'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
+                    src: iframeSrc,
+                    iframeW: iframeWidth,
+                    iframeH: iframeHeight,
+                    forceRefresh: true,
+                  ),
+                );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   String? extractUrlFromIframe(String iframeTag) {

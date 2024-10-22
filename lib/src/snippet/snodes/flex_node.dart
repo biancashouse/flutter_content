@@ -55,29 +55,39 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    Widget w;
     try {
-      w = LayoutBuilder(builder: (context, constraints) {
-        bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
-        return false && constraintsError
-            ? _errorWidget()
-            : Flex(
-          direction: this is RowNode ? Axis.horizontal : Axis.vertical,
-          key: createNodeGK(),
-          mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-          mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-          crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-          textBaseline: TextBaseline.alphabetic,
-          children: children.map((node) => node.toWidget(context, this)).toList(),
-        );
-      });
-    } catch(e) {
-      w = _errorWidget();
-      fco.logi('Flex() failed to render properly. ===============================================');
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      Widget w;
+      try {
+            w = LayoutBuilder(builder: (context, constraints) {
+              bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
+              return false && constraintsError
+                  ? _errorWidget()
+                  : Flex(
+                direction: this is RowNode ? Axis.horizontal : Axis.vertical,
+                key: createNodeGK(),
+                mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
+                mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
+                crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
+                textBaseline: TextBaseline.alphabetic,
+                children: children.map((node) => node.toWidget(context, this)).toList(),
+              );
+            });
+          } catch(e) {
+            w = _errorWidget();
+            fco.logi('Flex() failed to render properly. ===============================================');
+          }
+      return w;
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
     }
-    return w;
   }
 
   Widget _errorWidget() => const Row(
@@ -151,4 +161,9 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 //         calloutSize: CrossAxisAlignmentEnum.calloutSize(isRow: isRow),
 //       ),
 //     ];
+
+  @override
+  String toString() => FLUTTER_TYPE;
+
+  static const String FLUTTER_TYPE = "Flex";
 }

@@ -87,39 +87,49 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       ];
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    fco.logi("SnippetRootNode.toWidget()...");
-    if (findDescendant(SnippetRootNode) != null) {}
-    setParent(parentNode);
-    return FutureBuilder<void>(
-        future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
-        builder: (futureContext, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            fco.logi("FutureBuilder<void> Ensuring $name present");
-            try {
-              // in case did a revert, ignore snapshot data and use the AppInfo instead
-              SnippetRootNode? snippet = fco.currentSnippetVersion(name);
-              // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-              return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
-            } catch (e) {
-              fco.logi('snippetRootNode.toWidget() failed!');
-              return Material(
-                textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      fco.errorIcon(Colors.red),
-                      const Gap(10),
-                      fco.coloredText(e.toString()),
-                    ],
-                  ),
-                ),
-              );
-            }
-          } else {
-            return const CircularProgressIndicator();
-          }
-        });
+    try {
+      fco.logi("SnippetRootNode.toWidget()...");
+      if (findDescendant(SnippetRootNode) != null) {}
+      setParent(parentNode);
+      return FutureBuilder<void>(
+              future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
+              builder: (futureContext, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  fco.logi("FutureBuilder<void> Ensuring $name present");
+                  try {
+                    // in case did a revert, ignore snapshot data and use the AppInfo instead
+                    SnippetRootNode? snippet = fco.currentSnippetVersion(name);
+                    // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                    return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+                  } catch (e) {
+                    fco.logi('snippetRootNode.toWidget() failed!');
+                    return Material(
+                      textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            fco.errorIcon(Colors.red),
+                            const Gap(10),
+                            fco.coloredText(e.toString()),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                } else {
+                  return const CircularProgressIndicator();
+                }
+              });
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   // if root already exists, return it.

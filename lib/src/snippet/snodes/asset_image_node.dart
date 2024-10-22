@@ -157,43 +157,53 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    return name?.isNotEmpty ?? false
-        ? LayoutBuilder(
-        key: createNodeGK(),
-          builder: (context, constraints) {
-            double? w = width != null
-                ? width! * scale
-                : constraints.maxWidth != double.infinity
-                ? constraints.maxWidth*scale
-                : null;
-            double? h = height != null
-                ? height! * scale
-                : constraints.maxHeight != double.infinity
-                ? constraints.maxHeight*scale
-                : null;
-          // fco.logi('Constrints: ${constraints.toString()}');
-            return SizedBox(
-              width: w,
-              height: h,
-                child: Image.asset(
-                  name!,
-                  // scale: scale,
-                  fit: fit?.flutterValue,
-                  alignment: alignment?.flutterValue ?? Alignment.center,
-                  // package: 'flutter_content',
-                ),
-              );
-          }
-        )
-        : Placeholder(
-            key: createNodeGK(),
-            color: Colors.purpleAccent,
-            strokeWidth: 2.0,
-            fallbackWidth: (width ?? 400) * (scale ?? 1.0),
-            fallbackHeight: (height ?? 300) * (scale ?? 1.0),
-          );
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      return name?.isNotEmpty ?? false
+              ? LayoutBuilder(
+              key: createNodeGK(),
+                builder: (context, constraints) {
+                  double? w = width != null
+                      ? width! * scale
+                      : constraints.maxWidth != double.infinity
+                      ? constraints.maxWidth*scale
+                      : null;
+                  double? h = height != null
+                      ? height! * scale
+                      : constraints.maxHeight != double.infinity
+                      ? constraints.maxHeight*scale
+                      : null;
+                // fco.logi('Constrints: ${constraints.toString()}');
+                  return SizedBox(
+                    width: w,
+                    height: h,
+                      child: Image.asset(
+                        name!,
+                        // scale: scale,
+                        fit: fit?.flutterValue,
+                        alignment: alignment?.flutterValue ?? Alignment.center,
+                        // package: 'flutter_content',
+                      ),
+                    );
+                }
+              )
+              : Placeholder(
+                  key: createNodeGK(),
+                  color: Colors.purpleAccent,
+                  strokeWidth: 2.0,
+                  fallbackWidth: (width ?? 400) * (scale ?? 1.0),
+                  fallbackHeight: (height ?? 300) * (scale ?? 1.0),
+                );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   // @override

@@ -6,19 +6,18 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:http/http.dart' as http;
 
-const cloudRunAPIVersion = 'v4';
-const cloudRunServerHost =
-    'gcr-dart-bh-apps-188627927914.australia-southeast1.run.app/$cloudRunAPIVersion';
-
 mixin PasswordlessMixin {
 
   void showPasswordlessStepper({
     TargetKeyFunc? targetGkF,
+    required String gcrServerUrl,
     required ValueChanged<String> onSignedInF,
   }) {
     fco.showOverlay(
       targetGkF: targetGkF,
-      calloutContent: PasswordlessStepper(onSignedInF: onSignedInF),
+      calloutContent: PasswordlessStepper(
+          gcrServerUrl: gcrServerUrl,
+          onSignedInF: onSignedInF),
       calloutConfig: CalloutConfig(
         cId: "passwordless-stepper",
         initialCalloutW: 600,
@@ -42,9 +41,13 @@ mixin PasswordlessMixin {
 }
 
 class PasswordlessStepper extends StatefulWidget {
+  final String gcrServerUrl;
   final ValueChanged<String> onSignedInF;
 
-  const PasswordlessStepper({required this.onSignedInF, super.key});
+  const PasswordlessStepper({
+    required this.gcrServerUrl,
+    required this.onSignedInF,
+    super.key,});
 
   @override
   State<PasswordlessStepper> createState() => PasswordlessStepperState();
@@ -54,13 +57,14 @@ class PasswordlessStepper extends StatefulWidget {
 
   // if email gets sent ok, returns the token embedded in that email
   static Future<String?> cloudRunCreateTokenAndEmailVerificationLinkToUser({
+    required String gcrServerUrl,
     required String userEa,
   }) async {
     Map<String, dynamic> map = {'ea': userEa, 'app': 'algc'};
     final messageBody = json.encode(map);
 
     final response = await http.Client().post(
-      Uri.parse('https://$cloudRunServerHost/users/emailUserAConfirmButton'),
+      Uri.parse('$gcrServerUrl/passwordless/emailUserAConfirmButton'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -172,6 +176,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
           ),
           content: Step1(
             parentState: this,
+            gcrServerUrl: widget.gcrServerUrl,
           ),
         ),
         Step(
@@ -189,64 +194,69 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
 
 class Step1 extends StatelessWidget {
   final PasswordlessStepperState parentState;
+  final String gcrServerUrl;
 
-  const Step1({required this.parentState, super.key});
+
+  const Step1(
+      {required this.gcrServerUrl, required this.parentState, super.key});
 
   @override
-  Widget build(BuildContext context) => StatefulBuilder(
-        builder: (context, setState) => Row(
-          children: [
-            Expanded(
-              child: Container(
-                width: 340,
-                height: 70,
-                color: Colors.white,
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  enabled: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Your Email Address',
+  Widget build(BuildContext context) =>
+      StatefulBuilder(
+        builder: (context, setState) =>
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    width: 340,
+                    height: 70,
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      enabled: true,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Your Email Address',
+                      ),
+                      autofocus: true,
+                      controller: parentState.eaController,
+                      focusNode: parentState.focusNode,
+                      maxLines: 1,
+                      onChanged: (s) {
+                        setState(() {});
+                      },
+                      onEditingComplete: () async {
+                        _emailAddressEntered();
+                      },
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'monospace',
+                          color: parentState.eaController.text.isEmpty ||
+                              fco.emailIsValid(parentState.eaController.text)
+                              ? Colors.blue[900]
+                              : Colors.red,
+                          fontWeight: parentState.eaController.text.isEmpty ||
+                              fco.emailIsValid(parentState.eaController.text)
+                              ? FontWeight.w400
+                              : FontWeight.w900,
+                          background: fco.whiteBgPaint),
+                    ),
                   ),
-                  autofocus: true,
-                  controller: parentState.eaController,
-                  focusNode: parentState.focusNode,
-                  maxLines: 1,
-                  onChanged: (s) {
-                    setState(() {});
-                  },
-                  onEditingComplete: () async {
-                    _emailAddressEntered();
-                  },
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'monospace',
-                      color: parentState.eaController.text.isEmpty ||
-                              fco.emailIsValid(parentState.eaController.text)
-                          ? Colors.blue[900]
-                          : Colors.red,
-                      fontWeight: parentState.eaController.text.isEmpty ||
-                              fco.emailIsValid(parentState.eaController.text)
-                          ? FontWeight.w400
-                          : FontWeight.w900,
-                      background: fco.whiteBgPaint),
                 ),
-              ),
+                IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _emailAddressEntered();
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward,
+                      color: fco.emailIsValid(parentState.eaController.text)
+                          ? Colors.blue
+                          : Colors.red,
+                    )),
+              ],
             ),
-            IconButton(
-                onPressed: () {
-                  setState(() {
-                    _emailAddressEntered();
-                  });
-                },
-                icon: Icon(
-                  Icons.arrow_forward,
-                  color: fco.emailIsValid(parentState.eaController.text)
-                      ? Colors.blue
-                      : Colors.red,
-                )),
-          ],
-        ),
       );
 
   Future<void> _emailAddressEntered() async {
@@ -258,7 +268,8 @@ class Step1 extends StatelessWidget {
       }
       String? token = await PasswordlessStepper
           .cloudRunCreateTokenAndEmailVerificationLinkToUser(
-              userEa: parentState.eaController.text);
+          gcrServerUrl: gcrServerUrl,
+          userEa: parentState.eaController.text);
       if (token != null) {
         parentState.setEaAndToken(
           parentState.eaController.text,
@@ -307,33 +318,33 @@ class Step2 extends StatelessWidget {
     return parentState.userHasConfirmed()
         ? const Text('You are already signed in.')
         : Center(
-            child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  // check user is actually signed in now by checking firestore
-                  if (parentState.token != null &&
-                      await fco.modelRepo.tokenConfirmed(parentState.token!)) {
-                    final String? vea = fco.hiveBox.get('vea');
-                    if (vea != parentState.ea) {
-                      await fco.hiveBox.put('vea', parentState.ea);
-                    }
-                    parentState.widget.onSignedInF(parentState.ea!);
-                    fco.dismiss("passwordless-stepper");
-                    _showConfirmedOKToast();
-                  } else {
-                    parentState.refresh(f: () {
-                      _showWaitingForYouToConfirmToast();
-                    });
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                // check user is actually signed in now by checking firestore
+                if (parentState.token != null &&
+                    await fco.modelRepo.tokenConfirmed(parentState.token!)) {
+                  final String? vea = fco.hiveBox.get('vea');
+                  if (vea != parentState.ea) {
+                    await fco.hiveBox.put('vea', parentState.ea);
                   }
-                },
-                child: fco.coloredText('I tapped the button in the email',
-                    color: Colors.blue, fontSize: 24),
-              ),
-              fco.coloredText(
-                  "\n(NOTE - if you can't find it, it's probably in your spam email folder)"),
-            ],
-          ));
+                  parentState.widget.onSignedInF(parentState.ea!);
+                  fco.dismiss("passwordless-stepper");
+                  _showConfirmedOKToast();
+                } else {
+                  parentState.refresh(f: () {
+                    _showWaitingForYouToConfirmToast();
+                  });
+                }
+              },
+              child: fco.coloredText('I tapped the button in the email',
+                  color: Colors.blue, fontSize: 24),
+            ),
+            fco.coloredText(
+                "\n(NOTE - if you can't find it, it's probably in your spam email folder)"),
+          ],
+        ));
   }
 
   void _showConfirmedOKToast() {

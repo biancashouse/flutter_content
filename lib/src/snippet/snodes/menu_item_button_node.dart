@@ -51,26 +51,36 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    final gk = createNodeGK();
-    return MenuItemButton(
-      key: gk,
-      onPressed: () {
-        if (destinationPanelOrPlaceholderName != null) {
-          destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
-          capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-            snippetName: destinationSnippetName!,
-            panelName: destinationPanelOrPlaceholderName!,
-          ));
-        } else if (destinationRoutePathSnippetName != null) {
-          //context.goNamed(destinationRoutePathSnippetName!);
-          onPressed(context, gk);
-        }
-      },
-      style: fco.buttonStyle(30),
-      child: child?.toWidget(context, this),
-    );
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      final gk = createNodeGK();
+      return MenuItemButton(
+            key: gk,
+            onPressed: () {
+              if (destinationPanelOrPlaceholderName != null) {
+                destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+                capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+                  snippetName: destinationSnippetName!,
+                  panelName: destinationPanelOrPlaceholderName!,
+                ));
+              } else if (destinationRoutePathSnippetName != null) {
+                //context.goNamed(destinationRoutePathSnippetName!);
+                onPressed(context, gk);
+              }
+            },
+            style: fco.buttonStyle(30),
+            child: child?.toWidget(context, this),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override

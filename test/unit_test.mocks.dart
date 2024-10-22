@@ -71,6 +71,16 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
+  _i4.Future<String?> getGcrServerUrl() => (super.noSuchMethod(
+        Invocation.method(
+          #getGcrServerUrl,
+          [],
+        ),
+        returnValue: _i4.Future<String?>.value(),
+        returnValueForMissingStub: _i4.Future<String?>.value(),
+      ) as _i4.Future<String?>);
+
+  @override
   _i4.Future<_i5.AppInfoModel?> getAppInfo() => (super.noSuchMethod(
         Invocation.method(
           #getAppInfo,

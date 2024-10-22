@@ -52,16 +52,26 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    return child != null
-        ? DefaultTextStyle.merge(
-            key: createNodeGK(),
-            style: textStyleGroup?.toTextStyle(context),
-            textAlign: textAlign?.flutterValue,
-            child: child!.toWidget(context, this),
-          )
-        : const Offstage();
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      return child != null
+              ? DefaultTextStyle.merge(
+                  key: createNodeGK(),
+                  style: textStyleGroup?.toTextStyle(context),
+                  textAlign: textAlign?.flutterValue,
+                  child: child!.toWidget(context, this),
+                )
+              : const Offstage();
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   // @override

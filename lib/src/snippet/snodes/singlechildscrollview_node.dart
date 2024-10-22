@@ -34,33 +34,43 @@ class SingleChildScrollViewNode extends SC
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    //var targetGK = nodeWidgetGK;
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      //var targetGK = nodeWidgetGK;
 
-    // maintain offset between instantiations
-    NamedScrollController? sC;
-    if (EditablePage.of(context) != null) {
-      String editablePageName = EditablePage.name(context);
-      sC = NamedScrollController(
-        editablePageName,
-        Axis.vertical,
-        initialScrollOffset:
-            NamedScrollController.vScrollOffset(editablePageName),
+      // maintain offset between instantiations
+      NamedScrollController? sC;
+      if (EditablePage.of(context) != null) {
+            String editablePageName = EditablePage.name(context);
+            sC = NamedScrollController(
+              editablePageName,
+              Axis.vertical,
+              initialScrollOffset:
+                  NamedScrollController.vScrollOffset(editablePageName),
+            );
+            sC.listenToOffset();
+          }
+
+      return SingleChildScrollView(
+            key: createNodeGK(),
+            // descendants of this view can access it by:
+            // ScrollableState? scrollableState = Scrollable.of(context);
+            // ScrollController? scrollController = scrollableState?.position.scrollController;
+            controller: sC,
+            // key: targetGK,
+            padding: padding?.toEdgeInsets(),
+            child: child?.toWidget(context, this),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
-      sC.listenToOffset();
     }
-
-    return SingleChildScrollView(
-      key: createNodeGK(),
-      // descendants of this view can access it by:
-      // ScrollableState? scrollableState = Scrollable.of(context);
-      // ScrollController? scrollController = scrollableState?.position.scrollController;
-      controller: sC,
-      // key: targetGK,
-      padding: padding?.toEdgeInsets(),
-      child: child?.toWidget(context, this),
-    );
   }
 
   // @override

@@ -36,7 +36,7 @@ Future<void> main({bool useEmulator = false}) async {
     WidgetsFlutterBinding.ensureInitialized();
     // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-    usePathUrlStrategy();
+    // usePathUrlStrategy();
 
     //
     // try {

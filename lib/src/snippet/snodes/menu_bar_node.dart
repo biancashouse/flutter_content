@@ -27,37 +27,46 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    List<Widget> menuBarChildren = super.children.map((child) =>
-        child.toWidget(context, this)).toList();
     try {
-      return PreferredSizeMenuBar(
-        MenuBar(
-          key: createNodeGK(),
-          children: super.children.map((child) =>
-              child.toWidget(context, this)).toList(),
-        ),
-        width ?? fco.scrW,
-        height ?? 60,
-      );
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      List<Widget> menuBarChildren = super.children.map((child) =>
+              child.toWidget(context, this)).toList();
+      try {
+            return PreferredSizeMenuBar(
+              MenuBar(
+                key: createNodeGK(),
+                children: super.children.map((child) =>
+                    child.toWidget(context, this)).toList(),
+              ),
+              width ?? fco.scrW,
+              height ?? 60,
+            );
+          } catch (e) {
+            fco.logi('MenuBarNode.toWidget() failed!');
+            return Material(
+              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    fco.errorIcon(Colors.red),
+                    const Gap(10),
+                    fco.coloredText(e.toString()),
+                  ],
+                ),
+              ),
+            );
+          }
     } catch (e) {
-      fco.logi('MenuBarNode.toWidget() failed!');
-      return Material(
-        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              fco.errorIcon(Colors.red),
-              const Gap(10),
-              fco.coloredText(e.toString()),
-            ],
-          ),
-        ),
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
     }
-    return Placeholder();
   }
 
   @override

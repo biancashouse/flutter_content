@@ -96,40 +96,50 @@ class PollNode extends MC with PollNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
 
-    // find
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        List<Widget> optionWidgets = [];
-        for (int i=0; i<children.length; i++) {
-          PollOptionNode optionNode = children[i] as PollOptionNode;
-          optionWidgets.add(optionNode.toWidget(context, this));
-        }
-        return constraints.maxHeight == double.infinity
-            ? const Row(
-                children: [
-                  Icon(
-                    Icons.error,
-                    color: Colors.red,
-                  ),
-                  Gap(10),
-                  Text('Poll has infinite maxHeight constraint!'),
-                ],
-              )
-            : Container(width: 300, height:100.0 + 60.0*(children.length),
-              child: FlutterPoll(
-                key: createNodeGK(),
-                poll: this,
-                titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
-                startDate: startDate,
-                endDate: endDate,
-                children: optionWidgets,
-              ),
-            );
-      },
-    );
+      // find
+      return LayoutBuilder(
+            builder: (context, constraints) {
+              List<Widget> optionWidgets = [];
+              for (int i=0; i<children.length; i++) {
+                PollOptionNode optionNode = children[i] as PollOptionNode;
+                optionWidgets.add(optionNode.toWidget(context, this));
+              }
+              return constraints.maxHeight == double.infinity
+                  ? const Row(
+                      children: [
+                        Icon(
+                          Icons.error,
+                          color: Colors.red,
+                        ),
+                        Gap(10),
+                        Text('Poll has infinite maxHeight constraint!'),
+                      ],
+                    )
+                  : Container(width: 300, height:100.0 + 60.0*(children.length),
+                    child: FlutterPoll(
+                      key: createNodeGK(),
+                      poll: this,
+                      titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
+                      startDate: startDate,
+                      endDate: endDate,
+                      children: optionWidgets,
+                    ),
+                  );
+            },
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override

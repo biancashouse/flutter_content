@@ -29,18 +29,28 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    if (getParent() is PollNode) {
-      PollNode parentPoll = getParent() as PollNode;
-      int pos = parentPoll.children.indexOf(this);
-      return FlutterPollOption(
-        key: createNodeGK(),
-        optionId: pos.toString(),
-        optionWidget: Text(text),
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      if (getParent() is PollNode) {
+            PollNode parentPoll = getParent() as PollNode;
+            int pos = parentPoll.children.indexOf(this);
+            return FlutterPollOption(
+              key: createNodeGK(),
+              optionId: pos.toString(),
+              optionWidget: Text(text),
+            );
+          } else {
+            return fco.errorIcon(Colors.red);
+          }
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
-    } else {
-      return fco.errorIcon(Colors.red);
     }
   }
 

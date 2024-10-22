@@ -68,8 +68,12 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) {
-    String paddingLabel = padding == null ? 'padding' : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
-    String marginLabel = margin == null ? 'margin' : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
+    String paddingLabel = padding == null
+        ? 'padding'
+        : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
+    String marginLabel = margin == null
+        ? 'margin'
+        : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
 
     return [
       SizePropertyValueNode(
@@ -95,7 +99,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'margin',
             eiValue: margin,
-            onEIChangedF: (newValue) => refreshWithUpdate(() => margin = newValue),
+            onEIChangedF: (newValue) =>
+                refreshWithUpdate(() => margin = newValue),
           ),
         ],
       ),
@@ -107,7 +112,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'padding',
             eiValue: padding,
-            onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+            onEIChangedF: (newValue) =>
+                refreshWithUpdate(() => padding = newValue),
           ),
         ],
       ),
@@ -147,20 +153,24 @@ class ContainerNode extends SC with ContainerNodeMappable {
             snode: this,
             name: 'shape',
             valueIndex: decoration.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration = MappableDecorationShapeEnum.of(newValue) ?? MappableDecorationShapeEnum.rectangle),
+            onIndexChange: (newValue) => refreshWithUpdate(() => decoration =
+                MappableDecorationShapeEnum.of(newValue) ??
+                    MappableDecorationShapeEnum.rectangle),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'thickness',
             decimalValue: borderThickness,
-            onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
+            onDoubleChange: (newValue) =>
+                refreshWithUpdate(() => borderThickness = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
           DecimalPropertyValueNode(
             snode: this,
             name: 'radius',
             decimalValue: borderRadius,
-            onDoubleChange: (newValue) => refreshWithUpdate(() => borderRadius = newValue),
+            onDoubleChange: (newValue) =>
+                refreshWithUpdate(() => borderRadius = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
         ],
@@ -220,58 +230,35 @@ class ContainerNode extends SC with ContainerNodeMappable {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
     try {
-      // OutlinedBorder? oBorder;
-      // if (outlinedBorderGroup != null) {
-      //   oBorder = outlinedBorderGroup?.toOutlinedBorder(
-      //     radius: borderRadius,
-      //   );
-      // }
-      if (true || outlinedBorderGroup?.outlinedBorderType != null && outlinedBorderGroup?.side != null) {
-        return Container(
-          key: createNodeGK(),
-          decoration: decoration.toDecoration(
-            fillColorValues: fillColorValues,
-            borderColorValues: borderColorValues,
-            borderRadius: borderRadius,
-            thickness: borderThickness,
-            starPoints: starPoints,
-          ),
-          // decoration: ShapeDecoration(
-          //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
-          //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
-          // ),
-          padding: padding?.toEdgeInsets(),
-          margin: margin?.toEdgeInsets(),
-          width: width,
-          height: height,
-          alignment: alignment?.flutterValue,
-          child: child?.toWidget(context, this),
-        );
-      } else {
-        // return Container(
-        //   key: createNodeGK(),
-        //   decoration: BoxDecoration(
-        //     shape: BoxShape.rectangle,
-        //     color: fillColor1Value != null ? Color(fillColor1Value!) : null,
-        //     border: borderThickness != null || borderColor1Value != null
-        //         ? Border.all(
-        //             width: borderThickness ?? 1.0,
-        //             color: Color(borderColor1Value ?? Colors.black.value))
-        //         : null,
-        //     borderRadius: BorderRadius.circular(borderRadius ?? 0),
-        //   ),
-        //   padding: padding?.toEdgeInsets(),
-        //   margin: margin?.toEdgeInsets(),
-        //   width: width,
-        //   height: height,
-        //   alignment: alignment?.flutterValue,
-        //   child: child?.toWidget(context, this),
-        // );
-      }
+      return Container(
+        key: createNodeGK(),
+        decoration: decoration.toDecoration(
+          fillColorValues: fillColorValues,
+          borderColorValues: borderColorValues,
+          borderRadius: borderRadius,
+          thickness: borderThickness,
+          starPoints: starPoints,
+        ),
+        // decoration: ShapeDecoration(
+        //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
+        //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
+        // ),
+        padding: padding?.toEdgeInsets(),
+        margin: margin?.toEdgeInsets(),
+        width: width,
+        height: height,
+        alignment: alignment?.flutterValue,
+        child: child?.toWidget(context, this),
+      );
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
     }
-    return fco.errorIcon(Colors.red);
   }
 
   @override

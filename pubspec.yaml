@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 2.0.0
+version: 3.0.1
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 # github mirrored from bitbucket
@@ -39,7 +39,6 @@ dependencies:
   #universal_platform: ^1.0.0+1
   numeric_keyboard: ^1.1.0
   file_picker: ^8.1.2
-  dart_mappable: ^4.2.2
   smooth_page_indicator: ^1.2.0+3
   flutter_bloc: ^8.1.6
   firebase_core: ^3.3.0
@@ -94,17 +93,19 @@ dependencies:
 #  google_secret_manager: ^1.1.0
   http: ^1.2.2
   image: 4.2.0
-  interactive_viewer_2: ^0.0.10
+  random_string: 2.3.1
 
   bh_shared:
-    path: ../bh_shared
+    path: ../bh_shared_pkg
 
   routing_config_provider:
-    path: ../routing_config_provider
+    path: ../routing_config_provider_pkg
 
   flutter_callouts:
-    path: ../flutter_callouts
-  dart_firebase_admin: ^0.3.1
+    path: ../flutter_callouts_pkg
+
+  logging: 1.1.0
+  dart_mappable: 4.2.2
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now
@@ -118,9 +119,10 @@ dev_dependencies:
   text_editor: ^0.7.0
   bloc_test: ^9.1.1
   flutter_lints: any
-  build_runner: ^2.4.9
+  build_runner: ^2.1.11
+  built_value_generator: ^8.9.2
+  dart_mappable_builder: 4.2.2
   json_serializable: ^6.5.3
-  dart_mappable_builder: ^4.2.2
   analyzer: ^6.7.0
 
 false_secrets:

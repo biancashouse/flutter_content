@@ -62,30 +62,40 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
 
-    return FutureBuilder<UMLRecord>(
-        future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
-            (UMLRecord newValue) {
-          umlText = newValue.text;
-          encodedText = newValue.encodedText;
-          cachedPngBytes = newValue.bytes;
-        }),
-        builder: (futureContext, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      return FutureBuilder<UMLRecord>(
+              future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
+                  (UMLRecord newValue) {
+                umlText = newValue.text;
+                encodedText = newValue.encodedText;
+                cachedPngBytes = newValue.bytes;
+              }),
+              builder: (futureContext, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          UMLRecord? umlRecord = snapshot.data;
-          return snapshot.connectionState != ConnectionState.done
-              ? const Center(child: CircularProgressIndicator())
-              : Image.memory(
-                  key: createNodeGK(),
-                  cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-                  fit: BoxFit.cover,
-                );
-        });
+                UMLRecord? umlRecord = snapshot.data;
+                return snapshot.connectionState != ConnectionState.done
+                    ? const Center(child: CircularProgressIndicator())
+                    : Image.memory(
+                        key: createNodeGK(),
+                        cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+                        fit: BoxFit.cover,
+                      );
+              });
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   Future<Uint8List?> _fetchPng() async {
@@ -137,5 +147,5 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   @override
   String toString() => FLUTTER_TYPE;
 
-  static const String FLUTTER_TYPE = "UML Image";
+  static const String FLUTTER_TYPE = "UML";
 }

@@ -86,75 +86,85 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    List<Widget> images = super.children.isEmpty
-        ? kDemoImages
-            .map((name) => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      boxShadow: kElevationToShadow[2],
-                      image: DecorationImage(
-                          image: AssetImage(
-                            name,
-                            package: 'flutter_content',
+    try {
+      setParent(parentNode);
+      List<Widget> images = super.children.isEmpty
+              ? kDemoImages
+                  .map((name) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            boxShadow: kElevationToShadow[2],
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  name,
+                                  package: 'flutter_content',
+                                ),
+                                fit: BoxFit.fill),
                           ),
-                          fit: BoxFit.fill),
-                    ),
-                  ),
-                ))
-            .toList()
-        : super
-            .children
-            .map((STreeNode node) => node is AssetImageNode
-                ? node.toWidget(context, this)
-                : node is FirebaseStorageImageNode
-                    ? node.toWidget(context, this)
-                    : const Placeholder(
-                        child: Text('not an asset image!'),
+                        ),
                       ))
-            .toList();
+                  .toList()
+              : super
+                  .children
+                  .map((STreeNode node) => node is AssetImageNode
+                      ? node.toWidget(context, this)
+                      : node is FirebaseStorageImageNode
+                          ? node.toWidget(context, this)
+                          : const Placeholder(
+                              child: Text('not an asset image!'),
+                            ))
+                  .toList();
 
-    possiblyHighlightSelectedNode();
+      possiblyHighlightSelectedNode();
 
-    // SnippetPanelState? spState = SnippetPanel.of(context);  // vsync
-    // if (spState == null) return fco.errorIcon(Colors.red);
-    //
-    // int i=0;
-    // final AnimationController aC = AnimationController(
-    //   duration: Duration(seconds: images.length*2),
-    //   vsync: spState,
-    // )..repeat();
-    // final Animation<int> animation = IntTween(begin: 0, end: images.length-1).animate(aC);
-    // return StatefulBuilder(
-    //   builder: (context, StateSetter setState) {
-    //     return CarouselView(
-    //       controller: CarouselController(initialItem: animation.value),
-    //       itemExtent: 300,
-    //       itemSnapping: true,
-    //       children: images,
-    //     );
-    //   }
-    // );
+      // SnippetPanelState? spState = SnippetPanel.of(context);  // vsync
+      // if (spState == null) return fco.errorIcon(Colors.red);
+      //
+      // int i=0;
+      // final AnimationController aC = AnimationController(
+      //   duration: Duration(seconds: images.length*2),
+      //   vsync: spState,
+      // )..repeat();
+      // final Animation<int> animation = IntTween(begin: 0, end: images.length-1).animate(aC);
+      // return StatefulBuilder(
+      //   builder: (context, StateSetter setState) {
+      //     return CarouselView(
+      //       controller: CarouselController(initialItem: animation.value),
+      //       itemExtent: 300,
+      //       itemSnapping: true,
+      //       children: images,
+      //     );
+      //   }
+      // );
 
-    return CarouselSlider.builder(
-      key: createNodeGK(),
-      itemCount: images.length,
-      options: CarouselOptions(
-        autoPlay: autoPlay,
-        aspectRatio: aspectRatio,
-        autoPlayInterval: Duration(seconds: autoPlayIntervalSecs),
-        enlargeCenterPage: enlargeCenterPage,
-        scrollDirection: axis.flutterValue,
-      ),
-      itemBuilder: (context, itemIndex, realIndex) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: images[itemIndex],
-        );
-      },
-    );
+      return CarouselSlider.builder(
+            key: createNodeGK(),
+            itemCount: images.length,
+            options: CarouselOptions(
+              autoPlay: autoPlay,
+              aspectRatio: aspectRatio,
+              autoPlayInterval: Duration(seconds: autoPlayIntervalSecs),
+              enlargeCenterPage: enlargeCenterPage,
+              scrollDirection: axis.flutterValue,
+            ),
+            itemBuilder: (context, itemIndex, realIndex) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: images[itemIndex],
+              );
+            },
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override

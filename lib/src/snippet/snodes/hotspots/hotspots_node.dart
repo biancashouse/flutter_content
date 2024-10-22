@@ -68,29 +68,15 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    Widget tw = child != null
-        ? TargetsWrapper(
-            parentNode: this,
-            key: createNodeGK(),
-            scrollControllerName: EditablePage.name(context),
-            child: super.child?.toWidget(context, this) ??
-                const Icon(
-                  Icons.question_mark,
-                  color: Colors.orangeAccent,
-                ),
-          )
-        : TargetsWrapper(
-            parentNode: this,
-            key: createNodeGK(),
-            scrollControllerName: EditablePage.name(context),
-          );
     return SizedBox(
       width: width,
       height: height,
-      child: tw,
-      // child: aspectRatio != null
-      //     ? AspectRatio(aspectRatio: aspectRatio!, child: tw)
-      //     : tw,
+      child: TargetsWrapper(
+        parentNode: this,
+        key: createNodeGK(),
+        scrollControllerName: EditablePage.name(context),
+        child: super.child?.toWidget(context, this) ?? const Placeholder(),
+      ),
     );
   }
 

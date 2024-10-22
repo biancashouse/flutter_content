@@ -1,0 +1,233 @@
+{
+  "id": "f9",
+  "createdMs": 1621912924902,
+  "ownerEa": "samples@flowchart.studio",
+  "lastModifiedMs": 1641641221059,
+  "deleted": false,
+  "title": "RFS - Operating a Portable Pump",
+  "version": "0",
+  "pageSize": "a4",
+  "beginTxt": "setup pump",
+  "flowchartComment": {
+    "topTxt": "Created after following the RFS video: https://www.youtube.com/watch?v=zY6jT-3P0L4\n\nPortable pumps are great for mopping up fire trails, and for supplying water to truck from creeks, rivers and dams.\n\nAlso useful where access is difficult by vehicle.\n\nPortable pumps will likely have a couple of 25mm and, possibly, a 38mm outlet.\n",
+    "imageSize": 41368
+  },
+  "stepsMap": {
+    "0": [
+      {
+        "id": 1616455186543,
+        "txt": "grab the suction hose, strainer, and float",
+        "iconIndex": 0,
+        "txtW": 263.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "",
+          "bottomTxt": "",
+          "imageSize": 80862
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616455241891,
+        "txt": "check fuel and oil levels",
+        "iconIndex": 0,
+        "txtW": 157.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "",
+          "bottomTxt": "NOTE - oil dipstick is on the opposite side to the oil filler cap.",
+          "imageSize": 428354
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616455288388,
+        "txt": "ensure casing is primed",
+        "iconIndex": 0,
+        "txtW": 157.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "priming ensures the pump is sufficiently airtight to evacuate the air from the suction hose.\n\nthe pump should be at least 1/2 full of water.",
+          "bottomTxt": "then you can connect the suction hose to the pump`s Inlet.",
+          "imageSize": 29757
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616455478557,
+        "txt": "connect suction hose to Inlet",
+        "iconIndex": 0,
+        "txtW": 190.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "not sure where the inlet is ?\n\neasy when you look at the casing: the water is always sucked into a pump at its center\n (the impeller rotates around that centre, pushing the water out by centrifugal force).",
+          "bottomTxt": "Attach the suction hose here.",
+          "imageSize": 78115
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 10780333,
+        "txt": "OPEN one of the delivery Outlets",
+        "iconIndex": 0,
+        "txtW": 214.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "This pump has 2  x 25 plus one 38 outlets.",
+          "bottomTxt": "remember water will come gushing out of any open delivery outlet, so stand clear of it.",
+          "imageSize": 68289
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616456452570,
+        "txt": "connect the delivery hose(s) to the CLOSED outlets.",
+        "iconIndex": 0,
+        "txtW": 338.0,
+        "txtH": 17.0,
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 2725303,
+        "txt": "make sure you know where to find the choke and fuel valve",
+        "iconIndex": 0,
+        "txtW": 388.0,
+        "txtH": 17.0,
+        "comment": {
+          "topTxt": "",
+          "bottomTxt": "",
+          "imageSize": 234747
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616456001050,
+        "txt": "with that ONE delivery outlet OPEN,\nthe rest CLOSED,\nstart the pump",
+        "iconIndex": 0,
+        "txtW": 231.0,
+        "txtH": 51.0,
+        "comment": {
+          "topTxt": "",
+          "bottomTxt": "once started, you need to monitor the flow coming in through the suction hose.\n\nwhen water is flowing out of that open delivery outlet, you can close it off, and open up the delivery outlet(s) you have hoses connected to.",
+          "imageSize": 75538
+        },
+        "shape": "action",
+        "parentListType": "funcSteps",
+        "childStepLists": {},
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 1616457083647,
+        "txt": "water gushing out the the open delivery outlet ?",
+        "iconIndex": 0,
+        "txtW": 311.0,
+        "txtH": 17.0,
+        "shape": "decision",
+        "flowchartLinkVersion": 0,
+        "parentListType": "funcSteps",
+        "childStepLists": {
+          "trueSteps": [
+            {
+              "id": 1616457118995,
+              "txt": "CLOSE that delivery outlet.\nMaybe, connect a delivery hose to it now.\nOPEN the outlets that have delivery hoses connected.",
+              "iconIndex": 0,
+              "txtW": 351.0,
+              "txtH": 51.0,
+              "shape": "action",
+              "parentListType": "trueSteps",
+              "childStepLists": {},
+              "caseNameWidths": {},
+              "changeType": "txtOrCommentChange"
+            },
+            {
+              "id": 1616457400032,
+              "txt": "signal WATER ON to the Pump Operator at the truck",
+              "iconIndex": 0,
+              "txtW": 340.0,
+              "txtH": 17.0,
+              "shape": "action",
+              "parentListType": "trueSteps",
+              "childStepLists": {},
+              "caseNameWidths": {},
+              "changeType": "txtOrCommentChange"
+            }
+          ],
+          "xfalseSteps": []
+        },
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      },
+      {
+        "id": 17862200,
+        "txt": "while pump running",
+        "iconIndex": 0,
+        "txtW": 129.0,
+        "txtH": 17.0,
+        "shape": "loop",
+        "parentListType": "funcSteps",
+        "childStepLists": {
+          "loopSteps": [
+            {
+              "id": 98006804,
+              "txt": "For fire fighting operations, use\nfull throttle. For prolonged use over\na number of hours, set the throttle \nat 3/4 throttle or 3000 rpm.",
+              "iconIndex": 0,
+              "txtW": 231.0,
+              "txtH": 68.0,
+              "comment": {
+                "topTxt": "Don`t pump hydrocarbon based liquids. These will damage the pump.\n\nDo not allow the pump to run dry. Check that there is water flow through the pump at all times. Insufficient flow will damage the pump.\n\nFor effective delivery, use either one 38 mm hose, or two 25 mm hoses connected to the outlet.\n\nIf the impeller clogs during operations, carry out the following procedure:\n• stop the engine,\n• remove the spark plug lead,\n• remove any attached hoses,\n• remove the priming cap and the drain cap,\n• flush impeller with a hose, or other water source,\n• use the recoil starter to slowly turn the impeller.",
+                "bottomTxt": ""
+              },
+              "shape": "action",
+              "parentListType": "loopSteps",
+              "childStepLists": {},
+              "caseNameWidths": {},
+              "changeType": "txtOrCommentChange"
+            }
+          ]
+        },
+        "caseNameWidths": {},
+        "changeType": "txtOrCommentChange"
+      }
+    ]
+  },
+  "previousVersionMap": {
+    "0": "-1"
+  },
+  "endTxt": "stop pump, cleanup and transport",
+  "endComment": {
+    "topTxt": "",
+    "bottomTxt": "Ensure the engine is cold, and if required clean up using a water spray with warm soapy water.\n\nFlush the pump housing, fittings and all hoses, both suction and delivery, with fresh clean water.\n\nDrain any water from the pump:\n\na) Remove the pump drain plug, which is situated at the base of the housing directly below inlet. Remove priming cap.\n\nb) Allow water to drain from the pump body.\n\nc) Replace priming cap. Replace drain plug and seal with plumber`s tape",
+    "imageSize": 20958
+  },
+  "colorValue": 4292927712,
+  "showColouredTrueAndFalse": false
+}

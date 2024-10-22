@@ -84,7 +84,7 @@ class TargetModel with TargetModelMappable {
     this.calloutBorderThickness = 1,
     this.starPoints,
     // required this.snippetName,
-    this.calloutArrowTypeIndex = 1, // ArrowType.POINTY.index,
+    this.calloutArrowTypeIndex = 4, //ArrowType.THIN.index,
     this.calloutArrowColorValue,
     this.animateArrow = false,
     this.autoPlay = false,

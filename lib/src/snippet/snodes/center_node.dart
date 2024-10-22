@@ -28,11 +28,21 @@ class CenterNode extends SC with CenterNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    return Center(
-      key: createNodeGK(),
-      child: child?.toWidget(context, this),
-    );
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      return Center(
+            key: createNodeGK(),
+            child: child?.toWidget(context, this),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 }

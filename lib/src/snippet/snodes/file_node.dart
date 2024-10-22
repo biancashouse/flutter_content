@@ -91,24 +91,34 @@ class FileNode extends CL with FileNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    return SizedBox(
-      key: createNodeGK(),
-      width: 200,
-      height: 30,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      return SizedBox(
+            key: createNodeGK(),
+            width: 200,
+            height: 30,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Gap(10),
+                fco.coloredText(name.isEmpty ? 'filename?' : name,
+                    color: Colors.blue),
+                const Gap(10),
+                driveFileIcon(src),
+              ],
+            ),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
         children: [
-          const Gap(10),
-          fco.coloredText(name.isEmpty ? 'filename?' : name,
-              color: Colors.blue),
-          const Gap(10),
-          driveFileIcon(src),
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
         ],
-      ),
-    );
+      );
+    }
   }
 
   @override

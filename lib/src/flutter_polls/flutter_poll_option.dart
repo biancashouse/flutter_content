@@ -135,16 +135,22 @@ class FlutterPollOption extends HookWidget {
                       if (!pollBloc.state.userAlreadyVoted()) {
                         final String? vea = fco.hiveBox.get('vea');
                         if (vea == null) {
-                          fco.showPasswordlessStepper(
-                              targetGkF: () => key as GlobalKey?,
-                              onSignedInF: (ea) {
-                                pollBloc.add(
-                                  PollEvent.userVoted(
-                                      voterId: ea,
-                                      poll: parentPollState.widget.poll,
-                                      optionId: optionId),
-                                );
-                              });
+                          final gcrServerUrl = fco.gcrServerUrl;
+                          if (gcrServerUrl != null) {
+                            fco.showPasswordlessStepper(
+                                targetGkF: () => key as GlobalKey?,
+                                gcrServerUrl: gcrServerUrl,
+                                onSignedInF: (ea) {
+                                  pollBloc.add(
+                                    PollEvent.userVoted(
+                                        voterId: ea,
+                                        poll: parentPollState.widget.poll,
+                                        optionId: optionId),
+                                  );
+                                });
+                          } else {
+                            debugPrint('missing gcr-bh-apps-dart');
+                          }
                         } else {
                           pollBloc.add(
                             PollEvent.userVoted(

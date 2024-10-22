@@ -3,11 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:interactive_viewer_2/interactive_viewer_2.dart';
 
-import 'callout_snippet_content.dart';
-import 'config_toolbar/callout_config_toolbar.dart';
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
 
@@ -338,6 +334,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                       fco.logi('DOUBLE TAP');
                       await createTarget(details);
                     },
+                    child: _childBuild(),
                     // onLongPressEnd: (LongPressEndDetails details) async =>
                     //     await longPressedeBarrier(details),
                   ),
@@ -348,7 +345,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             ),
 
             // CHILD, typically an image
-            _childBuild(),
+            // _childBuild(),
 
             // TARGET COVERS
             for (TargetModel tc in tcs)
@@ -401,12 +398,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         );
 
     // return child;
-    return InteractiveViewer2(
-      child: IgnorePointer(
-              ignoring: fco.canEditContent.value,
-              child: child,
-            )
-    );
+    return IgnorePointer(
+            ignoring: false, //fco.canEditContent.value,
+            child: child,
+          );
   }
 }
 

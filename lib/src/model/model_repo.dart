@@ -17,6 +17,8 @@ abstract class IModelRepository {
   Future<void> possiblyLoadSnippetIntoCache(
       {required SnippetName snippetName, required VersionId versionId});
 
+  Future<String?> getGcrServerUrl();
+
   Future<AppInfoModel?> getAppInfo();
 
   Future<void> saveAppInfo();

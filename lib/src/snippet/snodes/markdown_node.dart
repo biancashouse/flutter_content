@@ -146,32 +146,42 @@ line 3
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    return Markdown(
-      key: createNodeGK(),
-      data: data,
-      styleSheet: MarkdownStyleSheet(
-        h1: const TextStyle(color: Colors.red),
-        p: const TextStyle(color: Colors.black),
-        a: const TextStyle(color: Colors.blue),
-        codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
-        code: const TextStyle(color: Colors.purple),
-      ),
-      onTapLink: (String text, String? href, String title) async {
-        if (href != null) {
-          try {
-            Uri url = Uri.parse(href);
-            if (!await launchUrl(url)) {
-              throw Exception('Could not launch $href');
-            }
-          } catch (e) {
-            print('Following exception ignored:');
-            print(e);
-          }
-        }
-      },
-    );
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      return Markdown(
+            key: createNodeGK(),
+            data: data,
+            styleSheet: MarkdownStyleSheet(
+              h1: const TextStyle(color: Colors.red),
+              p: const TextStyle(color: Colors.black),
+              a: const TextStyle(color: Colors.blue),
+              codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
+              code: const TextStyle(color: Colors.purple),
+            ),
+            onTapLink: (String text, String? href, String title) async {
+              if (href != null) {
+                try {
+                  Uri url = Uri.parse(href);
+                  if (!await launchUrl(url)) {
+                    throw Exception('Could not launch $href');
+                  }
+                } catch (e) {
+                  print('Following exception ignored:');
+                  print(e);
+                }
+              }
+            },
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override

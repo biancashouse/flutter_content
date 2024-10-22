@@ -59,73 +59,83 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    // find scaffold node
-    // add a back button if scaffold has tabs
-    SnippetPanelState? spState = SnippetPanel.of(context);
-    Widget leadingWidget() {
-      if (spState != null) {
-        if (spState.prevTabQ.isNotEmpty) {
-          return IconButton(
-            onPressed: () {
-              if (spState.prevTabQ.isNotEmpty) {
-                int prev = spState.prevTabQ.removeLast();
-                spState.backBtnPressed = true;
-                spState.tabC?.index = prev;
-                spState.prevTabQSize.value = spState.prevTabQ.length;
-                fco.logi("back to tab: $prev,  ${spState.prevTabQ.toString()}");
-              }
-            },
-            icon: const Icon(Icons.arrow_back),
-          );
-        } else {
-          return const Offstage();
-        }
-      } else {
-        return const Offstage();
-      }
-    }
-
-    var bottomWidget = bottom?.toWidgetProperty(context, this);
-    if (bottomWidget is! PreferredSizeWidget?) {
-      fco.logi("Oops.");
-    }
-    var actionWidgets = actions?.toWidgetProperty(context, this);
-    var titleWidget = title?.toWidgetProperty(context, this);
-
     try {
-      var appBar = AppBar(
-        key: createNodeGK(),
-        leading: leading != null
-            ? ListenableBuilder(
-            listenable: spState!.prevTabQSize,
-            builder: (_, __) => leadingWidget())
-            : null,
-        title: titleWidget,
-        toolbarHeight: height,
-        bottom: bottomWidget as PreferredSizeWidget?,
-        actions: actionWidgets,
-        backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
-        foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
-      );
-      return height != null
-          ? PreferredSize(preferredSize: Size.fromHeight(height!), child: appBar)
-          : appBar;
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      // find scaffold node
+      // add a back button if scaffold has tabs
+      SnippetPanelState? spState = SnippetPanel.of(context);
+      Widget leadingWidget() {
+            if (spState != null) {
+              if (spState.prevTabQ.isNotEmpty) {
+                return IconButton(
+                  onPressed: () {
+                    if (spState.prevTabQ.isNotEmpty) {
+                      int prev = spState.prevTabQ.removeLast();
+                      spState.backBtnPressed = true;
+                      spState.tabC?.index = prev;
+                      spState.prevTabQSize.value = spState.prevTabQ.length;
+                      fco.logi("back to tab: $prev,  ${spState.prevTabQ.toString()}");
+                    }
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                );
+              } else {
+                return const Offstage();
+              }
+            } else {
+              return const Offstage();
+            }
+          }
+
+      var bottomWidget = bottom?.toWidgetProperty(context, this);
+      if (bottomWidget is! PreferredSizeWidget?) {
+            fco.logi("Oops.");
+          }
+      var actionWidgets = actions?.toWidgetProperty(context, this);
+      var titleWidget = title?.toWidgetProperty(context, this);
+
+      try {
+            var appBar = AppBar(
+              key: createNodeGK(),
+              leading: leading != null
+                  ? ListenableBuilder(
+                  listenable: spState!.prevTabQSize,
+                  builder: (_, __) => leadingWidget())
+                  : null,
+              title: titleWidget,
+              toolbarHeight: height,
+              bottom: bottomWidget as PreferredSizeWidget?,
+              actions: actionWidgets,
+              backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
+              foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
+            );
+            return height != null
+                ? PreferredSize(preferredSize: Size.fromHeight(height!), child: appBar)
+                : appBar;
+          } catch (e) {
+            fco.logi('AppBarNode.toWidget() failed!');
+            return Material(
+              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    fco.errorIcon(Colors.red),
+                    const Gap(10),
+                    fco.coloredText(e.toString()),
+                  ],
+                ),
+              ),
+            );
+          }
     } catch (e) {
-      fco.logi('AppBarNode.toWidget() failed!');
-      return Material(
-        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              fco.errorIcon(Colors.red),
-              const Gap(10),
-              fco.coloredText(e.toString()),
-            ],
-          ),
-        ),
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
     }
   }

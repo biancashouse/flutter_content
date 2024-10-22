@@ -18,35 +18,45 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    SnippetPanelState? spState = SnippetPanel.of(context);
-    int numTabNodes = spState?.tabC?.length ?? 0;
-    List<Widget> childWidgets = children.map((node) => TabBarViewPage(child: node.toWidget(context, this))).toList();
     try {
-      if (numTabNodes != children.length) {
-        throw Exception('TabBar and TabBarView do not have matching number of children!');
-      } else {
-        return TabBarView(
-          key: createNodeGK(),
-          controller: spState!.tabC,
-          children: childWidgets,
-        );
-      }
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      SnippetPanelState? spState = SnippetPanel.of(context);
+      int numTabNodes = spState?.tabC?.length ?? 0;
+      List<Widget> childWidgets = children.map((node) => TabBarViewPage(child: node.toWidget(context, this))).toList();
+      try {
+            if (numTabNodes != children.length) {
+              throw Exception('TabBar and TabBarView do not have matching number of children!');
+            } else {
+              return TabBarView(
+                key: createNodeGK(),
+                controller: spState!.tabC,
+                children: childWidgets,
+              );
+            }
+          } catch (e) {
+            fco.logi('TabBarViewNode.toWidget() failed!');
+            return Material(
+              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    fco.errorIcon(Colors.red),
+                    const Gap(10),
+                    fco.coloredText(e.toString()),
+                  ],
+                ),
+              ),
+            );
+          }
     } catch (e) {
-      fco.logi('TabBarViewNode.toWidget() failed!');
-      return Material(
-        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              fco.errorIcon(Colors.red),
-              const Gap(10),
-              fco.coloredText(e.toString()),
-            ],
-          ),
-        ),
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
       );
     }
   }

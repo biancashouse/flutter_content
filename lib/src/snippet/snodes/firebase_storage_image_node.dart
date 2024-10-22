@@ -86,41 +86,51 @@ class FirebaseStorageImageNode extends CL
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode); // propagating parents down from root
-    possiblyHighlightSelectedNode();
-    // final storageRef = FirebaseStorage.instance.ref();
-    // final imagesRef = storageRef.child(fsUrl);
+    try {
+      setParent(parentNode); // propagating parents down from root
+      possiblyHighlightSelectedNode();
+      // final storageRef = FirebaseStorage.instance.ref();
+      // final imagesRef = storageRef.child(fsUrl);
 
-    return StorageGridView(
-      ref: FirebaseStorage.instance.ref('/some-folder'),
-      loadingBuilder: (context) {
-        return const Center(
-          child: Text('Loading...'),
-        );
-      },
-      itemBuilder: (context, ref) {
-        print('item: ref:${ref.fullPath}');
-        return AspectRatio(
-          aspectRatio: 1,
-          child: StorageImage(ref: ref),
-        );
-      },
-    );
-
-    return fsUrl.isNotEmpty
-        ? SizedBox(
-            key: createNodeGK(),
-            width: width,
-            height: height,
-            child: fetchImage(fsUrl),
-          )
-        : Placeholder(
-            key: createNodeGK(),
-            color: Colors.purpleAccent,
-            strokeWidth: 2.0,
-            fallbackWidth: width ?? 400,
-            fallbackHeight: height ?? 300,
+      return StorageGridView(
+            ref: FirebaseStorage.instance.ref('/some-folder'),
+            loadingBuilder: (context) {
+              return const Center(
+                child: Text('Loading...'),
+              );
+            },
+            itemBuilder: (context, ref) {
+              print('item: ref:${ref.fullPath}');
+              return AspectRatio(
+                aspectRatio: 1,
+                child: StorageImage(ref: ref),
+              );
+            },
           );
+
+      return fsUrl.isNotEmpty
+              ? SizedBox(
+                  key: createNodeGK(),
+                  width: width,
+                  height: height,
+                  child: fetchImage(fsUrl),
+                )
+              : Placeholder(
+                  key: createNodeGK(),
+                  color: Colors.purpleAccent,
+                  strokeWidth: 2.0,
+                  fallbackWidth: width ?? 400,
+                  fallbackHeight: height ?? 300,
+                );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   Widget fetchImage(String url) => Center(

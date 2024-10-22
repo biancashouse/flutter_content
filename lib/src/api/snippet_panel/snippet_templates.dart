@@ -4,7 +4,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 
 part 'snippet_templates.mapper.dart';
 
@@ -16,7 +15,6 @@ enum SnippetTemplateEnum {
   scaffold_with_tabs,
   scaffold_with_menubar,
   splitview_with_2_placeholders,
-  hotspotDemo,
   rich_text,
   callout_content;
 
@@ -30,8 +28,6 @@ enum SnippetTemplateEnum {
         SnippetTemplateEnum.scaffold_with_menubar => 'scaffold with a menu bar',
         SnippetTemplateEnum.splitview_with_2_placeholders =>
           'splitview with 2 placeholders',
-        SnippetTemplateEnum.hotspotDemo =>
-          'column with 2 placeholders',
         SnippetTemplateEnum.rich_text => 'rich text',
         SnippetTemplateEnum.callout_content => 'callout contents'
       };
@@ -132,29 +128,6 @@ enum SnippetTemplateEnum {
               children: [
                 PlaceholderNode(),
                 PlaceholderNode(),
-              ],
-            ),
-          ),
-        //
-        SnippetTemplateEnum.hotspotDemo => SnippetRootNode(
-            name: SnippetTemplateEnum.hotspotDemo.name,
-            child: ColumnNode(
-              mainAxisSize: MainAxisSizeEnum.max,
-              children: [
-                SizedBoxNode(
-                  child: CenterNode(
-                    child: AssetImageNode(
-                        name: 'assets/images/bridging-the-gap-logo.jpeg'),
-                  ),
-                ),
-                SizedBoxNode(
-                  child: CenterNode(
-                    child: HotspotsNode(
-                      child: AssetImageNode(
-                          name: 'assets/images/top-cat-gang.png'),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),

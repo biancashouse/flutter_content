@@ -9,6 +9,7 @@ class EditablePageRoute extends GoRoute {
   EditablePageRoute({
     required super.path, // path is also the snippet name
     required this.child,
+    super.routes,
   }) : super(
           onExit: (BuildContext context, GoRouterState state) async {
             return true;

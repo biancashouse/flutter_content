@@ -175,26 +175,36 @@ class ChipNode extends CL with ChipNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    TextStyle? ts = labelStyle?.toTextStyle(context);
+    try {
+      TextStyle? ts = labelStyle?.toTextStyle(context);
 
-    // possible handler
-    void Function(BuildContext)? f =
-        onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
+      // possible handler
+      void Function(BuildContext)? f =
+              onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
 
-    GlobalKey gk = createNodeGK();
+      GlobalKey gk = createNodeGK();
 
-    return InkWell(
-      onTap: () => onPressed(context, gk),
-      child: Chip(
-        key: gk,
-        label: Text(label),
-        // onLongPress: f != null ? () => f.call(context) : null,
-        labelStyle: ts,
-      ),
-    );
+      return InkWell(
+            onTap: () => onPressed(context, gk),
+            child: Chip(
+              key: gk,
+              label: Text(label),
+              // onLongPress: f != null ? () => f.call(context) : null,
+              labelStyle: ts,
+            ),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   Feature? get feature => calloutConfigGroup?.contentSnippetName;

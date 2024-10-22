@@ -32,34 +32,44 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    SnippetPanelState? ss = SnippetPanel.of(context);
-    if (!(ss?.mounted ?? false)) {
-      return fco.errorIcon(Colors.red);
-    }
+    try {
+      SnippetPanelState? ss = SnippetPanel.of(context);
+      if (!(ss?.mounted ?? false)) {
+            return fco.errorIcon(Colors.red);
+          }
 
-    // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
-    SnippetTreeController treeC = SnippetTreeController(
-      roots: [this],
-      childrenProvider: (STreeNode node) {
-        if (node is FileNode) {
-          return [];
-        }
-        if (node is DirectoryNode) {
-          return node.children;
-        }
-        // unexpected
-        return [];
-      },
-      parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
-    );
-    int nodeCount = treeC.countNodesInTree(this);
-    // treeC.expand(this);
-    treeC.expandCascading([this]);
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    return parentNode != DirectoryNode
-        ? Material(child: _widget(nodeCount, treeC))
-        : _widget(nodeCount, treeC);
+      // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
+      SnippetTreeController treeC = SnippetTreeController(
+            roots: [this],
+            childrenProvider: (STreeNode node) {
+              if (node is FileNode) {
+                return [];
+              }
+              if (node is DirectoryNode) {
+                return node.children;
+              }
+              // unexpected
+              return [];
+            },
+            parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
+          );
+      int nodeCount = treeC.countNodesInTree(this);
+      // treeC.expand(this);
+      treeC.expandCascading([this]);
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      return parentNode != DirectoryNode
+              ? Material(child: _widget(nodeCount, treeC))
+              : _widget(nodeCount, treeC);
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   Widget _widget(nodeCount, treeC) => Container(

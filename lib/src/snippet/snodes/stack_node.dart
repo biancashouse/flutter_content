@@ -47,32 +47,42 @@ class StackNode extends MC with StackNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
     try {
-      return LayoutBuilder(
-        builder: (context, constraints) {
-          return constraints.maxHeight == double.infinity
-              ? Row(
-                  children: [
-                    fco.errorIcon(Colors.red),
-                    const Gap(10),
-                    const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
-                  ],
-                )
-              : Stack(
-                  key: createNodeGK(),
-                  fit: fit.flutterValue,
-                  clipBehavior: clipBehavior.flutterValue,
-                  alignment: alignment.flutterValue,
-                  children: children.map((node) => node.toWidget(context, this)).toList(),
-                );
-        },
-      );
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      try {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return constraints.maxHeight == double.infinity
+                    ? Row(
+                        children: [
+                          fco.errorIcon(Colors.red),
+                          const Gap(10),
+                          const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
+                        ],
+                      )
+                    : Stack(
+                        key: createNodeGK(),
+                        fit: fit.flutterValue,
+                        clipBehavior: clipBehavior.flutterValue,
+                        alignment: alignment.flutterValue,
+                        children: children.map((node) => node.toWidget(context, this)).toList(),
+                      );
+              },
+            );
+          } catch (e) {
+            fco.logi('cannot render $FLUTTER_TYPE!');
+          }
+      return fco.errorIcon(Colors.red);
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
     }
-    return fco.errorIcon(Colors.red);
   }
 
   @override

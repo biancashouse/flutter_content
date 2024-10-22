@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_event.dart';
+import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -71,6 +72,7 @@ const List<Type> childlessSubClasses = [
   TextNode,
   RichTextNode,
   AssetImageNode,
+  AlgCNode,
   UMLImageNode,
   FSImageNode,
   IFrameNode,
@@ -1380,7 +1382,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       SubmenuButton(
         menuChildren: [
           menuItemButton("Asset Image", AssetImageNode, action),
-          menuItemButton("UML Image", UMLImageNode, action),
+          menuItemButton("Algorithm", AlgCNode, action),
+          menuItemButton("UML", UMLImageNode, action),
           menuItemButton("Firebase Storage Image", FSImageNode, action),
           menuItemButton("Carousel", CarouselNode, action),
           menuItemButton("Aspect Ratio", AspectRatioNode, action),
@@ -1432,7 +1435,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ],
       if (getParent() is CarouselNode) ...[
         menuItemButton("AssetImage", AssetImageNode, action),
-        menuItemButton("UMLImage", UMLImageNode, action),
+        menuItemButton("Algorithm", AlgCNode, action),
+        menuItemButton("UML", UMLImageNode, action),
         menuItemButton("FirestoreStorageImage", FSImageNode, action),
       ],
       if (getParent() is TextSpanNode) ...[
@@ -1533,7 +1537,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         SubmenuButton(
           menuChildren: [
             menuItemButton("Asset Image", AssetImageNode, action),
-            menuItemButton("UML Image", UMLImageNode, action),
+            menuItemButton("Algorithm", AlgCNode, action),
+            menuItemButton("UML", UMLImageNode, action),
             menuItemButton("Firebase Storage Image", FSImageNode, action),
             menuItemButton("Carousel", CarouselNode, action),
             menuItemButton("Aspect Ratio", AspectRatioNode, action),

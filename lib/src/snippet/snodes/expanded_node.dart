@@ -26,17 +26,27 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);
-    possiblyHighlightSelectedNode();
-    return Expanded(
-      key: createNodeGK(),
-      flex: flex,
-      child: child?.toWidget(context, this) ??
-          const Icon(
-            Icons.square,
-            color: Colors.red,
-          ),
-    );
+    try {
+      setParent(parentNode);
+      possiblyHighlightSelectedNode();
+      return Expanded(
+            key: createNodeGK(),
+            flex: flex,
+            child: child?.toWidget(context, this) ??
+                const Icon(
+                  Icons.square,
+                  color: Colors.red,
+                ),
+          );
+    } catch (e) {
+      print(e);
+      return const Column(
+        children: [
+          Text(FLUTTER_TYPE),
+          Icon(Icons.error_outline, color: Colors.red, size: 32),
+        ],
+      );
+    }
   }
 
   @override
