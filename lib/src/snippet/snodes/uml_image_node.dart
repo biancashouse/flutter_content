@@ -67,26 +67,32 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       possiblyHighlightSelectedNode();
 
       return FutureBuilder<UMLRecord>(
-              future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
-                  (UMLRecord newValue) {
-                umlText = newValue.text;
-                encodedText = newValue.encodedText;
-                cachedPngBytes = newValue.bytes;
-              }),
-              builder: (futureContext, snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
+              (UMLRecord newValue) {
+            umlText = newValue.text;
+            encodedText = newValue.encodedText;
+            cachedPngBytes = newValue.bytes;
+          }),
+          builder: (futureContext, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                UMLRecord? umlRecord = snapshot.data;
-                return snapshot.connectionState != ConnectionState.done
-                    ? const Center(child: CircularProgressIndicator())
-                    : Image.memory(
-                        key: createNodeGK(),
-                        cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-                        fit: BoxFit.cover,
-                      );
-              });
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (cachedPngBytes == null) {
+              fco.afterNextBuildDo(() => fco.forceRefresh());
+            }
+            
+            UMLRecord? umlRecord = snapshot.data;
+            return Image.memory(
+              key: createNodeGK(),
+              cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+              fit: BoxFit.cover,
+            );
+          });
     } catch (e) {
       print(e);
       return const Column(
