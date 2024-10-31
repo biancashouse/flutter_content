@@ -73,10 +73,11 @@ packages:
   bh_shared:
     dependency: "direct main"
     description:
-      path: "../bh_shared_pkg"
-      relative: true
-    source: path
-    version: "2.0.2"
+      name: bh_shared
+      sha256: e3c57b2267399a324cc5684b1c1c016bd8cc63e2baaa12cad4bfa644d9fd4e7a
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   bloc:
     dependency: transitive
     description:
@@ -637,10 +638,11 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      path: "../flutter_callouts_pkg"
-      relative: true
-    source: path
-    version: "0.0.3"
+      name: flutter_callouts
+      sha256: "9963f9d09f8796a5827a155323d8cedbe8eb1c8fb9b5d34690ef800afced7021"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   flutter_fancy_tree_view:
     dependency: "direct main"
     description:
@@ -1291,10 +1293,11 @@ packages:
   routing_config_provider:
     dependency: "direct main"
     description:
-      path: "../routing_config_provider_pkg"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: routing_config_provider
+      sha256: "2dec8faed90d6392e2e7d94a821049324c738e2736bb5e5e3b0e407a7d3b80cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   shared_preferences:
     dependency: transitive
     description:

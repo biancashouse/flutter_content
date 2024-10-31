@@ -9,10 +9,12 @@ import 'package:multi_split_view/multi_split_view.dart';
 class PlantUMLTextEditor extends StatefulWidget {
   final TextEditingController teC;
   final ValueChanged<UMLRecord> onChangeF;
+  final ValueChanged<Size> onSizedF;
 
   const PlantUMLTextEditor({
     required this.teC,
     required this.onChangeF,
+    required this.onSizedF,
     super.key,
   });
 
@@ -22,10 +24,13 @@ class PlantUMLTextEditor extends StatefulWidget {
 
 class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
   late FocusNode focusNode;
+  late GlobalKey gkForSizing;
+  UMLRecord? umlRecord;
 
   @override
   void initState() {
     focusNode = FocusNode();
+    gkForSizing = GlobalKey();
     super.initState();
   }
 
@@ -37,6 +42,18 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(child: CircularProgressIndicator());
           }
+
+          void _getSize() {
+            final RenderBox? renderBox =
+                gkForSizing?.currentContext?.findRenderObject() as RenderBox?;
+            if (renderBox != null) {
+              final size = renderBox.size;
+              widget.onSizedF(size);
+              print('Image size: $size');
+            }
+          }
+
+          fco.afterNextBuildDo(()=>_getSize());
 
           UMLRecord? umlRecord = snapshot.data;
 
@@ -111,11 +128,14 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
 
   Widget _plantUMLImageArea(Uint8List pngBytes) => Center(
         child: SingleChildScrollView(
-          child: Image.memory(pngBytes),
+          child: Image.memory(key: gkForSizing, pngBytes),
         ),
       );
 
-  static Future<UMLRecord> encodeThenFetchPng(String umlText,  ValueChanged<UMLRecord> onchangeF) async {
+  static Future<UMLRecord> encodeThenFetchPng(
+    String umlText,
+    ValueChanged<UMLRecord> onchangeF,
+  ) async {
     String? encodedText = await _cloudRunEncodeTextForPlantUML(umlText);
     encodedText ??= missingPng;
     Uint8List? pngBytes = await _fetchPngFromPlantUML(encodedText);
@@ -123,6 +143,8 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
       text: umlText,
       encodedText: encodedText,
       bytes: pngBytes,
+      width: null,
+      height: null,
     );
     onchangeF.call(umlRecord);
     return umlRecord;

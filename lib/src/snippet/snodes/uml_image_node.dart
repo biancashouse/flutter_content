@@ -18,11 +18,15 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   String? name;
   String? umlText;
   String? encodedText;
+  double? width;
+  double? height;
 
   UMLImageNode({
     this.name,
     this.umlText,
     this.encodedText,
+    this.width,
+    this.height,
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -47,14 +51,22 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           umlRecord: (
             text: umlText,
             encodedText: encodedText,
-            bytes: cachedPngBytes
+            bytes: cachedPngBytes,
+            width: width,
+            height: height,
           ),
           onUmlChange: (newValue) {
             refreshWithUpdate(() {
               umlText = newValue.text;
               encodedText = newValue.encodedText;
               cachedPngBytes = newValue.bytes;
+              width = newValue.width;
+              height = newValue.height;
             });
+          },
+          onSized: (newSize) {
+            width = newSize.width;
+            height = newSize.height;
           },
           calloutButtonSize: const Size(280, 70),
         ),
@@ -65,6 +77,10 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
       possiblyHighlightSelectedNode();
+
+      fco.afterNextBuildDo(() {
+        Future.delayed(const Duration(milliseconds: 500), () {});
+      });
 
       return FutureBuilder<UMLRecord>(
           future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
@@ -78,19 +94,15 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
             if (cachedPngBytes == null) {
               fco.afterNextBuildDo(() => fco.forceRefresh());
             }
-            
+
             UMLRecord? umlRecord = snapshot.data;
             return Image.memory(
               key: createNodeGK(),
               cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             );
           });
     } catch (e) {
@@ -104,10 +116,10 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
     }
   }
 
-  Future<Uint8List?> _fetchPng() async {
-    encodedText ??= await _cloudRunEncodeTextForPlantUML();
-    return await _fetchPngFromPlantUML(encodedText!);
-  }
+  // Future<Uint8List?> _fetchPng() async {
+  //   encodedText ??= await _cloudRunEncodeTextForPlantUML();
+  //   return await _fetchPngFromPlantUML(encodedText!);
+  // }
 
   /// http POST - send uml text to my cloud run server to encode into a string.
   /// That string can then be sent to https://www.plantuml.com/plantuml/png/<encoded-text>
@@ -130,22 +142,22 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
         : null; // "cloudRunEncodeTextForPlantUML() received a bad response!";
   }
 
-  Future<Uint8List?> _fetchPngFromPlantUML(String encodedUMLText) async {
-    final url =
-        Uri.parse('https://www.plantuml.com/plantuml/png/$encodedUMLText');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return response.bodyBytes;
-      } else {
-        print('Error fetching PNG: ${response.statusCode}');
-        return null;
-      }
-    } catch (e) {
-      print('Error fetching PNG: $e');
-      return null;
-    }
-  }
+  // Future<Uint8List?> _fetchPngFromPlantUML(String encodedUMLText) async {
+  //   final url =
+  //       Uri.parse('https://www.plantuml.com/plantuml/png/$encodedUMLText');
+  //   try {
+  //     final response = await http.get(url);
+  //     if (response.statusCode == 200) {
+  //       return response.bodyBytes;
+  //     } else {
+  //       print('Error fetching PNG: ${response.statusCode}');
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching PNG: $e');
+  //     return null;
+  //   }
+  // }
 
   @override
   List<Type> wrapWithRecommendations() => [CarouselNode];

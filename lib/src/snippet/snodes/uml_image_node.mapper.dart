@@ -30,6 +30,12 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static String? _$encodedText(UMLImageNode v) => v.encodedText;
   static const Field<UMLImageNode, String> _f$encodedText =
       Field('encodedText', _$encodedText, opt: true);
+  static double? _$width(UMLImageNode v) => v.width;
+  static const Field<UMLImageNode, double> _f$width =
+      Field('width', _$width, opt: true);
+  static double? _$height(UMLImageNode v) => v.height;
+  static const Field<UMLImageNode, double> _f$height =
+      Field('height', _$height, opt: true);
   static String _$uid(UMLImageNode v) => v.uid;
   static const Field<UMLImageNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -55,6 +61,8 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     #name: _f$name,
     #umlText: _f$umlText,
     #encodedText: _f$encodedText,
+    #width: _f$width,
+    #height: _f$height,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -73,7 +81,9 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     return UMLImageNode(
         name: data.dec(_f$name),
         umlText: data.dec(_f$umlText),
-        encodedText: data.dec(_f$encodedText));
+        encodedText: data.dec(_f$encodedText),
+        width: data.dec(_f$width),
+        height: data.dec(_f$height));
   }
 
   @override
@@ -129,7 +139,12 @@ extension UMLImageNodeValueCopy<$R, $Out>
 abstract class UMLImageNodeCopyWith<$R, $In extends UMLImageNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? name, String? umlText, String? encodedText});
+  $R call(
+      {String? name,
+      String? umlText,
+      String? encodedText,
+      double? width,
+      double? height});
   UMLImageNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -145,17 +160,23 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
   $R call(
           {Object? name = $none,
           Object? umlText = $none,
-          Object? encodedText = $none}) =>
+          Object? encodedText = $none,
+          Object? width = $none,
+          Object? height = $none}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
         if (umlText != $none) #umlText: umlText,
-        if (encodedText != $none) #encodedText: encodedText
+        if (encodedText != $none) #encodedText: encodedText,
+        if (width != $none) #width: width,
+        if (height != $none) #height: height
       }));
   @override
   UMLImageNode $make(CopyWithData data) => UMLImageNode(
       name: data.get(#name, or: $value.name),
       umlText: data.get(#umlText, or: $value.umlText),
-      encodedText: data.get(#encodedText, or: $value.encodedText));
+      encodedText: data.get(#encodedText, or: $value.encodedText),
+      width: data.get(#width, or: $value.width),
+      height: data.get(#height, or: $value.height));
 
   @override
   UMLImageNodeCopyWith<$R2, UMLImageNode, $Out2> $chain<$R2, $Out2>(

@@ -825,11 +825,13 @@ class StringPropertyValueNode extends PTreeNode {
 class UMLStringPropertyValueNode extends PTreeNode {
   UMLRecord umlRecord;
   final ValueChanged<UMLRecord> onUmlChange;
+  final ValueChanged<Size> onSized;
   final Size calloutButtonSize;
 
   UMLStringPropertyValueNode({
     required this.umlRecord,
     required this.onUmlChange,
+    required this.onSized,
     required this.calloutButtonSize,
     required super.snode,
     required super.name,
@@ -837,7 +839,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
 
   @override
   void revertToOriginalValue() {
-    onUmlChange((text: null, encodedText: null, bytes: null));
+    onUmlChange((text: null, encodedText: null, bytes: null, width: null, height: null));
   }
 
   @override
@@ -850,6 +852,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
       onChangeF: (newRecord) {
         onUmlChange(umlRecord = newRecord);
       },
+      onSizedF: (newSize) =>onSized(newSize),
     );
   }
 }

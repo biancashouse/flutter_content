@@ -9,12 +9,14 @@ class PropertyButtonUML extends StatefulWidget {
   final Size calloutButtonSize;
   final GlobalKey propertyBtnGK;
   final ValueChanged<UMLRecord> onChangeF;
+  final ValueChanged<Size> onSizedF;
 
   const PropertyButtonUML({
     required this.originalUMLRecord,
     this.label,
     required this.calloutButtonSize,
     required this.onChangeF,
+    required this.onSizedF,
     required this.propertyBtnGK,
     super.key,
   });
@@ -40,9 +42,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           String editedText = umlRecord.text ?? '';
-          String textLabel() =>
-              editedText.isNotEmpty ? '${widget.label}: $editedText' : '${widget
-                  .label}...';
+          String textLabel() => editedText.isNotEmpty ? '${widget.label}: $editedText' : '${widget.label}...';
           Widget labelWidget = Text(
             textLabel(),
             style: const TextStyle(color: Colors.white),
@@ -71,9 +71,12 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
               );
 
               Widget calloutContent = PlantUMLTextEditor(
-                teC: teC, onChangeF: (UMLRecord newUmlRecord) {
+                teC: teC,
+                onChangeF: (UMLRecord newUmlRecord) {
                   widget.onChangeF.call(umlRecord = newUmlRecord);
-              },);
+                },
+                onSizedF: widget.onSizedF,
+              );
 
               fco.showOverlay(
                 calloutConfig: teCC,

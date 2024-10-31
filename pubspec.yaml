@@ -1,17 +1,10 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 3.0.1
+version: 3.2.0
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
-# github mirrored from bitbucket
-#homepage: https://bitbucket:org/biancashouse/flutter_content/src/master/
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
 repository: https://github.com/biancashouse/flutter-content
-
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -95,14 +88,11 @@ dependencies:
   image: 4.2.0
   random_string: 2.3.1
 
-  bh_shared:
-    path: ../bh_shared_pkg
+  bh_shared:  ^2.2.0
 
-  routing_config_provider:
-    path: ../routing_config_provider_pkg
+  routing_config_provider:  ^1.0.0
 
-  flutter_callouts:
-    path: ../flutter_callouts_pkg
+  flutter_callouts: ^0.2.0
 
   logging: 1.1.0
   dart_mappable: 4.2.2
