@@ -639,10 +639,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_callouts
-      sha256: "9963f9d09f8796a5827a155323d8cedbe8eb1c8fb9b5d34690ef800afced7021"
+      sha256: a5fba0a1ea7c28a9a751a97b3a9114333c6eeaeb837dbc7c3c33fa063251cb09
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "1.0.0"
   flutter_fancy_tree_view:
     dependency: "direct main"
     description:
