@@ -10,7 +10,7 @@ import 'has_image.dart';
 
 class CommentM with HasImageInFBStorage, StringEncoderDecoder {
   // implicit id is /ea/fId/b|e|stepId, which is used to find its image in storage
-  CommentM() {}
+  CommentM();
 
   // initially a 300x200 placeholder
   double? calloutWidth = 300;

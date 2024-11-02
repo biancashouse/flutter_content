@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
 import 'package:routing_config_provider/routing_config_provider.dart';

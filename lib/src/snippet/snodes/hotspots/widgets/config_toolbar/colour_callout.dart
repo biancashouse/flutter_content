@@ -2,7 +2,6 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
 class TargetColourTool extends StatelessWidget {
   final TargetModel tc;

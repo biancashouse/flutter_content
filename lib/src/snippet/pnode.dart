@@ -1,7 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/edge_insets_editor.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';

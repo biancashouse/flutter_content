@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class EditablePage extends StatefulWidget {
@@ -164,7 +162,7 @@ class EditablePageState extends State<EditablePage> {
                                     },
                                   ),
                                 )
-                              : Offstage();
+                              : const Offstage();
                         },
                       ),
                   ],

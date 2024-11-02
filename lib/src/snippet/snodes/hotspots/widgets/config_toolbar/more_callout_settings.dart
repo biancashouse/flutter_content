@@ -4,7 +4,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/callout_snippet_content.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;

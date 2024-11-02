@@ -13,7 +13,7 @@ import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
 
-  FlowchartWidget(this.jsonString);
+  const FlowchartWidget(this.jsonString, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class FlowchartWidget extends StatelessWidget {
       return FlowchartWidgetStack(f);
     } catch (e) {
       print(e);
-      return Icon(Icons.error_outline, color: Colors.red, size: 32,);
+      return const Icon(Icons.error_outline, color: Colors.red, size: 32,);
     }
   }
 }
@@ -36,7 +36,7 @@ class FlowchartWidget extends StatelessWidget {
 class FlowchartWidgetStack extends StatelessWidget {
   final FlowchartM f;
 
-  FlowchartWidgetStack(this.f);
+  const FlowchartWidgetStack(this.f, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +179,7 @@ class FlowchartWidgetStack extends StatelessWidget {
         ),
       );
     } else {
-      return Offstage();
+      return const Offstage();
     }
   }
 
@@ -199,7 +199,7 @@ class FlowchartWidgetStack extends StatelessWidget {
         ),
       );
     } else {
-      return Offstage();
+      return const Offstage();
     }
   }
 

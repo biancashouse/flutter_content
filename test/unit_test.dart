@@ -74,7 +74,7 @@ void main() {
     fco.init(
       appName: 'test-app',
       editorPassword: 'pigsinspace',
-      routingConfig: RoutingConfig(routes: []),
+      routingConfig: const RoutingConfig(routes: []),
       initialRoutePath: '',
       testModelRepo: mockRepository,
     );

@@ -76,7 +76,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
                             EditablePage.of(context)
                                 ?.editorPasswordDialog();
                           },
-                          icon: Icon(Icons.edit, color: Colors.white),
+                          icon: const Icon(Icons.edit, color: Colors.white),
                         )),
                 ],
               );

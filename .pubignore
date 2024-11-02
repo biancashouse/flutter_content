@@ -1,2 +1,6 @@
-jic
-example/emulator-save
+example/emulator-saved/firebase-export-metadata.json
+example/emulator-saved/firestore_export/all_namespaces/all_kinds/all_namespaces_all_kinds.export_metadata
+example/emulator-saved/firestore_export/all_namespaces/all_kinds/output-0
+example/emulator-saved/firestore_export/firestore_export.overall_export_metadata
+example/emulator-saved/storage_export/buckets.json
+jic/

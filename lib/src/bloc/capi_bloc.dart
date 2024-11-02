@@ -1798,8 +1798,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (wChild is ExpandedNode && w is! FlexNode) return;
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
-    if (wChild is InlineSpanNode && parent is RichTextNode && w is RichTextNode)
+    if (wChild is InlineSpanNode && parent is RichTextNode && w is RichTextNode) {
       return;
+    }
     if (wChild is InlineSpanNode &&
         parent is! RichTextNode &&
         w is! InlineSpanNode) return;

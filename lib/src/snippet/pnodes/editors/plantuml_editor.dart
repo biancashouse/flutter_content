@@ -43,9 +43,9 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          void _getSize() {
+          void getSize() {
             final RenderBox? renderBox =
-                gkForSizing?.currentContext?.findRenderObject() as RenderBox?;
+                gkForSizing.currentContext?.findRenderObject() as RenderBox?;
             if (renderBox != null) {
               final size = renderBox.size;
               widget.onSizedF(size);
@@ -53,7 +53,7 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
             }
           }
 
-          fco.afterNextBuildDo(()=>_getSize());
+          fco.afterNextBuildDo(()=>getSize());
 
           UMLRecord? umlRecord = snapshot.data;
 
@@ -153,7 +153,7 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
   /// http POST - send uml text to my cloud run server to encode into a string.
   /// That string can then be sent to https://www.plantuml.com/plantuml/png/<encoded-text>
   static Future<String?> _cloudRunEncodeTextForPlantUML(String umlText) async {
-    final bodyMap = {"uml": "$umlText"};
+    final bodyMap = {"uml": umlText};
     final body = json.encode(bodyMap);
     final response = await http.Client().post(
       Uri.parse(

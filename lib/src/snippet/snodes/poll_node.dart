@@ -119,7 +119,7 @@ class PollNode extends MC with PollNodeMappable {
                         Text('Poll has infinite maxHeight constraint!'),
                       ],
                     )
-                  : Container(width: 300, height:100.0 + 60.0*(children.length),
+                  : SizedBox(width: 300, height:100.0 + 60.0*(children.length),
                     child: FlutterPoll(
                       key: createNodeGK(),
                       poll: this,

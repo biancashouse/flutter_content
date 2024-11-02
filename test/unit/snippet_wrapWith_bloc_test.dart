@@ -260,7 +260,7 @@ void main() {
     build: () => capiBloc,
     act: (bloc) {
       bloc.add(CAPIEvent.selectNode(node: rtNode.text));
-      bloc.add(CAPIEvent.wrapSelectionWith(type: TextSpanNode));
+      bloc.add(const CAPIEvent.wrapSelectionWith(type: TextSpanNode));
     },
     expect: () => <CAPIState>[
       expectedState_SelectedNode(capiBloc, rtNode.text),

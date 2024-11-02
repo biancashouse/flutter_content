@@ -11,7 +11,7 @@ class PkgStepWidget extends StatelessWidget {
   final FlowchartM flowchart;
   final StepM step;
 
-  const PkgStepWidget(this.flowchart, this.step);
+  const PkgStepWidget(this.flowchart, this.step, {super.key});
 
   double get extraWidthForFunctionCall =>
       step.isFuncCallStep() ? step.PPP * 2 : 0.0;
@@ -43,7 +43,7 @@ class PkgStepWidget extends StatelessWidget {
             Positioned(
                 top: 10,
                 left: widestStepW - 20,
-                child: Text(
+                child: const Text(
                   'T',
                   style: TextStyle(color: Colors.grey),
                 )),
@@ -51,12 +51,12 @@ class PkgStepWidget extends StatelessWidget {
             Positioned(
                 top: 10,
                 left: widestStepW - 20,
-                child: Text('F', style: TextStyle(color: Colors.grey))),
+                child: const Text('F', style: TextStyle(color: Colors.grey))),
           if (theListType == SUCCEED_STEPS)
             Positioned(
                 top: 10,
                 left: widestStepW - 20,
-                child: Icon(
+                child: const Icon(
                   Icons.check,
                   size: 16,
                   color: Colors.grey,
@@ -65,7 +65,7 @@ class PkgStepWidget extends StatelessWidget {
             Positioned(
                 top: 10,
                 left: widestStepW - 20,
-                child: Icon(
+                child: const Icon(
                   Icons.close,
                   size: 16,
                   color: Colors.grey,
@@ -243,7 +243,7 @@ class PkgStepWidget extends StatelessWidget {
           : index < 10
               ? 6.0
               : 4.0),
-      decoration: ShapeDecoration(
+      decoration: const ShapeDecoration(
         color: Colors.black,
         shape: CircleBorder(
           side: BorderSide(color: Colors.grey),

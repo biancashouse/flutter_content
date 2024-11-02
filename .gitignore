@@ -51,4 +51,3 @@ app.*.map.json
 /gemini_api_key.txt
 /compals/
 /ios.jic/
-/example/emulator-saved/

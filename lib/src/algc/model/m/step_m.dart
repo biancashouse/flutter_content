@@ -200,7 +200,7 @@ class StepM with StringEncoderDecoder {
   double get avoidWrap => 0;
 
   int get widestLine {
-    LineSplitter ls = LineSplitter();
+    LineSplitter ls = const LineSplitter();
     List<String> lines = ls.convert(txt);
     var lineLens = lines.map((line) => line.length);
     return lineLens.reduce((current, next) => current > next ? current : next);
@@ -835,7 +835,7 @@ class StepM with StringEncoderDecoder {
   // recursive
   static Future<StepM> clone(
       StepM theStep, StepM? theParentStep, FlowchartM theFlowchart) async {
-    await Future.delayed(Duration(microseconds: 100), () {});
+    await Future.delayed(const Duration(microseconds: 100), () {});
     int rnd = randomBetween(0, 99999999);
     int newId = DateTime.now().microsecondsSinceEpoch + rnd;
     StepM clonedStep = StepM(theFlowchart, newId);

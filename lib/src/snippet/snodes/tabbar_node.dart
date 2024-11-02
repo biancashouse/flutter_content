@@ -114,7 +114,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
               child: node is TextNode
-                  ? Tab(text: (node as TextNode).text)
+                  ? Tab(text: (node).text)
                   : Tab(child: node.toWidget(context, parentNode)),
             ));
           }
@@ -128,7 +128,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
             unselectedLabelColor: unselectedLabelColorValue != null
                 ? Color(unselectedLabelColorValue!)
                 : null,
-            labelPadding: EdgeInsets.all(10),
+            labelPadding: const EdgeInsets.all(10),
             labelStyle: labelStyleGroup?.toTextStyle(context),
             indicatorColor:
                 indicatorColorValue != null ? Color(indicatorColorValue!) : null,
@@ -142,7 +142,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
       spState?.tabC?.index = min(selection ?? 0, children.length - 1);
       try {
             return PreferredSize(
-              preferredSize: Size.fromHeight(100), //tabBar.preferredSize,
+              preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
               child: Container(
                 color: bgColorValue != null ? Color(bgColorValue!) : Colors.grey,
                 child: tabBar,

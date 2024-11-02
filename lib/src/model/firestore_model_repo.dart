@@ -441,7 +441,7 @@ class FireStoreModelRepository implements IModelRepository {
       required PollOptionId optionId,
       required Map<PollOptionId, int> newOptionVoteCountMap}) async {
 // check whether already voted
-    final docPath = '/apps/${fco.appName}/polls/$pollName/voters/${voterId}';
+    final docPath = '/apps/${fco.appName}/polls/$pollName/voters/$voterId';
     DocumentReference userVoteDocRef = FirebaseFirestore.instance.doc(docPath);
     DocumentSnapshot snap = await userVoteDocRef.get();
     if (!snap.exists) {

@@ -300,7 +300,7 @@ class Step1 extends StatelessWidget {
 class Step2 extends StatelessWidget {
   final PasswordlessStepperState parentState;
 
-  Step2(this.parentState, {super.key});
+  const Step2(this.parentState, {super.key});
 
   @override
   Widget build(BuildContext context) {

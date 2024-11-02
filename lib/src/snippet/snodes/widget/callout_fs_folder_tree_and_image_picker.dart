@@ -35,7 +35,7 @@ class FSFoldersAndImagePicker extends HookWidget {
     final config = FirebaseUIStorageConfiguration(
       storage: storage,
       uploadRoot: newRef,
-      namingPolicy: UuidFileUploadNamingPolicy(),
+      namingPolicy: const UuidFileUploadNamingPolicy(),
       // optional, will generate a UUID for each uploaded file
     );
     await FirebaseUIStorage.configure(config);
@@ -139,7 +139,7 @@ class FSFoldersAndImagePicker extends HookWidget {
               entry: entry,
               guide: const IndentGuide.connectingLines(color: Colors.white),
               child: Tooltip(
-                message: '${entry.node.ref.fullPath}',
+                message: entry.node.ref.fullPath,
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Row(
@@ -215,8 +215,8 @@ class FolderImagesGridView extends StatelessWidget {
                 throw Exception('Could not launch $url');
               }
             },
-            label: Icon(Icons.link),
-            icon: Text(' Cloud Storage Console')),
+            label: const Icon(Icons.link),
+            icon: const Text(' Cloud Storage Console')),
         MyUploadButton(storage: storage),
         Expanded(
           child: Container(

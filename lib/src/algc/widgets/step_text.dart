@@ -5,7 +5,7 @@ import 'package:flutter_content/src/algc/model/m/step_m.dart';
 class StepText extends StatelessWidget {
   final StepM step;
 
-  const StepText(this.step, {Key? key}) : super(key: key);
+  const StepText(this.step, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -15,7 +15,7 @@ class FlowchartBgPainter extends CustomPainter {
     bgPaint = fbe.isVersionLatest ? fco.whiteBgPaint : greyBgPaint;
 
     Rect innerRect = Rect.fromPoints(
-      Offset(0.0, 0.0),
+      const Offset(0.0, 0.0),
       Offset(
         fbe.screenPaperW,
         fbe.screenPaperH,

@@ -528,7 +528,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   int? lastModifiedMs;
 
-  EdgeInsets get pdfPageMargin => EdgeInsets.only(top: 20, left: 20);
+  EdgeInsets get pdfPageMargin => const EdgeInsets.only(top: 20, left: 20);
 
 // top, left margin of flowchart
 //Offset get flowchartOffset => Offset(pdfPageMargin.left, pdfPageMargin.top + 50 /*allow for 2 line title*/);

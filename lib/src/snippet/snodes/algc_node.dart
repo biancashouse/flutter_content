@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
 import 'package:http/http.dart' as http;
@@ -92,17 +91,17 @@ class AlgCNode extends CL with AlgCNodeMappable {
       // try to fetch from algc firestore using ea and fid
       String? vea = fco.hiveBox.get('vea');
       vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
-      if (vea == null || vea.isEmpty) {
+      if (vea.isEmpty) {
         return const Column(
           children: [
             Text("$FLUTTER_TYPE - you're not signed in"),
             Icon(Icons.error_outline, color: Colors.red, size: 32),
           ],
         );      }
-      if ((vea?.isNotEmpty ?? false) && (fId?.isNotEmpty ?? false)) {
+      if ((vea.isNotEmpty ?? false) && (fId?.isNotEmpty ?? false)) {
         try {
           return FutureBuilder<String?>(
-              future: _cloudRunFetchFlowchartJsonString(vea!, fId!),
+              future: _cloudRunFetchFlowchartJsonString(vea, fId!),
               builder: (futureContext, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(child: CircularProgressIndicator());

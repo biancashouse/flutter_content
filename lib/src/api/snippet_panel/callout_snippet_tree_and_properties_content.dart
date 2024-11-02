@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
-import 'package:flutter_content/src/bloc/capi_event.dart';
-import 'package:flutter_content/src/bloc/capi_state.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
-import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/config_toolbar/callout_config_toolbar.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
@@ -872,8 +869,9 @@ class SnippetTreeView extends StatelessWidget {
         // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // fco.logi("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         // never show the tree root node
-        if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node)
+        if (FlutterContentApp.snippetBeingEdited?.rootNode == entry.node) {
           return const Offstage();
+        }
         // if (entry.node == FlutterContentApp.selectedNode) {
         //   fco.logi(
         //       'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');

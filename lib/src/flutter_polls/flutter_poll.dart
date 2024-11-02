@@ -217,11 +217,11 @@ class FlutterPollState extends State<FlutterPoll> {
     UserVoterRecord? usersVote =
         await FlutterContentApp.capiBloc.modelRepo.getUsersVote(
       pollName: widget.poll.name,
-      voterId: voterId!,
+      voterId: voterId,
     );
     pollBloc = PollBloC(
       modelRepo: FlutterContentApp.capiBloc.modelRepo,
-      voterId: voterId!,
+      voterId: voterId,
       pollName: widget.poll.name,
       starts: widget.startDate,
       ends: widget.endDate,

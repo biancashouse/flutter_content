@@ -90,7 +90,7 @@ class ChangeType extends EnumClass {
   static const ChangeType movedStep = _$movedStep;
   static const ChangeType trashedStep = _$trashedStep;
 
-  const ChangeType._(String name) : super(name);
+  const ChangeType._(super.name);
 
   static BuiltSet<ChangeType> get values => _$stValues;
 
