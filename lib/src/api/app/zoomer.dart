@@ -52,9 +52,9 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
         begin: Matrix4.identity(),
         end: Matrix4.identity().scaled(currentScale=scaleX, scaleY))
         .animate(_aController);
-    if (alignment != null) {
-      _transformAlignment ??= alignment;
-    }
+    // if (alignment != null) {
+    //   _transformAlignment ??= alignment;
+    // }
     _aController
       ..duration = const Duration()
       ..reset()

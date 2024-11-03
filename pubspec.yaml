@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 1.0.0
+version: 1.0.1
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
@@ -92,7 +92,7 @@ dependencies:
   vector_math: ^2.1.4
   gradient_borders: ^1.0.1
 
-  bh_shared:  ^2.2.0
+  bh_shared:  ^2.3.0
 
   routing_config_provider:  ^1.0.0
 
@@ -121,7 +121,7 @@ dev_dependencies:
   analyzer: ^6.7.0
 
 false_secrets:
-  - /example/lib/firebase_options.dart
+  - /example/lib/bh-apps.firebase_options.dart
 
 # The following section is specific to Flutter packages.
 flutter:

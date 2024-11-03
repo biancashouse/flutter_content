@@ -27,7 +27,7 @@ class ClipboardNodeWidget extends StatelessWidget {
       builder: (context, state) {
         bool selected = FlutterContentApp.snippetBeingEdited?.selectedNode == entry.node;
         ThemeData themeData = Theme.of(context);
-        TreeEntry<Node>? parentEntry = entry.parent;
+        // TreeEntry<Node>? parentEntry = entry.parent;
 
         String displayedNodeName = entry.node is SnippetRootNode && (entry.node as SnippetRootNode).name.isNotEmpty
             ? (entry.node as SnippetRootNode).name

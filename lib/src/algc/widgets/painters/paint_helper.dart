@@ -166,7 +166,7 @@ drawTxtBox(
       rect,
       theCanvas: theCanvas,
       theLineColor: /*App.repo.currentUser.showColouredShapes*/
-          false ? model.shapeLineColor : Colors.grey,
+          Colors.grey,
       theBgColor: Colors.white, /* thicker: possibleThicker */
     );
   }
@@ -362,7 +362,7 @@ double drawDiamondConnector(StepM model, {required Canvas theCanvas}) {
   double x = model.MMM * 2 + model.PPP + model.TTT / 2;
   double y = model.boxH - model.MMM;
   //only show thick line when in colour
-  double extra = /*App.repo.currentUser.showColouredShapes*/ false ? 1.0 : 0;
+  double extra = 0;//*App.repo.currentUser.showColouredShapes*/ false ? 1.0 : 0;
   drawLine(model.parentFlowchart, Offset(x - extra, y),
       Offset(x - extra, y + model.MMM),
       theCanvas: theCanvas, color: Colors.black);
