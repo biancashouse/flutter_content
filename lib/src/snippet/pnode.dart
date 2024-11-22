@@ -1757,7 +1757,11 @@ class EnumPropertyValueNode<T> extends PTreeNode {
               onIndexChange(valueIndex = newValueIndex));
     }
     // T property not implemented yet
-    return fco.errorIcon(Colors.blue);
+    return Error(key: GlobalKey(), T.runtimeType.toString(),
+        color: Colors.red,
+        size: 32,
+        errorMsg:
+        'property not implemented yet');
   }
 }
 

@@ -1,0 +1,12 @@
+@startuml
+
+skinparam groupInheritance 99
+
+class GapNode extends CL
+class GoogleDriveIFrameNode extends CL
+class IFrameNode extends CL
+class MarkdownNode extends CL
+class PlaceholderNode extends CL
+class PollOptionNode extends CL
+
+@enduml

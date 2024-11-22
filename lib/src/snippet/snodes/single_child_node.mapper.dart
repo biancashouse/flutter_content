@@ -15,20 +15,20 @@ class SCMapper extends SubClassMapperBase<SC> {
       MapperContainer.globals.use(_instance = SCMapper._());
       STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
       GenericSingleChildNodeMapper.ensureInitialized();
-      SizedBoxNodeMapper.ensureInitialized();
-      SingleChildScrollViewNodeMapper.ensureInitialized();
-      ContainerNodeMapper.ensureInitialized();
+      AlignNodeMapper.ensureInitialized();
+      AspectRatioNodeMapper.ensureInitialized();
+      ButtonNodeMapper.ensureInitialized();
       CenterNodeMapper.ensureInitialized();
+      ContainerNodeMapper.ensureInitialized();
+      DefaultTextStyleNodeMapper.ensureInitialized();
       ExpandedNodeMapper.ensureInitialized();
       FlexibleNodeMapper.ensureInitialized();
+      HotspotsNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
       PositionedNodeMapper.ensureInitialized();
-      AlignNodeMapper.ensureInitialized();
-      ButtonNodeMapper.ensureInitialized();
+      SingleChildScrollViewNodeMapper.ensureInitialized();
+      SizedBoxNodeMapper.ensureInitialized();
       SnippetRootNodeMapper.ensureInitialized();
-      DefaultTextStyleNodeMapper.ensureInitialized();
-      AspectRatioNodeMapper.ensureInitialized();
-      HotspotsNodeMapper.ensureInitialized();
       STreeNodeMapper.ensureInitialized();
     }
     return _instance!;

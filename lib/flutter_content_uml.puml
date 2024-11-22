@@ -1,0 +1,39 @@
+@startuml
+
+'https://plantuml.com/class-diagram
+
+class FlutterContentMixins {
+    appName
+    editorPassword
+    title
+    webRoutingConfig
+    mobileRoutingConfig
+    fbOptions
+    capiBloc()
+    capiState()
+    snippetBeingEdited()
+    showProperties()
+    aSnippetIsSelected()
+}
+
+class AppInfoModel<<MappableClass>> {
+    bool autoPublishDefault;
+    STreeNode? clipboard;
+    List<SnippetName> snippetNames;
+}
+
+class SnippetInfoModel {
+    SnippetName name; // snippet name == route name
+    RoutePath? routePath; // route path
+    VersionId? editingVersionId;
+    VersionId? publishedVersionId;
+    bool? autoPublish;
+    List<VersionId> cachedVersionIds = [];
+    Map<VersionId, SnippetRootNode?> cachedVersions = {};
+}
+
+FlutterContentMixins [SnippetName] o-r--> AppInfoModel
+FlutterContentMixins [SnippetName] o-r--> SnippetInfoModel
+
+
+@enduml

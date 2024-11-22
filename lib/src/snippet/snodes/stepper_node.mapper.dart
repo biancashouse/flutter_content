@@ -35,6 +35,9 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
   static String _$uid(StepperNode v) => v.uid;
   static const Field<StepperNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(StepperNode v) => v.gk;
+  static const Field<StepperNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(StepperNode v) => v.isExpanded;
   static const Field<StepperNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -55,6 +58,7 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
     #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

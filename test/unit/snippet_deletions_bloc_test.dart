@@ -145,7 +145,7 @@ void main() {
         nodeBeingDeleted: null,
         rootNode: snippet,
         treeC: treeC,
-        jsonBeforePush: '',
+        jsonBeforeAnyChange: '',
       ),
     );
   }
@@ -158,7 +158,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: bloc.state.snippetBeingEdited!.rootNode,
           treeC: bloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ),
       );
 
@@ -170,7 +170,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: bloc.state.snippetBeingEdited!.rootNode,
           treeC: bloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ),
       );
 
@@ -182,7 +182,7 @@ void main() {
           nodeBeingDeleted: node,
           rootNode: bloc.state.snippetBeingEdited!.rootNode,
           treeC: bloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ),
       );
 

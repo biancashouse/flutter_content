@@ -40,6 +40,9 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
   static String _$uid(StackNode v) => v.uid;
   static const Field<StackNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(StackNode v) => v.gk;
+  static const Field<StackNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(StackNode v) => v.isExpanded;
   static const Field<StackNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -61,6 +64,7 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
     #alignment: _f$alignment,
     #children: _f$children,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -6,7 +6,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
-import 'package:gap/gap.dart';
 
 part 'stack_node.mapper.dart';
 
@@ -24,64 +23,67 @@ class StackNode extends MC with StackNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
+  List<PTreeNode> properties(BuildContext context) =>
+      [
         EnumPropertyValueNode<StackFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(
+                      () =>
+                  fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
         ),
         EnumPropertyValueNode<ClipEnum?>(
           snode: this,
           name: 'clipBehavior',
           valueIndex: clipBehavior.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(
+                      () =>
+                  clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
         ),
         EnumPropertyValueNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() =>
+              alignment = AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
         ),
       ];
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    setParent(parentNode);
+    possiblyHighlightSelectedNode();
     try {
-      setParent(parentNode);
-      possiblyHighlightSelectedNode();
-      try {
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                return constraints.maxHeight == double.infinity
-                    ? Row(
-                        children: [
-                          fco.errorIcon(Colors.red),
-                          const Gap(10),
-                          const Text('Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?'),
-                        ],
-                      )
-                    : Stack(
-                        key: createNodeGK(),
-                        fit: fit.flutterValue,
-                        clipBehavior: clipBehavior.flutterValue,
-                        alignment: alignment.flutterValue,
-                        children: children.map((node) => node.toWidget(context, this)).toList(),
-                      );
-              },
-            );
-          } catch (e) {
-            fco.logi('cannot render $FLUTTER_TYPE!');
-          }
-      return fco.errorIcon(Colors.red);
-    } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return constraints.maxHeight == double.infinity
+              ? Error(
+              key: createNodeGK(),
+              FLUTTER_TYPE,
+              color: Colors.red,
+              size: 32,
+              errorMsg:
+              'Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?')
+              : Stack(
+            key: createNodeGK(),
+            fit: fit.flutterValue,
+            clipBehavior: clipBehavior.flutterValue,
+            alignment: alignment.flutterValue,
+            children: children
+                .map((node) => node.toWidget(context, this))
+                .toList(),
+          );
+        },
       );
+    } catch (e) {
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 

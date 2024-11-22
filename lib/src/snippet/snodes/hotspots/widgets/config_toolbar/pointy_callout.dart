@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 
 class PointyTool extends StatefulWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final Rect wrapperRect;
   final String? scrollControllerName;
   final bool justPlaying;
 
   const PointyTool(
+    this.enterEditModeF,
+    this.exitEditModeF,
     this.tc, {
     required this.wrapperRect,
     this.scrollControllerName,
@@ -19,9 +23,9 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetModel tc, final Rect wrapperRect,
-      {final String? scrollControllerName,
-      required final bool justPlaying}) {
+  static show(final VoidCallback enterEditModeF, final VoidCallback exitEditModeF, final TargetModel tc,
+      final Rect wrapperRect,
+      {final String? scrollControllerName, required final bool justPlaying}) {
     GlobalKey? targetGK =
         // tc.single
         //     ? FCO.getSingleTargetGk(tc.wName)
@@ -31,11 +35,13 @@ class PointyTool extends StatefulWidget {
     fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: PointyTool(
-              tc,
-              wrapperRect: wrapperRect,
-              scrollControllerName: scrollControllerName,
-              justPlaying: justPlaying,
-            ),
+          enterEditModeF,
+          exitEditModeF,
+          tc,
+          wrapperRect: wrapperRect,
+          scrollControllerName: scrollControllerName,
+          justPlaying: justPlaying,
+        ),
         calloutConfig: CalloutConfig(
           cId: "arrow-type",
           initialCalloutW: 300,
@@ -85,6 +91,8 @@ class _PointyToolState extends State<PointyTool> {
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
+      enterEditModeF: widget.enterEditModeF,
+      exitEditModeF: widget.exitEditModeF,
       tc: tc,
       justPlaying: false,
       // widget.onParentBarrierTappedF,

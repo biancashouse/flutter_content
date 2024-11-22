@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
@@ -73,6 +74,7 @@ class EditablePageState extends State<EditablePage> {
     // });
 
     fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
+    fco.currentEditablePagePath = widget.routePath;
 
     fco.afterNextBuildDo(() {
       setState(() {
@@ -140,7 +142,11 @@ class EditablePageState extends State<EditablePage> {
                 child: Stack(
                   children: [
                     Zoomer(
-                      child: widget.child,
+                      child: BlocBuilder<CAPIBloC, CAPIState>(
+                          builder: (blocContext, state) {
+                          return widget.child;
+                        }
+                      ),
                     ),
                     if (fabPosition != null)
                       ValueListenableBuilder<bool>(
@@ -271,7 +277,7 @@ class EditablePageState extends State<EditablePage> {
     // }
   }
 
-  void removeAllNodeWidgetOverlays() {
+  static void removeAllNodeWidgetOverlays() {
     // fco.logi('removeAllNodeWidgetOverlays - start');
     for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
       fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
@@ -315,6 +321,8 @@ class EditablePageState extends State<EditablePage> {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
+              enterEditModeF: enterEditMode,
+              exitEditModeF: exitEditMode,
               nodeTypeName: node.toString(),
               r: r,
               scrollControllerName: widget.routePath,
@@ -334,7 +342,7 @@ class EditablePageState extends State<EditablePage> {
   }
 
   // only called with MaterialAppWrapper context
-  void showNodeWidgetOverlay(STreeNode node) {
+  static void showNodeWidgetOverlay(STreeNode node) {
     fco.dismiss('pink-border-overlay-non-tappable');
     fco.afterNextBuildDo(() {
       node.showNodeWidgetOverlay();

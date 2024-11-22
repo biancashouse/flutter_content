@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
+
   // final TargetsWrapperState parentWrapperState;
   final TargetModel tc;
   final int index;
@@ -11,6 +13,8 @@ class TargetCover extends StatelessWidget {
   final String? scrollControllerName;
 
   const TargetCover(
+    this.enterEditModeF,
+    this.exitEditModeF,
     this.tc,
     this.index, {
     required this.wrapperRect,
@@ -27,7 +31,8 @@ class TargetCover extends StatelessWidget {
     return fco.canEditContent.value
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
-            feedback: preventDrag ? const Offstage() : _draggableTargetCover(tc),
+            feedback:
+                preventDrag ? const Offstage() : _draggableTargetCover(tc),
             childWhenDragging: const Offstage(),
             child: _draggableTargetCover(tc),
           )
@@ -40,11 +45,14 @@ class TargetCover extends StatelessWidget {
 
   Widget _draggableTargetCover(TargetModel tc) {
     // fco.logi('_draggableTarget');
-    return Visibility(visible: true,//FlutterContentApp.snippetBeingEdited == null,
+    return Visibility(
+      visible: true, //FlutterContentApp.snippetBeingEdited == null,
       child: SizedBox(
         width: tc.radius * 2,
         height: tc.radius * 2,
         child: _TargetCover(
+          enterEditModeF,
+          exitEditModeF,
           tc,
           index,
           wrapperRect,
@@ -56,12 +64,16 @@ class TargetCover extends StatelessWidget {
 }
 
 class _TargetCover extends StatelessWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
   final String? scrollControllerName;
 
   const _TargetCover(
+    this.enterEditModeF,
+    this.exitEditModeF,
     this.tc,
     this.index,
     this.wrapperRect,
@@ -75,6 +87,8 @@ class _TargetCover extends StatelessWidget {
     return GestureDetector(
       onDoubleTap: () async {
         TargetsWrapper.configureTarget(
+          enterEditModeF,
+          exitEditModeF,
           tc,
           wrapperRect,
           scrollControllerName,
@@ -107,7 +121,8 @@ class _TargetCover extends StatelessWidget {
               num: index + 1,
               bgColor: tc.calloutColor().withOpacity(.5),
               radius: radius,
-              textColor: fco.canEditContent.value ? Colors.white : Colors.transparent,
+              textColor:
+                  fco.canEditContent.value ? Colors.white : Colors.transparent,
               fontSize: 14,
             ),
           ),

@@ -87,7 +87,7 @@ void main() {
         ),
         selectedNode: select,
         nodeBeingDeleted: null,
-        jsonBeforePush: '{}',
+        jsonBeforeAnyChange: '{}',
       ),
     );
     selectedState = capiBloc.state;
@@ -174,7 +174,7 @@ void main() {
           treeC: newTreeC(modelSnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
-          jsonBeforePush: '{}',
+          jsonBeforeAnyChange: '{}',
         ),
       ),
       act: (bloc) => bloc.add(CAPIEvent.selectNode(
@@ -189,7 +189,7 @@ void main() {
             nodeBeingDeleted: null,
             rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
             treeC: capiBloc.state.snippetBeingEdited!.treeC,
-            jsonBeforePush: '',
+            jsonBeforeAnyChange: '',
           ),
         ),
       ],
@@ -204,7 +204,7 @@ void main() {
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
-          jsonBeforePush: '{}',
+          jsonBeforeAnyChange: '{}',
         ),
       ),
       act: (bloc) {
@@ -240,7 +240,7 @@ void main() {
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
-          jsonBeforePush: '{}',
+          jsonBeforeAnyChange: '{}',
         ),
       ),
       seed: () => capiBloc.state.copyWith(
@@ -250,7 +250,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
           treeC: capiBloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ),
       ),
       act: (bloc) {
@@ -291,7 +291,7 @@ void main() {
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
-          jsonBeforePush: '{}',
+          jsonBeforeAnyChange: '{}',
         ),
       ),
       seed: () => capiBloc.state.copyWith(
@@ -301,7 +301,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
           treeC: capiBloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ),
       ),
       act: (bloc) {

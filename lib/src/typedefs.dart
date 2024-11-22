@@ -3,11 +3,10 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/capi_bloc.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
-import 'package:flutter_content/src/snippet/snode.dart';
 import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
 
 typedef VoterId = String;
@@ -88,16 +87,16 @@ typedef FeatureList = List<Feature>;
 // typedef FeaturedWidgetActionF = void Function(
 //     BuildContext, DiscoveryController);
 
-typedef TextStyleF = TextStyle Function();
-typedef TextAlignF = TextAlign Function();
+// typedef TextStyleF = TextStyle Function();
+// typedef TextAlignF = TextAlign Function();
 
-typedef JSON = Map<String, dynamic>;
-typedef SnippetJson = String;
-typedef Expansions = Set<STreeNode>;
-
-typedef SetStateF = void Function(VoidCallback f);
-
-typedef ColorValue = int;
+// typedef JSON = Map<String, dynamic>;
+// typedef SnippetJson = String;
+// typedef Expansions = Set<STreeNode>;
+//
+// typedef SetStateF = void Function(VoidCallback f);
+//
+// typedef ColorValue = int;
 
 // typedef PassBlocF = void Function(CAPIBloc);
 // typedef PassGlobalKeyF = void Function(GlobalKey);

@@ -3,25 +3,33 @@ import 'package:flutter_content/flutter_content.dart';
 
 class SnippetBeingEdited {
   // RouteName pageName;
-  SnippetRootNode rootNode;
+  // SnippetRootNode rootNode;
   SnippetTreeController treeC;
   STreeNode? selectedNode;
   GlobalKey? selectedTreeNodeGK;
   bool showTree;
   bool showProperties;
   STreeNode? nodeBeingDeleted;
-  String jsonBeforePush;
+  String jsonBeforeAnyChange;
 
   SnippetBeingEdited({
-    required this.rootNode,
+    // required this.rootNode,
     required this.treeC,
     this.selectedNode,
     this.selectedTreeNodeGK,
     this.showTree = true,
     this.showProperties = true,
     this.nodeBeingDeleted,
-    required this.jsonBeforePush,
+    required this.jsonBeforeAnyChange,
   });
 
+  SnippetRootNode getRootNode()  => treeC.roots.first as SnippetRootNode;
+  void setRootNode(SnippetRootNode newRootNode) => treeC.roots = [newRootNode];
+
   bool get aNodeIsSelected => selectedNode != null;
+
+  // SnippetRootNode newVersion() {
+  //   SnippetRootNode clonedSnippet = getRootNode().clone(cloneName: getRootNode().name);  // same name
+  //   return clonedSnippet;
+  // }
 }

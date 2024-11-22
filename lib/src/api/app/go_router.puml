@@ -1,0 +1,64 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+title flutter_content pkg using the go_router pkg
+
+package go_router {
+abstract class RouteBase{
+    List<RouteBase> routes;
+}
+
+class RoutingConfig {
+    List<RouteBase> routes;
+}
+
+class GoRoute extends RouteBase {
+     String? name;
+     String path;
+     GoRouterPageBuilder? pageBuilder;
+     GoRouterWidgetBuilder? builder;
+     ExitCallback? onExit;
+}
+
+class GoRouterState {
+    RouteConfiguration _configuration;
+    Uri uri;
+    String matchedLocation;
+    String? name;
+    String? path;
+    String? fullPath;
+    Map<String, String> pathParameters;
+    Object? extra;
+    GoException? error;
+    ValueKey<String> pageKey;
+    GoRoute? topRoute;
+}
+
+note right of GoRoute : typedef GoRouterPageBuilder = \n\tPage<dynamic> Function(\n\tBuildContext context,\n\tGoRouterState state,\n);
+note left of GoRoute : typedef GoRouterWidgetBuilder = \n\tWidget Function(\n\tBuildContext context,\n\tGoRouterState state,\n);
+
+RoutingConfig o-- RouteBase: " routes"
+RouteBase o-- RouteBase: routes
+
+}
+
+class EditablePageRoute extends GoRoute {
+    Widget child;
+}
+
+class DynamicPageRoute extends GoRoute {
+    SnippetTemplateEnum template;
+}
+
+enum SnippetTemplateEnum {
+  empty,
+  drive_iframe,
+  markdown,
+  scaffold_with_tabs,
+  scaffold_with_menubar,
+  splitview_with_2_placeholders,
+  rich_text,
+  callout_content
+  }
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+
+skinparam groupInheritance 99
+
+class AlgCNode extends CL
+class AssetImageNode extends CL
+class ChipNode extends CL
+class FileNode extends CL
+class FirebaseStorageImageNode extends CL
+class FSImageNode extends CL
+
+@enduml

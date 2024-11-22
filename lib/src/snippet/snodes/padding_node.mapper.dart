@@ -32,6 +32,9 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
   static String _$uid(PaddingNode v) => v.uid;
   static const Field<PaddingNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(PaddingNode v) => v.gk;
+  static const Field<PaddingNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(PaddingNode v) => v.isExpanded;
   static const Field<PaddingNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -51,6 +54,7 @@ class PaddingNodeMapper extends SubClassMapperBase<PaddingNode> {
     #padding: _f$padding,
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

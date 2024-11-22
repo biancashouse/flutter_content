@@ -74,13 +74,10 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+
     try {
       setParent(parentNode); // propagating parents down from root
       possiblyHighlightSelectedNode();
-
-      fco.afterNextBuildDo(() {
-        Future.delayed(const Duration(milliseconds: 500), () {});
-      });
 
       return FutureBuilder<UMLRecord>(
           future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
@@ -94,25 +91,28 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (cachedPngBytes == null) {
-              fco.afterNextBuildDo(() => fco.forceRefresh());
+            if (gk == null) {
+              gk = createNodeGK();
+              fco.afterMsDelayDo(100, () => fco.forceRefresh());
             }
 
             UMLRecord? umlRecord = snapshot.data;
-            return Image.memory(
-              key: createNodeGK(),
-              cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-              fit: BoxFit.fill,
+            return GestureDetector(
+              child: Image.memory(
+                key: gk,
+                // scale: 3.0,
+                cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+                fit: BoxFit.fill,
+              ),
             );
           });
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(
+          key: gk,
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 

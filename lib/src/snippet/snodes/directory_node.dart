@@ -19,7 +19,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
-          name: 'name'??'',
+          name: 'name' ?? '',
           stringValue: name,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),
@@ -27,6 +27,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           calloutWidth: 280,
         ),
       ];
+
   @override
   String toSource(BuildContext context) => "";
 
@@ -35,67 +36,72 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
     try {
       SnippetPanelState? ss = SnippetPanel.of(context);
       if (!(ss?.mounted ?? false)) {
-            return fco.errorIcon(Colors.red);
-          }
+        return Error(
+          key: createNodeGK(),
+          "FlowchartWidget",
+          color: Colors.green,
+          size: 32,
+          errorMsg: "SnippetPanel.of(context) not mounted!",
+        );
+      }
 
       // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
       SnippetTreeController treeC = SnippetTreeController(
-            roots: [this],
-            childrenProvider: (STreeNode node) {
-              if (node is FileNode) {
-                return [];
-              }
-              if (node is DirectoryNode) {
-                return node.children;
-              }
-              // unexpected
-              return [];
-            },
-            parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
-          );
+        roots: [this],
+        childrenProvider: (STreeNode node) {
+          if (node is FileNode) {
+            return [];
+          }
+          if (node is DirectoryNode) {
+            return node.children;
+          }
+          // unexpected
+          return [];
+        },
+        parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
+      );
       int nodeCount = treeC.countNodesInTree(this);
       // treeC.expand(this);
       treeC.expandCascading([this]);
       setParent(parentNode);
       possiblyHighlightSelectedNode();
       return parentNode != DirectoryNode
-              ? Material(child: _widget(nodeCount, treeC))
-              : _widget(nodeCount, treeC);
+          ? Material(child: _widget(nodeCount, treeC))
+          : _widget(nodeCount, treeC);
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
   Widget _widget(nodeCount, treeC) => Container(
-    key: createNodeGK(),
-    width: 800,
-    height: nodeCount * 60,
-    padding: const EdgeInsets.all(10),
-    child: TreeView<STreeNode>(
-      // physics: const NeverScrollableScrollPhysics(),
-      treeController: treeC,
-      shrinkWrap: true,
-      // filter or all
-      nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
-        return TreeIndentation(
-          guide: const IndentGuide.connectingLines(
-            // indent: 40.0,
-          ),
-          entry: entry,
-          child: DirectoryTreeNodeWidget(
-            treeController: treeC,
-            entry: entry,
-          ),
-        );
-      },
-    ),
-  );
+        key: createNodeGK(),
+        width: 800,
+        height: nodeCount * 60,
+        padding: const EdgeInsets.all(10),
+        child: TreeView<STreeNode>(
+          // physics: const NeverScrollableScrollPhysics(),
+          treeController: treeC,
+          shrinkWrap: true,
+          // filter or all
+          nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
+            return TreeIndentation(
+              guide: const IndentGuide.connectingLines(
+                  // indent: 40.0,
+                  ),
+              entry: entry,
+              child: DirectoryTreeNodeWidget(
+                treeController: treeC,
+                entry: entry,
+              ),
+            );
+          },
+        ),
+      );
 
   ListView immediateChildrenOnly(BuildContext context) {
     return ListView(
@@ -109,7 +115,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
                 children: [
                   const Icon(Icons.folder, size: 28, color: Colors.amber),
                   Container(
-                    child: Text(childNode.name??''),
+                    child: Text(childNode.name ?? ''),
                   ),
                 ],
               )

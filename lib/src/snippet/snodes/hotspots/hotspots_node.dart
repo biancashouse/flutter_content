@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 part 'hotspots_node.mapper.dart';
@@ -67,17 +66,25 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
-    return SizedBox(
+    return eps != null
+    ? SizedBox(
       width: width,
       height: height,
       child: TargetsWrapper(
+        enterEditModeF: eps.enterEditMode,
+        exitEditModeF: eps.exitEditMode,
         parentNode: this,
         key: createNodeGK(),
         scrollControllerName: EditablePage.name(context),
         child: super.child?.toWidget(context, this) ?? const Placeholder(),
       ),
-    );
+    )
+    : Error(
+        key: createNodeGK(),
+        FLUTTER_TYPE,
+        color: Colors.red, size: 32, errorMsg: "unable to find EditablePage.of(context)!");;
   }
 
   @override

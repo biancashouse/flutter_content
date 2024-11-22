@@ -26,7 +26,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       Field('clipboard', _$clipboard, opt: true);
   static bool _$autoPublishDefault(AppInfoModel v) => v.autoPublishDefault;
   static const Field<AppInfoModel, bool> _f$autoPublishDefault =
-      Field('autoPublishDefault', _$autoPublishDefault, opt: true, def: false);
+      Field('autoPublishDefault', _$autoPublishDefault, opt: true, def: true);
   static List<String> _$snippetNames(AppInfoModel v) => v.snippetNames;
   static const Field<AppInfoModel, List<String>> _f$snippetNames =
       Field('snippetNames', _$snippetNames, opt: true, def: const []);

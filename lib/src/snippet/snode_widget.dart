@@ -5,6 +5,8 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
 
 class NodeWidget extends StatelessWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
   final String snippetName;
   final SnippetTreeController treeController;
   final TreeEntry<STreeNode> entry;
@@ -14,6 +16,8 @@ class NodeWidget extends StatelessWidget {
 
   const NodeWidget({
     super.key,
+    required this.enterEditModeF,
+    required this.exitEditModeF,
     required this.snippetName,
     required this.treeController,
     required this.entry,
@@ -95,7 +99,7 @@ class NodeWidget extends StatelessWidget {
     return InkWell(
       // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
       // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
-      onDoubleTap: () {
+      onDoubleTap: () async {
         if (entry.node is! SnippetRootNode) return;
 
         fco.dismissAll();
@@ -103,14 +107,18 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetRootNode snippet = fco.currentSnippetVersion(
-            (entry.node as SnippetRootNode).name)!;
+        SnippetInfoModel?  snippetInfo = SnippetInfoModel.snippetInfoCache[(entry.node as SnippetRootNode).name];
+        SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
 
-        STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-          snippet.name,
-          snippet,
-          snippet.child ?? snippet,
-        );
+        if (snippet != null) {
+          STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+            enterEditModeF,
+            exitEditModeF,
+            snippet.name,
+            snippet,
+            snippet.child ?? snippet,
+          );
+        }
       },
       onTap: () {
         if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
@@ -161,9 +169,8 @@ class NodeWidget extends StatelessWidget {
               // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
             ));
             fco.afterNextBuildDo(() {
-              fco.currentPageState
-                ?..removeAllNodeWidgetOverlays()
-                ..showNodeWidgetOverlay(entry.node);
+              EditablePageState.removeAllNodeWidgetOverlays();
+              EditablePageState.showNodeWidgetOverlay(entry.node);
               // create selected node's properties tree
             });
           });

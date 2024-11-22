@@ -14,8 +14,8 @@ abstract class IModelRepository {
   // Future<void> copyFlowchartDocBetweenUsersInSameProject(String fromUserId, String toUserId);
   // Future<void> copyUsersProjects();
 
-  Future<void> possiblyLoadSnippetIntoCache(
-      {required SnippetName snippetName, required VersionId versionId});
+  Future<SnippetRootNode?> loadVersionFromFBIntoCache(
+      {required SnippetInfoModel snippetInfo, required VersionId versionId});
 
   Future<String?> getGcrServerUrl();
 
@@ -30,9 +30,16 @@ abstract class IModelRepository {
     bool? autoPublish,
   });
 
-  Future<bool> saveLatestSnippetVersion({
+  Future<bool> saveSnippetVersion({
     required SnippetName snippetName,
+    required VersionId newVersionId,
+    required SnippetRootNode newVersion,
   });
+
+  Future<void> deleteSnippetVersions(
+    final String snippetName,
+    final List<VersionId> tbd,
+  );
 
   Future<void> saveVote({
     required String pollName,
@@ -48,8 +55,7 @@ abstract class IModelRepository {
   Future<UserVoterRecord?> getUsersVote({
     required String pollName,
     required VoterId voterId,
-  }
-  );
+  });
 
   Future<Map<PollOptionId, List<EmailAddress>>> getVotersByOption({
     required String pollName,
@@ -62,5 +68,4 @@ abstract class IModelRepository {
       {required Reference ref, FSFolderNode? parentNode});
 
   Future<bool> tokenConfirmed(String token);
-
 }

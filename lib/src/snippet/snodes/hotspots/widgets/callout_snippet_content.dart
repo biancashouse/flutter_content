@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
@@ -24,6 +23,8 @@ void refreshSnippetContentCallout(TargetModel tc) {
 
 /// returning false means user tapped the x
 Future<void> showSnippetContentCallout({
+  required VoidCallback enterEditModeF,
+  required VoidCallback exitEditModeF,
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
@@ -66,9 +67,12 @@ Future<void> showSnippetContentCallout({
       );
 
   Widget editableContent() => GestureDetector(
-        onTap: () {
-          SnippetRootNode? snippet = fco.currentSnippetVersion(tc.contentSnippetName);
+        onTap: () async {
+          SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[tc.contentSnippetName];
+          SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
+            enterEditModeF,
+            exitEditModeF,
             tc.contentSnippetName,
             snippet!,
             snippet.child ?? snippet,

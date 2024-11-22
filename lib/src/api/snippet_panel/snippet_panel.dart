@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
@@ -13,9 +12,11 @@ class SnippetPanel extends StatefulWidget {
 
   // from canned snippet
   final String? snippetName;
+
   // or by providing tree of nodes
   final SnippetRootNode? snippetRootNode;
   final Map<String, void Function(BuildContext)>? handlers;
+
   // final bool allowButtonCallouts;
   // final bool justPlaying;
 
@@ -53,7 +54,8 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   }) : snippetRootNode = null;
 
-  static SnippetPanelState? of(BuildContext context) => context.findAncestorStateOfType<SnippetPanelState>();
+  static SnippetPanelState? of(BuildContext context) =>
+      context.findAncestorStateOfType<SnippetPanelState>();
 
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
@@ -71,16 +73,19 @@ class SnippetPanel extends StatefulWidget {
   }
 }
 
-class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
+class SnippetPanelState extends State<SnippetPanel>
+    with TickerProviderStateMixin {
   // late String snippetNameToUse;
   // NOTE - tabcontroller will only be instantiated if a TabBar calls createTabController
-  TabController? tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
+  TabController?
+      tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
   GlobalKey? tabBarGK;
   late List<int> prevTabQ;
-  bool? backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
+  bool?
+      backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
   final prevTabQSize = ValueNotifier<int>(0);
 
-  String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
+  String? snippetName() => widget.snippetName ?? widget.snippetRootNode?.name;
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -129,7 +134,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
       fco.logi("registered handler '$key'");
     });
 
-    if (widget.panelName != null && !fco.placeNames.contains(widget.panelName)) {
+    if (widget.panelName != null &&
+        !fco.placeNames.contains(widget.panelName)) {
       fco.placeNames.add(widget.panelName!);
     }
 
@@ -161,92 +167,119 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // if (FCO.snippetPlacementMap.containsKey(widget.panelName)) {
     //   snippetNameToUse = FCO.snippetPlacementMap[widget.panelName]!;
     // }
-    return FutureBuilder<void>(
-        future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-          snippetName: snippetName(),
-          snippetRootNode: widget.snippetRootNode,
-        ),
-        builder: (futureContext, snapshot) {
-          return snapshot.connectionState != ConnectionState.done
-              ? const Center(child: CircularProgressIndicator())
-              : BlocBuilder<CAPIBloC, CAPIState>(
-                  key: widget.panelName != null ? fco.panelGkMap[widget.panelName!] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]') : null,
-                  buildWhen: (previous, current) => !current.onlyTargetsWrappers,
-                  builder: (blocContext, state) {
-                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState>");
-                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
-                    // // var fc = FC();
-                    // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
-                    // fco.logi("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
-                    // // snippet panel renders a canned snippet or a supplied snippet tree
-                    //return _renderSnippet(context);
-                    Widget snippetWidget;
-                    try {
-                      // in case did a revert, ignore snapshot data and use the AppInfo instead
-                      String sName = snippetName();
-                      SnippetRootNode? snippet = fco.currentSnippetVersion(sName);
-                      snippet?.validateTree();
-                      // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-                      snippetWidget =
-                      snippet == null
-                          ? fco.errorIcon(Colors.red)
-                          : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
-                    } catch (e) {
-                      fco.logi('snippetRootNode.toWidget() failed!');
-                      snippetWidget = Material(
-                        textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              fco.errorIcon(Colors.red),
-                              const Gap(10),
-                              fco.coloredText(e.toString()),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                    return snippetWidget;                  },
-                );
+
+    // SnippetInfoModel.debug();
+
+    // if a snippet passed in, don't need a futurebuilder
+
+
+    return BlocBuilder<CAPIBloC, CAPIState>(
+        key: widget.panelName != null
+            ? fco.panelGkMap[widget.panelName!] =
+                GlobalKey(debugLabel: 'Panel[${widget.panelName}]')
+            : null,
+        buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+        builder: (blocContext, state) {
+          return FutureBuilder<SnippetRootNode?>(
+              future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                snippetName: snippetName() ?? 'unnamed snippet',
+                snippetRootNode: widget.snippetRootNode,
+              ),
+              builder: (futureContext, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                // SnippetInfoModel.debug();
+                SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
+                // SnippetInfoModel.debug();
+
+                Widget snippetWidget;
+                try {
+                  // in case did a revert, ignore snapshot data and use the AppInfo instead
+                  // String sName = snippetName();
+
+                  SnippetRootNode? snippet = snapshot.data; //fco.currentSnippetVersion(sName);
+
+                  // var cache = fco.snippetInfoCache;
+                  // SnippetInfoModel? snippetInfo = cache[sName];
+                  // VersionId? currentVersionId = snippetInfo?.currentVersionId;
+
+                  snippet?.validateTree();
+                  // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+                  snippetWidget = snippet == null
+                      ? Error("SnippetPanel",
+                          color: Colors.red,
+                          size: 32,
+                          errorMsg: "null snippet!",
+                          key: GlobalKey())
+                      : snippet.child?.toWidget(futureContext, snippet) ??
+                          const Placeholder();
+                } catch (e) {
+                  fco.logi('snippetRootNode.toWidget() failed!');
+                  snippetWidget = Material(
+                    textStyle:
+                        const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Error("FlowchartWidget",
+                          color: Colors.red,
+                          size: 32,
+                          errorMsg: e.toString(),
+                          key: GlobalKey()),
+                    ),
+                  );
+                }
+                return snippetWidget;
+                // return BlocListener<CAPIBloC, CAPIState>(
+                //   listenWhen: (CAPIState previous, CAPIState current) {
+                //     return previous.snippetBeingEdited?.rootNode !=
+                //         current.snippetBeingEdited?.rootNode
+                //     && fco.anyPresent([snippetName()]);
+                //   },
+                //   listener: (context, state) {
+                //     print("ROOT CHANGED");
+                //   },
+                //   child: snippetWidget,
+                // );
+              });
         });
   }
 
-  // _renderSnippet(context) {
-  //   return FutureBuilder<void>(
-  //
-  //     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
-  //     builder: (futureContext, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         Widget snippetWidget;
-  //         try {
-  //           // in case did a revert, ignore snapshot data and use the AppInfo instead
-  //           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
-  //           snippet?.validateTree();
-  //           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-  //           snippetWidget =
-  //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
-  //         } catch (e) {
-  //           fco.logi('snippetRootNode.toWidget() failed!');
-  //           snippetWidget = Material(
-  //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-  //             child: SingleChildScrollView(
-  //               scrollDirection: Axis.horizontal,
-  //               child: Row(
-  //                 children: [
-  //                   const Icon(Icons.error, color: Colors.redAccent),
-  //                   Gap(10),
-  //                   FCO.coloredText(e.toString()),
-  //                 ],
-  //               ),
-  //             ),
-  //           );
-  //         }
-  //         return snippetWidget;
-  //       } else {
-  //         return const Center(child: CircularProgressIndicator());
-  //       }
-  //     });
-  // }
+// _renderSnippet(context) {
+//   return FutureBuilder<void>(
+//
+//     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
+//     builder: (futureContext, snapshot) {
+//       if (snapshot.connectionState == ConnectionState.done) {
+//         Widget snippetWidget;
+//         try {
+//           // in case did a revert, ignore snapshot data and use the AppInfo instead
+//           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
+//           snippet?.validateTree();
+//           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+//           snippetWidget =
+//               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+//         } catch (e) {
+//           fco.logi('snippetRootNode.toWidget() failed!');
+//           snippetWidget = Material(
+//             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+//             child: SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: [
+//                   const Icon(Icons.error, color: Colors.redAccent),
+//                   Gap(10),
+//                   FCO.coloredText(e.toString()),
+//                 ],
+//               ),
+//             ),
+//           );
+//         }
+//         return snippetWidget;
+//       } else {
+//         return const Center(child: CircularProgressIndicator());
+//       }
+//     });
+// }
 }

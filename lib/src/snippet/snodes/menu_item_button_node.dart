@@ -72,13 +72,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
             child: child?.toWidget(context, this),
           );
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 

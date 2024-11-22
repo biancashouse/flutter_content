@@ -63,6 +63,7 @@ class CAPIState with _$CAPIState {
     //====  SNIPPET EDITING  ===================================================================
     //==========================================================================================
     SnippetBeingEdited? snippetBeingEdited,
+    // VersionId? snippetBeingEditedVersionId,
 
     @Default(true) bool ONLY_TESTING,
   }) = _CAPIState;

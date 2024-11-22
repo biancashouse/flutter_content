@@ -233,7 +233,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
     registerWebViewImplementation();
 
     fInitApp = _initApp();
-  }
+
+   }
 
   // @override
   // void didChangeDependencies() {

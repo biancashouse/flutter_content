@@ -121,7 +121,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    fco.errorIcon(Colors.red),
+                    Icon(Icons.error, color:Colors.red),
                     const Gap(10),
                     fco.coloredText(e.toString()),
                   ],
@@ -130,13 +130,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
             );
           }
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
@@ -145,13 +139,13 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
       (leading == null && title == null && bottom == null && actions == null);
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,
       NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is! ScaffoldNode)
         ...super.menuAnchorWidgets_Heading(action),
       if (getParent() is! ScaffoldNode)
-        menuItemButton("Scaffold", ScaffoldNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF,"Scaffold", ScaffoldNode, action),
     ];
   }
 

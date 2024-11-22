@@ -1,9 +1,11 @@
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 
 class TargetColourTool extends StatelessWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
@@ -11,6 +13,8 @@ class TargetColourTool extends StatelessWidget {
   final bool justPlaying;
 
   const TargetColourTool(
+    this.enterEditModeF,
+    this.exitEditModeF,
     this.tc,
     this.wrapperRect,
     this.onParentBarrierTappedF, {
@@ -24,7 +28,6 @@ class TargetColourTool extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     void colorPicked(Color pickedColor) {
       tc.setCalloutColor(pickedColor);
       // STreeNode.hideAllTargetCovers();
@@ -41,6 +44,8 @@ class TargetColourTool extends StatelessWidget {
           ?.zoomImmediately(tc.transformScale, tc.transformScale);
       tc.targetsWrapperState()?.refresh(() {
         showSnippetContentCallout(
+          enterEditModeF: enterEditModeF,
+          exitEditModeF: exitEditModeF,
           tc: tc,
           wrapperRect: wrapperRect,
           justPlaying: false,
@@ -96,6 +101,8 @@ class TargetColourTool extends StatelessWidget {
   }
 
   static show(
+    final VoidCallback enterEditModeF,
+    final VoidCallback exitEditModeF,
     final TargetModel tc,
     final Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
@@ -123,6 +130,8 @@ class TargetColourTool extends StatelessWidget {
         notUsingHydratedStorage: true,
       ),
       calloutContent: TargetColourTool(
+        enterEditModeF,
+        exitEditModeF,
         tc,
         wrapperRect,
         onBarrierTappedF,

@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
@@ -145,7 +144,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
             )),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      fco.addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      fco.addSubRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {

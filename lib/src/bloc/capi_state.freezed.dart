@@ -61,7 +61,7 @@ mixin _$CAPIState {
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
   SnippetBeingEdited? get snippetBeingEdited =>
-      throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // VersionId? snippetBeingEditedVersionId,
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
 
   /// Create a copy of CAPIState
@@ -430,6 +430,7 @@ class _$CAPIStateImpl extends _CAPIState {
 //==========================================================================================
   @override
   final SnippetBeingEdited? snippetBeingEdited;
+// VersionId? snippetBeingEditedVersionId,
   @override
   @JsonKey()
   final bool ONLY_TESTING;
@@ -588,7 +589,8 @@ abstract class _CAPIState extends CAPIState {
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
   @override
-  SnippetBeingEdited? get snippetBeingEdited;
+  SnippetBeingEdited?
+      get snippetBeingEdited; // VersionId? snippetBeingEditedVersionId,
   @override
   bool get ONLY_TESTING;
 

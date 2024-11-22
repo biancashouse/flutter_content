@@ -44,28 +44,10 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
             );
           } catch (e) {
             fco.logi('MenuBarNode.toWidget() failed!');
-            return Material(
-              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    fco.errorIcon(Colors.red),
-                    const Gap(10),
-                    fco.coloredText(e.toString()),
-                  ],
-                ),
-              ),
-            );
-          }
+            return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      }
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 

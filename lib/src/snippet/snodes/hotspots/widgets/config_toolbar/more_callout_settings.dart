@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_bool.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_number_T.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
+  final VoidCallback enterEditModeF;
+  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final Rect wrapperRect;
   final String? scrollControllerName;
 
   const MoreCalloutConfigSettings(
-    this.tc, this.wrapperRect, {
+    this.enterEditModeF,
+    this.exitEditModeF,
+    this.tc,
+    this.wrapperRect, {
     this.scrollControllerName,
     super.key,
   });
@@ -21,7 +26,10 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static show(
-    final TargetModel tc, final Rect wrapperRect, {
+    final VoidCallback enterEditModeF,
+    final VoidCallback exitEditModeF,
+    final TargetModel tc,
+    final Rect wrapperRect, {
     String? scrollControllerName,
     required final bool justPlaying,
   }) {
@@ -34,9 +42,12 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
-              tc, wrapperRect,
-              scrollControllerName: scrollControllerName,
-            ),
+          enterEditModeF,
+          exitEditModeF,
+          tc,
+          wrapperRect,
+          scrollControllerName: scrollControllerName,
+        ),
         calloutConfig: CalloutConfig(
           cId: "more-cc-settings",
           initialCalloutW: 200,
@@ -65,8 +76,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         ));
   }
 
-  static bool isShowing() =>
-      fco.anyPresent(["more-cc-settings"]);
+  static bool isShowing() => fco.anyPresent(["more-cc-settings"]);
 }
 
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
@@ -96,7 +106,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               child: PropertyButtonNumber<double>(
                 originalValue: tc.calloutBorderRadius,
                 onChangedF: (newValue) {
-                  tc.calloutBorderRadius = double.tryParse(newValue)??0;
+                  tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
                   _refreshContentCallout();
                 },
                 alignment: Alignment.center,
@@ -117,7 +127,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 child: PropertyButtonNumber<double>(
                   originalValue: tc.calloutBorderThickness,
                   onChangedF: (newValue) {
-                    tc.calloutBorderThickness = double.tryParse(newValue)??0;
+                    tc.calloutBorderThickness = double.tryParse(newValue) ?? 0;
                     _refreshContentCallout();
                   },
                   alignment: Alignment.center,
@@ -142,7 +152,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                       _refreshContentCallout();
                     },
                     alignment: Alignment.center,
-                    label: '${tc.starPoints??7}',
+                    label: '${tc.starPoints ?? 7}',
                     buttonSize: const Size(40, 30),
                     editorSize: const Size(60, 60),
                   ),
@@ -184,11 +194,15 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   void _refreshContentCallout() {
     fco.dismiss("more-cc-settings");
     removeSnippetContentCallout(tc);
-    tc.targetsWrapperState()
+    tc
+        .targetsWrapperState()
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
-      tc: tc, wrapperRect: widget.wrapperRect,
+      enterEditModeF: widget.enterEditModeF,
+      exitEditModeF: widget.exitEditModeF,
+      tc: tc,
+      wrapperRect: widget.wrapperRect,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
       scrollControllerName: widget.scrollControllerName,

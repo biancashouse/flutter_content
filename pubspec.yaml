@@ -5,6 +5,7 @@ maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
 repository: https://github.com/biancashouse/flutter-content
+#publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -18,7 +19,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #url_strategy: ^0.2.0
+
+  flutter_web_plugins:
+    sdk: flutter
+
   #path_provider: ^2.0.11
   json_annotation: ^4.9.0
   cupertino_icons: ^1.0.2
@@ -79,7 +83,7 @@ dependencies:
   webview_flutter_android: ^4.0.0
   flutter_markdown: ^0.7.3
   gap: ^3.0.1
-  go_router: ^14.2.7
+  go_router: ^14.3.0
   clipboard: ^0.1.3
   flex_color_picker: ^3.5.1
   hive: ^2.2.3
@@ -92,11 +96,12 @@ dependencies:
   vector_math: ^2.1.4
   gradient_borders: ^1.0.1
 
-  bh_shared:  ^2.3.0
-
   routing_config_provider:  ^1.0.0
 
-  flutter_callouts: ^1.0.0
+  bh_shared:  ^2.4.0
+
+  flutter_callouts: ^1.1.1
+
 
   logging: ^1.1.0
   dart_mappable: ^4.2.2

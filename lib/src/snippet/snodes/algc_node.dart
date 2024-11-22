@@ -79,25 +79,17 @@ class AlgCNode extends CL with AlgCNodeMappable {
       try {
         return FlowchartWidget(flowchartJsonString ?? '');
       } catch (e) {
-        print(e);
-        return const Column(
-          children: [
-            Text(FLUTTER_TYPE),
-            Icon(Icons.error_outline, color: Colors.red, size: 32),
-          ],
-        );
+        return Error(key: createNodeGK(), FLUTTER_TYPE,
+            color: Colors.green, size: 32, errorMsg: e.toString());
       }
     } else {
       // try to fetch from algc firestore using ea and fid
       String? vea = fco.hiveBox.get('vea');
       vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
       if (vea.isEmpty) {
-        return const Column(
-          children: [
-            Text("$FLUTTER_TYPE - you're not signed in"),
-            Icon(Icons.error_outline, color: Colors.red, size: 32),
-          ],
-        );      }
+        return Error(key: createNodeGK(), FLUTTER_TYPE,
+            color: Colors.green, size: 32, errorMsg: "vea.isEmpty!");
+      }
       if ((vea.isNotEmpty ?? false) && (fId?.isNotEmpty ?? false)) {
         try {
           return FutureBuilder<String?>(
@@ -111,31 +103,14 @@ class AlgCNode extends CL with AlgCNodeMappable {
                 try {
                   return FlowchartWidget(flowchartJsonString ?? '');
                 } catch (e) {
-                  print(e);
-                  return const Column(
-                    children: [
-                      Text(FLUTTER_TYPE),
-                      Icon(Icons.error_outline, color: Colors.red, size: 32),
-                    ],
-                  );
+                  return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
                 }
               });
         } catch (e) {
-          print(e);
-          return const Column(
-            children: [
-              Text(FLUTTER_TYPE),
-              Icon(Icons.error_outline, color: Colors.red, size: 32),
-            ],
-          );
+          return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
         }
       } else {
-        return const Column(
-          children: [
-            Text("$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !"),
-            Icon(Icons.error_outline, color: Colors.red, size: 32),
-          ],
-        );
+        return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
       }
     }
   }

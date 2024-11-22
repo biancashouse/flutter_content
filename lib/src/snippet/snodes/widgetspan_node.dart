@@ -23,8 +23,8 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
       );
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
+      return  WidgetSpan(child: Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
-    return  WidgetSpan(child: fco.errorIcon(Colors.red));
   }
 
   @override
@@ -40,10 +40,10 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("TextSpan", TextSpanNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"TextSpan", TextSpanNode, action),
     ];
   }
 

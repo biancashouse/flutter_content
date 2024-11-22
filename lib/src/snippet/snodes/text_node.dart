@@ -254,8 +254,8 @@ class TextNode extends CL with TextNodeMappable {
       return t;
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
+      return  Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString());
     }
-    return fco.errorIcon(Colors.red);
   }
 
   // @override

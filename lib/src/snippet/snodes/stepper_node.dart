@@ -52,13 +52,7 @@ class StepperNode extends MC with StepperNodeMappable {
             ),
           );
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
@@ -74,10 +68,10 @@ class StepperNode extends MC with StepperNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Step", StepNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"Step", StepNode, action),
     ];
   }
 

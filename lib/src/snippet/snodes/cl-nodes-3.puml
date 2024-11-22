@@ -1,0 +1,10 @@
+@startuml
+skinparam groupInheritance 99
+
+class RichTextNode extends CL
+class StepNode extends CL
+class TextNode extends CL
+class UMLImageNode extends CL
+class YTNode extends CL
+
+@enduml

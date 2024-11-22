@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -68,61 +68,56 @@ part 'snode.mapper.dart';
 // };
 
 const List<Type> childlessSubClasses = [
-  TextNode,
-  RichTextNode,
-  AssetImageNode,
   AlgCNode,
-  UMLImageNode,
-  FSImageNode,
-  IFrameNode,
-  GoogleDriveIFrameNode,
-  FileNode,
-  // FSFileNode,
-  FirebaseStorageImageNode,
-  // SnippetRefNode,
-  GapNode,
-  MarkdownNode,
-  /* , NetworkImageNode*/
-  PollOptionNode,
-  StepNode,
-  PlaceholderNode,
-  YTNode,
-  // FSBucketNode,
+  AssetImageNode,
   ChipNode,
+  FileNode,
+  FirebaseStorageImageNode,
+  FSImageNode,
+  GapNode,
+  GoogleDriveIFrameNode,
+  IFrameNode,
+  MarkdownNode,
+  PlaceholderNode,
+  PollOptionNode,
+  RichTextNode,
+  StepNode,
+  TextNode,
+  UMLImageNode,
+  YTNode,
 ];
 
 const List<Type> singleChildSubClasses = [
-  SizedBoxNode,
-  SingleChildScrollViewNode,
-  ContainerNode,
+  AlignNode,
+  AspectRatioNode,
+  ButtonNode,
   CenterNode,
+  ContainerNode,
+  DefaultTextStyleNode,
   ExpandedNode,
   FlexibleNode,
-  PaddingNode,
-  PositionedNode,
-  AlignNode,
-  ButtonNode,
-  SnippetRootNode,
-  DefaultTextStyleNode,
-  AspectRatioNode,
   GenericSingleChildNode,
   HotspotsNode,
+  PaddingNode,
+  PositionedNode,
+  SingleChildScrollViewNode,
+  SizedBoxNode,
+  SnippetRootNode,
 ];
 
 const List<Type> multiChildSubClasses = [
-  FlexNode,
-  StackNode,
-  DirectoryNode,
-  // FSDirectoryNode,
-  SplitViewNode,
-  MenuBarNode,
-  SubmenuButtonNode,
   CarouselNode,
+  DirectoryNode,
+  FlexNode,
+  GenericMultiChildNode,
+  MenuBarNode,
   PollNode,
+  SplitViewNode,
+  StackNode,
   StepperNode,
+  SubmenuButtonNode,
   TabBarNode,
   TabBarViewNode,
-  GenericMultiChildNode,
   WrapNode,
 ];
 
@@ -164,6 +159,7 @@ enum NodeAction {
 ])
 abstract class STreeNode extends Node with STreeNodeMappable {
   String uid = UniqueKey().toString();
+  GlobalKey? gk;
   PTreeNodeTreeController? _pTreeC;
   ScrollController? _propertiesPaneSC;
   List<PTreeNode>? _properties;
@@ -222,6 +218,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // static final GlobalKey _selectedWidgetGK = GlobalKey(debugLabel: "selectionGK");
 
   void showTappableNodeWidgetOverlay({
+    required VoidCallback enterEditModeF,
+    required VoidCallback exitEditModeF,
     required String nodeTypeName,
     required Rect r,
     String? scrollControllerName,
@@ -261,7 +259,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             hideAllSingleTargetBtns();
 // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
 // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-            fco.currentPageState?.removeAllNodeWidgetOverlays();
+            EditablePageState.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
             // tapped a real widget with GlobalKey of nodeWidgetGK
             var tappedNodeName = nodeTypeName;
@@ -270,6 +268,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             bool isMOunted = cc?.mounted ?? false;
             var cw = nodeWidgetGK?.currentWidget;
             pushThenShowNamedSnippetWithNodeSelected(
+              enterEditModeF,
+              exitEditModeF,
               snippetName,
               this,
               this,
@@ -374,12 +374,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   // node is where the snippet tree starts (not necc the snippet's root node)
   // selection is poss a current (lower) selection in the tree
-  static void pushThenShowNamedSnippetWithNodeSelected(
+  static Future<void> pushThenShowNamedSnippetWithNodeSelected(
+    VoidCallback enterEditModeF,
+    VoidCallback exitEditModeF,
     SnippetName snippetName,
     STreeNode startingAtNode,
     STreeNode selectedNode, {
     TargetModel? targetBeingConfigured,
-  }) {
+  }) async {
+    debugPrint(
+        "pushThenShowNamedSnippetWithNodeSelected($snippetName, ${selectedNode.toString()})");
     STreeNode? highestNode;
     if (startingAtNode is SnippetRootNode) {
       highestNode = startingAtNode.child; //JIC
@@ -390,7 +394,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
-    SnippetRootNode? rootNode = fco.currentSnippetVersion(snippetName);
+    SnippetInfoModel? snippetInfo =
+        SnippetInfoModel.snippetInfoCache[snippetName];
+    if (snippetInfo == null) return;
+
+    SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     if (rootNode == null) return;
     FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(
       rootNode: rootNode,
@@ -402,13 +410,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // fco.logi('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     fco.afterNextBuildDo(() {
-      var gk = startingAtNode.nodeWidgetGK;
+      enterEditModeF();
+      var nodeGK = startingAtNode.nodeWidgetGK;
 
-      var tappedNodeName = gk;
-      var cs = gk?.currentState;
-      var cc = gk?.currentContext;
+      var tappedNodeName = nodeGK;
+      var cs = nodeGK?.currentState;
+      var cc = nodeGK?.currentContext;
       // bool isMOunted = cc?.mounted ?? false;
-      var cw = gk?.currentWidget;
+      var cw = nodeGK?.currentWidget;
 
       if (FlutterContentApp.snippetBeingEdited != null) {
         FlutterContentApp.snippetBeingEdited?.treeC.expandAll();
@@ -419,6 +428,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         }
         fco.hide(CalloutConfigToolbar.CID);
         fco.showSnippetTreeAndPropertiesCallout(
+          enterEditModeF: enterEditModeF,
+          exitEditModeF: exitEditModeF,
           targetGKF: () => startingAtNode.nodeWidgetGK,
           onDismissedF: () {
 // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
@@ -426,28 +437,33 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // fco.printFeatures();
             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
             var currPageState = fco.currentPageState;
+
             currPageState?.unhideFAB();
             fco.dismiss(pinkOverlayFeature);
             // unhide if present
             fco.unhide(CalloutConfigToolbar.CID);
             // fco.printFeatures();
             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
-            fco.dismiss(TREENODE_MENU_CALLOUT);
+            // fco.dismiss(TREENODE_MENU_CALLOUT);
             fco.hideClipboard();
+            debugPrint(
+                "onDismissedF - $snippetName, ${selectedNode.toString()})");
+            exitEditModeF();
             FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
-            // FlutterContentPage.exitEditMode();
             // skip if no change
-            String? jsonBeforePush =
-                FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
-            String? currentJsonS =
-                FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
-            if (jsonBeforePush == currentJsonS) return;
-            if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
-              fco.cacheAndSaveANewSnippetVersion(
-                snippetName: snippetName,
-                rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
-              );
-            }
+            // String? jsonBeforePush =
+            //     FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
+            // String? currentJsonS =
+            //     FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
+            // if (jsonBeforePush == currentJsonS) return;
+            // if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
+            //   fco.cacheAndSaveANewSnippetVersion(
+            //     snippetName: snippetName,
+            //     rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
+            //   );
+            // }
+            // fco.afterNextBuildDo(() {
+            // });
             // FCO.capiBloc.add(
             //       CAPIEvent.saveSnippet(
             //         snippetRootNode: FCO.snippetBeingEdited!.rootNode,
@@ -474,9 +490,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
         fco.afterNextBuildDo(() {
-          fco.currentPageState
-            ?..removeAllNodeWidgetOverlays()
-            ..showNodeWidgetOverlay(selectedNode);
+          EditablePageState.removeAllNodeWidgetOverlays();
+          EditablePageState.showNodeWidgetOverlay(selectedNode);
           // create selected node's properties tree
         });
 
@@ -503,14 +518,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     });
   }
 
-  void refreshWithUpdate(VoidCallback assignF,
-      {bool alsoRefreshPropertiesView = false}) {
+  void refreshWithUpdate(VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
+    // FlutterContentApp.capiState.snippetBeingEdited?.newVersion();
+
     assignF.call();
     fco.forceRefresh();
     fco.afterNextBuildDo(() {
+      fco.saveNewVersion(snippet: rootNodeOfSnippet());
       if (FlutterContentApp.selectedNode != null) {
-        fco.currentPageState
-            ?.showNodeWidgetOverlay((FlutterContentApp.selectedNode)!);
+        EditablePageState.showNodeWidgetOverlay(
+            (FlutterContentApp.selectedNode)!);
       }
     });
   }
@@ -790,15 +807,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static List<TargetModel> allTargets() {
     // var fc = FC();
     List<TargetModel> foundTargets = [];
-    for (SnippetName snippetName in fco.snippetInfoCache.keys) {
+    for (SnippetName snippetName in SnippetInfoModel.snippetInfoCache.keys) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = fco.snippetInfoCache[snippetName];
+      SnippetInfoModel? snippetInfo =
+          SnippetInfoModel.snippetInfoCache[snippetName];
       if (snippetInfo == null) return foundTargets;
-      VersionId? versionId = fco.canEditContent.value
-          ? snippetInfo.editingVersionId
-          : snippetInfo.publishedVersionId;
+      VersionId? versionId = snippetInfo.currentVersionId();
       if (versionId == null) return foundTargets;
-      List<STreeNode> tws = fco.versionCache[snippetName]?[versionId]
+      List<STreeNode> tws = snippetInfo
+              .currentVersionFromCache()
               ?.findDescendantsOfType(HotspotsNode) ??
           [];
       for (STreeNode tw in tws) {
@@ -1170,7 +1187,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   bool canRemove() => true;
 
-  Widget insertItemMenuAnchor(
+  Widget insertItemMenuAnchor(VoidCallback enterEditModeF, exitEditModeF,
       {required NodeAction action,
       String? label,
       Color? bgColor,
@@ -1186,7 +1203,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                     ? 'insert after...'
                     : 'append child...';
 
-    List<Widget> menuChildren = menuAnchorWidgets(action);
+    List<Widget> menuChildren =
+        menuAnchorWidgets(enterEditModeF, exitEditModeF, action);
     return MenuAnchor(
       menuChildren: menuChildren,
       builder:
@@ -1238,20 +1256,25 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     );
   }
 
-  List<Widget> menuAnchorWidgets(NodeAction action) {
+  List<Widget> menuAnchorWidgets(
+      VoidCallback enterEditModeF, exitEditModeF, NodeAction action) {
     List<Widget> mis = [];
     if (action == NodeAction.wrapWith) {
-      mis.addAll(menuAnchorWidgets_WrapWith(action, false));
+      mis.addAll(menuAnchorWidgets_WrapWith(
+          enterEditModeF, exitEditModeF, action, false));
     }
     if (action == NodeAction.addChild) {
-      mis.addAll(menuAnchorWidgets_Append(action, false));
+      mis.addAll(menuAnchorWidgets_Append(
+          enterEditModeF, exitEditModeF, action, false));
     }
     if (action == NodeAction.addSiblingBefore ||
         action == NodeAction.addSiblingAfter) {
-      mis.addAll(menuAnchorWidgets_InsertSibling(action, false));
+      mis.addAll(menuAnchorWidgets_InsertSibling(
+          enterEditModeF, exitEditModeF, action, false));
     }
     if (action == NodeAction.replaceWith) {
-      mis.addAll(menuAnchorWidgets_ReplaceWith(action, false));
+      mis.addAll(menuAnchorWidgets_ReplaceWith(
+          enterEditModeF, exitEditModeF, action, false));
     }
     return mis;
   }
@@ -1279,71 +1302,103 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   List<Type> insertSiblingRecommendations() => [];
 
-  List<Widget> menuAnchorWidgets_WrapWith(
-      NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF,
+      VoidCallback exitEditModeF, NodeAction action, bool? skipHeading) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Align", AlignNode, action),
-          menuItemButton("Center", CenterNode, action),
-          menuItemButton("Container", ContainerNode, action),
-          menuItemButton("Padding", PaddingNode, action),
-          menuItemButton("SizedBox", SizedBoxNode, action),
           menuItemButton(
-              "SingleChildScrollView", SingleChildScrollViewNode, action),
+              enterEditModeF, exitEditModeF, "Align", AlignNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Center", CenterNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Container",
+              ContainerNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Padding", PaddingNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "SizedBox", SizedBoxNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "SingleChildScrollView",
+              SingleChildScrollViewNode, action),
           const Divider(),
-          menuItemButton("Column", ColumnNode, action),
-          menuItemButton("Row", RowNode, action),
-          menuItemButton("Wrap", WrapNode, action),
-          menuItemButton("Expanded", ExpandedNode, action),
-          menuItemButton("Flexible", FlexibleNode, action),
-          menuItemButton("Stack", StackNode, action),
-          menuItemButton("Positioned", PositionedNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Column", ColumnNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Row", RowNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Wrap", WrapNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Expanded", ExpandedNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Flexible", FlexibleNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Stack", StackNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Positioned",
+              PositionedNode, action),
           const Divider(),
-          menuItemButton("Scaffold", ScaffoldNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Scaffold", ScaffoldNode, action),
         ],
         child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
-      menuItemButton("SplitView", SplitViewNode, action),
-      menuItemButton("Hotspots", HotspotsNode, action),
-      menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
-      menuItemButton("Aspect Ratio", AspectRatioNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "SplitView", SplitViewNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "Hotspots", HotspotsNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "DefaultTextStyle",
+          DefaultTextStyleNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "Aspect Ratio",
+          AspectRatioNode, action),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(VoidCallback enterEditModeF,
+      exitEditModeF, NodeAction action, bool? skipHeading) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Align", AlignNode, action),
-          menuItemButton("Center", CenterNode, action),
-          menuItemButton("Container", ContainerNode, action),
-          menuItemButton("Expanded", ExpandedNode, action),
-          // _addChildMenuItemButton("IntrinsicHeight", IntrinsicHeightNode, action),
-          // _addChildMenuItemButton("IntrinsicWidth", IntrinsicWidthNode, action),
-          menuItemButton("Padding", PaddingNode, action),
-          menuItemButton("SizedBox", SizedBoxNode, action),
           menuItemButton(
-              "SingleChildScrollView", SingleChildScrollViewNode, action),
+              enterEditModeF, exitEditModeF, "Align", AlignNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Center", CenterNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Container",
+              ContainerNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Expanded", ExpandedNode, action),
+          // _addChildmenuItemButton(enterEditModeF, exitEditModeF,"IntrinsicHeight", IntrinsicHeightNode, action),
+          // _addChildmenuItemButton(enterEditModeF, exitEditModeF,"IntrinsicWidth", IntrinsicWidthNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Padding", PaddingNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "SizedBox", SizedBoxNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "SingleChildScrollView",
+              SingleChildScrollViewNode, action),
           const Divider(),
-          menuItemButton("Column", ColumnNode, action),
-          menuItemButton("Row", RowNode, action),
-          menuItemButton("Wrap", WrapNode, action),
-          menuItemButton("Stack", StackNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Column", ColumnNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Row", RowNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Wrap", WrapNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Stack", StackNode, action),
           const Divider(),
-          menuItemButton("Scaffold", ScaffoldNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Scaffold", ScaffoldNode, action),
         ],
         child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
-          menuItemButton("Text", TextNode, action),
-          menuItemButton("RichText", RichTextNode, action),
-          menuItemButton("TextSpan", TextSpanNode, action),
-          menuItemButton("WidgetSpan", WidgetSpanNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "DefaultTextStyle",
+              DefaultTextStyleNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Text", TextNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "RichText", RichTextNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "TextSpan", TextSpanNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "WidgetSpan",
+              WidgetSpanNode, action),
         ],
         child: fco.coloredText("text", fontWeight: FontWeight.normal),
       ),
@@ -1351,103 +1406,143 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuChildren: [
           SubmenuButton(
             menuChildren: [
-              menuItemButton("MenuItemButton", MenuItemButtonNode, action),
-              menuItemButton("SubmenuButton", SubmenuButtonNode, action),
-              menuItemButton("MenuBar", MenuBarNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "MenuItemButton",
+                  MenuItemButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "SubmenuButton",
+                  SubmenuButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "MenuBar",
+                  MenuBarNode, action),
             ],
             child: fco.coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
-              menuItemButton("TabBar", TabBarNode, action),
-              menuItemButton("TabBarView", TabBarViewNode, action),
+              menuItemButton(
+                  enterEditModeF, exitEditModeF, "TabBar", TabBarNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "TabBarView",
+                  TabBarViewNode, action),
             ],
             child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
-              menuItemButton("ElevatedButton", ElevatedButtonNode, action),
-              menuItemButton("OutlinedButton", OutlinedButtonNode, action),
-              menuItemButton("TextButton", TextButtonNode, action),
-              menuItemButton("FilledButton", FilledButtonNode, action),
-              menuItemButton("IconButton", IconButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "ElevatedButton",
+                  ElevatedButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "OutlinedButton",
+                  OutlinedButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "TextButton",
+                  TextButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "FilledButton",
+                  FilledButtonNode, action),
+              menuItemButton(enterEditModeF, exitEditModeF, "IconButton",
+                  IconButtonNode, action),
             ],
             child: fco.coloredText("button", fontWeight: FontWeight.normal),
           ),
-          menuItemButton("Chip", ChipNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Chip", ChipNode, action),
         ],
         child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("Asset Image", AssetImageNode, action),
-          menuItemButton("Algorithm", AlgCNode, action),
-          menuItemButton("UML", UMLImageNode, action),
-          menuItemButton("Firebase Storage Image", FSImageNode, action),
-          menuItemButton("Carousel", CarouselNode, action),
-          menuItemButton("Aspect Ratio", AspectRatioNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Asset Image",
+              AssetImageNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Algorithm", AlgCNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "UML", UMLImageNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF,
+              "Firebase Storage Image", FSImageNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "Carousel", CarouselNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Aspect Ratio",
+              AspectRatioNode, action),
         ],
         child: fco.coloredText("image", fontWeight: FontWeight.normal),
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton("ifrane", IFrameNode, action),
-          menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action),
-          menuItemButton("File", FileNode, action),
-          menuItemButton("Directory", DirectoryNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "ifrane", IFrameNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Google Drive iframe",
+              GoogleDriveIFrameNode, action),
+          menuItemButton(
+              enterEditModeF, exitEditModeF, "File", FileNode, action),
+          menuItemButton(enterEditModeF, exitEditModeF, "Directory",
+              DirectoryNode, action),
         ],
         child: fco.coloredText("file", fontWeight: FontWeight.normal),
       ),
-      menuItemButton("SplitView", SplitViewNode, action),
-      menuItemButton("Stepper", StepperNode, action),
-      menuItemButton("Gap", GapNode, action),
-      menuItemButton("Hotspots", HotspotsNode, action),
-      menuItemButton("Poll", PollNode, action),
-      menuItemButton("Placeholder", PlaceholderNode, action),
-      menuItemButton("Youtube", YTNode, action),
-      menuItemButton("Markdown", MarkdownNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "SplitView", SplitViewNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "Stepper", StepperNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "Gap", GapNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "Hotspots", HotspotsNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "Poll", PollNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "Placeholder",
+          PlaceholderNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF, "Youtube", YTNode, action),
+      menuItemButton(
+          enterEditModeF, exitEditModeF, "Markdown", MarkdownNode, action),
       addSnippetsSubmenu(action),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_InsertSibling(
-      NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_InsertSibling(VoidCallback enterEditModeF,
+      exitEditModeF, NodeAction action, bool? skipHeading) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action),
       if (getParent() is FlexNode) ...[
-        menuItemButton("Expanded", ExpandedNode, action),
-        menuItemButton("Flexible", FlexibleNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Expanded", ExpandedNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Flexible", FlexibleNode, action),
       ],
-      if (getParent() is StepperNode) menuItemButton("Step", StepNode, action),
+      if (getParent() is StepperNode)
+        menuItemButton(enterEditModeF, exitEditModeF, "Step", StepNode, action),
       if (getParent() is StackNode)
-        menuItemButton("Positioned", PositionedNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "Positioned",
+            PositionedNode, action),
       if (getParent() is DirectoryNode) ...[
-        menuItemButton("Directory", DirectoryNode, action),
-        menuItemButton("File", FileNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Directory", DirectoryNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "File", FileNode, action),
       ],
       if (getParent() is MenuBarNode) ...[
-        menuItemButton("SubMenuButton", SubmenuButtonNode, action),
-        menuItemButton("MenuItemButton", MenuItemButtonNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "SubMenuButton",
+            SubmenuButtonNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "MenuItemButton",
+            MenuItemButtonNode, action),
       ],
       if (getParent() is SubmenuButtonNode) ...[
-        menuItemButton("MenuItemButton", MenuItemButtonNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "MenuItemButton",
+            MenuItemButtonNode, action),
       ],
       if (getParent() is CarouselNode) ...[
-        menuItemButton("AssetImage", AssetImageNode, action),
-        menuItemButton("Algorithm", AlgCNode, action),
-        menuItemButton("UML", UMLImageNode, action),
-        menuItemButton("FirestoreStorageImage", FSImageNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "AssetImage",
+            AssetImageNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Algorithm", AlgCNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "UML", UMLImageNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "FirestoreStorageImage",
+            FSImageNode, action),
       ],
       if (getParent() is TextSpanNode) ...[
-        menuItemButton("TextSpanN", TextSpanNode, action),
-        menuItemButton("WidgetSpan", WidgetSpanNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "TextSpanN", TextSpanNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "WidgetSpan",
+            WidgetSpanNode, action),
       ],
-      ...menuAnchorWidgets_Append(action, true),
+      ...menuAnchorWidgets_Append(enterEditModeF, exitEditModeF, action, true),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_ReplaceWith(
-      NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_ReplaceWith(VoidCallback enterEditModeF,
+      exitEditModeF, NodeAction action, bool? skipHeading) {
     bool skipTheRest = false;
     List<Type> replaceTypes = replaceWithOnly();
     if (replaceWithOnly().isEmpty) {
@@ -1468,37 +1563,56 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       pasteMI(action) ?? const Offstage(),
 
       for (Type type in replaceTypes)
-        menuItemButton(type.toString(), type, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, type.toString(), type, action),
       if (!skipTheRest) ...[
         SubmenuButton(
           menuChildren: [
-            menuItemButton("Align", AlignNode, action),
-            menuItemButton("Center", CenterNode, action),
-            menuItemButton("Container", ContainerNode, action),
-            menuItemButton("Padding", PaddingNode, action),
-            menuItemButton("SizedBox", SizedBoxNode, action),
             menuItemButton(
+                enterEditModeF, exitEditModeF, "Align", AlignNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Center", CenterNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Container",
+                ContainerNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Padding", PaddingNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "SizedBox",
+                SizedBoxNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF,
                 "SingleChildScrollView", SingleChildScrollViewNode, action),
             const Divider(),
-            menuItemButton("Column", ColumnNode, action),
-            menuItemButton("Row", RowNode, action),
-            menuItemButton("Wrap", WrapNode, action),
-            menuItemButton("Expanded", ExpandedNode, action),
-            menuItemButton("Flexible", FlexibleNode, action),
-            menuItemButton("Stack", StackNode, action),
-            menuItemButton("Positioned", PositionedNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Column", ColumnNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Row", RowNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Wrap", WrapNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Expanded",
+                ExpandedNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Flexible",
+                FlexibleNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Stack", StackNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Positioned",
+                PositionedNode, action),
             const Divider(),
-            menuItemButton("Scaffold", ScaffoldNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Scaffold",
+                ScaffoldNode, action),
           ],
           child: fco.coloredText("container", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action),
-            menuItemButton("Text", TextNode, action),
-            menuItemButton("RichText", RichTextNode, action),
-            menuItemButton("TextSpan", TextSpanNode, action),
-            menuItemButton("WidgetSpan", WidgetSpanNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "DefaultTextStyle",
+                DefaultTextStyleNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Text", TextNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "RichText",
+                RichTextNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "TextSpan",
+                TextSpanNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "WidgetSpan",
+                WidgetSpanNode, action),
           ],
           child: fco.coloredText("text", fontWeight: FontWeight.normal),
         ),
@@ -1506,64 +1620,91 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           menuChildren: [
             SubmenuButton(
               menuChildren: [
-                menuItemButton("MenuItemButton", MenuItemButtonNode, action),
-                menuItemButton("SubmenuButton", SubmenuButtonNode, action),
-                menuItemButton("MenuBar", MenuBarNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "MenuItemButton",
+                    MenuItemButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "SubmenuButton",
+                    SubmenuButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "MenuBar",
+                    MenuBarNode, action),
               ],
               child: fco.coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton("TabBar", TabBarNode, action),
-                menuItemButton("TabBarView", TabBarViewNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "TabBar",
+                    TabBarNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "TabBarView",
+                    TabBarViewNode, action),
               ],
               child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton("ElevatedButton", ElevatedButtonNode, action),
-                menuItemButton("OutlinedButton", OutlinedButtonNode, action),
-                menuItemButton("TextButton", TextButtonNode, action),
-                menuItemButton("FilledButton", FilledButtonNode, action),
-                menuItemButton("IconButton", IconButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "ElevatedButton",
+                    ElevatedButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "OutlinedButton",
+                    OutlinedButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "TextButton",
+                    TextButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "FilledButton",
+                    FilledButtonNode, action),
+                menuItemButton(enterEditModeF, exitEditModeF, "IconButton",
+                    IconButtonNode, action),
               ],
               child: fco.coloredText("button", fontWeight: FontWeight.normal),
             ),
-            menuItemButton("Chip", ChipNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Chip", ChipNode, action),
           ],
           child: fco.coloredText("navigation", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("Asset Image", AssetImageNode, action),
-            menuItemButton("Algorithm", AlgCNode, action),
-            menuItemButton("UML", UMLImageNode, action),
-            menuItemButton("Firebase Storage Image", FSImageNode, action),
-            menuItemButton("Carousel", CarouselNode, action),
-            menuItemButton("Aspect Ratio", AspectRatioNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Asset Image",
+                AssetImageNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "Algorithm", AlgCNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "UML", UMLImageNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF,
+                "Firebase Storage Image", FSImageNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Carousel",
+                CarouselNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Aspect Ratio",
+                AspectRatioNode, action),
           ],
           child: fco.coloredText("image", fontWeight: FontWeight.normal),
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton("ifrane", IFrameNode, action),
             menuItemButton(
-                "Google Drive iframe", GoogleDriveIFrameNode, action),
-            menuItemButton("File", FileNode, action),
-            menuItemButton("Directory", DirectoryNode, action),
+                enterEditModeF, exitEditModeF, "ifrane", IFrameNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Google Drive iframe",
+                GoogleDriveIFrameNode, action),
+            menuItemButton(
+                enterEditModeF, exitEditModeF, "File", FileNode, action),
+            menuItemButton(enterEditModeF, exitEditModeF, "Directory",
+                DirectoryNode, action),
           ],
           child: fco.coloredText("file", fontWeight: FontWeight.normal),
         ),
-        menuItemButton("SplitView", SplitViewNode, action),
-        menuItemButton("Stepper", StepperNode, action),
-        menuItemButton("Gap", GapNode, action),
-        // menuItemButton("TargetWrapper", TargetButtonNode, action),
-        menuItemButton("Hotspots", HotspotsNode, action),
-        menuItemButton("Poll", PollNode, action),
-        menuItemButton("PollOption", PollOptionNode, action),
-        menuItemButton("Placeholder", PlaceholderNode, action),
-        menuItemButton("Youtube", YTNode, action),
-        menuItemButton("Markdown", MarkdownNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "SplitView", SplitViewNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Stepper", StepperNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "Gap", GapNode, action),
+        // menuItemButton(enterEditModeF, exitEditModeF,"TargetWrapper", TargetButtonNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Hotspots", HotspotsNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "Poll", PollNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "PollOption",
+            PollOptionNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF, "Placeholder",
+            PlaceholderNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Youtube", YTNode, action),
+        menuItemButton(
+            enterEditModeF, exitEditModeF, "Markdown", MarkdownNode, action),
         addSnippetsSubmenu(action),
       ],
     ];
@@ -1584,6 +1725,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   MenuItemButton menuItemButton(
+    VoidCallback enterEditModeF,
+    exitEditModeF,
     final String label,
     Type childType,
     NodeAction action,
@@ -1598,7 +1741,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             // in case need to show more of the tree (higher up)
             fco.afterNextBuildDo(() {
               if (navUp) {
-                SnippetTreePane.navigateUpTree();
+                SnippetTreePane.navigateUpTree(enterEditModeF, exitEditModeF);
               }
             });
           } else if (action == NodeAction.replaceWith) {
@@ -1662,7 +1805,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     NodeAction action,
   ) {
     List<MenuItemButton> snippetMIs = [];
-    List<SnippetName> snippetNames = fco.snippetInfoCache.keys.toList()..sort();
+    // var snippetInfoCache = fco.snippetInfoCache;
+    List<SnippetName>? snippetNames =
+        fco.appInfo.snippetNames; //snippetInfoCache.keys.toList();
+    snippetNames.sort();
     for (String snippetName in snippetNames) {
       snippetMIs.add(
         MenuItemButton(

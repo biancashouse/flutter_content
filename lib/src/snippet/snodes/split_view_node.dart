@@ -3,7 +3,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 part 'split_view_node.mapper.dart';
@@ -75,22 +74,18 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                 constraints.maxHeight == double.infinity) ||
             (svAxis == Axis.horizontal &&
                 constraints.maxWidth == double.infinity)) {
-          return Row(
-            children: [
-              fco.errorIcon(Colors.red),
-              const Gap(10),
-              fco.coloredText('MultiSplitView has infinite constraint!',
-                  color: Colors.red),
-            ],
-          );
+          return Error(key: createNodeGK(), FLUTTER_TYPE,
+              color: Colors.red,
+              size: 32,
+              errorMsg: 'MultiSplitView has infinite constraint!');
         } else {
           List<Area> areas = super
               .children
               .map(
                 (child) => Area(builder: (ctx, area) {
-              return child.toWidget(context, this);
-            }),
-          )
+                  return child.toWidget(context, this);
+                }),
+              )
               .toList();
           return MultiSplitViewTheme(
             data: MultiSplitViewThemeData(
@@ -106,12 +101,10 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
         }
       });
     } catch (e) {
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 

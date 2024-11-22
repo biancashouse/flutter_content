@@ -24,8 +24,8 @@ MockModelRepository setupMockRepo() {
     return appInfo;
   });
   when(
-    mockRepository.possiblyLoadSnippetIntoCache(
-        snippetName: 'scaffoldWithTabs', versionId: TEST_VERSION_ID),
+    mockRepository.loadVersionFromFBIntoCache(
+        snippetInfo: 'scaffoldWithTabs', versionId: TEST_VERSION_ID),
   ).thenAnswer((_) async {
     SnippetRootNode rootNode = SnippetRootNode(
       name: 'scaffoldWithTabs',
@@ -84,12 +84,12 @@ void main() {
     final appInfo = await mockRepository.getAppInfo();
     expect(appInfo, isNotNull);
 
-    await mockRepository.possiblyLoadSnippetIntoCache(
-      snippetName: 'scaffoldWithTabs',
-      versionId: TEST_VERSION_ID,
-    );
+    // await mockRepository.loadVersionFromFBIntoCache(
+    //   snippetInfo: 'scaffoldWithTabs',
+    //   versionId: TEST_VERSION_ID,
+    // );
 
-    var snippet = fco.snippetInfoCache['scaffoldWithTabs'];
+    var snippet = SnippetInfoModel.snippetInfoCache['scaffoldWithTabs'];
 
     expect(snippet, isNotNull);
   });

@@ -11,7 +11,7 @@ class AppInfoModel with AppInfoModelMappable {
 
   AppInfoModel({
     this.clipboard,
-    this.autoPublishDefault = false,
+    this.autoPublishDefault = true,
     this.snippetNames = const [],
   });
 }

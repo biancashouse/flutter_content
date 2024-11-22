@@ -29,6 +29,9 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   static String _$uid(STreeNode v) => v.uid;
   static const Field<STreeNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(STreeNode v) => v.gk;
+  static const Field<STreeNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(STreeNode v) => v.isExpanded;
   static const Field<STreeNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -46,6 +49,7 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   @override
   final MappableFields<STreeNode> fields = const {
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

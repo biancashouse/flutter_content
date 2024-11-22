@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
@@ -16,115 +15,54 @@ import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
+  // late SnippetUndoRedoStack _ur;
+
   final IModelRepository modelRepo;
 
-  // static CAPIBloC instance(context) => BlocProvider.of<CAPIBloC>(context);
+  // void clearUR() => _ur.clear();
+  //
+  // bool get canUndo => _ur.undoQ.isNotEmpty;
+  //
+  // bool get canRedo => _ur.redoQ.isNotEmpty;
+  //
+  // int get undoCount => _ur.undoQ.length;
+  //
+  // int get redoCount => _ur.redoQ.length;
+
+  // void createUndo() {
+  //   if (state.snippetBeingEdited?.rootNode != null) {
+  //     _ur.createUndo(snippet: state.snippetBeingEdited!.rootNode);
+  //   }
+  // }
 
   CAPIBloC({
     required this.modelRepo,
-    SnippetBeingEdited? mockSnippetBeingEdited,  // for testing
-    // bool useFirebase = false,
-    // required bool localTestingFilePaths,
-    // required Map<String, TargetGroupModel> targetGroupMap,
-    // required Map<String, TargetModel> singleTargetMap,
-    // EncodedJson? jsonRootDirectoryNode,
-    // required Map<SnippetName, SnippetRootNode> snippetsMap,
+    SnippetBeingEdited? mockSnippetBeingEdited, // for testing
     Offset? snippetTreeCalloutInitialPos,
     double? snippetTreeCalloutW,
     double? snippetTreeCalloutH,
-    // double? snippetPropertiesCalloutW,
-    // double? snippetPropertiesCalloutH,
   }) : super(CAPIState(
-          snippetBeingEdited: mockSnippetBeingEdited,  // testing usage only
-          // useFirebase: useFirebase,
-          // localTestingFilePaths: localTestingFilePaths,
-          // targetGroupMap: targetGroupMap,
-          // jsonRootDirectoryNode: jsonRootDirectoryNode,
-          // snippetTreeCalloutInitialPos: snippetTreeCalloutInitialPos,
+          snippetBeingEdited: mockSnippetBeingEdited, // testing usage only
           snippetTreeCalloutW: snippetTreeCalloutW,
           snippetTreeCalloutH: snippetTreeCalloutH,
-          // snippetPropertiesCalloutW: snippetPropertiesCalloutW,
-          // snippetPropertiesCalloutH: snippetPropertiesCalloutH,
-          // snippetsMap: snippetsMap,
-          // modelUR: ModelUR(),
         )) {
-    // init the static map
-    // for (String id in singleTargetMap.keys) {
-    //   SingleTargetWrapper.singleTargetMap[id] = singleTargetMap[id]!.clone();
-    // }
+    // _ur = SnippetUndoRedoStack(this);
 
-    // on<AppStarted>((event, emit) => _appStarted(event, emit));
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
-    // on<TrainerSignedIn>((event, emit) => _trainerSignedIn(event, emit));
-    // on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
-    // on<EnsureSnippetPresent>(
-    // (event, emit) => _ensureSnippetPresent(event, emit));
-    // on<SaveSnippet>((event, emit) => _saveSnippet(event, emit));
-    // on<SwitchBranch>((event, emit) => _switchBranch(event, emit));
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
-    // on<InitApp>((event, emit) => _initApp(event, emit));
-    // on<RecordMatrix>((event, emit) => _recordMatrix(event, emit));
-    // on<TargetMoved>((event, emit) => _targetMoved(event, emit));
-    // on<BtnMoved>((event, emit) => _btnMoved(event, emit));
-    // on<NewTargetManual>((event, emit) => _newTargetManual(event, emit));
-    // on<NewTarget>((event, emit) => _newTarget(event, emit));
-    // on<ListViewRefreshed>((event, emit) => _listViewRefreshed(event, emit));
-    // on<DeleteTarget>((event, emit) => _deleteTarget(event, emit));
-    // on<SelectTarget>((event, emit) => _selectTarget(event, emit));
-    // on<HideIframes>((event, emit) => _hideIframes(event, emit));
-    // on<HideTargetBtn>((event, emit) => _hideTargetBtn(event, emit));
-    // on<UnhideTargetBtn>((event, emit) => _unhideTargetBtn(event, emit));
-    // on<HideAllTargetCoversAndBtns>((event, emit) => _hideAllTargetCoversAndBtns(event, emit));
-    // on<HideAllTargetBtns>(
-    //     (event, emit) => _hideAllTargetBtns(event, emit));
-    // on<HideTargetCoversExcept>(
-    //     (event, emit) => _hideTargetGroupsExcept(event, emit));
-    // on<ShowOnlyOneTarget>(
-    //     (event, emit) => _showOnlyOneTargetGroup(event, emit));
-    // on<UnhideAllTargetGroupsAndBtns>(
-    //         (event, emit) => _unhideAllTargetGroupsAndBtns(event, emit));
-    // on<UnhideAllTargetBtns>((event, emit) => _unhideAllTargetBtns(event, emit));
-    // on<ChangedOrder>((event, emit) => _changedOrder(event, emit));
-    // on<ClearSelection>((event, emit) => _clearSelection(event, emit));
-    // on<StartPlayingList>((event, emit) => _startPlayingList(event, emit));
-    // on<PlayNextInList>((event, emit) => _playNextInList(event, emit));
-    // on<TargetChanged>((event, emit) => _targetChanged(event, emit));
-    // on<ChangedCalloutPosition>((event, emit) => _changedCalloutPosition(event, emit));
-    // on<ChangedCalloutDuration>((event, emit) => _changedCalloutDuration(event, emit));
-    // on<ChangedCalloutColor>((event, emit) => _changedCalloutColor(event, emit));
-    // on<ChangedCalloutTextAlign>((event, emit) => _changedCalloutTextAlign(event, emit));
-    // on<ChangedCalloutTextStyle>((event, emit) => _changedCalloutTextStyle(event, emit));
-    // on<ChangedTargetRadius>((event, emit) => _changedTargetRadius(event, emit));
-    // on<ChangedTransformScale>((event, emit) => _changedTransformScale(event, emit));
-    //
-    // content editor
-    //
-    // on<ClearUR>((event, emit) => _clearUR(event, emit));
+    on<ToggleAutoPublishingOfSnippet>((event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
-    // on<RestoredSnippetBloc>((event, emit) => _restoredSnippetBloc(event, emit));
-    // on<CreatedSnippet>((event, emit) => _createdSnippet(event, emit));
-    on<SetPanelSnippet>(
-        (event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
-    // on<DockChangeSnippetEditor>((event, emit) => _dockChangeSnippetEditor(event, emit));
-    // on<ShowNodeProperties>((event, emit) => _showNodeProperties(event, emit));
-    // on<ChangedSnippetName>((event, emit) => _changedSnippetName(event, emit));
-    // on<ChangedSnippetTreeCalloutSize>((event, emit) => _changedSnippetTreeCalloutSize(event, emit));
-    // on<ChangedSnippetTreeCalloutPos>((event, emit) => _changedSnippetTreeCalloutPos(event, emit));
-    // on<ChangedSnippetPropertiesCalloutSize>((event, emit) => _changedSnippetPropertiesCalloutSize(event, emit));
+    on<SetPanelSnippet>((event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
     on<UpdateClipboard>((event, emit) => _updateClipboard(event, emit));
-    // on<PickedAColor>((event, emit) => _pickedAColor(event, emit));
-    // on<TextChanged>((event, emit) => _textChanged(event, emit));
-    // on<CreateUndo>((event, emit) => _createUndo(event, emit));
 
     //==========================================================================================
     //====  SNIPPET EDITING  ===================================================================
     //==========================================================================================
     on<SelectNode>((event, emit) => _selectNode(event, emit));
     on<ClearNodeSelection>((event, emit) => _clearNodeSelection(event, emit));
-    // on<HighlightNode>((event, emit) => _highlightNode(event, emit));
     on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<ForceSnippetRefresh>((event, emit) => _forceSnippetRefresh(event, emit));
     on<WrapSelectionWith>((event, emit) => _wrapWith(event, emit));
@@ -138,226 +76,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PasteSiblingAfter>((event, emit) => _pasteSiblingAfter(event, emit));
     on<DeleteNodeTapped>((event, emit) => _deleteNodeTapped(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
-    on<SelectedDirectoryOrNode>(
-        (event, emit) => _selectedDirectoryOrNode(event, emit));
+    on<SelectedDirectoryOrNode>((event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
-    // on<RemoveSiblingForReinsertion>(
-    //     (event, emit) => _removeSiblingForReinsertion(event, emit));
-    // on<ReinsertSibling>((event, emit) => _reinsertSibling(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
-    on<CopySnippetJsonToClipboard>(
-        (event, emit) => _copySnippetJsonToClipboard(event, emit));
-    on<ReplaceSnippetFromJson>(
-        (event, emit) => _replaceSnippetFromJson(event, emit));
+    on<CopySnippetJsonToClipboard>((event, emit) => _copySnippetJsonToClipboard(event, emit));
+    on<ReplaceSnippetFromJson>((event, emit) => _replaceSnippetFromJson(event, emit));
+    // on<CreateUndo>((event, emit) => _createUndo(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
   }
 
-// static Soundpool? _soundpool;
-// static int? _shutterSoundId;
-// static int? _plopSoundId;
-// static int? _whooshSoundId;
-// static int? _errorSoundId;
-
-// // lazy load
-// static Future<void> possiblyLoadSounds(CAPIState capiState) async {
-//   if (_soundpool == null && capiState.initialValueJsonAssetPath != null) {
-//     await _readSoundFiles(capiState.initialValueJsonAssetPath!, capiState.localTestingFilePaths);
-//   }
-// }
-
-// Future<void> _initApp(InitApp event, emit) async {
-//   emit(
-//     state.copyWith(
-//       targetGroupMap: event.imageTargetListMap,
-//       localTestingFilePaths: event.localTestingFilePaths,
-//     ),
-//   );
-// }
-
-// Future<void> _initTW(InitTW event, emit) async {
-//   Map<String, GlobalKey> newIVGKMap = {}..addAll(state.ivGKMap);
-//   newIVGKMap[event.wName] = event.ivGK;
-//   Map<String, GlobalKey> newIVChildGKMap = {}..addAll(state.ivChildGKMap);
-//   newIVChildGKMap[event.wName] = event.ivChildGK;
-//   emit(state.copyWith(
-//     ivGKMap: newIVGKMap,
-//     ivChildGKMap: newIVChildGKMap,
-//   ));
-// }
-
-  // void _appStarted(event, emit) {
-  //   CAPIModel model = _stateToModel();
-  //   String jsonS = jsonEncode(model.toJson());
-  //   emit(state.copyWith(
-  //     lastSavedModelJson: jsonS,
-  //   ));
-  // }
-
-  // void _createdSnippet(CreatedSnippet event, emit) {
-  //   // skip if named snippet already exists
-  //   // if (state.snippetsMap.containsKey(event.newSnippetBloc.snippetName)) return;
-  //   Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(state.snippetsMap);
-  //   newSnippetsMap[event.newSnippetNode.name] = event.newSnippetNode;
-  //   // state.snippetTreeC.toggleExpansion(state.snippetTreeC.roots.first);
-  //   emit(state.copyWith(
-  //     snippetsMap: newSnippetsMap,
-  //     force: state.force + 1,
-  //   ));
-  // }
-
-  // // ensure both published and editing versions are present
-  // Future<void> _ensureSnippetPresent(EnsureSnippetPresent event, emit) async {
-  //   await _getOrCreateSnippet(
-  //     event.snippetName,
-  //     true,
-  //     event.fromTemplate,
-  //     event.onlyTargetsWrappers,
-  //     emit,
-  //   );
-  //   await _getOrCreateSnippet(
-  //     event.snippetName,
-  //     false,
-  //     event.fromTemplate,
-  //     event.onlyTargetsWrappers,
-  //     emit,
-  //   );
-  //   // var fc = FC();
-  //   emit(state.copyWith(
-  //     force: state.force + 1,
-  //     onlyTargetsWrappers: !event.onlyTargetsWrappers,
-  //   ));
-  // }
-
-  // Future<void> _getOrCreateSnippet(
-  //   SnippetName snippetName,
-  //   bool canEdit,
-  //   SnippetTemplate fromTemplate,
-  //   bool onlyTargetsWrappers,
-  //   emit,
-  // ) async {
-  //   SnippetRootNode? rootNode;
-  //   VersionId? editingOrPublishedVersionId = canEdit
-  //       ? FCO.editingVersionIds[snippetName]
-  //       : FCO.publishedVersionIds[snippetName];
-  //   if (editingOrPublishedVersionId != null) {
-  //     // exists in AppInfo, so make sure it has been fetched from FB
-  //     await FCO.modelRepo.getSnippetFromCacheOrFB(
-  //         snippetName: snippetName, versionId: editingOrPublishedVersionId);
-  //     // var test = FCO.snippetCache[snippetName]?[editingOrPublishedVersionId];
-  //     rootNode = FCO.snippetCache[snippetName]?[editingOrPublishedVersionId];
-  //   } else {
-  //     // snippet does not yet exist in FB, hence not in AppInfo
-  //     VersionId initialVersionId =
-  //         DateTime.now().millisecondsSinceEpoch.toString();
-  //     rootNode =
-  //         SnippetPanel.createSnippetFromTemplate(fromTemplate, snippetName);
-  //     FCO.addToSnippetCache(
-  //       snippetName: snippetName,
-  //       rootNode: rootNode,
-  //       versionId: initialVersionId,
-  //       // editing: true,
-  //     );
-  //     FCO.updatePublishedVersionId(
-  //         snippetName: snippetName, versionId: initialVersionId);
-  //     FCO.updateEditingVersionId(
-  //         snippetName: snippetName, newVersionId: initialVersionId);
-  //     SaveSnippet ssEvent = SaveSnippet(
-  //       snippetRootNode: rootNode,
-  //       newVersionId: initialVersionId,
-  //       onlyTargetsWrappers: true,
-  //     );
-  //     _saveSnippet(ssEvent, emit);
-  //   }
-  // }
-
-  // Future<void> _saveSnippet(SaveSnippet event, emit) async {
-  //   String? jsonBeforePush = FCO.jsonBeforePush;
-  //   String currentJsonS = event.snippetRootNode.toJson();
-  //
-  //   // testing
-  //   // var testModel = jsonDecode(jsonS);
-  //
-  //   // only save if changes detected
-  //   if (!event.force && currentJsonS == jsonBeforePush) return;
-  //
-  //   final stopwatch = Stopwatch()..start();
-  //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-  //   fco.showTextToast(
-  //     cId: "saving-model",
-  //     msgText: 'saving changes...',
-  //     backgroundColor: Colors.yellow,
-  //     width: FCO.scrW * .8,
-  //     height: 40,
-  //     gravity: Alignment.topCenter,
-  //     textColor: Colors.blueAccent,
-  //   );
-  //
-  //   // save to local storage
-  //   HydratedBloc.storage.write('flutter-content', currentJsonS);
-  //   // // save to clipboard
-  //   // try {
-  //   //   Clipboard.setData(ClipboardData(text: jsonS));
-  //   // } catch(e) {
-  //   //   // ignore clipboard exception
-  //   // }
-  //
-  //   // save to firebase
-  //   modelRepo.saveSnippet(
-  //       snippetRootNode: event.snippetRootNode,
-  //       newVersionId: event.newVersionId);
-  //
-  //   // }
-  //   // } else {
-  //   //   // only write if later than firebase version
-  //   //   Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-  //   //   int lastVersion = data["latestVersion"] ?? 0;
-  //   //   if (model.lastModified! > lastVersion) {
-  //   //     //int latestVersion = data["latestVersion"] ?? 0;
-  //   //     await _createOrUpdateFirebaseModel(modelDocRef, model);
-  //   //   }
-  //   // }
-  //   // min 2s display of toast
-  //   if (stopwatch.elapsedMilliseconds < 2000) {
-  //     await Future.delayed(
-  //         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
-  //   }
-  //   fco.dismissAll(onlyToasts: true);
-  //   // update last value
-  //   if (!event.dontEmit) {
-  //     emit(state.copyWith(
-  //       force: state.force + 1,
-  //       onlyTargetsWrappers: event.onlyTargetsWrappers,
-  //     ));
-  //   }
-  // }
-
-  // Future<void> _switchBranch(SwitchBranch event, emit) async {
-  //   final stopwatch = Stopwatch()..start();
-  //   // fco.logi('saving ${state.snippetTreeCalloutW}, ${state.snippetTreeCalloutH}');
-  //   fco.showTextToast(
-  //     cId: "saving-model",
-  //     msgText: 'saving changes...',
-  //     backgroundColor: Colors.yellow,
-  //     width: FCO.scrW * .8,
-  //     height: 40,
-  //     gravity: Alignment.topCenter,
-  //     textColor: Colors.blueAccent,
-  //   );
-  //
-  //   // save to firebase
-  //   await modelRepo.switchBranch(newBranchName: event.newBranchName);
-  //
-  //   // min 2s display of toast
-  //   if (stopwatch.elapsedMilliseconds < 2000) {
-  //     await Future.delayed(
-  //         Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
-  //   }
-  //   fco.dismissAll(onlyToasts: true);
-  //   // update last value
-  // }
-
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    if (snippetInfo == null) return;
+
     final stopwatch = Stopwatch()..start();
     fco.showToast(
       calloutConfig: CalloutConfig(
@@ -369,22 +101,75 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
-          child: fco.coloredText('reverting staged version...',
+          child: fco.coloredText(
+              'snippet reverted to version ${event.versionId}.',
               color: Colors.blueAccent)),
     );
 
     await modelRepo.updateSnippetProps(
       snippetName: event.snippetName,
       editingVersionId: event.versionId,
-      publishingVersionId: event.versionId,
+      publishingVersionId: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
+          ? event.versionId
+          : snippetInfo.publishedVersionId,
     );
 
     if (stopwatch.elapsedMilliseconds < 2000) {
       Future.delayed(
-          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds), () {
+        fco.dismiss('reverting-model');
+      });
     }
 
-    fco.dismissAll(onlyToasts: true);
+    // fco.dismissAll(onlyToasts: true);
+
+    // ensure reverted snippet in memory
+    SnippetRootNode? revertedRootNode =
+        await SnippetRootNode.loadSnippetFromCacheOrFromFB(
+      snippetName: event.snippetName,
+    );
+
+    // // reset snippetBeingEdited
+    // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[event.snippetName];
+    // if (snippetInfo != null) {
+    //   VersionId? currentVersionid = await snippetInfo.currentVersionId();
+    //   if (currentVersionid != null) {
+    //     snippetInfo.cachedVersions[currentVersionid] = revertedRootNode;
+    //   }
+    // }
+
+    if (state.snippetBeingEdited != null && revertedRootNode != null) {
+      state.snippetBeingEdited!
+        ..setRootNode(revertedRootNode)
+        ..showProperties = false
+        ..selectedNode = null
+        ..treeC.roots = [revertedRootNode]
+        ..treeC.rebuild()
+        ..treeC.expandAll()
+        ..jsonBeforeAnyChange = revertedRootNode.toJson();
+    }
+
+    // print('');
+    // print('');
+    // print('');
+    // print('');
+    // print(revertedRootNode?.toJson());
+    // print('');
+    // print('');
+    // print('');
+    // print('');
+
+    emit(state.copyWith(
+      force: state.force + 1,
+    ));
+  }
+
+  Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    if (snippetInfo == null) return;
+
+    bool autoPublish = snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
+    snippetInfo.autoPublish = !autoPublish;
 
     emit(state.copyWith(
       force: state.force + 1,
@@ -441,45 +226,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
-// void _trainerSignedIn(event, emit) {
-//   emit(state.copyWith(
-//     trainerIsSignedn: true,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _startPlayingList(StartPlayingList event, emit) {
-//   List<TargetModel> newPlayList = [];
-//   if (event.playList == null) {
-//     if (state.aTargetIsSelected()) {
-//       newPlayList = [state.selectedTarget!];
-//     } else {
-//       newPlayList = List.of(state.imageConfig(event.name)?.imageTargets ?? []);
-//     }
-//   } else {
-//     // playlist supplied as list ints
-//     newPlayList = event.playList == null
-//         ? []
-//         : event.playList!.map((i) {
-//             TargetModel tc = state.imageConfig(event.name)!.imageTargets[i];
-//             return tc;
-//           }).toList();
-//   }
-//   emit(state.copyWith(
-//     playList: newPlayList,
-//   ));
-// }
-
-// void _playNextInList(PlayNextInList event, emit) {
-//   List<TargetModel> newPlayList = [];
-//   if (state.playList.isNotEmpty) {
-//     newPlayList = state.playList.sublist(1);
-//     emit(state.copyWith(
-//       playList: newPlayList,
-//     ));
-//   }
-// }
-
   /// copy snippet json to clipboard
   Future<void> _copySnippetJsonToClipboard(event, emit) async {
     await FlutterClipboard.copy(event.rootNode.toJson());
@@ -519,533 +265,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
-// // update current scale, translate and selected target
-//   void _recordMatrix(RecordMatrix event, emit) {
-//     if (state.aTargetIsSelected()) {
-//       TargetModel updatedTC = state.selectedTarget!;
-//       updatedTC.setRecordedMatrix(event.newMatrix);
-//       Map<String, CAPITargetModel> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, updatedTC);
-//       emit(state.copyWith(
-//         targetGroupMap: newTargetGroupListMap,
-//         force: state.force + 1,
-//         // lastUpdatedTC: updatedTC,
-//       ));
-//     }
-//   }
-
-// update current scale, translate and selected target
-//   void _targetMoved(TargetMoved event, emit) {
-//     TargetModel updatedTC = event.tc;
-//     updatedTC.setTargetStackPosPc(event.newGlobalPos.translate(
-//       event.tc.getScale(state) * event.targetRadius,
-//       event.tc.getScale(state) * event.targetRadius,
-//     ));
-//     Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
-//     emit(state.copyWith(
-//       targetGroupMap: newTargetGroupListMap,
-//       force: state.force + 1,
-//     ));
-//   }
-
-// update current scale, translate and selected target
-//   void _btnMoved(BtnMoved event, emit) {
-//     TargetModel updatedTC = event.tc;
-//     updatedTC.setBtnStackPosPc(event.newGlobalPos.translate(
-//       state.CAPI_TARGET_BTN_RADIUS,
-//       state.CAPI_TARGET_BTN_RADIUS,
-//     ));
-//     Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.tc.wName, updatedTC);
-//     emit(state.copyWith(
-//       targetGroupMap: newTargetGroupListMap,
-//       force: state.force + 1,
-//     ));
-//   }
-
-// void _newTargetManual(NewTargetManual event, emit) {
-//   TargetModel newItem = TargetModel(
-//     uid: Random().nextInt(100),
-//     twName: event.wName,
-//   );
-//   newItem.init(
-//     this,
-//     GlobalKey(debugLabel: "Target: ${1 + (state.targetGroupMap[event.wName] ?? []).length}"),
-//     FocusNode(),
-//   );
-//   newItem.setRecordedMatrix(Matrix4.identity());
-//   newItem.setTargetStackPosPc(event.newGlobalPos);
-//   newItem.btnLocalLeftPc = newItem.targetLocalPosLeftPc;
-//   newItem.btnLocalTopPc = newItem.targetLocalPosTopPc;
-//   Map<String, List<TargetModel>> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.wName, newItem);
-//   // select new item
-//   int index = (newTargetGroupListMap[event.wName] ?? []).indexOf(newItem);
-//   Map<String, int> newSelectionMap = Map.of(state.selectedTargetIndexMap);
-//   if (index > -1) {
-//     newSelectionMap[event.wName] = index;
-//   }
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     selectedTargetIndexMap: newSelectionMap,
-//     // lastUpdatedTC: newItem,
-//   ));
-// }
-
-  // void _newTarget(NewTarget event, emit) {
-  //   Map<String, TargetGroupModel> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.wName, newItem);
-  //   emit(state.copyWith(
-  //     targetGroupMap: newTargetGroupListMap,
-  //     // selectedTarget: newItem,
-  //     newestTarget: newItem,
-  //   ));
-  // }
-
-  // void _deleteTarget(DeleteTarget event, emit) {
-  //   TargetGroupModel newConfig = state.imageConfig(event.tc.wName)!;
-  //   try {
-  //     TargetModel oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == event.tc.uid);
-  //     int oldTcIndex = newConfig.targets.indexOf(oldTc);
-  //     newConfig.targets.removeAt(oldTcIndex);
-  //     Map<String, TargetGroupModel> newTargetGroupListMap = Map.of(state.targetGroupMap);
-  //     newTargetGroupListMap[event.tc.wName] = newConfig;
-  //     emit(state.copyWith(
-  //       targetGroupMap: newTargetGroupListMap,
-  //       hideAllTargetGroups: false,
-  //       hideAllTargetGroupPlayBtns: false,
-  //       hideTargetsExcept: null,
-  //       force: state.force + 1,
-  //     ));
-  //     _saveModel(event, emit);
-  //   } catch (e) {
-  //     fco.logi("\nUnable to remove tc !\n");
-  //   }
-  // }
-
-// Future<void> _selectTarget(SelectTarget event, emit) async {
-//   emit(state.copyWith(
-//     selectedTarget: event.tc,
-//   ));
-// }
-
-  // Future<void> _hideIframes(HideIframes event, emit) async {
-  //   emit(state.copyWith(
-  //     hideIframes: event.hide,
-  //   ));
-  // }
-
-  // // Target Btns
-  // Future<void> _hideAllTargetBtns(event, emit) async {
-  //   emit(state.copyWith(
-  //     hideAllTargetBtns: true,
-  //   ));
-  // }
-  //
-  // Future<void> _unhideTargetBtn(HideTargetBtn event, emit) async {
-  //   emit(state.copyWith(
-  //     hideTargetBtnsExcept: event.tc,
-  //   ));
-  // }
-  //
-  // Future<void> _hideAllTargetCovers(event, emit) async {
-  //   emit(state.copyWith(
-  //     hideAllTargetCovers: true,
-  //   ));
-  // }
-  //
-  //
-  //
-  // Future<void> _unhideTargetCovers(HideTargetCoversExcept event, emit) async {
-  //   emit(state.copyWith(
-  //     hideTargetCoversExcept: event.tc,
-  //   ));
-  // }
-  //
-  // Future<void> _showOnlyOneTargetGroup(ShowOnlyOneTarget event, emit) async {
-  //   emit(state.copyWith(
-  //     hideTargetsExcept: event.tc,
-  //     hideAllTargetGroupPlayBtns: true,
-  //   ));
-  // }
-  //
-  // Future<void> _unhideAllTargetGroupsAndBtns(event, emit) async {
-  //   emit(state.copyWith(
-  //     hideAllTargetGroups: false,
-  //     hideAllTargetGroupPlayBtns: false,
-  //     hideTargetsExcept: null,
-  //     force: state.force + 1,
-  //   ));
-  // }
-  // Future<void> _unhideAllTargetBtns(event, emit) async {
-  //   emit(state.copyWith(
-  //     hideAllTargetGroupPlayBtns: false,
-  //     force: state.force + 1,
-  //   ));
-  // }
-
-// void _changedOrder(ChangedOrder event, emit) {
-//   int newIndex = event.newIndex;
-//   if (event.oldIndex < newIndex) {
-//     newIndex -= 1;
-//   }
-//   List<TargetModel> newTargetList = List.of(state.imageTargets(event.wName));
-//   final TargetModel item = newTargetList.removeAt(event.oldIndex);
-//   newTargetList.insert(newIndex, item);
-//   Map<String, List<TargetModel>> newTargetsMap = Map.of(state.targetGroupMap);
-//   newTargetsMap[event.wName] = newTargetList;
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetsMap,
-//   ));
-// }
-
-// void clearSelection({bool reshowAllTargets = true}) {
-//   bloc.add(CAPIEvent.clearSelection());
-//   if (aTargetIsSelected(widget.name)) {
-//     transformationController.removeListener(_onChangeTransformation);
-//     fco.removeOverlayCalloutByFeature(CAPI.ANY_TOAST.feature(featureSeed), true);
-//     targetListGK.currentState?.setState(() {
-//       //measureIVchild();
-//       Callout? targetCallout = FCO.om.findCallout(CAPI.TARGET_CALLOUT.feature((featureSeed), selectedTargetIndex));
-//       if (targetCallout != null) {
-//         selectedTarget!.setTargetLocalPosPc(Offset(targetCallout.left!, targetCallout.top!));
-//         fco.logi("final callout pos (${targetCallout.left},${targetCallout.top})");
-//         fco.logi("targetGlobalPos now: ${selectedTarget!.targetGlobalPos()}");
-//       }
-//       ivScale = 1.0;
-//       ivTranslate = Offset.zero;
-//       fco.logi("new child local pos (${selectedTarget!.childLocalPosLeftPc},${selectedTarget!.childLocalPosTopPc})");
-//       // selectedTarget!.childLocalPosLeftPc = savedChildLocalPosPc!.dx;
-//       // selectedTarget!.childLocalPosTopPc = savedChildLocalPosPc!.dy;
-//       fco.logi("previous child local pos (${savedChildLocalPosPc!.dx},${savedChildLocalPosPc!.dy})");
-//       int saveSelection = selectedTargetIndex;
-//       selectedTargetIndex = -1;
-//       transformationController.value = Matrix4.identity();
-//       removeTextEditorCallout(this, selectedTargetIndex);
-//       removeTargetCallout(this, saveSelection);
-//     });
-//   }
-//   if (reshowAllTargets)
-//     // show all targets unselected
-//     fco.afterMsDelayDo(500, () {
-//       showAllTargets();
-//       // for (var tc in targets) {
-//       //   showDraggableTargetCallout(this, tc, onReadyF: () {});
-//       // }
-//     });
-// }
-
-// void _clearSelection(ClearSelection event, emit) {
-//   emit(state.copyWith(
-//     selectedTarget: null,
-//   ));
-// }
-
-// void _clearSelection(ClearSelection event, emit) {
-//   if (state.aTargetIsSelected(widget.name)) {
-//     TargetModel newTC = state.selectedTarget!.clone();
-//     Map<String, List<TargetModel>> newTargetGroupListMap = {}..addAll(state.targetGroupMap);
-//     newTC.setTargetLocalPosPc(
-//       event.targetCalloutGlobalPos,
-//       state.childMeasuredPositionMap[state.selectedTargetWrapperName]!,
-//       state.childMeasuredSizeMap[state.selectedTargetWrapperName]!,
-//     );
-//     newTargetGroupListMap[state.selectedTargetWrapperName]![state.selectedTargetIndex(widget.name)] = newTC;
-//     emit(state.copyWith(
-//       targetGroupMap: newTargetGroupListMap,
-//       selectedTarget: null,
-//     ));
-//   }
-// }
-
-// void _playSelection(event, emit) {
-//   emit(state.copyWith());
-// }
-
-// void _changedCalloutPosition(ChangedCalloutPosition event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.calloutTopPc = event.newPos.dy / FCO.scrH;
-//   tc.calloutLeftPc = event.newPos.dx / FCO.scrW;
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedCalloutDuration(ChangedCalloutDuration event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.calloutDurationMs = event.newDurationMs;
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedCalloutTextAlign(ChangedCalloutTextAlign event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.setTextAlign(event.newTextAlign);
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedCalloutColor(ChangedCalloutColor event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.setCalloutColor(event.newColor);
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedCalloutTextStyle(ChangedCalloutTextStyle event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.setTextStyle(event.newTextStyle);
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdatetargetGroupMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedTargetRadius(ChangedTargetRadius event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.radius = event.newRadius;
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _changedTransformScale(ChangedTransformScale event, emit) {
-//   TargetModel tc = event.tc.clone();
-//   tc.transformScale = event.newScale;
-//   Map<String, CAPITargetModelList> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(tc.wName, tc);
-//   emit(state.copyWith(
-//     targetGroupMap: newTargetGroupListMap,
-//     // selectedTarget: tc,
-//     force: state.force + 1,
-//   ));
-// }
-
-// void _kbdHChanged(event, emit) {
-//   emit(state.copyWith(
-//     force: state.force + 1,
-//   ));
-// }
-
-// // emits new state containing the new measurement
-// void _measuredIV(MeasuredIV event, emit) {
-//   Map<String, Rect> newIVRectMap = {};
-//   newIVRectMap = Map.of(state.ivRectMap);
-//   newIVRectMap[event.wName] = event.ivRect;
-//   // if (state.ivRectMap[event.wName]?.size != event.ivRect.size) {
-//   emit(state.copyWith(
-//     ivRectMap: newIVRectMap,
-//   ));
-//   // }
-// }
-
-  // Map<String, TargetGroupModel> _addOrUpdateTargetGroupListMap(final String name, final TargetModel tc) {
-  //   // replace or append tc in copy of its list
-  //   TargetGroupModel newConfig = state.imageConfig(name) ?? TargetGroupModel([]);
-  //   try {
-  //     TargetModel oldTc = newConfig.targets.firstWhere((theTc) => theTc.uid == tc.uid);
-  //     int oldTcIndex = newConfig.targets.indexOf(oldTc);
-  //     if (oldTcIndex == -1) {
-  //       newConfig.targets.add(tc);
-  //     } else {
-  //       newConfig.targets[oldTcIndex] = tc;
-  //     }
-  //   } catch (e) {
-  //     newConfig.targets.add(tc);
-  //   }
-  //   // replace the list containing the tc
-  //   Map<String, TargetGroupModel> newTargetGroupListMap = Map.of(state.targetGroupMap);
-  //   newTargetGroupListMap[name] = newConfig;
-  //   return newTargetGroupListMap;
-  // }
-
-// void _refreshToolCallouts() {
-//   // fco.moveToByFeature(CAPI.BUTTONS_CALLOUT.feature(), buttonsCalloutInitialPos());
-//   Callout? listViewCallout = FCO.om.findCallout(CAPI.TARGET_LISTVIEW_CALLOUT.feature());
-//   fco.moveToByFeature(
-//       CAPI.TARGET_LISTVIEW_CALLOUT.feature(), targetListCalloutInitialPos(widget.child is Scaffold, listViewCallout?.calloutH ?? 200));
-//   bool? b = tseGK.currentState?.minimise;
-//   fco.moveToByFeature(CAPI.STYLES_CALLOUT.feature(), stylesCalloutInitialPos(b ?? true));
-// }
-
-// Map<String, TargetModel> _parseTargets(CAPIModel model) {
-//   Map<String, TargetModel> targetMap = {};
-//   try {
-//     for (String name in model.targetMap?.keys ?? []) {
-//       TargetModel tc = model.targetMap![name]!;
-//       tc.init(
-//         this,
-//         GlobalKey(debugLabel: name),
-//         FocusNode(),
-//         FocusNode(),
-//       );
-//       targetMap[name] = tc;
-//     }
-//   } catch (e) {
-//     fco.logi("_parseImageTargets(): ${e.toString()}");
-//     rethrow;
-//   }
-//   return targetMap;
-// }
-
-// static Future<void> _readSoundFiles(final String path, final bool localTestingFilePaths) async {
-//   _soundpool = Soundpool.fromOptions(
-//       options: const SoundpoolOptions(
-//     streamType: StreamType.notification,
-//   ));
-//   var asset = await rootBundle.load(localTestingFilePaths
-//       ? "lib/src/sounds/178186__snapper4298__camera-click-nikon.wav"
-//       : "${pkg_flutter_content}lib/src/sounds/178186__snapper4298__camera-click-nikon.wav");
-//   _shutterSoundId = await _soundpool?.load(asset);
-//   asset = await rootBundle.load(
-//       localTestingFilePaths ? "lib/src/sounds/447910__breviceps__plop.wav" : "${pkg_flutter_content}lib/src/sounds/447910__breviceps__plop.wav");
-//   _plopSoundId = await _soundpool?.load(asset);
-//   asset = await rootBundle.load(localTestingFilePaths
-//       ? "lib/src/sounds/394415__inspectorj__bamboo-swing-a1.wav"
-//       : "${pkg_flutter_content}lib/src/sounds/394415__inspectorj__bamboo-swing-a1.wav");
-//   _whooshSoundId = await _soundpool?.load(asset);
-//   asset = await rootBundle.load(localTestingFilePaths
-//       ? "lib/src/sounds/250048__kwahmah-02__sits6.wav"
-//       : "${pkg_flutter_content}lib/src/sounds/250048__kwahmah-02__sits6.wav");
-//   _errorSoundId = await _soundpool?.load(asset);
-// }
-//
-// Future<void> playShutterSound() async {
-//   await CAPIBloc.possiblyLoadSounds(state);
-//   if (_soundpool != null && _shutterSoundId != null) await _soundpool!.play(_shutterSoundId!);
-// }
-//
-// Future<void> playPlopSound() async {
-//   await CAPIBloc.possiblyLoadSounds(state);
-//   if (_soundpool != null && _plopSoundId != null) await _soundpool!.play(_plopSoundId!);
-// }
-//
-// Future<void> playWhooshSound() async {
-//   await CAPIBloc.possiblyLoadSounds(state);
-//   if (_soundpool != null && _whooshSoundId != null) await _soundpool!.play(_whooshSoundId!);
-// }
-//
-// Future<void> playErrorSound(state) async {
-//   await CAPIBloc.possiblyLoadSounds(state);
-//   if (_soundpool != null && _errorSoundId != null) await _soundpool!.play(_errorSoundId!);
-// }
-
-// TargetModel? selectedTC() => state.selectedTarget;
-
-// static Offset m4ToTranslation(Matrix4 m) {
-//   math.Vector3 translation = math.Vector3.zero();
-//   math.Quaternion rotation = math.Quaternion.identity();
-//   math.Vector3 scale = math.Vector3.zero();
-//   m.decompose(translation, rotation, scale);
-//   return Offset(translation.x, translation.y);
-// }
-//
-// static double m4ToScale(Matrix4 m) {
-//   math.Vector3 translation = math.Vector3.zero();
-//   math.Quaternion rotation = math.Quaternion.identity();
-//   math.Vector3 scale = math.Vector3.zero();
-//   m.decompose(translation, rotation, scale);
-//   return scale.b;
-// }
-
-//
-// content editor
-//
-
-// void _showNodeProperties(ShowNodeProperties event, emit) {
-//   if (event.tc != null) {
-//     SnippetNode snippet = state.snippetTreeC.roots.toList()[event.nodeRootIndex] as SnippetNode;
-//     event.tc!.snippetName = snippet.name;
-//     if (event.nodeParent is MultiChildNode) {
-//       state.snippetTreeC.collapse(event.node);
-//     }
-//     Map<String, CAPITargetModel> newTargetGroupListMap = _addOrUpdatetargetGroupMap(event.tc!.wName, event.tc!);
-//     emit(state.copyWith(
-//       targetGroupMap: newTargetGroupListMap,
-//       movedNodeId: null,
-//       selectedNode: event.node,
-//       showAdders: event.showAdders,
-//       showProperties: event.showProperties,
-//       selectedNodeParent: event.nodeParent,
-//       lastAddedNode: null,
-//       force: state.force + 1,
-//     ));
-//   } else {
-//     emit(state.copyWith(
-//       movedNodeId: null,
-//       selectedNode: event.node,
-//       showAdders: event.showAdders,
-//       showProperties: event.showProperties,
-//       selectedNodeParent: event.nodeParent,
-//       lastAddedNode: null,
-//       force: state.force + 1,
-//     ));
-//   }
-// }
-
-// void _updateNodeTxt(UpdateNodeTxt event, emit) {
-// if (event.node != null) {
-//   if (event.node!.txt != event.theNewTxt) {
-//     event.node!.setTxt(event.theNewTxt);
-//   }
-// } else if (event.isBeginNode && state.flowchart.beginTxt != event.theNewTxt) {
-//   state.flowchart.beginTxt = event.theNewTxt;
-//   //developer.log('new beginTxt size is ${fbe.txtSize.width} ${fbe.txtSize.height}');
-// } else if (event.isEndNode && state.flowchart.endTxt != event.theNewTxt) {
-//   state.flowchart.endTxt = event.theNewTxt;
-// }
-// emit(state.copyWith(
-//   force: state.force + 1,
-// ));
-// }
-
-  // void _saveNodeAsSnippet(SaveNodeAsSnippet event, emit) {
-  //   _createSnippetUndo();
-  //
-  //   _possiblyRemoveFromParent();
-  //
-  //   // create new snippet
-  //   SnippetNode newSnippetNode = SnippetNode(
-  //     name: event.newSnippetName,
-  //     child: event.node,
-  //   );
-  //   // add to snippets map
-  //   FCO.capiBloc.add(capiEvent.CreatedSnippet(newNode: newSnippetNode));
-  //   // create a snippet ref node
-  //   SnippetRefNode refNode = SnippetRefNode(snippetName: event.newSnippetName);
-  //   // attach to parent
-  //   if (state.selectedNodeParent is SingleChildNode) {
-  //     (state.selectedNodeParent as SingleChildNode).child = refNode;
-  //   } else if (state.selectedNodeParent is MultiChildNode) {
-  //     (state.selectedNodeParent as MultiChildNode).children.add(refNode);
-  //   } else if (state.selectedNodeParent is WidgetSpanNode) {
-  //     (state.selectedNodeParent as WidgetSpanNode).child = refNode;
-  //   }
-  //   state.treeC.expand(newSnippetNode);
-  //   state.treeC.rebuild();
-  //
-  //   emit(state.copyWith(
-  //     selectedNode: refNode,
-  //     force: state.force + 1,
-  //   ));
-  //   // }
-  // }
-
   void _selectPanel(SelectPanel event, emit) {
     // null clears selection
     emit(state.copyWith(
@@ -1064,10 +283,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         );
 
     SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
-      rootNode: event.rootNode,
-      jsonBeforePush: event.rootNode.toJson(),
+      jsonBeforeAnyChange: event.rootNode.toJson(),
       treeC: newTreeC()..expandAll(),
-    );
+    )..setRootNode(event.rootNode);
+
+    // _ur.clear();
 
     emit(state.copyWith(
       // hideAllTargetGroupPlayBtns: true,
@@ -1093,128 +313,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
-  // Future<void> _restoredSnippetBloc(RestoredSnippetBloc event, emit) async {
-  //   SnippetBloC? beforeUndoOrRedo = FCO.popSnippet();
-  //   FCO.pushSnippet(event.restoredBloc);
-  //   // CAPIState.snippetStateMap[beforeUndoOrRedo.snippetName] = event.restoredBloc.state;
-  //   // Map<SnippetName, SnippetRootNode> newSnippetsMap = Map<SnippetName, SnippetRootNode>.of(FCO.snippetsMap);
-  //   SnippetRootNode rootNode = event.restoredBloc.rootNode;
-  //   FCO.snippetsMap[rootNode.name] = rootNode;
-  //
-  //   emit(state.copyWith(
-  //     // snippetsMap: newSnippetsMap,
-  //     force: state.force + 1,
-  //   ));
-  // }
-
   void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
     fco.snippetPlacementMap[event.panelName] = event.snippetName;
     emit(state.copyWith(
       force: state.force + 1,
     ));
   }
-
-// void _dockChangeSnippetEditor(DockChangeSnippetEditor event, emit) {
-//   DockEnum newDock;
-//   DockEnum oldDock = state.snippetEditorDock ?? DockEnum.undocked;
-//   if (oldDock == DockEnum.undocked)
-//     newDock = DockEnum.onRight;
-//   else if (oldDock == DockEnum.onRight)
-//     newDock = DockEnum.onLeft;
-//   else
-//     newDock = DockEnum.undocked;
-//
-//   emit(state.copyWith(
-//     snippetEditorDock: newDock,
-//     force: state.force + 1,
-//   ));
-// }
-
-// Future<void> _changedSnippetTreeCalloutSize(ChangedSnippetTreeCalloutSize event, emit) async {
-//   CAPIState newState = state.copyWith(
-//     force: state.force + 1,
-//     snippetTreeCalloutW: event.newW,
-//     snippetTreeCalloutH: event.newH,
-//   );
-//   emit(newState);
-// }
-//
-// Future<void> _changedSnippetTreeCalloutPos(ChangedSnippetTreeCalloutPos event, emit) async {
-//   CAPIState newState = state.copyWith(
-//     force: state.force + 1,
-//     snippetTreeCalloutInitialPos: event.newOffset,
-//   );
-//   emit(newState);
-// }
-
-// void _changedSnippetPropertiesCalloutSize(ChangedSnippetPropertiesCalloutSize event, emit) {
-//   // fco.logi('Snippet Properties Callout Size: ${event.newW} x ${event.newH}');
-//   emit(state.copyWith(
-//     force: state.force + 1,
-//     snippetPropertiesCalloutW: event.newW,
-//     snippetPropertiesCalloutH: event.newH,
-//   ));
-// }
-
-// void _changedSnippetName(ChangedSnippetName event, emit) {
-//   state.ur.createUndo(state.snippetTreeC.roots ?? [], state.snippetTreeC.expandedNodes);
-//   event.tc.snippetName = event.newName;
-//   emit(state.copyWith(
-//     force: state.force + 1,
-//   ));
-// }
-
-// Future<void> _pickedAColor(PickedAColor event, emit) async {
-//   state.ur.createUndo(state.snippetTreeC.roots ?? [], state.snippetTreeC.expandedNodes);
-//   if (event.node is ContainerNode) {
-//     (event.node as ContainerNode).colorValue = event.color.value;
-//   } else if (event.node is DefaultTextStyleNode) {
-//     NodeTextStyle style = (event.node as DefaultTextStyleNode).style ?? NodeTextStyle();
-//     style.colorValue = event.color.value;
-//     (event.node as DefaultTextStyleNode).style = style;
-//   } else if (event.node is TextNode) {
-//     NodeTextStyle style = (event.node as TextNode).style ?? NodeTextStyle();
-//     style.colorValue = event.color.value;
-//     (event.node as TextNode).style = style;
-//   } else if (event.node is TextSpanNode) {
-//     NodeTextStyle style = (event.node as TextSpanNode).style ?? NodeTextStyle();
-//     style.colorValue = event.color.value;
-//     (event.node as TextSpanNode).style = style;
-//   }
-//   emit(
-//     state.copyWith(
-//       ur: state.ur,
-//       force: state.force + 1,
-//     ),
-//   );
-// }
-//
-// Future<void> _textChanged(TextChanged event, emit) async {
-//   state.ur.createUndo(state.snippetTreeC.roots ?? [], state.snippetTreeC.expandedNodes);
-//   if (event.node is TextNode) {
-//     (event.node as TextNode).text = event.newText;
-//   } else if (event.node is TextSpanNode) {
-//     (event.node as TextSpanNode).text = event.newText;
-//   }
-//   emit(
-//     state.copyWith(
-//       ur: state.ur,
-//       force: state.force + 1,
-//     ),
-//   );
-// }
-
-// void _clearUR(ClearUR event, emit) {
-//   state.ur.clear();
-//   emit(
-//     state.copyWith(
-//       ur: state.ur,
-//       force: state.force + 1,
-//     ),
-//   );
-// }
-
-// the tree nodes do not have a reference to their parent BloC object
 
 //==========================================================================================
 //====  SNIPPET EDITING  ===================================================================
@@ -1227,33 +331,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _selectNode(SelectNode event, emit) {
-    // if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-
-    // if (event.imageTC != null) {
-    //   // tc not null means editing a snippet and updating the wrapped target (that will show the snippet in a callout)
-    //   SnippetNode snippet = state.snippetTreeC.roots.toList()[event.nodeRootIndex] as SnippetNode;
-    //   event.imageTC!.snippetName = snippet.name;
-    //   if (event.nodeParent is MultiChildNode) {
-    //     state.snippetTreeC.collapse(event.node);
-    //     // state.snippetTreeC.rebuild();
-    //   }
-    //   Map<String, TargetGroupModel> newTargetGroupListMap = _addOrUpdateTargetGroupListMap(event.imageTC!.wName, event.imageTC!);
-    //   emit(state.copyWith(
-    //     multiTargetListMap: newTargetGroupListMap,
-    //
-    //     selectedNode: event.node,
-    //     selectedTarget: event.imageTC,
-    //     showAdders: event.showAdders,
-    //     showProperties: event.showProperties,
-    //     selectedNodeParent: event.nodeParent,
-    //
-    //   ));
-    // } else {
-    // tc null means just editing a Snippet
-    // STreeNode snode = event.node;
-    // // create a bloc for the selected node
-    // STreeNodeBloc newBloc = STreeNodeBloc(node: snode);
-
     // if new selection is a node above this tree root, reset the tree's root to it
     bool resetTree = !state.snippetBeingEdited!.treeC.nodeIsADescendantOf(
       state.snippetBeingEdited!.treeC.roots.first,
@@ -1299,25 +376,30 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
+    // state.snippetBeingEdited?.newVersion();
+
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    //_createSnippetUndo();
+
     // STreeNode? sel = state.selectedNode;
     // STreeNode? selParent = sel?.getParent() as STreeNode?;
     STreeNode newSel = _possiblyRemoveFromParentButNotChildren();
     SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-    if (newSel.getParent() is SnippetRootNode) {
-      possiblyNewTreeC = SnippetTreeController(
-        roots: [newSel],
-        childrenProvider: Node.snippetTreeChildrenProvider,
-        parentProvider: Node.snippetTreeParentProvider,
-      );
-    }
+    // if (newSel.getParent() is SnippetRootNode) {
+    //   possiblyNewTreeC = SnippetTreeController(
+    //     roots: [newSel],
+    //     childrenProvider: Node.snippetTreeChildrenProvider,
+    //     parentProvider: Node.snippetTreeParentProvider,
+    //   );
+    // }
     possiblyNewTreeC.rebuild();
     // fco.logi("--------------");
     // fco.logi(state.snippetTreeC.roots.first.toMap());
     state.snippetBeingEdited!.treeC = possiblyNewTreeC;
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.selectedNode = newSel;
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+
     emit(state.copyWith(
       snippetBeingEdited: state.snippetBeingEdited,
       force: state.force + 1,
@@ -1430,82 +512,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     return newSel;
   }
 
-  // void _possiblyRemoveFromParentButNotChildrenOLD() {
-  //   try {
-  //   STreeNode? selectedNode = state.selectedNode;
-  //   if (selectedNode != null) {
-  //     if (selectedNode != state.rootNode) {
-  //       STreeNode parentNode = selectedNode.parent as STreeNode;
-  //       if (parentNode is SC && selectedNode is SC) {
-  //         parentNode.child = selectedNode.child;
-  //         selectedNode.child?.setParent(parentNode);
-  //       } else if (parentNode is MC && selectedNode is SC) {
-  //         int index = parentNode.children.indexOf(selectedNode);
-  //         if (selectedNode.child != null) {
-  //           parentNode.children[index] = selectedNode.child!;
-  //           selectedNode.child?.setParent(parentNode);
-  //         }
-  //       }
-  //       if (selectedNode is MC && selectedNode.children.length == 1) {
-  //         if (parentNode is SC) {
-  //           parentNode.child = selectedNode.children.first;
-  //         } else if (parentNode is MC) {
-  //           int index = parentNode.children.indexOf(selectedNode);
-  //           parentNode.children[index] = selectedNode.children.first;
-  //         }
-  //         if (parentNode is SnippetRootNode && parentNode.child == null) {
-  //           parentNode.child = PlaceholderNode()
-  //             ..setParent(parentNode);
-  //         }
-  //       } else if (parentNode is SC) {
-  //         parentNode.child = null;
-  //         if (parentNode is SnippetRootNode) {
-  //           parentNode.child = PlaceholderNode()
-  //             ..setParent(parentNode);
-  //         }
-  //       } else if (parentNode is MC) {
-  //         int i = (parentNode).children.indexOf(selectedNode);
-  //         if (parentNode is TabBarNode) {
-  //           TabBarNode? tabBarNode = state.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
-  //           if (tabBarNode != null) {
-  //             int numTabs = tabBarNode.children.length;
-  //             tabBarNode.children.removeAt(i);
-  //             TabBarViewNode? tabBarViewNode = state.treeC.findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
-  //             if (numTabs == tabBarViewNode?.children.length) {
-  //               tabBarViewNode?.children.removeAt(i);
-  //             }
-  //           }
-  //         } else if (parentNode is TabBarViewNode) {
-  //           TabBarViewNode? tabBarViewNode = state.treeC.findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
-  //           if (tabBarViewNode != null) {
-  //             int numTabs = tabBarViewNode.children.length;
-  //             tabBarViewNode.children.removeAt(i);
-  //             TabBarNode? tabBarNode = state.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
-  //             if (numTabs == tabBarNode?.children.length) {
-  //               tabBarNode?.children.removeAt(i);
-  //             }
-  //           }
-  //         } else {
-  //           parentNode.children.removeAt(i);
-  //         }
-  //       } else if (parentNode is TextSpanNode) {
-  //         if (parentNode.children!.length > 1) {
-  //           parentNode.children!.remove(selectedNode);
-  //         } else {
-  //           parentNode.children = null;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   } catch (e) {
-  //     fco.logi("\n ***  _possiblyRemoveFromParentButNotChildren() - null selectedNode.parent!  ***");
-  //     rethrow;
-  //   }
-  // }
-
   Future<void> _cutNode(CutNode event, emit) async {
+    // state.snippetBeingEdited?.newVersion();
+
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    //_createSnippetUndo();
     _cutIncludingAnyChildren(event.node);
     state.snippetBeingEdited!.treeC.rebuild();
     // bool well = state.rootNode.anyMissingParents();
@@ -1515,7 +525,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   _cutIncludingAnyChildren(STreeNode node) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    if (node != state.snippetBeingEdited!.rootNode) {
+    if (node != state.snippetBeingEdited!.getRootNode()) {
       // was: if (state.selectedNode?.parent != null) {
       STreeNode parentNode = node.getParent() as STreeNode;
       if (parentNode is SC) {
@@ -1526,72 +536,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         parentNode.children?.remove(node);
       }
     }
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
   }
-
-  // void _removeSiblingForReinsertion(RemoveSiblingForReinsertion event, emit) {
-  //   int fromPos = event.parentNode.children.indexOf(event.node);
-  //   // remove node from children
-  //   event.parentNode.children.remove(event.node);
-  //   state.snippetBeingEdited!.treeC.rebuild();
-  //   // emit(state.copyWith(
-  //   //   force: state.force + 1,
-  //   // ));
-  //   // side effect : will effectively cause a replacement node to be appended
-  //   add(
-  //     CAPIEvent.reinsertSibling(
-  //       parentNode: event.parentNode,
-  //       node: event.node,
-  //       atPos: event.atPos,
-  //     ),
-  //   );
-  // }
-  //
-  // void _reinsertSibling(ReinsertSibling event, emit) {
-  //   event.parentNode.children.insert(event.atPos, event.node);
-  //   // remove last (dummy) child
-  //   event.parentNode.children.removeLast();
-  //   state.snippetBeingEdited!.treeC.rebuild();
-  //   emit(state.copyWith(
-  //     force: state.force + 1,
-  //   ));
-  // }
-
-  // Future<void> _cutNode(CutNode event, emit) async {
-  //   //_createSnippetUndo();
-  //   STreeNode selectedNode = event.node;
-  //   String cutJson = selectedNode.toJson();
-  //   if (selectedNode != state.rootNode) {
-  //     // hook child(ren) up to deleted node's parent
-  //     {
-  //       if (selectedNode is SingleChildNode) {
-  //         STreeNode? child = selectedNode.child;
-  //         child?.parent = selectedNode.parent;
-  //       }
-  //       if (selectedNode is MultiChildNode && selectedNode.parent is MultiChildNode) {
-  //         for (STreeNode child in (selectedNode).children) {
-  //           child.parent = selectedNode.parent;
-  //         }
-  //       }
-  //       if (selectedNode is TextSpanNode && selectedNode.parent is TextSpanNode) {
-  //         List<InlineSpanNode>? children = selectedNode.children;
-  //         if (children?.isNotEmpty ?? false) {
-  //           for (InlineSpanNode child in children!) {
-  //             child.parent = selectedNode.parent;
-  //           }
-  //         }
-  //       }
-  //     }
-  //     // parent to deleted node's children
-  //     STreeNode parentNode = selectedNode.parent as STreeNode;
-  //     if (parentNode is SingleChildNode && selectedNode is SingleChildNode) {
-  //       parentNode.child = selectedNode.child;
-  //     } else if (parentNode is MultiChildNode && selectedNode is MultiChildNode) {
-  //       parentNode.children = selectedNode.children;
-  //     }
-  //   }
-  //   state.treeC.rebuild();
-  //   FCO.capiBloc.add(CAPIEvent.updateClipboard(newContent: cutJson));
-  // }
 
   Future<void> _copyNode(CopyNode event, emit) async {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
@@ -1669,8 +615,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               PollOptionNode(text: 'option 3 text?'),
             ],
           ),
-        const (PollOptionNode) =>
-          PollOptionNode(text: 'new option text?'),
+        const (PollOptionNode) => PollOptionNode(text: 'new option text?'),
         const (PositionedNode) =>
           PositionedNode(top: 0, left: 0, child: childNode),
         const (RichTextNode) => RichTextNode(
@@ -1776,6 +721,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       };
 
   void _wrapWith(WrapSelectionWith event, emit) {
+    // state.snippetBeingEdited?.newVersion();
+
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
 
     STreeNode wChild = state.snippetBeingEdited!.selectedNode!;
@@ -1798,7 +745,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (wChild is ExpandedNode && w is! FlexNode) return;
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
-    if (wChild is InlineSpanNode && parent is RichTextNode && w is RichTextNode) {
+    if (wChild is InlineSpanNode &&
+        parent is RichTextNode &&
+        w is RichTextNode) {
       return;
     }
     if (wChild is InlineSpanNode &&
@@ -1857,6 +806,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         ..selectedNode = w
         ..treeC = possiblyNewTreeC;
 
+      fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+
       emit(state.copyWith(
         force: state.force + 1,
       ));
@@ -1866,45 +817,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
   }
 
-  // void _wrapWithOLD(WrapWith event, emit) {
-  //   if (state.aNodeIsSelected) {
-  //     STreeNode selectedNode = state.selectedNode!;
-  //     //_createSnippetUndo();
-  //     STreeNode newNode =
-  //         event.type != null ? _typeAsATreeNode(event.type!, selectedNode, "_wrapWith() missing ${event.type.toString()}") : event.testNode!;
-  //
-  //     newNode.setParent(selectedNode.parent);
-  //
-  //     // // attach new parent at select node's pos in the tree...
-  //     // if selected node is actually a root node, make newNode the new root
-  //     if (selectedNode.parent == null) {
-  //       state.treeC.roots = [newNode];
-  //     } else {
-  //       //
-  //       if (selectedNode.parent is SC) {
-  //         (selectedNode.parent as SC).child = newNode;
-  //       } else if (selectedNode.parent is MC) {
-  //         int i = (selectedNode.parent as MC).children.indexOf(selectedNode);
-  //         (selectedNode.parent as MC).children[i] = newNode;
-  //       } else if (selectedNode.parent is WidgetSpanNode) {
-  //         (selectedNode.parent as WidgetSpanNode).child = newNode;
-  //       }
-  //     }
-  //     selectedNode.setParent(newNode);
-  //
-  //     state.treeC.expand(newNode);
-  //     state.treeC.rebuild();
-  //     emit(state.copyWith(
-  //       selectedNode: newNode,
-  //     ));
-  //   }
-  // }
-
   void _replaceWith(ReplaceSelectionWith event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+
     STreeNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     if (event.type == selectedNode.runtimeType) return;
-    //_createSnippetUndo();
+
     STreeNode newNode = event.type != null
         ? _typeAsATreeNode(
             event.type!,
@@ -1917,6 +835,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _replaceWithNewNodeOrClipboard(STreeNode sel, emit, STreeNode r) {
+    // state.snippetBeingEdited?.newVersion();
+
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
 
     if (sel is InlineSpanNode && r is! InlineSpanNode) return;
@@ -1981,55 +901,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       ..selectedNode = r
       ..treeC = possiblyNewTreeC;
 
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+
     emit(state.copyWith(
       force: state.force + 1,
     ));
   }
 
-  // void _replaceWithNewNodeOrClipboardOLD(STreeNode selectedNode, emit, STreeNode r) {
-  //   //_createSnippetUndo();
-  //
-  //   // attach newNode to parent
-  //   // if selected node is actually a root node, make newNode the new root
-  //   if (selectedNode.parent == null) {
-  //     state.treeC.roots = [replacementNode];
-  //   } else {
-  //     if (selectedNode.parent is SC) {
-  //       (selectedNode.parent as SC).child = replacementNode;
-  //     } else if (selectedNode.parent is MC) {
-  //       List<STreeNode> children = (selectedNode.parent as MC).children;
-  //       int index = children.indexOf(selectedNode);
-  //       if (index != -1) {
-  //         children[index] = replacementNode;
-  //       }
-  //     }
-  //   }
-  //   replacementNode.setParent(selectedNode.parent);
-  //
-  //   // move any child or children to replacementNode, and set parent
-  //   if (selectedNode is SC && replacementNode is SC) {
-  //     replacementNode.child = selectedNode.child;
-  //     replacementNode.child!.setParent(replacementNode);
-  //   } else if (selectedNode is MC && replacementNode is MC) {
-  //     replacementNode.children = (selectedNode).children;
-  //     for (STreeNode child in replacementNode.children) {
-  //       child.setParent(replacementNode);
-  //     }
-  //   } else if (selectedNode is SC && (selectedNode).child != null && replacementNode is MC) {
-  //     STreeNode child = selectedNode.child!;
-  //     replacementNode.children.add(child);
-  //     child.setParent(replacementNode);
-  //   }
-  //
-  //   state.treeC.expand(replacementNode);
-  //   state.treeC.rebuild();
-  //   emit(state.copyWith(
-  //     selectedNode: replacementNode,
-  //   ));
-  // }
-
   void _addChild(AppendChild event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+
     STreeNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     STreeNode newNode = event.type != null
         ? _typeAsATreeNode(
@@ -2043,7 +925,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _addOrPasteChild(STreeNode selectedNode, emit, STreeNode newNode) {
-    //_createSnippetUndo();
+    // state.snippetBeingEdited?.newVersion();
+
     // STreeNode? childNode;
 
     // if (selectedNode is ContainerNode) {
@@ -2089,7 +972,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!
       ..treeC.expand(newNode)
       ..treeC.rebuild()
-      ..rootNode.validateTree();
+      ..getRootNode().validateTree();
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
     emit(state.copyWith(
       force: state.force + 1,
@@ -2233,7 +1118,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _addSiblingAt(STreeNode newNode, emit, int i) {
-    //_createSnippetUndo();
+    // state.snippetBeingEdited?.newVersion();
+
     STreeNode? parent =
         state.snippetBeingEdited!.selectedNode?.getParent() as STreeNode?;
     if (parent is TabBarNode) {
@@ -2262,13 +1148,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     newNode.setParent(parent);
     state.snippetBeingEdited!.treeC.expand(newNode);
     state.snippetBeingEdited!.selectedNode = newNode;
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
+
     emit(state.copyWith(
       force: state.force + 1,
     ));
   }
 
   void _pasteSiblingAt(STreeNode clipboardNode, emit, int i) {
-    //_createSnippetUndo();
+    // state.snippetBeingEdited?.newVersion();
+
     TextSpanNode? textSpanNode;
     STreeNode newNode = clipboardNode;
 
@@ -2285,7 +1175,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
     }
 
-    state.snippetBeingEdited!.rootNode.validateTree();
+    state.snippetBeingEdited!.getRootNode().validateTree();
+
+    fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
     if (newNode is RichTextNode) {
       state.snippetBeingEdited!.treeC.expand(newNode);
@@ -2308,23 +1200,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       force: state.force + 1,
     ));
   }
-
-  // void _createdSnippet(CreatedSnippet event, emit) {
-  //   // state.ur.createUndo(state.snippetTreeC.roots, state.snippetTreeC.expandedNodes);
-  //   state.treeC.roots = [event.newNode];
-  //   state.treeC.rebuild();
-  //   if (state.snippetsMap.containsKey(event.newNode.name)) return;
-  //   Map<SnippetName, SnippetNode> newSnippetsMap = Map<SnippetName, SnippetNode>.of(state.snippetsMap);
-  //   newSnippetsMap[event.newNode.name] = event.newNode;
-  //   // state.snippetTreeC.toggleExpansion(state.snippetTreeC.roots.first);
-  //   emit(state.copyWith(
-  //     snippetsMap: newSnippetsMap,
-  //     selectedNode: event.newNode,
-  //     // showAdders: true,
-  //     lastAddedNode: event.newNode,
-  //   ));
-  // }
-  //
 
   Future<void> _saveNodeAsSnippet(SaveNodeAsSnippet event, emit) async {
     //_createSnippetUndo();
@@ -2383,56 +1258,43 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // }
   }
 
-  // void _createSnippetUndo() {
-  //   state.ur.createUndo(state);
-  // }
-
-  // void _undo(Undo event, emit) {
-  //   if (state.canUndo()) {
-  //     SnippetState? result = state.ur.undo(state);
-  //     _restore(result, emit);
-  //   }
-  // }
-
-  // void _redo(Redo event, emit) {
-  //   if (state.canRedo()) {
-  //     SnippetState? result = state.ur.redo(state);
-  //     _restore(result, emit);
-  //   }
-  // }
-
-  // void _restore(SnippetState? undoOrRedoResult, emit) {
-  //   // replace bloc in queue with undo/redo result
-  //   SnippetState? prevSnippetState = undoOrRedoResult;
-  //   SnippetRootNode? prevRootNode = prevSnippetState?.rootNode;
-  //   if (prevRootNode == null) return;
-  //   SnippetBloC restoredSnippetBloc = SnippetBloC(
-  //     rootNode: prevRootNode,
-  //     treeC: prevSnippetState!.treeC..expand(prevRootNode),
-  //     treeUR: prevSnippetState.ur,
-  //     selectedNode: prevSnippetState.selectedNode,
-  //     selectedWidgetGK: prevSnippetState.selectedWidgetGK,
-  //     selectedTreeNodeGK: prevSnippetState.selectedTreeNodeGK,
-  //   );
-  //   FC()
-  //       .capiBloc
-  //       .add(CAPIEvent.restoredSnippetBloc(restoredBloc: restoredSnippetBloc));
-  //
-  //   if (undoOrRedoResult != null) {
-  //     emit(prevSnippetState);
-  //     fco.afterNextBuildDo(() {
-  //       state.treeC.rebuild();
-  //       STreeNode? restoredSelectedNode = state.selectedNode;
-  //       if (restoredSelectedNode != null) {
-  //         add(
-  //           SelectNode(
-  //             node: restoredSelectedNode,
-  //             selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-  //             selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-  //           ),
-  //         );
+  // FutureOr<void> _undo(Undo event, emit) async {
+  //   if (canUndo) {
+  //     SnippetRootNode? result = _ur.undo();
+  //     if (result != null) {
+  //       state.snippetBeingEdited?.rootNode = result;
+  //       // update cached version
+  //       SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[result.name];
+  //       if (snippetInfo != null) {
+  //         VersionId? currentVersionid = await snippetInfo.currentVersionId();
+  //         if (currentVersionid != null) {
+  //           snippetInfo.cachedVersions[currentVersionid] = result;
+  //         }
   //       }
-  //     });
+  //       emit(state.copyWith(
+  //         force: state.force + 1,
+  //       ));
+  //     }
+  //   }
+  // }
+  //
+  // FutureOr<void> _redo(Redo event, emit) async {
+  //   if (canRedo) {
+  //     SnippetRootNode? result = _ur.redo();
+  //     if (result != null) {
+  //       state.snippetBeingEdited?.rootNode = result;
+  //       // update cached version
+  //       SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[result.name];
+  //       if (snippetInfo != null) {
+  //         VersionId? currentVersionid = await snippetInfo.currentVersionId();
+  //         if (currentVersionid != null) {
+  //           snippetInfo.cachedVersions[currentVersionid] = result;
+  //         }
+  //       }
+  //       emit(state.copyWith(
+  //         force: state.force + 1,
+  //       ));
+  //     }
   //   }
   // }
 
@@ -2442,7 +1304,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   bool get aNodeIsSelected =>
       state.snippetBeingEdited?.aNodeIsSelected ?? false;
 
-  SnippetRootNode? get rootNode => state.snippetBeingEdited?.rootNode;
+  SnippetRootNode? get rootNode => state.snippetBeingEdited?.getRootNode();
 
   SnippetTreeController? get treeC => state.snippetBeingEdited?.treeC;
 

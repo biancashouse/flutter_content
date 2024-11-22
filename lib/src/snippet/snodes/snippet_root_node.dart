@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
 
 part 'snippet_root_node.mapper.dart';
 
@@ -24,13 +23,13 @@ class SnippetRootNodeHook extends MappingHook {
 @MappableClass(hook: SnippetRootNodeHook()) //discriminatorKey: 'sr', includeSubClasses: [TitleSnippetRootNode, SubtitleSnippetRootNode, ContentSnippetRootNode])
 class SnippetRootNode extends SC with SnippetRootNodeMappable {
   SnippetName name;
-  RoutePath? routePath;
+  // RoutePath? routePath;
   // bool isEmbedded;
   String tags;
 
   SnippetRootNode({
     required this.name,
-    this.routePath,
+    // this.routePath,
     // this.isEmbedded = false,
     this.tags = '',
     super.child,
@@ -58,14 +57,14 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
-            StringPropertyValueNode(
-              snode: this,
-              name: 'Route Path',
-              stringValue: routePath,
-              onStringChange: (newValue) => refreshWithUpdate(() => routePath = newValue),
-              calloutButtonSize: const Size(280, 70),
-              calloutWidth: 280,
-            ),
+            // StringPropertyValueNode(
+            //   snode: this,
+            //   name: 'Route Path',
+            //   stringValue: routePath,
+            //   onStringChange: (newValue) => refreshWithUpdate(() => routePath = newValue),
+            //   calloutButtonSize: const Size(280, 70),
+            //   calloutWidth: 280,
+            // ),
           ],
         ),
         // BoolPropertyValueNode(
@@ -89,56 +88,48 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       fco.logi("SnippetRootNode.toWidget()...");
-      if (findDescendant(SnippetRootNode) != null) {}
+      // if (findDescendant(SnippetRootNode) != null) {}
       setParent(parentNode);
-      return FutureBuilder<void>(
+      // SnippetInfoModel.debug();
+      return FutureBuilder<SnippetRootNode?>(
               future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
               builder: (futureContext, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   fco.logi("FutureBuilder<void> Ensuring $name present");
                   try {
                     // in case did a revert, ignore snapshot data and use the AppInfo instead
-                    SnippetRootNode? snippet = fco.currentSnippetVersion(name);
+                    SnippetRootNode? snippet = snapshot.data;//fco.currentSnippetVersion(name);
                     // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-                    return snippet == null ? fco.errorIcon(Colors.red) : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+                    return snippet == null
+                        ? Error(key: createNodeGK(), FLUTTER_TYPE,
+                        color: Colors.red,
+                        size: 32,
+                        errorMsg: "null snippet!")
+                        : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
                   } catch (e) {
-                    fco.logi('snippetRootNode.toWidget() failed!');
-                    return Material(
-                      textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            fco.errorIcon(Colors.red),
-                            const Gap(10),
-                            fco.coloredText(e.toString()),
-                          ],
-                        ),
-                      ),
-                    );
+                    return Error(key: createNodeGK(), FLUTTER_TYPE,
+                        color: Colors.red,
+                        size: 32,
+                        errorMsg: e.toString());
                   }
                 } else {
                   return const CircularProgressIndicator();
                 }
               });
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
   // if root already exists, return it.
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
-  static Future<void> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
+  static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
     SnippetRootNode? snippetRootNode,
     required SnippetName snippetName,
   }) async {
+    debugPrint("SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate");
+
     AppInfoModel appInfo = fco.appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
@@ -148,27 +139,33 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         rootNode: snippetRootNode,
         publish: true,
       );
-      return;
+      return snippetRootNode;
     }
 
     // snippet was definitely previously created (because snippetName present in appInfo)
     // may already have a read in progress (app may start with >1 builds!
     // if (fco.snippetsBeingReadFromFB.contains(snippetName)) return;
 
+    SnippetRootNode? rootNode;
     SnippetInfoModel? snippetInfo = await fco.modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     if (snippetInfo != null) {
-      VersionId? currentVersionId = snippetInfo.currentVersionId;
       // may already be in snippet cache
-      SnippetRootNode? rootNode = fco.currentSnippetVersion(snippetName);
-      //
-      if (rootNode == null && currentVersionId != null) {
-        // snippet version was not already in cache
-        await fco.modelRepo.possiblyLoadSnippetIntoCache(
-              snippetName: snippetName,
-              versionId: currentVersionId,
-            );
-      }
+      rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     }
+    snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    return rootNode;
+  }
+
+  static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFB({
+    required SnippetName snippetName,
+  }) async {
+    debugPrint("SnippetRootNode.loadSnippetFromCacheOrFromFB");
+
+    SnippetInfoModel? snippetInfo = await fco.modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
+    return snippetInfo != null
+      // may already be in snippet cache, or will be loaded from FB
+      ? await snippetInfo.currentVersionFromCacheOrFB()
+      : null;
   }
 
   // static Future<void> ensureSnippetInCache({

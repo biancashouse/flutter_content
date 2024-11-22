@@ -75,8 +75,8 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       );
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
+      return  WidgetSpan(child: Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
-    return WidgetSpan(child: fco.errorIcon(Colors.red));
   }
 
   // @override
@@ -238,10 +238,10 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   bool canBeDeleted() => children == null || children!.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("TextSpan", TextSpanNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"TextSpan", TextSpanNode, action),
     ];
   }
 

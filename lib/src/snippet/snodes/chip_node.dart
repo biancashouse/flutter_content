@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
@@ -197,13 +196,7 @@ class ChipNode extends CL with ChipNodeMappable {
             ),
           );
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
@@ -245,7 +238,7 @@ class ChipNode extends CL with ChipNodeMappable {
             )),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      fco.addRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      fco.addSubRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {

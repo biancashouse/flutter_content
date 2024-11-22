@@ -24,9 +24,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
 
   static String _$name(SnippetRootNode v) => v.name;
   static const Field<SnippetRootNode, String> _f$name = Field('name', _$name);
-  static String? _$routePath(SnippetRootNode v) => v.routePath;
-  static const Field<SnippetRootNode, String> _f$routePath =
-      Field('routePath', _$routePath, opt: true);
   static String _$tags(SnippetRootNode v) => v.tags;
   static const Field<SnippetRootNode, String> _f$tags =
       Field('tags', _$tags, opt: true, def: '');
@@ -36,6 +33,9 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static String _$uid(SnippetRootNode v) => v.uid;
   static const Field<SnippetRootNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(SnippetRootNode v) => v.gk;
+  static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(SnippetRootNode v) => v.isExpanded;
   static const Field<SnippetRootNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -53,10 +53,10 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   @override
   final MappableFields<SnippetRootNode> fields = const {
     #name: _f$name,
-    #routePath: _f$routePath,
     #tags: _f$tags,
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
@@ -74,7 +74,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static SnippetRootNode _instantiate(DecodingData data) {
     return SnippetRootNode(
         name: data.dec(_f$name),
-        routePath: data.dec(_f$routePath),
         tags: data.dec(_f$tags),
         child: data.dec(_f$child));
   }
@@ -135,7 +134,7 @@ abstract class SnippetRootNodeCopyWith<$R, $In extends SnippetRootNode, $Out>
   @override
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
   @override
-  $R call({String? name, String? routePath, String? tags, STreeNode? child});
+  $R call({String? name, String? tags, STreeNode? child});
   SnippetRootNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -152,21 +151,15 @@ class _SnippetRootNodeCopyWithImpl<$R, $Out>
   STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
-  $R call(
-          {String? name,
-          Object? routePath = $none,
-          String? tags,
-          Object? child = $none}) =>
+  $R call({String? name, String? tags, Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (routePath != $none) #routePath: routePath,
         if (tags != null) #tags: tags,
         if (child != $none) #child: child
       }));
   @override
   SnippetRootNode $make(CopyWithData data) => SnippetRootNode(
       name: data.get(#name, or: $value.name),
-      routePath: data.get(#routePath, or: $value.routePath),
       tags: data.get(#tags, or: $value.tags),
       child: data.get(#child, or: $value.child));
 

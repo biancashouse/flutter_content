@@ -26,7 +26,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: bloc.state.snippetBeingEdited!.rootNode,
           treeC: bloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: bloc.state.snippetBeingEdited!.jsonBeforePush,
+          jsonBeforeAnyChange: bloc.state.snippetBeingEdited!.jsonBeforeAnyChange,
         ),
       );
 
@@ -54,7 +54,7 @@ void main() {
         mockSnippetBeingEdited: SnippetBeingEdited(
           rootNode: snippet,
           treeC: treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
         ));
     if (select != null) {
       selectedState = capiBloc.state.copyWith(
@@ -63,7 +63,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
           treeC: capiBloc.state.snippetBeingEdited!.treeC,
-          jsonBeforePush: capiBloc.state.snippetBeingEdited!.jsonBeforePush,
+          jsonBeforeAnyChange: capiBloc.state.snippetBeingEdited!.jsonBeforeAnyChange,
         ),
       );
     }

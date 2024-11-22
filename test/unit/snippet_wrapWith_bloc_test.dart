@@ -42,7 +42,7 @@ void main() {
         ),
         selectedNode: select,
         nodeBeingDeleted: null,
-        jsonBeforePush: '{}',
+        jsonBeforeAnyChange: '{}',
       ),
     );
     selectedState = capiBloc.state;
@@ -60,7 +60,7 @@ void main() {
           ),
           selectedNode: node,
           nodeBeingDeleted: null,
-          jsonBeforePush: '{}',
+          jsonBeforeAnyChange: '{}',
         ),
       );
 

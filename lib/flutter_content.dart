@@ -2,22 +2,51 @@
 
 // library flutter_content;
 
+import 'dart:async';
 import 'dart:math';
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
 import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/model/model_repo.dart';
+
+// re-export
+export 'package:bh_shared/src/debouncer/debouncer.dart';
+export 'package:bh_shared/src/widget/error.dart';
+export 'package:bh_shared/src/widget/blink.dart';
+export 'package:bh_shared/src/widget/constant_scroll_behavior.dart';
+export 'package:bh_shared/src/system_mixin.dart';
+export 'package:bh_shared/src/canvas/canvas_mixin.dart';
+export 'package:bh_shared/src/widget/widget_helper_mixin.dart';
+export 'package:bh_shared/src/gotits_mixin.dart';
+export 'package:bh_shared/src/local_storage_mixin.dart';
+
+export 'package:flutter_callouts/src/measuring/measure_sizebox.dart';
+export 'package:flutter_callouts/src/text_editing/string_editor.dart';
+export 'package:flutter_callouts/src/text_editing/textfield_callout.dart';
+export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
+
+// re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
+export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
+export 'package:flutter_callouts/src/typedefs.dart';
+export 'package:flutter_callouts/src/api/callouts/color_values.dart';
+export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
+export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
+export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
+export 'package:flutter_callouts/src/api/callouts/decoration_shape_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
 
 export 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 
@@ -28,10 +57,12 @@ export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
+
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
+
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -40,6 +71,7 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
+
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -89,6 +121,7 @@ export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
+
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -119,6 +152,7 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -136,7 +170,8 @@ export 'src/snippet/snodes/yt_node.dart';
 
 export 'src/typedefs.dart';
 
-FlutterContentMixins fco = FlutterContentMixins.instance;
+// global instance singleton
+FlutterContentMixins fco = FlutterContentMixins._instance;
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
@@ -158,18 +193,15 @@ class FlutterContentMixins
         PasswordlessMixin,
         // ImageCaptureMixin,
         LocalStorageMixin {
-  FlutterContentMixins._internal() // Private constructor
-  {
-    logi('FlutterContent._internal()');
+  FlutterContentMixins._internal() {
+    // Private constructor
+    logi('FlutterContentMixins._internal() private constructor');
   }
 
   static final FlutterContentMixins _instance =
       FlutterContentMixins._internal();
 
-  static FlutterContentMixins get instance {
-    FlutterCalloutMixins.instance;
-    return _instance;
-  }
+  // static FlutterContentMixins get instance => _instance;
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> init({
@@ -211,32 +243,97 @@ class FlutterContentMixins
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
       debugLogDiagnostics: true,
-      // initialLocation: initialRoutePath,
+      initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,
+
+      // onException: (_, GoRouterState state, GoRouter router) {
+      //   router.go('/404', extra: state.uri.toString());
+      // },
       errorBuilder: (context, state) {
-        return Material(
-          child: Text(
-            state.error?.message ?? 'Unknown go error',
-            textScaler: const TextScaler.linear(2.0),
-          ),
-        );
+        // create new page entry and goto page
+        // addRoute(newPath: state.matchedLocation, template: SnippetTemplateEnum.empty);
+        EditablePageState.removeAllNodeWidgetOverlays();
+        fco.dismiss('exit-editMode');
+        bool userCanEdit = canEditContent.value;
+        if (userCanEdit) {
+          final snippetName = state.matchedLocation;
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            snippetRootNode: rootNode,
+          );
+          final dynamicPage = EditablePage(
+            key: GlobalKey(), // provides access to state later
+            routePath: state.matchedLocation,
+            child: SnippetPanel.fromSnippet(
+              panelName: "dynamic panel",
+              snippetName: snippetName,
+            ),
+          );
+          // fco.cacheAndSaveANewSnippetVersion(
+          //   snippetName: snippetName,
+          //   rootNode: rootNode,
+          //   pagePath: snippetName,
+          //   publish: true,
+          // );
+          return dynamicPage;
+        } else {
+          return EditablePage(
+            key: GlobalKey(), // provides access to state later
+            routePath: "/404",
+            child: SnippetPanel.fromNodes(
+              panelName: "dynamic panel",
+              snippetRootNode: SnippetRootNode(
+                name: '${state.matchedLocation} missing',
+                child: ScaffoldNode(
+                  body: GenericSingleChildNode(
+                    propertyName: 'title',
+                    child: RichTextNode(
+                      text: TextSpanNode(
+                        text: 'Page not found:',
+                        textStyleGroup: TextStyleGroup(
+                            colorValue: Colors.red.value, fontSize: 32),
+                        children: [
+                          TextSpanNode(
+                            text: ' ${state.matchedLocation}',
+                            textStyleGroup: TextStyleGroup(
+                                colorValue: Colors.green.value, fontSize: 64),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
       },
+      // return Material(
+      //   child: Text(
+      //     state.error?.message ?? 'Unknown go error',
+      //     textScaler: const TextScaler.linear(2.0),
+      //     style: TextStyle(color: Colors.red),
+      //   ),
+      // );
     );
 
     // extract go routes
-    void parseRouteConfig(List<String> names, List<GoRoute> routes) {
-      for (GoRoute route in routes) {
-        if (route.name != null) names.add(route.name!);
-        parseRouteConfig(names, List.from(route.routes));
+    void parseRouteConfig(List<String> names, List<RouteBase> routes) {
+      for (var route in routes) {
+        if (route is GoRoute && route.name != null) names.add(route.name!);
+        parseRouteConfig(names, route.routes);
       }
     }
 
+    List<String> routePaths = [];
     logi('starting parseRouteConfig');
-    parseRouteConfig(pagePaths, List.from(router.configuration.routes));
+    parseRouteConfig(routePaths, router.configuration.routes);
     logi('finished parseRouteConfig');
 
-    logi('Routes--------------------------');
-    logi(pagePaths.toString());
+    logi('RoutingConfig Routes------------');
+    logi(routePaths.toString());
     logi('--------------------------------');
 
     if (fbOptions != null) {
@@ -256,13 +353,14 @@ class FlutterContentMixins
 
       fco.logi('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
-      // add any snippet names that start with /, because they are also page pathnames
+      // add more routes from the snippet names to below the "/" route
+      RouteBase home = routingConfig.routes.first;
       for (String snippetName in _appInfo.snippetNames) {
         if (snippetName.startsWith('/') && !pagePaths.contains(snippetName)) {
-          addRoute(newPath: snippetName, template: SnippetTemplateEnum.empty);
+          addSubRoute(
+              newPath: snippetName, template: SnippetTemplateEnum.empty);
         }
       }
-      pagePaths.sort();
 
       // await loadLatestSnippetMap();
 
@@ -303,6 +401,7 @@ class FlutterContentMixins
 
   late AppInfoModel _appInfo; // must be instantiated in init()
   late String? _gcrServerUrl;
+
   AppInfoModel get appInfo => _appInfo;
 
   String? get gcrServerUrl => _gcrServerUrl;
@@ -321,19 +420,19 @@ class FlutterContentMixins
   }
 
   //
-  void addRoute({
+  void addSubRoute({
     required String newPath,
     required SnippetTemplateEnum template,
   }) {
-    routingConfigVN.value = RoutingConfig(
-      routes: <RouteBase>[
-        ...routingConfigVN.value.routes,
+    List<RouteBase> subRoutes = routingConfigVN.value.routes;
+    if (!newPath.endsWith(' missing')) {
+      subRoutes.add(
         DynamicPageRoute(
           path: newPath,
           template: template,
         ),
-      ],
-    );
+      );
+    }
   }
 
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
@@ -358,16 +457,55 @@ class FlutterContentMixins
 
   List<SnippetName> snippetsBeingReadFromFB = [];
 
-  // must be instantiated in init()
-  Map<SnippetName, SnippetInfoModel> snippetInfoCache = {};
-  Map<SnippetName, List<VersionId>> versionIdCache = {};
+  // Map<SnippetName, List<VersionId>> versionIdCache = {};
 
   // Map<SnippetName, LinkedList<VersionEntryItem>> versionIdCache = {};
-  List<VersionId> versionIds(SnippetName snippetName) =>
-      versionIdCache[snippetName] ?? [];
+  // List<VersionId> versionIds(SnippetName snippetName) =>
+  //     versionIdCache[snippetName] ?? [];
 
   // versionIdCache[snippetName]?.map((e) => e.versionId).toList() ??[];
-  Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
+  // Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
+
+  void saveNewVersion({required SnippetRootNode? snippet}) {
+    if (snippet?.name == null) return;
+
+    String? snippetName = snippet!.name.startsWith('/')
+        ? snippet.name.substring(1)
+        : snippet.name;
+
+    // remove all subsequent versions following the current version
+    // before saving new version
+    SnippetInfoModel? snippetInfo =
+        SnippetInfoModel.snippetInfoCache[snippet.name];
+    if (snippetInfo != null) {
+      VersionId? currVerId = snippetInfo.currentVersionId();
+      if (currVerId != null) {
+        List<VersionId> newIdCache = [];
+        List<VersionId> tbd = [];
+        for (VersionId v in snippetInfo.cachedVersionIds) {
+          if (int.parse(v) > int.parse(currVerId)) {
+            tbd.add(v);
+          } else {
+            newIdCache.add(v);
+          }
+        }
+        // delete from FB and also from cache
+        for (VersionId vId in tbd) {
+          snippetInfo.cachedVersionIds.remove(vId);
+          snippetInfo.cachedVersions.remove(vId);
+        }
+        fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
+        SnippetInfoModel.debug();
+
+        // write new version to FB
+        fco.cacheAndSaveANewSnippetVersion(
+          snippetName: snippetName,
+          rootNode: snippet,
+        );
+      }
+      //
+    }
+  }
 
   // create new snippet version in cache, then write through to FB
   Future<void> cacheAndSaveANewSnippetVersion({
@@ -376,47 +514,67 @@ class FlutterContentMixins
     required SnippetRootNode rootNode,
     bool? publish,
   }) async {
-    logi('newSnippetVersion($snippetName)');
-    SnippetInfoModel snippetInfo;
+    logi('cacheAndSaveANewSnippetVersion($snippetName)');
+
     // snippet has changed
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // hopefully write new version to FB
-    versionCache[snippetName] ??= {};
-    versionIdCache[snippetName] ??= []; //LinkedList<VersionEntryItem>();
-    versionIdCache[snippetName]
-        ?.add(newVersionId); //add(VersionEntryItem(newVersionId));
-    versionCache[snippetName]?.addAll({newVersionId: rootNode});
-    bool fbSuccess =
-        await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
+    // update or create SnippetInfo
+    SnippetInfoModel? snippetInfo =
+        SnippetInfoModel.snippetInfoCache[snippetName];
 
-    if (!fbSuccess) {
-      versionIdCache[snippetName]?.remove(newVersionId);
-      versionCache[snippetName]?.remove(newVersionId);
-      return;
-    }
+    VersionId? currVersionId = snippetInfo?.currentVersionId();
 
     // NEW snippet - initial version
-    if (!snippetInfoCache.containsKey(snippetName)) {
-      appInfo.snippetNames = [snippetName, ...appInfo.snippetNames];
-      // bool publishImmediately = true; //publish ?? appInfo.autoPublishDefault;
-      snippetInfo = snippetInfoCache[snippetName] = SnippetInfoModel(
+    if (snippetInfo == null) {
+      snippetInfo = SnippetInfoModel(
         snippetName,
-        routePath: pagePath,
         editingVersionId: newVersionId,
         publishedVersionId: newVersionId,
-        //publishImmediately ? newVersionId : null,
-        autoPublish: true, //appInfo.autoPublishDefault,
+        routePath: pagePath,
+        autoPublish: appInfo.autoPublishDefault,
       );
-      await modelRepo.saveAppInfo();
-      await modelRepo.saveLatestSnippetVersion(snippetName: snippetName);
+      SnippetInfoModel.snippetInfoCache[snippetName] = snippetInfo;
+      // update FB appInfo
+      if (!appInfo.snippetNames.contains(snippetName)) {
+        // jsArray issue
+        List<String> newList = appInfo.snippetNames.toList();
+        newList.add(snippetName);
+        appInfo.snippetNames = newList;
+        await modelRepo.saveAppInfo();
+      }
     } else {
-      // EXISTING snippet - just add new version
-      snippetInfo = snippetInfoCache[snippetName]!
-        ..editingVersionId = newVersionId;
-      // if (snippetInfo.autoPublish ?? false) {
-      snippetInfo.publishedVersionId = newVersionId;
-      // }
+      snippetInfo.editingVersionId = newVersionId;
+      if (snippetInfo.autoPublish ?? appInfo.autoPublishDefault) {
+        snippetInfo.publishedVersionId = newVersionId;
+      }
+    }
+
+    snippetInfo.cachedVersionIds.add(newVersionId);
+    snippetInfo.cachedVersions[newVersionId] = rootNode;
+
+    // try to write new version to FB
+    bool fbSuccess = await modelRepo.saveSnippetVersion(
+      snippetName: snippetName,
+      newVersionId: newVersionId,
+      newVersion: rootNode,
+    );
+
+    if (!fbSuccess) {
+      logi('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSucess !');
+    } else {
+      // reset current version to before change
+      if (currVersionId != null) {
+        String? origSnippetJson =
+            FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
+        if (origSnippetJson != null) {
+          SnippetRootNode? origSnippet =
+              SnippetRootNodeMapper.fromJson(origSnippetJson);
+          snippetInfo.cachedVersions[currVersionId] = origSnippet;
+          FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange =
+              rootNode.toJson();
+        }
+      }
     }
   }
 
@@ -424,7 +582,7 @@ class FlutterContentMixins
 
   /// The package name. `bundleIdentifier` on iOS, `getPackageName` on Android.
 
-  // model that was loaded from facebook when this app started up
+  // model that was loaded from firebase when this app started up
   late String? prevSavedModelVersion;
   late String? nextSavedModelVersion;
 
@@ -481,6 +639,8 @@ class FlutterContentMixins
 
   void Function(BuildContext)? namedHandler(HandlerName name) =>
       _handlers[name];
+
+  String? currentEditablePagePath; // gets set by EditablePage initState()
 
   // each snippet panel has a gk, a last selected node, and a ur
   final Map<RouteName, GlobalKey> pageGKs = {};
@@ -576,16 +736,6 @@ class FlutterContentMixins
 
   // FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
 
-  SnippetRootNode? currentSnippetVersion(SnippetName snippetName) {
-    SnippetRootNode? rootNode;
-    SnippetInfoModel? snippetInfo = snippetInfoCache[snippetName];
-    VersionId? currentVersionId = snippetInfo?.currentVersionId;
-    if (currentVersionId != null) {
-      rootNode = versionCache[snippetName]?[currentVersionId];
-    }
-    return rootNode;
-  }
-
   // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
 
   void hideClipboard() => dismiss("floating-clipboard");
@@ -637,7 +787,8 @@ class FlutterContentMixins
 
   Future<void> loadFirebaseStorageFolders() async {
     var rootRef = fbStorage.ref('/$appName'); // .child("/");
-    rootFSFolderNode = await modelRepo.createAndPopulateFolderNode(ref: rootRef);
+    rootFSFolderNode =
+        await modelRepo.createAndPopulateFolderNode(ref: rootRef);
   }
 
   // snippet editing
@@ -721,6 +872,8 @@ class FlutterContentMixins
   }
 
   void showSnippetTreeAndPropertiesCallout({
+    required VoidCallback enterEditModeF,
+    required VoidCallback exitEditModeF,
     required TargetKeyFunc targetGKF,
     String? scrollControllerName,
     required VoidCallback onDismissedF,
@@ -730,7 +883,8 @@ class FlutterContentMixins
     bool allowButtonCallouts = false,
     TargetModel? targetBeingConfigured,
   }) async {
-    SnippetRootNode? rootNode = FlutterContentApp.snippetBeingEdited?.rootNode;
+    SnippetRootNode? rootNode =
+        FlutterContentApp.snippetBeingEdited?.getRootNode();
     if (rootNode == null) return;
 
     // dismiss any pink border overlays
@@ -749,12 +903,16 @@ class FlutterContentMixins
     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
     CalloutConfig cc = snippetTreeCalloutConfig(
-        cId: FlutterContentApp.snippetBeingEdited!.rootNode.name,
+        cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
         onDismissedF: onDismissedF);
+
     Widget content = SnippetTreeAndPropertiesCalloutContents(
+      enterEditModeF: enterEditModeF,
+      exitEditModeF: exitEditModeF,
       scrollControllerName: scrollControllerName,
       allowButtonCallouts: allowButtonCallouts,
     );
+
     fco.showOverlay(
       calloutConfig: cc,
       calloutContent: content,

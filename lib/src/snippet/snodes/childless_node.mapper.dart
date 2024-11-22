@@ -14,23 +14,23 @@ class CLMapper extends SubClassMapperBase<CL> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CLMapper._());
       STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      TextNodeMapper.ensureInitialized();
-      RichTextNodeMapper.ensureInitialized();
-      AssetImageNodeMapper.ensureInitialized();
       AlgCNodeMapper.ensureInitialized();
-      UMLImageNodeMapper.ensureInitialized();
-      FSImageNodeMapper.ensureInitialized();
-      IFrameNodeMapper.ensureInitialized();
-      GoogleDriveIFrameNodeMapper.ensureInitialized();
+      AssetImageNodeMapper.ensureInitialized();
+      ChipNodeMapper.ensureInitialized();
       FileNodeMapper.ensureInitialized();
       FirebaseStorageImageNodeMapper.ensureInitialized();
+      FSImageNodeMapper.ensureInitialized();
       GapNodeMapper.ensureInitialized();
+      GoogleDriveIFrameNodeMapper.ensureInitialized();
+      IFrameNodeMapper.ensureInitialized();
       MarkdownNodeMapper.ensureInitialized();
-      PollOptionNodeMapper.ensureInitialized();
-      StepNodeMapper.ensureInitialized();
       PlaceholderNodeMapper.ensureInitialized();
+      PollOptionNodeMapper.ensureInitialized();
+      RichTextNodeMapper.ensureInitialized();
+      StepNodeMapper.ensureInitialized();
+      TextNodeMapper.ensureInitialized();
+      UMLImageNodeMapper.ensureInitialized();
       YTNodeMapper.ensureInitialized();
-      ChipNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -41,6 +41,9 @@ class CLMapper extends SubClassMapperBase<CL> {
   static String _$uid(CL v) => v.uid;
   static const Field<CL, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(CL v) => v.gk;
+  static const Field<CL, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(CL v) => v.isExpanded;
   static const Field<CL, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -57,6 +60,7 @@ class CLMapper extends SubClassMapperBase<CL> {
   @override
   final MappableFields<CL> fields = const {
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

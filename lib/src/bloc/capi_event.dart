@@ -341,14 +341,18 @@ class CAPIEvent with _$CAPIEvent {
     Uint8List? newBytes,
   }) = ImageChanged;
 
-  const factory CAPIEvent.undo({
-    required String name,
-    @Default(false) bool skipRedo,
-  }) = Undo;
+  // const factory CAPIEvent.clearUR() = ClearUR;
+  //
 
-  const factory CAPIEvent.redo({
-    required String name,
-  }) = Redo;
+  // const factory CAPIEvent.createUndo({
+  //   required SnippetRootNode? snippet,
+  // }) = CreateUndo;
+
+  // const factory CAPIEvent.undo({
+  //   @Default(false) bool skipRedo,
+  // }) = Undo;
+  //
+  // const factory CAPIEvent.redo() = Redo;
 
   const factory CAPIEvent.forceSnippetRefresh() = ForceSnippetRefresh;
 }

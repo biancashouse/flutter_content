@@ -44,12 +44,12 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   ];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Expanded", ExpandedNode, action),
-      menuItemButton("Flexible", FlexibleNode, action),
-      ...super.menuAnchorWidgets_WrapWith(action, true),
+      menuItemButton(enterEditModeF, exitEditModeF,"Expanded", ExpandedNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"Flexible", FlexibleNode, action),
+      ...super.menuAnchorWidgets_WrapWith(enterEditModeF, exitEditModeF,action, true),
     ];
   }
 
@@ -63,7 +63,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
             w = LayoutBuilder(builder: (context, constraints) {
               bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
               return false && constraintsError
-                  ? _errorWidget()
+                  ? _Error()
                   : Flex(
                 direction: this is RowNode ? Axis.horizontal : Axis.vertical,
                 key: createNodeGK(),
@@ -75,22 +75,16 @@ abstract class FlexNode extends MC with FlexNodeMappable {
               );
             });
           } catch(e) {
-            w = _errorWidget();
+            w = _Error();
             fco.logi('Flex() failed to render properly. ===============================================');
           }
       return w;
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
-  Widget _errorWidget() => const Row(
+  Widget _Error() => const Row(
         children: [
           Icon(
             Icons.error,

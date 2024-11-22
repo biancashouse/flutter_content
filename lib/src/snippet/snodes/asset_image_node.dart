@@ -161,50 +161,95 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
       setParent(parentNode); // propagating parents down from root
       possiblyHighlightSelectedNode();
       return name?.isNotEmpty ?? false
-              ? LayoutBuilder(
-              key: createNodeGK(),
-                builder: (context, constraints) {
-                  double? w = width != null
-                      ? width! * scale
-                      : constraints.maxWidth != double.infinity
-                      ? constraints.maxWidth*scale
-                      : null;
-                  double? h = height != null
-                      ? height! * scale
-                      : constraints.maxHeight != double.infinity
-                      ? constraints.maxHeight*scale
-                      : null;
-                // fco.logi('Constrints: ${constraints.toString()}');
-                  return SizedBox(
-                    width: w,
-                    height: h,
-                      child: Image.asset(
-                        name!,
-                        // scale: scale,
-                        fit: fit?.flutterValue,
-                        alignment: alignment?.flutterValue ?? Alignment.center,
-                        // package: 'flutter_content',
-                      ),
-                    );
-                }
-              )
-              : Placeholder(
-                  key: createNodeGK(),
-                  color: Colors.purpleAccent,
-                  strokeWidth: 2.0,
-                  fallbackWidth: (width ?? 400) * (scale ?? 1.0),
-                  fallbackHeight: (height ?? 300) * (scale ?? 1.0),
-                );
-    } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
+          ? LayoutBuilder(
+          builder: (context, constraints) {
+            double? w = width != null
+                ? width! * scale
+                : constraints.maxWidth != double.infinity
+                ? constraints.maxWidth*scale
+                : null;
+            double? h = height != null
+                ? height! * scale
+                : constraints.maxHeight != double.infinity
+                ? constraints.maxHeight*scale
+                : null;
+            // fco.logi('Constrints: ${constraints.toString()}');
+            return SizedBox(
+              width: w,
+              //height: h,
+              child: Image.asset(
+                key: createNodeGK(),
+                name!,
+                // scale: scale,
+                fit: fit?.flutterValue,
+                alignment: alignment?.flutterValue ?? Alignment.center,
+                // package: 'flutter_content',
+              ),
+            );
+          }
+      )
+          : Placeholder(
+        key: createNodeGK(),
+        color: Colors.purpleAccent,
+        strokeWidth: 2.0,
+        fallbackWidth: (width ?? 400) * (scale ?? 1.0),
+        fallbackHeight: (height ?? 300) * (scale ?? 1.0),
       );
+    } catch (e) {
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
+
+  // @override
+  // Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  //   try {
+  //     setParent(parentNode); // propagating parents down from root
+  //     possiblyHighlightSelectedNode();
+  //     return name?.isNotEmpty ?? false
+  //             ? LayoutBuilder(
+  //             key: createNodeGK(),
+  //               builder: (context, constraints) {
+  //                 double? w = width != null
+  //                     ? width! * scale
+  //                     : constraints.maxWidth != double.infinity
+  //                     ? constraints.maxWidth*scale
+  //                     : null;
+  //                 double? h = height != null
+  //                     ? height! * scale
+  //                     : constraints.maxHeight != double.infinity
+  //                     ? constraints.maxHeight*scale
+  //                     : null;
+  //               // fco.logi('Constrints: ${constraints.toString()}');
+  //                 return SizedBox(
+  //                   width: w,
+  //                   height: h,
+  //                     child: Image.asset(
+  //                       name!,
+  //                       // scale: scale,
+  //                       fit: fit?.flutterValue,
+  //                       alignment: alignment?.flutterValue ?? Alignment.center,
+  //                       // package: 'flutter_content',
+  //                     ),
+  //                   );
+  //               }
+  //             )
+  //             : Placeholder(
+  //                 key: createNodeGK(),
+  //                 color: Colors.purpleAccent,
+  //                 strokeWidth: 2.0,
+  //                 fallbackWidth: (width ?? 400) * (scale ?? 1.0),
+  //                 fallbackHeight: (height ?? 300) * (scale ?? 1.0),
+  //               );
+  //   } catch (e) {
+  //     print(e);
+  //     return const Column(
+  //       children: [
+  //         Text(FLUTTER_TYPE),
+  //         fco.errorIcon(color: Colors.red, size: 32),
+  //       ],
+  //     );
+  //   }
+  // }
 
   // @override
   // String toSource(BuildContext context) {
@@ -225,12 +270,12 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Carousel", CarouselNode, action),
-      menuItemButton("AspectRatio", AspectRatioNode, action),
-      ...super.menuAnchorWidgets_WrapWith(action, true),
+      menuItemButton(enterEditModeF, exitEditModeF,"Carousel", CarouselNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"AspectRatio", AspectRatioNode, action),
+      ...super.menuAnchorWidgets_WrapWith(enterEditModeF, exitEditModeF,action, true),
     ];
   }
 

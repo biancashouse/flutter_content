@@ -1,0 +1,10 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class FlutterContentMixins {
+    . . .\nValueNotifier<RoutingConfig> routingConfigVN\n. . .
+}
+
+FlutterContentMixins : Future<CAPIBloC> init(\n\t. . .\n\tRoutingConfig routingConfig\n\t. . .\n)
+
+@enduml

@@ -77,12 +77,12 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith( NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF,  VoidCallback exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is! MenuBarNode) ...super.menuAnchorWidgets_Heading( action),
       if (findNearestAncestor<MenuBarNode>() == null && findNearestAncestor<SubmenuButtonNode>() == null)
-        menuItemButton("MenuBar", MenuBarNode, action),
-      menuItemButton("SubMenu", SubmenuButtonNode, action),
+        menuItemButton(enterEditModeF, exitEditModeF,"MenuBar", MenuBarNode, action),
+      menuItemButton(enterEditModeF, exitEditModeF,"SubMenu", SubmenuButtonNode, action),
     ];
   }
 

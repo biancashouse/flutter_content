@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
+
 import 'package:flutter_content/flutter_content.dart';
 // import 'package:flutter_content/src/target_config/content/snippet_editor/node_properties/node_text_editor.dart';
 

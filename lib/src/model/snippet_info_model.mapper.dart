@@ -22,19 +22,28 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
 
   static String _$name(SnippetInfoModel v) => v.name;
   static const Field<SnippetInfoModel, String> _f$name = Field('name', _$name);
-  static String? _$editingVersionId(SnippetInfoModel v) => v.editingVersionId;
+  static String _$editingVersionId(SnippetInfoModel v) => v.editingVersionId;
   static const Field<SnippetInfoModel, String> _f$editingVersionId =
-      Field('editingVersionId', _$editingVersionId, opt: true);
-  static String? _$publishedVersionId(SnippetInfoModel v) =>
+      Field('editingVersionId', _$editingVersionId);
+  static String _$publishedVersionId(SnippetInfoModel v) =>
       v.publishedVersionId;
   static const Field<SnippetInfoModel, String> _f$publishedVersionId =
-      Field('publishedVersionId', _$publishedVersionId, opt: true);
+      Field('publishedVersionId', _$publishedVersionId);
   static bool? _$autoPublish(SnippetInfoModel v) => v.autoPublish;
   static const Field<SnippetInfoModel, bool> _f$autoPublish =
       Field('autoPublish', _$autoPublish, opt: true);
   static String? _$routePath(SnippetInfoModel v) => v.routePath;
   static const Field<SnippetInfoModel, String> _f$routePath =
       Field('routePath', _$routePath, opt: true);
+  static List<String> _$cachedVersionIds(SnippetInfoModel v) =>
+      v.cachedVersionIds;
+  static const Field<SnippetInfoModel, List<String>> _f$cachedVersionIds =
+      Field('cachedVersionIds', _$cachedVersionIds, mode: FieldMode.member);
+  static Map<String, SnippetRootNode?> _$cachedVersions(SnippetInfoModel v) =>
+      v.cachedVersions;
+  static const Field<SnippetInfoModel, Map<String, SnippetRootNode?>>
+      _f$cachedVersions =
+      Field('cachedVersions', _$cachedVersions, mode: FieldMode.member);
 
   @override
   final MappableFields<SnippetInfoModel> fields = const {
@@ -43,6 +52,8 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     #publishedVersionId: _f$publishedVersionId,
     #autoPublish: _f$autoPublish,
     #routePath: _f$routePath,
+    #cachedVersionIds: _f$cachedVersionIds,
+    #cachedVersions: _f$cachedVersions,
   };
 
   static SnippetInfoModel _instantiate(DecodingData data) {
@@ -128,15 +139,14 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
   @override
   $R call(
           {String? name,
-          Object? editingVersionId = $none,
-          Object? publishedVersionId = $none,
+          String? editingVersionId,
+          String? publishedVersionId,
           Object? autoPublish = $none,
           Object? routePath = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (editingVersionId != $none) #editingVersionId: editingVersionId,
-        if (publishedVersionId != $none)
-          #publishedVersionId: publishedVersionId,
+        if (editingVersionId != null) #editingVersionId: editingVersionId,
+        if (publishedVersionId != null) #publishedVersionId: publishedVersionId,
         if (autoPublish != $none) #autoPublish: autoPublish,
         if (routePath != $none) #routePath: routePath
       }));

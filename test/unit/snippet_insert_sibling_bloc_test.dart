@@ -74,7 +74,7 @@ void main() {
         nodeBeingDeleted: null,
         rootNode: snippet,
         treeC: treeC,
-        jsonBeforePush: '',
+        jsonBeforeAnyChange: '',
       ),
     );
 
@@ -86,7 +86,7 @@ void main() {
           nodeBeingDeleted: null,
           rootNode: snippet,
           treeC: treeC,
-          jsonBeforePush: '',
+          jsonBeforeAnyChange: '',
           showProperties: true,
         ),
       );

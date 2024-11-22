@@ -1,0 +1,90 @@
+
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class Object
+
+abstract class Node extends Object {
+    Node? _parent
+}
+
+abstract class STreeNode <<MappableClass>> extends Node {
+    String uid
+}
+
+skinparam groupInheritance 17
+abstract class CL extends STreeNode {}
+
+skinparam groupInheritance 15
+abstract class SC extends STreeNode {
+   STreeNode? child
+}
+
+skinparam groupInheritance 13
+abstract class MC extends STreeNode {
+   List<STreeNode> children
+}
+
+'interface List
+'interface Collection
+
+'class AlgCNode extends CL
+'class AssetImageNode extends CL
+'class ChipNode extends CL
+'class FileNode extends CL
+'class FirebaseStorageImageNode extends CL
+'class FSImageNode extends CL
+'class GapNode extends CL
+'class GoogleDriveIFrameNode extends CL
+'class IFrameNode extends CL
+'class MarkdownNode extends CL
+'class PlaceholderNode extends CL
+'class PollOptionNode extends CL
+'class RichTextNode extends CL
+'class StepNode extends CL
+'class TextNode extends CL
+'class UMLImageNode extends CL
+'class YTNode extends CL
+
+class AlignNode extends SC
+class AspectRatioNode extends SC
+class ButtonNode extends SC
+class CenterNode extends SC
+class ContainerNode extends SC
+class DefaultTextStyleNode extends SC
+class ExpandedNode extends SC
+class FlexibleNode extends SC
+class GenericSingleChildNode extends SC
+class HotspotsNode extends SC
+class PaddingNode extends SC
+class PositionedNode extends SC
+class SingleChildScrollViewNode extends SC
+class SizedBoxNode extends SC
+class SnippetRootNode extends SC {
+  SnippetName name
+  RoutePath? routePath
+  String tags
+}
+
+'class CarouselNode extends MC
+'class DirectoryNode extends MC
+'class FlexNode extends MC
+'class GenericMultiChildNode extends MC
+'class MenuBarNode extends MC
+'class PollNode extends MC
+'class SplitViewNode extends MC
+'class StackNode extends MC
+'class StepperNode extends MC
+'class SubmenuButtonNode extends MC
+'class TabBarNode extends MC
+'class TabBarViewNode extends MC
+'class WrapNode extends MC
+'
+'enum TimeUnit {
+'DAYS
+'HOURS
+'MINUTES
+'}
+
+@enduml

@@ -62,6 +62,9 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
   static String _$uid(ElevatedButtonNode v) => v.uid;
   static const Field<ElevatedButtonNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(ElevatedButtonNode v) => v.gk;
+  static const Field<ElevatedButtonNode, GlobalKey<State<StatefulWidget>>>
+      _f$gk = Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(ElevatedButtonNode v) => v.isExpanded;
   static const Field<ElevatedButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -88,6 +91,7 @@ class ElevatedButtonNodeMapper extends SubClassMapperBase<ElevatedButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

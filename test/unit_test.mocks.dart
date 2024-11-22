@@ -53,22 +53,22 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<_i5.SnippetInfoModel?>);
 
   @override
-  _i4.Future<void> possiblyLoadSnippetIntoCache({
-    required String? snippetName,
+  _i4.Future<_i5.SnippetRootNode?> loadVersionFromFBIntoCache({
+    required _i5.SnippetInfoModel? snippetInfo,
     required String? versionId,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #possiblyLoadSnippetIntoCache,
+          #loadVersionFromFBIntoCache,
           [],
           {
-            #snippetName: snippetName,
+            #snippetInfo: snippetInfo,
             #versionId: versionId,
           },
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i4.Future<_i5.SnippetRootNode?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.SnippetRootNode?>.value(),
+      ) as _i4.Future<_i5.SnippetRootNode?>);
 
   @override
   _i4.Future<String?> getGcrServerUrl() => (super.noSuchMethod(
@@ -123,16 +123,41 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<void>);
 
   @override
-  _i4.Future<bool> saveLatestSnippetVersion({required String? snippetName}) =>
+  _i4.Future<bool> saveSnippetVersion({
+    required String? snippetName,
+    required String? newVersionId,
+    required _i5.SnippetRootNode? newVersion,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
-          #saveLatestSnippetVersion,
+          #saveSnippetVersion,
           [],
-          {#snippetName: snippetName},
+          {
+            #snippetName: snippetName,
+            #newVersionId: newVersionId,
+            #newVersion: newVersion,
+          },
         ),
         returnValue: _i4.Future<bool>.value(false),
         returnValueForMissingStub: _i4.Future<bool>.value(false),
       ) as _i4.Future<bool>);
+
+  @override
+  _i4.Future<void> deleteSnippetVersions(
+    String? snippetName,
+    List<String>? tbd,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #deleteSnippetVersions,
+          [
+            snippetName,
+            tbd,
+          ],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   _i4.Future<void> saveVote({

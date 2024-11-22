@@ -4,7 +4,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
 
 part 'placeholder_node.mapper.dart';
 
@@ -69,7 +68,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
     Widget? childWidget;
     if (fco.snippetPlacementMap.containsKey(name)) {
       String snippetName = fco.snippetPlacementMap[name]!;
-      return FutureBuilder<void>(
+      return FutureBuilder<SnippetRootNode?>(
           future:
               SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
             snippetName: snippetName,
@@ -92,30 +91,22 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                       Widget snippetWidget;
                       try {
                         // in case did a revert, ignore snapshot data and use the AppInfo instead
-                        SnippetRootNode? snippet =
-                            fco.currentSnippetVersion(snippetName);
+                        SnippetRootNode? snippet = snapshot.data;//fco.currentSnippetVersion(snippetName);
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null
-                            ? fco.errorIcon(Colors.red)
+                            ? Error(key: createNodeGK(), FLUTTER_TYPE,
+                                color: Colors.red,
+                                size: 32,
+                                errorMsg: "null snippet!")
                             : snippet.child?.toWidget(futureContext, snippet) ??
                                 const Placeholder();
                       } catch (e) {
                         fco.logi('snippetRootNode.toWidget() failed!');
-                        snippetWidget = Material(
-                          textStyle: const TextStyle(
-                              fontFamily: 'monospace', fontSize: 12),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                fco.errorIcon(Colors.red),
-                                const Gap(10),
-                                fco.coloredText(e.toString()),
-                              ],
-                            ),
-                          ),
-                        );
+                        snippetWidget = Error(key: createNodeGK(), FLUTTER_TYPE,
+                            color: Colors.red,
+                            size: 32,
+                            errorMsg: e.toString());
                       }
                       return Placeholder(
                         key: createNodeGK(),

@@ -47,6 +47,9 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   static String _$uid(CarouselNode v) => v.uid;
   static const Field<CarouselNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(CarouselNode v) => v.gk;
+  static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(CarouselNode v) => v.isExpanded;
   static const Field<CarouselNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -71,6 +74,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #axis: _f$axis,
     #children: _f$children,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

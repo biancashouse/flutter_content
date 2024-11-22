@@ -41,16 +41,13 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
               optionWidget: Text(text),
             );
           } else {
-            return fco.errorIcon(Colors.red);
+            return Error(key: createNodeGK(), FLUTTER_TYPE,
+                color: Colors.red,
+                size: 32,
+                errorMsg: "getParent() is not a PollNode!");
           }
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
@@ -74,10 +71,10 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is! PollNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! PollNode) menuItemButton("Poll", PollNode, action),
+      if (getParent() is! PollNode) menuItemButton(enterEditModeF, exitEditModeF,"Poll", PollNode, action),
     ];
   }
 

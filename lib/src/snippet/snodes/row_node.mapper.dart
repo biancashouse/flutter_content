@@ -42,6 +42,9 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
   static String _$uid(RowNode v) => v.uid;
   static const Field<RowNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(RowNode v) => v.gk;
+  static const Field<RowNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(RowNode v) => v.isExpanded;
   static const Field<RowNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -63,6 +66,7 @@ class RowNodeMapper extends SubClassMapperBase<RowNode> {
     #crossAxisAlignment: _f$crossAxisAlignment,
     #children: _f$children,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

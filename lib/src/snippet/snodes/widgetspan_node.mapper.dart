@@ -28,6 +28,9 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   static String _$uid(WidgetSpanNode v) => v.uid;
   static const Field<WidgetSpanNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(WidgetSpanNode v) => v.gk;
+  static const Field<WidgetSpanNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(WidgetSpanNode v) => v.isExpanded;
   static const Field<WidgetSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -46,6 +49,7 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   final MappableFields<WidgetSpanNode> fields = const {
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

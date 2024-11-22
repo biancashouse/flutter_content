@@ -37,10 +37,10 @@ class StepNode extends CL with StepNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is! StepperNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! StepperNode) menuItemButton("Stepper", StepperNode, action),
+      if (getParent() is! StepperNode) menuItemButton(enterEditModeF, exitEditModeF,"Stepper", StepperNode, action),
     ];
   }
 

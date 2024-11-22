@@ -6,7 +6,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
-import 'package:gap/gap.dart';
 
 part 'tabbar_node.mapper.dart';
 
@@ -110,68 +109,51 @@ class TabBarNode extends MC with TabBarNodeMappable {
       spState?.createTabController(children.length);
       List<Widget> tabs = [];
       for (STreeNode node in children) {
-            tabs.add(Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
-              child: node is TextNode
-                  ? Tab(text: (node).text)
-                  : Tab(child: node.toWidget(context, parentNode)),
-            ));
-          }
+        tabs.add(Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
+          child: node is TextNode
+              ? Tab(text: (node).text)
+              : Tab(child: node.toWidget(context, parentNode)),
+        ));
+      }
       final tabBar = TabBar(
-            key: spState?.tabBarGK = createNodeGK(),
-            controller: spState?.tabC,
-            tabs: tabs,
-            labelColor: selectedLabelColorValue != null
-                ? Color(selectedLabelColorValue!)
-                : null,
-            unselectedLabelColor: unselectedLabelColorValue != null
-                ? Color(unselectedLabelColorValue!)
-                : null,
-            labelPadding: const EdgeInsets.all(10),
-            labelStyle: labelStyleGroup?.toTextStyle(context),
-            indicatorColor:
-                indicatorColorValue != null ? Color(indicatorColorValue!) : null,
-            indicatorWeight: indicatorWeight = 2.0,
-            indicator: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 2),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(10),
-          );
+        key: spState?.tabBarGK = createNodeGK(),
+        controller: spState?.tabC,
+        tabs: tabs,
+        labelColor: selectedLabelColorValue != null
+            ? Color(selectedLabelColorValue!)
+            : null,
+        unselectedLabelColor: unselectedLabelColorValue != null
+            ? Color(unselectedLabelColorValue!)
+            : null,
+        labelPadding: const EdgeInsets.all(10),
+        labelStyle: labelStyleGroup?.toTextStyle(context),
+        indicatorColor:
+            indicatorColorValue != null ? Color(indicatorColorValue!) : null,
+        indicatorWeight: indicatorWeight = 2.0,
+        indicator: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 2),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(10),
+      );
       spState?.tabC?.index = min(selection ?? 0, children.length - 1);
       try {
-            return PreferredSize(
-              preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
-              child: Container(
-                color: bgColorValue != null ? Color(bgColorValue!) : Colors.grey,
-                child: tabBar,
-              ),
-            );
-          } catch (e) {
-            fco.logi('TabBarNode.toWidget() failed! ${e.toString()}');
-            return Material(
-              textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    fco.errorIcon(Colors.red),
-                    const Gap(10),
-                    fco.coloredText(e.toString()),
-                  ],
-                ),
-              ),
-            );
-          }
+        return PreferredSize(
+          preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
+          child: Container(
+            color: bgColorValue != null ? Color(bgColorValue!) : Colors.grey,
+            child: tabBar,
+          ),
+        );
+      } catch (e) {
+        fco.logi('TabBarNode.toWidget() failed! ${e.toString()}');
+        return Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString());
+      }
     } catch (e) {
-      print(e);
-      return const Column(
-        children: [
-          Text(FLUTTER_TYPE),
-          Icon(Icons.error_outline, color: Colors.red, size: 32),
-        ],
-      );
+      return Error(key: createNodeGK(), FLUTTER_TYPE,
+          color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 

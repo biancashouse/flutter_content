@@ -33,32 +33,37 @@ class RichTextNode extends CL with RichTextNodeMappable {
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => TextAlignEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => TextAlignEnum.of(newValue)),
         ),
         BoolPropertyValueNode(
           snode: this,
           name: 'softWrap',
           boolValue: softWrap ?? true,
-          onBoolChange: (newValue) => refreshWithUpdate(() => softWrap = newValue),
+          onBoolChange: (newValue) =>
+              refreshWithUpdate(() => softWrap = newValue),
         ),
         EnumPropertyValueNode<TextOverflowEnum?>(
           snode: this,
           name: 'overflow',
           valueIndex: overflow?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => TextOverflowEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => TextOverflowEnum.of(newValue)),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'textScaleFactor',
           decimalValue: textScaleFactor,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => textScaleFactor = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => textScaleFactor = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
         EnumPropertyValueNode<TextDirectionEnum?>(
           snode: this,
           name: 'textDirection',
           valueIndex: textDirection?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => TextDirectionEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => TextDirectionEnum.of(newValue)),
         ),
       ];
 
@@ -73,15 +78,16 @@ class RichTextNode extends CL with RichTextNodeMappable {
         text: rootTextSpan,
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,
-        textScaler: TextScaler.linear(textScaleFactor??1.0),
+        textScaler: TextScaler.linear(textScaleFactor ?? 1.0),
         softWrap: softWrap ?? true,
         overflow: overflow?.flutterValue ?? TextOverflow.clip,
       );
       return rt;
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
+      return Error(key: createNodeGK(), FLUTTER_TYPE,
+          color: Colors.red, size: 32, errorMsg: e.toString());
     }
-    return fco.errorIcon(Colors.red);
   }
 
   // @override

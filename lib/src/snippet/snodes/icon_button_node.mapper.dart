@@ -76,6 +76,9 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static String _$uid(IconButtonNode v) => v.uid;
   static const Field<IconButtonNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(IconButtonNode v) => v.gk;
+  static const Field<IconButtonNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(IconButtonNode v) => v.isExpanded;
   static const Field<IconButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -106,6 +109,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

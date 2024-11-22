@@ -31,6 +31,9 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static String _$uid(AspectRatioNode v) => v.uid;
   static const Field<AspectRatioNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$gk(AspectRatioNode v) => v.gk;
+  static const Field<AspectRatioNode, GlobalKey<State<StatefulWidget>>> _f$gk =
+      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(AspectRatioNode v) => v.isExpanded;
   static const Field<AspectRatioNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -50,6 +53,7 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     #aspectRatio: _f$aspectRatio,
     #child: _f$child,
     #uid: _f$uid,
+    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
