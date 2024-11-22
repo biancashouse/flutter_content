@@ -354,7 +354,7 @@ class FlutterContentMixins
       fco.logi('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
       // add more routes from the snippet names to below the "/" route
-      RouteBase home = routingConfig.routes.first;
+      // RouteBase home = routingConfig.routes.first;
       for (String snippetName in _appInfo.snippetNames) {
         if (snippetName.startsWith('/') && !pagePaths.contains(snippetName)) {
           addSubRoute(

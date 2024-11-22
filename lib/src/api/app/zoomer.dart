@@ -1,6 +1,5 @@
 // ignore_for_file: camel_case_types
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 

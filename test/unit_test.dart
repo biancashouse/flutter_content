@@ -55,6 +55,7 @@ MockModelRepository setupMockRepo() {
         ),
       ),
     )..validateTree();
+    return null;
     // fco.snippetInfoCache['scaffoldWithTabs'] = {'TEST_VERSION_ID': rootNode};
   });
   return mockRepository;
@@ -65,8 +66,8 @@ CAPIBloC getMockCAPIBloC(MockModelRepository repo) => CAPIBloC(modelRepo: repo);
 void main() {
   late MockModelRepository mockRepository;
   // AppInfo
-  const appName = 'flutter-content-test-app';
-  const snippetName = 'scaffold-with-tabs';
+  // const appName = 'flutter-content-test-app';
+  // const snippetName = 'scaffold-with-tabs';
 
   setUp(() {
     mockRepository = setupMockRepo();

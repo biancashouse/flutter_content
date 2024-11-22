@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_editor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:http/http.dart' as http;
 
 part 'uml_image_node.mapper.dart';
 
@@ -96,7 +93,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
               fco.afterMsDelayDo(100, () => fco.forceRefresh());
             }
 
-            UMLRecord? umlRecord = snapshot.data;
+            // UMLRecord? umlRecord = snapshot.data;
             return GestureDetector(
               child: Image.memory(
                 key: gk,
@@ -123,24 +120,24 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   /// http POST - send uml text to my cloud run server to encode into a string.
   /// That string can then be sent to https://www.plantuml.com/plantuml/png/<encoded-text>
-  Future<String?> _cloudRunEncodeTextForPlantUML() async {
-    final bodyMap = {"uml": "$umlText"};
-    final body = json.encode(bodyMap);
-    final response = await http.Client().post(
-      Uri.parse(
-          'https://gcr-plantuml-encoder-js-188627927914.australia-southeast1.run.app'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: body,
-    );
-    final responseBody = response.body;
-    final String encodedText = responseBody;
-    return response.statusCode == 200
-        ? encodedText
-        : null; // "cloudRunEncodeTextForPlantUML() received a bad response!";
-  }
+  // Future<String?> _cloudRunEncodeTextForPlantUML() async {
+  //   final bodyMap = {"uml": "$umlText"};
+  //   final body = json.encode(bodyMap);
+  //   final response = await http.Client().post(
+  //     Uri.parse(
+  //         'https://gcr-plantuml-encoder-js-188627927914.australia-southeast1.run.app'),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: body,
+  //   );
+  //   final responseBody = response.body;
+  //   final String encodedText = responseBody;
+  //   return response.statusCode == 200
+  //       ? encodedText
+  //       : null; // "cloudRunEncodeTextForPlantUML() received a bad response!";
+  // }
 
   // Future<Uint8List?> _fetchPngFromPlantUML(String encodedUMLText) async {
   //   final url =

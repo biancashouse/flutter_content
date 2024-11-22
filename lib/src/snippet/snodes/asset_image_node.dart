@@ -168,11 +168,11 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                 : constraints.maxWidth != double.infinity
                 ? constraints.maxWidth*scale
                 : null;
-            double? h = height != null
-                ? height! * scale
-                : constraints.maxHeight != double.infinity
-                ? constraints.maxHeight*scale
-                : null;
+            // double? h = height != null
+            //     ? height! * scale
+            //     : constraints.maxHeight != double.infinity
+            //     ? constraints.maxHeight*scale
+            //     : null;
             // fco.logi('Constrints: ${constraints.toString()}');
             return SizedBox(
               width: w,
@@ -192,8 +192,8 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
         key: createNodeGK(),
         color: Colors.purpleAccent,
         strokeWidth: 2.0,
-        fallbackWidth: (width ?? 400) * (scale ?? 1.0),
-        fallbackHeight: (height ?? 300) * (scale ?? 1.0),
+        fallbackWidth: (width ?? 400) * (scale),
+        fallbackHeight: (height ?? 300) * (scale),
       );
     } catch (e) {
       return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());

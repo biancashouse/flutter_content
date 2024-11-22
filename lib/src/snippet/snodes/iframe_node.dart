@@ -117,8 +117,8 @@ class IFrameNode extends CL with IFrameNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
       possiblyHighlightSelectedNode();
-      String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
-      String resourceKey = '';
+      // String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
+      // String resourceKey = '';
       String iframeSrc = src == null
               ? "https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"
               : (src?.contains('<iframe') ?? false)

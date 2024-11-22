@@ -191,7 +191,7 @@ class SnippetPanelState extends State<SnippetPanel>
                 }
 
                 // SnippetInfoModel.debug();
-                SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
+                // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
                 // SnippetInfoModel.debug();
 
                 Widget snippetWidget;

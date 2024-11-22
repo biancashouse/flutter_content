@@ -1,7 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
 
 part 'menu_bar_node.mapper.dart';
 
@@ -30,8 +29,8 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
     try {
       setParent(parentNode);
       possiblyHighlightSelectedNode();
-      List<Widget> menuBarChildren = super.children.map((child) =>
-              child.toWidget(context, this)).toList();
+      // List<Widget> menuBarChildren = super.children.map((child) =>
+      //         child.toWidget(context, this)).toList();
       try {
             return PreferredSizeMenuBar(
               MenuBar(

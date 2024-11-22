@@ -41,8 +41,8 @@ class PropertyButton<T> extends StatelessWidget {
       // print('editedText: $editedText');
       // print('label: $label');
       String textLabel() => skipLabelText
-          ? editedText ?? ''
-          : (editedText ?? '').isNotEmpty
+          ? editedText
+          : editedText.isNotEmpty
               ? '$label: $editedText'
               : '$label...';
       Widget labelWidget = Text(
@@ -93,7 +93,7 @@ class PropertyButton<T> extends StatelessWidget {
             // key: calloutChildGK,
             prompt: () => label ?? '',
             inputDecorationLabel: inputDecorationLabel,
-            originalS: editedText ?? '',
+            originalS: editedText,
             onTextChangedF: (s) {
               editedText = s;
               fco.dismiss('matches');
@@ -102,7 +102,7 @@ class PropertyButton<T> extends StatelessWidget {
                   _matches(options, editedText).isNotEmpty) {
                 _showOptionMatches(
                   options!,
-                  editedText ?? '',
+                  editedText,
                   (s) {
                     editedText = s;
                     onChangeF(s);
@@ -141,7 +141,7 @@ class PropertyButton<T> extends StatelessWidget {
               _matches(options, editedText).isNotEmpty) {
             _showOptionMatches(
               options!,
-              editedText ?? '',
+              editedText,
               (s) {
                 editedText = s;
                 onChangeF(s);

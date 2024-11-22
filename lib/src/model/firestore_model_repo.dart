@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -111,7 +110,7 @@ class FireStoreModelRepository implements IModelRepository {
         List<VersionId> versionIds =
             versionsSnapshot.docs.map((doc) => doc.id).toList();
         snippetInfo?.cachedVersions = {};
-        snippetInfo?.cachedVersionIds = []..addAll(versionIds);
+        snippetInfo?.cachedVersionIds = [...versionIds];
       } catch (e) {
         // Handle errors
         print(e.toString());
@@ -274,7 +273,7 @@ class FireStoreModelRepository implements IModelRepository {
     final List<VersionId> tbd,
   ) async {
     CollectionReference versions =
-        appDocRef.collection('snippets/${snippetName}/versions');
+        appDocRef.collection('snippets/$snippetName/versions');
     final WriteBatch batch = FirebaseFirestore.instance.batch();
     for (String documentId in tbd) {
       batch.delete(versions.doc(documentId));
@@ -307,10 +306,12 @@ class FireStoreModelRepository implements IModelRepository {
     }, SetOptions(merge: true));
 
     // update local values
-    if (editingVersionId != null)
+    if (editingVersionId != null) {
       snippetInfo.editingVersionId = editingVersionId;
-    if (publishingVersionId != null)
+    }
+    if (publishingVersionId != null) {
       snippetInfo.publishedVersionId = publishingVersionId;
+    }
 
     fco.logi('--- UPDATED SNIPPET PROPERTIES ------------------------------');
     fco.logi('wrote snippet ($snippetName) properties to FB:');

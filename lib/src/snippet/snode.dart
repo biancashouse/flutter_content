@@ -262,11 +262,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             EditablePageState.removeAllNodeWidgetOverlays();
 // actually push node parent, then select node - more user-friendly
             // tapped a real widget with GlobalKey of nodeWidgetGK
-            var tappedNodeName = nodeTypeName;
-            var cs = nodeWidgetGK?.currentState;
-            var cc = nodeWidgetGK?.currentContext;
-            bool isMOunted = cc?.mounted ?? false;
-            var cw = nodeWidgetGK?.currentWidget;
+            // var tappedNodeName = nodeTypeName;
+            // var cs = nodeWidgetGK?.currentState;
+            // var cc = nodeWidgetGK?.currentContext;
+            // bool isMOunted = cc?.mounted ?? false;
+            // var cw = nodeWidgetGK?.currentWidget;
             pushThenShowNamedSnippetWithNodeSelected(
               enterEditModeF,
               exitEditModeF,
@@ -411,13 +411,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     fco.afterNextBuildDo(() {
       enterEditModeF();
-      var nodeGK = startingAtNode.nodeWidgetGK;
+      // var nodeGK = startingAtNode.nodeWidgetGK;
 
-      var tappedNodeName = nodeGK;
-      var cs = nodeGK?.currentState;
-      var cc = nodeGK?.currentContext;
+      // var tappedNodeName = nodeGK;
+      // var cs = nodeGK?.currentState;
+      // var cc = nodeGK?.currentContext;
       // bool isMOunted = cc?.mounted ?? false;
-      var cw = nodeGK?.currentWidget;
+      // var cw = nodeGK?.currentWidget;
 
       if (FlutterContentApp.snippetBeingEdited != null) {
         FlutterContentApp.snippetBeingEdited?.treeC.expandAll();

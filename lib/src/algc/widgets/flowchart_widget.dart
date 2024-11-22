@@ -10,8 +10,6 @@ import 'package:flutter_content/src/algc/widgets/painters/screen_flowchart_paint
 import 'package:flutter_content/src/algc/widgets/pkg_step_widget.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
 
-import '../../../flutter_content.dart';
-
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
 

@@ -886,13 +886,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // update treeC if rootNode changed (that's the Snippet's child)
     SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-    if (false && r.getParent() is SnippetRootNode) {
-      possiblyNewTreeC = SnippetTreeController(
-        roots: [r],
-        childrenProvider: Node.snippetTreeChildrenProvider,
-        parentProvider: Node.snippetTreeParentProvider,
-      );
-    }
+    // if (false && r.getParent() is SnippetRootNode) {
+    //   possiblyNewTreeC = SnippetTreeController(
+    //     roots: [r],
+    //     childrenProvider: Node.snippetTreeChildrenProvider,
+    //     parentProvider: Node.snippetTreeParentProvider,
+    //   );
+    // }
     possiblyNewTreeC.roots.first.validateTree();
     possiblyNewTreeC.expand(r);
     possiblyNewTreeC.rebuild();

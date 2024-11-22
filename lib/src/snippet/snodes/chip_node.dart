@@ -178,8 +178,8 @@ class ChipNode extends CL with ChipNodeMappable {
       TextStyle? ts = labelStyle?.toTextStyle(context);
 
       // possible handler
-      void Function(BuildContext)? f =
-              onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
+      // void Function(BuildContext)? f =
+      //         onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
       possiblyHighlightSelectedNode();

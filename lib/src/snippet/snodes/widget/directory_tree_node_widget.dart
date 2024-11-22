@@ -84,11 +84,11 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   }
 
   Widget _text() {
-    String displayedNodeName = entry.node is SnippetRootNode && ((entry.node as SnippetRootNode).name.isNotEmpty ?? true)
+    String displayedNodeName = entry.node is SnippetRootNode && ((entry.node as SnippetRootNode).name.isNotEmpty)
         ? (entry.node as SnippetRootNode).name
-        : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isNotEmpty ?? true
+        : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isNotEmpty
             ? (entry.node as DirectoryNode).name!
-            : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isEmpty ?? true
+            : entry.node is DirectoryNode && (entry.node as DirectoryNode).name!.isEmpty
                 ? 'directory name ?'
                 : entry.node is FileNode && (entry.node as FileNode).name.isEmpty
                     ? 'file name ?'

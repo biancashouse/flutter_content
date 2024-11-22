@@ -7,7 +7,7 @@ import 'unit_test.mocks.dart';
 const VersionId TEST_VERSION_ID = '1700000000000';
 
 void main() {
-  const appName = 'flutter-content-example';
+  // const appName = 'flutter-content-example';
 
   late MockModelRepository mockRepo;
   late CAPIBloC capiBloc;

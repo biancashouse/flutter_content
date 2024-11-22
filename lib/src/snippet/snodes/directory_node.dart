@@ -19,7 +19,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   List<PTreeNode> properties(BuildContext context) => [
         StringPropertyValueNode(
           snode: this,
-          name: 'name' ?? '',
+          name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => name = newValue),

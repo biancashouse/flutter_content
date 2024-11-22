@@ -524,13 +524,13 @@ class _FCStepperState extends State<FCStepper> with TickerProviderStateMixin {
       );
     }
 
-    final Color cancelColor;
-    switch (Theme.of(context).brightness) {
-      case Brightness.light:
-        cancelColor = Colors.black54;
-      case Brightness.dark:
-        cancelColor = Colors.white70;
-    }
+    // final Color cancelColor;
+    // switch (Theme.of(context).brightness) {
+    //   case Brightness.light:
+    //     cancelColor = Colors.black54;
+    //   case Brightness.dark:
+    //     cancelColor = Colors.white70;
+    // }
 
     final ThemeData themeData = Theme.of(context);
     final ColorScheme colorScheme = themeData.colorScheme;

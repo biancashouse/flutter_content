@@ -84,7 +84,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
     : Error(
         key: createNodeGK(),
         FLUTTER_TYPE,
-        color: Colors.red, size: 32, errorMsg: "unable to find EditablePage.of(context)!");;
+        color: Colors.red, size: 32, errorMsg: "unable to find EditablePage.of(context)!");
   }
 
   @override

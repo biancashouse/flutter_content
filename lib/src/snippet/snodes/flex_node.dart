@@ -61,10 +61,8 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       Widget w;
       try {
             w = LayoutBuilder(builder: (context, constraints) {
-              bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
-              return false && constraintsError
-                  ? _Error()
-                  : Flex(
+              // bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
+              return Flex(
                 direction: this is RowNode ? Axis.horizontal : Axis.vertical,
                 key: createNodeGK(),
                 mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,

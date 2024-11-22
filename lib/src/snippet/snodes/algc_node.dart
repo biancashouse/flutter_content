@@ -90,7 +90,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
         return Error(key: createNodeGK(), FLUTTER_TYPE,
             color: Colors.green, size: 32, errorMsg: "vea.isEmpty!");
       }
-      if ((vea.isNotEmpty ?? false) && (fId?.isNotEmpty ?? false)) {
+      if ((vea.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
         try {
           return FutureBuilder<String?>(
               future: _cloudRunFetchFlowchartJsonString(vea, fId!),

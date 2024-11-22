@@ -1,4 +1,4 @@
-library flutter_polls;
+library;
 
 import 'dart:async';
 
