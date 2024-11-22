@@ -250,6 +250,63 @@ class FlutterContentMixins
       //   router.go('/404', extra: state.uri.toString());
       // },
       errorBuilder: (context, state) {
+        return canEditContent.value
+          ? AlertDialog(
+          title: const Text('Page does not Exist !'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Want to create it now ?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                context.go('/');
+              },
+            ),
+            TextButton(
+              child: const Text('Yes, Create page. (then you can retry)'),
+              onPressed: () {
+                final String destUrl = state.matchedLocation;
+                EditablePageState.removeAllNodeWidgetOverlays();
+                fco.dismiss('exit-editMode');
+                bool userCanEdit = canEditContent.value;
+                final snippetName = destUrl;
+                final rootNode = SnippetTemplateEnum.empty.clone()
+                  ..name = snippetName;
+                SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                  snippetName: snippetName,
+                  snippetRootNode: rootNode,
+                ).then((_) {
+                  afterNextBuildDo((){
+                    router.go('/');
+                  });
+                });
+              },
+            ),
+          ],
+        )
+        : AlertDialog(
+          title: const Text('Page does not Exist !'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('You can sign in as an editor to create it.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('ok'),
+              onPressed: () {
+                context.go('/');
+              },
+            ),
+          ],
+        );
         // create new page entry and goto page
         // addRoute(newPath: state.matchedLocation, template: SnippetTemplateEnum.empty);
         EditablePageState.removeAllNodeWidgetOverlays();
