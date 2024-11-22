@@ -11,6 +11,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   // every drag end of a cover or play btn updates the aspect ratio
   double? width;
   double? height;
+  double borderRadius;
   List<TargetModel> targets;
   List<TargetModel> playList;
 
@@ -18,6 +19,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
     this.aspectRatio,
     this.width,
     this.height,
+    this.borderRadius = 0,
     this.targets = const [],
     this.playList = const [],
     super.child,
@@ -33,14 +35,22 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
               refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
-          snode: this,
-          name: 'height',
-          decimalValue: height,
-          onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => height = newValue),
-          calloutButtonSize: const Size(80, 20),
-        ),
+    DecimalPropertyValueNode(
+      snode: this,
+      name: 'height',
+      decimalValue: height,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(() => height = newValue),
+      calloutButtonSize: const Size(80, 20),
+    ),
+    DecimalPropertyValueNode(
+      snode: this,
+      name: 'borderRadius',
+      decimalValue: borderRadius,
+      onDoubleChange: (newValue) =>
+          refreshWithUpdate(() => borderRadius = newValue??0.0),
+      calloutButtonSize: const Size(80, 20),
+    ),
         // StringPropertyValueNode(
         //   snode: this,
         //   name: 'wrapper name',
@@ -69,16 +79,18 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
     EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
     return eps != null
-    ? SizedBox(
-      width: width,
-      height: height,
-      child: TargetsWrapper(
-        enterEditModeF: eps.enterEditMode,
-        exitEditModeF: eps.exitEditMode,
-        parentNode: this,
-        key: createNodeGK(),
-        scrollControllerName: EditablePage.name(context),
-        child: super.child?.toWidget(context, this) ?? const Placeholder(),
+    ? ClipRRect(borderRadius: BorderRadius.circular(borderRadius),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: TargetsWrapper(
+          enterEditModeF: eps.enterEditMode,
+          exitEditModeF: eps.exitEditMode,
+          parentNode: this,
+          key: createNodeGK(),
+          scrollControllerName: EditablePage.name(context),
+          child: super.child?.toWidget(context, this) ?? const Placeholder(),
+        ),
       ),
     )
     : Error(

@@ -32,6 +32,9 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static double? _$height(HotspotsNode v) => v.height;
   static const Field<HotspotsNode, double> _f$height =
       Field('height', _$height, opt: true);
+  static double _$borderRadius(HotspotsNode v) => v.borderRadius;
+  static const Field<HotspotsNode, double> _f$borderRadius =
+      Field('borderRadius', _$borderRadius, opt: true, def: 0);
   static List<TargetModel> _$targets(HotspotsNode v) => v.targets;
   static const Field<HotspotsNode, List<TargetModel>> _f$targets =
       Field('targets', _$targets, opt: true, def: const []);
@@ -66,6 +69,7 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
     #aspectRatio: _f$aspectRatio,
     #width: _f$width,
     #height: _f$height,
+    #borderRadius: _f$borderRadius,
     #targets: _f$targets,
     #playList: _f$playList,
     #child: _f$child,
@@ -88,6 +92,7 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
         aspectRatio: data.dec(_f$aspectRatio),
         width: data.dec(_f$width),
         height: data.dec(_f$height),
+        borderRadius: data.dec(_f$borderRadius),
         targets: data.dec(_f$targets),
         playList: data.dec(_f$playList),
         child: data.dec(_f$child));
@@ -156,6 +161,7 @@ abstract class HotspotsNodeCopyWith<$R, $In extends HotspotsNode, $Out>
       {double? aspectRatio,
       double? width,
       double? height,
+      double? borderRadius,
       List<TargetModel>? targets,
       List<TargetModel>? playList,
       STreeNode? child});
@@ -188,6 +194,7 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
           {Object? aspectRatio = $none,
           Object? width = $none,
           Object? height = $none,
+          double? borderRadius,
           List<TargetModel>? targets,
           List<TargetModel>? playList,
           Object? child = $none}) =>
@@ -195,6 +202,7 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
         if (aspectRatio != $none) #aspectRatio: aspectRatio,
         if (width != $none) #width: width,
         if (height != $none) #height: height,
+        if (borderRadius != null) #borderRadius: borderRadius,
         if (targets != null) #targets: targets,
         if (playList != null) #playList: playList,
         if (child != $none) #child: child
@@ -204,6 +212,7 @@ class _HotspotsNodeCopyWithImpl<$R, $Out>
       aspectRatio: data.get(#aspectRatio, or: $value.aspectRatio),
       width: data.get(#width, or: $value.width),
       height: data.get(#height, or: $value.height),
+      borderRadius: data.get(#borderRadius, or: $value.borderRadius),
       targets: data.get(#targets, or: $value.targets),
       playList: data.get(#playList, or: $value.playList),
       child: data.get(#child, or: $value.child));
