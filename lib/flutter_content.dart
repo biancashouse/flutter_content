@@ -9,12 +9,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_callouts/flutter_callouts.dart';
-
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,32 +19,29 @@ import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/model/model_repo.dart';
 
+export 'package:bh_shared/src/canvas/canvas_mixin.dart';
 // re-export
 export 'package:bh_shared/src/debouncer/debouncer.dart';
-export 'package:bh_shared/src/widget/error.dart';
-export 'package:bh_shared/src/widget/blink.dart';
-export 'package:bh_shared/src/widget/constant_scroll_behavior.dart';
-export 'package:bh_shared/src/system_mixin.dart';
-export 'package:bh_shared/src/canvas/canvas_mixin.dart';
-export 'package:bh_shared/src/widget/widget_helper_mixin.dart';
 export 'package:bh_shared/src/gotits_mixin.dart';
 export 'package:bh_shared/src/local_storage_mixin.dart';
-
+export 'package:bh_shared/src/system_mixin.dart';
+export 'package:bh_shared/src/widget/blink.dart';
+export 'package:bh_shared/src/widget/constant_scroll_behavior.dart';
+export 'package:bh_shared/src/widget/error.dart';
+export 'package:bh_shared/src/widget/widget_helper_mixin.dart';
+export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
+// re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
+export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
+export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
+export 'package:flutter_callouts/src/api/callouts/color_values.dart';
+export 'package:flutter_callouts/src/api/callouts/decoration_shape_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
+export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
+export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
 export 'package:flutter_callouts/src/measuring/measure_sizebox.dart';
 export 'package:flutter_callouts/src/text_editing/string_editor.dart';
 export 'package:flutter_callouts/src/text_editing/textfield_callout.dart';
-export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
-
-// re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
-export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/typedefs.dart';
-export 'package:flutter_callouts/src/api/callouts/color_values.dart';
-export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
-export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
-export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
-export 'package:flutter_callouts/src/api/callouts/decoration_shape_enum.dart';
-export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
-
 export 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
 
 export 'src/api/app/dynamic_page_route.dart';
@@ -57,12 +51,10 @@ export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
-
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -71,7 +63,6 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -121,7 +112,6 @@ export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
-
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -152,7 +142,6 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -270,12 +259,6 @@ class FlutterContentMixins
               snippetName: snippetName,
             ),
           );
-          // fco.cacheAndSaveANewSnippetVersion(
-          //   snippetName: snippetName,
-          //   rootNode: rootNode,
-          //   pagePath: snippetName,
-          //   publish: true,
-          // );
           return dynamicPage;
         }
         // page doesn't exist yet
@@ -302,7 +285,7 @@ class FlutterContentMixins
                 final String destUrl = state.matchedLocation;
                 EditablePageState.removeAllNodeWidgetOverlays();
                 fco.dismiss('exit-editMode');
-                bool userCanEdit = canEditContent.value;
+                // bool userCanEdit = canEditContent.value;
                 final snippetName = destUrl;
                 final rootNode = SnippetTemplateEnum.empty.clone()
                   ..name = snippetName;
@@ -340,10 +323,6 @@ class FlutterContentMixins
         );
       },
     );
-
-    void pageExists() {
-
-    }
 
     // extract go routes
     void parseRouteConfig(List<String> names, List<RouteBase> routes) {
