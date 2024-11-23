@@ -250,7 +250,36 @@ class FlutterContentMixins
       //   router.go('/404', extra: state.uri.toString());
       // },
       errorBuilder: (context, state) {
-        return canEditContent.value
+        // may have been created
+        bool dynamicPageExists = appInfo.snippetNames.contains(state.matchedLocation);
+        if (dynamicPageExists) {
+          EditablePageState.removeAllNodeWidgetOverlays();
+          fco.dismiss('exit-editMode');
+          final snippetName = state.matchedLocation;
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            snippetRootNode: rootNode,
+          );
+          final dynamicPage = EditablePage(
+            key: GlobalKey(), // provides access to state later
+            routePath: state.matchedLocation,
+            child: SnippetPanel.fromSnippet(
+              panelName: "dynamic panel",
+              snippetName: snippetName,
+            ),
+          );
+          // fco.cacheAndSaveANewSnippetVersion(
+          //   snippetName: snippetName,
+          //   rootNode: rootNode,
+          //   pagePath: snippetName,
+          //   publish: true,
+          // );
+          return dynamicPage;
+        }
+        // page doesn't exist yet
+          return canEditContent.value
           ? AlertDialog(
           title: const Text('Page does not Exist !'),
           content: SingleChildScrollView(
@@ -268,7 +297,7 @@ class FlutterContentMixins
               },
             ),
             TextButton(
-              child: const Text('Yes, Create page. (then you can retry)'),
+              child: Text('Yes, Create page ${state.matchedLocation}'),
               onPressed: () {
                 final String destUrl = state.matchedLocation;
                 EditablePageState.removeAllNodeWidgetOverlays();
@@ -282,7 +311,9 @@ class FlutterContentMixins
                   snippetRootNode: rootNode,
                 ).then((_) {
                   afterNextBuildDo((){
-                    router.go('/');
+                    SnippetInfoModel.snippetInfoCache;
+                    router.push(state.matchedLocation);
+                    // router.go('/');
                   });
                 });
               },
@@ -307,74 +338,12 @@ class FlutterContentMixins
             ),
           ],
         );
-        // create new page entry and goto page
-        // addRoute(newPath: state.matchedLocation, template: SnippetTemplateEnum.empty);
-        EditablePageState.removeAllNodeWidgetOverlays();
-        fco.dismiss('exit-editMode');
-        bool userCanEdit = canEditContent.value;
-        if (userCanEdit) {
-          final snippetName = state.matchedLocation;
-          final rootNode = SnippetTemplateEnum.empty.clone()
-            ..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-            snippetName: snippetName,
-            snippetRootNode: rootNode,
-          );
-          final dynamicPage = EditablePage(
-            key: GlobalKey(), // provides access to state later
-            routePath: state.matchedLocation,
-            child: SnippetPanel.fromSnippet(
-              panelName: "dynamic panel",
-              snippetName: snippetName,
-            ),
-          );
-          // fco.cacheAndSaveANewSnippetVersion(
-          //   snippetName: snippetName,
-          //   rootNode: rootNode,
-          //   pagePath: snippetName,
-          //   publish: true,
-          // );
-          return dynamicPage;
-        } else {
-          return EditablePage(
-            key: GlobalKey(), // provides access to state later
-            routePath: "/404",
-            child: SnippetPanel.fromNodes(
-              panelName: "dynamic panel",
-              snippetRootNode: SnippetRootNode(
-                name: '${state.matchedLocation} missing',
-                child: ScaffoldNode(
-                  body: GenericSingleChildNode(
-                    propertyName: 'title',
-                    child: RichTextNode(
-                      text: TextSpanNode(
-                        text: 'Page not found:',
-                        textStyleGroup: TextStyleGroup(
-                            colorValue: Colors.red.value, fontSize: 32),
-                        children: [
-                          TextSpanNode(
-                            text: ' ${state.matchedLocation}',
-                            textStyleGroup: TextStyleGroup(
-                                colorValue: Colors.green.value, fontSize: 64),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
       },
-      // return Material(
-      //   child: Text(
-      //     state.error?.message ?? 'Unknown go error',
-      //     textScaler: const TextScaler.linear(2.0),
-      //     style: TextStyle(color: Colors.red),
-      //   ),
-      // );
     );
+
+    void pageExists() {
+
+    }
 
     // extract go routes
     void parseRouteConfig(List<String> names, List<RouteBase> routes) {
