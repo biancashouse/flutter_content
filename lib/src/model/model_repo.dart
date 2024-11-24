@@ -36,6 +36,8 @@ abstract class IModelRepository {
     required SnippetRootNode newVersion,
   });
 
+  Future<void> deleteSnippet(final String snippetName);
+
   Future<void> deleteSnippetVersions(
     final String snippetName,
     final List<VersionId> tbd,

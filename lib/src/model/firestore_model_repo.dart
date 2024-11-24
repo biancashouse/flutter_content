@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -234,7 +233,8 @@ class FireStoreModelRepository implements IModelRepository {
 
     // create the actual version doc
     try {
-      DocumentReference snippetInfoDocRef = appDocRef.collection('snippets').doc(snippetName);
+      DocumentReference snippetInfoDocRef =
+          appDocRef.collection('snippets').doc(snippetName);
       await snippetInfoDocRef
           .collection('versions')
           .doc(newVersionId)
@@ -265,6 +265,12 @@ class FireStoreModelRepository implements IModelRepository {
       print(e);
       return false;
     }
+  }
+
+  @override
+  Future<void> deleteSnippet(final String snippetName) async {
+    DocumentReference snippetDocRef = appDocRef.collection('snippets').doc(snippetName);
+    snippetDocRef.delete();
   }
 
   @override

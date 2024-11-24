@@ -29,6 +29,7 @@ mixin _$CAPIEvent {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -92,6 +93,7 @@ mixin _$CAPIEvent {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -145,6 +147,7 @@ mixin _$CAPIEvent {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -196,6 +199,7 @@ mixin _$CAPIEvent {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -240,6 +244,7 @@ mixin _$CAPIEvent {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -281,6 +286,7 @@ mixin _$CAPIEvent {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -425,6 +431,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -491,6 +498,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -547,6 +555,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -604,6 +613,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -651,6 +661,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -695,6 +706,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -857,6 +869,7 @@ class _$OverrideTargetGKImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -923,6 +936,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -979,6 +993,7 @@ class _$OverrideTargetGKImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -1036,6 +1051,7 @@ class _$OverrideTargetGKImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -1083,6 +1099,7 @@ class _$OverrideTargetGKImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -1127,6 +1144,7 @@ class _$OverrideTargetGKImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -1274,6 +1292,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -1340,6 +1359,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -1396,6 +1416,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -1453,6 +1474,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -1500,6 +1522,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -1544,6 +1567,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -1697,6 +1721,7 @@ class _$UpdateClipboardImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -1763,6 +1788,7 @@ class _$UpdateClipboardImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -1819,6 +1845,7 @@ class _$UpdateClipboardImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -1876,6 +1903,7 @@ class _$UpdateClipboardImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -1923,6 +1951,7 @@ class _$UpdateClipboardImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -1967,6 +1996,7 @@ class _$UpdateClipboardImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -2124,6 +2154,7 @@ class _$PublishSnippetImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -2190,6 +2221,7 @@ class _$PublishSnippetImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -2246,6 +2278,7 @@ class _$PublishSnippetImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -2303,6 +2336,7 @@ class _$PublishSnippetImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -2350,6 +2384,7 @@ class _$PublishSnippetImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -2394,6 +2429,7 @@ class _$PublishSnippetImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -2550,6 +2586,7 @@ class _$RevertSnippetImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -2616,6 +2653,7 @@ class _$RevertSnippetImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -2672,6 +2710,7 @@ class _$RevertSnippetImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -2729,6 +2768,7 @@ class _$RevertSnippetImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -2776,6 +2816,7 @@ class _$RevertSnippetImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -2820,6 +2861,7 @@ class _$RevertSnippetImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -2872,6 +2914,422 @@ abstract class RevertSnippet implements CAPIEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$RevertSnippetImplCopyWith<_$RevertSnippetImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DeletePageImplCopyWith<$Res> {
+  factory _$$DeletePageImplCopyWith(
+          _$DeletePageImpl value, $Res Function(_$DeletePageImpl) then) =
+      __$$DeletePageImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String pathName});
+}
+
+/// @nodoc
+class __$$DeletePageImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$DeletePageImpl>
+    implements _$$DeletePageImplCopyWith<$Res> {
+  __$$DeletePageImplCopyWithImpl(
+      _$DeletePageImpl _value, $Res Function(_$DeletePageImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? pathName = null,
+  }) {
+    return _then(_$DeletePageImpl(
+      pathName: null == pathName
+          ? _value.pathName
+          : pathName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
+  const _$DeletePageImpl({required this.pathName});
+
+  @override
+  final String pathName;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.deletePage(pathName: $pathName)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.deletePage'))
+      ..add(DiagnosticsProperty('pathName', pathName));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DeletePageImpl &&
+            (identical(other.pathName, pathName) ||
+                other.pathName == pathName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, pathName);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DeletePageImplCopyWith<_$DeletePageImpl> get copyWith =>
+      __$$DeletePageImplCopyWithImpl<_$DeletePageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(STreeNode? newContent, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String pathName) deletePage,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(STreeNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(STreeNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(
+            Type? type,
+            STreeNode? testNode,
+            String? snippetName,
+            Type? widgetSpanChildType,
+            STreeNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingBefore,
+    required TResult Function(
+            Type? type, String? snippetName, STreeNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
+    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(String snippetName, STreeNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return deletePage(pathName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(
+            SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(STreeNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return deletePage?.call(pathName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(SnippetRootNode rootNode, STreeNode? visibleDecendantNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(STreeNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, STreeNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(
+            Type? widgetSpanChildType, STreeNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
+    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, STreeNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (deletePage != null) {
+      return deletePage(pathName);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return deletePage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return deletePage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (deletePage != null) {
+      return deletePage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DeletePage implements CAPIEvent {
+  const factory DeletePage({required final String pathName}) = _$DeletePageImpl;
+
+  String get pathName;
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DeletePageImplCopyWith<_$DeletePageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2970,6 +3428,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -3036,6 +3495,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -3092,6 +3552,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -3149,6 +3610,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -3196,6 +3658,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -3240,6 +3703,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -3385,6 +3849,7 @@ class _$AutoPublishDefaultImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -3451,6 +3916,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -3507,6 +3973,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -3564,6 +4031,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -3611,6 +4079,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -3655,6 +4124,7 @@ class _$AutoPublishDefaultImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -3795,6 +4265,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -3861,6 +4332,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -3917,6 +4389,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -3974,6 +4447,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -4021,6 +4495,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -4065,6 +4540,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -4220,6 +4696,7 @@ class _$SetPanelSnippetImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -4286,6 +4763,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -4342,6 +4820,7 @@ class _$SetPanelSnippetImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -4399,6 +4878,7 @@ class _$SetPanelSnippetImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -4446,6 +4926,7 @@ class _$SetPanelSnippetImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -4490,6 +4971,7 @@ class _$SetPanelSnippetImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -4647,6 +5129,7 @@ class _$PushSnippetEditorImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -4713,6 +5196,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -4769,6 +5253,7 @@ class _$PushSnippetEditorImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -4826,6 +5311,7 @@ class _$PushSnippetEditorImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -4873,6 +5359,7 @@ class _$PushSnippetEditorImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -4917,6 +5404,7 @@ class _$PushSnippetEditorImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -5063,6 +5551,7 @@ class _$PopSnippetEditorImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -5129,6 +5618,7 @@ class _$PopSnippetEditorImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -5185,6 +5675,7 @@ class _$PopSnippetEditorImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -5242,6 +5733,7 @@ class _$PopSnippetEditorImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -5289,6 +5781,7 @@ class _$PopSnippetEditorImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -5333,6 +5826,7 @@ class _$PopSnippetEditorImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -5445,6 +5939,7 @@ class _$ShowDirectoryTreeImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -5511,6 +6006,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -5567,6 +6063,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -5624,6 +6121,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -5671,6 +6169,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -5715,6 +6214,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -5850,6 +6350,7 @@ class _$RemoveDirectoryTreeImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -5916,6 +6417,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -5972,6 +6474,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -6029,6 +6532,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -6076,6 +6580,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -6120,6 +6625,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -6260,6 +6766,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -6326,6 +6833,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -6382,6 +6890,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -6439,6 +6948,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -6486,6 +6996,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -6530,6 +7041,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -6642,6 +7154,7 @@ class _$ClearNodeSelectionImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -6708,6 +7221,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -6764,6 +7278,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -6821,6 +7336,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -6868,6 +7384,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -6912,6 +7429,7 @@ class _$ClearNodeSelectionImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -7057,6 +7575,7 @@ class _$SaveNodeAsSnippetImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -7123,6 +7642,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -7179,6 +7699,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -7236,6 +7757,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -7283,6 +7805,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -7327,6 +7850,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -7495,6 +8019,7 @@ class _$ReplaceSelectionWithImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -7561,6 +8086,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -7617,6 +8143,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -7674,6 +8201,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -7721,6 +8249,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -7765,6 +8294,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -7933,6 +8463,7 @@ class _$WrapSelectionWithImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -7999,6 +8530,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -8055,6 +8587,7 @@ class _$WrapSelectionWithImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -8112,6 +8645,7 @@ class _$WrapSelectionWithImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -8159,6 +8693,7 @@ class _$WrapSelectionWithImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -8203,6 +8738,7 @@ class _$WrapSelectionWithImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -8401,6 +8937,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -8468,6 +9005,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -8525,6 +9063,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -8583,6 +9122,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -8630,6 +9170,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -8674,6 +9215,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -8846,6 +9388,7 @@ class _$AddSiblingBeforeImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -8912,6 +9455,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -8968,6 +9512,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -9025,6 +9570,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -9072,6 +9618,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -9116,6 +9663,7 @@ class _$AddSiblingBeforeImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -9284,6 +9832,7 @@ class _$AddSiblingAfterImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -9350,6 +9899,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -9406,6 +9956,7 @@ class _$AddSiblingAfterImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -9463,6 +10014,7 @@ class _$AddSiblingAfterImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -9510,6 +10062,7 @@ class _$AddSiblingAfterImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -9554,6 +10107,7 @@ class _$AddSiblingAfterImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -9703,6 +10257,7 @@ class _$PasteReplacementImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -9769,6 +10324,7 @@ class _$PasteReplacementImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -9825,6 +10381,7 @@ class _$PasteReplacementImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -9882,6 +10439,7 @@ class _$PasteReplacementImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -9929,6 +10487,7 @@ class _$PasteReplacementImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -9973,6 +10532,7 @@ class _$PasteReplacementImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -10130,6 +10690,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -10196,6 +10757,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -10252,6 +10814,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -10309,6 +10872,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -10356,6 +10920,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -10400,6 +10965,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -10516,6 +11082,7 @@ class _$PasteSiblingBeforeImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -10582,6 +11149,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -10638,6 +11206,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -10695,6 +11264,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -10742,6 +11312,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -10786,6 +11357,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -10890,6 +11462,7 @@ class _$PasteSiblingAfterImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -10956,6 +11529,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -11012,6 +11586,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -11069,6 +11644,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -11116,6 +11692,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -11160,6 +11737,7 @@ class _$PasteSiblingAfterImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -11264,6 +11842,7 @@ class _$DeleteNodeTappedImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -11330,6 +11909,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -11386,6 +11966,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -11443,6 +12024,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -11490,6 +12072,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -11534,6 +12117,7 @@ class _$DeleteNodeTappedImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -11638,6 +12222,7 @@ class _$CompleteDeletionImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -11704,6 +12289,7 @@ class _$CompleteDeletionImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -11760,6 +12346,7 @@ class _$CompleteDeletionImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -11817,6 +12404,7 @@ class _$CompleteDeletionImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -11864,6 +12452,7 @@ class _$CompleteDeletionImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -11908,6 +12497,7 @@ class _$CompleteDeletionImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -12045,6 +12635,7 @@ class _$CopySnippetJsonToClipboardImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -12111,6 +12702,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -12167,6 +12759,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -12224,6 +12817,7 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -12271,6 +12865,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -12315,6 +12910,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -12462,6 +13058,7 @@ class _$ReplaceSnippetFromJsonImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -12528,6 +13125,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -12584,6 +13182,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -12641,6 +13240,7 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -12688,6 +13288,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -12732,6 +13333,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -12880,6 +13482,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -12946,6 +13549,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -13002,6 +13606,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -13059,6 +13664,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -13106,6 +13712,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -13150,6 +13757,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -13299,6 +13907,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -13365,6 +13974,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -13421,6 +14031,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -13478,6 +14089,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -13525,6 +14137,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -13569,6 +14182,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -13727,6 +14341,7 @@ class _$SelectedDirectoryOrNodeImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -13793,6 +14408,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -13849,6 +14465,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -13906,6 +14523,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -13953,6 +14571,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -13997,6 +14616,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -14140,6 +14760,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -14206,6 +14827,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -14262,6 +14884,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -14319,6 +14942,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -14366,6 +14990,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -14410,6 +15035,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
@@ -14524,6 +15150,7 @@ class _$ForceSnippetRefreshImpl
         publishSnippet,
     required TResult Function(String snippetName, String versionId)
         revertSnippet,
+    required TResult Function(String pathName) deletePage,
     required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
     required TResult Function(bool b) autoPublishDefault,
     required TResult Function(bool hide) hideIframes,
@@ -14590,6 +15217,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
     TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult? Function(bool b)? autoPublishDefault,
     TResult? Function(bool hide)? hideIframes,
@@ -14646,6 +15274,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
     TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
     TResult Function(bool b)? autoPublishDefault,
     TResult Function(bool hide)? hideIframes,
@@ -14703,6 +15332,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(UpdateClipboard value) updateClipboard,
     required TResult Function(PublishSnippet value) publishSnippet,
     required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
     required TResult Function(ToggleAutoPublishingOfSnippet value)
         toggleAutoPublishingOfSnippet,
     required TResult Function(AutoPublishDefault value) autoPublishDefault,
@@ -14750,6 +15380,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(UpdateClipboard value)? updateClipboard,
     TResult? Function(PublishSnippet value)? publishSnippet,
     TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
     TResult? Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
@@ -14794,6 +15425,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function(UpdateClipboard value)? updateClipboard,
     TResult Function(PublishSnippet value)? publishSnippet,
     TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
     TResult Function(ToggleAutoPublishingOfSnippet value)?
         toggleAutoPublishingOfSnippet,
     TResult Function(AutoPublishDefault value)? autoPublishDefault,

@@ -150,6 +150,10 @@ class CAPIEvent with _$CAPIEvent {
     required VersionId versionId,
   }) = RevertSnippet;
 
+  const factory CAPIEvent.deletePage({
+    required String pathName,
+  }) = DeletePage;
+
   const factory CAPIEvent.toggleAutoPublishingOfSnippet({
     required SnippetName snippetName,
   }) = ToggleAutoPublishingOfSnippet;

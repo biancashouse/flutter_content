@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
+import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +21,7 @@ import 'src/bloc/bloc_observer.dart';
 import 'src/model/model_repo.dart';
 
 export 'package:bh_shared/src/canvas/canvas_mixin.dart';
+
 // re-export
 export 'package:bh_shared/src/debouncer/debouncer.dart';
 export 'package:bh_shared/src/gotits_mixin.dart';
@@ -30,6 +32,7 @@ export 'package:bh_shared/src/widget/constant_scroll_behavior.dart';
 export 'package:bh_shared/src/widget/error.dart';
 export 'package:bh_shared/src/widget/widget_helper_mixin.dart';
 export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
+
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
@@ -51,10 +54,12 @@ export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
 export 'src/api/snippet_panel/snippet_templates.dart';
+
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
+
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -63,6 +68,7 @@ export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
+
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -112,6 +118,7 @@ export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
 export 'src/snippet/snodes/named_text_style.dart';
+
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
 export 'src/snippet/snodes/padding_node.dart';
@@ -142,6 +149,7 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -239,8 +247,24 @@ class FlutterContentMixins
       //   router.go('/404', extra: state.uri.toString());
       // },
       errorBuilder: (context, state) {
+        if (state.matchedLocation == '/pages') {
+          if (fco.canEditContent.value) {
+            return Pages();
+          } else {
+            return AlertDialog(
+              title: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(40),
+                child: fco.coloredText(
+                    'Viewing the Page list:\nYou must be signed in as an editor !',
+                    color: Colors.red),
+              ),
+            );
+          }
+        }
         // may have been created
-        bool dynamicPageExists = appInfo.snippetNames.contains(state.matchedLocation);
+        bool dynamicPageExists =
+            appInfo.snippetNames.contains(state.matchedLocation);
         if (dynamicPageExists) {
           EditablePageState.removeAllNodeWidgetOverlays();
           fco.dismiss('exit-editMode');
@@ -262,65 +286,66 @@ class FlutterContentMixins
           return dynamicPage;
         }
         // page doesn't exist yet
-          return canEditContent.value
-          ? AlertDialog(
-          title: const Text('Page does not Exist !'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('Want to create it now ?'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                context.go('/');
-              },
-            ),
-            TextButton(
-              child: Text('Yes, Create page ${state.matchedLocation}'),
-              onPressed: () {
-                final String destUrl = state.matchedLocation;
-                EditablePageState.removeAllNodeWidgetOverlays();
-                fco.dismiss('exit-editMode');
-                // bool userCanEdit = canEditContent.value;
-                final snippetName = destUrl;
-                final rootNode = SnippetTemplateEnum.empty.clone()
-                  ..name = snippetName;
-                SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                  snippetName: snippetName,
-                  snippetRootNode: rootNode,
-                ).then((_) {
-                  afterNextBuildDo((){
-                    SnippetInfoModel.snippetInfoCache;
-                    router.push(state.matchedLocation);
-                    // router.go('/');
-                  });
-                });
-              },
-            ),
-          ],
-        )
-        : AlertDialog(
-          title: const Text('Page does not Exist !'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: const <Widget>[
-                Text('You can sign in as an editor to create it.'),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('ok'),
-              onPressed: () {
-                context.go('/');
-              },
-            ),
-          ],
-        );
+        return canEditContent.value
+            ? AlertDialog(
+                title: const Text('Page does not Exist !'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: const <Widget>[
+                      Text('Want to create it now ?'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      context.go('/');
+                    },
+                  ),
+                  TextButton(
+                    child: Text('Yes, Create page ${state.matchedLocation}'),
+                    onPressed: () {
+                      final String destUrl = state.matchedLocation;
+                      EditablePageState.removeAllNodeWidgetOverlays();
+                      fco.dismiss('exit-editMode');
+                      // bool userCanEdit = canEditContent.value;
+                      final snippetName = destUrl;
+                      final rootNode = SnippetTemplateEnum.empty.clone()
+                        ..name = snippetName;
+                      SnippetRootNode
+                          .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                        snippetName: snippetName,
+                        snippetRootNode: rootNode,
+                      ).then((_) {
+                        afterNextBuildDo(() {
+                          SnippetInfoModel.snippetInfoCache;
+                          router.push(state.matchedLocation);
+                          // router.go('/');
+                        });
+                      });
+                    },
+                  ),
+                ],
+              )
+            : AlertDialog(
+                title: const Text('Page does not Exist !'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: const <Widget>[
+                      Text('You can sign in as an editor to create it.'),
+                    ],
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('ok'),
+                    onPressed: () {
+                      context.go('/');
+                    },
+                  ),
+                ],
+              );
       },
     );
 
@@ -424,7 +449,6 @@ class FlutterContentMixins
     return routes.map((route) => (route as GoRoute).path).toList();
   }
 
-  //
   void addSubRoute({
     required String newPath,
     required SnippetTemplateEnum template,
@@ -437,6 +461,15 @@ class FlutterContentMixins
           template: template,
         ),
       );
+    }
+  }
+
+  void deleteSubRoute({required String path}) {
+    List<RouteBase> subRoutes = routingConfigVN.value.routes;
+    for (RouteBase sr in subRoutes) {
+      if (sr is GoRoute && sr.path == path) {
+        subRoutes.remove(sr);
+      }
     }
   }
 

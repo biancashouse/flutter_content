@@ -164,6 +164,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
+  Future<void> _deletePage(DeletePage event, emit) async {
+
+    emit(state.copyWith(
+      force: state.force + 1,
+    ));
+  }
+
   Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
     if (snippetInfo == null) return;
