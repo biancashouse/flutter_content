@@ -129,7 +129,7 @@ class ChipNode extends CL with ChipNodeMappable {
                 refreshWithUpdate(
                     () => destinationRoutePathSnippetName = newValue);
               },
-              options: fco.pagePaths,
+              options: fco.pageList,
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),

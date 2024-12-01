@@ -386,7 +386,7 @@ class FlutterContentMixins
       // add more routes from the snippet names to below the "/" route
       // RouteBase home = routingConfig.routes.first;
       for (String snippetName in _appInfo.snippetNames) {
-        if (snippetName.startsWith('/') && !pagePaths.contains(snippetName)) {
+        if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
           addSubRoute(
               newPath: snippetName, template: SnippetTemplateEnum.empty);
         }
@@ -444,9 +444,22 @@ class FlutterContentMixins
 
   late GoRouter router;
 
-  List<RoutePath> get pagePaths {
-    List<RouteBase> routes = routingConfigVN.value.routes;
-    return routes.map((route) => (route as GoRoute).path).toList();
+  List<String> get pageList {
+
+    List<RouteBase> allRoutes = [];
+
+    void routes(List<RouteBase> parentRoutes) {
+      for (RouteBase route in parentRoutes) {
+        allRoutes.add(route);
+        if (route.routes.isNotEmpty) {
+          routes(route.routes);
+        }
+      }
+    }
+
+    routes(routingConfigVN.value.routes);
+
+    return allRoutes.map((route) => (route as GoRoute).path).toList();
   }
 
   void addSubRoute({

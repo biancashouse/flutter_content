@@ -13,16 +13,16 @@ class _PagesState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
     print('pages build');
-    var pages = fco.pagePaths;
+    var pages = fco.pageList;
     final scaffold = Scaffold(
       appBar: AppBar(
         title: Text('Available Pages in this web app'),
       ),
       body: ListView.builder(
         padding: EdgeInsets.all(30),
-        itemCount: fco.pagePaths.length,
+        itemCount: pages.length,
         itemBuilder: (context, index) {
-          final label = fco.pagePaths[index];
+          final label = pages[index];
           return Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

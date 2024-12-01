@@ -54,7 +54,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
               onStringChange: (newValue) {
                 refreshWithUpdate(() => destinationRoutePathSnippetName = newValue);
               },
-              options: fco.pagePaths,
+              options: fco.pageList,
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
