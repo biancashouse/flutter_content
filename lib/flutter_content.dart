@@ -459,7 +459,10 @@ class FlutterContentMixins
 
     routes(routingConfigVN.value.routes);
 
-    return allRoutes.map((route) => (route as GoRoute).path).toList();
+    return allRoutes.map((route) {
+      String path = (route as GoRoute).path;
+      return path.startsWith('/') ? path : '/$path';
+    }).toList();
   }
 
   void addSubRoute({
