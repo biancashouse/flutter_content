@@ -123,7 +123,7 @@ class _TargetCover extends StatelessWidget {
               radius: radius,
               textColor:
                   fco.canEditContent.value ? Colors.white : Colors.transparent,
-              fontSize: 14,
+              fontSize: 16,
             ),
           ),
         ],

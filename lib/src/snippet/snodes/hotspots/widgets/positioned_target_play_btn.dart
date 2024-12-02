@@ -32,124 +32,135 @@ class TargetPlayBtn extends StatelessWidget {
 
 
     return Visibility(
-      visible: FlutterContentApp.snippetBeingEdited == null && !fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
+      visible: FlutterContentApp.snippetBeingEdited == null &&
+          !fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
       child: _draggableSelectTargetBtn(tc),
     );
   }
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
+    double luminance = tc.calloutColor().computeLuminance();
+    bool needsDarkText = luminance > 0.5;
     return !fco.canEditContent.value
         ? GestureDetector(
-            onTap: () {
-              if (tc.targetsWrapperState() == null) return;
-              var list = tc.targetsWrapperState()?.widget.parentNode.playList;
-              list?.add(tc);
-              playTarget(enterEditModeF, exitEditModeF,tc);
-            },
-            child: IntegerCircleAvatar(
-              tc,
-              num: index + 1,
-              bgColor: tc.calloutColor(),
-              radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-              textColor: Colors.white,
-              fontSize: 14,
-            ),
-          )
+      onTap: () {
+        if (tc.targetsWrapperState() == null) return;
+        var list = tc
+            .targetsWrapperState()
+            ?.widget
+            .parentNode
+            .playList;
+        list?.add(tc);
+        playTarget(enterEditModeF, exitEditModeF, tc);
+      },
+      child: IntegerCircleAvatar(
+        tc,
+        num: index + 1,
+        bgColor: tc.calloutColor(),
+        radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+        textColor: Colors.white,
+        fontSize: 14,
+      ),
+    )
         : Draggable<(TargetId, bool)>(
-            data: (tc.uid, true),
-            childWhenDragging: const Offstage(),
-            feedback: preventDrag
-                ? const Offstage()
-                : IntegerCircleAvatar(
-                    tc,
-                    num: index + 1,
-                    bgColor: tc.calloutColor(),
-                    radius:
-                        FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-                    textColor: Color(Colors.white.value),
-                    fontSize: 14,
-                  ),
-            // onDragUpdate: (DragUpdateDetails details) {
-            //   fco.logi("${details.globalPosition}");
-            //   Offset newGlobalPos =
-            //       details.globalPosition; //.translate(iwPos.dx, iwPos.dy);
-            //   tc.setBtnStackPosPc(
-            //     newGlobalPos
-            //         // .translate(
-            //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         // )
-            //         // .translate(
-            //         //   parentWrapperState!
-            //         //           .zoomer?.widget.ancestorHScrollController?.offset ??
-            //         //       0.0,
-            //         //   parentWrapperState!
-            //         //           .zoomer?.widget.ancestorVScrollController?.offset ??
-            //         //       0.0,
-            //         // ),
-            //   );
-            //   fco.logi("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
-            // },
-            // onDragStarted: () {
-            //   fco.logi("drag started");
-            //   //bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
-            // },
-            // onDraggableCanceled: (_, offset) {
-            //   fco.logi("drag ended");
-            //   Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
-            //   tc.setBtnStackPosPc(
-            //     newGlobalPos
-            //         .translate(
-            //           bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //           bloc.state.CAPI_TARGET_BTN_RADIUS,
-            //         )
-            //         .translate(
-            //           parentWrapperState!
-            //                   .zoomer?.widget.ancestorHScrollController?.offset ??
-            //               0.0,
-            //           parentWrapperState!
-            //                   .zoomer?.widget.ancestorVScrollController?.offset ??
-            //               0.0,
-            //         ),
-            //   );
-            //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-            //
-            //   // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
-            // },
-            child: GestureDetector(
-              onTap: () {
-                if (tc.targetsWrapperState() == null) return;
+      data: (tc.uid, true),
+      childWhenDragging: const Offstage(),
+      feedback: preventDrag
+          ? const Offstage()
+          : IntegerCircleAvatar(
+        tc,
+        num: index + 1,
+        bgColor: tc.calloutColor(),
+        radius:
+        FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+        textColor: Colors.white,
+        fontSize: 14,
+      ),
+      // onDragUpdate: (DragUpdateDetails details) {
+      //   fco.logi("${details.globalPosition}");
+      //   Offset newGlobalPos =
+      //       details.globalPosition; //.translate(iwPos.dx, iwPos.dy);
+      //   tc.setBtnStackPosPc(
+      //     newGlobalPos
+      //         // .translate(
+      //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         //   bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         // )
+      //         // .translate(
+      //         //   parentWrapperState!
+      //         //           .zoomer?.widget.ancestorHScrollController?.offset ??
+      //         //       0.0,
+      //         //   parentWrapperState!
+      //         //           .zoomer?.widget.ancestorVScrollController?.offset ??
+      //         //       0.0,
+      //         // ),
+      //   );
+      //   fco.logi("${tc.btnLocalLeftPc}, ${tc.btnLocalTopPc}");
+      // },
+      // onDragStarted: () {
+      //   fco.logi("drag started");
+      //   //bloc.add(CAPIEvent.showOnlyOneTarget(tc: tc));
+      // },
+      // onDraggableCanceled: (_, offset) {
+      //   fco.logi("drag ended");
+      //   Offset newGlobalPos = offset; //.translate(iwPos.dx, iwPos.dy);
+      //   tc.setBtnStackPosPc(
+      //     newGlobalPos
+      //         .translate(
+      //           bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //           bloc.state.CAPI_TARGET_BTN_RADIUS,
+      //         )
+      //         .translate(
+      //           parentWrapperState!
+      //                   .zoomer?.widget.ancestorHScrollController?.offset ??
+      //               0.0,
+      //           parentWrapperState!
+      //                   .zoomer?.widget.ancestorVScrollController?.offset ??
+      //               0.0,
+      //         ),
+      //   );
+      //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+      //
+      //   // parentTW!.bloc.add(CAPIEvent.btnMoved(tc: tc, newGlobalPos: newGlobalPos));
+      // },
+      child: GestureDetector(
+        onTap: () {
+          if (tc.targetsWrapperState() == null) return;
 
-                final playList = tc.targetsWrapperState()!.widget.parentNode.playList;
-                playList.add(tc);
-                playTarget(enterEditModeF, exitEditModeF,tc);
-              },
-              // onLongPress: () {
-              //   tc.setTargetStackPosPc(
-              //     tc.btnStackPos(),
-              //   );
-              //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
-              // },
-              onDoubleTap: () async {
-                TargetsWrapper.configureTarget(
-                  enterEditModeF,
-                  exitEditModeF,
-                  tc,
-                  wrapperRect,
-                  scrollControllerName,
-                );
-              },
-              child: IntegerCircleAvatar(
-                tc,
-                num: index + 1,
-                bgColor: tc.calloutColor(),
-                radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-                textColor: Colors.white,
-                fontSize: 14,
-              ),
-            ),
+          final playList = tc
+              .targetsWrapperState()!
+              .widget
+              .parentNode
+              .playList;
+          playList.add(tc);
+          playTarget(enterEditModeF, exitEditModeF, tc);
+        },
+        // onLongPress: () {
+        //   tc.setTargetStackPosPc(
+        //     tc.btnStackPos(),
+        //   );
+        //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
+        // },
+        onDoubleTap: () async {
+          TargetsWrapper.configureTarget(
+            enterEditModeF,
+            exitEditModeF,
+            tc,
+            wrapperRect,
+            scrollControllerName,
           );
+        },
+        child: IntegerCircleAvatar(
+          tc,
+          num: index + 1,
+          bgColor: tc.calloutColor(),
+          radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+          textColor: needsDarkText ? Colors.black : Colors.white,
+          fontSize: 14,
+        ),
+      ),
+    );
   }
 
   // static void configureTarget(
@@ -200,7 +211,7 @@ class TargetPlayBtn extends StatelessWidget {
     if (targetRect == null) return;
 
     Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+    fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;
@@ -210,24 +221,25 @@ class TargetPlayBtn extends StatelessWidget {
 
     zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
         afterTransformF: () async {
-      // if (savedKey != tc.targetsWrapperGK) {
-      //   fco.logi('doh!');
-      // }
-      //
-      await tc.ensureContentSnippetPresent();
-      showSnippetContentCallout(
-        enterEditModeF: enterEditModeF,
-        exitEditModeF: exitEditModeF,
-        tc: tc,
-        justPlaying: true,
-        wrapperRect: wrapperRect,
-        scrollControllerName: scrollControllerName,
-      );
-      fco.afterMsDelayDo(tc.calloutDurationMs, () {
-        tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
-          tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
+          // if (savedKey != tc.targetsWrapperGK) {
+          //   fco.logi('doh!');
+          // }
+          //
+          await tc.ensureContentSnippetPresent();
+          showSnippetContentCallout(
+            enterEditModeF: enterEditModeF,
+            exitEditModeF: exitEditModeF,
+            tc: tc,
+            justPlaying: true,
+            wrapperRect: wrapperRect,
+            scrollControllerName: scrollControllerName,
+          );
+          fco.afterMsDelayDo(tc.calloutDurationMs, () {
+            tc.targetsWrapperState()!.zoomer?.resetTransform(
+                afterTransformF: () {
+                  tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
+                });
+          });
         });
-      });
-    });
   }
 }

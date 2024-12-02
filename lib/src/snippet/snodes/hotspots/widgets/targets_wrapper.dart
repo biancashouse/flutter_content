@@ -444,20 +444,20 @@ class IntegerCircleAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => CircleAvatar(
         backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
-        radius: radius + 2,
+        radius: radius,// + 2,
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          radius: radius + 1,
+          radius: radius,// + 1,
           child: CircleAvatar(
             foregroundColor: textColor,
             backgroundColor: bgColor,
             radius: radius,
             child: Container(
-                decoration: ShapeDecoration(
-                    color: bgColor,
-                    shape: const CircleBorder(
-                      side: BorderSide(color: Colors.white),
-                    )),
+                // decoration: ShapeDecoration(
+                //     color: bgColor,
+                //     shape: const CircleBorder(
+                //       side: BorderSide(color: Colors.white),
+                //     )),
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
