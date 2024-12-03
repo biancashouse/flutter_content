@@ -137,7 +137,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
           errorMsg: "null SnippetName!",
           key: GlobalKey());
     }
-    var snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    var snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) {
       return Error("SnippetTreeAndPropertiesCalloutContents",
           color: Colors.blue,

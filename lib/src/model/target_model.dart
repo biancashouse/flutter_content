@@ -161,7 +161,7 @@ class TargetModel with TargetModelMappable {
   String get contentSnippetName => 'T-$uid';
 
   Future<void> ensureContentSnippetPresent() async =>
-      SnippetInfoModel.snippetInfoCache[contentSnippetName] ??
+      SnippetInfoModel.cachedSnippet(contentSnippetName) ??
       await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
         snippetName: contentSnippetName,
         snippetRootNode: SnippetRootNode(

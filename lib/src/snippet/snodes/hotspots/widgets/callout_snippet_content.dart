@@ -68,12 +68,17 @@ Future<void> showSnippetContentCallout({
 
   Widget editableContent() => GestureDetector(
         onTap: () async {
-          SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[tc.contentSnippetName];
+          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(tc.contentSnippetName);
           SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
+          String? snippetName = snippet?.name;
+          // maybe a page snippet, so check name in appInfo: maybe prefix with /
+          if (fco.appInfo.snippetNames.contains('/$snippetName}')) {
+            snippetName = '/$snippetName';
+          }
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
             enterEditModeF,
             exitEditModeF,
-            tc.contentSnippetName,
+            snippetName ?? tc.contentSnippetName,
             snippet!,
             snippet.child ?? snippet,
             targetBeingConfigured: tc,

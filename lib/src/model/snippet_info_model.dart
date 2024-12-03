@@ -15,10 +15,24 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   VersionId publishedVersionId;
   bool? autoPublish;
 
-  static Map<SnippetName, SnippetInfoModel> snippetInfoCache = {};
+  static final Map<SnippetName, SnippetInfoModel> _snippetInfoCache = {};
+
+  static SnippetInfoModel? cachedSnippet(String snippetName) {
+    return _snippetInfoCache.containsKey(snippetName)
+        ? _snippetInfoCache[snippetName]
+        : _snippetInfoCache['/$snippetName'];
+  }
+
+  static void cacheSnippetInfo(String snippetName, SnippetInfoModel sni) {
+    _snippetInfoCache[snippetName] = sni;
+  }
+
+  static List<String> cachedSnippetNames() => _snippetInfoCache.keys.toList();
+
+  static void removeFromCache(String snippetName) => _snippetInfoCache.remove(snippetName);
 
   static void debug() {
-    var snippetInfoCache = SnippetInfoModel.snippetInfoCache;
+    var snippetInfoCache = SnippetInfoModel._snippetInfoCache;
     for (SnippetName name in snippetInfoCache.keys) {
       List<VersionId> versionIds = snippetInfoCache[name]?.cachedVersionIds ?? [];
       debugPrint('$name: ${versionIds.toString()}');

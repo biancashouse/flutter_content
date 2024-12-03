@@ -143,6 +143,16 @@ class MockModelRepository extends _i1.Mock implements _i3.IModelRepository {
       ) as _i4.Future<bool>);
 
   @override
+  _i4.Future<void> deleteSnippet(String? snippetName) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteSnippet,
+          [snippetName],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
   _i4.Future<void> deleteSnippetVersions(
     String? snippetName,
     List<String>? tbd,

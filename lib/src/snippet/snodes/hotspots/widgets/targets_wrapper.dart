@@ -424,7 +424,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 class IntegerCircleAvatar extends StatelessWidget {
   final TargetModel tc;
   final int? num;
-  final Color textColor;
+  // final Color textColor;
   final Color bgColor;
   final double radius;
   final double fontSize;
@@ -432,7 +432,7 @@ class IntegerCircleAvatar extends StatelessWidget {
 
   const IntegerCircleAvatar(this.tc,
       {this.num,
-      required this.textColor,
+      // required this.textColor,
       required this.bgColor,
       required this.radius,
       required this.fontSize,
@@ -442,14 +442,17 @@ class IntegerCircleAvatar extends StatelessWidget {
   CAPIBloC get bloc => FlutterContentApp.capiBloc;
 
   @override
-  Widget build(BuildContext context) => CircleAvatar(
+  Widget build(BuildContext context) {
+    double luminance = bgColor.computeLuminance();
+    bool needsDarkText = luminance > 0.5;
+    return CircleAvatar(
         backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
         radius: radius,// + 2,
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: radius,// + 1,
           child: CircleAvatar(
-            foregroundColor: textColor,
+            foregroundColor: needsDarkText ? Colors.black : Colors.white,
             backgroundColor: bgColor,
             radius: radius,
             child: Container(
@@ -462,10 +465,11 @@ class IntegerCircleAvatar extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
                     '$num',
-                    style: TextStyle(color: textColor, fontSize: fontSize),
+                    style: TextStyle(color: needsDarkText ? Colors.black : Colors.white, fontSize: fontSize),
                   ),
                 )),
           ),
         ),
       );
+  }
 }

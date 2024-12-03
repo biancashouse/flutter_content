@@ -40,7 +40,7 @@ class _PagesState extends State<Pages> {
                     fco.deleteSubRoute(path: label);
                     await fco.modelRepo.saveAppInfo();
                     await fco.modelRepo.deleteSnippet(label);
-                    SnippetInfoModel.snippetInfoCache.remove(label);
+                    SnippetInfoModel.removeFromCache(label);
                     setState(() {});
                   },
                   icon: Icon(

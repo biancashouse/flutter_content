@@ -180,6 +180,8 @@ class SnippetPanelState extends State<SnippetPanel>
             : null,
         buildWhen: (previous, current) => !current.onlyTargetsWrappers,
         builder: (blocContext, state) {
+          var snippetInfo = SnippetInfoModel.cachedSnippet(snippetName()!);
+          bool isPublishedVersion = snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
           return FutureBuilder<SnippetRootNode?>(
               future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
                 snippetName: snippetName() ?? 'unnamed snippet',
@@ -230,7 +232,14 @@ class SnippetPanelState extends State<SnippetPanel>
                     ),
                   );
                 }
-                return snippetWidget;
+                return fco.canEditContent.value
+                ? Banner(
+                    message: isPublishedVersion ? 'published' : 'not published',
+                    location: BannerLocation.topEnd,
+                    color: isPublishedVersion ? Colors.limeAccent: Colors.pink.shade100,
+                    textStyle: TextStyle(color: Colors.black, fontSize: 10),
+                    child: snippetWidget)
+                : snippetWidget;
                 // return BlocListener<CAPIBloC, CAPIState>(
                 //   listenWhen: (CAPIState previous, CAPIState current) {
                 //     return previous.snippetBeingEdited?.rootNode !=

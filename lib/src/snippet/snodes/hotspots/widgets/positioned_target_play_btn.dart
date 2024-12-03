@@ -40,8 +40,6 @@ class TargetPlayBtn extends StatelessWidget {
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    double luminance = tc.calloutColor().computeLuminance();
-    bool needsDarkText = luminance > 0.5;
     return !fco.canEditContent.value
         ? GestureDetector(
       onTap: () {
@@ -59,7 +57,6 @@ class TargetPlayBtn extends StatelessWidget {
         num: index + 1,
         bgColor: tc.calloutColor(),
         radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-        textColor: Colors.white,
         fontSize: 14,
       ),
     )
@@ -74,7 +71,6 @@ class TargetPlayBtn extends StatelessWidget {
         bgColor: tc.calloutColor(),
         radius:
         FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-        textColor: Colors.white,
         fontSize: 14,
       ),
       // onDragUpdate: (DragUpdateDetails details) {
@@ -156,7 +152,6 @@ class TargetPlayBtn extends StatelessWidget {
           num: index + 1,
           bgColor: tc.calloutColor(),
           radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-          textColor: needsDarkText ? Colors.black : Colors.white,
           fontSize: 14,
         ),
       ),

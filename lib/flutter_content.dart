@@ -263,8 +263,7 @@ class FlutterContentMixins
           }
         }
         // may have been created
-        bool dynamicPageExists =
-            appInfo.snippetNames.contains(state.matchedLocation);
+        bool dynamicPageExists = appInfo.snippetNames.contains(state.matchedLocation);
         if (dynamicPageExists) {
           EditablePageState.removeAllNodeWidgetOverlays();
           fco.dismiss('exit-editMode');
@@ -319,7 +318,7 @@ class FlutterContentMixins
                         snippetRootNode: rootNode,
                       ).then((_) {
                         afterNextBuildDo(() {
-                          SnippetInfoModel.snippetInfoCache;
+                          // SnippetInfoModel.snippetInfoCache;
                           router.push(state.matchedLocation);
                           // router.go('/');
                         });
@@ -530,7 +529,7 @@ class FlutterContentMixins
     // remove all subsequent versions following the current version
     // before saving new version
     SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippet.name];
+        SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo != null) {
       VersionId? currVerId = snippetInfo.currentVersionId();
       if (currVerId != null) {
@@ -575,7 +574,7 @@ class FlutterContentMixins
 
     // update or create SnippetInfo
     SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippetName];
+        SnippetInfoModel.cachedSnippet(snippetName);
 
     VersionId? currVersionId = snippetInfo?.currentVersionId();
 
@@ -588,7 +587,7 @@ class FlutterContentMixins
         routePath: pagePath,
         autoPublish: appInfo.autoPublishDefault,
       );
-      SnippetInfoModel.snippetInfoCache[snippetName] = snippetInfo;
+      SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
       // update FB appInfo
       if (!appInfo.snippetNames.contains(snippetName)) {
         // jsArray issue

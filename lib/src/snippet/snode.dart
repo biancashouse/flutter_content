@@ -252,8 +252,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         child: InkWell(
           onTap: () {
             // fco.logi("${toString()} tapped");
-            SnippetName? snippetName = rootNodeOfSnippet()?.name;
+            SnippetRootNode? rootNode = rootNodeOfSnippet();
+            SnippetName? snippetName = rootNode?.name;
             if (snippetName == null) return;
+            // maybe a page snippet, so check name in appInfo: maybe prefix with /
+            var names = fco.appInfo.snippetNames;
+            if (fco.appInfo.snippetNames.contains('/$snippetName')) {
+              snippetName = '/$snippetName';
+            }
             // var cc = nodeWidgetGK?.currentContext;
 // edit the root snippet
 //             hideAllSingleTargetBtns();
@@ -394,8 +400,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippetName];
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
     SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
@@ -807,10 +812,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static List<TargetModel> allTargets() {
     // var fc = FC();
     List<TargetModel> foundTargets = [];
-    for (SnippetName snippetName in SnippetInfoModel.snippetInfoCache.keys) {
+    for (SnippetName snippetName in SnippetInfoModel.cachedSnippetNames()) {
       // get published or editing version
       SnippetInfoModel? snippetInfo =
-          SnippetInfoModel.snippetInfoCache[snippetName];
+          SnippetInfoModel.cachedSnippet(snippetName);
       if (snippetInfo == null) return foundTargets;
       VersionId? versionId = snippetInfo.currentVersionId();
       if (versionId == null) return foundTargets;

@@ -37,26 +37,36 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
-          snode: this,
-          name: 'Snippet Name',
-          stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 280,
-        ),
-        PropertyGroup(
-          snode: this,
-          name: 'Page Snippet...',
-          children: [
-            StringPropertyValueNode(
-              snode: this,
-              name: 'Snippet Name',
-              stringValue: name,
-              onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
-              calloutButtonSize: const Size(280, 70),
-              calloutWidth: 280,
-            ),
+    StringPropertyValueNode(
+      snode: this,
+      name: 'tags',
+      stringValue: tags.toString(),
+      onStringChange: (newValue) {
+        refreshWithUpdate(() => tags = newValue??'');
+      },
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 280,
+    ),
+    // StringPropertyValueNode(
+        //   snode: this,
+        //   name: 'Snippet Name',
+        //   stringValue: name,
+        //   onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+        //   calloutButtonSize: const Size(280, 70),
+        //   calloutWidth: 280,
+        // ),
+        // PropertyGroup(
+        //   snode: this,
+        //   name: 'Page Snippet...',
+        //   children: [
+        //     StringPropertyValueNode(
+        //       snode: this,
+        //       name: 'Snippet Name',
+        //       stringValue: name,
+        //       onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+        //       calloutButtonSize: const Size(280, 70),
+        //       calloutWidth: 280,
+        //     ),
             // StringPropertyValueNode(
             //   snode: this,
             //   name: 'Route Path',
@@ -65,24 +75,14 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             //   calloutButtonSize: const Size(280, 70),
             //   calloutWidth: 280,
             // ),
-          ],
-        ),
+        //   ],
+        // ),
         // BoolPropertyValueNode(
         //   snode: this,
         //   name: 'isEmbedded',
         //   boolValue: isEmbedded,
         //   onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
         // ),
-        StringPropertyValueNode(
-          snode: this,
-          name: 'tags',
-          stringValue: tags.toString(),
-          onStringChange: (newValue) {
-            refreshWithUpdate(() => tags = newValue??'');
-          },
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 280,
-        ),
       ];
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
@@ -152,7 +152,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       // may already be in snippet cache
       rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     }
-    snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     return rootNode;
   }
 

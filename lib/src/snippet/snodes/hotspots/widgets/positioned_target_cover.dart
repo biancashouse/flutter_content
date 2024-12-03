@@ -121,8 +121,6 @@ class _TargetCover extends StatelessWidget {
               num: index + 1,
               bgColor: tc.calloutColor().withOpacity(.5),
               radius: radius,
-              textColor:
-                  fco.canEditContent.value ? Colors.white : Colors.transparent,
               fontSize: 16,
             ),
           ),

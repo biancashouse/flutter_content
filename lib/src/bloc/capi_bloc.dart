@@ -87,7 +87,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
     final stopwatch = Stopwatch()..start();
@@ -172,7 +172,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName];
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
     bool autoPublish = snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;

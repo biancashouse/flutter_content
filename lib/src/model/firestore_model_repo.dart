@@ -78,7 +78,7 @@ class FireStoreModelRepository implements IModelRepository {
       {required SnippetName snippetName}) async {
     // may be already in cache
     SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippetName];
+        SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo != null) {
       // if (FCO.currentSnippet(snippetName) != null) {
       return snippetInfo;
@@ -98,7 +98,7 @@ class FireStoreModelRepository implements IModelRepository {
         final data = snippetInfoDoc.data() as Map<String, dynamic>;
         snippetInfo = SnippetInfoModelMapper.fromMap(data);
         // set or update cache
-        SnippetInfoModel.snippetInfoCache[snippetName] = snippetInfo;
+        SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
       } catch (e) {
         print(e);
       }
@@ -228,7 +228,7 @@ class FireStoreModelRepository implements IModelRepository {
     required SnippetRootNode newVersion,
   }) async {
     SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippetName];
+        SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return false;
 
     // create the actual version doc
@@ -297,7 +297,7 @@ class FireStoreModelRepository implements IModelRepository {
     // var fc = FC();
 
     SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.snippetInfoCache[snippetName];
+        SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
     // set the snippet properties

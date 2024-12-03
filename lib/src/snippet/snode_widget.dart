@@ -107,7 +107,7 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetInfoModel?  snippetInfo = SnippetInfoModel.snippetInfoCache[(entry.node as SnippetRootNode).name];
+        SnippetInfoModel?  snippetInfo = SnippetInfoModel.cachedSnippet((entry.node as SnippetRootNode).name);
         SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
 
         if (snippet != null) {
