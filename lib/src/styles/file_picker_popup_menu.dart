@@ -39,10 +39,10 @@ class FilePickerPopupMenu extends StatefulWidget {
       return fi.image;
     }
 
-    Future<Uint8List> uiImageToBytes(ui.Image image) async {
-      var byteData = await (image.toByteData(format: ui.ImageByteFormat.png) as FutureOr<ByteData>);
-      return byteData.buffer.asUint8List();
-    }
+    // Future<Uint8List> uiImageToBytes(ui.Image image) async {
+    //   var byteData = await (image.toByteData(format: ui.ImageByteFormat.png) as FutureOr<ByteData>);
+    //   return byteData.buffer.asUint8List();
+    // }
 
     // FCO.om.showCircularProgressIndicator(false, reason: 'Picking an Image');
     // FCO.om.showCircularProgressIndicator(true, reason: 'Picked an Image');

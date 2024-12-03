@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -114,13 +115,13 @@ class YTNode extends CL with YTNodeMappable {
   // }
 
   @override
-  String toString() => 'YT';
-
-  @override
   Widget? logoSrc() => const Row(children: [
         Icon(Icons.link),
         Gap(6),
       ]);
+
+  @override
+  String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "YT";
 }
