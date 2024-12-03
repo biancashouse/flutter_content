@@ -1,3 +1,4 @@
+// ignore_for_file: constant_identifier_names
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -65,7 +66,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
       treeC.expandCascading([this]);
       setParent(parentNode);
       possiblyHighlightSelectedNode();
-      return parentNode != DirectoryNode
+      return parentNode is! DirectoryNode
           ? Material(child: _widget(nodeCount, treeC))
           : _widget(nodeCount, treeC);
     } catch (e) {
@@ -114,9 +115,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Icon(Icons.folder, size: 28, color: Colors.amber),
-                  Container(
-                    child: Text(childNode.name ?? ''),
-                  ),
+                  Text(childNode.name ?? ''),
                 ],
               )
             : (childNode as FileNode).toWidget(context, this);
