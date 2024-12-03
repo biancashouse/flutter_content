@@ -256,7 +256,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             SnippetName? snippetName = rootNode?.name;
             if (snippetName == null) return;
             // maybe a page snippet, so check name in appInfo: maybe prefix with /
-            var names = fco.appInfo.snippetNames;
+            // var names = fco.appInfo.snippetNames;
             if (fco.appInfo.snippetNames.contains('/$snippetName')) {
               snippetName = '/$snippetName';
             }

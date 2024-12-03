@@ -79,7 +79,7 @@ void main() {
     capiBloc = CAPIBloC(
       modelRepo: setupMockRepo(),
       mockSnippetBeingEdited: SnippetBeingEdited(
-        rootNode: snippet,
+        // rootNode: snippet,
         treeC: SnippetTreeController(
           roots: [snippet],
           childrenProvider: Node.snippetTreeChildrenProvider,
@@ -170,7 +170,7 @@ void main() {
       build: () => capiBloc = CAPIBloC(
         modelRepo: setupMockRepo(),
         mockSnippetBeingEdited: SnippetBeingEdited(
-          rootNode: modelSnippetRoot,
+          // rootNode: modelSnippetRoot,
           treeC: newTreeC(modelSnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
@@ -187,7 +187,7 @@ void main() {
             selectedNode: firstTabViewNode,
             showProperties: false,
             nodeBeingDeleted: null,
-            rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+            // rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
             treeC: capiBloc.state.snippetBeingEdited!.treeC,
             jsonBeforeAnyChange: '',
           ),
@@ -200,7 +200,7 @@ void main() {
       build: () => capiBloc = CAPIBloC(
         modelRepo: setupMockRepo(),
         mockSnippetBeingEdited: SnippetBeingEdited(
-          rootNode: emptySnippetRoot,
+          // rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
@@ -236,7 +236,7 @@ void main() {
       build: () => capiBloc = CAPIBloC(
         modelRepo: setupMockRepo(),
         mockSnippetBeingEdited: SnippetBeingEdited(
-          rootNode: emptySnippetRoot,
+          // rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
@@ -248,7 +248,7 @@ void main() {
           selectedNode: firstTabViewNode,
           showProperties: false,
           nodeBeingDeleted: null,
-          rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+          // rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
           treeC: capiBloc.state.snippetBeingEdited!.treeC,
           jsonBeforeAnyChange: '',
         ),
@@ -287,7 +287,7 @@ void main() {
       build: () => capiBloc = CAPIBloC(
         modelRepo: setupMockRepo(),
         mockSnippetBeingEdited: SnippetBeingEdited(
-          rootNode: emptySnippetRoot,
+          // rootNode: emptySnippetRoot,
           treeC: newTreeC(emptySnippetRoot),
           selectedNode: null,
           nodeBeingDeleted: null,
@@ -299,7 +299,7 @@ void main() {
           selectedNode: firstTabViewNode,
           showProperties: false,
           nodeBeingDeleted: null,
-          rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
+          // rootNode: capiBloc.state.snippetBeingEdited!.rootNode,
           treeC: capiBloc.state.snippetBeingEdited!.treeC,
           jsonBeforeAnyChange: '',
         ),
