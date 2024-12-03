@@ -15,10 +15,10 @@ class ColorPalette extends StatefulWidget {
   });
 
   @override
-  _ColorPaletteState createState() => _ColorPaletteState();
+  ColorPaletteState createState() => ColorPaletteState();
 }
 
-class _ColorPaletteState extends State<ColorPalette> {
+class ColorPaletteState extends State<ColorPalette> {
   late Color _activeColor;
   late List<_ColorHolder> _colorHolders;
 
