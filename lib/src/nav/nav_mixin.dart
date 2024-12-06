@@ -39,6 +39,7 @@ mixin NavMixin {
                 }
                 final dd = DropdownButton<String>(
                   items: dropdownItems,
+                  underline: Offstage(),
                   icon: Icon(Icons.more_vert, color: Colors.red, size: 24,),
                   onChanged: (_) {},
                 );
