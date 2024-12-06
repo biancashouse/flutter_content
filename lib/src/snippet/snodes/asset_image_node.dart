@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'asset_image_node.mapper.dart';
 
@@ -32,6 +33,9 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     // this.opacity,
     // this.blendMode,
   });
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  GlobalKey? _gk;
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
@@ -160,6 +164,12 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
       possiblyHighlightSelectedNode();
+
+      if (_gk == null) {
+        _gk = createNodeGK();
+        fco.afterMsDelayDo(100, () => fco.forceRefresh());
+      }
+
       return name?.isNotEmpty ?? false
           ? LayoutBuilder(
           builder: (context, constraints) {
@@ -178,7 +188,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
               width: w,
               //height: h,
               child: Image.asset(
-                key: createNodeGK(),
+                key: _gk,
                 name!,
                 // scale: scale,
                 fit: fit?.flutterValue,
@@ -189,14 +199,14 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           }
       )
           : Placeholder(
-        key: createNodeGK(),
+        key: _gk,
         color: Colors.purpleAccent,
         strokeWidth: 2.0,
         fallbackWidth: (width ?? 400) * (scale),
         fallbackHeight: (height ?? 300) * (scale),
       );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: _gk, FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
     }
   }
 
@@ -270,12 +280,12 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"Carousel", CarouselNode, action),
-      menuItemButton(enterEditModeF, exitEditModeF,"AspectRatio", AspectRatioNode, action),
-      ...super.menuAnchorWidgets_WrapWith(enterEditModeF, exitEditModeF,action, true),
+      menuItemButton("Carousel", CarouselNode, action),
+      menuItemButton("AspectRatio", AspectRatioNode, action),
+      ...super.menuAnchorWidgets_WrapWith(action, true),
     ];
   }
 

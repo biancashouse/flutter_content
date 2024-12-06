@@ -11,8 +11,6 @@ import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final String? scrollControllerName;
 
   // final VoidCallback onChangedF;
@@ -20,8 +18,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
   final bool allowButtonCallouts;
 
   const SnippetTreeAndPropertiesCalloutContents({
-    required this.enterEditModeF,
-    required this.exitEditModeF,
     this.scrollControllerName,
     // required this.onChangedF,
     // required this.onExpiredF,
@@ -45,8 +41,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     STreeNode startingAtNode = treeRootNode.rootNodeOfSnippet()!;
     STreeNode selectedNode = FlutterContentApp.selectedNode!;
     STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-      enterEditModeF,
-      exitEditModeF,
       snippetName,
       startingAtNode,
       selectedNode,
@@ -67,7 +61,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       fco.logi('reverted to previous version.');
       STreeNode.unhighlightSelectedNode();
       var currPageState = fco.currentPageState;
-      currPageState?.unhideFAB();
+      // currPageState?.unhideFAB();
       fco.dismiss('pink-border-overlay-non-tappable');
       fco.dismiss(CalloutConfigToolbar.CID);
       fco.hideClipboard();
@@ -335,7 +329,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               .add(const CAPIEvent.clearNodeSelection());
                           fco.hide("floating-clipboard");
                         },
-                        child: SnippetTreePane(snippetInfo, enterEditModeF, exitEditModeF),
+                        child: SnippetTreePane(snippetInfo),
                       );
                     },
                     flex: 1,
@@ -601,8 +595,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: selectedNode.insertItemMenuAnchor(
-                enterEditModeF,
-                exitEditModeF,
                 action: NodeAction.replaceWith,
                 label: 'Replace with...',
                 bgColor: Colors.lightBlueAccent,
@@ -672,7 +664,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           selectedNode.insertItemMenuAnchor(
-                              enterEditModeF, exitEditModeF,
                               action: NodeAction.addSiblingBefore,
                               tooltip: 'Insert sibling before...',
                               bgColor: Colors.blue),
@@ -681,7 +672,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
                           selectedNode.insertItemMenuAnchor(
-                              enterEditModeF, exitEditModeF,
                               action: NodeAction.addSiblingAfter,
                               tooltip: 'Insert sibling after...',
                               bgColor: Colors.blue),
@@ -693,7 +683,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       top: 10,
                       left: 10,
                       child: selectedNode.insertItemMenuAnchor(
-                          enterEditModeF, exitEditModeF,
                           action: NodeAction.wrapWith,
                           tooltip: 'Wrap with...',
                           bgColor: Colors.blue),
@@ -703,7 +692,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       bottom: 10,
                       right: 10,
                       child: selectedNode.insertItemMenuAnchor(
-                          enterEditModeF, exitEditModeF,
                           action: NodeAction.addChild,
                           tooltip: 'Add child...',
                           bgColor: Colors.blue),
@@ -725,12 +713,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     selectedNode.insertItemMenuAnchor(
-                        enterEditModeF, exitEditModeF,
                         action: NodeAction.addSiblingBefore,
                         tooltip: 'Insert sibling before...',
                         bgColor: Colors.blue),
                     selectedNode.insertItemMenuAnchor(
-                        enterEditModeF, exitEditModeF,
                         action: NodeAction.addSiblingAfter,
                         tooltip: 'Insert sibling after...',
                         bgColor: Colors.blue),
@@ -746,18 +732,15 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 
 class SnippetTreePane extends StatelessWidget {
   final SnippetInfoModel snippetInfo;
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
 
-  const SnippetTreePane(this.snippetInfo, this.enterEditModeF, this.exitEditModeF, {super.key});
+  const SnippetTreePane(this.snippetInfo, {super.key});
 
   @override
   Widget build(BuildContext context) {
     if (FlutterContentApp.snippetBeingEdited?.getRootNode().child == null) {
       List<Widget> menuChildren = FlutterContentApp.snippetBeingEdited
               ?.getRootNode()
-              .menuAnchorWidgets(
-                  enterEditModeF, exitEditModeF, NodeAction.addChild) ??
+              .menuAnchorWidgets(NodeAction.addChild) ??
           [];
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
@@ -824,18 +807,14 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (canShowNavigateUpBtn)
-                        navigateUpTreeButton(enterEditModeF, exitEditModeF),
+                        navigateUpTreeButton(),
                       Expanded(
-                          child: SnippetTreeView(
-                              enterEditModeF: enterEditModeF,
-                              exitEditModeF: exitEditModeF)),
+                          child: SnippetTreeView()),
                     ],
                   );
                 }
                 fco.logi('SnippetTreeView...');
-                return SnippetTreeView(
-                    enterEditModeF: enterEditModeF,
-                    exitEditModeF: exitEditModeF);
+                return SnippetTreeView();
               }),
             ),
           ),
@@ -844,11 +823,10 @@ class SnippetTreePane extends StatelessWidget {
     }
   }
 
-  Widget navigateUpTreeButton(
-          VoidCallback enterEditModeF, VoidCallback exitEditModeF) =>
+  Widget navigateUpTreeButton() =>
       FilledButton(
         onPressed: () {
-          SnippetTreePane.navigateUpTree(enterEditModeF, exitEditModeF);
+          SnippetTreePane.navigateUpTree();
           return;
 
           // TBD ----------------
@@ -898,8 +876,7 @@ class SnippetTreePane extends StatelessWidget {
         child: fco.coloredText("...", color: Colors.white, fontSize: 24),
       );
 
-  static void navigateUpTree(
-      VoidCallback enterEditModeF, VoidCallback exitEditModeF) {
+  static void navigateUpTree() {
     // change tree root to parent
     STreeNode treeRootNode =
         FlutterContentApp.snippetBeingEdited!.treeC.roots.first;
@@ -913,8 +890,6 @@ class SnippetTreePane extends StatelessWidget {
     if (parent != null) {
       fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
       STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-        enterEditModeF,
-        exitEditModeF,
         parent.rootNodeOfSnippet()!.name,
         parent,
         parent,
@@ -924,8 +899,6 @@ class SnippetTreePane extends StatelessWidget {
 }
 
 class SnippetTreeView extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final String? scrollControllerName;
 
   // final VoidCallback onChangedF;
@@ -933,8 +906,6 @@ class SnippetTreeView extends StatelessWidget {
   final bool allowButtonCallouts;
 
   const SnippetTreeView({
-    required this.enterEditModeF,
-    required this.exitEditModeF,
     this.scrollControllerName,
     // required this.onChangedF,
     // required this.onExpiredF,
@@ -987,8 +958,6 @@ class SnippetTreeView extends StatelessWidget {
         ),
         entry: entry,
         child: NodeWidget(
-          enterEditModeF: enterEditModeF,
-          exitEditModeF: exitEditModeF,
           snippetName:
               FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
                   'snippet name ?',

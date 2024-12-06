@@ -41,7 +41,8 @@ class PollNode extends MC with PollNodeMappable {
           // skipHelperText: true,
           // skipLabelText: true,
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue ?? ''),
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
@@ -51,7 +52,8 @@ class PollNode extends MC with PollNodeMappable {
           stringValue: title,
           expands: false,
           numLines: 3,
-          onStringChange: (newValue) => refreshWithUpdate(() => title = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => title = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
@@ -62,20 +64,18 @@ class PollNode extends MC with PollNodeMappable {
           untilValue: endDate,
           onRangeChange: (DateRange? newValues) => refreshWithUpdate(() {
             if (newValues != null) {
-              DateTime startDT = DateTime.fromMillisecondsSinceEpoch(newValues.from!);
+              DateTime startDT =
+                  DateTime.fromMillisecondsSinceEpoch(newValues.from!);
               DateTime startDTMorning = DateTime(
                 startDT.year,
                 startDT.month,
                 startDT.day,
               );
               startDate = startDTMorning.millisecondsSinceEpoch;
-              DateTime endDT = DateTime.fromMillisecondsSinceEpoch(newValues.until!);
-              DateTime untilDTMidnight = DateTime(
-                endDT.year,
-                endDT.month,
-                endDT.day,
-                23,59,59
-              );
+              DateTime endDT =
+                  DateTime.fromMillisecondsSinceEpoch(newValues.until!);
+              DateTime untilDTMidnight =
+                  DateTime(endDT.year, endDT.month, endDT.day, 23, 59, 59);
               endDate = untilDTMidnight.millisecondsSinceEpoch;
             } else {
               startDate = null;
@@ -102,37 +102,37 @@ class PollNode extends MC with PollNodeMappable {
 
       // find
       return LayoutBuilder(
-            builder: (context, constraints) {
-              List<Widget> optionWidgets = [];
-              for (int i=0; i<children.length; i++) {
-                PollOptionNode optionNode = children[i] as PollOptionNode;
-                optionWidgets.add(optionNode.toWidget(context, this));
-              }
-              return constraints.maxHeight == double.infinity
-                  ? const Row(
-                      children: [
-                        Icon(
-                          Icons.error,
-                          color: Colors.red,
-                        ),
-                        Gap(10),
-                        Text('Poll has infinite maxHeight constraint!'),
-                      ],
-                    )
-                  : SizedBox(width: 300, height:100.0 + 60.0*(children.length),
-                    child: FlutterPoll(
-                      key: createNodeGK(),
-                      poll: this,
-                      titleWidget: Center(child: fco.coloredText(title, color: Colors.blue[900], fontSize: 24, fontWeight: FontWeight.bold)),
-                      startDate: startDate,
-                      endDate: endDate,
-                      children: optionWidgets,
-                    ),
-                  );
-            },
+        builder: (context, constraints) {
+          List<Widget> optionWidgets = [];
+          for (int i = 0; i < children.length; i++) {
+            PollOptionNode optionNode = children[i] as PollOptionNode;
+            optionWidgets.add(optionNode.toWidget(context, this));
+          }
+          return SizedBox(
+            width: 300,
+            height: 100.0 + 60.0 * (children.length),
+            child: FlutterPoll(
+              key: createNodeGK(),
+              poll: this,
+              titleWidget: Center(
+                  child: fco.coloredText(title,
+                      color: Colors.blue[900],
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)),
+              startDate: startDate,
+              endDate: endDate,
+              children: optionWidgets,
+            ),
           );
+        },
+      );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
@@ -140,10 +140,10 @@ class PollNode extends MC with PollNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"PollOption", PollOptionNode, action),
+      menuItemButton("PollOption", PollOptionNode, action),
     ];
   }
 

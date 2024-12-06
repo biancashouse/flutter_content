@@ -203,7 +203,7 @@ class Step1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       StatefulBuilder(
-        builder: (context, setState) =>
+        builder: (context, StateSetter setState) =>
             Row(
               children: [
                 Expanded(

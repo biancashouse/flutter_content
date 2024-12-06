@@ -6,15 +6,11 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_numbe
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final Rect wrapperRect;
   final String? scrollControllerName;
 
   const MoreCalloutConfigSettings(
-    this.enterEditModeF,
-    this.exitEditModeF,
     this.tc,
     this.wrapperRect, {
     this.scrollControllerName,
@@ -26,8 +22,6 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static show(
-    final VoidCallback enterEditModeF,
-    final VoidCallback exitEditModeF,
     final TargetModel tc,
     final Rect wrapperRect, {
     String? scrollControllerName,
@@ -42,8 +36,6 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
-          enterEditModeF,
-          exitEditModeF,
           tc,
           wrapperRect,
           scrollControllerName: scrollControllerName,
@@ -199,8 +191,6 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
         ?.zoomer
         ?.zoomImmediately(tc.transformScale, tc.transformScale);
     showSnippetContentCallout(
-      enterEditModeF: widget.enterEditModeF,
-      exitEditModeF: widget.exitEditModeF,
       tc: tc,
       wrapperRect: widget.wrapperRect,
       justPlaying: false,

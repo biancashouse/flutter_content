@@ -2,9 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_content/flutter_content.dart';
-import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 class EditablePage extends StatefulWidget {
   final String routePath;
@@ -23,6 +21,16 @@ class EditablePage extends StatefulWidget {
     fco.dismiss('pink-border-overlay-non-tappable');
     FlutterContentApp.selectedNode?.showNodeWidgetOverlay();
   }
+
+  static void removeAllNodeWidgetOverlays() {
+    // fco.logi('removeAllNodeWidgetOverlays - start');
+    for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
+      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
+    }
+    // fco.logi('removeAllNodeWidgetOverlays - ended');
+    fco.showingNodeBoundaryOverlays = false;
+  }
+
 
   // allow a page widget to find its parent EditablePage
   static EditablePageState? of(BuildContext context) =>
@@ -49,17 +57,17 @@ class EditablePageState extends State<EditablePage> {
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
 
-  void unhideFAB() {
-    setState(() {
-      isFABVisible = true; // Toggle FAB visibility
-    });
-  }
-
-  void hideFAB() {
-    setState(() {
-      isFABVisible = false; // Toggle FAB visibility
-    });
-  }
+  // void unhideFAB() {
+  //   setState(() {
+  //     isFABVisible = true; // Toggle FAB visibility
+  //   });
+  // }
+  //
+  // void hideFAB() {
+  //   setState(() {
+  //     isFABVisible = false; // Toggle FAB visibility
+  //   });
+  // }
 
   @override
   void initState() {
@@ -78,7 +86,7 @@ class EditablePageState extends State<EditablePage> {
 
     fco.afterNextBuildDo(() {
       setState(() {
-        fabPosition = Offset(20, fco.scrH - 90); // Initial position of the FAB
+        fabPosition = Offset(fco.scrW - 90, 10); // Initial position of the FAB
       });
     });
   }
@@ -117,7 +125,7 @@ class EditablePageState extends State<EditablePage> {
         fco.afterMsDelayDo(300, () {
           // FCO.refreshMQ(context);
           if (fco.showingNodeBoundaryOverlays ?? false) {
-            removeAllNodeWidgetOverlays();
+            EditablePage.removeAllNodeWidgetOverlays();
             showAllNodeWidgetOverlays();
           }
         });
@@ -130,13 +138,15 @@ class EditablePageState extends State<EditablePage> {
             onKeyEvent: (KeyEvent event) {
               bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
               if (fco.inEditMode.value && isEsc) {
-                exitEditMode();
+                // exitEditMode();
+                fco.inEditMode.value = false;
               }
               // _enterOrExitEditMode(event, lastTapTime, tapCount);
             },
             child: GestureDetector(
               onTap: () {
-                exitEditMode();
+                // exitEditMode();
+                fco.inEditMode.value = false;
               },
               child: Material(
                 child: Stack(
@@ -148,29 +158,29 @@ class EditablePageState extends State<EditablePage> {
                         }
                       ),
                     ),
-                    if (fabPosition != null)
-                      ValueListenableBuilder<bool>(
-                        valueListenable: fco.canEditContent,
-                        builder: (context, value, child) {
-                          return isFABVisible
-                              ? Positioned(
-                                  left: fabPosition!.dx,
-                                  top: fabPosition!.dy,
-                                  child: Draggable(
-                                    feedback: FAB(),
-                                    child: FAB(),
-                                    //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
-                                    onDragEnd: (details) {
-                                      setState(() {
-                                        fabPosition = details
-                                            .offset; // Update FAB position when dragged
-                                      });
-                                    },
-                                  ),
-                                )
-                              : const Offstage();
-                        },
-                      ),
+                    // if (fabPosition != null)
+                    //   ValueListenableBuilder<bool>(
+                    //     valueListenable: fco.canEditContent,
+                    //     builder: (context, value, child) {
+                    //       return isFABVisible
+                    //           ? Positioned(
+                    //               left: fabPosition!.dx,
+                    //               top: fabPosition!.dy,
+                    //               child: Draggable(
+                    //                 feedback: FAB(),
+                    //                 child: FAB(),
+                    //                 //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
+                    //                 onDragEnd: (details) {
+                    //                   setState(() {
+                    //                     fabPosition = details
+                    //                         .offset; // Update FAB position when dragged
+                    //                   });
+                    //                 },
+                    //               ),
+                    //             )
+                    //           : const Offstage();
+                    //     },
+                    //   ),
                   ],
                 ),
               ),
@@ -183,108 +193,99 @@ class EditablePageState extends State<EditablePage> {
         : builtWidget;
   }
 
-  Widget FAB() => Container(
-        decoration: BoxDecoration(
-          color: !fco.canEditContent.value ? Colors.green : Colors.blue,
-          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-        ),
-        child: fco.canEditContent.value
-            ? PointerInterceptor(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      tooltip: 'show editable widgets',
-                      onPressed: () async {
-                        enterEditMode(); //rootState.context);
-                      },
-                      icon: const Icon(Icons.search, color: Colors.white),
-                    ),
-                    IconButton(
-                      tooltip: 'sign out',
-                      onPressed: () async {
-                        if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
-                          _signOut();
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : const Offstage(), //lockIconButton(context),
-      );
+  // Widget FAB() => Container(
+  //       decoration: BoxDecoration(
+  //         color: !fco.canEditContent.value ? Colors.green : Colors.blue,
+  //         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+  //       ),
+  //       child: fco.canEditContent.value
+  //           ? PointerInterceptor(
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   IconButton(
+  //                     tooltip: 'show editable widgets',
+  //                     onPressed: () async {
+  //                       enterEditMode(); //rootState.context);
+  //                     },
+  //                     icon: const Icon(Icons.search, color: Colors.white),
+  //                   ),
+  //                   IconButton(
+  //                     tooltip: 'sign out',
+  //                     onPressed: () {
+  //                       if (!fco.anyPresent([CalloutConfigToolbar.CID])) {
+  //                         _signOut();
+  //                       }
+  //                     },
+  //                     icon: const Icon(
+  //                       Icons.close,
+  //                       color: Colors.white,
+  //                       size: 12,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             )
+  //           : const Offstage(), //lockIconButton(context),
+  //     );
 
-  void showExitEditModeCallout() {
-    fco.showOverlay(
-      calloutContent: Container(
-        decoration: const BoxDecoration(
-          color: Colors.orange,
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        ),
-        child: IconButton(
-          tooltip: 'exit edit mode',
-          onPressed: () async {
-            if (!fco.anyPresent([CalloutConfigToolbar.CID])) exitEditMode();
-          },
-          icon: const Icon(
-            Icons.close,
-            color: Colors.red,
-            size: 36,
-          ),
-        ),
-      ),
-      calloutConfig: CalloutConfig(
-        cId: "exit-editMode",
-        initialCalloutPos: fabPosition,
-        initialCalloutW: 60,
-        initialCalloutH: 60,
-        borderRadius: 20,
-        fillColor: Colors.orange,
-      ),
-    );
-  }
+  // void showExitEditModeCallout() {
+  //   fco.showOverlay(
+  //     calloutContent: Container(
+  //       decoration: const BoxDecoration(
+  //         color: Colors.orange,
+  //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+  //       ),
+  //       child: IconButton(
+  //         tooltip: 'exit edit mode',
+  //         onPressed: () async {
+  //           if (!fco.anyPresent([CalloutConfigToolbar.CID])) exitEditMode();
+  //         },
+  //         icon: const Icon(
+  //           Icons.close,
+  //           color: Colors.red,
+  //           size: 36,
+  //         ),
+  //       ),
+  //     ),
+  //     calloutConfig: CalloutConfig(
+  //       cId: "exit-editMode",
+  //       initialCalloutPos: fabPosition,
+  //       initialCalloutW: 60,
+  //       initialCalloutH: 60,
+  //       borderRadius: 20,
+  //       fillColor: Colors.orange,
+  //     ),
+  //   );
+  // }
 
-  void enterEditMode() {
-    hideFAB();
-    fco.inEditMode.value = true;
-    showAllNodeWidgetOverlays();
-    showExitEditModeCallout();
-    // fco.showTextToast(
-    //   cId: 'tap-a-widget',
-    //   backgroundColor: Colors.red,
-    //   textColor: Colors.white,
-    //   textScaleFactor: 2.5,
-    //   msgText: 'Tap a widget...',
-    //   onlyOnce: true,
-    //   height: 100,
-    // );
-  }
+  // void enterEditMode() {
+  //   hideFAB();
+  //   fco.inEditMode.value = true;
+  //   showAllNodeWidgetOverlays();
+  //   showExitEditModeCallout();
+  //   // fco.showTextToast(
+  //   //   cId: 'tap-a-widget',
+  //   //   backgroundColor: Colors.red,
+  //   //   textColor: Colors.white,
+  //   //   textScaleFactor: 2.5,
+  //   //   msgText: 'Tap a widget...',
+  //   //   onlyOnce: true,
+  //   //   height: 100,
+  //   // );
+  // }
 
-  void exitEditMode() {
-    removeAllNodeWidgetOverlays();
-    FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
-    fco.dismiss('exit-editMode');
-    unhideFAB();
-    fco.inEditMode.value = false;
-    // String feature = FlutterContentApp.rootNode?.name ?? "snippet name ?!";
-    // if (fco.anyPresent([feature])) {
-    //   fco.dismiss(feature);
-    // }
-  }
-
-  static void removeAllNodeWidgetOverlays() {
-    // fco.logi('removeAllNodeWidgetOverlays - start');
-    for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
-      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
-    }
-    // fco.logi('removeAllNodeWidgetOverlays - ended');
-    fco.showingNodeBoundaryOverlays = false;
-  }
+  // void exitEditMode() {
+  //   removeAllNodeWidgetOverlays();
+  //   FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
+  //   fco.dismiss('exit-editMode');
+  //   unhideFAB();
+  //   fco.inEditMode.value = false;
+  //   // String feature = FlutterContentApp.rootNode?.name ?? "snippet name ?!";
+  //   // if (fco.anyPresent([feature])) {
+  //   //   fco.dismiss(feature);
+  //   // }
+  // }
 
   // only called with MaterialAppWrapper context
   void showAllNodeWidgetOverlays() {
@@ -312,6 +313,7 @@ class EditablePageState extends State<EditablePage> {
           //   fco.logi('PlaceholderNode');
           // }
           if (r != null) {
+            node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
             r = fco.restrictRectToScreen(r);
             // fco.logi("========>  r restricted to ${r.toString()}");
             // fco.logi('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
@@ -321,10 +323,6 @@ class EditablePageState extends State<EditablePage> {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
-              enterEditModeF: enterEditMode,
-              exitEditModeF: exitEditMode,
-              nodeTypeName: node.toString(),
-              r: r,
               scrollControllerName: widget.routePath,
             );
           }
@@ -341,21 +339,21 @@ class EditablePageState extends State<EditablePage> {
     // fco.logi('traverseAndMeasure(context) finished.');
   }
 
-  // only called with MaterialAppWrapper context
-  static void showNodeWidgetOverlay(STreeNode node) {
-    fco.dismiss('pink-border-overlay-non-tappable');
-    fco.afterNextBuildDo(() {
-      node.showNodeWidgetOverlay();
-    });
-    return;
-    // Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-    // if (r != null) {
-    //   r = FCO.restrictRectToScreen(r);
-    //   // fco.logi("========>  r restricted to ${r.toString()}");
-    //   fco.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
-    //   node.showNodeWidgetOverlay();
-    // }
-  }
+  // // only called with MaterialAppWrapper context
+  // static void showNodeWidgetOverlay(STreeNode node) {
+  //   fco.dismiss('pink-border-overlay-non-tappable');
+  //   fco.afterNextBuildDo(() {
+  //     node.showNodeWidgetOverlay();
+  //   });
+  //   return;
+  //   // Rect? r = node.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+  //   // if (r != null) {
+  //   //   r = FCO.restrictRectToScreen(r);
+  //   //   // fco.logi("========>  r restricted to ${r.toString()}");
+  //   //   fco.dismiss('${node.nodeWidgetGK.hashCode}-pink-overlay');
+  //   //   node.showNodeWidgetOverlay();
+  //   // }
+  // }
 
   // Widget lockIconButton(context) {
   //   if (!widget.dontShowLockIcon) return Offstage();
@@ -439,17 +437,17 @@ class EditablePageState extends State<EditablePage> {
     );
   }
 
-  void _signOut() {
-    setState(() {
-      fco.setCanEditContent(false);
-    });
-
-    // // if auto-publishing, make sure publishing version == editing version
-    // if (FCO.isAutoPublishing()) {
-    //   FCO.appInfo.publishedVersionIds[]
-    // }
-
-    FlutterContentApp.capiBloc
-        .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-  }
+  // void _signOut() {
+  //   setState(() {
+  //     fco.setCanEditContent(false);
+  //   });
+  //
+  //   // // if auto-publishing, make sure publishing version == editing version
+  //   // if (FCO.isAutoPublishing()) {
+  //   //   FCO.appInfo.publishedVersionIds[]
+  //   // }
+  //
+  //   FlutterContentApp.capiBloc
+  //       .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  // }
 }

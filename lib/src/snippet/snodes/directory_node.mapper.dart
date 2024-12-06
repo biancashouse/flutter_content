@@ -31,9 +31,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   static String _$uid(DirectoryNode v) => v.uid;
   static const Field<DirectoryNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(DirectoryNode v) => v.gk;
-  static const Field<DirectoryNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(DirectoryNode v) => v.isExpanded;
   static const Field<DirectoryNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -53,7 +50,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     #name: _f$name,
     #children: _f$children,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

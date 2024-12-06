@@ -13,16 +13,12 @@ import 'pointy_callout.dart';
 import 'resize_slider.dart';
 
 class CalloutConfigToolbar extends StatefulWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
   final String? scrollControllerName;
 
   const CalloutConfigToolbar({
-    required this.enterEditModeF,
-    required this.exitEditModeF,
     required this.tc,
     required this.wrapperRect,
     required this.onCloseF,
@@ -78,8 +74,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           STreeNode.showAllTargetCovers();
                           // fco.dismiss(CalloutConfigToolbar.CID);
                           showSnippetContentCallout(
-                            enterEditModeF: widget.enterEditModeF,
-                            exitEditModeF: widget.exitEditModeF,
                             tc: tc,
                             justPlaying: false,
                             wrapperRect: widget.wrapperRect,
@@ -123,8 +117,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           STreeNode.showAllTargetBtns();
                           STreeNode.showAllTargetCovers();
                           TargetsWrapper.configureTarget(
-                            widget.enterEditModeF,
-                            widget.exitEditModeF,
                             tc,
                             widget.wrapperRect,
                             widget.scrollControllerName,
@@ -162,8 +154,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 TargetColourTool.show(
-                  widget.enterEditModeF,
-                  widget.exitEditModeF,
                   tc,
                   widget.wrapperRect,
                   onBarrierTappedF: widget.onCloseF,
@@ -197,8 +187,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 PointyTool.show(
-                  widget.enterEditModeF,
-                  widget.exitEditModeF,
                   tc, widget.wrapperRect,
                   // onBarrierTappedF: onParentBarrierTappedF,
                   scrollControllerName: widget.scrollControllerName,
@@ -229,8 +217,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       ?.zoomer
                       ?.zoomImmediately(tc.transformScale, tc.transformScale);
                   showSnippetContentCallout(
-                    enterEditModeF: widget.enterEditModeF,
-                    exitEditModeF: widget.exitEditModeF,
                     tc: tc,
                     wrapperRect: widget.wrapperRect,
                     justPlaying: false,
@@ -262,8 +248,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 MoreCalloutConfigSettings.show(
-                  widget.enterEditModeF,
-                  widget.exitEditModeF,
                   widget.tc,
                   widget.wrapperRect,
                   scrollControllerName: widget.scrollControllerName,
@@ -320,7 +304,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     // tc.changed_saveRootSnippet();
                     STreeNode.showAllTargetBtns();
                     STreeNode.showAllTargetCovers();
-                    fco.currentPageState?.unhideFAB();
+                    // fco.currentPageState?.unhideFAB();
                     removeSnippetContentCallout(tc);
                     fco.afterNextBuildDo(() {
                       // save hotspot's parent snippet
@@ -350,8 +334,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               !fco.calloutConfigToolbarAtTopOfScreen;
           fco.dismiss(CalloutConfigToolbar.CID);
           TargetsWrapper.showConfigToolbar(
-            widget.enterEditModeF,
-            widget.exitEditModeF,
             widget.tc,
             widget.wrapperRect,
             widget.scrollControllerName,

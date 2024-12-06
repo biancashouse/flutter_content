@@ -3,8 +3,6 @@ import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
 
   // final TargetsWrapperState parentWrapperState;
   final TargetModel tc;
@@ -13,8 +11,6 @@ class TargetCover extends StatelessWidget {
   final String? scrollControllerName;
 
   const TargetCover(
-    this.enterEditModeF,
-    this.exitEditModeF,
     this.tc,
     this.index, {
     required this.wrapperRect,
@@ -51,8 +47,6 @@ class TargetCover extends StatelessWidget {
         width: tc.radius * 2,
         height: tc.radius * 2,
         child: _TargetCover(
-          enterEditModeF,
-          exitEditModeF,
           tc,
           index,
           wrapperRect,
@@ -64,16 +58,12 @@ class TargetCover extends StatelessWidget {
 }
 
 class _TargetCover extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
   final String? scrollControllerName;
 
   const _TargetCover(
-    this.enterEditModeF,
-    this.exitEditModeF,
     this.tc,
     this.index,
     this.wrapperRect,
@@ -87,8 +77,6 @@ class _TargetCover extends StatelessWidget {
     return GestureDetector(
       onDoubleTap: () async {
         TargetsWrapper.configureTarget(
-          enterEditModeF,
-          exitEditModeF,
           tc,
           wrapperRect,
           scrollControllerName,

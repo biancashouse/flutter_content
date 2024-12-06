@@ -7,8 +7,6 @@ import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
 
 class TargetsWrapper extends StatefulWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final HotspotsNode parentNode;
   final Widget? child;
   final bool hardEdge;
@@ -16,8 +14,6 @@ class TargetsWrapper extends StatefulWidget {
 
   const TargetsWrapper(
       {
-        required this.enterEditModeF,
-        required this.exitEditModeF,
       required this.parentNode,
       this.child,
       this.hardEdge = true,
@@ -60,7 +56,7 @@ class TargetsWrapper extends StatefulWidget {
 //   }
 // }
 
-  static void configureTarget(VoidCallback enterEditModeF, exitEditModeF, TargetModel tc,
+  static void configureTarget( TargetModel tc,
       Rect wrapperRect, String? scrollControllerName,
       {bool quickly = false}) {
     if (!fco.canEditContent.value) return;
@@ -77,8 +73,6 @@ class TargetsWrapper extends StatefulWidget {
     tc.targetsWrapperState()?.zoomer?.applyTransform(
         tc.transformScale, tc.transformScale, ta, afterTransformF: () {
       showSnippetContentCallout(
-        enterEditModeF: enterEditModeF,
-        exitEditModeF: exitEditModeF,
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
@@ -87,20 +81,16 @@ class TargetsWrapper extends StatefulWidget {
       // show config toolbar in a toast
       tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
       showConfigToolbar(
-        enterEditModeF,
-        exitEditModeF,
         tc,
         wrapperRect,
         scrollControllerName,
       );
 
-      fco.currentPageState?.hideFAB();
+      // fco.currentPageState?.hideFAB();
     }, quickly: quickly);
   }
 
   static void showConfigToolbar(
-      VoidCallback enterEditModeF,
-    VoidCallback exitEditModeF,
     TargetModel tc,
     Rect wrapperRect,
     final String? scrollControllerName,
@@ -124,8 +114,6 @@ class TargetsWrapper extends StatefulWidget {
         dragHandleHeight: 30,
       ),
       calloutContent: CalloutConfigToolbar(
-        enterEditModeF: enterEditModeF,
-        exitEditModeF: exitEditModeF,
         tc: tc,
         wrapperRect: wrapperRect,
         onCloseF: () {
@@ -370,8 +358,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   visible: fco.canEditContent.value &&
                       (playingTc == null || playingTc == tc),
                   child: TargetCover(
-                    widget.enterEditModeF,
-                    widget.exitEditModeF,
                     tc,
                     _targetIndex(tc),
                     wrapperRect: wrapperRect,
@@ -389,8 +375,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   left: tc.btnStackPos().dx -
                       FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                   child: TargetPlayBtn(
-                    enterEditModeF: widget.enterEditModeF,
-                    exitEditModeF: widget.exitEditModeF,
                     initialTC: tc,
                     index: _targetIndex(tc),
                     wrapperRect: wrapperRect,

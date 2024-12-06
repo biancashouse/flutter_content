@@ -19,6 +19,7 @@ import 'package:go_router/go_router.dart';
 import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/bloc/bloc_observer.dart';
 import 'src/model/model_repo.dart';
+import 'src/nav/nav_mixin.dart';
 
 export 'package:bh_shared/src/canvas/canvas_mixin.dart';
 
@@ -74,6 +75,7 @@ export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
 export 'src/passwordless/passwordless_mixin.dart';
+export 'src/nav/nav_mixin.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
@@ -171,7 +173,7 @@ export 'src/typedefs.dart';
 FlutterContentMixins fco = FlutterContentMixins._instance;
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
-const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
+// const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
 
 /// this is a global container
@@ -188,6 +190,7 @@ class FlutterContentMixins
         CanvasMixin,
         GotitsMixin,
         PasswordlessMixin,
+        NavMixin,
         // ImageCaptureMixin,
         LocalStorageMixin {
   FlutterContentMixins._internal() {
@@ -265,7 +268,7 @@ class FlutterContentMixins
         // may have been created
         bool dynamicPageExists = appInfo.snippetNames.contains(state.matchedLocation);
         if (dynamicPageExists) {
-          EditablePageState.removeAllNodeWidgetOverlays();
+          EditablePage.removeAllNodeWidgetOverlays();
           fco.dismiss('exit-editMode');
           final snippetName = state.matchedLocation;
           final rootNode = SnippetTemplateEnum.empty.clone()
@@ -306,7 +309,7 @@ class FlutterContentMixins
                     child: Text('Yes, Create page ${state.matchedLocation}'),
                     onPressed: () {
                       final String destUrl = state.matchedLocation;
-                      EditablePageState.removeAllNodeWidgetOverlays();
+                      EditablePage.removeAllNodeWidgetOverlays();
                       fco.dismiss('exit-editMode');
                       // bool userCanEdit = canEditContent.value;
                       final snippetName = destUrl;
@@ -925,8 +928,6 @@ class FlutterContentMixins
   }
 
   void showSnippetTreeAndPropertiesCallout({
-    required VoidCallback enterEditModeF,
-    required VoidCallback exitEditModeF,
     required TargetKeyFunc targetGKF,
     String? scrollControllerName,
     required VoidCallback onDismissedF,
@@ -960,8 +961,6 @@ class FlutterContentMixins
         onDismissedF: onDismissedF);
 
     Widget content = SnippetTreeAndPropertiesCalloutContents(
-      enterEditModeF: enterEditModeF,
-      exitEditModeF: exitEditModeF,
       scrollControllerName: scrollControllerName,
       allowButtonCallouts: allowButtonCallouts,
     );

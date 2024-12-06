@@ -75,9 +75,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   static String _$uid(ChipNode v) => v.uid;
   static const Field<ChipNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(ChipNode v) => v.gk;
-  static const Field<ChipNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(ChipNode v) => v.isExpanded;
   static const Field<ChipNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -108,7 +105,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

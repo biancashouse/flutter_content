@@ -375,8 +375,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    state.snippetBeingEdited!.nodeBeingDeleted =
-        state.snippetBeingEdited!.selectedNode;
+    state.snippetBeingEdited!.nodeBeingDeleted = state.snippetBeingEdited!.selectedNode;
     emit(state.copyWith(
       force: state.force + 1,
     ));

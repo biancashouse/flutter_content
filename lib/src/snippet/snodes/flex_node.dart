@@ -44,12 +44,12 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   ];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"Expanded", ExpandedNode, action),
-      menuItemButton(enterEditModeF, exitEditModeF,"Flexible", FlexibleNode, action),
-      ...super.menuAnchorWidgets_WrapWith(enterEditModeF, exitEditModeF,action, true),
+      menuItemButton("Expanded", ExpandedNode, action),
+      menuItemButton("Flexible", FlexibleNode, action),
+      ...super.menuAnchorWidgets_WrapWith(action, true),
     ];
   }
 

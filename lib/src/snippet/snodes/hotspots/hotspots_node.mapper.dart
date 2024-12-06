@@ -47,9 +47,6 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static String _$uid(HotspotsNode v) => v.uid;
   static const Field<HotspotsNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(HotspotsNode v) => v.gk;
-  static const Field<HotspotsNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(HotspotsNode v) => v.isExpanded;
   static const Field<HotspotsNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -74,7 +71,6 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
     #playList: _f$playList,
     #child: _f$child,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

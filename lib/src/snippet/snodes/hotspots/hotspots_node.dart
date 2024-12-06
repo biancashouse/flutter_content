@@ -84,8 +84,6 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
         width: width,
         height: height,
         child: TargetsWrapper(
-          enterEditModeF: eps.enterEditMode,
-          exitEditModeF: eps.exitEditMode,
           parentNode: this,
           key: createNodeGK(),
           scrollControllerName: EditablePage.name(context),

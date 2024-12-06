@@ -5,8 +5,6 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
 
 class NodeWidget extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final String snippetName;
   final SnippetTreeController treeController;
   final TreeEntry<STreeNode> entry;
@@ -16,8 +14,6 @@ class NodeWidget extends StatelessWidget {
 
   const NodeWidget({
     super.key,
-    required this.enterEditModeF,
-    required this.exitEditModeF,
     required this.snippetName,
     required this.treeController,
     required this.entry,
@@ -33,66 +29,66 @@ class NodeWidget extends StatelessWidget {
     // }
 
     // bool selected = FCO.capiBloc.selectedNode == entry.node;
-    Color boxColor = FlutterContentApp.snippetBeingEdited!.nodeBeingDeleted ==
-        entry.node
-        ? Colors.red
-        : entry.node is GenericSingleChildNode
-        ? Colors.transparent
-        : entry.node is SnippetRootNode
-        ? Colors.black
-        : Colors.white;
+    Color boxColor =
+        FlutterContentApp.snippetBeingEdited!.nodeBeingDeleted == entry.node
+            ? Colors.red
+            : entry.node is GenericSingleChildNode
+                ? Colors.transparent
+                : entry.node is SnippetRootNode
+                    ? Colors.black
+                    : Colors.white;
     return BlocBuilder<CAPIBloC, CAPIState>(
-      // buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+        // buildWhen: (previous, current) => !current.onlyTargetsWrappers,
         builder: (blocContext, state) {
-          return Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                key: FlutterContentApp.aNodeIsSelected &&
-                    FlutterContentApp.selectedNode == entry.node ? FlutterContentApp
-                    .snippetBeingEdited!.selectedTreeNodeGK : null,
-                margin: EdgeInsets.zero,
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: entry.node is DirectoryNode ||
-                    entry.node is FileNode
-                    ? null
-                    : BoxDecoration(
-                  color: boxColor,
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(
-                      entry.node is GenericSingleChildNode ? 4 : 30)),
-                ),
-                alignment: Alignment.center,
-                child: Row(
-                  children: [
-                    if (entry.node.logoSrc() != null &&
-                        entry.node is! GenericSingleChildNode) entry.node
-                        .logoSrc()!,
-                    // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
-                    _name(context),
-                  ],
-                ),
-              ),
-              if (entry.hasChildren)
-                ExpandIcon(
-                  key: GlobalObjectKey(entry.node),
-                  isExpanded: treeController.getExpansionState(entry.node),
-                  //entry.isExpanded,
-                  padding: EdgeInsets.zero,
-                  onPressed: (_) {
-                    if (treeController.getExpansionState(entry.node)) {
-                      treeController.toggleExpansion(entry.node);
-                    } else {
-                      // instead of expanding current node, do a cascading expand
-                      treeController.expand(entry.node);
-                    }
-                  },
-                )
-              else
-                const SizedBox(height: 30),
-            ],
-          );
-        });
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            key: FlutterContentApp.aNodeIsSelected &&
+                    FlutterContentApp.selectedNode == entry.node
+                ? FlutterContentApp.snippetBeingEdited!.selectedTreeNodeGK
+                : null,
+            margin: EdgeInsets.zero,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: entry.node is DirectoryNode || entry.node is FileNode
+                ? null
+                : BoxDecoration(
+                    color: boxColor,
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(
+                        entry.node is GenericSingleChildNode ? 4 : 30)),
+                  ),
+            alignment: Alignment.center,
+            child: Row(
+              children: [
+                if (entry.node.logoSrc() != null &&
+                    entry.node is! GenericSingleChildNode)
+                  entry.node.logoSrc()!,
+                // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
+                _name(context),
+              ],
+            ),
+          ),
+          if (entry.hasChildren)
+            ExpandIcon(
+              key: GlobalObjectKey(entry.node),
+              isExpanded: treeController.getExpansionState(entry.node),
+              //entry.isExpanded,
+              padding: EdgeInsets.zero,
+              onPressed: (_) {
+                if (treeController.getExpansionState(entry.node)) {
+                  treeController.toggleExpansion(entry.node);
+                } else {
+                  // instead of expanding current node, do a cascading expand
+                  treeController.expand(entry.node);
+                }
+              },
+            )
+          else
+            const SizedBox(height: 30),
+        ],
+      );
+    });
   }
 
   Widget _name(context) {
@@ -107,13 +103,13 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetInfoModel?  snippetInfo = SnippetInfoModel.cachedSnippet((entry.node as SnippetRootNode).name);
-        SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
+        SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(
+            (entry.node as SnippetRootNode).name);
+        SnippetRootNode? snippet =
+            await snippetInfo?.currentVersionFromCacheOrFB();
 
         if (snippet != null) {
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-            enterEditModeF,
-            exitEditModeF,
             snippet.name,
             snippet,
             snippet.child ?? snippet,
@@ -134,9 +130,10 @@ class NodeWidget extends StatelessWidget {
           treeController.expand(entry.node);
         }
 
-        fco.dismiss(TREENODE_MENU_CALLOUT);
+        // fco.dismiss(TREENODE_MENU_CALLOUT);
 
-        bool thisWasAlreadySelected = (entry.node == FlutterContentApp.selectedNode);
+        bool thisWasAlreadySelected =
+            (entry.node == FlutterContentApp.selectedNode);
 
         if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
             thisWasAlreadySelected) {
@@ -148,31 +145,16 @@ class NodeWidget extends StatelessWidget {
           if (fco.clipboard != null) {
             fco.unhide("floating-clipboard");
           }
-          FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
+          FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
+            node: entry.node,
+            // imageTC: tc,
+            // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+            // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+          ));
           fco.afterNextBuildDo(() {
-            // final List<PTreeNode> propertyNodes = entry.node.properties(context);
-            // get a new treeController only when snippet selected
-            // entry.node.pTreeC ??= PTreeNodeTreeController(
-            //   roots: propertyNodes,
-            //   childrenProvider: Node.propertyTreeChildrenProvider,
-            // );
-            // //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-            // // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
-            // entry.node.propertiesPaneSC() ??= ScrollController()
-            //   ..addListener(() {
-            //     entry.node.propertiesPaneScrollPos = entry.node.propertiesPaneSC?.offset ?? 0.0;
-            //   });
-            FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
-              node: entry.node,
-              // imageTC: tc,
-              // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-              // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-            ));
-            fco.afterNextBuildDo(() {
-              EditablePageState.removeAllNodeWidgetOverlays();
-              EditablePageState.showNodeWidgetOverlay(entry.node);
-              // create selected node's properties tree
-            });
+            EditablePage.removeAllNodeWidgetOverlays();
+            entry.node.showNodeWidgetOverlay(skipMeasure: true);
+            // create selected node's properties tree
           });
         }
 
@@ -267,17 +249,17 @@ class NodeWidget extends StatelessWidget {
       // },
       child: entry.node is DirectoryNode
           ? Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(Icons.folder, size: 30, color: Colors.amber),
-          const Gap(6),
-          _text(),
-        ],
-      )
-      // : entry.node is FileNode
-      // ? (entry.node as FileNode).toWidget(snippetBloc, context)
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(Icons.folder, size: 30, color: Colors.amber),
+                const Gap(6),
+                _text(),
+              ],
+            )
+          // : entry.node is FileNode
+          // ? (entry.node as FileNode).toWidget(snippetBloc, context)
           : _text(),
     );
   }
@@ -323,16 +305,16 @@ class NodeWidget extends StatelessWidget {
     String displayedNodeName = node is SnippetRootNode && node.name.isNotEmpty
         ? node.name
         : node is DirectoryNode && node.name!.isNotEmpty
-        ? node.name!
-        : node is DirectoryNode && node.name!.isEmpty
-        ? 'name ?'
-        : node is FileNode && node.name.isEmpty
-        ? 'filename ?'
-        : node is FileNode && node.src.isEmpty
-        ? 'src ?'
-        : node is FileNode
-        ? node.name
-        : node.toString();
+            ? node.name!
+            : node is DirectoryNode && node.name!.isEmpty
+                ? 'name ?'
+                : node is FileNode && node.name.isEmpty
+                    ? 'filename ?'
+                    : node is FileNode && node.src.isEmpty
+                        ? 'src ?'
+                        : node is FileNode
+                            ? node.name
+                            : node.toString();
 
     // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
     // if (badParent) {
@@ -343,8 +325,8 @@ class NodeWidget extends StatelessWidget {
     Color textColor = node == selectedNode ? Colors.black : Colors.grey;
     return Text(
       displayedNodeName,
-      textScaler: TextScaler.linear(
-          entry.node is GenericSingleChildNode ? .9 : 1.0),
+      textScaler:
+          TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
       style: TextStyle(
         color: node is SnippetRootNode || node is GenericSingleChildNode
             ? Colors.white

@@ -31,9 +31,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static String _$uid(ExpandedNode v) => v.uid;
   static const Field<ExpandedNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(ExpandedNode v) => v.gk;
-  static const Field<ExpandedNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(ExpandedNode v) => v.isExpanded;
   static const Field<ExpandedNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -53,7 +50,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #flex: _f$flex,
     #child: _f$child,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -92,10 +92,10 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   bool canBeDeleted() => appBar == null && body == null;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"PollOption", PollOptionNode, action),
+      menuItemButton("PollOption", PollOptionNode, action),
     ];
   }
 

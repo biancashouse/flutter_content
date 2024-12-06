@@ -229,9 +229,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
     possiblyHighlightSelectedNode();
+    var gk = createNodeGK();
+    print("Container GK: $gk");
     try {
       return Container(
-        key: createNodeGK(),
+        key: gk,
         decoration: decoration.toDecoration(
           fillColorValues: fillColorValues,
           borderColorValues: borderColorValues,

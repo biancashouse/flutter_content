@@ -140,13 +140,12 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
       (leading == null && title == null && bottom == null && actions == null);
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,
-      NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
       if (getParent() is! ScaffoldNode)
         ...super.menuAnchorWidgets_Heading(action),
       if (getParent() is! ScaffoldNode)
-        menuItemButton(enterEditModeF, exitEditModeF,"Scaffold", ScaffoldNode, action),
+        menuItemButton("Scaffold", ScaffoldNode, action),
     ];
   }
 

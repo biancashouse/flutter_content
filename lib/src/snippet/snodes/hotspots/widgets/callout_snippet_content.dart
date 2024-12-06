@@ -23,8 +23,6 @@ void refreshSnippetContentCallout(TargetModel tc) {
 
 /// returning false means user tapped the x
 Future<void> showSnippetContentCallout({
-  required VoidCallback enterEditModeF,
-  required VoidCallback exitEditModeF,
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
@@ -76,8 +74,6 @@ Future<void> showSnippetContentCallout({
             snippetName = '/$snippetName';
           }
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-            enterEditModeF,
-            exitEditModeF,
             snippetName ?? tc.contentSnippetName,
             snippet!,
             snippet.child ?? snippet,

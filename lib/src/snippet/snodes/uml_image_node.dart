@@ -27,6 +27,9 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
+  GlobalKey? _gk;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
   Uint8List? cachedPngBytes;
 
   @override
@@ -88,15 +91,15 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
               return const Center(child: CircularProgressIndicator());
             }
 
-            if (gk == null) {
-              gk = createNodeGK();
+            if (_gk == null) {
+              _gk = createNodeGK();
               fco.afterMsDelayDo(100, () => fco.forceRefresh());
             }
 
             // UMLRecord? umlRecord = snapshot.data;
             return GestureDetector(
               child: Image.memory(
-                key: gk,
+                key: _gk,
                 // scale: 3.0,
                 cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
                 fit: BoxFit.fill,
@@ -105,7 +108,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           });
     } catch (e) {
       return Error(
-          key: gk,
+          key: _gk,
           FLUTTER_TYPE,
           color: Colors.red,
           size: 32,

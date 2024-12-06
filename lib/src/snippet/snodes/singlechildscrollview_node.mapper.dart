@@ -34,11 +34,6 @@ class SingleChildScrollViewNodeMapper
   static String _$uid(SingleChildScrollViewNode v) => v.uid;
   static const Field<SingleChildScrollViewNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(SingleChildScrollViewNode v) =>
-      v.gk;
-  static const Field<SingleChildScrollViewNode,
-          GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(SingleChildScrollViewNode v) => v.isExpanded;
   static const Field<SingleChildScrollViewNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -60,7 +55,6 @@ class SingleChildScrollViewNodeMapper
     #padding: _f$padding,
     #child: _f$child,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

@@ -42,9 +42,6 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
   static String _$uid(ColumnNode v) => v.uid;
   static const Field<ColumnNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(ColumnNode v) => v.gk;
-  static const Field<ColumnNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(ColumnNode v) => v.isExpanded;
   static const Field<ColumnNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -66,7 +63,6 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #crossAxisAlignment: _f$crossAxisAlignment,
     #children: _f$children,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

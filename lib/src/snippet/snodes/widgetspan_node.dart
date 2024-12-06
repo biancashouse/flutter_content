@@ -41,10 +41,10 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"TextSpan", TextSpanNode, action),
+      menuItemButton("TextSpan", TextSpanNode, action),
     ];
   }
 

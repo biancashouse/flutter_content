@@ -28,9 +28,6 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
   static String _$uid(TabBarViewNode v) => v.uid;
   static const Field<TabBarViewNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(TabBarViewNode v) => v.gk;
-  static const Field<TabBarViewNode, GlobalKey<State<StatefulWidget>>> _f$gk =
-      Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(TabBarViewNode v) => v.isExpanded;
   static const Field<TabBarViewNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -49,7 +46,6 @@ class TabBarViewNodeMapper extends SubClassMapperBase<TabBarViewNode> {
   final MappableFields<TabBarViewNode> fields = const {
     #children: _f$children,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

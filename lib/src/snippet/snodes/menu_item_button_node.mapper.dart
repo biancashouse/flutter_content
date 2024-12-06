@@ -62,9 +62,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   static String _$uid(MenuItemButtonNode v) => v.uid;
   static const Field<MenuItemButtonNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$gk(MenuItemButtonNode v) => v.gk;
-  static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
-      _f$gk = Field('gk', _$gk, mode: FieldMode.member);
   static bool _$isExpanded(MenuItemButtonNode v) => v.isExpanded;
   static const Field<MenuItemButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -91,7 +88,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #uid: _f$uid,
-    #gk: _f$gk,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,

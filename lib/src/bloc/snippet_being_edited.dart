@@ -23,7 +23,13 @@ class SnippetBeingEdited {
     required this.jsonBeforeAnyChange,
   });
 
-  SnippetRootNode getRootNode()  => treeC.roots.first as SnippetRootNode;
+  SnippetRootNode getRootNode() {
+    try {
+      return treeC.roots.first as SnippetRootNode;
+    } catch (e) {
+      throw(e);
+    }
+  }
   void setRootNode(SnippetRootNode newRootNode) => treeC.roots = [newRootNode];
 
   bool get aNodeIsSelected => selectedNode != null;

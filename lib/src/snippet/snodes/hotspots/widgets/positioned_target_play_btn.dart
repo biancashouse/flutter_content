@@ -4,16 +4,12 @@ import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetPlayBtn extends StatelessWidget {
-  final VoidCallback enterEditModeF;
-  final VoidCallback exitEditModeF;
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
   final String? scrollControllerName;
 
   const TargetPlayBtn({
-    required this.enterEditModeF,
-    required this.exitEditModeF,
     required this.initialTC,
     required this.index,
     required this.wrapperRect,
@@ -50,7 +46,7 @@ class TargetPlayBtn extends StatelessWidget {
             .parentNode
             .playList;
         list?.add(tc);
-        playTarget(enterEditModeF, exitEditModeF, tc);
+        playTarget( tc);
       },
       child: IntegerCircleAvatar(
         tc,
@@ -130,7 +126,7 @@ class TargetPlayBtn extends StatelessWidget {
               .parentNode
               .playList;
           playList.add(tc);
-          playTarget(enterEditModeF, exitEditModeF, tc);
+          playTarget( tc);
         },
         // onLongPress: () {
         //   tc.setTargetStackPosPc(
@@ -140,8 +136,6 @@ class TargetPlayBtn extends StatelessWidget {
         // },
         onDoubleTap: () async {
           TargetsWrapper.configureTarget(
-            enterEditModeF,
-            exitEditModeF,
             tc,
             wrapperRect,
             scrollControllerName,
@@ -193,7 +187,7 @@ class TargetPlayBtn extends StatelessWidget {
   //   }, quickly: quickly);
   // }
 
-  void playTarget(VoidCallback enterEditModeF, exitEditModeF, TargetModel tc) {
+  void playTarget( TargetModel tc) {
     if (tc.targetsWrapperState() == null) return;
 
     // cover will now have been rendered with its gk
@@ -222,8 +216,6 @@ class TargetPlayBtn extends StatelessWidget {
           //
           await tc.ensureContentSnippetPresent();
           showSnippetContentCallout(
-            enterEditModeF: enterEditModeF,
-            exitEditModeF: exitEditModeF,
             tc: tc,
             justPlaying: true,
             wrapperRect: wrapperRect,

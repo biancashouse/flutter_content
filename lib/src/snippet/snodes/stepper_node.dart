@@ -68,10 +68,10 @@ class StepperNode extends MC with StepperNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(VoidCallback enterEditModeF, exitEditModeF,NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
     return [
       ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton(enterEditModeF, exitEditModeF,"Step", StepNode, action),
+      menuItemButton("Step", StepNode, action),
     ];
   }
 
