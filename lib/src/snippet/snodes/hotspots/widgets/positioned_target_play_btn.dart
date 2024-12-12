@@ -44,7 +44,7 @@ class TargetPlayBtn extends StatelessWidget {
             .targetsWrapperState()
             ?.widget
             .parentNode
-            .playList;
+            .playList.toList();
         list?.add(tc);
         playTarget( tc);
       },
@@ -124,7 +124,7 @@ class TargetPlayBtn extends StatelessWidget {
               .targetsWrapperState()!
               .widget
               .parentNode
-              .playList;
+              .playList.toList();
           playList.add(tc);
           playTarget( tc);
         },

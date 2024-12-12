@@ -313,10 +313,8 @@ class FlutterContentMixins
                       fco.dismiss('exit-editMode');
                       // bool userCanEdit = canEditContent.value;
                       final snippetName = destUrl;
-                      final rootNode = SnippetTemplateEnum.empty.clone()
-                        ..name = snippetName;
-                      SnippetRootNode
-                          .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                      final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
+                      SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
                         snippetName: snippetName,
                         snippetRootNode: rootNode,
                       ).then((_) {

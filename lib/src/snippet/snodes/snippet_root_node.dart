@@ -196,8 +196,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     AppInfoModel appInfo = fco.appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!appInfo.snippetNames.contains(snippetName) &&
-        snippetRootNode != null) {
+    if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
       await fco.cacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,
