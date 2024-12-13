@@ -1,4 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/tr_triangle_painter.dart';
@@ -95,6 +96,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       fco.logi("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
       setParent(parentNode);
+
       // SnippetInfoModel.debug();
       return FutureBuilder<SnippetRootNode?>(
           future:
@@ -102,12 +104,14 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                   snippetName: name),
           builder: (futureContext, snapshot) {
             var snippetInfo = SnippetInfoModel.cachedSnippet(name);
-            bool isPublishedVersion = snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
+            bool isPublishedVersion = snippetInfo?.publishedVersionId ==
+                snippetInfo?.editingVersionId;
             if (snapshot.connectionState == ConnectionState.done) {
               fco.logi("FutureBuilder<void> Ensuring $name present");
               try {
                 // in case did a revert, ignore snapshot data and use the AppInfo instead
-                SnippetRootNode? snippet = snapshot.data; //fco.currentSnippetVersion(name);
+                SnippetRootNode? snippet =
+                    snapshot.data; //fco.currentSnippetVersion(name);
                 // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                 Widget snippetWidget = snippet == null
                     ? Error(
@@ -136,30 +140,38 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                                     },
                                     child: fco.inEditMode.value
                                         ? fco.blink(CustomPaint(
-                                      size: const Size(40, 40),
-                                      painter: TRTriangle(
-                                          Colors.purpleAccent),
-                                    ))
+                                            size: const Size(40, 40),
+                                            painter:
+                                                TRTriangle(Colors.purpleAccent),
+                                          ))
                                         : CustomPaint(
-                                      size: const Size(40, 40),
-                                      painter: TRTriangle(
-                                          Colors.purpleAccent),
-                                    ),
+                                            size: const Size(40, 40),
+                                            painter:
+                                                TRTriangle(Colors.purpleAccent),
+                                          ),
                                   ),
                                 )),
                         ],
-                      );                    });
+                      );
+                    });
                 return fco.canEditContent.value
                     ? Banner(
-                    message:
-                    isPublishedVersion ? 'published' : 'not published',
-                    location: BannerLocation.topEnd,
-                    color: isPublishedVersion
-                        ? Colors.limeAccent.withOpacity(.5)
-                        : Colors.pink.shade100,
-                    textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                    child: listenable)
-                    : snippetWidget;
+                        message:
+                            isPublishedVersion ? 'published' : 'not published',
+                        location: BannerLocation.topEnd,
+                        color: isPublishedVersion
+                            ? Colors.limeAccent.withOpacity(.5)
+                            : Colors.pink.shade100,
+                        textStyle: TextStyle(color: Colors.black, fontSize: 10),
+                        child: listenable)
+                    //TODO warn user if in debug mode and snippet version does not match editing version
+                    : !isPublishedVersion && kDebugMode
+                        ? Container(
+                            color: Colors.red,
+                            padding: EdgeInsets.all(50),
+                            child: snippetWidget,
+                          )
+                        : snippetWidget;
               } catch (e) {
                 return Error(
                     key: createNodeGK(),
@@ -196,7 +208,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     AppInfoModel appInfo = fco.appInfo;
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
+    if (!appInfo.snippetNames.contains(snippetName) &&
+        snippetRootNode != null) {
       await fco.cacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,
@@ -262,9 +275,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
-              // restrictedRect: r,
-              // scrollControllerName: widget.scrollControllerName,
-            );
+                // restrictedRect: r,
+                // scrollControllerName: widget.scrollControllerName,
+                );
           }
         }
       }

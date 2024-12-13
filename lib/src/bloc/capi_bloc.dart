@@ -309,7 +309,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    // if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     if (event.save) {
       //TODO save snippet
     }

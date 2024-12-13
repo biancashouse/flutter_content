@@ -182,8 +182,7 @@ class SnippetPanelState extends State<SnippetPanel>
         buildWhen: (previous, current) => !current.onlyTargetsWrappers,
         builder: (blocContext, state) {
           var snippetInfo = SnippetInfoModel.cachedSnippet(snippetName()!);
-          bool isPublishedVersion =
-              snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
+          bool isPublishedVersion = snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
           return FutureBuilder<SnippetRootNode?>(
               future: SnippetRootNode
                   .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
@@ -204,12 +203,10 @@ class SnippetPanelState extends State<SnippetPanel>
                   // in case did a revert, ignore snapshot data and use the AppInfo instead
                   // String sName = snippetName();
 
-                  SnippetRootNode? snippet =
-                      snapshot.data; //fco.currentSnippetVersion(sName);
+                  SnippetRootNode? snippet = snapshot.data;
 
-                  // var cache = fco.snippetInfoCache;
-                  // SnippetInfoModel? snippetInfo = cache[sName];
-                  // VersionId? currentVersionId = snippetInfo?.currentVersionId;
+                  Color triangleColor = Colors.purpleAccent;  // in edit mode
+                  if (!isPublishedVersion) triangleColor = Colors.deepOrange;
 
                   snippet?.validateTree();
                   // SnippetRootNode? snippetRoot = cache?[editingVersionId];
@@ -228,6 +225,9 @@ class SnippetPanelState extends State<SnippetPanel>
                                 snippet.child
                                         ?.toWidget(futureContext, snippet) ??
                                     const Placeholder(),
+                                if (!isPublishedVersion && !fco.canEditContent.value)
+                                  Align(alignment: Alignment.topLeft,
+                                  child: Container(color:Colors.deepOrange, height:6, width:double.infinity),),
                                 if (fco.canEditContent.value)
                                   Align(
                                       alignment: Alignment.topRight,
@@ -242,12 +242,12 @@ class SnippetPanelState extends State<SnippetPanel>
                                               ? fco.blink(CustomPaint(
                                                   size: const Size(40, 40),
                                                   painter: TRTriangle(
-                                                      Colors.purpleAccent),
+                                                      triangleColor),
                                                 ))
                                               : CustomPaint(
                                                   size: const Size(40, 40),
                                                   painter: TRTriangle(
-                                                      Colors.purple),
+                                                      triangleColor),
                                                 ),
                                         ),
                                       )),

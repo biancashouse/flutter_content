@@ -26,10 +26,12 @@ class TargetPlayBtn extends StatelessWidget {
     //     hideAllTargetCovers();
     //   }
 
+    var snippetBeingEdited = FlutterContentApp.snippetBeingEdited;
+    bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true);
+    bool isVisible = snippetBeingEdited == null && !toolbarPresent;
 
     return Visibility(
-      visible: FlutterContentApp.snippetBeingEdited == null &&
-          !fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true),
+      visible: isVisible,
       child: _draggableSelectTargetBtn(tc),
     );
   }
