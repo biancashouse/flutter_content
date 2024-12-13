@@ -79,6 +79,9 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static bool _$isExpanded(IconButtonNode v) => v.isExpanded;
   static const Field<IconButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(IconButtonNode v) => v.measuredRect;
+  static const Field<IconButtonNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(IconButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<IconButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -107,6 +110,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

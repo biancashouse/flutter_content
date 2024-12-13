@@ -65,6 +65,9 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
   static bool _$isExpanded(FilledButtonNode v) => v.isExpanded;
   static const Field<FilledButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(FilledButtonNode v) => v.measuredRect;
+  static const Field<FilledButtonNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FilledButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FilledButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -88,6 +91,7 @@ class FilledButtonNodeMapper extends SubClassMapperBase<FilledButtonNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

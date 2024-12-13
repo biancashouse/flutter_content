@@ -43,6 +43,9 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static bool _$isExpanded(ScaffoldNode v) => v.isExpanded;
   static const Field<ScaffoldNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(ScaffoldNode v) => v.measuredRect;
+  static const Field<ScaffoldNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ScaffoldNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ScaffoldNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -62,6 +65,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     #canShowEditorLoginBtn: _f$canShowEditorLoginBtn,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

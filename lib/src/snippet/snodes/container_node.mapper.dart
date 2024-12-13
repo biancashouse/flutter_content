@@ -97,6 +97,9 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static bool _$isExpanded(ContainerNode v) => v.isExpanded;
   static const Field<ContainerNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(ContainerNode v) => v.measuredRect;
+  static const Field<ContainerNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ContainerNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ContainerNode, bool> _f$hidePropertiesWhileDragging =
@@ -146,6 +149,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #borderColor2Value: _f$borderColor2Value,

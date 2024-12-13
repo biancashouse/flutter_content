@@ -36,6 +36,9 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
   static bool _$isExpanded(IFrameNode v) => v.isExpanded;
   static const Field<IFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(IFrameNode v) => v.measuredRect;
+  static const Field<IFrameNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(IFrameNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<IFrameNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -54,6 +57,7 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
     #iframeHeight: _f$iframeHeight,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

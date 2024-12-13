@@ -41,6 +41,9 @@ class DefaultTextStyleNodeMapper
   static bool _$isExpanded(DefaultTextStyleNode v) => v.isExpanded;
   static const Field<DefaultTextStyleNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(DefaultTextStyleNode v) => v.measuredRect;
+  static const Field<DefaultTextStyleNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(DefaultTextStyleNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<DefaultTextStyleNode, bool>
@@ -61,6 +64,7 @@ class DefaultTextStyleNodeMapper
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

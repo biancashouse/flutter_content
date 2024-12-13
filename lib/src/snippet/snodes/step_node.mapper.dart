@@ -37,6 +37,9 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   static bool _$isExpanded(StepNode v) => v.isExpanded;
   static const Field<StepNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(StepNode v) => v.measuredRect;
+  static const Field<StepNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(StepNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<StepNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -55,6 +58,7 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
     #content: _f$content,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

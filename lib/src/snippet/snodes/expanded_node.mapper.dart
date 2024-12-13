@@ -34,6 +34,9 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static bool _$isExpanded(ExpandedNode v) => v.isExpanded;
   static const Field<ExpandedNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(ExpandedNode v) => v.measuredRect;
+  static const Field<ExpandedNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ExpandedNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ExpandedNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -51,6 +54,7 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

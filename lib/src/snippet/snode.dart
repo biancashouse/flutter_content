@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -224,16 +222,18 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static double BORDER = 4;
 
   void showTappableNodeWidgetOverlay({
+    bool whiteBarrier = false,
     String? scrollControllerName,
   }) {
     if (measuredRect == null) return;
 
     // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
-    Rect borderRect = measuredRect!;//_borderRect(measuredRect!);
+    Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
     CalloutConfig cc = _cc(
       cId: feature,
       borderRect: borderRect,
+      whiteBarrier: whiteBarrier,
       scrollControllerName: scrollControllerName,
     );
     fco.showOverlay(
@@ -310,6 +310,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // }
 
   void showNodeWidgetOverlay({
+    bool whiteBarrier = false,
     bool skipMeasure = false,
     String? scrollControllerName,
   }) {
@@ -319,11 +320,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             skipWidthConstraintWarning: true, skipHeightConstraintWarning: true)
         : measuredRect;
     if (r != null) {
-      Rect borderRect = r;//_borderRect(r);
+      Rect borderRect = r; //_borderRect(r);
       CalloutConfig cc = _cc(
         cId: 'pink-border-overlay-non-tappable',
         borderRect: borderRect,
-        whiteBarrier: true,
+        whiteBarrier: whiteBarrier,
         scrollControllerName: scrollControllerName,
       );
       fco.showOverlay(
@@ -358,37 +359,50 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }) =>
       CalloutConfig(
         cId: cId,
-        initialCalloutW: borderRect.width.abs(),// + BORDER,
-        initialCalloutH: borderRect.height.abs(),// + BORDER,
-        initialCalloutPos: borderRect.topLeft,//.translate(-BORDER, -BORDER),
+        initialCalloutW: borderRect.width.abs(),
+        // + BORDER,
+        initialCalloutH: borderRect.height.abs(),
+        // + BORDER,
+        initialCalloutPos: borderRect.topLeft,
+        //.translate(-BORDER, -BORDER),
         fillColor: Colors.transparent,
         arrowType: ArrowType.NONE,
-        // barrier: whiteBarrier ? CalloutBarrier(opacity: .9, gradientColors: [Colors.white]) : null,
+        barrier: whiteBarrier
+            ? CalloutBarrier(
+                opacity: .9,
+                color: Colors.white,
+                onTappedF: () {
+                  print('barrier tapped');
+                },
+              )
+            : null,
         draggable: false,
         scrollControllerName: scrollControllerName,
       );
 
   Decoration _decoration({bool transparent = true}) => BoxDecoration(
-    shape: BoxShape.rectangle,
-    color: transparent ? Colors.transparent : Colors.purpleAccent.withOpacity(.2),
-    border: GradientBoxBorder(
-      gradient: LinearGradient(colors: [
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.yellowAccent.withOpacity(.5),
-        Colors.grey.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-        Colors.grey.withOpacity(.5),
-        Colors.yellowAccent.withOpacity(.5),
-        Colors.purpleAccent.withOpacity(.5),
-      ]),
-      width: BORDER,
-    ),
-  );
+        shape: BoxShape.rectangle,
+        color: transparent
+            ? Colors.transparent
+            : Colors.purpleAccent.withOpacity(.2),
+        border: GradientBoxBorder(
+          gradient: LinearGradient(colors: [
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.yellowAccent.withOpacity(.5),
+            Colors.grey.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+            Colors.grey.withOpacity(.5),
+            Colors.yellowAccent.withOpacity(.5),
+            Colors.purpleAccent.withOpacity(.5),
+          ]),
+          width: BORDER,
+        ),
+      );
 
   // node is where the snippet tree starts (not necc the snippet's root node)
   // selection is poss a current (lower) selection in the tree

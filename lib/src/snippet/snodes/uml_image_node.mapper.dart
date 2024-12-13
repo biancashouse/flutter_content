@@ -42,6 +42,9 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static bool _$isExpanded(UMLImageNode v) => v.isExpanded;
   static const Field<UMLImageNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(UMLImageNode v) => v.measuredRect;
+  static const Field<UMLImageNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(UMLImageNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<UMLImageNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -65,6 +68,7 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     #height: _f$height,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #cachedPngBytes: _f$cachedPngBytes,

@@ -37,6 +37,9 @@ class SingleChildScrollViewNodeMapper
   static bool _$isExpanded(SingleChildScrollViewNode v) => v.isExpanded;
   static const Field<SingleChildScrollViewNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(SingleChildScrollViewNode v) => v.measuredRect;
+  static const Field<SingleChildScrollViewNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SingleChildScrollViewNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SingleChildScrollViewNode, bool>
@@ -56,6 +59,7 @@ class SingleChildScrollViewNodeMapper
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

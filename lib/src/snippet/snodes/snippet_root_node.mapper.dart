@@ -36,6 +36,9 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static bool _$isExpanded(SnippetRootNode v) => v.isExpanded;
   static const Field<SnippetRootNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(SnippetRootNode v) => v.measuredRect;
+  static const Field<SnippetRootNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SnippetRootNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SnippetRootNode, bool> _f$hidePropertiesWhileDragging =
@@ -54,6 +57,7 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

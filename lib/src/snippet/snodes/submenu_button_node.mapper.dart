@@ -34,6 +34,9 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static bool _$isExpanded(SubmenuButtonNode v) => v.isExpanded;
   static const Field<SubmenuButtonNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(SubmenuButtonNode v) => v.measuredRect;
+  static const Field<SubmenuButtonNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(SubmenuButtonNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<SubmenuButtonNode, bool> _f$hidePropertiesWhileDragging =
@@ -55,6 +58,7 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
     #menuChildren: _f$menuChildren,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #children: _f$children,

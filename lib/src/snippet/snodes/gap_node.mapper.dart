@@ -29,6 +29,9 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
   static bool _$isExpanded(GapNode v) => v.isExpanded;
   static const Field<GapNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(GapNode v) => v.measuredRect;
+  static const Field<GapNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(GapNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GapNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -45,6 +48,7 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
     #gap: _f$gap,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

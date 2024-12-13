@@ -292,7 +292,8 @@ class EditablePageState extends State<EditablePage> {
     // fco.logi('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
     // bool configuringATarget = fco.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
-    void traverseAndMeasure(BuildContext el) {
+
+    void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
       // fco.logi('traverseAndMeasure(${el.toString()})');
 
       if ((fco.gkSTreeNodeMap.containsKey(el.widget.key))) {
@@ -323,18 +324,19 @@ class EditablePageState extends State<EditablePage> {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
+              whiteBarrier: overlayWithABarrier,
               scrollControllerName: widget.routePath,
             );
           }
         }
       }
       el.visitChildElements((innerEl) {
-        traverseAndMeasure(innerEl);
+        traverseAndMeasure(innerEl, false);
       });
     }
 
     var pageContext = context;
-    traverseAndMeasure(pageContext);
+    traverseAndMeasure(pageContext, true);
     fco.showingNodeBoundaryOverlays = true;
     // fco.logi('traverseAndMeasure(context) finished.');
   }

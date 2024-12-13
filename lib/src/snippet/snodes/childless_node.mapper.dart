@@ -44,6 +44,9 @@ class CLMapper extends SubClassMapperBase<CL> {
   static bool _$isExpanded(CL v) => v.isExpanded;
   static const Field<CL, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(CL v) => v.measuredRect;
+  static const Field<CL, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(CL v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CL, bool> _f$hidePropertiesWhileDragging = Field(
@@ -58,6 +61,7 @@ class CLMapper extends SubClassMapperBase<CL> {
   final MappableFields<CL> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

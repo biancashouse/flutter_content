@@ -34,6 +34,9 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static bool _$isExpanded(AspectRatioNode v) => v.isExpanded;
   static const Field<AspectRatioNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(AspectRatioNode v) => v.measuredRect;
+  static const Field<AspectRatioNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AspectRatioNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AspectRatioNode, bool> _f$hidePropertiesWhileDragging =
@@ -51,6 +54,7 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -144,6 +144,9 @@ line 3
   static bool _$isExpanded(MarkdownNode v) => v.isExpanded;
   static const Field<MarkdownNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(MarkdownNode v) => v.measuredRect;
+  static const Field<MarkdownNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(MarkdownNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<MarkdownNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -160,6 +163,7 @@ line 3
     #data: _f$data,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

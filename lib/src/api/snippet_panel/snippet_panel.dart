@@ -285,6 +285,7 @@ class SnippetPanelState extends State<SnippetPanel>
   }
 
   void showSnippetNodeWidgetOverlays() {
+    bool barrierApplied = false;
     void traverseAndMeasure(BuildContext el) {
       if ((fco.gkSTreeNodeMap.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
@@ -314,8 +315,10 @@ class SnippetPanelState extends State<SnippetPanel>
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
+              whiteBarrier: !barrierApplied,
               scrollControllerName: widget.scrollControllerName,
             );
+            barrierApplied = true;
           }
         }
       }
@@ -325,7 +328,7 @@ class SnippetPanelState extends State<SnippetPanel>
     }
 
     var pageContext = context;
-    traverseAndMeasure(pageContext);
+    traverseAndMeasure(pageContext);  // root node overlay must have barrier
     fco.showingNodeBoundaryOverlays = true;
     // fco.logi('traverseAndMeasure(context) finished.');
   }

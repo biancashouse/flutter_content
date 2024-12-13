@@ -31,6 +31,9 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   static bool _$isExpanded(CenterNode v) => v.isExpanded;
   static const Field<CenterNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(CenterNode v) => v.measuredRect;
+  static const Field<CenterNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(CenterNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CenterNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -47,6 +50,7 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

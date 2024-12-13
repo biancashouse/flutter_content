@@ -38,6 +38,9 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
   static bool _$isExpanded(StepperNode v) => v.isExpanded;
   static const Field<StepperNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(StepperNode v) => v.measuredRect;
+  static const Field<StepperNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(StepperNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<StepperNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -56,6 +59,7 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

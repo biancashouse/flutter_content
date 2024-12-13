@@ -34,6 +34,9 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
   static bool _$isExpanded(AlgCNode v) => v.isExpanded;
   static const Field<AlgCNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
+  static Rect? _$measuredRect(AlgCNode v) => v.measuredRect;
+  static const Field<AlgCNode, Rect> _f$measuredRect =
+      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AlgCNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AlgCNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -52,6 +55,7 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
     #flowchartJsonString: _f$flowchartJsonString,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
+    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };
