@@ -174,7 +174,7 @@ FlutterContentMixins fco = FlutterContentMixins._instance;
 
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 // const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
-const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
+// const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
 
 /// this is a global container
 class FlutterContentMixins

@@ -23,6 +23,11 @@ class PropertyButtonColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void propagateChangeAndClose(Color newColor) {
+      onChangeF(newColor);
+      fco.dismiss(cId);
+    }
+
     Widget colorLabel = originalColor != null
         ? Row(children: [
             Text(label,
@@ -57,11 +62,11 @@ class PropertyButtonColor extends StatelessWidget {
                       backgroundColor:
                           WidgetStateProperty.all<Color>(Colors.black),
                     ),
-                    onPressed: () => onChangeF(Colors.black),
+                    onPressed: () => propagateChangeAndClose(Colors.black),
                     child: fco.coloredText('black', color: Colors.white),
                   ),
                   TextButton(
-                    onPressed: () => onChangeF(Colors.transparent),
+                    onPressed: () => propagateChangeAndClose(Colors.transparent),
                     child: const Text('transparent'),
                   ),
                   TextButton(
@@ -69,7 +74,7 @@ class PropertyButtonColor extends StatelessWidget {
                       backgroundColor:
                           WidgetStateProperty.all<Color>(Colors.white),
                     ),
-                    onPressed: () => onChangeF.call(Colors.white),
+                    onPressed: () => propagateChangeAndClose(Colors.white),
                     child: const Text('white'),
                   ),
                 ],
@@ -78,7 +83,7 @@ class PropertyButtonColor extends StatelessWidget {
                 // Use the screenPickerColor as color.
                 color: originalColor ?? Colors.blue,
                 // Update the screenPickerColor using the callback.
-                onColorChanged: (Color color) => onChangeF(color),
+                onColorChanged: (Color color) => propagateChangeAndClose(color),
                 // onCompleted: () => fco.dismiss(cId),
                 width: 32,
                 height: 32,

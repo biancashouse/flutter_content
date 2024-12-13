@@ -33,7 +33,8 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
 
   @override
   Widget build(BuildContext context) {
-    Widget fontFamilyLabel = widget.originalFontFamily != null
+
+      Widget fontFamilyLabel = widget.originalFontFamily != null
         ? Text('fontFamily: ${widget.originalFontFamily}',
             style: const TextStyle(color: Colors.white))
         : const Text('fontFamily...', style: TextStyle(color: Colors.white));
@@ -66,9 +67,10 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
                   toggleable: true,
                   onChanged: (newFamily) {
                     widget.onChangeF.call(newFamily);
-                    fco.afterMsDelayDo(500, () {
-                      fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
-                    });
+                    fco.dismiss('font-family');
+                    // fco.afterMsDelayDo(500, () {
+                    //   fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+                    // });
                   },
                 );
               }).toList()),

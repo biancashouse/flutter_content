@@ -47,6 +47,7 @@ class TargetColourTool extends StatelessWidget {
           scrollControllerName: scrollControllerName,
         );
       });
+      fco.dismiss('color-picker');
     }
 
     return Center(

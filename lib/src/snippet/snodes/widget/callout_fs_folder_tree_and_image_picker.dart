@@ -235,7 +235,7 @@ class FolderImagesGridView extends StatelessWidget {
                 return InkWell(
                   onTap: () {
                     onChangeF(ref.fullPath);
-                    fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
+                    // fco.dismiss(NODE_PROPERTY_CALLOUT_BUTTON);
                   },
                   child: AspectRatio(
                     aspectRatio: 1,
