@@ -174,7 +174,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
 
       if (_gk == null) {
         _gk = createNodeGK();
-        fco.afterMsDelayDo(100, () => fco.forceRefresh());
+        fco.afterMsDelayDo(1000, () => fco.forceRefresh());
       }
 
       return name?.isNotEmpty ?? false
