@@ -10,6 +10,7 @@ class PropertyButtonUML extends StatefulWidget {
   final GlobalKey propertyBtnGK;
   final ValueChanged<UMLRecord> onChangeF;
   final ValueChanged<Size> onSizedF;
+  final ScrollControllerName? scName;
 
   const PropertyButtonUML({
     required this.originalUMLRecord,
@@ -18,6 +19,7 @@ class PropertyButtonUML extends StatefulWidget {
     required this.onChangeF,
     required this.onSizedF,
     required this.propertyBtnGK,
+    required this.scName,
     super.key,
   });
 
@@ -52,6 +54,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
             onTap: () {
               CalloutConfig teCC = CalloutConfig(
                 cId: 'uml-te',
+                scrollControllerName: widget.scName,
                 containsTextField: true,
                 barrier: CalloutBarrier(
                     opacity: .25,

@@ -6,7 +6,7 @@ class PTreeNodeWidget extends StatelessWidget {
   // final STreeNode sNode;
   final PTreeNodeTreeController treeC;
   final TreeEntry<PTreeNode> entry;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const PTreeNodeWidget({
     super.key,

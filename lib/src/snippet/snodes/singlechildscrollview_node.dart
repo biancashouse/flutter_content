@@ -35,7 +35,8 @@ class SingleChildScrollViewNode extends SC
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       //var targetGK = nodeWidgetGK;
 
       // maintain offset between instantiations

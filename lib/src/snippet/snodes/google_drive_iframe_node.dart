@@ -140,7 +140,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       String src =
               'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlAAiNow9CthD2TMk0qxiEoXveNDZh0etVOlwlqbzkBgPijvY4YDygnzjZkCbBGQ/pubhtml?widget=true&amp;headers=false';
 //        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';

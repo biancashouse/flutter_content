@@ -16,7 +16,7 @@ class CalloutConfigToolbar extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const CalloutConfigToolbar({
     required this.tc,
@@ -238,6 +238,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 wrap: true,
                 calloutButtonSize: const Size(70, 40),
                 calloutSize: const Size(240, 220),
+                scName: widget.scName,
               ),
             ),
             IconButton(

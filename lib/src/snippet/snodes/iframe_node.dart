@@ -116,7 +116,8 @@ class IFrameNode extends CL with IFrameNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       // String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
       // String resourceKey = '';
       String iframeSrc = src == null

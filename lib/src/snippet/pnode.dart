@@ -794,30 +794,33 @@ class StringPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
     // fco.logi('toPropertyNodeContents');
     return PropertyButton<String>(
-        // originalText: (stringValue??'').isNotEmpty
-        //     ? nameOnSeparateLine
-        //     ? '$name: \n$stringValue'
-        //     : '$name: $stringValue'
-        //     : '$name...',
-        originalText: stringValue ?? '',
-        options: options,
-        label: super.name,
-        maxLines: numLines,
-        expands: expands,
-        skipLabelText: skipLabelText,
-        skipHelperText: skipHelperText,
-        // textInputType: const TextInputType.numberWithOptions(decimal: true),
-        calloutButtonSize: calloutButtonSize,
-        calloutSize: Size(calloutWidth, numLines * 28 + 52),
-        // calloutSize: calloutSize,
-        propertyBtnGK: GlobalKey(debugLabel: ''),
-        onChangeF: (s) {
-          fco.dismiss('matches');
-          fco.dismiss('te');
-          onStringChange(stringValue = s);
-        });
+      // originalText: (stringValue??'').isNotEmpty
+      //     ? nameOnSeparateLine
+      //     ? '$name: \n$stringValue'
+      //     : '$name: $stringValue'
+      //     : '$name...',
+      originalText: stringValue ?? '',
+      options: options,
+      label: super.name,
+      maxLines: numLines,
+      expands: expands,
+      skipLabelText: skipLabelText,
+      skipHelperText: skipHelperText,
+      // textInputType: const TextInputType.numberWithOptions(decimal: true),
+      calloutButtonSize: calloutButtonSize,
+      calloutSize: Size(calloutWidth, numLines * 28 + 52),
+      // calloutSize: calloutSize,
+      propertyBtnGK: GlobalKey(debugLabel: ''),
+      onChangeF: (s) {
+        fco.dismiss('matches');
+        fco.dismiss('te');
+        onStringChange(stringValue = s);
+      },
+      scName: scName,
+    );
   }
 }
 
@@ -838,11 +841,18 @@ class UMLStringPropertyValueNode extends PTreeNode {
 
   @override
   void revertToOriginalValue() {
-    onUmlChange((text: null, encodedText: null, bytes: null, width: null, height: null));
+    onUmlChange((
+      text: null,
+      encodedText: null,
+      bytes: null,
+      width: null,
+      height: null
+    ));
   }
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
     return PropertyButtonUML(
       originalUMLRecord: umlRecord,
       label: super.name,
@@ -851,7 +861,8 @@ class UMLStringPropertyValueNode extends PTreeNode {
       onChangeF: (newRecord) {
         onUmlChange(umlRecord = newRecord);
       },
-      onSizedF: (newSize) =>onSized(newSize),
+      onSizedF: (newSize) => onSized(newSize),
+      scName: scName,
     );
   }
 }
@@ -935,32 +946,36 @@ class DecimalPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => PropertyButton<double>(
-        originalText: decimalValue != null ? decimalValue.toString() : '',
-        label: super.name,
-        skipHelperText: true,
-        //inputType: double,
-        calloutButtonSize: calloutButtonSize,
-        calloutSize: const Size(120, 80),
-        // calloutSize: calloutSize,
-        propertyBtnGK: GlobalKey(debugLabel: 'decimal'),
-        onChangeF: (s) {
-          if (s.toLowerCase() == 'infinity') {
-            onDoubleChange.call(decimalValue = 999999999);
-            return;
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return PropertyButton<double>(
+      originalText: decimalValue != null ? decimalValue.toString() : '',
+      label: super.name,
+      skipHelperText: true,
+      //inputType: double,
+      calloutButtonSize: calloutButtonSize,
+      calloutSize: const Size(120, 80),
+      // calloutSize: calloutSize,
+      propertyBtnGK: GlobalKey(debugLabel: 'decimal'),
+      onChangeF: (s) {
+        if (s.toLowerCase() == 'infinity') {
+          onDoubleChange.call(decimalValue = 999999999);
+          return;
+        }
+        if (s.contains('/') && s.split('/').length == 2) {
+          var split = s.split('/');
+          double? w = double.tryParse(split[0]);
+          double? h = double.tryParse(split[1]);
+          if (w != null && h != null) {
+            onDoubleChange.call(decimalValue = w / h);
           }
-          if (s.contains('/') && s.split('/').length == 2) {
-            var split = s.split('/');
-            double? w = double.tryParse(split[0]);
-            double? h = double.tryParse(split[1]);
-            if (w != null && h != null) {
-              onDoubleChange.call(decimalValue = w / h);
-            }
-          } else {
-            onDoubleChange.call(decimalValue = double.tryParse(s));
-          }
-        },
-      );
+        } else {
+          onDoubleChange.call(decimalValue = double.tryParse(s));
+        }
+      },
+      scName: scName,
+    );
+  }
 }
 
 class SizePropertyValueNode extends PTreeNode {
@@ -986,68 +1001,73 @@ class SizePropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => SizedBox(
-        width: 200,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            PropertyButton<double>(
-              originalText: widthValue != null ? widthValue.toString() : '',
-              label: 'width',
-              skipHelperText: true,
-              //inputType: double,
-              calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(80, 80),
-              onChangeF: (s) {
-                if (s.toLowerCase() == 'infinity') {
-                  onSizeChange.call((widthValue = 999999999, heightValue));
-                  return;
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return SizedBox(
+      width: 200,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          PropertyButton<double>(
+            originalText: widthValue != null ? widthValue.toString() : '',
+            label: 'width',
+            skipHelperText: true,
+            //inputType: double,
+            calloutButtonSize: const Size(80, 20),
+            calloutSize: const Size(80, 80),
+            onChangeF: (s) {
+              if (s.toLowerCase() == 'infinity') {
+                onSizeChange.call((widthValue = 999999999, heightValue));
+                return;
+              }
+              if (s.contains('/') && s.split('/').length == 2) {
+                var split = s.split('/');
+                double? part1 = double.tryParse(split[0]);
+                double? part2 = double.tryParse(split[1]);
+                if (part1 != null && part2 != null) {
+                  onSizeChange.call((widthValue = part1 / part2, part2));
                 }
-                if (s.contains('/') && s.split('/').length == 2) {
-                  var split = s.split('/');
-                  double? part1 = double.tryParse(split[0]);
-                  double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null) {
-                    onSizeChange.call((widthValue = part1 / part2, part2));
-                  }
-                } else {
-                  onSizeChange
-                      .call((widthValue = double.tryParse(s), heightValue));
+              } else {
+                onSizeChange
+                    .call((widthValue = double.tryParse(s), heightValue));
+              }
+            },
+            scName: scName,
+            propertyBtnGK: GlobalKey(debugLabel: 'width'),
+          ),
+          const SizedBox(width: 40, child: Text('x')),
+          PropertyButton<double>(
+            originalText: heightValue != null ? heightValue.toString() : '',
+            label: 'height',
+            skipHelperText: true,
+            //inputType: double,
+            calloutButtonSize: const Size(80, 20),
+            calloutSize: const Size(80, 80),
+            // calloutSize: calloutSize,
+            onChangeF: (s) {
+              if (s.toLowerCase() == 'infinity') {
+                onSizeChange.call((widthValue, heightValue = 999999999));
+                return;
+              }
+              if (s.contains('/') && s.split('/').length == 2) {
+                var split = s.split('/');
+                double? part1 = double.tryParse(split[0]);
+                double? part2 = double.tryParse(split[1]);
+                if (part1 != null && part2 != null) {
+                  onSizeChange.call((part2, heightValue = part1 / part2));
                 }
-              },
-              propertyBtnGK: GlobalKey(debugLabel: 'width'),
-            ),
-            const SizedBox(width: 40, child: Text('x')),
-            PropertyButton<double>(
-              originalText: heightValue != null ? heightValue.toString() : '',
-              label: 'height',
-              skipHelperText: true,
-              //inputType: double,
-              calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(80, 80),
-              // calloutSize: calloutSize,
-              onChangeF: (s) {
-                if (s.toLowerCase() == 'infinity') {
-                  onSizeChange.call((widthValue, heightValue = 999999999));
-                  return;
-                }
-                if (s.contains('/') && s.split('/').length == 2) {
-                  var split = s.split('/');
-                  double? part1 = double.tryParse(split[0]);
-                  double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null) {
-                    onSizeChange.call((part2, heightValue = part1 / part2));
-                  }
-                } else {
-                  onSizeChange
-                      .call((widthValue, heightValue = double.tryParse(s)));
-                }
-              },
-              propertyBtnGK: GlobalKey(debugLabel: 'height'),
-            ),
-          ],
-        ),
-      );
+              } else {
+                onSizeChange
+                    .call((widthValue, heightValue = double.tryParse(s)));
+              }
+            },
+            scName: scName,
+            propertyBtnGK: GlobalKey(debugLabel: 'height'),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class OffsetPropertyValueNode extends PTreeNode {
@@ -1073,70 +1093,73 @@ class OffsetPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => SizedBox(
-        width: 200,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            PropertyButton<double>(
-              originalText: topValue != null ? topValue.toString() : '',
-              label: 'left',
-              skipLabelText: true,
-              skipHelperText: true,
-              //inputType: double,
-              calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(120, 80),
-              propertyBtnGK: GlobalKey(debugLabel: 'left'),
-              onChangeF: (s) {
-                if (s.toLowerCase() == 'infinity') {
-                  onOffsetChange.call((topValue = 999999999, leftValue));
-                  return;
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return SizedBox(
+      width: 200,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          PropertyButton<double>(
+            originalText: topValue != null ? topValue.toString() : '',
+            label: 'left',
+            skipLabelText: true,
+            skipHelperText: true,
+            //inputType: double,
+            calloutButtonSize: const Size(80, 20),
+            calloutSize: const Size(120, 80),
+            propertyBtnGK: GlobalKey(debugLabel: 'left'),
+            onChangeF: (s) {
+              if (s.toLowerCase() == 'infinity') {
+                onOffsetChange.call((topValue = 999999999, leftValue));
+                return;
+              }
+              if (s.contains('/') && s.split('/').length == 2) {
+                var split = s.split('/');
+                double? part1 = double.tryParse(split[0]);
+                double? part2 = double.tryParse(split[1]);
+                if (part1 != null && part2 != null) {
+                  onOffsetChange.call((topValue = part1 / part2, part2));
                 }
-                if (s.contains('/') && s.split('/').length == 2) {
-                  var split = s.split('/');
-                  double? part1 = double.tryParse(split[0]);
-                  double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null) {
-                    onOffsetChange.call((topValue = part1 / part2, part2));
-                  }
-                } else {
-                  onOffsetChange
-                      .call((topValue = double.tryParse(s), leftValue));
+              } else {
+                onOffsetChange.call((topValue = double.tryParse(s), leftValue));
+              }
+            },
+            scName: scName,
+          ),
+          const SizedBox(width: 40, child: Text('x')),
+          PropertyButton<double>(
+            originalText: leftValue != null ? leftValue.toString() : '',
+            label: 'top',
+            skipLabelText: true,
+            skipHelperText: true,
+            //inputType: double,
+            calloutButtonSize: const Size(80, 20),
+            calloutSize: const Size(120, 80),
+            // calloutOffset: calloutOffset,
+            propertyBtnGK: GlobalKey(debugLabel: 'top'),
+            onChangeF: (s) {
+              if (s.toLowerCase() == 'infinity') {
+                onOffsetChange.call((topValue, leftValue = 999999999));
+                return;
+              }
+              if (s.contains('/') && s.split('/').length == 2) {
+                var split = s.split('/');
+                double? part1 = double.tryParse(split[0]);
+                double? part2 = double.tryParse(split[1]);
+                if (part1 != null && part2 != null) {
+                  onOffsetChange.call((part2, leftValue = part1 / part2));
                 }
-              },
-            ),
-            const SizedBox(width: 40, child: Text('x')),
-            PropertyButton<double>(
-              originalText: leftValue != null ? leftValue.toString() : '',
-              label: 'top',
-              skipLabelText: true,
-              skipHelperText: true,
-              //inputType: double,
-              calloutButtonSize: const Size(80, 20),
-              calloutSize: const Size(120, 80),
-              // calloutOffset: calloutOffset,
-              propertyBtnGK: GlobalKey(debugLabel: 'top'),
-              onChangeF: (s) {
-                if (s.toLowerCase() == 'infinity') {
-                  onOffsetChange.call((topValue, leftValue = 999999999));
-                  return;
-                }
-                if (s.contains('/') && s.split('/').length == 2) {
-                  var split = s.split('/');
-                  double? part1 = double.tryParse(split[0]);
-                  double? part2 = double.tryParse(split[1]);
-                  if (part1 != null && part2 != null) {
-                    onOffsetChange.call((part2, leftValue = part1 / part2));
-                  }
-                } else {
-                  onOffsetChange
-                      .call((topValue, leftValue = double.tryParse(s)));
-                }
-              },
-            ),
-          ],
-        ),
-      );
+              } else {
+                onOffsetChange.call((topValue, leftValue = double.tryParse(s)));
+              }
+            },
+            scName: scName,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class IntPropertyValueNode extends PTreeNode {
@@ -1163,7 +1186,9 @@ class IntPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => PropertyButton<int>(
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return PropertyButton<int>(
       originalText: intValue != null ? intValue.toString() : '',
       label: super.name,
       skipHelperText: true,
@@ -1172,7 +1197,10 @@ class IntPropertyValueNode extends PTreeNode {
       propertyBtnGK: GlobalKey(debugLabel: 'int'),
       onChangeF: (s) {
         onIntChange.call(intValue = int.tryParse(s));
-      });
+      },
+      scName: scName,
+    );
+  }
 }
 
 class DatePropertyValueNode extends PTreeNode {
@@ -1220,15 +1248,19 @@ class DateRangePropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => DateRangeButton(
-        from: fromValue,
-        until: untilValue,
-        onChangeF: (DateRange range) {
-          fromValue = range.from;
-          untilValue = range.until;
-          onRangeChange.call(range);
-        },
-      );
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return DateRangeButton(
+      from: fromValue,
+      until: untilValue,
+      onChangeF: (DateRange range) {
+        fromValue = range.from;
+        untilValue = range.until;
+        onRangeChange.call(range);
+      },
+      scName: scName,
+    );
+  }
 }
 
 class ColorPropertyValueNode extends PTreeNode {
@@ -1251,18 +1283,22 @@ class ColorPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) => PropertyButtonColor(
-        cId: name,
-        label: name,
-        tooltip: tooltip,
-        originalColor: colorValue != null ? Color(colorValue!) : null,
-        onChangeF: (Color? newColor) {
-          if (newColor != null) {
-            onColorIntChange.call(colorValue = newColor.value);
-          }
-        },
-        calloutButtonSize: calloutButtonSize,
-      );
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return PropertyButtonColor(
+      cId: name,
+      label: name,
+      tooltip: tooltip,
+      originalColor: colorValue != null ? Color(colorValue!) : null,
+      onChangeF: (Color? newColor) {
+        if (newColor != null) {
+          onColorIntChange.call(colorValue = newColor.value);
+        }
+      },
+      calloutButtonSize: calloutButtonSize,
+      scName: scName,
+    );
+  }
 }
 
 class GradientPropertyValueNode extends PTreeNode {
@@ -1283,6 +1319,7 @@ class GradientPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
     return Tooltip(
       message: name,
       child: SizedBox(
@@ -1314,6 +1351,7 @@ class GradientPropertyValueNode extends PTreeNode {
                           ));
                     }
                   },
+                  scName: scName,
                   calloutButtonSize: const Size(24, 24),
                 );
               }),
@@ -1339,6 +1377,7 @@ class GradientPropertyValueNode extends PTreeNode {
                             ));
                       }
                     },
+                    scName: scName,
                     calloutButtonSize: const Size(24, 24),
                   );
                 },
@@ -1365,6 +1404,7 @@ class GradientPropertyValueNode extends PTreeNode {
                             ));
                       }
                     },
+                    scName: scName,
                     calloutButtonSize: const Size(24, 24),
                   );
                 },
@@ -1391,6 +1431,7 @@ class GradientPropertyValueNode extends PTreeNode {
                             ));
                       }
                     },
+                    scName: scName,
                     calloutButtonSize: const Size(24, 24),
                   );
                 },
@@ -1417,6 +1458,7 @@ class GradientPropertyValueNode extends PTreeNode {
                             ));
                       }
                     },
+                    scName: scName,
                     calloutButtonSize: const Size(24, 24),
                   );
                 },
@@ -1443,6 +1485,7 @@ class GradientPropertyValueNode extends PTreeNode {
                             ));
                       }
                     },
+                    scName: scName,
                     calloutButtonSize: const Size(24, 24),
                   );
                 },
@@ -1473,18 +1516,21 @@ class FSImagePathPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      PropertyButtonFSBrowser(
-        label: name,
-        tooltip: tooltip,
-        originalFSPath: stringValue,
-        onChangeF: (String? newPath) {
-          if (newPath != null) {
-            onPathChange.call(stringValue = newPath);
-          }
-        },
-        calloutButtonSize: calloutButtonSize,
-      );
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return PropertyButtonFSBrowser(
+      label: name,
+      tooltip: tooltip,
+      originalFSPath: stringValue,
+      onChangeF: (String? newPath) {
+        if (newPath != null) {
+          onPathChange.call(stringValue = newPath);
+        }
+      },
+      scName: scName,
+      calloutButtonSize: calloutButtonSize,
+    );
+  }
 }
 
 class FontFamilyPropertyValueNode extends PTreeNode {
@@ -1504,17 +1550,20 @@ class FontFamilyPropertyValueNode extends PTreeNode {
   }
 
   @override
-  Widget toPropertyNodeContents(BuildContext context) =>
-      PropertyButtonFontFamily(
-        label: "fontFamily",
-        originalFontFamily: fontFamily,
-        menuBgColor: Colors.purpleAccent,
-        onChangeF: (String? newFamily) {
-          if (newFamily != null) {
-            onFontFamilyChange.call(fontFamily = newFamily);
-          }
-        },
-      );
+  Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
+    return PropertyButtonFontFamily(
+      label: "fontFamily",
+      originalFontFamily: fontFamily,
+      menuBgColor: Colors.purpleAccent,
+      onChangeF: (String? newFamily) {
+        if (newFamily != null) {
+          onFontFamilyChange.call(fontFamily = newFamily);
+        }
+      },
+      scName: scName,
+    );
+  }
 }
 
 class EdgeInsetsPropertyValueNode extends PTreeNode {
@@ -1563,34 +1612,41 @@ class EnumPropertyValueNode<T> extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
+    ScrollControllerName? scName = EditablePage.name(context);
     // just show name for null property value
     // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
     if (_sameType<T, SnippetTemplateEnum?>()) {
       return SnippetTemplateEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // BoxFit -------------
     if (_sameType<T, BoxFitEnum?>()) {
       return BoxFitEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // Alignment -------------
     if (_sameType<T, AlignmentEnum?>()) {
       return AlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // Alignment -------------
     if (_sameType<T, MappableDecorationShapeEnum?>()) {
@@ -1600,25 +1656,29 @@ class EnumPropertyValueNode<T> extends PTreeNode {
         enumValueIndex: valueIndex,
         onChangedF: (newValueIndex) =>
             onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
       );
     }
     // ArrowType -------------
     if (_sameType<T, ArrowTypeEnum?>()) {
       return ArrowTypeEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // Axis -------------
     if (_sameType<T, AxisEnum?>()) {
       return AxisEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+      );
     }
     // Clip -------------
     if (_sameType<T, ClipEnum?>()) {
@@ -1632,11 +1692,13 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // MainAxisAlignment -------------
     if (_sameType<T, MainAxisAlignmentEnum?>()) {
       return MainAxisAlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // MainAxisSize -------------
     if (_sameType<T, MainAxisSizeEnum?>()) {
@@ -1649,12 +1711,15 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     }
     // CrossAxisAlignment -------------
     if (_sameType<T, CrossAxisAlignmentEnum?>()) {
+      ScrollControllerName? scName = EditablePage.name(context);
       return CrossAxisAlignmentEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // FlexFit -------------
     if (_sameType<T, FlexFitEnum?>()) {
@@ -1677,39 +1742,47 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // FontStyle -------------
     if (_sameType<T, FontStyleEnum?>()) {
       return FontStyleEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // FontWeight -------------
     if (_sameType<T, FontWeightEnum?>()) {
       return FontWeightEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // Material3 Text Size -------------
     if (_sameType<T, Material3TextSizeEnum?>()) {
       return Material3TextSizeEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          themeData: Theme.of(context),
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        themeData: Theme.of(context),
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // OutlinedBorder -------------
     if (_sameType<T, OutlinedBorderEnum?>()) {
       return OutlinedBorderEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // StackFit -------------
     if (_sameType<T, StackFitEnum?>()) {
@@ -1732,11 +1805,13 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // TextAlign -------------
     if (_sameType<T, TextAlignEnum?>()) {
       return TextAlignEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // TextDirection -------------
     if (_sameType<T, TextDirectionEnum?>()) {
@@ -1750,18 +1825,21 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     // TextOverflow -------------
     if (_sameType<T, TextOverflowEnum?>()) {
       return TextOverflowEnum.propertyNodeContents(
-          snode: snode,
-          label: name,
-          enumValueIndex: valueIndex,
-          onChangedF: (newValueIndex) =>
-              onIndexChange(valueIndex = newValueIndex));
+        snode: snode,
+        label: name,
+        enumValueIndex: valueIndex,
+        onChangedF: (newValueIndex) =>
+            onIndexChange(valueIndex = newValueIndex),
+        scName: scName,
+      );
     }
     // T property not implemented yet
-    return Error(key: GlobalKey(), T.runtimeType.toString(),
+    return Error(
+        key: GlobalKey(),
+        T.runtimeType.toString(),
         color: Colors.red,
         size: 32,
-        errorMsg:
-        'property not implemented yet');
+        errorMsg: 'property not implemented yet');
   }
 }
 

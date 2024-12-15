@@ -39,7 +39,8 @@ class GapNode extends CL with GapNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);  // propagating parents down from root
-    possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
     return Gap(
       key: createNodeGK(), gap,
       // crossAxisExtent: 10,

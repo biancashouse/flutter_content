@@ -93,7 +93,8 @@ class FileNode extends CL with FileNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       return SizedBox(
             key: createNodeGK(),
             width: 200,

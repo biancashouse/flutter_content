@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 class PointyTool extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final String? scName;
+  final ScrollControllerName? scName;
   final bool justPlaying;
 
   const PointyTool(
@@ -21,7 +21,7 @@ class PointyTool extends StatefulWidget {
 
   static show(final TargetModel tc,
       final Rect wrapperRect,
-      {final String? scName, required final bool justPlaying}) {
+      {final ScrollControllerName? scName, required final bool justPlaying}) {
     GlobalKey? targetGK =
         // tc.single
         //     ? FCO.getSingleTargetGk(tc.wName)
@@ -50,6 +50,7 @@ class PointyTool extends StatefulWidget {
           borderRadius: 16,
           arrowType: ArrowType.NONE,
           notUsingHydratedStorage: true,
+          scrollControllerName: scName,
         ));
   }
 

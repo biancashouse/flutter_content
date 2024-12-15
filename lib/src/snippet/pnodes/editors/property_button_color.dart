@@ -10,6 +10,7 @@ class PropertyButtonColor extends StatelessWidget {
   final Color? originalColor;
   final ValueChanged<Color?> onChangeF;
   final Size calloutButtonSize;
+  final ScrollControllerName? scName;
 
   const PropertyButtonColor({
     required this.cId,
@@ -18,6 +19,7 @@ class PropertyButtonColor extends StatelessWidget {
     required this.originalColor,
     required this.onChangeF,
     required this.calloutButtonSize,
+    required this.scName,
     super.key,
   });
 
@@ -42,6 +44,7 @@ class PropertyButtonColor extends StatelessWidget {
             ));
     return PropertyCalloutButton(
       cId: cId,
+      scName: scName,
       labelWidget: colorLabel,
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,

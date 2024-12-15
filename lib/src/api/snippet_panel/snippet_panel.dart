@@ -37,7 +37,7 @@ class SnippetPanel extends StatefulWidget {
     this.handlers,
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
-    this.scName,
+    required this.scName, // force dev to be scroll aware
     super.key,
   }) : snippetName = null;
 
@@ -52,7 +52,7 @@ class SnippetPanel extends StatefulWidget {
     // this.icon,
     // this.iconColor,
     // this.iconSize,
-    this.scName,
+    required this.scName, // force dev to be scroll aware
     super.key,
   }) : snippetRootNode = null;
 

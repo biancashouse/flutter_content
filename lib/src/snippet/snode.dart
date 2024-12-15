@@ -319,7 +319,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   void showNodeWidgetOverlay({
     bool whiteBarrier = false,
     bool skipMeasure = false,
-    String? scName,
+    ScrollControllerName? scName,
   }) {
     fco.dismiss('pink-border-overlay-non-tappable');
     Rect? r = !skipMeasure
@@ -362,7 +362,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     required String cId,
     required Rect borderRect,
     bool whiteBarrier = false,
-    String? scName,
+    ScrollControllerName? scName,
   }) =>
       CalloutConfig(
         cId: cId,
@@ -462,7 +462,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         FlutterContentApp.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
         if (!fco.clipboardIsEmpty) {
-          fco.showFloatingClipboard();
+          fco.showFloatingClipboard(scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
         fco.showSnippetTreeAndPropertiesCallout(
@@ -900,7 +900,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static void unhighlightSelectedNode() =>
       fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
-  Future<void> possiblyHighlightSelectedNode() async {
+  Future<void> possiblyHighlightSelectedNode(ScrollControllerName? scName) async {
     return;
     if (FlutterContentApp.snippetBeingEdited?.selectedNode == this) {
       unhighlightSelectedNode();
@@ -923,6 +923,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             arrowType: ArrowType.NONE,
             draggable: false,
             // transparentPointer: true,
+            scrollControllerName: scName,
           ),
           calloutContent: InkWell(
             child: Container(

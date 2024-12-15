@@ -37,6 +37,7 @@ enum SnippetTemplateEnum {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -48,6 +49,7 @@ enum SnippetTemplateEnum {
         wrap: true,
         calloutButtonSize: const Size(280, 80),
         calloutSize: Size(300, values.length * 80),
+        scName: scName,
       );
 
   SnippetRootNode templateSnippet() => switch (this) {

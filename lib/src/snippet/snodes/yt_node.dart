@@ -69,7 +69,8 @@ class YTNode extends CL with YTNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       // final ytId = getIdFromUrl(ytUrl??'') ?? 'zWh3CShX_do';
       // final controller = YoutubePlayerController.fromVideoId(
       //   videoId: ytId,

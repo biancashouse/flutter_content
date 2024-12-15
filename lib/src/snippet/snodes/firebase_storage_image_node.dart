@@ -88,7 +88,8 @@ class FirebaseStorageImageNode extends CL
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       // final storageRef = FirebaseStorage.instance.ref();
       // final imagesRef = storageRef.child(fsUrl);
 

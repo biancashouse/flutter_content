@@ -32,6 +32,7 @@ enum FontWeightEnum  {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -43,6 +44,7 @@ enum FontWeightEnum  {
         wrap: true,
         calloutButtonSize: const Size(200, 30),
         calloutSize: Size(180, values.length * 40),
+        scName: scName,
       );
 
 

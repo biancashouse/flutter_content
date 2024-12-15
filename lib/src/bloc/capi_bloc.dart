@@ -52,10 +52,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
-    on<ToggleAutoPublishingOfSnippet>((event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
+    on<ToggleAutoPublishingOfSnippet>(
+        (event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
-    on<SetPanelSnippet>((event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
+    on<SetPanelSnippet>(
+        (event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
     on<UpdateClipboard>((event, emit) => _updateClipboard(event, emit));
 
     //==========================================================================================
@@ -76,11 +78,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PasteSiblingAfter>((event, emit) => _pasteSiblingAfter(event, emit));
     on<DeleteNodeTapped>((event, emit) => _deleteNodeTapped(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
-    on<SelectedDirectoryOrNode>((event, emit) => _selectedDirectoryOrNode(event, emit));
+    on<SelectedDirectoryOrNode>(
+        (event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
-    on<CopySnippetJsonToClipboard>((event, emit) => _copySnippetJsonToClipboard(event, emit));
-    on<ReplaceSnippetFromJson>((event, emit) => _replaceSnippetFromJson(event, emit));
+    on<CopySnippetJsonToClipboard>(
+        (event, emit) => _copySnippetJsonToClipboard(event, emit));
+    on<ReplaceSnippetFromJson>(
+        (event, emit) => _replaceSnippetFromJson(event, emit));
     // on<CreateUndo>((event, emit) => _createUndo(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
@@ -98,6 +103,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         fillColor: Colors.yellow,
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
+        scrollControllerName: null,
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
@@ -109,9 +115,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     await modelRepo.updateSnippetProps(
       snippetName: event.snippetName,
       editingVersionId: event.versionId,
-      publishingVersionId: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
-          ? event.versionId
-          : snippetInfo.publishedVersionId,
+      publishingVersionId:
+          snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
+              ? event.versionId
+              : snippetInfo.publishedVersionId,
     );
 
     if (stopwatch.elapsedMilliseconds < 2000) {
@@ -165,17 +172,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _deletePage(DeletePage event, emit) async {
-
     emit(state.copyWith(
       force: state.force + 1,
     ));
   }
 
-  Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
+  Future<void> _toggleAutoPublishingOfSnippet(
+      ToggleAutoPublishingOfSnippet event, emit) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
-    bool autoPublish = snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
+    bool autoPublish =
+        snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
     snippetInfo.autoPublish = !autoPublish;
 
     emit(state.copyWith(
@@ -192,6 +200,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         fillColor: Colors.yellow,
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
+        scrollControllerName: null,
       ),
       calloutContent: Padding(
           padding: const EdgeInsets.all(10),
@@ -268,7 +277,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       fco.hideClipboard();
     } else {
       fco.hideClipboard();
-      fco.showFloatingClipboard();
+      fco.showFloatingClipboard(event.scName);
     }
   }
 
@@ -375,7 +384,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    state.snippetBeingEdited!.nodeBeingDeleted = state.snippetBeingEdited!.selectedNode;
+    state.snippetBeingEdited!.nodeBeingDeleted =
+        state.snippetBeingEdited!.selectedNode;
     emit(state.copyWith(
       force: state.force + 1,
     ));
@@ -526,7 +536,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.treeC.rebuild();
     // bool well = state.rootNode.anyMissingParents();
     add(CAPIEvent.updateClipboard(
-        newContent: event.node, skipSave: event.skipSave));
+      newContent: event.node,
+      scName: event.scName,
+      skipSave: event.skipSave,
+    ));
   }
 
   _cutIncludingAnyChildren(STreeNode node) {
@@ -555,7 +568,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
     fco.hideClipboard();
-    fco.showFloatingClipboard();
+    fco.showFloatingClipboard(event.scName);
   }
 
   STreeNode _typeAsATreeNode(Type t, STreeNode? childNode, String notFoundMsg,
@@ -906,7 +919,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!
       ..selectedNode = r
       ..treeC = possiblyNewTreeC;
-
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 

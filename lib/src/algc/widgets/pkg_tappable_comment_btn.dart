@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -13,7 +12,7 @@ class TappableCommentBtn extends StatelessWidget {
   final bool isEndStep;
   final StepM? step;
   final bool bigger;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const TappableCommentBtn({
     required this.flowchart,
@@ -81,7 +80,7 @@ class TappableCommentBtn extends StatelessWidget {
     bool isEndStep,
     StepM? step,
     bool bigger,
-    String? scName,
+    ScrollControllerName? scName,
     CommentM comment, {
     VoidCallback? onReadyF,
   }) {
@@ -104,6 +103,7 @@ class TappableCommentBtn extends StatelessWidget {
         borderRadius: 16,
         borderColor: Colors.yellow,
         elevation: 10,
+        scrollControllerName: scName,
       ),
       calloutContent: commentSnippetWidget,
       targetGkF: () => flowchart.stepGK(stepId),

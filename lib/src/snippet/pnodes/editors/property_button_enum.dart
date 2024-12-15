@@ -10,6 +10,7 @@ class PropertyButtonEnum extends StatelessWidget {
   final bool wrap;
   final Size calloutButtonSize;
   final Size calloutSize;
+  final ScrollControllerName? scName;
 
   const PropertyButtonEnum({
     required this.label,
@@ -19,6 +20,7 @@ class PropertyButtonEnum extends StatelessWidget {
     this.wrap = false,
     required this.calloutButtonSize,
     required this.calloutSize,
+    required this.scName,
     super.key,
   });
 
@@ -27,6 +29,7 @@ class PropertyButtonEnum extends StatelessWidget {
     Widget mi = menuItems[originalEnumIndex ?? 0];
     return PropertyCalloutButton(
       cId: label,
+      scName: scName,
       notifier: ValueNotifier<int>(0),
       labelWidget: label.isNotEmpty
           ? Row(

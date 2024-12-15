@@ -31,6 +31,7 @@ enum TextAlignEnum   {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -43,6 +44,7 @@ enum TextAlignEnum   {
         wrap: true,
         calloutButtonSize: const Size(90, 30),
         calloutSize: const Size(280, 80),
+        scName: scName,
       );
 
   // @override

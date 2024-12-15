@@ -56,7 +56,8 @@ class StackNode extends MC with StackNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
     try {
       return LayoutBuilder(
         builder: (context, constraints) {

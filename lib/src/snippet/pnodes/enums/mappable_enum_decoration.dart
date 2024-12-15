@@ -25,6 +25,7 @@ enum MappableDecorationShapeEnum {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -36,6 +37,7 @@ enum MappableDecorationShapeEnum {
         wrap: true,
         calloutButtonSize: const Size(150, 40),
         calloutSize: const Size(240, 220),
+        scName: scName,
       );
 
   Widget toMenuItem({bool skipLabel = true}) => Row(

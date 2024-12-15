@@ -10,7 +10,7 @@ class TargetsWrapper extends StatefulWidget {
   final HotspotsNode parentNode;
   final Widget? child;
   final bool hardEdge;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const TargetsWrapper(
       {
@@ -57,7 +57,7 @@ class TargetsWrapper extends StatefulWidget {
 // }
 
   static void configureTarget( TargetModel tc,
-      Rect wrapperRect, String? scName,
+      Rect wrapperRect, ScrollControllerName? scName,
       {bool quickly = false}) {
     if (!fco.canEditContent.value) return;
 
@@ -93,7 +93,7 @@ class TargetsWrapper extends StatefulWidget {
   static void showConfigToolbar(
     TargetModel tc,
     Rect wrapperRect,
-    final String? scName,
+    final ScrollControllerName? scName,
   ) {
     fco.dismiss(CalloutConfigToolbar.CID);
     fco.showOverlay(

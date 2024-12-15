@@ -49,8 +49,7 @@ class EditablePage extends StatefulWidget {
 }
 
 class EditablePageState extends State<EditablePage> {
-  // for use by child widget
-  // ScrollController? sC;
+  late NamedScrollController sC;
 
   final focusNode = FocusNode();
 
@@ -73,13 +72,8 @@ class EditablePageState extends State<EditablePage> {
   void initState() {
     super.initState();
 
-    // sC = ScrollController(
-    //   initialScrollOffset: fco.scrollControllerOffsets[widget.routePath] ?? 0.0,
-    // );
-    // // maintain offset between instantiations
-    // sC!.addListener(() {
-    //   fco.scrollControllerOffsets[widget.routePath] = sC!.offset;
-    // });
+    var scName = EditablePage.name(context);
+    sC = NamedScrollController(scName, Axis.vertical);
 
     fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
     fco.currentEditablePagePath = widget.routePath;
@@ -108,15 +102,6 @@ class EditablePageState extends State<EditablePage> {
   @override
   Widget build(BuildContext context) {
     // FCO.initWithContext(context);
-
-    // // maintain scroll pos
-    // if (sC?.hasClients??false && fco.scrollControllerOffsets[widget.routePath] != sC?.offset) {
-    //   fco.afterNextBuildDo(() {
-    //     sC?.jumpTo(fco.scrollControllerOffsets[widget.routePath] ?? 0.0);
-    //   });
-    // }
-
-    // fco.refreshScrollController(widget.routePath);
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -149,42 +134,44 @@ class EditablePageState extends State<EditablePage> {
                 fco.inEditMode.value = false;
               },
               child: Material(
-                child: Stack(
-                  children: [
-                    Zoomer(
-                      child: BlocBuilder<CAPIBloC, CAPIState>(
-                          builder: (blocContext, state) {
-                          return widget.child;
-                        }
+                  child: Stack(
+                    children: [
+                      Zoomer(
+                        child: BlocBuilder<CAPIBloC, CAPIState>(
+                            builder: (blocContext, state) {
+                            return widget.child;
+                          }
+                        ),
                       ),
-                    ),
-                    // if (fabPosition != null)
-                    //   ValueListenableBuilder<bool>(
-                    //     valueListenable: fco.canEditContent,
-                    //     builder: (context, value, child) {
-                    //       return isFABVisible
-                    //           ? Positioned(
-                    //               left: fabPosition!.dx,
-                    //               top: fabPosition!.dy,
-                    //               child: Draggable(
-                    //                 feedback: FAB(),
-                    //                 child: FAB(),
-                    //                 //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
-                    //                 onDragEnd: (details) {
-                    //                   setState(() {
-                    //                     fabPosition = details
-                    //                         .offset; // Update FAB position when dragged
-                    //                   });
-                    //                 },
-                    //               ),
-                    //             )
-                    //           : const Offstage();
-                    //     },
-                    //   ),
-                  ],
+                      // if (fabPosition != null)
+                      //   ValueListenableBuilder<bool>(
+                      //     valueListenable: fco.canEditContent,
+                      //     builder: (context, value, child) {
+                      //       return isFABVisible
+                      //           ? Positioned(
+                      //               left: fabPosition!.dx,
+                      //               top: fabPosition!.dy,
+                      //               child: Draggable(
+                      //                 feedback: FAB(),
+                      //                 child: FAB(),
+                      //                 //isFABVisible ? FAB() : const Offstage(), // Hide FAB when isFABVisible is false
+                      //                 onDragEnd: (details) {
+                      //                   setState(() {
+                      //                     fabPosition = details
+                      //                         .offset; // Update FAB position when dragged
+                      //                   });
+                      //                 },
+                      //               ),
+                      //             )
+                      //           : const Offstage();
+                      //     },
+                      //   ),
+                    ],
+                  ),
                 ),
-              ),
-            )),
+              // ),
+            ),
+            ),
       ),
     );
 
@@ -435,6 +422,7 @@ class EditablePageState extends State<EditablePage> {
         initialCalloutH: 150,
         borderRadius: 12,
         fillColor: Colors.white,
+        scrollControllerName: sC.name,
       ),
     );
   }

@@ -10,7 +10,7 @@ import 'package:gap/gap.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
-  final String? scName;
+  final ScrollControllerName? scName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
@@ -32,8 +32,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
   //   return _entry.node as SnippetNode;
   // }
 
-  void popThenRepushSnipper(
-      String snippetName, VoidCallback enterEditModeF,
+  void popThenRepushSnipper(String snippetName, VoidCallback enterEditModeF,
       VoidCallback exitEditModeF) {
     STreeNode treeRootNode =
         FlutterContentApp.snippetBeingEdited!.treeC.roots.first;
@@ -61,7 +60,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       // current snippet version will now be changed to prevId
       fco.logi('reverted to previous version.');
       STreeNode.unhighlightSelectedNode();
-      var currPageState = fco.currentPageState;
+      // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
       fco.dismiss('pink-border-overlay-non-tappable');
       fco.dismiss(CalloutConfigToolbar.CID);
@@ -148,9 +147,10 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
       child: BlocBuilder<CAPIBloC, CAPIState>(builder: (context, state) {
         return Scaffold(
-          backgroundColor: snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-            ? Colors.grey
-            : Colors.purpleAccent.shade100,
+          backgroundColor:
+              snippetInfo.editingVersionId != snippetInfo.publishedVersionId
+                  ? Colors.grey
+                  : Colors.purpleAccent.shade100,
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             backgroundColor: Colors.black,
@@ -308,11 +308,16 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 // onWeightChange: () => setState(() {}),
                 dividerBuilder:
                     (axis, index, resizable, dragging, highlighted, themeData) {
-                  bool notPublished = snippetInfo.editingVersionId != snippetInfo.publishedVersionId;
+                  bool notPublished = snippetInfo.editingVersionId !=
+                      snippetInfo.publishedVersionId;
                   return Container(
                     color: dragging
-                        ? notPublished ? Colors.grey : Colors.purpleAccent.shade200
-                        : notPublished ? Colors.grey[300] : Colors.purpleAccent.shade400,
+                        ? notPublished
+                            ? Colors.grey
+                            : Colors.purpleAccent.shade200
+                        : notPublished
+                            ? Colors.grey[300]
+                            : Colors.purpleAccent.shade400,
                     child: Icon(
                       Icons.drag_indicator,
                       color: highlighted ? Colors.blueAccent : Colors.white,
@@ -438,7 +443,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         (gc?.propertyName == 'title' ||
                             gc?.propertyName == 'content')) return;
                     FlutterContentApp.capiBloc
-                        .add(CAPIEvent.cutNode(node: selectedNode));
+                        .add(CAPIEvent.cutNode(node: selectedNode, scName: scName));
                     fco.afterNextBuildDo(() {
                       if (fco.clipboard != null) {
                         fco.unhide("floating-clipboard");
@@ -464,7 +469,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   onPressed: () {
                     fco.afterNextBuildDo(() {
                       FlutterContentApp.capiBloc
-                          .add(CAPIEvent.copyNode(node: selectedNode));
+                          .add(CAPIEvent.copyNode(node: selectedNode, scName: scName));
                       fco.afterNextBuildDo(() {
                         if (fco.clipboard != null) {
                           fco.unhide("floating-clipboard");
@@ -536,18 +541,20 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     hoverColor: Colors.white30,
                     onPressed: () {
                       showSaveAsCallout(
-                          selectedNode: selectedNode,
-                          //targetGKF: () => targetGK,
-                          saveModelF: (s) {
-                            FlutterContentApp.capiBloc
-                                .add(CAPIEvent.saveNodeAsSnippet(
-                              node: selectedNode,
-                              newSnippetName: s,
-                            ));
-                            fco.afterNextBuildDo(() {
-                              fco.dismiss("input-snippet-name");
-                            });
+                        selectedNode: selectedNode,
+                        //targetGKF: () => targetGK,
+                        saveModelF: (s) {
+                          FlutterContentApp.capiBloc
+                              .add(CAPIEvent.saveNodeAsSnippet(
+                            node: selectedNode,
+                            newSnippetName: s,
+                          ));
+                          fco.afterNextBuildDo(() {
+                            fco.dismiss("input-snippet-name");
                           });
+                        },
+                        scName: scName,
+                      );
                     },
                     icon: const Icon(
                       Icons.link,
@@ -808,15 +815,18 @@ class SnippetTreePane extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (canShowNavigateUpBtn)
-                        navigateUpTreeButton(),
+                      if (canShowNavigateUpBtn) navigateUpTreeButton(),
                       Expanded(
-                          child: SnippetTreeView(scName: scName,)),
+                          child: SnippetTreeView(
+                        scName: scName,
+                      )),
                     ],
                   );
                 }
                 fco.logi('SnippetTreeView...');
-                return SnippetTreeView(scName: scName,);
+                return SnippetTreeView(
+                  scName: scName,
+                );
               }),
             ),
           ),
@@ -825,8 +835,7 @@ class SnippetTreePane extends StatelessWidget {
     }
   }
 
-  Widget navigateUpTreeButton() =>
-      FilledButton(
+  Widget navigateUpTreeButton() => FilledButton(
         onPressed: () {
           SnippetTreePane.navigateUpTree(scName);
           return;
@@ -895,14 +904,14 @@ class SnippetTreePane extends StatelessWidget {
         parent.rootNodeOfSnippet()!.name,
         parent,
         parent,
-        scName:scName,
+        scName: scName,
       );
     }
   }
 }
 
 class SnippetTreeView extends StatelessWidget {
-  final String? scName;
+  final ScrollControllerName? scName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
@@ -1089,7 +1098,8 @@ class VersionsMenuAnchor extends StatelessWidget {
           color: snippetInfo.editingVersionId != snippetInfo.publishedVersionId
               ? Colors.grey
               : Colors.deepOrange,
-          child: Column(mainAxisSize: MainAxisSize.max,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
             children: [
               fco.coloredText(
                   snippetInfo.editingVersionId != snippetInfo.publishedVersionId

@@ -57,7 +57,8 @@ class PositionedNode extends SC with PositionedNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
     return Positioned(
       key: createNodeGK(),
       top: top,

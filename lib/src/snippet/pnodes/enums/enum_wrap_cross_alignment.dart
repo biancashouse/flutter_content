@@ -25,6 +25,7 @@ enum WrapCrossAlignmentEnum  {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -37,6 +38,7 @@ enum WrapCrossAlignmentEnum  {
         wrap: true,
         calloutButtonSize: const Size(260, 70),
         calloutSize: const Size(140, 20),
+        scName: scName,
       );
 
   Widget toMenuItem(bool isRow) {

@@ -77,7 +77,8 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
 
       return FutureBuilder<UMLRecord>(
           future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',

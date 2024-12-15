@@ -29,6 +29,7 @@ enum OutlinedBorderEnum {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: enumValueIndex != null ? '' : label,
@@ -41,6 +42,7 @@ enum OutlinedBorderEnum {
         wrap: true,
         calloutButtonSize: const Size(200, 30),
         calloutSize: Size(256, values.length * 50),
+        scName: scName,
       );
 
   OutlinedBorder toFlutterWidget({BorderSideGroup? nodeSide, double? nodeRadius}) {

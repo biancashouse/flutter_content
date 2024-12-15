@@ -8,12 +8,14 @@ class PropertyButtonFontFamily extends StatefulWidget {
   final String? originalFontFamily;
   final Color menuBgColor;
   final Function(String?) onChangeF;
+  final ScrollControllerName? scName;
 
   const PropertyButtonFontFamily({
     required this.label,
     required this.originalFontFamily,
     required this.menuBgColor,
     required this.onChangeF,
+    required this.scName,
     super.key,
   });
 
@@ -40,6 +42,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
         : const Text('fontFamily...', style: TextStyle(color: Colors.white));
     return PropertyCalloutButton(
       cId: 'font-family',
+      scName: widget.scName,
       notifier: ValueNotifier<int>(0),
       labelWidget: fontFamilyLabel,
       calloutButtonSize: const Size(200, 40),

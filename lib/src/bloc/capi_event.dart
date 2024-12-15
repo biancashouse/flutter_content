@@ -110,6 +110,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.updateClipboard({
     required STreeNode? newContent,
+    required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = UpdateClipboard;
 
@@ -319,11 +320,13 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.copyNode({
     required STreeNode node,
+    required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = CopyNode;
 
   const factory CAPIEvent.cutNode({
     required STreeNode node,
+    required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = CutNode;
 

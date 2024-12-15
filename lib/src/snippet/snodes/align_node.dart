@@ -58,7 +58,9 @@ class AlignNode extends SC with AlignNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
+
       return Align(
             key: createNodeGK(),
             alignment: alignment.flutterValue,

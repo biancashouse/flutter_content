@@ -8,6 +8,7 @@ void showSaveAsCallout({
   STreeNode? selectionParentNode,
   // required TargetKeyFunc targetGKF,
   required ValueChanged<String> saveModelF,
+  required ScrollControllerName? scName,
 }) {
   fco.showOverlay(
       // targetGkF: targetGKF,
@@ -34,6 +35,7 @@ void showSaveAsCallout({
           },
         ),
         notUsingHydratedStorage: true,
+        scrollControllerName: scName,
       ));
 }
 

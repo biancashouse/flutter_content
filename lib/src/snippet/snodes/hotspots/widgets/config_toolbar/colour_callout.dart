@@ -7,7 +7,7 @@ class TargetColourTool extends StatelessWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
-  final String? scName;
+  final ScrollControllerName? scName;
   final bool justPlaying;
 
   const TargetColourTool(
@@ -99,7 +99,7 @@ class TargetColourTool extends StatelessWidget {
     final TargetModel tc,
     final Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
-    final String? scName,
+    final ScrollControllerName? scName,
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -121,6 +121,7 @@ class TargetColourTool extends StatelessWidget {
           opacity: 0.1,
         ),
         notUsingHydratedStorage: true,
+        scrollControllerName: scName,
       ),
       calloutContent: TargetColourTool(
         tc,

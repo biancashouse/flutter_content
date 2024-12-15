@@ -28,7 +28,8 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+      possiblyHighlightSelectedNode(scName);
       return Expanded(
             key: createNodeGK(),
             flex: flex,

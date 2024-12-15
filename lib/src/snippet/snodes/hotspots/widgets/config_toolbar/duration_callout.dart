@@ -16,7 +16,7 @@ void removeTargetDurationCallout() {
 
 Future<void> showTargetDurationCallout(
   final TargetModel tc, {
-  final String? scName,
+  final ScrollControllerName? scName,
 }) async {
   GlobalKey? targetGK =
   // tc.single

@@ -50,9 +50,11 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.name(context);
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       final gk = createNodeGK();
       return MenuItemButton(
             key: gk,
@@ -65,7 +67,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
                 ));
               } else if (destinationRoutePathSnippetName != null) {
                 //context.goNamed(destinationRoutePathSnippetName!);
-                onPressed(context, gk);
+                onPressed(context, gk, scName);
               }
             },
             style: fco.buttonStyle(30),

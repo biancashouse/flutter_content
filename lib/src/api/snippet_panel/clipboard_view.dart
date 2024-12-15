@@ -7,7 +7,7 @@ const double CLIPBOARD_TAB_W = 200;
 const double CLIPBOARD_TAB_H = 200;
 
 class ClipboardView extends StatelessWidget {
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const ClipboardView({this.scName, super.key});
 
@@ -65,7 +65,7 @@ class ClipboardView extends StatelessWidget {
               tooltip: 'clear the clipboard',
               onPressed: () {
                 fco.hide("floating-clipboard");
-                bloc.add(const CAPIEvent.updateClipboard(newContent: null));
+                bloc.add(CAPIEvent.updateClipboard(newContent: null, scName: scName));
               },
               icon: const Icon(
                 Icons.close,

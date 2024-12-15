@@ -8,7 +8,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const MoreCalloutConfigSettings(
     this.tc,
@@ -24,7 +24,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   static show(
     final TargetModel tc,
     final Rect wrapperRect, {
-    String? scName,
+    ScrollControllerName? scName,
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -65,6 +65,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           borderRadius: 16,
           arrowType: ArrowType.NONE,
           notUsingHydratedStorage: true,
+          scrollControllerName: scName,
         ));
   }
 

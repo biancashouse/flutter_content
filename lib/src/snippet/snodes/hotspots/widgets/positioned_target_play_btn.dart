@@ -7,7 +7,7 @@ class TargetPlayBtn extends StatelessWidget {
   final TargetModel initialTC;
   final int index;
   final Rect wrapperRect;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const TargetPlayBtn({
     required this.initialTC,

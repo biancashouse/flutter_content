@@ -26,13 +26,15 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.name(context);
     try {
       ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+      possiblyHighlightSelectedNode(scName);
 
       final gk = createNodeGK();
 
@@ -42,7 +44,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
             child: ElevatedButton(
               // if feature specified, must be a callout
               key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-              onPressed: ()=>onPressed(context, gk),
+              onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: () => f?.call(context),
               style: btnStyle,
               child: child?.toWidget(context, this),

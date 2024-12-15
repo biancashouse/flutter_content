@@ -66,7 +66,8 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
     Axis svAxis = axis.flutterValue;
     try {
       return LayoutBuilder(builder: (context, constraints) {

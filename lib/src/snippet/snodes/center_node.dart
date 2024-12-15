@@ -31,7 +31,9 @@ class CenterNode extends SC with CenterNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
+
       return Center(
             key: createNodeGK(),
             child: child?.toWidget(context, this),

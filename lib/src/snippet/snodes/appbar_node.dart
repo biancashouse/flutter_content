@@ -63,7 +63,9 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
+
       // find scaffold node
       // add a back button if scaffold has tabs
       SnippetPanelState? spState = SnippetPanel.of(context);

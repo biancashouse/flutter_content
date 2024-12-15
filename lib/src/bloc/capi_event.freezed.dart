@@ -23,7 +23,8 @@ mixin _$CAPIEvent {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -75,8 +76,10 @@ mixin _$CAPIEvent {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -90,7 +93,8 @@ mixin _$CAPIEvent {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -129,8 +133,10 @@ mixin _$CAPIEvent {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -144,7 +150,8 @@ mixin _$CAPIEvent {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -182,8 +189,9 @@ mixin _$CAPIEvent {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -425,7 +433,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -477,8 +486,10 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -495,7 +506,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -534,8 +546,10 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -552,7 +566,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -590,8 +605,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -863,7 +879,8 @@ class _$OverrideTargetGKImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -915,8 +932,10 @@ class _$OverrideTargetGKImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -933,7 +952,8 @@ class _$OverrideTargetGKImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -972,8 +992,10 @@ class _$OverrideTargetGKImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -990,7 +1012,8 @@ class _$OverrideTargetGKImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -1028,8 +1051,9 @@ class _$OverrideTargetGKImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -1286,7 +1310,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1338,8 +1363,10 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -1356,7 +1383,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -1395,8 +1423,10 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -1413,7 +1443,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -1451,8 +1482,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -1627,7 +1659,7 @@ abstract class _$$UpdateClipboardImplCopyWith<$Res> {
           $Res Function(_$UpdateClipboardImpl) then) =
       __$$UpdateClipboardImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({STreeNode? newContent, dynamic skipSave});
+  $Res call({STreeNode? newContent, String? scName, dynamic skipSave});
 }
 
 /// @nodoc
@@ -1644,6 +1676,7 @@ class __$$UpdateClipboardImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? newContent = freezed,
+    Object? scName = freezed,
     Object? skipSave = freezed,
   }) {
     return _then(_$UpdateClipboardImpl(
@@ -1651,6 +1684,10 @@ class __$$UpdateClipboardImplCopyWithImpl<$Res>
           ? _value.newContent
           : newContent // ignore: cast_nullable_to_non_nullable
               as STreeNode?,
+      scName: freezed == scName
+          ? _value.scName
+          : scName // ignore: cast_nullable_to_non_nullable
+              as String?,
       skipSave: freezed == skipSave ? _value.skipSave! : skipSave,
     ));
   }
@@ -1662,17 +1699,19 @@ class _$UpdateClipboardImpl
     with DiagnosticableTreeMixin
     implements UpdateClipboard {
   const _$UpdateClipboardImpl(
-      {required this.newContent, this.skipSave = false});
+      {required this.newContent, required this.scName, this.skipSave = false});
 
   @override
   final STreeNode? newContent;
+  @override
+  final String? scName;
   @override
   @JsonKey()
   final dynamic skipSave;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.updateClipboard(newContent: $newContent, skipSave: $skipSave)';
+    return 'CAPIEvent.updateClipboard(newContent: $newContent, scName: $scName, skipSave: $skipSave)';
   }
 
   @override
@@ -1681,6 +1720,7 @@ class _$UpdateClipboardImpl
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.updateClipboard'))
       ..add(DiagnosticsProperty('newContent', newContent))
+      ..add(DiagnosticsProperty('scName', scName))
       ..add(DiagnosticsProperty('skipSave', skipSave));
   }
 
@@ -1691,12 +1731,13 @@ class _$UpdateClipboardImpl
             other is _$UpdateClipboardImpl &&
             (identical(other.newContent, newContent) ||
                 other.newContent == newContent) &&
+            (identical(other.scName, scName) || other.scName == scName) &&
             const DeepCollectionEquality().equals(other.skipSave, skipSave));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, newContent, const DeepCollectionEquality().hash(skipSave));
+  int get hashCode => Object.hash(runtimeType, newContent, scName,
+      const DeepCollectionEquality().hash(skipSave));
 
   /// Create a copy of CAPIEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -1715,7 +1756,8 @@ class _$UpdateClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -1767,14 +1809,16 @@ class _$UpdateClipboardImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return updateClipboard(newContent, skipSave);
+    return updateClipboard(newContent, scName, skipSave);
   }
 
   @override
@@ -1785,7 +1829,8 @@ class _$UpdateClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -1824,14 +1869,16 @@ class _$UpdateClipboardImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return updateClipboard?.call(newContent, skipSave);
+    return updateClipboard?.call(newContent, scName, skipSave);
   }
 
   @override
@@ -1842,7 +1889,8 @@ class _$UpdateClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -1880,8 +1928,9 @@ class _$UpdateClipboardImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -1889,7 +1938,7 @@ class _$UpdateClipboardImpl
     required TResult orElse(),
   }) {
     if (updateClipboard != null) {
-      return updateClipboard(newContent, skipSave);
+      return updateClipboard(newContent, scName, skipSave);
     }
     return orElse();
   }
@@ -2040,9 +2089,11 @@ class _$UpdateClipboardImpl
 abstract class UpdateClipboard implements CAPIEvent {
   const factory UpdateClipboard(
       {required final STreeNode? newContent,
+      required final String? scName,
       final dynamic skipSave}) = _$UpdateClipboardImpl;
 
   STreeNode? get newContent;
+  String? get scName;
   dynamic get skipSave;
 
   /// Create a copy of CAPIEvent
@@ -2148,7 +2199,8 @@ class _$PublishSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2200,8 +2252,10 @@ class _$PublishSnippetImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -2218,7 +2272,8 @@ class _$PublishSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -2257,8 +2312,10 @@ class _$PublishSnippetImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -2275,7 +2332,8 @@ class _$PublishSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -2313,8 +2371,9 @@ class _$PublishSnippetImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -2580,7 +2639,8 @@ class _$RevertSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -2632,8 +2692,10 @@ class _$RevertSnippetImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -2650,7 +2712,8 @@ class _$RevertSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -2689,8 +2752,10 @@ class _$RevertSnippetImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -2707,7 +2772,8 @@ class _$RevertSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -2745,8 +2811,9 @@ class _$RevertSnippetImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -2999,7 +3066,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3051,8 +3119,10 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -3069,7 +3139,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -3108,8 +3179,10 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -3126,7 +3199,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -3164,8 +3238,9 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -3422,7 +3497,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3474,8 +3550,10 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -3492,7 +3570,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -3531,8 +3610,10 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -3549,7 +3630,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -3587,8 +3669,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -3843,7 +3926,8 @@ class _$AutoPublishDefaultImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -3895,8 +3979,10 @@ class _$AutoPublishDefaultImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -3913,7 +3999,8 @@ class _$AutoPublishDefaultImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -3952,8 +4039,10 @@ class _$AutoPublishDefaultImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -3970,7 +4059,8 @@ class _$AutoPublishDefaultImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -4008,8 +4098,9 @@ class _$AutoPublishDefaultImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -4259,7 +4350,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4311,8 +4403,10 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -4329,7 +4423,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -4368,8 +4463,10 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -4386,7 +4483,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -4424,8 +4522,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -4690,7 +4789,8 @@ class _$SetPanelSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -4742,8 +4842,10 @@ class _$SetPanelSnippetImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -4760,7 +4862,8 @@ class _$SetPanelSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -4799,8 +4902,10 @@ class _$SetPanelSnippetImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -4817,7 +4922,8 @@ class _$SetPanelSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -4855,8 +4961,9 @@ class _$SetPanelSnippetImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -5123,7 +5230,8 @@ class _$PushSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -5175,8 +5283,10 @@ class _$PushSnippetEditorImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -5193,7 +5303,8 @@ class _$PushSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -5232,8 +5343,10 @@ class _$PushSnippetEditorImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -5250,7 +5363,8 @@ class _$PushSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -5288,8 +5402,9 @@ class _$PushSnippetEditorImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -5545,7 +5660,8 @@ class _$PopSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -5597,8 +5713,10 @@ class _$PopSnippetEditorImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -5615,7 +5733,8 @@ class _$PopSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -5654,8 +5773,10 @@ class _$PopSnippetEditorImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -5672,7 +5793,8 @@ class _$PopSnippetEditorImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -5710,8 +5832,9 @@ class _$PopSnippetEditorImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -5933,7 +6056,8 @@ class _$ShowDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -5985,8 +6109,10 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -6003,7 +6129,8 @@ class _$ShowDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -6042,8 +6169,10 @@ class _$ShowDirectoryTreeImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -6060,7 +6189,8 @@ class _$ShowDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -6098,8 +6228,9 @@ class _$ShowDirectoryTreeImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -6344,7 +6475,8 @@ class _$RemoveDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -6396,8 +6528,10 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -6414,7 +6548,8 @@ class _$RemoveDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -6453,8 +6588,10 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -6471,7 +6608,8 @@ class _$RemoveDirectoryTreeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -6509,8 +6647,9 @@ class _$RemoveDirectoryTreeImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -6760,7 +6899,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -6812,8 +6952,10 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -6830,7 +6972,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -6869,8 +7012,10 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -6887,7 +7032,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -6925,8 +7071,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -7148,7 +7295,8 @@ class _$ClearNodeSelectionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -7200,8 +7348,10 @@ class _$ClearNodeSelectionImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -7218,7 +7368,8 @@ class _$ClearNodeSelectionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -7257,8 +7408,10 @@ class _$ClearNodeSelectionImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -7275,7 +7428,8 @@ class _$ClearNodeSelectionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -7313,8 +7467,9 @@ class _$ClearNodeSelectionImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -7569,7 +7724,8 @@ class _$SaveNodeAsSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -7621,8 +7777,10 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -7639,7 +7797,8 @@ class _$SaveNodeAsSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -7678,8 +7837,10 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -7696,7 +7857,8 @@ class _$SaveNodeAsSnippetImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -7734,8 +7896,9 @@ class _$SaveNodeAsSnippetImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -8013,7 +8176,8 @@ class _$ReplaceSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -8065,8 +8229,10 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -8083,7 +8249,8 @@ class _$ReplaceSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -8122,8 +8289,10 @@ class _$ReplaceSelectionWithImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -8140,7 +8309,8 @@ class _$ReplaceSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -8178,8 +8348,9 @@ class _$ReplaceSelectionWithImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -8457,7 +8628,8 @@ class _$WrapSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -8509,8 +8681,10 @@ class _$WrapSelectionWithImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -8527,7 +8701,8 @@ class _$WrapSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -8566,8 +8741,10 @@ class _$WrapSelectionWithImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -8584,7 +8761,8 @@ class _$WrapSelectionWithImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -8622,8 +8800,9 @@ class _$WrapSelectionWithImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -8931,7 +9110,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -8983,8 +9163,10 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -9002,7 +9184,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -9041,8 +9224,10 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -9060,7 +9245,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -9098,8 +9284,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -9382,7 +9569,8 @@ class _$AddSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -9434,8 +9622,10 @@ class _$AddSiblingBeforeImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -9452,7 +9642,8 @@ class _$AddSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -9491,8 +9682,10 @@ class _$AddSiblingBeforeImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -9509,7 +9702,8 @@ class _$AddSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -9547,8 +9741,9 @@ class _$AddSiblingBeforeImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -9826,7 +10021,8 @@ class _$AddSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -9878,8 +10074,10 @@ class _$AddSiblingAfterImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -9896,7 +10094,8 @@ class _$AddSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -9935,8 +10134,10 @@ class _$AddSiblingAfterImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -9953,7 +10154,8 @@ class _$AddSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -9991,8 +10193,9 @@ class _$AddSiblingAfterImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -10251,7 +10454,8 @@ class _$PasteReplacementImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -10303,8 +10507,10 @@ class _$PasteReplacementImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -10321,7 +10527,8 @@ class _$PasteReplacementImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -10360,8 +10567,10 @@ class _$PasteReplacementImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -10378,7 +10587,8 @@ class _$PasteReplacementImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -10416,8 +10626,9 @@ class _$PasteReplacementImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -10684,7 +10895,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -10736,8 +10948,10 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -10754,7 +10968,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -10793,8 +11008,10 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -10811,7 +11028,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -10849,8 +11067,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -11076,7 +11295,8 @@ class _$PasteSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -11128,8 +11348,10 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -11146,7 +11368,8 @@ class _$PasteSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -11185,8 +11408,10 @@ class _$PasteSiblingBeforeImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -11203,7 +11428,8 @@ class _$PasteSiblingBeforeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -11241,8 +11467,9 @@ class _$PasteSiblingBeforeImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -11456,7 +11683,8 @@ class _$PasteSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -11508,8 +11736,10 @@ class _$PasteSiblingAfterImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -11526,7 +11756,8 @@ class _$PasteSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -11565,8 +11796,10 @@ class _$PasteSiblingAfterImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -11583,7 +11816,8 @@ class _$PasteSiblingAfterImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -11621,8 +11855,9 @@ class _$PasteSiblingAfterImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -11836,7 +12071,8 @@ class _$DeleteNodeTappedImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -11888,8 +12124,10 @@ class _$DeleteNodeTappedImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -11906,7 +12144,8 @@ class _$DeleteNodeTappedImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -11945,8 +12184,10 @@ class _$DeleteNodeTappedImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -11963,7 +12204,8 @@ class _$DeleteNodeTappedImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -12001,8 +12243,9 @@ class _$DeleteNodeTappedImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -12216,7 +12459,8 @@ class _$CompleteDeletionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -12268,8 +12512,10 @@ class _$CompleteDeletionImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -12286,7 +12532,8 @@ class _$CompleteDeletionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -12325,8 +12572,10 @@ class _$CompleteDeletionImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -12343,7 +12592,8 @@ class _$CompleteDeletionImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -12381,8 +12631,9 @@ class _$CompleteDeletionImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -12629,7 +12880,8 @@ class _$CopySnippetJsonToClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -12681,8 +12933,10 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -12699,7 +12953,8 @@ class _$CopySnippetJsonToClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -12738,8 +12993,10 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -12756,7 +13013,8 @@ class _$CopySnippetJsonToClipboardImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -12794,8 +13052,9 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -13052,7 +13311,8 @@ class _$ReplaceSnippetFromJsonImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -13104,8 +13364,10 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -13122,7 +13384,8 @@ class _$ReplaceSnippetFromJsonImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -13161,8 +13424,10 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -13179,7 +13444,8 @@ class _$ReplaceSnippetFromJsonImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -13217,8 +13483,9 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -13393,7 +13660,7 @@ abstract class _$$CopyNodeImplCopyWith<$Res> {
           _$CopyNodeImpl value, $Res Function(_$CopyNodeImpl) then) =
       __$$CopyNodeImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({STreeNode node, dynamic skipSave});
+  $Res call({STreeNode node, String? scName, dynamic skipSave});
 }
 
 /// @nodoc
@@ -13410,6 +13677,7 @@ class __$$CopyNodeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? node = null,
+    Object? scName = freezed,
     Object? skipSave = freezed,
   }) {
     return _then(_$CopyNodeImpl(
@@ -13417,6 +13685,10 @@ class __$$CopyNodeImplCopyWithImpl<$Res>
           ? _value.node
           : node // ignore: cast_nullable_to_non_nullable
               as STreeNode,
+      scName: freezed == scName
+          ? _value.scName
+          : scName // ignore: cast_nullable_to_non_nullable
+              as String?,
       skipSave: freezed == skipSave ? _value.skipSave! : skipSave,
     ));
   }
@@ -13425,17 +13697,20 @@ class __$$CopyNodeImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
-  const _$CopyNodeImpl({required this.node, this.skipSave = false});
+  const _$CopyNodeImpl(
+      {required this.node, required this.scName, this.skipSave = false});
 
   @override
   final STreeNode node;
+  @override
+  final String? scName;
   @override
   @JsonKey()
   final dynamic skipSave;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.copyNode(node: $node, skipSave: $skipSave)';
+    return 'CAPIEvent.copyNode(node: $node, scName: $scName, skipSave: $skipSave)';
   }
 
   @override
@@ -13444,6 +13719,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.copyNode'))
       ..add(DiagnosticsProperty('node', node))
+      ..add(DiagnosticsProperty('scName', scName))
       ..add(DiagnosticsProperty('skipSave', skipSave));
   }
 
@@ -13453,12 +13729,13 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         (other.runtimeType == runtimeType &&
             other is _$CopyNodeImpl &&
             (identical(other.node, node) || other.node == node) &&
+            (identical(other.scName, scName) || other.scName == scName) &&
             const DeepCollectionEquality().equals(other.skipSave, skipSave));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, node, const DeepCollectionEquality().hash(skipSave));
+      runtimeType, node, scName, const DeepCollectionEquality().hash(skipSave));
 
   /// Create a copy of CAPIEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -13476,7 +13753,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -13528,14 +13806,16 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return copyNode(node, skipSave);
+    return copyNode(node, scName, skipSave);
   }
 
   @override
@@ -13546,7 +13826,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -13585,14 +13866,16 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return copyNode?.call(node, skipSave);
+    return copyNode?.call(node, scName, skipSave);
   }
 
   @override
@@ -13603,7 +13886,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -13641,8 +13925,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -13650,7 +13935,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult orElse(),
   }) {
     if (copyNode != null) {
-      return copyNode(node, skipSave);
+      return copyNode(node, scName, skipSave);
     }
     return orElse();
   }
@@ -13800,9 +14085,12 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
 
 abstract class CopyNode implements CAPIEvent {
   const factory CopyNode(
-      {required final STreeNode node, final dynamic skipSave}) = _$CopyNodeImpl;
+      {required final STreeNode node,
+      required final String? scName,
+      final dynamic skipSave}) = _$CopyNodeImpl;
 
   STreeNode get node;
+  String? get scName;
   dynamic get skipSave;
 
   /// Create a copy of CAPIEvent
@@ -13818,7 +14106,7 @@ abstract class _$$CutNodeImplCopyWith<$Res> {
           _$CutNodeImpl value, $Res Function(_$CutNodeImpl) then) =
       __$$CutNodeImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({STreeNode node, dynamic skipSave});
+  $Res call({STreeNode node, String? scName, dynamic skipSave});
 }
 
 /// @nodoc
@@ -13835,6 +14123,7 @@ class __$$CutNodeImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? node = null,
+    Object? scName = freezed,
     Object? skipSave = freezed,
   }) {
     return _then(_$CutNodeImpl(
@@ -13842,6 +14131,10 @@ class __$$CutNodeImplCopyWithImpl<$Res>
           ? _value.node
           : node // ignore: cast_nullable_to_non_nullable
               as STreeNode,
+      scName: freezed == scName
+          ? _value.scName
+          : scName // ignore: cast_nullable_to_non_nullable
+              as String?,
       skipSave: freezed == skipSave ? _value.skipSave! : skipSave,
     ));
   }
@@ -13850,17 +14143,20 @@ class __$$CutNodeImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
-  const _$CutNodeImpl({required this.node, this.skipSave = false});
+  const _$CutNodeImpl(
+      {required this.node, required this.scName, this.skipSave = false});
 
   @override
   final STreeNode node;
+  @override
+  final String? scName;
   @override
   @JsonKey()
   final dynamic skipSave;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.cutNode(node: $node, skipSave: $skipSave)';
+    return 'CAPIEvent.cutNode(node: $node, scName: $scName, skipSave: $skipSave)';
   }
 
   @override
@@ -13869,6 +14165,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     properties
       ..add(DiagnosticsProperty('type', 'CAPIEvent.cutNode'))
       ..add(DiagnosticsProperty('node', node))
+      ..add(DiagnosticsProperty('scName', scName))
       ..add(DiagnosticsProperty('skipSave', skipSave));
   }
 
@@ -13878,12 +14175,13 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         (other.runtimeType == runtimeType &&
             other is _$CutNodeImpl &&
             (identical(other.node, node) || other.node == node) &&
+            (identical(other.scName, scName) || other.scName == scName) &&
             const DeepCollectionEquality().equals(other.skipSave, skipSave));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, node, const DeepCollectionEquality().hash(skipSave));
+      runtimeType, node, scName, const DeepCollectionEquality().hash(skipSave));
 
   /// Create a copy of CAPIEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -13901,7 +14199,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -13953,14 +14252,16 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return cutNode(node, skipSave);
+    return cutNode(node, scName, skipSave);
   }
 
   @override
@@ -13971,7 +14272,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -14010,14 +14312,16 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return cutNode?.call(node, skipSave);
+    return cutNode?.call(node, scName, skipSave);
   }
 
   @override
@@ -14028,7 +14332,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -14066,8 +14371,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -14075,7 +14381,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult orElse(),
   }) {
     if (cutNode != null) {
-      return cutNode(node, skipSave);
+      return cutNode(node, scName, skipSave);
     }
     return orElse();
   }
@@ -14225,9 +14531,12 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
 
 abstract class CutNode implements CAPIEvent {
   const factory CutNode(
-      {required final STreeNode node, final dynamic skipSave}) = _$CutNodeImpl;
+      {required final STreeNode node,
+      required final String? scName,
+      final dynamic skipSave}) = _$CutNodeImpl;
 
   STreeNode get node;
+  String? get scName;
   dynamic get skipSave;
 
   /// Create a copy of CAPIEvent
@@ -14335,7 +14644,8 @@ class _$SelectedDirectoryOrNodeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -14387,8 +14697,10 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -14405,7 +14717,8 @@ class _$SelectedDirectoryOrNodeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -14444,8 +14757,10 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -14462,7 +14777,8 @@ class _$SelectedDirectoryOrNodeImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -14500,8 +14816,9 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -14754,7 +15071,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -14806,8 +15124,10 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -14824,7 +15144,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -14863,8 +15184,10 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -14881,7 +15204,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -14919,8 +15243,9 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,
@@ -15144,7 +15469,8 @@ class _$ForceSnippetRefreshImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)
         overrideTargetGK,
     required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(STreeNode? newContent, dynamic skipSave)
+    required TResult Function(
+            STreeNode? newContent, String? scName, dynamic skipSave)
         updateClipboard,
     required TResult Function(String snippetName, String versionId)
         publishSnippet,
@@ -15196,8 +15522,10 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(SnippetRootNode rootNode)
         copySnippetJsonToClipboard,
     required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(STreeNode node, dynamic skipSave) copyNode,
-    required TResult Function(STreeNode node, dynamic skipSave) cutNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(STreeNode node, String? scName, dynamic skipSave)
+        cutNode,
     required TResult Function(String snippetName, STreeNode? selectedNode)
         selectedDirectoryOrNode,
     required TResult Function(Uint8List? newBytes) imageChanged,
@@ -15214,7 +15542,8 @@ class _$ForceSnippetRefreshImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult? Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult? Function(String snippetName, String versionId)? publishSnippet,
     TResult? Function(String snippetName, String versionId)? revertSnippet,
     TResult? Function(String pathName)? deletePage,
@@ -15253,8 +15582,10 @@ class _$ForceSnippetRefreshImpl
     TResult? Function()? completeDeletion,
     TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult? Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult? Function(STreeNode node, String? scName, dynamic skipSave)?
+        cutNode,
     TResult? Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult? Function(Uint8List? newBytes)? imageChanged,
@@ -15271,7 +15602,8 @@ class _$ForceSnippetRefreshImpl
             String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
         overrideTargetGK,
     TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(STreeNode? newContent, dynamic skipSave)? updateClipboard,
+    TResult Function(STreeNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
     TResult Function(String snippetName, String versionId)? publishSnippet,
     TResult Function(String snippetName, String versionId)? revertSnippet,
     TResult Function(String pathName)? deletePage,
@@ -15309,8 +15641,9 @@ class _$ForceSnippetRefreshImpl
     TResult Function()? completeDeletion,
     TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
     TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(STreeNode node, dynamic skipSave)? copyNode,
-    TResult Function(STreeNode node, dynamic skipSave)? cutNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)?
+        copyNode,
+    TResult Function(STreeNode node, String? scName, dynamic skipSave)? cutNode,
     TResult Function(String snippetName, STreeNode? selectedNode)?
         selectedDirectoryOrNode,
     TResult Function(Uint8List? newBytes)? imageChanged,

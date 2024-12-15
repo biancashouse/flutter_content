@@ -21,7 +21,8 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   Widget? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       if (child == null) return null;
       try {
             Widget? childWidget = child?.toWidget(context, this);

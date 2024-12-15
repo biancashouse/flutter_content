@@ -34,6 +34,7 @@ enum TextOverflowEnum  {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -46,6 +47,7 @@ enum TextOverflowEnum  {
         wrap: true,
         calloutButtonSize: const Size(110, 30),
         calloutSize: const Size(240, 60),
+        scName: scName,
       );
 
   // @override

@@ -91,7 +91,8 @@ class FSImageNode extends CL with FSImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
 
       if (_gk == null) {
         _gk = createNodeGK();

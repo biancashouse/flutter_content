@@ -144,7 +144,8 @@ class ChipNode extends CL with ChipNodeMappable {
               name: 'destination Panel Name',
               stringValue: destinationPanelOrPlaceholderName,
               onStringChange: (newValue) {
-                refreshWithUpdate(() => destinationPanelOrPlaceholderName = newValue);
+                refreshWithUpdate(
+                    () => destinationPanelOrPlaceholderName = newValue);
               },
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
@@ -174,6 +175,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.name(context);
     try {
       TextStyle? ts = labelStyle?.toTextStyle(context);
 
@@ -182,27 +184,37 @@ class ChipNode extends CL with ChipNodeMappable {
       //         onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+      possiblyHighlightSelectedNode(scName);
 
       GlobalKey gk = createNodeGK();
 
       return InkWell(
-            onTap: () => onPressed(context, gk),
-            child: Chip(
-              key: gk,
-              label: Text(label),
-              // onLongPress: f != null ? () => f.call(context) : null,
-              labelStyle: ts,
-            ),
-          );
+        onTap: () => onPressed(context, gk, scName),
+        child: Chip(
+          key: gk,
+          label: Text(label),
+          // onLongPress: f != null ? () => f.call(context) : null,
+          labelStyle: ts,
+        ),
+      );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
   Feature? get feature => calloutConfigGroup?.contentSnippetName;
 
-  void onPressed(BuildContext context, GlobalKey gk) {
+  void onPressed(
+    BuildContext context,
+    GlobalKey gk,
+    ScrollControllerName? scName,
+  ) {
     if (onTapHandlerName != null) {
       fco.getNamedCallback(onTapHandlerName!)?.call(context, gk);
     } else if (feature != null) {
@@ -210,39 +222,50 @@ class ChipNode extends CL with ChipNodeMappable {
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
-            () => fco.showOverlay(
-            targetGkF: () => fco.getCalloutGk(feature),
-            calloutContent: SnippetPanel.fromSnippet(
-              panelName: calloutConfigGroup!.contentSnippetName!,
-              snippetName: BODY_PLACEHOLDER,
-              // allowButtonCallouts: false,
+        () => fco.showOverlay(
+          targetGkF: () => fco.getCalloutGk(feature),
+          calloutContent: SnippetPanel.fromSnippet(
+            panelName: calloutConfigGroup!.contentSnippetName!,
+            snippetName: BODY_PLACEHOLDER,
+            // allowButtonCallouts: false,
+            scName: scName,
+          ),
+          calloutConfig: CalloutConfig(
+            cId: feature!,
+            initialTargetAlignment: calloutConfigGroup!.targetAlignment != null
+                ? calloutConfigGroup!.targetAlignment!.flutterValue
+                : AlignmentEnum.bottomRight.flutterValue,
+            initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
+                ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
+                : AlignmentEnum.topLeft.flutterValue,
+            initialCalloutW: 200,
+            initialCalloutH: 150,
+            arrowType:
+                calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
+            finalSeparation: 100,
+            barrier: CalloutBarrier(
+              opacity: 0.1,
+              onTappedF: () async {
+                fco.dismiss(feature!);
+              },
             ),
-            calloutConfig: CalloutConfig(
-              cId: feature!,
-              initialTargetAlignment:
-              calloutConfigGroup!.targetAlignment != null ? calloutConfigGroup!.targetAlignment!.flutterValue : AlignmentEnum.bottomRight.flutterValue,
-              initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
-                  ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
-                  : AlignmentEnum.topLeft.flutterValue,
-              initialCalloutW: 200,
-              initialCalloutH: 150,
-              arrowType: calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
-              finalSeparation: 100,
-              barrier: CalloutBarrier(
-                opacity: 0.1,
-                onTappedF: () async {
-                  fco.dismiss(feature!);
-                },
-              ),
-              fillColor: calloutConfigGroup?.colorValue != null ? Color(calloutConfigGroup!.colorValue!) : Colors.white,
-            )),
+            fillColor: calloutConfigGroup?.colorValue != null
+                ? Color(calloutConfigGroup!.colorValue!)
+                : Colors.white,
+            scrollControllerName: scName,
+          ),
+        ),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      fco.addSubRoute(newPath: destinationRoutePathSnippetName!, template: SnippetTemplateEnum.empty);
+      fco.addSubRoute(
+          newPath: destinationRoutePathSnippetName!,
+          template: SnippetTemplateEnum.empty);
       context.go(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
-    } else if (destinationPanelOrPlaceholderName != null && destinationSnippetName != null) {
-      destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+    } else if (destinationPanelOrPlaceholderName != null &&
+        destinationSnippetName != null) {
+      destinationSnippetName ??=
+          '$destinationPanelOrPlaceholderName:default-snippet';
       capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
         snippetName: destinationSnippetName!,
         panelName: destinationPanelOrPlaceholderName!,

@@ -77,6 +77,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.name(context);
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
@@ -89,12 +90,12 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     IconButton button = IconButton(
       // if feature specified, must be a callout
       key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
-      onPressed: ()=>onPressed(context, gk),
+      onPressed: ()=>onPressed(context, gk, scName),
       style: btnStyle,
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
-    possiblyHighlightSelectedNode();
+    possiblyHighlightSelectedNode(scName);
 
     return Container(
       // container only for possble selection gk

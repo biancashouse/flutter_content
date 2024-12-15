@@ -12,10 +12,12 @@ import 'flutter_poll.dart';
 class FlutterPollOption extends HookWidget {
   final PollOptionId optionId;
   final Widget optionWidget;
+  final ScrollControllerName? scName;
 
   const FlutterPollOption({
     required this.optionId,
     required this.optionWidget,
+    required this.scName,
     super.key,
   });
 
@@ -139,16 +141,18 @@ class FlutterPollOption extends HookWidget {
                           final gcrServerUrl = fco.gcrServerUrl;
                           if (gcrServerUrl != null) {
                             fco.showPasswordlessStepper(
-                                targetGkF: () => key as GlobalKey?,
-                                gcrServerUrl: gcrServerUrl,
-                                onSignedInF: (ea) {
-                                  pollBloc.add(
-                                    PollEvent.userVoted(
-                                        voterId: ea,
-                                        poll: parentPollState.widget.poll,
-                                        optionId: optionId),
-                                  );
-                                });
+                              targetGkF: () => key as GlobalKey?,
+                              gcrServerUrl: gcrServerUrl,
+                              onSignedInF: (ea) {
+                                pollBloc.add(
+                                  PollEvent.userVoted(
+                                      voterId: ea,
+                                      poll: parentPollState.widget.poll,
+                                      optionId: optionId),
+                                );
+                              },
+                              scName: scName,
+                            );
                           } else {
                             debugPrint('missing gcr-bh-apps-dart');
                           }

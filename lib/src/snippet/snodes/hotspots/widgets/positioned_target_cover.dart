@@ -8,7 +8,7 @@ class TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const TargetCover(
     this.tc,
@@ -61,7 +61,7 @@ class _TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final String? scName;
+  final ScrollControllerName? scName;
 
   const _TargetCover(
     this.tc,

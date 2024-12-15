@@ -28,6 +28,7 @@ enum MainAxisAlignmentEnum  {
     required STreeNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
+    required ScrollControllerName? scName,
   }) =>
       PropertyButtonEnum(
         label: label,
@@ -40,6 +41,7 @@ enum MainAxisAlignmentEnum  {
         wrap: true,
         calloutButtonSize: Size(snode is RowNode ? 260 : 200, snode is RowNode ? 60 : 100),
         calloutSize: Size(snode is RowNode ? 140 : 370, snode is RowNode ? 380 :120),
+        scName: scName,
       );
 
 

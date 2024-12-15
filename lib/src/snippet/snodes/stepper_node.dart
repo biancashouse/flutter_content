@@ -45,7 +45,8 @@ class StepperNode extends MC with StepperNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       return possiblyCheckHeightConstraint(
         parentNode,
         FCStepper(

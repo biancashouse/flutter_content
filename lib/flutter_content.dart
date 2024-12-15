@@ -266,7 +266,8 @@ class FlutterContentMixins
           }
         }
         // may have been created
-        bool dynamicPageExists = appInfo.snippetNames.contains(state.matchedLocation);
+        bool dynamicPageExists =
+            appInfo.snippetNames.contains(state.matchedLocation);
         if (dynamicPageExists) {
           EditablePage.removeAllNodeWidgetOverlays();
           fco.dismiss('exit-editMode');
@@ -283,6 +284,7 @@ class FlutterContentMixins
             child: SnippetPanel.fromSnippet(
               panelName: "dynamic panel",
               snippetName: snippetName,
+              scName: null,
             ),
           );
           return dynamicPage;
@@ -313,8 +315,10 @@ class FlutterContentMixins
                       fco.dismiss('exit-editMode');
                       // bool userCanEdit = canEditContent.value;
                       final snippetName = destUrl;
-                      final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-                      SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                      final rootNode = SnippetTemplateEnum.empty.clone()
+                        ..name = snippetName;
+                      SnippetRootNode
+                          .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
                         snippetName: snippetName,
                         snippetRootNode: rootNode,
                       ).then((_) {
@@ -445,7 +449,6 @@ class FlutterContentMixins
   late GoRouter router;
 
   List<String> get pageList {
-
     List<RouteBase> allRoutes = [];
 
     void routes(List<RouteBase> parentRoutes) {
@@ -529,8 +532,7 @@ class FlutterContentMixins
 
     // remove all subsequent versions following the current version
     // before saving new version
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo != null) {
       VersionId? currVerId = snippetInfo.currentVersionId();
       if (currVerId != null) {
@@ -574,8 +576,7 @@ class FlutterContentMixins
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
     // update or create SnippetInfo
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
 
     VersionId? currVersionId = snippetInfo?.currentVersionId();
 
@@ -794,7 +795,7 @@ class FlutterContentMixins
 
   void hideClipboard() => dismiss("floating-clipboard");
 
-  void showFloatingClipboard() {
+  void showFloatingClipboard(ScrollControllerName? scName) {
     dismiss("floating-clipboard");
     fco.showOverlay(
         calloutContent: const ClipboardView(),
@@ -806,6 +807,7 @@ class FlutterContentMixins
           fillColor: Colors.transparent,
           arrowType: ArrowType.NONE,
           borderRadius: 16,
+          scrollControllerName: scName,
         ));
   }
 
@@ -929,7 +931,7 @@ class FlutterContentMixins
 
   void showSnippetTreeAndPropertiesCallout({
     required TargetKeyFunc targetGKF,
-    String? scName,
+    ScrollControllerName? scName,
     required VoidCallback onDismissedF,
     required STreeNode startingAtNode,
     required STreeNode selectedNode,
@@ -957,8 +959,8 @@ class FlutterContentMixins
     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
     CalloutConfig cc = snippetTreeCalloutConfig(
-        cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
-        onDismissedF: onDismissedF,
+      cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
+      onDismissedF: onDismissedF,
     );
 
     Widget content = SnippetTreeAndPropertiesCalloutContents(

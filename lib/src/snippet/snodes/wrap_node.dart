@@ -68,7 +68,8 @@ class WrapNode extends MC with WrapNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
     return Wrap(
         key: createNodeGK(),
         direction: direction.flutterValue,

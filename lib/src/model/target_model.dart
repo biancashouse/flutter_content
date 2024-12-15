@@ -297,6 +297,7 @@ class TargetModel with TargetModelMappable {
           fillColor: Colors.yellow,
           initialCalloutW: fco.scrW * .8,
           initialCalloutH: 40,
+          scrollControllerName: null,
         ),
         calloutContent: Padding(
             padding: const EdgeInsets.all(10),

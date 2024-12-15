@@ -28,7 +28,8 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       // List<Widget> menuBarChildren = super.children.map((child) =>
       //         child.toWidget(context, this)).toList();
       try {

@@ -65,7 +65,8 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
       // treeC.expand(this);
       treeC.expandCascading([this]);
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+      ScrollControllerName? scName = EditablePage.name(context);
+      possiblyHighlightSelectedNode(scName);
       return parentNode is! DirectoryNode
           ? Material(child: _widget(nodeCount, treeC))
           : _widget(nodeCount, treeC);

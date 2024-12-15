@@ -30,9 +30,11 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.name(context);
     try {
       setParent(parentNode);
-      possiblyHighlightSelectedNode();
+    ScrollControllerName? scName = EditablePage.name(context);
+    possiblyHighlightSelectedNode(scName);
       if (getParent() is PollNode) {
         PollNode parentPoll = getParent() as PollNode;
         int pos = parentPoll.children.indexOf(this);
@@ -40,6 +42,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
           key: createNodeGK(),
           optionId: pos.toString(),
           optionWidget: Text(text),
+          scName: scName,
         );
       } else {
         return Error(
