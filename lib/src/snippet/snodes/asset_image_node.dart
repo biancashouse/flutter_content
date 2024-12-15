@@ -44,7 +44,8 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'name',
           stringValue: name,
           skipHelperText: true,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
@@ -52,34 +53,39 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           snode: this,
           name: 'width',
           decimalValue: width,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'height',
           decimalValue: height,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'scale',
           decimalValue: scale,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => scale = newValue ?? 1.0),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => scale = newValue ?? 1.0),
           calloutButtonSize: const Size(80, 20),
         ),
         EnumPropertyValueNode<BoxFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
         ),
         EnumPropertyValueNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
         ),
       ];
 
@@ -171,42 +177,45 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
       }
 
       return name?.isNotEmpty ?? false
-          ? LayoutBuilder(
-          builder: (context, constraints) {
-            double? w = width != null
-                ? width! * scale
-                : constraints.maxWidth != double.infinity
-                ? constraints.maxWidth*scale
-                : null;
-            // double? h = height != null
-            //     ? height! * scale
-            //     : constraints.maxHeight != double.infinity
-            //     ? constraints.maxHeight*scale
-            //     : null;
-            // fco.logi('Constrints: ${constraints.toString()}');
-            return SizedBox(
-              width: w,
-              //height: h,
-              child: Image.asset(
-                key: _gk,
-                name!,
-                // scale: scale,
-                fit: fit?.flutterValue,
-                alignment: alignment?.flutterValue ?? Alignment.center,
-                // package: 'flutter_content',
-              ),
-            );
-          }
-      )
+          ? LayoutBuilder(builder: (context, constraints) {
+              double? w = width != null
+                  ? width! * scale
+                  : constraints.maxWidth != double.infinity
+                      ? constraints.maxWidth * scale
+                      : null;
+              // double? h = height != null
+              //     ? height! * scale
+              //     : constraints.maxHeight != double.infinity
+              //     ? constraints.maxHeight*scale
+              //     : null;
+              // fco.logi('Constrints: ${constraints.toString()}');
+              return SizedBox(
+                width: w,
+                //height: h,
+                child: Image.asset(
+                  key: _gk,
+                  name!,
+                  // scale: scale,
+                  fit: fit?.flutterValue,
+                  alignment: alignment?.flutterValue ?? Alignment.center,
+                  // package: 'flutter_content',
+                ),
+              );
+            })
           : Placeholder(
-        key: _gk,
-        color: Colors.purpleAccent,
-        strokeWidth: 2.0,
-        fallbackWidth: (width ?? 400) * (scale),
-        fallbackHeight: (height ?? 300) * (scale),
-      );
+              key: _gk,
+              color: Colors.purpleAccent,
+              strokeWidth: 2.0,
+              fallbackWidth: (width ?? 400) * (scale),
+              fallbackHeight: (height ?? 300) * (scale),
+            );
     } catch (e) {
-      return Error(key: _gk, FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: _gk,
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
@@ -280,12 +289,16 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   // }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Carousel", CarouselNode, action),
-      menuItemButton("AspectRatio", AspectRatioNode, action),
-      ...super.menuAnchorWidgets_WrapWith(action, true),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("Carousel", CarouselNode, action, scName),
+      menuItemButton("AspectRatio", AspectRatioNode, action, scName),
+      ...super.menuAnchorWidgets_WrapWith(action,  true, scName,),
     ];
   }
 

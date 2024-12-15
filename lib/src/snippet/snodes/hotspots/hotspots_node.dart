@@ -86,7 +86,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
         child: TargetsWrapper(
           parentNode: this,
           key: createNodeGK(),
-          scrollControllerName: EditablePage.name(context),
+          scName: EditablePage.name(context),
           child: super.child?.toWidget(context, this) ?? const Placeholder(),
         ),
       ),

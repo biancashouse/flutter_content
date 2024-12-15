@@ -23,33 +23,40 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 
   @override
   List<PTreeNode> properties(BuildContext context) => [
-    EnumPropertyValueNode<MainAxisAlignmentEnum?>(
-      snode: this,
-      name: 'mainAxisAlignment',
-      valueIndex: mainAxisAlignment?.index,
-      onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
-    ),
-    EnumPropertyValueNode<MainAxisSizeEnum?>(
-      snode: this,
-      name: 'mainAxisSize',
-      valueIndex: mainAxisSize?.index,
-      onIndexChange: (newValue) => refreshWithUpdate(() => mainAxisSize = MainAxisSizeEnum.of(newValue)),
-    ),
-    EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
-      snode: this,
-      name: 'crossAxisAlignment',
-      valueIndex: crossAxisAlignment?.index,
-      onIndexChange: (newValue) => refreshWithUpdate(() => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
-    ),
-  ];
+        EnumPropertyValueNode<MainAxisAlignmentEnum?>(
+          snode: this,
+          name: 'mainAxisAlignment',
+          valueIndex: mainAxisAlignment?.index,
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
+        ),
+        EnumPropertyValueNode<MainAxisSizeEnum?>(
+          snode: this,
+          name: 'mainAxisSize',
+          valueIndex: mainAxisSize?.index,
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
+        ),
+        EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
+          snode: this,
+          name: 'crossAxisAlignment',
+          valueIndex: crossAxisAlignment?.index,
+          onIndexChange: (newValue) => refreshWithUpdate(
+              () => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
+        ),
+      ];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Expanded", ExpandedNode, action),
-      menuItemButton("Flexible", FlexibleNode, action),
-      ...super.menuAnchorWidgets_WrapWith(action, true),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("Expanded", ExpandedNode, action, scName),
+      menuItemButton("Flexible", FlexibleNode, action, scName),
+      ...super.menuAnchorWidgets_WrapWith(action, true, scName),
     ];
   }
 
@@ -60,25 +67,34 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       possiblyHighlightSelectedNode();
       Widget w;
       try {
-            w = LayoutBuilder(builder: (context, constraints) {
-              // bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
-              return Flex(
-                direction: this is RowNode ? Axis.horizontal : Axis.vertical,
-                key: createNodeGK(),
-                mainAxisAlignment: mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
-                mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
-                crossAxisAlignment: crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
-                textBaseline: TextBaseline.alphabetic,
-                children: children.map((node) => node.toWidget(context, this)).toList(),
-              );
-            });
-          } catch(e) {
-            w = _Error();
-            fco.logi('Flex() failed to render properly. ===============================================');
-          }
+        w = LayoutBuilder(builder: (context, constraints) {
+          // bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
+          return Flex(
+            direction: this is RowNode ? Axis.horizontal : Axis.vertical,
+            key: createNodeGK(),
+            mainAxisAlignment:
+                mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
+            mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
+            crossAxisAlignment:
+                crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
+            textBaseline: TextBaseline.alphabetic,
+            children:
+                children.map((node) => node.toWidget(context, this)).toList(),
+          );
+        });
+      } catch (e) {
+        w = _Error();
+        fco.logi(
+            'Flex() failed to render properly. ===============================================');
+      }
       return w;
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 

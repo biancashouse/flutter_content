@@ -32,21 +32,24 @@ class PositionedNode extends SC with PositionedNodeMappable {
           snode: this,
           name: 'left',
           decimalValue: left,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => left = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => left = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'bottom',
           decimalValue: bottom,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => bottom = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => bottom = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPropertyValueNode(
           snode: this,
           name: 'right',
           decimalValue: right,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => right = newValue),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => right = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];
@@ -192,10 +195,16 @@ class PositionedNode extends SC with PositionedNodeMappable {
   List<Type> replaceWithRecommendations() => [PositionedNode, AlignNode];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      if (getParent() is! StackNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! StackNode) menuItemButton("Stack", StackNode, action),
+      if (getParent() is! StackNode)
+        ...super.menuAnchorWidgets_Heading(action, scName),
+      if (getParent() is! StackNode)
+        menuItemButton("Stack", StackNode, action, scName),
     ];
   }
 

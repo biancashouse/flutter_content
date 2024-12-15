@@ -25,11 +25,13 @@ class StepNode extends CL with StepNodeMappable {
   Step toStep(BuildContext context, int index, FCStepperState parent) {
     setParent(parent.widget.stepperNode);
     possiblyHighlightSelectedNode();
-     return Step(
-       isActive: parent.currentStep >= index,
-      title: title.toWidgetProperty(context, this) ?? fco.coloredText('must have a title', color: Colors.red),
+    return Step(
+      isActive: parent.currentStep >= index,
+      title: title.toWidgetProperty(context, this) ??
+          fco.coloredText('must have a title', color: Colors.red),
       subtitle: subtitle?.toWidgetProperty(context, this),
-      content: content.toWidgetProperty(context, this) ?? fco.coloredText('must have content', color: Colors.red),
+      content: content.toWidgetProperty(context, this) ??
+          fco.coloredText('must have content', color: Colors.red),
     );
   }
 
@@ -37,10 +39,16 @@ class StepNode extends CL with StepNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      if (getParent() is! StepperNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! StepperNode) menuItemButton("Stepper", StepperNode, action),
+      if (getParent() is! StepperNode)
+        ...super.menuAnchorWidgets_Heading(action, scName),
+      if (getParent() is! StepperNode)
+        menuItemButton("Stepper", StepperNode, action, scName),
     ];
   }
 
@@ -58,7 +66,6 @@ class StepNode extends CL with StepNodeMappable {
 
   @override
   List<Type> insertSiblingOnly() => [StepNode];
-
 
   @override
   String toString() => FLUTTER_TYPE;

@@ -325,7 +325,7 @@ class EditablePageState extends State<EditablePage> {
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
               whiteBarrier: overlayWithABarrier,
-              scrollControllerName: widget.routePath,
+              scName: widget.routePath,
             );
           }
         }

@@ -4,8 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
-bool isShowingSnippetCallout(TargetModel tc) =>
-    fco.anyPresent([tc.contentCId]);
+bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
 
 void hideSnippetCallout(TargetModel tc) => fco.hide(tc.contentCId);
 
@@ -26,7 +25,7 @@ Future<void> showSnippetContentCallout({
   required TargetModel tc,
   required bool justPlaying,
   required Rect wrapperRect,
-  String? scrollControllerName,
+  String? scName,
 }) async {
   // possibly transform before showing callout
 
@@ -62,12 +61,15 @@ Future<void> showSnippetContentCallout({
   Widget content() => SnippetPanel.fromSnippet(
         panelName: tc.contentCId, // never used
         snippetName: tc.contentSnippetName,
+        scName: scName,
       );
 
   Widget editableContent() => GestureDetector(
         onTap: () async {
-          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(tc.contentSnippetName);
-          SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
+          SnippetInfoModel? snippetInfo =
+              SnippetInfoModel.cachedSnippet(tc.contentSnippetName);
+          SnippetRootNode? snippet =
+              await snippetInfo?.currentVersionFromCacheOrFB();
           String? snippetName = snippet?.name;
           // maybe a page snippet, so check name in appInfo: maybe prefix with /
           if (fco.appInfo.snippetNames.contains('/$snippetName}')) {
@@ -79,7 +81,7 @@ Future<void> showSnippetContentCallout({
             snippet.child ?? snippet,
             targetBeingConfigured: tc,
           );
-          fco.afterMsDelayDo(2000, (){
+          fco.afterMsDelayDo(2000, () {
             fco.refresh(tc.contentCId);
           });
         },
@@ -112,7 +114,7 @@ Future<void> showSnippetContentCallout({
     ),
     calloutConfig: CalloutConfig(
       cId: tc.contentCId,
-      scrollControllerName: scrollControllerName,
+      scrollControllerName: scName,
       // scale: tc.transformScale,
       // barrierOpacity: 0.1,
       fillColor: tc.calloutColor(),

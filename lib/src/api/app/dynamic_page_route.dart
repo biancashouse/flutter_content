@@ -26,10 +26,11 @@ class DynamicPageRoute extends GoRoute {
                   fco.currentRoute = routePath;
                   return EditablePage(
                     key: GlobalKey(), // provides access to state later
-                    routePath: state.path!,
+                    routePath: routePath,
                     child: SnippetPanel.fromNodes(
                       panelName: routePath,
                       snippetRootNode: template.clone()..name = state.path!,
+                      scName: routePath,
                     ),
                   );
                 }

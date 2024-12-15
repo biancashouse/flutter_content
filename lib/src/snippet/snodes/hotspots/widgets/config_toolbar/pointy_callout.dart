@@ -5,13 +5,13 @@ import 'package:flutter_content/flutter_content.dart';
 class PointyTool extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final String? scrollControllerName;
+  final String? scName;
   final bool justPlaying;
 
   const PointyTool(
     this.tc, {
     required this.wrapperRect,
-    this.scrollControllerName,
+    this.scName,
     required this.justPlaying,
     super.key,
   });
@@ -21,7 +21,7 @@ class PointyTool extends StatefulWidget {
 
   static show(final TargetModel tc,
       final Rect wrapperRect,
-      {final String? scrollControllerName, required final bool justPlaying}) {
+      {final String? scName, required final bool justPlaying}) {
     GlobalKey? targetGK =
         // tc.single
         //     ? FCO.getSingleTargetGk(tc.wName)
@@ -33,7 +33,7 @@ class PointyTool extends StatefulWidget {
         calloutContent: PointyTool(
           tc,
           wrapperRect: wrapperRect,
-          scrollControllerName: scrollControllerName,
+          scName: scName,
           justPlaying: justPlaying,
         ),
         calloutConfig: CalloutConfig(
@@ -89,7 +89,7 @@ class _PointyToolState extends State<PointyTool> {
       justPlaying: false,
       // widget.onParentBarrierTappedF,
       wrapperRect: widget.wrapperRect,
-      scrollControllerName: widget.scrollControllerName,
+      scName: widget.scName,
     );
     // fco.afterNextBuildDo(() {
     //   removeSnippetContentCallout(tc.snippetName);

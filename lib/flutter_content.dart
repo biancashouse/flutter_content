@@ -849,6 +849,7 @@ class FlutterContentMixins
   CalloutConfig snippetTreeCalloutConfig({
     required String cId,
     required VoidCallback onDismissedF,
+    ScrollControllerName? scName,
   }) {
     double width() {
       double? w = fco.hiveBox.get("snippet-tree-callout-width");
@@ -922,12 +923,13 @@ class FlutterContentMixins
       onDragEndedF: (_) {
         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = false;
       },
+      scrollControllerName: scName,
     );
   }
 
   void showSnippetTreeAndPropertiesCallout({
     required TargetKeyFunc targetGKF,
-    String? scrollControllerName,
+    String? scName,
     required VoidCallback onDismissedF,
     required STreeNode startingAtNode,
     required STreeNode selectedNode,
@@ -956,10 +958,11 @@ class FlutterContentMixins
 
     CalloutConfig cc = snippetTreeCalloutConfig(
         cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
-        onDismissedF: onDismissedF);
+        onDismissedF: onDismissedF,
+    );
 
     Widget content = SnippetTreeAndPropertiesCalloutContents(
-      scrollControllerName: scrollControllerName,
+      scName: scName,
       allowButtonCallouts: allowButtonCallouts,
     );
 

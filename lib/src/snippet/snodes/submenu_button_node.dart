@@ -25,7 +25,8 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
           snode: this,
           name: 'itemLabel',
           stringValue: itemLabel,
-          onStringChange: (newValue) => refreshWithUpdate(() => itemLabel = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => itemLabel = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -67,7 +68,8 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
           },
         ),
       ),
-      menuChildren: super.children.map((child) => child.toWidget(context, this)).toList(),
+      menuChildren:
+          super.children.map((child) => child.toWidget(context, this)).toList(),
       // child: child == null ? Text(itemLabel??'label?') : child?.toWidget(context, this),
       child: Text(itemLabel),
     );
@@ -77,12 +79,18 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      if (getParent() is! MenuBarNode) ...super.menuAnchorWidgets_Heading( action),
-      if (findNearestAncestor<MenuBarNode>() == null && findNearestAncestor<SubmenuButtonNode>() == null)
-        menuItemButton("MenuBar", MenuBarNode, action),
-      menuItemButton("SubMenu", SubmenuButtonNode, action),
+      if (getParent() is! MenuBarNode)
+        ...super.menuAnchorWidgets_Heading(action, scName),
+      if (findNearestAncestor<MenuBarNode>() == null &&
+          findNearestAncestor<SubmenuButtonNode>() == null)
+        menuItemButton("MenuBar", MenuBarNode, action, scName),
+      menuItemButton("SubMenu", SubmenuButtonNode, action, scName),
     ];
   }
 

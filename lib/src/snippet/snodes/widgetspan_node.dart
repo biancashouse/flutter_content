@@ -20,11 +20,16 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
     try {
       return WidgetSpan(
-        child: child != null ? child!.toWidget(context, this) : fco.boxChild(child: const Text("missing child!"), bgColor: Colors.red),
+        child: child != null
+            ? child!.toWidget(context, this)
+            : fco.boxChild(
+                child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
-      return  WidgetSpan(child: Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
+      return WidgetSpan(
+          child:
+              Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
   }
 
@@ -41,10 +46,14 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   }
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("TextSpan", TextSpanNode, action),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("TextSpan", TextSpanNode, action, scName),
     ];
   }
 

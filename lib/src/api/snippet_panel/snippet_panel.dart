@@ -28,7 +28,7 @@ class SnippetPanel extends StatefulWidget {
   // final VoidCallback? onPressed;
   // final VoidCallback? onLongPress;
   // parent widget may be scrollable
-  final String? scrollControllerName;
+  final ScrollControllerName? scName;
 
   // effectively from a Template
   const SnippetPanel.fromNodes({
@@ -37,7 +37,7 @@ class SnippetPanel extends StatefulWidget {
     this.handlers,
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
-    this.scrollControllerName,
+    this.scName,
     super.key,
   }) : snippetName = null;
 
@@ -52,7 +52,7 @@ class SnippetPanel extends StatefulWidget {
     // this.icon,
     // this.iconColor,
     // this.iconSize,
-    this.scrollControllerName,
+    this.scName,
     super.key,
   }) : snippetRootNode = null;
 
@@ -316,7 +316,7 @@ class SnippetPanelState extends State<SnippetPanel>
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
               whiteBarrier: !barrierApplied,
-              scrollControllerName: widget.scrollControllerName,
+              scName: widget.scName,
             );
             barrierApplied = true;
           }

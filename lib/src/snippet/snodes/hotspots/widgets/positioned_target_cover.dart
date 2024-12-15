@@ -8,13 +8,13 @@ class TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final String? scrollControllerName;
+  final String? scName;
 
   const TargetCover(
     this.tc,
     this.index, {
     required this.wrapperRect,
-    this.scrollControllerName,
+    this.scName,
     super.key,
   });
 
@@ -50,7 +50,7 @@ class TargetCover extends StatelessWidget {
           tc,
           index,
           wrapperRect,
-          scrollControllerName,
+          scName,
         ),
       ),
     );
@@ -61,13 +61,13 @@ class _TargetCover extends StatelessWidget {
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
-  final String? scrollControllerName;
+  final String? scName;
 
   const _TargetCover(
     this.tc,
     this.index,
     this.wrapperRect,
-    this.scrollControllerName,
+    this.scName,
   );
 
   @override
@@ -79,7 +79,7 @@ class _TargetCover extends StatelessWidget {
         TargetsWrapper.configureTarget(
           tc,
           wrapperRect,
-          scrollControllerName,
+          scName,
         );
       },
       child: Stack(

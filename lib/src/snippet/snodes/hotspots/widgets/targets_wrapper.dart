@@ -10,14 +10,14 @@ class TargetsWrapper extends StatefulWidget {
   final HotspotsNode parentNode;
   final Widget? child;
   final bool hardEdge;
-  final String? scrollControllerName;
+  final String? scName;
 
   const TargetsWrapper(
       {
       required this.parentNode,
       this.child,
       this.hardEdge = true,
-      this.scrollControllerName,
+      this.scName,
       required super.key});
 
   @override
@@ -57,7 +57,7 @@ class TargetsWrapper extends StatefulWidget {
 // }
 
   static void configureTarget( TargetModel tc,
-      Rect wrapperRect, String? scrollControllerName,
+      Rect wrapperRect, String? scName,
       {bool quickly = false}) {
     if (!fco.canEditContent.value) return;
 
@@ -76,14 +76,14 @@ class TargetsWrapper extends StatefulWidget {
         tc: tc,
         justPlaying: false,
         wrapperRect: wrapperRect,
-        scrollControllerName: scrollControllerName,
+        scName: scName,
       );
       // show config toolbar in a toast
       tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
       showConfigToolbar(
         tc,
         wrapperRect,
-        scrollControllerName,
+        scName,
       );
 
       // fco.currentPageState?.hideFAB();
@@ -93,13 +93,13 @@ class TargetsWrapper extends StatefulWidget {
   static void showConfigToolbar(
     TargetModel tc,
     Rect wrapperRect,
-    final String? scrollControllerName,
+    final String? scName,
   ) {
     fco.dismiss(CalloutConfigToolbar.CID);
     fco.showOverlay(
       calloutConfig: CalloutConfig(
         cId: CalloutConfigToolbar.CID,
-        scrollControllerName: scrollControllerName,
+        scrollControllerName: scName,
         fillColor: Colors.purpleAccent,
         initialCalloutW: 820,
         initialCalloutH: 80,
@@ -203,8 +203,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     Offset? globalPos;
     try {
       globalPos = newPosAndSize.$1?.translate(
-        NamedScrollController.hScrollOffset(widget.scrollControllerName),
-        NamedScrollController.vScrollOffset(widget.scrollControllerName),
+        NamedScrollController.hScrollOffset(widget.scName),
+        NamedScrollController.vScrollOffset(widget.scName),
       );
       if (globalPos != null) {
         // fco.logi('globalPos != null');
@@ -291,8 +291,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         uid: newTargetId, //event.wName.hashCode,
       )..parentHotspotNode = widget.parentNode;
       Offset newGlobalPos = details.globalPosition.translate(
-        NamedScrollController.hScrollOffset(widget.scrollControllerName),
-        NamedScrollController.vScrollOffset(widget.scrollControllerName),
+        NamedScrollController.hScrollOffset(widget.scName),
+        NamedScrollController.vScrollOffset(widget.scName),
       );
       newTC.setTargetStackPosPc(
         newGlobalPos,
@@ -361,7 +361,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     tc,
                     _targetIndex(tc),
                     wrapperRect: wrapperRect,
-                    scrollControllerName: widget.scrollControllerName,
+                    scName: widget.scName,
                   ),
                 ),
               ),
@@ -378,7 +378,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     initialTC: tc,
                     index: _targetIndex(tc),
                     wrapperRect: wrapperRect,
-                    scrollControllerName: widget.scrollControllerName,
+                    scName: widget.scName,
                   ),
                 ),
           ],

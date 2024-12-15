@@ -8,12 +8,12 @@ import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoratio
 class MoreCalloutConfigSettings extends StatefulWidget {
   final TargetModel tc;
   final Rect wrapperRect;
-  final String? scrollControllerName;
+  final String? scName;
 
   const MoreCalloutConfigSettings(
     this.tc,
     this.wrapperRect, {
-    this.scrollControllerName,
+    this.scName,
     super.key,
   });
 
@@ -24,7 +24,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   static show(
     final TargetModel tc,
     final Rect wrapperRect, {
-    String? scrollControllerName,
+    String? scName,
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -38,7 +38,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         calloutContent: MoreCalloutConfigSettings(
           tc,
           wrapperRect,
-          scrollControllerName: scrollControllerName,
+          scName: scName,
         ),
         calloutConfig: CalloutConfig(
           cId: "more-cc-settings",
@@ -195,7 +195,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       wrapperRect: widget.wrapperRect,
       justPlaying: false,
       // widget.onParentBarrierTappedF,
-      scrollControllerName: widget.scrollControllerName,
+      scName: widget.scName,
     );
   }
 }

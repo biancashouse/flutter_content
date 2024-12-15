@@ -30,7 +30,8 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           name: 'text',
           numLines: 6,
           stringValue: text,
-          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => text = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
@@ -44,7 +45,8 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           snode: this,
           name: 'textStyle',
           textStyleGroup: textStyleGroup,
-          onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => textStyleGroup = newValue),
         ),
       ];
 
@@ -58,24 +60,29 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
     //     ?? DefaultTextStyle.of(context).style;
     // merge with individual text style properties
     // if (textStyleGroup != null) {
-      // ts = ts.merge(
-      //   TextStyle(
-      //     color: textStyleGroup?.colorValue != null ? Color(textStyleGroup!.colorValue!) : null,
-      //     fontFamily: textStyleGroup?.fontFamily != null ? textStyleGroup!.fontFamily! : null,
-      //     fontSize: textStyleGroup?.fontSize != null ? textStyleGroup!.fontSize! : null,
-      //   ),
-      // );
-      // ts.merge(textStyleGroup?.toTextStyle(context));
+    // ts = ts.merge(
+    //   TextStyle(
+    //     color: textStyleGroup?.colorValue != null ? Color(textStyleGroup!.colorValue!) : null,
+    //     fontFamily: textStyleGroup?.fontFamily != null ? textStyleGroup!.fontFamily! : null,
+    //     fontSize: textStyleGroup?.fontSize != null ? textStyleGroup!.fontSize! : null,
+    //   ),
+    // );
+    // ts.merge(textStyleGroup?.toTextStyle(context));
     // }
     try {
       return TextSpan(
         text: text ?? "",
         style: textStyleGroup?.toTextStyle(context),
-        children: children?.map<InlineSpan>((inlinespanNode) => inlinespanNode.toInlineSpan(context)).toList(),
+        children: children
+            ?.map<InlineSpan>(
+                (inlinespanNode) => inlinespanNode.toInlineSpan(context))
+            .toList(),
       );
     } catch (e) {
       fco.logi('cannot render $FLUTTER_TYPE!');
-      return  WidgetSpan(child: Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
+      return WidgetSpan(
+          child:
+              Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
   }
 
@@ -238,15 +245,20 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   bool canBeDeleted() => children == null || children!.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("TextSpan", TextSpanNode, action),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("TextSpan", TextSpanNode, action, scName),
     ];
   }
 
   @override
-  List<Type> replaceWithRecommendations() => [TextSpanNode, if (getParent() is TextSpanNode) WidgetSpanNode];
+  List<Type> replaceWithRecommendations() =>
+      [TextSpanNode, if (getParent() is TextSpanNode) WidgetSpanNode];
 
   @override
   String toString() => FLUTTER_TYPE;

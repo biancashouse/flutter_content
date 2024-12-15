@@ -6,14 +6,14 @@ class PTreeNodeWidget extends StatelessWidget {
   // final STreeNode sNode;
   final PTreeNodeTreeController treeC;
   final TreeEntry<PTreeNode> entry;
-  final String? scrollControllerName;
+  final String? scName;
 
   const PTreeNodeWidget({
     super.key,
     // required this.sNode,
     required this.treeC,
     required this.entry,
-    this.scrollControllerName,
+    this.scName,
   });
 
   CAPIBloC get bloc => FlutterContentApp.capiBloc;

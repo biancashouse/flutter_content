@@ -7,14 +7,14 @@ class TargetColourTool extends StatelessWidget {
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
-  final String? scrollControllerName;
+  final String? scName;
   final bool justPlaying;
 
   const TargetColourTool(
     this.tc,
     this.wrapperRect,
     this.onParentBarrierTappedF, {
-    this.scrollControllerName,
+    this.scName,
     required this.justPlaying,
     super.key,
   });
@@ -44,7 +44,7 @@ class TargetColourTool extends StatelessWidget {
           wrapperRect: wrapperRect,
           justPlaying: false,
           // widget.onParentBarrierTappedF,
-          scrollControllerName: scrollControllerName,
+          scName: scName,
         );
       });
       fco.dismiss('color-picker');
@@ -99,7 +99,7 @@ class TargetColourTool extends StatelessWidget {
     final TargetModel tc,
     final Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
-    final String? scrollControllerName,
+    final String? scName,
     required final bool justPlaying,
   }) {
     GlobalKey? targetGK =
@@ -126,7 +126,7 @@ class TargetColourTool extends StatelessWidget {
         tc,
         wrapperRect,
         onBarrierTappedF,
-        scrollControllerName: scrollControllerName,
+        scName: scName,
         justPlaying: justPlaying,
       ),
     );

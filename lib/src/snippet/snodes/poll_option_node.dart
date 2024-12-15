@@ -21,7 +21,8 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
           snode: this,
           name: 'text',
           stringValue: text,
-          onStringChange: (newValue) => refreshWithUpdate(() => text = newValue??''),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => text = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -33,21 +34,28 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
       setParent(parentNode);
       possiblyHighlightSelectedNode();
       if (getParent() is PollNode) {
-            PollNode parentPoll = getParent() as PollNode;
-            int pos = parentPoll.children.indexOf(this);
-            return FlutterPollOption(
-              key: createNodeGK(),
-              optionId: pos.toString(),
-              optionWidget: Text(text),
-            );
-          } else {
-            return Error(key: createNodeGK(), FLUTTER_TYPE,
-                color: Colors.red,
-                size: 32,
-                errorMsg: "getParent() is not a PollNode!");
-          }
+        PollNode parentPoll = getParent() as PollNode;
+        int pos = parentPoll.children.indexOf(this);
+        return FlutterPollOption(
+          key: createNodeGK(),
+          optionId: pos.toString(),
+          optionWidget: Text(text),
+        );
+      } else {
+        return Error(
+            key: createNodeGK(),
+            FLUTTER_TYPE,
+            color: Colors.red,
+            size: 32,
+            errorMsg: "getParent() is not a PollNode!");
+      }
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
@@ -71,10 +79,19 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_WrapWith(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      if (getParent() is! PollNode) ...super.menuAnchorWidgets_Heading(action),
-      if (getParent() is! PollNode) menuItemButton("Poll", PollNode, action),
+      if (getParent() is! PollNode)
+        ...super.menuAnchorWidgets_Heading(
+          action,
+          scName,
+        ),
+      if (getParent() is! PollNode)
+        menuItemButton("Poll", PollNode, action, scName),
     ];
   }
 

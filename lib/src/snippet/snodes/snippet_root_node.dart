@@ -276,7 +276,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
                 // restrictedRect: r,
-                // scrollControllerName: widget.scrollControllerName,
+                // scName: widget.scName,
                 );
           }
         }

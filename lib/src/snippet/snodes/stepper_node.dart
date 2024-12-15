@@ -11,7 +11,8 @@ part 'stepper_node.mapper.dart';
 @MappableClass()
 class StepperNode extends MC with StepperNodeMappable {
   StepperTypeEnum type;
-  String? name; // required iot allocate snippet names to step widgets (title, subtitle and content)
+  String?
+      name; // required iot allocate snippet names to step widgets (title, subtitle and content)
 
   StepperNode({
     this.type = StepperTypeEnum.vertical,
@@ -20,19 +21,20 @@ class StepperNode extends MC with StepperNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) =>
-      [
+  List<PTreeNode> properties(BuildContext context) => [
         EnumPropertyValueNode<StepperTypeEnum?>(
           snode: this,
           name: 'type',
           valueIndex: type.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => type = StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
+          onIndexChange: (newValue) => refreshWithUpdate(() =>
+              type = StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
         ),
         StringPropertyValueNode(
           snode: this,
           name: 'name',
           stringValue: name,
-          onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue),
           expands: false,
           calloutButtonSize: const Size(280, 20),
           calloutWidth: 280,
@@ -45,17 +47,21 @@ class StepperNode extends MC with StepperNodeMappable {
       setParent(parentNode);
       possiblyHighlightSelectedNode();
       return possiblyCheckHeightConstraint(
-            parentNode,
-            FCStepper(
-              this,
-              key: createNodeGK(),
-            ),
-          );
+        parentNode,
+        FCStepper(
+          this,
+          key: createNodeGK(),
+        ),
+      );
     } catch (e) {
-     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
-
 
   @override
   String toSource(BuildContext context) {
@@ -68,10 +74,14 @@ class StepperNode extends MC with StepperNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("Step", StepNode, action),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("Step", StepNode, action, scName),
     ];
   }
 

@@ -13,7 +13,7 @@ class TappableCommentBtn extends StatelessWidget {
   final bool isEndStep;
   final StepM? step;
   final bool bigger;
-  final String? scrollControllerName;
+  final String? scName;
 
   const TappableCommentBtn({
     required this.flowchart,
@@ -21,7 +21,7 @@ class TappableCommentBtn extends StatelessWidget {
     required this.isEndStep,
     this.step,
     this.bigger = false,
-    this.scrollControllerName,
+    this.scName,
     super.key,
   });
 
@@ -52,7 +52,7 @@ class TappableCommentBtn extends StatelessWidget {
             isEndStep,
             step,
             bigger,
-            scrollControllerName,
+            scName,
             comment,
           );
         },
@@ -65,7 +65,7 @@ class TappableCommentBtn extends StatelessWidget {
             isEndStep,
             step,
             bigger,
-            scrollControllerName,
+            scName,
             comment,
             onReadyF: () {},
           );
@@ -81,7 +81,7 @@ class TappableCommentBtn extends StatelessWidget {
     bool isEndStep,
     StepM? step,
     bool bigger,
-    String? scrollControllerName,
+    String? scName,
     CommentM comment, {
     VoidCallback? onReadyF,
   }) {

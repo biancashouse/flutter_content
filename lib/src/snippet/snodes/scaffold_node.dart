@@ -61,30 +61,34 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
 
     try {
       return ValueListenableBuilder<bool>(
-            valueListenable: fco.canEditContent,
-            builder: (context, value, child) {
-              bool showPencil = !value;
-              return Stack(
-                children: [
-                  scaffold,
-                  if (showPencil && canShowEditorLoginBtn)
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                          onPressed: () {
-                            // ask user to sign in as editor
-                            EditablePage.of(context)
-                                ?.editorPasswordDialog();
-                          },
-                          icon: const Icon(Icons.edit, color: Colors.white),
-                        )),
-                ],
-              );
-            },
-            child: scaffold,
+        valueListenable: fco.canEditContent,
+        builder: (context, value, child) {
+          bool showPencil = !value;
+          return Stack(
+            children: [
+              scaffold,
+              if (showPencil && canShowEditorLoginBtn)
+                Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        // ask user to sign in as editor
+                        EditablePage.of(context)?.editorPasswordDialog();
+                      },
+                      icon: const Icon(Icons.edit, color: Colors.white),
+                    )),
+            ],
           );
+        },
+        child: scaffold,
+      );
     } catch (e) {
-     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 
@@ -92,10 +96,14 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   bool canBeDeleted() => appBar == null && body == null;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading) {
+  List<Widget> menuAnchorWidgets_Append(
+    NodeAction action,
+    bool? skipHeading,
+    ScrollControllerName? scName,
+  ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action),
-      menuItemButton("PollOption", PollOptionNode, action),
+      ...super.menuAnchorWidgets_Heading(action, scName),
+      menuItemButton("PollOption", PollOptionNode, action, scName),
     ];
   }
 

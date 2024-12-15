@@ -16,7 +16,7 @@ void removeTargetDurationCallout() {
 
 Future<void> showTargetDurationCallout(
   final TargetModel tc, {
-  final String? scrollControllerName,
+  final String? scName,
 }) async {
   GlobalKey? targetGK =
   // tc.single
@@ -36,7 +36,7 @@ Future<void> showTargetDurationCallout(
           ),
       calloutConfig: CalloutConfig(
         cId: "duration",
-        scrollControllerName: scrollControllerName,
+        scrollControllerName: scName,
         initialTargetAlignment: Alignment.centerRight,
         initialCalloutAlignment: Alignment.centerLeft,
         finalSeparation: 30,

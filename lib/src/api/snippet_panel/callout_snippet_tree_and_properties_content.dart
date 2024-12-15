@@ -6,19 +6,18 @@ import 'package:flutter_content/src/snippet/pnode_widget.dart';
 import 'package:flutter_content/src/snippet/snode_widget.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
-
 // import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
-  final String? scrollControllerName;
+  final String? scName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
   final bool allowButtonCallouts;
 
   const SnippetTreeAndPropertiesCalloutContents({
-    this.scrollControllerName,
+    this.scName,
     // required this.onChangedF,
     // required this.onExpiredF,
     this.allowButtonCallouts = false,
@@ -33,7 +32,8 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
   //   return _entry.node as SnippetNode;
   // }
 
-  void popThenRepushSnipper(String snippetName, VoidCallback enterEditModeF,
+  void popThenRepushSnipper(
+      String snippetName, VoidCallback enterEditModeF,
       VoidCallback exitEditModeF) {
     STreeNode treeRootNode =
         FlutterContentApp.snippetBeingEdited!.treeC.roots.first;
@@ -44,6 +44,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       snippetName,
       startingAtNode,
       selectedNode,
+      scName: scName,
     );
   }
 
@@ -329,7 +330,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               .add(const CAPIEvent.clearNodeSelection());
                           fco.hide("floating-clipboard");
                         },
-                        child: SnippetTreePane(snippetInfo),
+                        child: SnippetTreePane(snippetInfo, scName),
                       );
                     },
                     flex: 1,
@@ -732,15 +733,16 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 
 class SnippetTreePane extends StatelessWidget {
   final SnippetInfoModel snippetInfo;
+  final ScrollControllerName? scName;
 
-  const SnippetTreePane(this.snippetInfo, {super.key});
+  const SnippetTreePane(this.snippetInfo, this.scName, {super.key});
 
   @override
   Widget build(BuildContext context) {
     if (FlutterContentApp.snippetBeingEdited?.getRootNode().child == null) {
       List<Widget> menuChildren = FlutterContentApp.snippetBeingEdited
               ?.getRootNode()
-              .menuAnchorWidgets(NodeAction.addChild) ??
+              .menuAnchorWidgets(NodeAction.addChild, scName) ??
           [];
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
@@ -809,12 +811,12 @@ class SnippetTreePane extends StatelessWidget {
                       if (canShowNavigateUpBtn)
                         navigateUpTreeButton(),
                       Expanded(
-                          child: SnippetTreeView()),
+                          child: SnippetTreeView(scName: scName,)),
                     ],
                   );
                 }
                 fco.logi('SnippetTreeView...');
-                return SnippetTreeView();
+                return SnippetTreeView(scName: scName,);
               }),
             ),
           ),
@@ -826,7 +828,7 @@ class SnippetTreePane extends StatelessWidget {
   Widget navigateUpTreeButton() =>
       FilledButton(
         onPressed: () {
-          SnippetTreePane.navigateUpTree();
+          SnippetTreePane.navigateUpTree(scName);
           return;
 
           // TBD ----------------
@@ -876,7 +878,7 @@ class SnippetTreePane extends StatelessWidget {
         child: fco.coloredText("...", color: Colors.white, fontSize: 24),
       );
 
-  static void navigateUpTree() {
+  static void navigateUpTree(ScrollControllerName? scName) {
     // change tree root to parent
     STreeNode treeRootNode =
         FlutterContentApp.snippetBeingEdited!.treeC.roots.first;
@@ -893,20 +895,21 @@ class SnippetTreePane extends StatelessWidget {
         parent.rootNodeOfSnippet()!.name,
         parent,
         parent,
+        scName:scName,
       );
     }
   }
 }
 
 class SnippetTreeView extends StatelessWidget {
-  final String? scrollControllerName;
+  final String? scName;
 
   // final VoidCallback onChangedF;
   // final VoidCallback onExpiredF;
   final bool allowButtonCallouts;
 
   const SnippetTreeView({
-    this.scrollControllerName,
+    this.scName,
     // required this.onChangedF,
     // required this.onExpiredF,
     this.allowButtonCallouts = false,
@@ -964,6 +967,7 @@ class SnippetTreeView extends StatelessWidget {
           treeController: treeC,
           entry: entry,
           allowButtonCallouts: allowButtonCallouts,
+          scName: scName,
         ),
       );
 }

@@ -9,8 +9,8 @@ class NodeWidget extends StatelessWidget {
   final SnippetTreeController treeController;
   final TreeEntry<STreeNode> entry;
   final bool onClipboard;
-  final String? scrollControllerName;
   final bool allowButtonCallouts;
+  final ScrollControllerName? scName;
 
   const NodeWidget({
     super.key,
@@ -18,8 +18,8 @@ class NodeWidget extends StatelessWidget {
     required this.treeController,
     required this.entry,
     this.onClipboard = false,
-    this.scrollControllerName,
     this.allowButtonCallouts = false,
+    this.scName,
   });
 
   @override
@@ -113,6 +113,7 @@ class NodeWidget extends StatelessWidget {
             snippet.name,
             snippet,
             snippet.child ?? snippet,
+            scName: scName,
           );
         }
       },
@@ -125,6 +126,8 @@ class NodeWidget extends StatelessWidget {
 
         if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
             entry.node == FlutterContentApp.selectedNode) return;
+
+        double savedOffset = NamedScrollController.scrollOffset(scName);
 
         if (!treeController.getExpansionState(entry.node)) {
           treeController.expand(entry.node);
@@ -145,17 +148,22 @@ class NodeWidget extends StatelessWidget {
           if (fco.clipboard != null) {
             fco.unhide("floating-clipboard");
           }
+
           FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
             node: entry.node,
             // imageTC: tc,
             // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
             // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
           ));
-          fco.afterNextBuildDo(() {
-            EditablePage.removeAllNodeWidgetOverlays();
-            entry.node.showNodeWidgetOverlay(skipMeasure: true);
-            // create selected node's properties tree
-          });
+
+          fco.afterNextBuildDo(
+            () {
+              EditablePage.removeAllNodeWidgetOverlays();
+              entry.node.showNodeWidgetOverlay(skipMeasure: true);
+              //NamedScrollController.restoreOffsetTo(scName, savedOffset);
+            },
+            scrollControllers: NamedScrollController.allControllers(),
+          );
         }
 
         // removeNodePropertiesCallout();
