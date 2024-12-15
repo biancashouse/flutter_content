@@ -53,7 +53,7 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
             }
           }
 
-          fco.afterNextBuildDo(()=>getSize());
+          fco.afterNextBuildDo(() => getSize());
 
           UMLRecord? umlRecord = snapshot.data;
 
@@ -128,7 +128,19 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
 
   Widget _plantUMLImageArea(Uint8List pngBytes) => Center(
         child: SingleChildScrollView(
-          child: Image.memory(key: gkForSizing, pngBytes),
+          child: Image.memory(
+            key: gkForSizing,
+            pngBytes,
+            errorBuilder: (context, o, stackTrace) {
+              return Error(
+                key: GlobalKey(),
+                "PlantUMLTextEditor Image.memory",
+                color: Colors.red,
+                size: 18,
+                errorMsg: 'Bad pngBytes',
+              );
+            },
+          ),
         ),
       );
 

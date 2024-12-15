@@ -170,8 +170,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
     try {
       setParent(parentNode); // propagating parents down from root
       ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
-
+      possiblyHighlightSelectedNode(scName);
 
       if (_gk == null) {
         _gk = createNodeGK();
@@ -201,6 +200,15 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                   fit: fit?.flutterValue,
                   alignment: alignment?.flutterValue ?? Alignment.center,
                   // package: 'flutter_content',
+                  errorBuilder: (context, o, stackTrace) {
+                    return Error(
+                      key: _gk = createNodeGK(),
+                      FLUTTER_TYPE,
+                      color: Colors.red,
+                      size: 18,
+                      errorMsg: 'Missing: $name',
+                    );
+                  },
                 ),
               );
             })
@@ -216,7 +224,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           key: _gk,
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 18,
           errorMsg: e.toString());
     }
   }
@@ -300,7 +308,11 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
       ...super.menuAnchorWidgets_Heading(action, scName),
       menuItemButton("Carousel", CarouselNode, action, scName),
       menuItemButton("AspectRatio", AspectRatioNode, action, scName),
-      ...super.menuAnchorWidgets_WrapWith(action,  true, scName,),
+      ...super.menuAnchorWidgets_WrapWith(
+        action,
+        true,
+        scName,
+      ),
     ];
   }
 

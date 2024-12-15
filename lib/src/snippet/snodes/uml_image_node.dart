@@ -74,11 +74,10 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-
     try {
       setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+      ScrollControllerName? scName = EditablePage.name(context);
+      possiblyHighlightSelectedNode(scName);
 
       return FutureBuilder<UMLRecord>(
           future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
@@ -104,6 +103,15 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
                 // scale: 3.0,
                 cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
                 fit: BoxFit.fill,
+                errorBuilder: (context, o, stackTrace) {
+                  return Error(
+                    key: GlobalKey(),
+                    "PlantUMLTextEditor Image.memory",
+                    color: Colors.red,
+                    size: 18,
+                    errorMsg: 'Bad pngBytes',
+                  );
+                },
               ),
             );
           });
