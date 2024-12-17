@@ -166,8 +166,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  Rect? measuredRect;
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  // Rect? measuredRect;
 
   PTreeNodeTreeController pTreeC(BuildContext context) {
     // var prevExpansions = _pTreeC?.expandedNodes;
@@ -225,49 +225,39 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     bool whiteBarrier = false,
     ScrollControllerName? scName,
   }) {
-    if (measuredRect == null) return;
+    // if (measuredRect == null) return;
 
     // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
-    Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
-    CalloutConfig cc = _cc(
-      cId: feature,
-      borderRect: borderRect,
-      whiteBarrier: whiteBarrier,
-      scName: scName,
-    );
-    fco.showOverlay(
-      ensureLowestOverlay: false,
-      calloutContent: PointerInterceptor(
-        intercepting: true,
-        child: Tooltip(
-          message: 'tap to edit this ${toString()} node',
-          child: InkWell(
-            onTap: () => _tappedToEditSnipperNode(scName),
-            child: Container(
-              width: borderRect.width.abs(),
-              height: borderRect.height.abs(),
-              decoration: _decoration(transparent: true),
-              // decoration: BoxDecoration(
-              //   border: Border.all(
-              //       width: 2,
-              //       color: Colors.purpleAccent,
-              //       style: BorderStyle.solid),
-              // ),              // decoration: DottedDecoration(
-              //   shape: Shape.box,
-              //   dash: const <int>[4, 3],
-              //   borderColor: Colors.purpleAccent,
-              //   strokeWidth: 3,
-              //   // fillColor: Colors.transparent,
-              //   fillGradient: LinearGradient(colors: [Colors.white, Colors.yellowAccent]),
-              // ),
+    // Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
+    Rect? borderRect =  nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    if (borderRect != null) {
+      CalloutConfig cc = _cc(
+        cId: feature,
+        borderRect: borderRect,
+        whiteBarrier: whiteBarrier,
+        scName: scName,
+      );
+      fco.showOverlay(
+        ensureLowestOverlay: false,
+        calloutContent: PointerInterceptor(
+          intercepting: true,
+          child: Tooltip(
+            message: 'tap to edit this ${toString()} node',
+            child: InkWell(
+              onTap: () => _tappedToEditSnipperNode(scName),
+              child: Container(
+                width: borderRect.width.abs(),
+                height: borderRect.height.abs(),
+                decoration: _decoration(transparent: true),
+              ),
             ),
           ),
         ),
-      ),
-      calloutConfig: cc,
-      targetGkF: () => nodeWidgetGK,
-    );
+        calloutConfig: cc,
+        targetGkF: () => nodeWidgetGK,
+      );
+    }
   }
 
   void _tappedToEditSnipperNode(ScrollControllerName? scName) {
@@ -318,14 +308,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   void showNodeWidgetOverlay({
     bool whiteBarrier = false,
-    bool skipMeasure = false,
+    // bool skipMeasure = false,
     ScrollControllerName? scName,
   }) {
     fco.dismiss('pink-border-overlay-non-tappable');
-    Rect? r = !skipMeasure
-        ? nodeWidgetGK?.globalPaintBounds(
-            skipWidthConstraintWarning: true, skipHeightConstraintWarning: true)
-        : measuredRect;
+    var gkState = nodeWidgetGK?.currentState;
+    var gkCtx = nodeWidgetGK?.currentContext;
+    Rect? r =  nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       Rect borderRect = r; //_borderRect(r);
       CalloutConfig cc = _cc(
@@ -465,63 +454,64 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           fco.showFloatingClipboard(scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
-        fco.showSnippetTreeAndPropertiesCallout(
-          targetGKF: () => startingAtNode.nodeWidgetGK,
-          onDismissedF: () {
-// CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-            STreeNode.unhighlightSelectedNode();
-            // fco.printFeatures();
-            var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
-            // var currPageState = fco.currentPageState;
 
-            // currPageState?.unhideFAB();
-            fco.dismiss(pinkOverlayFeature);
-            // unhide if present
-            fco.unhide(CalloutConfigToolbar.CID);
-            // fco.printFeatures();
-            // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
-            // fco.dismiss(TREENODE_MENU_CALLOUT);
-            fco.hideClipboard();
-            debugPrint(
-                "onDismissedF - $snippetName, ${selectedNode.toString()})");
-            fco.inEditMode.value = false;
-            FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
-            fco.afterNextBuildDo(() {
-              NamedScrollController.restoreOffset(scName);
-            });
-            // skip if no change
-            // String? jsonBeforePush =
-            //     FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
-            // String? currentJsonS =
-            //     FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
-            // if (jsonBeforePush == currentJsonS) return;
-            // if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
-            //   fco.cacheAndSaveANewSnippetVersion(
-            //     snippetName: snippetName,
-            //     rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
-            //   );
-            // }
-            // fco.afterNextBuildDo(() {
-            // });
-            // FCO.capiBloc.add(
-            //       CAPIEvent.saveSnippet(
-            //         snippetRootNode: FCO.snippetBeingEdited!.rootNode,
-            //         newVersionId: newVersionId,
-            //       ),
-            //     );
-            //  fco.afterMsDelayDo(2000, (){
-            //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
-            //   if (toolbarPresent) {
-            //     hideAllTargetBtns();
-            //     hideAllTargetCovers();
-            //   }
-            // });
-          },
-          startingAtNode: startingAtNode,
-          selectedNode: selectedNode,
-          targetBeingConfigured: targetBeingConfigured,
-          scName: scName,
-        );
+//         fco.showSnippetTreeAndPropertiesCallout(
+//           targetGKF: () => startingAtNode.nodeWidgetGK,
+//           onDismissedF: () {
+// // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
+//             STreeNode.unhighlightSelectedNode();
+//             // fco.printFeatures();
+//             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
+//             // var currPageState = fco.currentPageState;
+//
+//             // currPageState?.unhideFAB();
+//             fco.dismiss(pinkOverlayFeature);
+//             // unhide if present
+//             fco.unhide(CalloutConfigToolbar.CID);
+//             // fco.printFeatures();
+//             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
+//             // fco.dismiss(TREENODE_MENU_CALLOUT);
+//             fco.hideClipboard();
+//             debugPrint(
+//                 "onDismissedF - $snippetName, ${selectedNode.toString()})");
+//             fco.inEditMode.value = false;
+//             FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
+//             fco.afterNextBuildDo(() {
+//               NamedScrollController.restoreOffset(scName);
+//             });
+//             // skip if no change
+//             // String? jsonBeforePush =
+//             //     FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
+//             // String? currentJsonS =
+//             //     FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
+//             // if (jsonBeforePush == currentJsonS) return;
+//             // if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
+//             //   fco.cacheAndSaveANewSnippetVersion(
+//             //     snippetName: snippetName,
+//             //     rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
+//             //   );
+//             // }
+//             // fco.afterNextBuildDo(() {
+//             // });
+//             // FCO.capiBloc.add(
+//             //       CAPIEvent.saveSnippet(
+//             //         snippetRootNode: FCO.snippetBeingEdited!.rootNode,
+//             //         newVersionId: newVersionId,
+//             //       ),
+//             //     );
+//             //  fco.afterMsDelayDo(2000, (){
+//             //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
+//             //   if (toolbarPresent) {
+//             //     hideAllTargetBtns();
+//             //     hideAllTargetCovers();
+//             //   }
+//             // });
+//           },
+//           startingAtNode: startingAtNode,
+//           selectedNode: selectedNode,
+//           targetBeingConfigured: targetBeingConfigured,
+//           scName: scName,
+//         );
 
         // FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
         //   node: selectedNode,
@@ -529,9 +519,16 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         //   // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
+
+        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: selectedNode));
+
         fco.afterNextBuildDo(() {
           EditablePage.removeAllNodeWidgetOverlays();
-          selectedNode.showNodeWidgetOverlay(skipMeasure: true);
+          bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+          print('snippetBeingEdited: $snippetBeingEdited');
+          fco.afterMsDelayDo(500, (){
+            selectedNode.showNodeWidgetOverlay();
+          });
           // create selected node's properties tree
         });
 

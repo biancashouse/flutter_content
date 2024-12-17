@@ -52,9 +52,6 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static bool _$isExpanded(PollNode v) => v.isExpanded;
   static const Field<PollNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(PollNode v) => v.measuredRect;
-  static const Field<PollNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(PollNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<PollNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -78,7 +75,6 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

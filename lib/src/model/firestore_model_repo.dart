@@ -77,8 +77,7 @@ class FireStoreModelRepository implements IModelRepository {
   Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
       {required SnippetName snippetName}) async {
     // may be already in cache
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo != null) {
       // if (FCO.currentSnippet(snippetName) != null) {
       return snippetInfo;

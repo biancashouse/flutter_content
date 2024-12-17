@@ -50,9 +50,6 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   static bool _$isExpanded(AppBarNode v) => v.isExpanded;
   static const Field<AppBarNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(AppBarNode v) => v.measuredRect;
-  static const Field<AppBarNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(AppBarNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<AppBarNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -75,7 +72,6 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #actions: _f$actions,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

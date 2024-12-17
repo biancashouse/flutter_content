@@ -231,7 +231,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
     ScrollControllerName? scName = EditablePage.name(context);
     possiblyHighlightSelectedNode(scName);
     var gk = createNodeGK();
-    print("Container GK: $gk");
+    // debugging
+    fco.afterNextBuildDo((){
+      Rect? r = gk.globalPaintBounds(
+          skipWidthConstraintWarning: true,
+          skipHeightConstraintWarning: true);
+      print("Container GK: $gk, $r");
+    });
     try {
       return Container(
         key: gk,

@@ -40,7 +40,7 @@ mixin HasImageInFBStorage {
 
     // stored in local srore i.e. prefs or indexedDB ?
     // fco.logi('getting local-store-cached...', name: 'mixin HasImageInFBStorage');
-    final s = fco.hiveBox.get(storageKey);
+    final s = fco.hiveBox?.get(storageKey);
     if (s != null) {
       imageBytes = base64Decode(s);
       if (imageBytes != null) {
@@ -77,7 +77,7 @@ mixin HasImageInFBStorage {
         imageSize = imageBytes!.lengthInBytes;
         // save to local storage
         String s = base64Encode(imageBytes!);
-        await fco.hiveBox.put(storageKey, s);
+        await fco.hiveBox?.put(storageKey, s);
         fco.logi('saved to local store: $storageKey');
         return downloadedData;
       }
@@ -90,7 +90,7 @@ mixin HasImageInFBStorage {
           Uint8List? data = await downloadImageData();
           // save (cache) to local storage
           String s = base64Encode(data!);
-          await fco.hiveBox.put(storageKey, s);
+          await fco.hiveBox?.put(storageKey, s);
           fco.logi('saved to local store: $storageKey');
           return data;
         } on firebase_storage.FirebaseException catch (e) {

@@ -305,7 +305,7 @@ class SnippetPanelState extends State<SnippetPanel>
           //   fco.logi('PlaceholderNode');
           // }
           if (r != null) {
-            node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
+            // node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
             r = fco.restrictRectToScreen(r);
             // fco.logi("========>  r restricted to ${r.toString()}");
             // fco.logi('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');

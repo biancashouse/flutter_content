@@ -35,9 +35,6 @@ class GenericSingleChildNodeMapper
   static bool _$isExpanded(GenericSingleChildNode v) => v.isExpanded;
   static const Field<GenericSingleChildNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(GenericSingleChildNode v) => v.measuredRect;
-  static const Field<GenericSingleChildNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(GenericSingleChildNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GenericSingleChildNode, bool>
@@ -57,7 +54,6 @@ class GenericSingleChildNodeMapper
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

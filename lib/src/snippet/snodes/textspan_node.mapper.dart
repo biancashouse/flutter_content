@@ -38,9 +38,6 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static bool _$isExpanded(TextSpanNode v) => v.isExpanded;
   static const Field<TextSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(TextSpanNode v) => v.measuredRect;
-  static const Field<TextSpanNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(TextSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TextSpanNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -59,7 +56,6 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

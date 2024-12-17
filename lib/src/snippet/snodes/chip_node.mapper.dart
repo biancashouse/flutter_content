@@ -78,9 +78,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   static bool _$isExpanded(ChipNode v) => v.isExpanded;
   static const Field<ChipNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(ChipNode v) => v.measuredRect;
-  static const Field<ChipNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(ChipNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<ChipNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -109,7 +106,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #calloutConfigGroup: _f$calloutConfigGroup,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

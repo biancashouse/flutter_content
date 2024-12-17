@@ -87,7 +87,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
       }
     } else {
       // try to fetch from algc firestore using ea and fid
-      String? vea = fco.hiveBox.get('vea');
+      String? vea = fco.hiveBox?.get('vea');
       vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
       if (vea.isEmpty) {
         return Error(key: createNodeGK(), FLUTTER_TYPE,

@@ -49,9 +49,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
   static bool _$isExpanded(RichTextNode v) => v.isExpanded;
   static const Field<RichTextNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(RichTextNode v) => v.measuredRect;
-  static const Field<RichTextNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(RichTextNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<RichTextNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -73,7 +70,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #text: _f$text,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

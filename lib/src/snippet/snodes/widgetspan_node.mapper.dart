@@ -31,9 +31,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   static bool _$isExpanded(WidgetSpanNode v) => v.isExpanded;
   static const Field<WidgetSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(WidgetSpanNode v) => v.measuredRect;
-  static const Field<WidgetSpanNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(WidgetSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<WidgetSpanNode, bool> _f$hidePropertiesWhileDragging =
@@ -50,7 +47,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

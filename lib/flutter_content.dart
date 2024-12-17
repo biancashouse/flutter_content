@@ -13,6 +13,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/pages.dart';
+import 'package:flutter_content/src/route_observer.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
@@ -351,6 +352,9 @@ class FlutterContentMixins
                 ],
               );
       },
+      observers: [
+        GoRouterObserver(),
+      ],
     );
 
     // extract go routes
@@ -409,7 +413,7 @@ class FlutterContentMixins
     await initLocalStorage();
     fco.logi('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    bool b = hiveBox.get("canEditContent") ?? false;
+    bool b = hiveBox?.get("canEditContent") ?? false;
     canEditContent = ValueNotifier<bool>(b);
 
     // FutureBuilder requires this return
@@ -669,7 +673,7 @@ class FlutterContentMixins
 
   Future<void> setCanEditContent(bool b) async {
     canEditContent.value = b;
-    return hiveBox.put("canEditContent", b);
+    return hiveBox?.put("canEditContent", b);
   }
 
   Offset calloutConfigToolbarPos() =>
@@ -854,7 +858,7 @@ class FlutterContentMixins
     ScrollControllerName? scName,
   }) {
     double width() {
-      double? w = fco.hiveBox.get("snippet-tree-callout-width");
+      double? w = fco.hiveBox?.get("snippet-tree-callout-width");
       if (w != null) return w.abs();
 
       // if (root?.child == null) return 190;
@@ -863,7 +867,7 @@ class FlutterContentMixins
     }
 
     double height() {
-      double? h = fco.hiveBox.get("snippet-tree-callout-height");
+      double? h = fco.hiveBox?.get("snippet-tree-callout-height");
       if (h != null) return h.abs();
 
       // if (root?.child == null) return 60;
@@ -916,8 +920,8 @@ class FlutterContentMixins
       resizeableV: true,
       onResizeF: (newSize) {
         // keep size in localstorage for future use
-        fco.hiveBox.put("snippet-tree-callout-width", newSize.width);
-        fco.hiveBox.put("snippet-tree-callout-height", newSize.height);
+        fco.hiveBox?.put("snippet-tree-callout-width", newSize.width);
+        fco.hiveBox?.put("snippet-tree-callout-height", newSize.height);
       },
       onDragStartedF: () {
         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = true;
@@ -958,21 +962,22 @@ class FlutterContentMixins
     // String? originalClipboardJson = FlutterContentApp.capiBloc.state.jsonClipboard;
     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
 
-    CalloutConfig cc = snippetTreeCalloutConfig(
-      cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
-      onDismissedF: onDismissedF,
-    );
+    // CalloutConfig cc = snippetTreeCalloutConfig(
+    //   cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
+    //   onDismissedF: onDismissedF,
+    // );
+    //
+    // Widget content = SnippetTreeAndPropertiesCalloutContents(
+    //   scName: scName,
+    //   allowButtonCallouts: allowButtonCallouts,
+    // );
+    //
+    // fco.showOverlay(
+    //   calloutConfig: cc,
+    //   calloutContent: content,
+    //   targetGkF: targetGKF,
+    // );
 
-    Widget content = SnippetTreeAndPropertiesCalloutContents(
-      scName: scName,
-      allowButtonCallouts: allowButtonCallouts,
-    );
-
-    fco.showOverlay(
-      calloutConfig: cc,
-      calloutContent: content,
-      targetGkF: targetGKF,
-    );
     // imm select a node
     STreeNode sel = selectedNode;
     FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
@@ -980,7 +985,7 @@ class FlutterContentMixins
       //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
 // imageTC: tc,
     ));
-    fco.afterNextBuildDo(() {
+    fco.afterMsDelayDo(100, () {
       selectedNode.showNodeWidgetOverlay();
     });
   }

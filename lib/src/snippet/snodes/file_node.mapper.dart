@@ -31,9 +31,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   static bool _$isExpanded(FileNode v) => v.isExpanded;
   static const Field<FileNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(FileNode v) => v.measuredRect;
-  static const Field<FileNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FileNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FileNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -51,7 +48,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
     #src: _f$src,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

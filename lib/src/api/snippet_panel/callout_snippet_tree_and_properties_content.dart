@@ -95,33 +95,6 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // fco.logi('SnippetTreeAndPropertiesCalloutContents tree build');
-    // final snippetBloc = context.watch<SnippetBloC>();
-    // final STreeNode? selectedNode = selectedNode;
-    // get parent callout config
-    // PositionedBoxContent? parent = PositionedBoxContent.of(context);
-    // var cc = parent?.calloutConfig;
-    // CAPIState state = FCO.capiBloc.state;
-    // pTreeC?.expandedNodes = CAPIState.expandedNodes[state.selectedNode!] ?? {};
-    // pTreeC?.rebuild();
-    // pTreeC?.addListener(() {
-    //   // may have toggled an expansion
-    //   CAPIState.expandedNodes[state.selectedNode!] = pTreeC.expandedNodes;
-    //   fco.logi('expanded: ${CAPIState.expandedNodes.length}');
-    // });
-    // GlobalKey snippetNodeAddChildBtnGK = GlobalKey();
-    // fco.logi("SnippetTreeCalloutContents rebuild Scaffold/SnippetTreePane and PropertiesTreePane...");
-    // fco.logi('${FCO.capiBloc.selectedNode?.propertiesPaneScrollPos ?? 0.0}');
-    // restore scrollPos
-    // STreeNode? selectedNode = ;
-    // if (selectedNode?.propertiesPaneSC().hasClients ?? false) {
-    //   fco.afterNextBuildDo(() {
-    //     if (selectedNode?.propertiesPaneScrollPos != selectedNode?.propertiesPaneSC().offset) {
-    //       selectedNode?.propertiesPaneSC().jumpTo(selectedNode.propertiesPaneScrollPos());
-    //     }
-    //   });
-    // }
-    // for the prev and next icons
     SnippetName? snippetName =
         FlutterContentApp.snippetBeingEdited?.getRootNode().name;
     if (snippetName == null) {
@@ -326,20 +299,20 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 },
                 initialAreas: [
                   // SNIPPET TREE
-                  Area(
-                    builder: (ctx, area) {
-                      state.snippetBeingEdited?.treeC.rebuild();
-                      return GestureDetector(
-                        onTap: () {
-                          FlutterContentApp.capiBloc
-                              .add(const CAPIEvent.clearNodeSelection());
-                          fco.hide("floating-clipboard");
-                        },
-                        child: SnippetTreePane(snippetInfo, scName),
-                      );
-                    },
-                    flex: 1,
-                  ),
+                  // Area(
+                  //   builder: (ctx, area) {
+                  //     state.snippetBeingEdited?.treeC.rebuild();
+                  //     return GestureDetector(
+                  //       onTap: () {
+                  //         FlutterContentApp.capiBloc
+                  //             .add(const CAPIEvent.clearNodeSelection());
+                  //         fco.hide("floating-clipboard");
+                  //       },
+                  //       child: SnippetTreePane(snippetInfo, scName),
+                  //     );
+                  //   },
+                  //   flex: 1,
+                  // ),
                   // NODE PROPERTIES
                   if (FlutterContentApp.selectedNode?.pTreeC != null)
                     Area(
@@ -355,18 +328,18 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                                     shrinkWrap: true,
                                     children: [
                                       // icon buttons
-                                      ExpansionTile(
-                                        title: fco.coloredText('widget actions',
-                                            color: Colors.white54,
-                                            fontSize: 14),
-                                        backgroundColor: Colors.black,
-                                        collapsedBackgroundColor: Colors.black,
-                                        onExpansionChanged: (bool isExpanded) =>
-                                            fco.showingNodeButtons = isExpanded,
-                                        initiallyExpanded:
-                                            fco.showingNodeButtons,
-                                        children: [nodeButtons(context)],
-                                      ),
+                                      // ExpansionTile(
+                                      //   title: fco.coloredText('widget actions',
+                                      //       color: Colors.white54,
+                                      //       fontSize: 14),
+                                      //   backgroundColor: Colors.black,
+                                      //   collapsedBackgroundColor: Colors.black,
+                                      //   onExpansionChanged: (bool isExpanded) =>
+                                      //       fco.showingNodeButtons = isExpanded,
+                                      //   initiallyExpanded:
+                                      //       fco.showingNodeButtons,
+                                      //   children: [nodeButtons(context, scName)],
+                                      // ),
                                       // NODE PROPERTIES TREE
                                       if (FlutterContentApp.selectedNode!
                                           .pTreeC(context)
@@ -421,7 +394,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     );
   }
 
-  Widget nodeButtons(context) {
+  static Widget nodeButtons(context, scName) {
     var selectedNode = FlutterContentApp.selectedNode!;
     var gc = selectedNode.getParent(); // may be genericchildnode
     return Container(
@@ -608,20 +581,20 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                 bgColor: Colors.lightBlueAccent,
               ),
             ),
-          editTreeStructureIconButtons(selectedNode),
+          _editTreeStructureIconButtons(selectedNode),
           const Gap(10),
         ],
       ),
     );
   }
 
-  bool _canReplace(STreeNode? selectNode) => selectNode?.getParent() != null;
+  static bool _canReplace(STreeNode? selectNode) => selectNode?.getParent() != null;
 
-  bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC ||
+  static bool _canAddSiblng(STreeNode? selectNodeParent) => (selectNodeParent is MC ||
       selectNodeParent is TextSpanNode ||
       selectNodeParent is WidgetSpanNode);
 
-  bool _canWrap(STreeNode selectedNode) => (selectedNode
+  static bool _canWrap(STreeNode selectedNode) => (selectedNode
           is! GenericSingleChildNode &&
       selectedNode is! GenericMultiChildNode &&
       selectedNode is! InlineSpanNode &&
@@ -630,7 +603,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       selectedNode is! PollOptionNode &&
       selectedNode is! StepNode);
 
-  bool _canAddChld(STreeNode selectedNode) =>
+  static bool _canAddChld(STreeNode selectedNode) =>
       selectedNode is! SnippetRootNode &&
       ((selectedNode is SnippetRootNode && selectedNode.child == null) ||
           // || (selectedNode is! ChildlessNode && !entry.hasChildren))
@@ -640,7 +613,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
               selectedNode is TextSpanNode ||
               selectedNode is WidgetSpanNode));
 
-  Widget editTreeStructureIconButtons(STreeNode selectedNode) {
+  static Widget _editTreeStructureIconButtons(STreeNode selectedNode) {
     return Center(
       child: Stack(
         children: [

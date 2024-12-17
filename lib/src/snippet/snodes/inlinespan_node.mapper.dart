@@ -29,9 +29,6 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   static bool _$isExpanded(InlineSpanNode v) => v.isExpanded;
   static const Field<InlineSpanNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(InlineSpanNode v) => v.measuredRect;
-  static const Field<InlineSpanNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(InlineSpanNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<InlineSpanNode, bool> _f$hidePropertiesWhileDragging =
@@ -47,7 +44,6 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   final MappableFields<InlineSpanNode> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

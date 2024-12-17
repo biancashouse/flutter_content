@@ -53,9 +53,6 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   static bool _$isExpanded(WrapNode v) => v.isExpanded;
   static const Field<WrapNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(WrapNode v) => v.measuredRect;
-  static const Field<WrapNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(WrapNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<WrapNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -78,7 +75,6 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

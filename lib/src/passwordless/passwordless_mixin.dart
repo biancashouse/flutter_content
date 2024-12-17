@@ -141,7 +141,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
   }
 
   bool userHasConfirmed() {
-    return fco.hiveBox.get('vea') == ea;
+    return fco.hiveBox?.get('vea') == ea;
   }
 
   @override
@@ -328,9 +328,9 @@ class Step2 extends StatelessWidget {
                 // check user is actually signed in now by checking firestore
                 if (parentState.token != null &&
                     await fco.modelRepo.tokenConfirmed(parentState.token!)) {
-                  final String? vea = fco.hiveBox.get('vea');
+                  final String? vea = fco.hiveBox?.get('vea');
                   if (vea != parentState.ea) {
-                    await fco.hiveBox.put('vea', parentState.ea);
+                    await fco.hiveBox?.put('vea', parentState.ea);
                   }
                   parentState.widget.onSignedInF(parentState.ea!);
                   fco.dismiss("passwordless-stepper");

@@ -47,9 +47,6 @@ class FSImageNodeMapper extends SubClassMapperBase<FSImageNode> {
   static bool _$isExpanded(FSImageNode v) => v.isExpanded;
   static const Field<FSImageNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(FSImageNode v) => v.measuredRect;
-  static const Field<FSImageNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FSImageNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FSImageNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -74,7 +71,6 @@ class FSImageNodeMapper extends SubClassMapperBase<FSImageNode> {
     #scale: _f$scale,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #cachedPngBytes: _f$cachedPngBytes,

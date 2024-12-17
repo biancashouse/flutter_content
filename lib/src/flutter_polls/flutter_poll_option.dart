@@ -136,7 +136,7 @@ class FlutterPollOption extends HookWidget {
                       // }
 
                       if (!pollBloc.state.userAlreadyVoted()) {
-                        final String? vea = fco.hiveBox.get('vea');
+                        final String? vea = fco.hiveBox?.get('vea');
                         if (vea == null) {
                           final gcrServerUrl = fco.gcrServerUrl;
                           if (gcrServerUrl != null) {

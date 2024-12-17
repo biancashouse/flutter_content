@@ -51,9 +51,6 @@ class FirebaseStorageImageNodeMapper
   static bool _$isExpanded(FirebaseStorageImageNode v) => v.isExpanded;
   static const Field<FirebaseStorageImageNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(FirebaseStorageImageNode v) => v.measuredRect;
-  static const Field<FirebaseStorageImageNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FirebaseStorageImageNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FirebaseStorageImageNode, bool>
@@ -77,7 +74,6 @@ class FirebaseStorageImageNodeMapper
     #height: _f$height,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

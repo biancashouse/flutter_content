@@ -208,7 +208,7 @@ class FlutterPollState extends State<FlutterPoll> {
 
   Future<PollBloC> _initPoll() async {
     // localstorage
-    voterId = fco.hiveBox.get("vea") ?? 'anon';
+    voterId = fco.hiveBox?.get("vea") ?? 'anon';
     // firestore
     OptionVoteCountMap counts =
         await FlutterContentApp.capiBloc.modelRepo.getPollOptionVoteCounts(

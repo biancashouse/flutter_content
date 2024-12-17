@@ -98,9 +98,9 @@ dependencies:
 
   routing_config_provider:  ^1.0.0
 
-  bh_shared:  ^2.8.3
+  bh_shared:  ^2.9.1
 
-  flutter_callouts: ^2.2.3
+  flutter_callouts: ^2.3.0
 #    path: ../flutter_callouts_pkg
 
   logging: ^1.1.0

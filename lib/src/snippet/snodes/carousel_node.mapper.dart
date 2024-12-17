@@ -50,9 +50,6 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   static bool _$isExpanded(CarouselNode v) => v.isExpanded;
   static const Field<CarouselNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(CarouselNode v) => v.measuredRect;
-  static const Field<CarouselNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(CarouselNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<CarouselNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -75,7 +72,6 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

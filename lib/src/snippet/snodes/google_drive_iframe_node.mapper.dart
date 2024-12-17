@@ -43,9 +43,6 @@ class GoogleDriveIFrameNodeMapper
   static bool _$isExpanded(GoogleDriveIFrameNode v) => v.isExpanded;
   static const Field<GoogleDriveIFrameNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(GoogleDriveIFrameNode v) => v.measuredRect;
-  static const Field<GoogleDriveIFrameNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(GoogleDriveIFrameNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<GoogleDriveIFrameNode, bool>
@@ -71,7 +68,6 @@ class GoogleDriveIFrameNodeMapper
     #iframeHeight: _f$iframeHeight,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
     #savedWidget: _f$savedWidget,

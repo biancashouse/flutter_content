@@ -50,9 +50,6 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
   static bool _$isExpanded(HotspotsNode v) => v.isExpanded;
   static const Field<HotspotsNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(HotspotsNode v) => v.measuredRect;
-  static const Field<HotspotsNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(HotspotsNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<HotspotsNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -75,7 +72,6 @@ class HotspotsNodeMapper extends SubClassMapperBase<HotspotsNode> {
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

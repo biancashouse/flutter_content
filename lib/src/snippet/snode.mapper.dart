@@ -32,9 +32,6 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   static bool _$isExpanded(STreeNode v) => v.isExpanded;
   static const Field<STreeNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(STreeNode v) => v.measuredRect;
-  static const Field<STreeNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(STreeNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<STreeNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -50,7 +47,6 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   final MappableFields<STreeNode> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

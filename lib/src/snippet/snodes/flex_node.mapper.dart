@@ -47,9 +47,6 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
   static bool _$isExpanded(FlexNode v) => v.isExpanded;
   static const Field<FlexNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(FlexNode v) => v.measuredRect;
-  static const Field<FlexNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(FlexNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<FlexNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -69,7 +66,6 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

@@ -60,9 +60,6 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static bool _$isExpanded(TabBarNode v) => v.isExpanded;
   static const Field<TabBarNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static Rect? _$measuredRect(TabBarNode v) => v.measuredRect;
-  static const Field<TabBarNode, Rect> _f$measuredRect =
-      Field('measuredRect', _$measuredRect, mode: FieldMode.member);
   static bool? _$hidePropertiesWhileDragging(TabBarNode v) =>
       v.hidePropertiesWhileDragging;
   static const Field<TabBarNode, bool> _f$hidePropertiesWhileDragging = Field(
@@ -87,7 +84,6 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
-    #measuredRect: _f$measuredRect,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
     #nodeWidgetGK: _f$nodeWidgetGK,
   };

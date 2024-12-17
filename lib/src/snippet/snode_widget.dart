@@ -29,6 +29,9 @@ class NodeWidget extends StatelessWidget {
     // }
 
     // bool selected = FCO.capiBloc.selectedNode == entry.node;
+
+    GlobalKey targetGK = GlobalKey();
+
     Color boxColor =
         FlutterContentApp.snippetBeingEdited!.nodeBeingDeleted == entry.node
             ? Colors.red
@@ -65,7 +68,7 @@ class NodeWidget extends StatelessWidget {
                     entry.node is! GenericSingleChildNode)
                   entry.node.logoSrc()!,
                 // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
-                _name(context),
+                _name(context, targetGK),
               ],
             ),
           ),
@@ -91,8 +94,9 @@ class NodeWidget extends StatelessWidget {
     });
   }
 
-  Widget _name(context) {
+  Widget _name(context, targetGK) {
     return InkWell(
+      key: targetGK,
       // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
       // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
       onDoubleTap: () async {
@@ -156,10 +160,13 @@ class NodeWidget extends StatelessWidget {
             // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
           ));
 
-          fco.afterNextBuildDo(
+          fco.afterMsDelayDo(
+            100,
             () {
               EditablePage.removeAllNodeWidgetOverlays();
-              entry.node.showNodeWidgetOverlay(skipMeasure: true);
+              fco.afterMsDelayDo(500, (){
+                entry.node.showNodeWidgetOverlay();
+              });
               //NamedScrollController.restoreOffsetTo(scName, savedOffset);
             },
             scrollControllers: NamedScrollController.allControllers(),
@@ -186,75 +193,24 @@ class NodeWidget extends StatelessWidget {
         //   );
         // });
       },
-      // onLongPress: () {
-      //   FCO.capiBloc.add(CAPIEvent.selectNode(
-      //     node: entry.node,
-      //     nodeParent: entry.parent?.node,
-      //     nodeRootIndex: treeController.nearestRootIndex(entry),
-      //     showAdders: true,
-      //     showProperties: true,
-      //     // imageTC: tc,
-      //   ));
-      //   fco.afterNextBuildDo(() {
-      //     showTreeNodeMenu();
-      //   });
-      // },
-      // onDoubleTap: () {
-      //   _longPressedOrDoubleTapped(snippetBloc);
-
-      // if (onClipboard) return;
-      //
-      // // removeNodePropertiesCallout();
-      // fco.dismiss(TREENODE_MENU_CALLOUT);
-      //
-      // snippetBloc.add(SnippetEvent.selectNode(
-      //   node: entry.node,
-      //   nodeParent: entry.parent?.node,
-      //   showProperties: true,
-      //   // imageTC: tc,
-      // ));
-      //
-      // fco.afterNextBuildDo(() {
-      //   if (entry.node is SnippetRefNode) {
-      //     _pushThenEditSnippet();
-      //   } else {
-      //     // showNodeAddersAndPropertiesCallout(
-      //     //   context: context,
-      //     //   selectedNode: entry.node as STreeNode,
-      //     //   selectionParentNode: entry.parent?.node as STreeNode?,
-      //     //   nodeGK: () => nodeGK,
-      //     // );
-      //   }
-      // });
-      // },
-      // onLongPress: () {
-      //   Callout(
-      //     // context: context,
-      //     cId: CAPI.SOURCE_CODE.index,
-      //     color: Colors.white,
-      //     closeButtonColor: Colors.red,
-      //     barrierOpacity: .1,
-      //     contents: () =>
-      //         ListView(
-      //           shrinkWrap: true,
-      //           padding: const EdgeInsets.all(8.0),
-      //           children: [
-      //             SizedBox(
-      //               height: 4000,
-      //               child: Text(
-      //                 entry.node.toSource(context),
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //     width: FCO.scrW * .9,
-      //     height: FCO.scrH * .8,
-      //     minHeight: 60,
-      //     onBarrierTappedF: () async {
-      //       fco.removeOverlay(CAPI.SOURCE_CODE.index);
-      //     },
-      //   ).show();
-      // },
+      onLongPress: () {
+        fco.showOverlay(
+          calloutConfig: CalloutConfig(
+            cId: 'node-actions',
+            scrollControllerName: scName,
+            initialCalloutW: 300,
+            initialCalloutH: 200,
+            initialTargetAlignment: Alignment.centerRight,
+            initialCalloutAlignment: Alignment.centerLeft,
+            arrowType: ArrowType.THIN,
+            arrowColor: Colors.white,
+            barrier: CalloutBarrier(),
+          ),
+          calloutContent: SnippetTreeAndPropertiesCalloutContents.nodeButtons(
+              context, scName),
+          targetGkF: () => targetGK,
+        );
+      },
       child: entry.node is DirectoryNode
           ? Row(
               mainAxisSize: MainAxisSize.max,
