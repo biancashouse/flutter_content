@@ -21,8 +21,8 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       List<Widget> childWidgets = children.map((node) => node.toWidget(context, this)).toList();
       return childWidgets;
     } catch (e) {

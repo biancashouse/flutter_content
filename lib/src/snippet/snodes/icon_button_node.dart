@@ -95,7 +95,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
-    possiblyHighlightSelectedNode(scName);
+    // possiblyHighlightSelectedNode(scName);
 
     return Container(
       // container only for possble selection gk

@@ -53,8 +53,8 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     ScrollControllerName? scName = EditablePage.name(context);
     try {
       setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       final gk = createNodeGK();
       return MenuItemButton(
             key: gk,

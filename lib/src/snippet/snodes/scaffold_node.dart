@@ -47,8 +47,8 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
     late Widget scaffold;
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;

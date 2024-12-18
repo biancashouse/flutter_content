@@ -19,8 +19,8 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       SnippetPanelState? spState = SnippetPanel.of(context);
       int numTabNodes = spState?.tabC?.length ?? 0;
       List<Widget> childWidgets = children

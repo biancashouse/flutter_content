@@ -54,8 +54,8 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     //Icon(Icons.info, size: 28, color: Colors.red);
     setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
     return SubmenuButton(
       key: createNodeGK(),
       style: fco.buttonStyle(36),

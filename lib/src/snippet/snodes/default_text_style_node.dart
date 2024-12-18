@@ -54,8 +54,8 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      ScrollControllerName? scName = EditablePage.name(context);
-      possiblyHighlightSelectedNode(scName);
+      // ScrollControllerName? scName = EditablePage.name(context);
+      // possiblyHighlightSelectedNode(scName);
       return child != null
               ? DefaultTextStyle.merge(
                   key: createNodeGK(),

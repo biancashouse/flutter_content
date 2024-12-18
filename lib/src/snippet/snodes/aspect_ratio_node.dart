@@ -30,8 +30,8 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-      ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
       return AspectRatio(
         key: createNodeGK(),

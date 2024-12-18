@@ -91,8 +91,8 @@ class FSImageNode extends CL with FSImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
 
       if (_gk == null) {
         _gk = createNodeGK();
@@ -101,16 +101,22 @@ class FSImageNode extends CL with FSImageNodeMappable {
 
       Widget widget = StorageImage(
         key: _gk,
-            fit: fit?.flutterValue,
-            width: width,
-            height: height,
-            scale: scale??1.0,
-            alignment: alignment?.flutterValue ?? Alignment.center,
-            ref: FirebaseStorage.instance.ref(fsFullPath ?? 'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
-          );
+        fit: fit?.flutterValue,
+        width: width,
+        height: height,
+        scale: scale ?? 1.0,
+        alignment: alignment?.flutterValue ?? Alignment.center,
+        ref: FirebaseStorage.instance.ref(fsFullPath ??
+            'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
+      );
       return widget;
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 

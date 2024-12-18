@@ -33,8 +33,8 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
       void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-      ScrollControllerName? scName = EditablePage.name(context);
-      possiblyHighlightSelectedNode(scName);
+      // ScrollControllerName? scName = EditablePage.name(context);
+      // possiblyHighlightSelectedNode(scName);
 
       final gk = createNodeGK();
 

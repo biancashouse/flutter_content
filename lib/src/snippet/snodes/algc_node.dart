@@ -73,25 +73,35 @@ class AlgCNode extends CL with AlgCNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
-
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
     if (flowchartJsonString?.isNotEmpty ?? false) {
       // use stored json
       try {
-        return FlowchartWidget(flowchartJsonString ?? '');
+        return FlowchartWidget(
+          key: createNodeGK(),
+          flowchartJsonString ?? '',
+        );
       } catch (e) {
-        return Error(key: createNodeGK(), FLUTTER_TYPE,
-            color: Colors.green, size: 32, errorMsg: e.toString());
+        return Error(
+            key: createNodeGK(),
+            FLUTTER_TYPE,
+            color: Colors.green,
+            size: 32,
+            errorMsg: e.toString());
       }
     } else {
       // try to fetch from algc firestore using ea and fid
       String? vea = fco.hiveBox?.get('vea');
       vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
       if (vea.isEmpty) {
-        return Error(key: createNodeGK(), FLUTTER_TYPE,
-            color: Colors.green, size: 32, errorMsg: "vea.isEmpty!");
+        return Error(
+            key: createNodeGK(),
+            FLUTTER_TYPE,
+            color: Colors.green,
+            size: 32,
+            errorMsg: "vea.isEmpty!");
       }
       if ((vea.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
         try {
@@ -104,16 +114,35 @@ class AlgCNode extends CL with AlgCNodeMappable {
                 // cache fetched json in the node
                 flowchartJsonString = snapshot.data;
                 try {
-                  return FlowchartWidget(flowchartJsonString ?? '');
+                  return FlowchartWidget(
+                    key: createNodeGK(),
+                    flowchartJsonString ?? '',
+                  );
                 } catch (e) {
-                  return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+                  return Error(
+                      key: createNodeGK(),
+                      FLUTTER_TYPE,
+                      color: Colors.red,
+                      size: 32,
+                      errorMsg: e.toString());
                 }
               });
         } catch (e) {
-          return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+          return Error(
+              key: createNodeGK(),
+              FLUTTER_TYPE,
+              color: Colors.red,
+              size: 32,
+              errorMsg: e.toString());
         }
       } else {
-        return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
+        return Error(
+            key: createNodeGK(),
+            FLUTTER_TYPE,
+            color: Colors.red,
+            size: 32,
+            errorMsg:
+                "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
       }
     }
   }

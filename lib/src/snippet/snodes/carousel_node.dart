@@ -118,8 +118,8 @@ class CarouselNode extends MC with CarouselNodeMappable {
                             ))
                   .toList();
 
-      ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
 
       // SnippetPanelState? spState = SnippetPanel.of(context);  // vsync

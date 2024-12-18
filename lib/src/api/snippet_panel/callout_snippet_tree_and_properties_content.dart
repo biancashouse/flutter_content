@@ -62,7 +62,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
       STreeNode.unhighlightSelectedNode();
       // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
-      fco.dismiss('pink-border-overlay-non-tappable');
+      fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
       fco.dismiss(CalloutConfigToolbar.CID);
       fco.hideClipboard();
       // exitEditModeF();
@@ -394,15 +394,14 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
     );
   }
 
-  static Widget nodeButtons(context, scName) {
-    var selectedNode = FlutterContentApp.selectedNode!;
-    var gc = selectedNode.getParent(); // may be genericchildnode
+  static Widget nodeButtons(context, scName, STreeNode node) {
+    var gc = node.getParent(); // may be genericchildnode
     return Container(
       color: Colors.black,
       child: Column(
         children: [
-          if (selectedNode is! GenericSingleChildNode &&
-              selectedNode is! GenericMultiChildNode)
+          if (node is! GenericSingleChildNode &&
+              node is! GenericMultiChildNode)
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -416,7 +415,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                         (gc?.propertyName == 'title' ||
                             gc?.propertyName == 'content')) return;
                     FlutterContentApp.capiBloc
-                        .add(CAPIEvent.cutNode(node: selectedNode, scName: scName));
+                        .add(CAPIEvent.cutNode(node: node, scName: scName));
                     fco.afterNextBuildDo(() {
                       if (fco.clipboard != null) {
                         fco.unhide("floating-clipboard");
@@ -427,7 +426,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   icon: Icon(Icons.cut,
                       color: Colors.orange.withOpacity(
                           !FlutterContentApp.aNodeIsSelected ||
-                                  selectedNode is SnippetRootNode ||
+                                  node is SnippetRootNode ||
                                   gc is GenericSingleChildNode? &&
                                       gc?.getParent() is StepNode &&
                                       (gc?.propertyName == 'title' ||
@@ -442,7 +441,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   onPressed: () {
                     fco.afterNextBuildDo(() {
                       FlutterContentApp.capiBloc
-                          .add(CAPIEvent.copyNode(node: selectedNode, scName: scName));
+                          .add(CAPIEvent.copyNode(node: node, scName: scName));
                       fco.afterNextBuildDo(() {
                         if (fco.clipboard != null) {
                           fco.unhide("floating-clipboard");
@@ -455,7 +454,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     Icons.copy,
                     color: Colors.green.withOpacity(
                         FlutterContentApp.aNodeIsSelected &&
-                                selectedNode is! SnippetRootNode
+                                node is! SnippetRootNode
                             ? 1.0
                             : .25),
                   ),
@@ -466,8 +465,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   onPressed: () async {
                     // some properties cannot be deleted!selectedNode.canBeDeleted()
                     // some properties cannot be deleted
-                    if (!selectedNode.canBeDeleted()) return;
-                    STreeNode node = selectedNode;
+                    if (!node.canBeDeleted()) return;
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
@@ -498,9 +496,9 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                   icon: Icon(Icons.delete,
                       color: Colors.red.withOpacity(
                           !FlutterContentApp.aNodeIsSelected ||
-                                  !selectedNode.canBeDeleted() ||
-                                  (selectedNode is SnippetRootNode &&
-                                      selectedNode.getParent() == null) ||
+                                  !node.canBeDeleted() ||
+                                  (node is SnippetRootNode &&
+                                      node.getParent() == null) ||
                                   (gc is GenericSingleChildNode? &&
                                       gc?.getParent() is StepNode &&
                                       (gc?.propertyName == 'title' ||
@@ -509,17 +507,17 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                               : 1.0)),
                   tooltip: 'Remove',
                 ),
-                if (selectedNode is! SnippetRootNode)
+                if (node is! SnippetRootNode)
                   IconButton(
                     hoverColor: Colors.white30,
                     onPressed: () {
                       showSaveAsCallout(
-                        selectedNode: selectedNode,
+                        selectedNode: node,
                         //targetGKF: () => targetGK,
                         saveModelF: (s) {
                           FlutterContentApp.capiBloc
                               .add(CAPIEvent.saveNodeAsSnippet(
-                            node: selectedNode,
+                            node: node,
                             newSnippetName: s,
                           ));
                           fco.afterNextBuildDo(() {
@@ -571,17 +569,17 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             ),
           // tree structure icon buttons
           // replace button
-          if (selectedNode is! GenericSingleChildNode &&
-              _canReplace(selectedNode))
+          if (node is! GenericSingleChildNode &&
+              _canReplace(node))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: selectedNode.insertItemMenuAnchor(
+              child: node.insertItemMenuAnchor(
                 action: NodeAction.replaceWith,
                 label: 'Replace with...',
                 bgColor: Colors.lightBlueAccent,
               ),
             ),
-          _editTreeStructureIconButtons(selectedNode),
+          _editTreeStructureIconButtons(node),
           const Gap(10),
         ],
       ),
@@ -751,9 +749,7 @@ class SnippetTreePane extends StatelessWidget {
       );
     } else {
       return Material(
-        color: snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-            ? Colors.grey
-            : Colors.purpleAccent.shade100,
+        color: Colors.purple.shade200,
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: InteractiveViewer(
@@ -937,7 +933,7 @@ class SnippetTreeView extends StatelessWidget {
         guide: IndentGuide.connectingLines(
           color: FlutterContentApp.aNodeIsSelected &&
                   entry.node == FlutterContentApp.selectedNode
-              ? Colors.green
+              ? Colors.purpleAccent
               : Colors.white,
           indent: 40.0,
         ),

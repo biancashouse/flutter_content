@@ -184,8 +184,8 @@ class ChipNode extends CL with ChipNodeMappable {
       //         onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
       setParent(parentNode);
-      ScrollControllerName? scName = EditablePage.name(context);
-      possiblyHighlightSelectedNode(scName);
+      // ScrollControllerName? scName = EditablePage.name(context);
+      // possiblyHighlightSelectedNode(scName);
 
       GlobalKey gk = createNodeGK();
 

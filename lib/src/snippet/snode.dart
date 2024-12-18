@@ -311,14 +311,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // bool skipMeasure = false,
     ScrollControllerName? scName,
   }) {
-    fco.dismiss('pink-border-overlay-non-tappable');
+    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
     var gkState = nodeWidgetGK?.currentState;
     var gkCtx = nodeWidgetGK?.currentContext;
     Rect? r =  nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       Rect borderRect = r; //_borderRect(r);
       CalloutConfig cc = _cc(
-        cId: 'pink-border-overlay-non-tappable',
+        cId: PINK_OVERLAY_NON_TAPPABLE,
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
         scName: scName,
@@ -461,7 +461,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
 //             STreeNode.unhighlightSelectedNode();
 //             // fco.printFeatures();
-//             var pinkOverlayFeature = 'pink-border-overlay-non-tappable';
+//             var pinkOverlayFeature = PINK_OVERLAY_NON_TAPPABLE;
 //             // var currPageState = fco.currentPageState;
 //
 //             // currPageState?.unhideFAB();
@@ -897,48 +897,48 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   static void unhighlightSelectedNode() =>
       fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
-  Future<void> possiblyHighlightSelectedNode(ScrollControllerName? scName) async {
-    return;
-    if (FlutterContentApp.snippetBeingEdited?.selectedNode == this) {
-      unhighlightSelectedNode();
-      var gk = nodeWidgetGK;
-      Rect? r = gk?.globalPaintBounds();
-      if (r != null) {
-        double thickness = 4;
-        double w = r.width + thickness * 2;
-        double h = r.height + thickness * 2;
-        Offset translate = Offset(-thickness, -thickness);
-        // fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
-        fco.showOverlay(
-          ensureLowestOverlay: true,
-          calloutConfig: CalloutConfig(
-            cId: SELECTED_NODE_BORDER_CALLOUT,
-            initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
-            initialCalloutW: w,
-            initialCalloutH: h,
-            fillColor: Colors.transparent,
-            arrowType: ArrowType.NONE,
-            draggable: false,
-            // transparentPointer: true,
-            scrollControllerName: scName,
-          ),
-          calloutContent: InkWell(
-            child: Container(
-              width: w,
-              height: h,
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                border: Border.all(
-                    color: Colors.purpleAccent.withOpacity(.5),
-                    width: thickness),
-              ),
-            ),
-          ),
-        );
-        // FCO.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
-      }
-    }
-  }
+  // Future<void> possiblyHighlightSelectedNode(ScrollControllerName? scName) async {
+  //   return;
+  //   if (FlutterContentApp.snippetBeingEdited?.selectedNode == this) {
+  //     unhighlightSelectedNode();
+  //     var gk = nodeWidgetGK;
+  //     Rect? r = gk?.globalPaintBounds();
+  //     if (r != null) {
+  //       double thickness = 4;
+  //       double w = r.width + thickness * 2;
+  //       double h = r.height + thickness * 2;
+  //       Offset translate = Offset(-thickness, -thickness);
+  //       // fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
+  //       fco.showOverlay(
+  //         ensureLowestOverlay: true,
+  //         calloutConfig: CalloutConfig(
+  //           cId: SELECTED_NODE_BORDER_CALLOUT,
+  //           initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
+  //           initialCalloutW: w,
+  //           initialCalloutH: h,
+  //           fillColor: Colors.transparent,
+  //           arrowType: ArrowType.NONE,
+  //           draggable: false,
+  //           // transparentPointer: true,
+  //           scrollControllerName: scName,
+  //         ),
+  //         calloutContent: InkWell(
+  //           child: Container(
+  //             width: w,
+  //             height: h,
+  //             decoration: BoxDecoration(
+  //               color: Colors.transparent,
+  //               border: Border.all(
+  //                   color: Colors.purpleAccent.withOpacity(.5),
+  //                   width: thickness),
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //       // FCO.snippetBeingEdited?.add(SnippetEvent.highlightNode(node: this));
+  //     }
+  //   }
+  // }
 
 //   Future<void> possiblyHighlightSelectedNode() async {
 //     if (FCO.selectedNode == this) {

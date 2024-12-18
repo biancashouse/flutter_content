@@ -33,8 +33,8 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
     ScrollControllerName? scName = EditablePage.name(context);
     try {
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       if (getParent() is PollNode) {
         PollNode parentPoll = getParent() as PollNode;
         int pos = parentPoll.children.indexOf(this);

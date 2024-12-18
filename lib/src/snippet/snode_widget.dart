@@ -52,7 +52,7 @@ class NodeWidget extends StatelessWidget {
                 ? FlutterContentApp.snippetBeingEdited!.selectedTreeNodeGK
                 : null,
             margin: EdgeInsets.zero,
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
             decoration: entry.node is DirectoryNode || entry.node is FileNode
                 ? null
                 : BoxDecoration(
@@ -64,11 +64,24 @@ class NodeWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: Row(
               children: [
-                if (entry.node.logoSrc() != null &&
-                    entry.node is! GenericSingleChildNode)
-                  entry.node.logoSrc()!,
+                if (entry.node is! GenericSingleChildNode &&
+                    entry.node is! SnippetRootNode)
+                  GestureDetector(
+                    onTap: () {
+                      _tappedNode();
+                    },
+                    onLongPress: () {
+                      _longPressedNode(context, targetGK, entry.node);
+                    },
+                    child: Image.asset(
+                      fco.asset('lib/assets/images/pub.dev.png'),
+                      width: 16,
+                    ),
+                  ),
+                Gap(8),
                 // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
                 _name(context, targetGK),
+                Gap(8),
               ],
             ),
           ),
@@ -122,94 +135,10 @@ class NodeWidget extends StatelessWidget {
         }
       },
       onTap: () {
-        if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
-        // if (entry.node is TextSpanNode) {
-        //   fco.logi('TextSpan cannot be selected (has no key property!)');
-        //   return;
-        // };
-
-        if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
-            entry.node == FlutterContentApp.selectedNode) return;
-
-        double savedOffset = NamedScrollController.scrollOffset(scName);
-
-        if (!treeController.getExpansionState(entry.node)) {
-          treeController.expand(entry.node);
-        }
-
-        // fco.dismiss(TREENODE_MENU_CALLOUT);
-
-        bool thisWasAlreadySelected =
-            (entry.node == FlutterContentApp.selectedNode);
-
-        if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
-            thisWasAlreadySelected) {
-          fco.hide("floating-clipboard");
-          fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-          FlutterContentApp.capiBloc.add(const CAPIEvent.clearNodeSelection());
-        } else if (!FlutterContentApp.snippetBeingEdited!.aNodeIsSelected ||
-            !thisWasAlreadySelected) {
-          if (fco.clipboard != null) {
-            fco.unhide("floating-clipboard");
-          }
-
-          FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
-            node: entry.node,
-            // imageTC: tc,
-            // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-            // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-          ));
-
-          fco.afterMsDelayDo(
-            100,
-            () {
-              EditablePage.removeAllNodeWidgetOverlays();
-              fco.afterMsDelayDo(500, (){
-                entry.node.showNodeWidgetOverlay();
-              });
-              //NamedScrollController.restoreOffsetTo(scName, savedOffset);
-            },
-            scrollControllers: NamedScrollController.allControllers(),
-          );
-        }
-
-        // removeNodePropertiesCallout();
-        // if ((MediaQuery.of(context).size.width ?? 0) <= 1366) {
-        //   fco.afterNextBuildDo(() {
-        //     if (context.mounted) {
-        //       showTreeNodeMenu(context, () => STreeNode.selectionGK);
-        //     } else
-        //       fco.logi("context fucked.");
-        //   });
-        // }
-
-        // fco.afterNextBuildDo(() {
-        //   removeNodeMenuCallout();
-        //   showNodeMenuCallout(
-        //     context: context,
-        //     selectedNode: entry.node,
-        //     selectionParentNode: entry.parent?.node,
-        //     targetGKF: () => Node.selectionGK, //nodeGK,
-        //   );
-        // });
+        _tappedNode();
       },
       onLongPress: () {
-        fco.showOverlay(
-          calloutConfig: CalloutConfig(
-            cId: 'node-actions',
-            scrollControllerName: scName,
-            initialCalloutW: 300,
-            initialCalloutH: 200,
-            initialTargetAlignment: Alignment.centerRight,
-            initialCalloutAlignment: Alignment.centerLeft,
-            arrowType: ArrowType.THIN,
-            arrowColor: Colors.white,
-            barrier: CalloutBarrier(),
-          ),
-          calloutContent: SnippetTreeAndPropertiesCalloutContents.nodeButtons(
-              context, scName),
-          targetGkF: () => targetGK,
-        );
+        _longPressedNode(context, targetGK, entry.node);
       },
       child: entry.node is DirectoryNode
           ? Row(
@@ -225,6 +154,78 @@ class NodeWidget extends StatelessWidget {
           // : entry.node is FileNode
           // ? (entry.node as FileNode).toWidget(snippetBloc, context)
           : _text(),
+    );
+  }
+
+  void _tappedNode() {
+    if (onClipboard /* || entry.node is GenericSingleChildNode*/) return;
+    // if (entry.node is TextSpanNode) {
+    //   fco.logi('TextSpan cannot be selected (has no key property!)');
+    //   return;
+    // };
+
+    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
+        entry.node == FlutterContentApp.selectedNode) return;
+
+    double savedOffset = NamedScrollController.scrollOffset(scName);
+
+    if (!treeController.getExpansionState(entry.node)) {
+      treeController.expand(entry.node);
+    }
+
+    // fco.dismiss(TREENODE_MENU_CALLOUT);
+
+    bool thisWasAlreadySelected =
+        (entry.node == FlutterContentApp.selectedNode);
+
+    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected &&
+        thisWasAlreadySelected) {
+      fco.hide("floating-clipboard");
+      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+      FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection(scName));
+    } else if (!FlutterContentApp.snippetBeingEdited!.aNodeIsSelected ||
+        !thisWasAlreadySelected) {
+      if (fco.clipboard != null) {
+        fco.unhide("floating-clipboard");
+      }
+
+      FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
+        node: entry.node,
+        // imageTC: tc,
+        // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
+        // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+      ));
+
+      fco.afterMsDelayDo(
+        100,
+        () {
+          EditablePage.removeAllNodeWidgetOverlays();
+          fco.afterMsDelayDo(500, () {
+            entry.node.showNodeWidgetOverlay();
+          });
+          //NamedScrollController.restoreOffsetTo(scName, savedOffset);
+        },
+        scrollControllers: NamedScrollController.allControllers(),
+      );
+    }
+  }
+
+  void _longPressedNode(context, targetGK, STreeNode node) {
+    fco.showOverlay(
+      calloutConfig: CalloutConfig(
+        cId: 'node-actions',
+        scrollControllerName: scName,
+        initialCalloutW: 300,
+        initialCalloutH: 200,
+        initialTargetAlignment: Alignment.centerRight,
+        initialCalloutAlignment: Alignment.centerLeft,
+        arrowType: ArrowType.THIN,
+        arrowColor: Colors.white,
+        barrier: CalloutBarrier(),
+      ),
+      calloutContent: SnippetTreeAndPropertiesCalloutContents.nodeButtons(
+          context, scName, node),
+      targetGkF: () => targetGK,
     );
   }
 

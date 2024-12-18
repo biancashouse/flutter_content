@@ -43,7 +43,7 @@ mixin _$CAPIEvent {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -110,7 +110,7 @@ mixin _$CAPIEvent {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -166,7 +166,7 @@ mixin _$CAPIEvent {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -453,7 +453,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -523,7 +523,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -582,7 +582,7 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -899,7 +899,7 @@ class _$OverrideTargetGKImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -969,7 +969,7 @@ class _$OverrideTargetGKImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -1028,7 +1028,7 @@ class _$OverrideTargetGKImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -1330,7 +1330,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -1400,7 +1400,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -1459,7 +1459,7 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -1776,7 +1776,7 @@ class _$UpdateClipboardImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -1846,7 +1846,7 @@ class _$UpdateClipboardImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -1905,7 +1905,7 @@ class _$UpdateClipboardImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -2219,7 +2219,7 @@ class _$PublishSnippetImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -2289,7 +2289,7 @@ class _$PublishSnippetImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -2348,7 +2348,7 @@ class _$PublishSnippetImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -2659,7 +2659,7 @@ class _$RevertSnippetImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -2729,7 +2729,7 @@ class _$RevertSnippetImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -2788,7 +2788,7 @@ class _$RevertSnippetImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -3086,7 +3086,7 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -3156,7 +3156,7 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -3215,7 +3215,7 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -3517,7 +3517,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -3587,7 +3587,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -3646,7 +3646,7 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -3946,7 +3946,7 @@ class _$AutoPublishDefaultImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -4016,7 +4016,7 @@ class _$AutoPublishDefaultImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -4075,7 +4075,7 @@ class _$AutoPublishDefaultImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -4370,7 +4370,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -4440,7 +4440,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -4499,7 +4499,7 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -4809,7 +4809,7 @@ class _$SetPanelSnippetImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -4879,7 +4879,7 @@ class _$SetPanelSnippetImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -4938,7 +4938,7 @@ class _$SetPanelSnippetImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -5250,7 +5250,7 @@ class _$PushSnippetEditorImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -5320,7 +5320,7 @@ class _$PushSnippetEditorImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -5379,7 +5379,7 @@ class _$PushSnippetEditorImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -5680,7 +5680,7 @@ class _$PopSnippetEditorImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -5750,7 +5750,7 @@ class _$PopSnippetEditorImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -5809,7 +5809,7 @@ class _$PopSnippetEditorImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -6076,7 +6076,7 @@ class _$ShowDirectoryTreeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -6146,7 +6146,7 @@ class _$ShowDirectoryTreeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -6205,7 +6205,7 @@ class _$ShowDirectoryTreeImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -6495,7 +6495,7 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -6565,7 +6565,7 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -6624,7 +6624,7 @@ class _$RemoveDirectoryTreeImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -6919,7 +6919,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -6989,7 +6989,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -7048,7 +7048,7 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -7246,6 +7246,8 @@ abstract class _$$ClearNodeSelectionImplCopyWith<$Res> {
   factory _$$ClearNodeSelectionImplCopyWith(_$ClearNodeSelectionImpl value,
           $Res Function(_$ClearNodeSelectionImpl) then) =
       __$$ClearNodeSelectionImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String? scName});
 }
 
 /// @nodoc
@@ -7258,6 +7260,18 @@ class __$$ClearNodeSelectionImplCopyWithImpl<$Res>
 
   /// Create a copy of CAPIEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? scName = freezed,
+  }) {
+    return _then(_$ClearNodeSelectionImpl(
+      freezed == scName
+          ? _value.scName
+          : scName // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
 }
 
 /// @nodoc
@@ -7265,27 +7279,43 @@ class __$$ClearNodeSelectionImplCopyWithImpl<$Res>
 class _$ClearNodeSelectionImpl
     with DiagnosticableTreeMixin
     implements ClearNodeSelection {
-  const _$ClearNodeSelectionImpl();
+  const _$ClearNodeSelectionImpl(this.scName);
+
+  @override
+  final String? scName;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.clearNodeSelection()';
+    return 'CAPIEvent.clearNodeSelection(scName: $scName)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'CAPIEvent.clearNodeSelection'));
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.clearNodeSelection'))
+      ..add(DiagnosticsProperty('scName', scName));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$ClearNodeSelectionImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$ClearNodeSelectionImpl &&
+            (identical(other.scName, scName) || other.scName == scName));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, scName);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClearNodeSelectionImplCopyWith<_$ClearNodeSelectionImpl> get copyWith =>
+      __$$ClearNodeSelectionImplCopyWithImpl<_$ClearNodeSelectionImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -7315,7 +7345,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -7357,7 +7387,7 @@ class _$ClearNodeSelectionImpl
     required TResult Function(Uint8List? newBytes) imageChanged,
     required TResult Function() forceSnippetRefresh,
   }) {
-    return clearNodeSelection();
+    return clearNodeSelection(scName);
   }
 
   @override
@@ -7385,7 +7415,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -7417,7 +7447,7 @@ class _$ClearNodeSelectionImpl
     TResult? Function(Uint8List? newBytes)? imageChanged,
     TResult? Function()? forceSnippetRefresh,
   }) {
-    return clearNodeSelection?.call();
+    return clearNodeSelection?.call(scName);
   }
 
   @override
@@ -7444,7 +7474,7 @@ class _$ClearNodeSelectionImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -7477,7 +7507,7 @@ class _$ClearNodeSelectionImpl
     required TResult orElse(),
   }) {
     if (clearNodeSelection != null) {
-      return clearNodeSelection();
+      return clearNodeSelection(scName);
     }
     return orElse();
   }
@@ -7626,7 +7656,16 @@ class _$ClearNodeSelectionImpl
 }
 
 abstract class ClearNodeSelection implements CAPIEvent {
-  const factory ClearNodeSelection() = _$ClearNodeSelectionImpl;
+  const factory ClearNodeSelection(final String? scName) =
+      _$ClearNodeSelectionImpl;
+
+  String? get scName;
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ClearNodeSelectionImplCopyWith<_$ClearNodeSelectionImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -7744,7 +7783,7 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -7814,7 +7853,7 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -7873,7 +7912,7 @@ class _$SaveNodeAsSnippetImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -8196,7 +8235,7 @@ class _$ReplaceSelectionWithImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -8266,7 +8305,7 @@ class _$ReplaceSelectionWithImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -8325,7 +8364,7 @@ class _$ReplaceSelectionWithImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -8648,7 +8687,7 @@ class _$WrapSelectionWithImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -8718,7 +8757,7 @@ class _$WrapSelectionWithImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -8777,7 +8816,7 @@ class _$WrapSelectionWithImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -9130,7 +9169,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -9201,7 +9240,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -9261,7 +9300,7 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -9589,7 +9628,7 @@ class _$AddSiblingBeforeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -9659,7 +9698,7 @@ class _$AddSiblingBeforeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -9718,7 +9757,7 @@ class _$AddSiblingBeforeImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -10041,7 +10080,7 @@ class _$AddSiblingAfterImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -10111,7 +10150,7 @@ class _$AddSiblingAfterImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -10170,7 +10209,7 @@ class _$AddSiblingAfterImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -10474,7 +10513,7 @@ class _$PasteReplacementImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -10544,7 +10583,7 @@ class _$PasteReplacementImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -10603,7 +10642,7 @@ class _$PasteReplacementImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -10915,7 +10954,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -10985,7 +11024,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -11044,7 +11083,7 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -11315,7 +11354,7 @@ class _$PasteSiblingBeforeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -11385,7 +11424,7 @@ class _$PasteSiblingBeforeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -11444,7 +11483,7 @@ class _$PasteSiblingBeforeImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -11703,7 +11742,7 @@ class _$PasteSiblingAfterImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -11773,7 +11812,7 @@ class _$PasteSiblingAfterImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -11832,7 +11871,7 @@ class _$PasteSiblingAfterImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -12091,7 +12130,7 @@ class _$DeleteNodeTappedImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -12161,7 +12200,7 @@ class _$DeleteNodeTappedImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -12220,7 +12259,7 @@ class _$DeleteNodeTappedImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -12479,7 +12518,7 @@ class _$CompleteDeletionImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -12549,7 +12588,7 @@ class _$CompleteDeletionImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -12608,7 +12647,7 @@ class _$CompleteDeletionImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -12900,7 +12939,7 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -12970,7 +13009,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -13029,7 +13068,7 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -13331,7 +13370,7 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -13401,7 +13440,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -13460,7 +13499,7 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -13773,7 +13812,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -13843,7 +13882,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -13902,7 +13941,7 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -14219,7 +14258,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -14289,7 +14328,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -14348,7 +14387,7 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -14664,7 +14703,7 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -14734,7 +14773,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -14793,7 +14832,7 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -15091,7 +15130,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -15161,7 +15200,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -15220,7 +15259,7 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -15489,7 +15528,7 @@ class _$ForceSnippetRefreshImpl
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(STreeNode node) selectNode,
-    required TResult Function() clearNodeSelection,
+    required TResult Function(String? scName) clearNodeSelection,
     required TResult Function(STreeNode node, String newSnippetName)
         saveNodeAsSnippet,
     required TResult Function(
@@ -15559,7 +15598,7 @@ class _$ForceSnippetRefreshImpl
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(STreeNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
+    TResult? Function(String? scName)? clearNodeSelection,
     TResult? Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult? Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,
@@ -15618,7 +15657,7 @@ class _$ForceSnippetRefreshImpl
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(STreeNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
+    TResult Function(String? scName)? clearNodeSelection,
     TResult Function(STreeNode node, String newSnippetName)? saveNodeAsSnippet,
     TResult Function(Type? type, String? snippetName, STreeNode? testNode)?
         replaceSelectionWith,

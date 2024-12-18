@@ -76,8 +76,8 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-      ScrollControllerName? scName = EditablePage.name(context);
-      possiblyHighlightSelectedNode(scName);
+      // ScrollControllerName? scName = EditablePage.name(context);
+      // possiblyHighlightSelectedNode(scName);
 
       return FutureBuilder<UMLRecord>(
           future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',

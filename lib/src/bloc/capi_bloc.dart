@@ -367,6 +367,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // state.snippetBeingEdited!.selectedTreeNodeGK = event.selectedTreeNodeGK;
     state.snippetBeingEdited!.showProperties = true;
     state.snippetBeingEdited!.nodeBeingDeleted = null;
+    state.snippetBeingEdited!.treeC.rebuild();
 
     emit(state.copyWith(
       force: state.force + 1,
@@ -377,9 +378,22 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     state.snippetBeingEdited!.selectedNode = null;
     state.snippetBeingEdited!.showProperties = false;
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+
+    if (event.scName != null) {
+      double savedOffset = NamedScrollController.scrollOffset(event.scName);
+
+      emit(state.copyWith(
+        force: state.force + 1,
+      ));
+
+      fco.afterMsDelayDo(1300, () {
+        // restore scroll offset
+        NamedScrollController.restoreOffsetTo(event.scName, savedOffset);
+      });
+    } else
+      emit(state.copyWith(
+        force: state.force + 1,
+      ));
   }
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {

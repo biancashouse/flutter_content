@@ -224,7 +224,9 @@ class CAPIEvent with _$CAPIEvent {
     // TargetModel? widgetTC,
   }) = SelectNode;
 
-  const factory CAPIEvent.clearNodeSelection() = ClearNodeSelection;
+  const factory CAPIEvent.clearNodeSelection(
+      ScrollControllerName? scName,
+      ) = ClearNodeSelection;
 
   const factory CAPIEvent.saveNodeAsSnippet({
     required STreeNode node,

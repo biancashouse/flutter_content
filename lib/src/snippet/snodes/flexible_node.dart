@@ -41,8 +41,8 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       return Flexible(
             key: createNodeGK(),
             flex: flex,

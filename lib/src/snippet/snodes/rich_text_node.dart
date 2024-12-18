@@ -72,8 +72,8 @@ class RichTextNode extends CL with RichTextNodeMappable {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context)) as TextSpan;
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       RichText rt = RichText(
         key: createNodeGK(),
         text: rootTextSpan,

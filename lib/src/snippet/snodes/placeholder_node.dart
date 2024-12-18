@@ -58,8 +58,8 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
     if (name != null && !fco.placeNames.contains(name!)) {
       fco.placeNames.add(name!);

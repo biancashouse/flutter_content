@@ -93,7 +93,6 @@ export 'src/snippet/snodes/childless_node.dart';
 export 'src/snippet/snodes/chip_node.dart';
 export 'src/snippet/snodes/column_node.dart';
 export 'src/snippet/snodes/container_node.dart';
-export 'src/snippet/snodes/content_snippet_root_node.dart';
 export 'src/snippet/snodes/default_text_style_node.dart';
 export 'src/snippet/snodes/directory_node.dart';
 export 'src/snippet/snodes/edgeinsets_node_value.dart';
@@ -173,6 +172,7 @@ export 'src/typedefs.dart';
 // global instance singleton
 FlutterContentMixins fco = FlutterContentMixins._instance;
 
+const String PINK_OVERLAY_NON_TAPPABLE = 'pink-border-overlay-non-tappable';
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 // const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 // const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";

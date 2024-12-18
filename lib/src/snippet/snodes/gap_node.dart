@@ -19,7 +19,8 @@ class GapNode extends CL with GapNodeMappable {
           snode: this,
           name: 'gap',
           decimalValue: gap,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => gap = newValue ?? 0),
+          onDoubleChange: (newValue) =>
+              refreshWithUpdate(() => gap = newValue ?? 0),
           calloutButtonSize: const Size(60, 30),
         ),
       ];
@@ -38,9 +39,9 @@ class GapNode extends CL with GapNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    setParent(parentNode);  // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    setParent(parentNode); // propagating parents down from root
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
     return Gap(
       key: createNodeGK(), gap,
       // crossAxisExtent: 10,

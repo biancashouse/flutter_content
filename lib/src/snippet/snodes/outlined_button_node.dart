@@ -38,8 +38,8 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
       setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
 
       final gk = createNodeGK();
 

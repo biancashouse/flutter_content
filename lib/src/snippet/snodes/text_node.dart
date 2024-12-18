@@ -242,8 +242,8 @@ class TextNode extends CL with TextNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
     TextStyle? ts = textStyleGroup?.toTextStyle(context);
     try {
       Text t = Text(

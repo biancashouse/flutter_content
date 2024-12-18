@@ -24,8 +24,8 @@ class StepNode extends CL with StepNodeMappable {
 
   Step toStep(BuildContext context, int index, FCStepperState parent) {
     setParent(parent.widget.stepperNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
     return Step(
       isActive: parent.currentStep >= index,
       title: title.toWidgetProperty(context, this) ??

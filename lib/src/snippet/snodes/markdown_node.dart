@@ -148,8 +148,8 @@ line 3
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
       return Markdown(
             key: createNodeGK(),
             data: data,

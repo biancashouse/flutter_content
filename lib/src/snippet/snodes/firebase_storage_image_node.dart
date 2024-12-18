@@ -38,7 +38,7 @@ class FirebaseStorageImageNode extends CL
           stringValue: name,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue??''),
+              refreshWithUpdate(() => name = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
@@ -48,7 +48,7 @@ class FirebaseStorageImageNode extends CL
           stringValue: fsUrl,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue??''),
+              refreshWithUpdate(() => name = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
@@ -88,43 +88,49 @@ class FirebaseStorageImageNode extends CL
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       // final storageRef = FirebaseStorage.instance.ref();
       // final imagesRef = storageRef.child(fsUrl);
 
       return StorageGridView(
-            ref: FirebaseStorage.instance.ref('/some-folder'),
-            loadingBuilder: (context) {
-              return const Center(
-                child: Text('Loading...'),
-              );
-            },
-            itemBuilder: (context, ref) {
-              print('item: ref:${ref.fullPath}');
-              return AspectRatio(
-                aspectRatio: 1,
-                child: StorageImage(ref: ref),
-              );
-            },
+        key: createNodeGK(),
+        ref: FirebaseStorage.instance.ref('/some-folder'),
+        loadingBuilder: (context) {
+          return const Center(
+            child: Text('Loading...'),
           );
+        },
+        itemBuilder: (context, ref) {
+          print('item: ref:${ref.fullPath}');
+          return AspectRatio(
+            aspectRatio: 1,
+            child: StorageImage(ref: ref),
+          );
+        },
+      );
 
       return fsUrl.isNotEmpty
-              ? SizedBox(
-                  key: createNodeGK(),
-                  width: width,
-                  height: height,
-                  child: fetchImage(fsUrl),
-                )
-              : Placeholder(
-                  key: createNodeGK(),
-                  color: Colors.purpleAccent,
-                  strokeWidth: 2.0,
-                  fallbackWidth: width ?? 400,
-                  fallbackHeight: height ?? 300,
-                );
+          ? SizedBox(
+              key: createNodeGK(),
+              width: width,
+              height: height,
+              child: fetchImage(fsUrl),
+            )
+          : Placeholder(
+              key: createNodeGK(),
+              color: Colors.purpleAccent,
+              strokeWidth: 2.0,
+              fallbackWidth: width ?? 400,
+              fallbackHeight: height ?? 300,
+            );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 32,
+          errorMsg: e.toString());
     }
   }
 

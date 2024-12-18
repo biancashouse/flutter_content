@@ -28,8 +28,8 @@ class PaddingNode extends SC with PaddingNodeMappable {
   @override
   Widget toWidget(BuildContext context, STreeNode? parentNode) {
     setParent(parentNode);
-    ScrollControllerName? scName = EditablePage.name(context);
-    possiblyHighlightSelectedNode(scName);
+    //ScrollControllerName? scName = EditablePage.name(context);
+    //possiblyHighlightSelectedNode(scName);
     return Padding(
       key: createNodeGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),

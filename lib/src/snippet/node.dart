@@ -98,15 +98,15 @@ abstract class Node extends Object {
   //   return node;
   // }
 
-  Widget? logoSrc() => Row(
-        children: [
-          Image.asset(
-            fco.asset('lib/assets/images/pub.dev.png'),
-            width: 16,
-          ),
-          const Gap(8),
-        ],
-      );
+  // Widget? logoSrc() => Row(
+  //       children: [
+  //         Image.asset(
+  //           fco.asset('lib/assets/images/pub.dev.png'),
+  //           width: 16,
+  //         ),
+  //         const Gap(8),
+  //       ],
+  //     );
 
   CAPIBloC get capiBloc => FlutterContentApp.capiBloc;
 
