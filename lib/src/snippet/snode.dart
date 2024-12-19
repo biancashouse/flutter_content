@@ -230,7 +230,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // overlay rect with a transparent pink rect, and a 3px surround
     String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
     // Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
-    Rect? borderRect =  nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    Rect? borderRect = nodeWidgetGK?.globalPaintBounds(
+        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (borderRect != null) {
       CalloutConfig cc = _cc(
         cId: feature,
@@ -286,8 +287,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // bool isMOunted = cc?.mounted ?? false;
     // var cw = nodeWidgetGK?.currentWidget;
 
-    double savedOffset =
-        NamedScrollController.scrollOffset(scName);
+    double savedOffset = NamedScrollController.scrollOffset(scName);
 
     pushThenShowNamedSnippetWithNodeSelected(
       snippetName,
@@ -314,7 +314,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
     var gkState = nodeWidgetGK?.currentState;
     var gkCtx = nodeWidgetGK?.currentContext;
-    Rect? r =  nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+    Rect? r = nodeWidgetGK?.globalPaintBounds(
+        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       Rect borderRect = r; //_borderRect(r);
       CalloutConfig cc = _cc(
@@ -520,13 +521,15 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
 
-        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: selectedNode));
+        FlutterContentApp.capiBloc
+            .add(CAPIEvent.selectNode(node: selectedNode));
 
         fco.afterNextBuildDo(() {
           EditablePage.removeAllNodeWidgetOverlays();
-          bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+          bool snippetBeingEdited =
+              FlutterContentApp.snippetBeingEdited != null;
           print('snippetBeingEdited: $snippetBeingEdited');
-          fco.afterMsDelayDo(500, (){
+          fco.afterMsDelayDo(500, () {
             selectedNode.showNodeWidgetOverlay();
           });
           // create selected node's properties tree
@@ -1328,13 +1331,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         if (getParent() is StackNode) AlignNode,
       ];
 
-  List<Type> addChildOnly() => [];
+  // List<Type> addChildOnly() => [];
 
-  List<Type> addChildRecommendations() => [];
+  // List<Type> addChildRecommendations() => [];
 
-  List<Type> insertSiblingOnly() => [];
+  // List<Type> insertSiblingOnly() => [];
 
-  List<Type> insertSiblingRecommendations() => [];
+  // List<Type> insertSiblingRecommendations() => [];
 
   List<Widget> menuAnchorWidgets_WrapWith(
     NodeAction action,
@@ -1493,8 +1496,14 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ],
       if (getParent() is StepperNode)
         menuItemButton("Step", StepNode, action, scName),
+
+      if (getParent() is PollNode)
+        menuItemButton("PollOption", PollOptionNode, action, scName),
+
       if (getParent() is StackNode)
         menuItemButton("Positioned", PositionedNode, action, scName),
+      if (getParent() is StackNode)
+        menuItemButton("Align", AlignNode, action, scName),
       if (getParent() is DirectoryNode) ...[
         menuItemButton("Directory", DirectoryNode, action, scName),
         menuItemButton("File", FileNode, action, scName),
@@ -1516,6 +1525,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("TextSpanN", TextSpanNode, action, scName),
         menuItemButton("WidgetSpan", WidgetSpanNode, action, scName),
       ],
+      if (getParent() is! PollNode)
       ...menuAnchorWidgets_Append(action, true, scName),
     ];
   }
@@ -1683,26 +1693,38 @@ abstract class STreeNode extends Node with STreeNodeMappable {
               if (navUp) {
                 SnippetTreePane.navigateUpTree(scName);
               }
+              fco.dismiss('node-actions');
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
             });
           } else if (action == NodeAction.replaceWith) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.replaceSelectionWith(type: childType));
+            fco.afterNextBuildDo(() {
+              fco.dismiss('node-actions');
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+            });
           } else if (action == NodeAction.addChild) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.appendChild(type: childType));
+            fco.afterNextBuildDo(() {
+              fco.dismiss('node-actions');
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+            });
           } else if (action == NodeAction.addSiblingBefore) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.addSiblingBefore(type: childType));
-          } else if (action == NodeAction.addSiblingAfter) {
-            FlutterContentApp.capiBloc.add(
-              CAPIEvent.addSiblingAfter(type: childType),
-            );
-          }
-          fco.afterNextBuildDo(() {
-            fco.afterMsDelayDo(500, () {
+            fco.afterNextBuildDo(() {
+              fco.dismiss('node-actions');
               EditablePage.refreshSelectedNodeWidgetBorderOverlay();
             });
-          });
+          } else if (action == NodeAction.addSiblingAfter) {
+            FlutterContentApp.capiBloc
+                .add(CAPIEvent.addSiblingAfter(type: childType));
+            fco.afterNextBuildDo(() {
+              fco.dismiss('node-actions');
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+            });
+          }
         },
         child: fco.coloredText(label, fontWeight: FontWeight.bold),
       );
@@ -1718,22 +1740,37 @@ abstract class STreeNode extends Node with STreeNodeMappable {
             case NodeAction.replaceWith:
               FlutterContentApp.capiBloc
                   .add(const CAPIEvent.pasteReplacement());
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               break;
             case NodeAction.addSiblingBefore:
               FlutterContentApp.capiBloc
                   .add(const CAPIEvent.pasteSiblingBefore());
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               break;
             case NodeAction.addSiblingAfter:
               FlutterContentApp.capiBloc
                   .add(const CAPIEvent.pasteSiblingAfter());
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               break;
             case NodeAction.addChild:
               FlutterContentApp.capiBloc.add(const CAPIEvent.pasteChild());
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               break;
             case NodeAction.wrapWith:
+              fco.dismiss('node-actions');
               break;
           }
-          // fco.dismiss(TREENODE_MENU_CALLOUT);
+          fco.afterNextBuildDo(() {
+            fco.dismiss('node-actions');
+          });
         },
         child: fco.coloredText('paste from clipboard', color: Colors.blue),
       );
@@ -1763,23 +1800,35 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
             } else if (action == NodeAction.addSiblingBefore) {
               FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
               // removeNodePropertiesCallout();
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
             } else if (action == NodeAction.addSiblingAfter) {
               FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
               FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(
                 type: SnippetRootNode,
                 snippetName: snippetName,
               ));
+              fco.afterNextBuildDo(() {
+                fco.dismiss('node-actions');
+              });
               // removeNodePropertiesCallout();
             }
           },

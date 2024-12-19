@@ -144,132 +144,137 @@ class EditablePageState extends State<EditablePage> {
 
   Area _treeArea(CAPIState state) => Area(
         builder: (ctx, area) {
-          SnippetRootNode? rootNode =
-              state.snippetBeingEdited?.treeC.roots.first as SnippetRootNode;
-          SnippetName snippetName = rootNode.name;
-          SnippetInfoModel? snippetInfo =
-              SnippetInfoModel.cachedSnippet(snippetName);
-          String title =
-              FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
-                  'snippet name?';
-          if (snippetInfo != null) {
-            //state.snippetBeingEdited?.treeC.rebuild();
-            return GestureDetector(
-              onTap: () {
-                FlutterContentApp.capiBloc
-                    .add(CAPIEvent.clearNodeSelection(scName));
-                fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-                fco.hide("floating-clipboard");
-              },
-              child: Column(
-                children: [
-                  Container(
-                    color: Colors.purple.shade200,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Tooltip(
-                          message:
-                              'snippet: $title, versionId: ${snippetInfo.editingVersionId}'
-                                  '${snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-                                  ? "\n\nSnippet name in RED indicates that this "
-                                  "\nversion is not the PUBLISHED version"
-                                  : ""}',
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
-                            child: Container(
-                              margin: EdgeInsets.zero,
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.all(Radius.circular(30)),
-                              ),
-                              alignment: Alignment.center,
-                              child: Material(color: Colors.transparent,
-                                child: fco.coloredText(
-                                  title,
-                                  fontSize: 14.0,
-                                  color: snippetInfo.editingVersionId != snippetInfo.publishedVersionId
-                                      ? Colors.red
-                                      : Colors.grey,
+          STreeNode? rootNode = state.snippetBeingEdited?.treeC.roots.first;
+          if (rootNode is SnippetRootNode) {
+            SnippetName snippetName = rootNode.name;
+            SnippetInfoModel? snippetInfo =
+                SnippetInfoModel.cachedSnippet(snippetName);
+            String title =
+                FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
+                    'snippet name?';
+            if (snippetInfo != null) {
+              //state.snippetBeingEdited?.treeC.rebuild();
+              return GestureDetector(
+                onTap: () {
+                  FlutterContentApp.capiBloc
+                      .add(CAPIEvent.clearNodeSelection(scName));
+                  fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+                  fco.hide("floating-clipboard");
+                },
+                child: Column(
+                  children: [
+                    Container(
+                      color: Colors.purple.shade200,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Tooltip(
+                            message:
+                                'snippet: $title, versionId: ${snippetInfo.editingVersionId}'
+                                '${snippetInfo.editingVersionId != snippetInfo.publishedVersionId ? "\n\nSnippet name in RED indicates that this "
+                                    "\nversion is not the PUBLISHED version" : ""}',
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Container(
+                                margin: EdgeInsets.zero,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                ),
+                                alignment: Alignment.center,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: fco.coloredText(
+                                    title,
+                                    fontSize: 14.0,
+                                    color: snippetInfo.editingVersionId !=
+                                            snippetInfo.publishedVersionId
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              hoverColor: Colors.white30,
-                              onPressed: () async {
-                                if (!snippetInfo.isFirstVersion()) {
-                                  VersionId? prevId =
-                                      snippetInfo.previousVersionId();
-                                  revertToVersion(prevId, snippetInfo, state);
-                                }
-                              },
-                              icon: Icon(Icons.undo,
-                                  color: !snippetInfo
-                                          .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
-                                      ? Colors.white
-                                      : Colors.white54),
-                              tooltip: 'previous version',
-                            ),
-                            IconButton(
-                              hoverColor: Colors.white30,
-                              onPressed: () {
-                                if (!snippetInfo.isLatestVersion()) {
-                                  VersionId? nextId =
-                                      snippetInfo.nextVersionId();
-                                  revertToVersion(nextId, snippetInfo, state);
-                                }
-                              },
-                              icon: Icon(Icons.redo,
-                                  color: !snippetInfo
-                                          .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
-                                      ? Colors.white
-                                      : Colors.white54),
-                              tooltip: 'next version',
-                            ),
-                            IconButton(
-                              hoverColor: Colors.white30,
-                              onPressed: () async {},
-                              icon:
-                                  VersionsMenuAnchor(snippetInfo: snippetInfo),
-                              tooltip: 'version...',
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                STreeNode.unhighlightSelectedNode();
-                                var pinkOverlayFeature =
-                                    PINK_OVERLAY_NON_TAPPABLE;
-                                fco.dismiss(pinkOverlayFeature);
-                                fco.unhide(CalloutConfigToolbar.CID);
-                                fco.hideClipboard();
-                                fco.inEditMode.value = false;
-                                FlutterContentApp.capiBloc
-                                    .add(const CAPIEvent.popSnippetEditor());
-                                // fco.afterNextBuildDo(() {
-                                //   NamedScrollController.restoreOffset(scName);
-                                // });
-                              },
-                              icon: Icon(Icons.close),
-                            ),
-                          ],
-                        ),
-                      ],
+                          Row(
+                            children: [
+                              IconButton(
+                                hoverColor: Colors.white30,
+                                onPressed: () async {
+                                  if (!snippetInfo.isFirstVersion()) {
+                                    VersionId? prevId =
+                                        snippetInfo.previousVersionId();
+                                    revertToVersion(prevId, snippetInfo, state);
+                                  }
+                                },
+                                icon: Icon(Icons.undo,
+                                    color: !snippetInfo
+                                            .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
+                                        ? Colors.white
+                                        : Colors.white54),
+                                tooltip: 'previous version',
+                              ),
+                              IconButton(
+                                hoverColor: Colors.white30,
+                                onPressed: () {
+                                  if (!snippetInfo.isLatestVersion()) {
+                                    VersionId? nextId =
+                                        snippetInfo.nextVersionId();
+                                    revertToVersion(nextId, snippetInfo, state);
+                                  }
+                                },
+                                icon: Icon(Icons.redo,
+                                    color: !snippetInfo
+                                            .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
+                                        ? Colors.white
+                                        : Colors.white54),
+                                tooltip: 'next version',
+                              ),
+                              IconButton(
+                                hoverColor: Colors.white30,
+                                onPressed: () async {},
+                                icon: VersionsMenuAnchor(
+                                    snippetInfo: snippetInfo),
+                                tooltip: 'version...',
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  STreeNode.unhighlightSelectedNode();
+                                  var pinkOverlayFeature =
+                                      PINK_OVERLAY_NON_TAPPABLE;
+                                  fco.dismiss(pinkOverlayFeature);
+                                  fco.unhide(CalloutConfigToolbar.CID);
+                                  fco.hideClipboard();
+                                  fco.inEditMode.value = false;
+                                  FlutterContentApp.capiBloc
+                                      .add(const CAPIEvent.popSnippetEditor());
+                                  // fco.afterNextBuildDo(() {
+                                  //   NamedScrollController.restoreOffset(scName);
+                                  // });
+                                },
+                                icon: Icon(Icons.close),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SnippetTreePane(snippetInfo, null),
-                  ),
-                ],
-              ),
-            );
+                    Expanded(
+                      child: SnippetTreePane(snippetInfo, null),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const Offstage();
+          } else {
+            return const Offstage();
           }
-          return const Offstage();
         },
         flex: 1,
       );
@@ -306,13 +311,15 @@ class EditablePageState extends State<EditablePage> {
                           .isEmpty)
                         Material(
                           color: Colors.purpleAccent[50],
-                          child: fco.coloredText(' (${FlutterContentApp.selectedNode.toString()} has no properties)',
+                          child: fco.coloredText(
+                              ' (${FlutterContentApp.selectedNode.toString()} has no properties)',
                               color: Colors.white),
                         ),
                       Material(
                           color: Colors.purpleAccent[50],
                           child: PropertiesTreeView(
-                            treeC: FlutterContentApp.selectedNode!.pTreeC(context),
+                            treeC:
+                                FlutterContentApp.selectedNode!.pTreeC(context),
                           )),
                       // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
                     ],

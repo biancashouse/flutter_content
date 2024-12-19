@@ -222,9 +222,7 @@ class SnippetPanelState extends State<SnippetPanel>
                             print('inEditMode: ${fco.inEditMode.value}');
                             return Stack(
                               children: [
-                                snippet.child
-                                        ?.toWidget(futureContext, snippet) ??
-                                    const Placeholder(),
+                                snippet.toWidget(futureContext, null),
                                 if (!isPublishedVersion && !fco.canEditContent.value)
                                   Align(alignment: Alignment.topLeft,
                                   child: Container(color:Colors.deepOrange, height:6, width:double.infinity),),

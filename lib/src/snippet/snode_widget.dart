@@ -120,10 +120,8 @@ class NodeWidget extends StatelessWidget {
         // instead of using the embedded snippet node, which has no child,
         // use the actual (STANDALONE) snippet itself
         // Assumption: actual snippet will be in versionCache
-        SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(
-            (entry.node as SnippetRootNode).name);
-        SnippetRootNode? snippet =
-            await snippetInfo?.currentVersionFromCacheOrFB();
+        SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet((entry.node as SnippetRootNode).name);
+        SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
 
         if (snippet != null) {
           STreeNode.pushThenShowNamedSnippetWithNodeSelected(
@@ -227,6 +225,36 @@ class NodeWidget extends StatelessWidget {
           context, scName, node),
       targetGkF: () => targetGK,
     );
+
+    double savedOffset = NamedScrollController.scrollOffset(scName);
+
+    bool thisWasAlreadySelected =
+        (entry.node == FlutterContentApp.selectedNode);
+
+    // clear sel
+    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected) {
+      fco.hide("floating-clipboard");
+      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+      FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection(scName));
+      fco.afterNextBuildDo(() {
+        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
+      });
+    } else {
+      FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
+    }
+    fco.afterNextBuildDo(() {
+      fco.afterMsDelayDo(
+        100,
+        () {
+          EditablePage.removeAllNodeWidgetOverlays();
+          fco.afterMsDelayDo(500, () {
+            entry.node.showNodeWidgetOverlay();
+          });
+          //NamedScrollController.restoreOffsetTo(scName, savedOffset);
+        },
+        scrollControllers: NamedScrollController.allControllers(),
+      );
+    });
   }
 
   // _longPressedOrDoubleTapped(snippetBloc) {

@@ -417,6 +417,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                     FlutterContentApp.capiBloc
                         .add(CAPIEvent.cutNode(node: node, scName: scName));
                     fco.afterNextBuildDo(() {
+                      fco.dismiss('node-actions');
                       if (fco.clipboard != null) {
                         fco.unhide("floating-clipboard");
                       }
@@ -443,6 +444,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       FlutterContentApp.capiBloc
                           .add(CAPIEvent.copyNode(node: node, scName: scName));
                       fco.afterNextBuildDo(() {
+                        fco.dismiss('node-actions');
                         if (fco.clipboard != null) {
                           fco.unhide("floating-clipboard");
                         }
@@ -476,6 +478,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                       FlutterContentApp.capiBloc
                           .add(const CAPIEvent.completeDeletion());
                       fco.afterNextBuildDo(() {
+                        fco.dismiss('node-actions');
                         // if was tab or tabview, reset the tab Q and controller
                         SnippetPanelState? spState = SnippetPanel.of(context);
                         spState?.resetTabQandC;
@@ -522,6 +525,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
                           ));
                           fco.afterNextBuildDo(() {
                             fco.dismiss("input-snippet-name");
+                            fco.dismiss('node-actions');
                           });
                         },
                         scName: scName,
@@ -569,8 +573,7 @@ class SnippetTreeAndPropertiesCalloutContents extends StatelessWidget {
             ),
           // tree structure icon buttons
           // replace button
-          if (node is! GenericSingleChildNode &&
-              _canReplace(node))
+          if (node is! GenericSingleChildNode && _canReplace(node))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: node.insertItemMenuAnchor(
