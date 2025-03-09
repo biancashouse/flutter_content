@@ -5,7 +5,7 @@ import 'package:flutter_content/flutter_content.dart';
 part 'hotspots_node.mapper.dart';
 
 @MappableClass()
-class HotspotsNode extends SC with HotspotsNodeMappable {
+class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   double? aspectRatio;
 
   // every drag end of a cover or play btn updates the aspect ratio
@@ -15,7 +15,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   List<TargetModel> targets;
   List<TargetModel> playList;
 
-  HotspotsNode({
+  TargetsWrapperNode({
     this.aspectRatio,
     this.width,
     this.height,
@@ -26,8 +26,8 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
@@ -35,7 +35,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
               refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-    DecimalPropertyValueNode(
+    DecimalPNode(
       snode: this,
       name: 'height',
       decimalValue: height,
@@ -43,7 +43,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
           refreshWithUpdate(() => height = newValue),
       calloutButtonSize: const Size(80, 20),
     ),
-    DecimalPropertyValueNode(
+    DecimalPNode(
       snode: this,
       name: 'borderRadius',
       decimalValue: borderRadius,
@@ -51,7 +51,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
           refreshWithUpdate(() => borderRadius = newValue??0.0),
       calloutButtonSize: const Size(80, 20),
     ),
-        // StringPropertyValueNode(
+        // StringPNode(
         //   snode: this,
         //   name: 'wrapper name',
         //   stringValue: name,
@@ -75,7 +75,7 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
     return eps != null
@@ -85,16 +85,16 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
         height: height,
         child: TargetsWrapper(
           parentNode: this,
-          key: createNodeGK(),
-          scName: EditablePage.name(context),
+          key: createNodeWidgetGK(),
+          scName: EditablePage.scName(context),
           child: super.child?.toWidget(context, this) ?? const Placeholder(),
         ),
       ),
     )
     : Error(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         FLUTTER_TYPE,
-        color: Colors.red, size: 32, errorMsg: "unable to find EditablePage.of(context)!");
+        color: Colors.red, size: 16, errorMsg: "unable to find EditablePage.of(context)!");
   }
 
   @override
@@ -113,8 +113,8 @@ class HotspotsNode extends SC with HotspotsNodeMappable {
   @override
   String toString() => FLUTTER_TYPE;
 
-  @override
-  Widget? logoSrc() => const Icon(Icons.messenger);
+  // @override
+  // Widget? logoSrc() => const Icon(Icons.messenger);
 
   static const String FLUTTER_TYPE = "Hotspots";
 }

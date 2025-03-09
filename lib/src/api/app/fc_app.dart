@@ -3,24 +3,27 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
 import 'package:routing_config_provider/routing_config_provider.dart';
 
 // conditional import for webview ------------------
-import 'register_ios_or_android_webview.dart' if (dart.library.html) 'register_web_webview.dart';
-//--------------------------------------------------
+import 'register_ios_or_android_webview.dart'
+    if (dart.library.html) 'register_web_webview.dart';
+
 
 /// this widget must enclose your MaterialApp, or CupertinoApp or WidgetsApp
 /// so that the CAPIBloc becomes available to overlays, which are placed into
 /// the app's overlay and not in your widget tree as you might have expected.
 class FlutterContentApp extends StatefulWidget {
   final String appName;
-  final String editorPassword;
+  final List<String> editorPasswords;
   final String title;
 
   // final SnippetName pageSnippetName;
@@ -32,8 +35,6 @@ class FlutterContentApp extends StatefulWidget {
   final bool useEmulator;
   final bool useFBStorage;
   final Map<String, void Function(BuildContext)> namedVoidCallbacks = {};
-  final Map<String, TextStyle> namedTextStyles;
-  final Map<String, ButtonStyle> namedButtonStyles;
   final bool hideStatusBar;
   final VoidCallback? onReadyF;
 
@@ -44,9 +45,10 @@ class FlutterContentApp extends StatefulWidget {
 
   static CAPIState get capiState => _singletonBloc!.state;
 
-  static SnippetBeingEdited? get snippetBeingEdited => capiState.snippetBeingEdited;
+  static SnippetBeingEdited? get snippetBeingEdited =>
+      capiState.snippetBeingEdited;
 
-  static STreeNode? get selectedNode => snippetBeingEdited?.selectedNode;
+  static SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 
   static bool get showProperties => snippetBeingEdited?.showProperties ?? false;
 
@@ -62,7 +64,7 @@ class FlutterContentApp extends StatefulWidget {
   FlutterContentApp({
     super.key,
     required this.appName,
-    required this.editorPassword,
+    required this.editorPasswords,
     this.title = '',
     // required this.pageSnippetName,
     // this.localTestingFilePaths = false,
@@ -73,8 +75,6 @@ class FlutterContentApp extends StatefulWidget {
     this.fbOptions,
     this.useEmulator = false,
     this.useFBStorage = false,
-    this.namedTextStyles = const {},
-    this.namedButtonStyles = const {},
     this.hideStatusBar = true,
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
@@ -97,7 +97,7 @@ class FlutterContentApp extends StatefulWidget {
   //       // skipHeightConstraintWarning: skipHeightConstraintWarning,
   //       ); //Measuring.findGlobalRect(_offstageGK!);
   //   if (rect != null) {
-  //     fco.logi('$panelName ${rect.toString()}');
+  //     fco.logger.i('$panelName ${rect.toString()}');
   //     // overlay rect with a transparent pink rect, and a 3px surround
   //     fco.showOverlay(
   //       ensureLowestOverlay: true,
@@ -200,7 +200,8 @@ class FlutterContentApp extends StatefulWidget {
   // }
   // }
 
-  static FlutterContentAppState? of(BuildContext context) => context.findAncestorStateOfType<FlutterContentAppState>();
+  static FlutterContentAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<FlutterContentAppState>();
 
   // static bool escKeyPressedZFor3Secs = false;
 
@@ -209,7 +210,8 @@ class FlutterContentApp extends StatefulWidget {
 }
 
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
-class FlutterContentAppState extends State<FlutterContentApp> with TickerProviderStateMixin {
+class FlutterContentAppState extends State<FlutterContentApp>
+    with TickerProviderStateMixin {
   late Future<CAPIBloC> fInitApp;
   int tapCount = 0;
   DateTime? lastTapTime;
@@ -220,24 +222,36 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
   void initState() {
     super.initState();
 
+    if (kReleaseMode) {
+      // don't log anything below warning in production
+      Logger.root.level = Level.WARNING;
+    }
+    Logger.root.onRecord.listen((record) {
+      fco.logger.d('${record.level.name}: ${record.time}'
+          '${record.loggerName}: ${record.message}');
+    });
+
     if (widget.hideStatusBar) {
+      // fco.logger.i('hiding status bar');
       // https://medium.com/@mustafatahirhussein/these-quick-tips-will-surely-help-you-to-build-a-better-flutter-app-6db93c1095b6
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
       );
+    } else {
+      fco.logger.i('going full screen');
+      SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
 
     // see conditional imports for web or mobile
     registerWebViewImplementation();
 
     fInitApp = _initApp();
-
-   }
+  }
 
   // @override
   // void didChangeDependencies() {
-  //   fco.logi("didChangeDependencies");
+  //   fco.logger.i("didChangeDependencies");
   //   // FCO.refreshMQ(context);
   //   if (FCO.showingNodeOBoundaryOverlays??false) {
   //     FlutterContentAppState.removeAllNodeWidgetOverlays();
@@ -252,38 +266,37 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
   //   super.didChangeDependencies();
   // }
 
-    // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
+  // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
-    debugPrint("_initApp() before init()");
+    // fco.logger.d("_initApp() before init()");
 
     CAPIBloC capiBloc = await fco.init(
       appName: widget.appName,
-      editorPassword: widget.editorPassword,
+      editorPasswords: widget.editorPasswords,
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
       useFBStorage: widget.useFBStorage,
-      namedTextStyles: widget.namedTextStyles,
-      namedButtonStyles: widget.namedButtonStyles,
       routingConfig: RoutingConfigProvider().getWebOrMobileRoutingConfig(
         widget.webRoutingConfig,
         widget.mobileRoutingConfig,
       ),
       initialRoutePath: widget.initialRoutePath,
     );
-    debugPrint("_initApp() after");
+    // fco.logger.d("_initApp() after");
 
     widget.onReadyF?.call();
 
-    STreeNode.hideAllTargetCovers();
+    SNode.hideAllTargetCovers();
     // trigger another build
     // fco.afterNextBuildDo(() {
     //   fco.afterMsDelayDo(1000, () async {
-    //     fco.logi('============================================================================');
-    //     fco.logi('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
-    //     fco.logi('============================================================================');
+    //     fco.logger.i('============================================================================');
+    //     fco.logger.i('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
+    //     fco.logger.i('============================================================================');
     //     fco.forceRefresh();
     //   });
     // });
+
     return FlutterContentApp._singletonBloc = capiBloc;
   }
 
@@ -298,7 +311,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
     return FutureBuilder<CAPIBloC>(
         future: fInitApp,
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
             return BlocProvider<CAPIBloC>(
               create: (BuildContext context) => snapshot.data!,
               child: MaterialApp.router(

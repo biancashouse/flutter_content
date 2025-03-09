@@ -14,7 +14,7 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = DirectoryNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,8 +25,8 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   static String? _$name(DirectoryNode v) => v.name;
   static const Field<DirectoryNode, String> _f$name =
       Field('name', _$name, opt: true);
-  static List<STreeNode> _$children(DirectoryNode v) => v.children;
-  static const Field<DirectoryNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(DirectoryNode v) => v.children;
+  static const Field<DirectoryNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(DirectoryNode v) => v.uid;
   static const Field<DirectoryNode, String> _f$uid =
@@ -39,11 +39,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
   static const Field<DirectoryNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(DirectoryNode v) =>
-      v.nodeWidgetGK;
-  static const Field<DirectoryNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<DirectoryNode> fields = const {
@@ -52,7 +47,6 @@ class DirectoryNodeMapper extends SubClassMapperBase<DirectoryNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -121,10 +115,9 @@ extension DirectoryNodeValueCopy<$R, $Out>
 abstract class DirectoryNodeCopyWith<$R, $In extends DirectoryNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({String? name, List<STreeNode>? children});
+  $R call({String? name, List<SNode>? children});
   DirectoryNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -137,11 +130,11 @@ class _DirectoryNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DirectoryNode> $mapper =
       DirectoryNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
-  $R call({Object? name = $none, List<STreeNode>? children}) =>
+  $R call({Object? name = $none, List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (name != $none) #name: name,
         if (children != null) #children: children

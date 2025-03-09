@@ -40,7 +40,7 @@ class PointyTool extends StatefulWidget {
           cId: "arrow-type",
           initialCalloutW: 300,
           initialCalloutH: 200,
-          barrier: CalloutBarrier(
+          barrier: CalloutBarrierConfig(
             opacity: 0.1,
             // onTappedF: () async {
             //   fco.removeOverlay("arrow-type");

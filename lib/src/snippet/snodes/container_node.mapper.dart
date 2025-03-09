@@ -19,8 +19,8 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
       AlignmentEnumMapper.ensureInitialized();
       MappableDecorationShapeEnumMapper.ensureInitialized();
       BadgePositionEnumMapper.ensureInitialized();
-      OutlinedBorderGroupMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      OutlinedBorderPropertiesMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -83,13 +83,13 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static String? _$badgeText(ContainerNode v) => v.badgeText;
   static const Field<ContainerNode, String> _f$badgeText =
       Field('badgeText', _$badgeText, opt: true);
-  static OutlinedBorderGroup? _$outlinedBorderGroup(ContainerNode v) =>
+  static OutlinedBorderProperties? _$outlinedBorderGroup(ContainerNode v) =>
       v.outlinedBorderGroup;
-  static const Field<ContainerNode, OutlinedBorderGroup>
+  static const Field<ContainerNode, OutlinedBorderProperties>
       _f$outlinedBorderGroup =
       Field('outlinedBorderGroup', _$outlinedBorderGroup, opt: true);
-  static STreeNode? _$child(ContainerNode v) => v.child;
-  static const Field<ContainerNode, STreeNode> _f$child =
+  static SNode? _$child(ContainerNode v) => v.child;
+  static const Field<ContainerNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(ContainerNode v) => v.uid;
   static const Field<ContainerNode, String> _f$uid =
@@ -102,11 +102,6 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static const Field<ContainerNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(ContainerNode v) =>
-      v.nodeWidgetGK;
-  static const Field<ContainerNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
   static int? _$borderColor2Value(ContainerNode v) => v.borderColor2Value;
   static const Field<ContainerNode, int> _f$borderColor2Value =
       Field('borderColor2Value', _$borderColor2Value, mode: FieldMode.member);
@@ -147,7 +142,6 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
     #borderColor2Value: _f$borderColor2Value,
     #borderColor3Value: _f$borderColor3Value,
     #borderColor4Value: _f$borderColor4Value,
@@ -244,10 +238,10 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
       get borderColorValues;
-  OutlinedBorderGroupCopyWith<$R, OutlinedBorderGroup, OutlinedBorderGroup>?
-      get outlinedBorderGroup;
+  OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
+      OutlinedBorderProperties>? get outlinedBorderGroup;
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
       {UpTo6ColorValues? fillColorValues,
@@ -267,8 +261,8 @@ abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
       double? badgeHeight,
       BadgePositionEnum? badgeCorner,
       String? badgeText,
-      OutlinedBorderGroup? outlinedBorderGroup,
-      STreeNode? child});
+      OutlinedBorderProperties? outlinedBorderGroup,
+      SNode? child});
   ContainerNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -295,11 +289,12 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
       get borderColorValues => $value.borderColorValues?.copyWith
           .$chain((v) => call(borderColorValues: v));
   @override
-  OutlinedBorderGroupCopyWith<$R, OutlinedBorderGroup, OutlinedBorderGroup>?
+  OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
+          OutlinedBorderProperties>?
       get outlinedBorderGroup => $value.outlinedBorderGroup?.copyWith
           .$chain((v) => call(outlinedBorderGroup: v));
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(

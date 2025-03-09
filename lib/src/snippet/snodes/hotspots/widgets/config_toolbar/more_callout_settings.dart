@@ -43,8 +43,8 @@ class MoreCalloutConfigSettings extends StatefulWidget {
         calloutConfig: CalloutConfig(
           cId: "more-cc-settings",
           initialCalloutW: 200,
-          initialCalloutH: 440,
-          barrier: CalloutBarrier(
+          initialCalloutH: 550,
+          barrier: CalloutBarrierConfig(
             opacity: 0.1,
             // onTappedF: () async {
             //   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
@@ -175,6 +175,21 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               boolValue: tc.canResizeV,
               onChanged: (newValue) {
                 tc.canResizeV = newValue;
+                _refreshContentCallout();
+              },
+            ),
+          ],
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('follow scroll?'),
+            PropertyEditorBool(
+              name: '',
+              boolValue: tc.followScroll,
+              onChanged: (newValue) {
+                tc.followScroll = newValue;
                 _refreshContentCallout();
               },
             ),

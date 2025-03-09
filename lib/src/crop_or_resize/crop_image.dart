@@ -38,11 +38,11 @@
 //       calloutConfig: CalloutConfig(
 //         cId: 'cropper',
 //         initialCalloutPos: calloutPos,
-//         barrier: CalloutBarrier(
+//         barrier: CalloutBarrierConfig(
 //           opacity: .75,
 //         ),
 //         arrowType: ArrowType.NONE,
-//         // onBarrierTappedF: () => fco.logi('barrier tapped'),
+//         // onBarrierTappedF: () => fco.logger.i('barrier tapped'),
 //         initialCalloutW: calloutSize.width,
 //         initialCalloutH: calloutSize.height,
 //         draggable: false,
@@ -215,13 +215,13 @@
 //
 //       // ..addStatusListener((status) {
 //       //   if (status == AnimationStatus.completed) {
-//       //     fco.logi("status is completed");
+//       //     fco.logger.i("status is completed");
 //       //   } else if (status == AnimationStatus.dismissed) {
-//       //     fco.logi("status is dismissed");
+//       //     fco.logger.i("status is dismissed");
 //       //   } else if (status == AnimationStatus.forward) {
-//       //     fco.logi("status is forward");
+//       //     fco.logger.i("status is forward");
 //       //   } else if (status == AnimationStatus.reverse) {
-//       //     fco.logi("status is reverse");
+//       //     fco.logger.i("status is reverse");
 //       //   }
 //       // });
 //       controller!.forward();
@@ -252,7 +252,7 @@
 //                     setState(() {
 //                       panOffset =
 //                           panOffset.translate(event.delta.dx, event.delta.dy);
-//                       //fco.logi('${panOffset.dx}, ${panOffset.dy}');
+//                       //fco.logger.i('${panOffset.dx}, ${panOffset.dy}');
 //                     });
 //                   },
 //                   child: image != null
@@ -346,10 +346,10 @@
 //                     //     if (result != null && result.files.isNotEmpty && mounted) {
 //                     //       PlatformFile file = result.files.first;
 //                     //       image = await bytesToUiImage(file.bytes!);
-//                     //       fco.logi('actual size (${image!.width} v ${image!.height}) storage: ${file.bytes?.toList().length} bytes');
+//                     //       fco.logger.i('actual size (${image!.width} v ${image!.height}) storage: ${file.bytes?.toList().length} bytes');
 //                     //       // _bytes = await compressImage(file.bytes!, min(512,img.width.toDouble()), .85);
 //                     //       // ui.Image compressedImg = await bytesToUiImage(_bytes!);
-//                     //       // fco.logi('scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${_bytes?.toList().length} bytes');
+//                     //       // fco.logger.i('scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${_bytes?.toList().length} bytes');
 //                     //       // EditorBloc.of(context).add(CommentImageChanged(
 //                     //       //   widget.flowchart,
 //                     //       //   widget.stepId,
@@ -499,7 +499,7 @@
 //               min(widget.paperW, img.width.toDouble()), .85 /*quality*/);
 //           ui.Image compressedImg =
 //               await fco.bytesToUiImage(compressedImageBytes);
-//           fco.logi(
+//           fco.logger.i(
 //               'scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${compressedImageBytes.toList().length} bytes');
 //           widget.changedF.call(compressedImageBytes.buffer.asUint8List());
 //           // if (widget.stepId != null) {
@@ -511,12 +511,12 @@
 //           // }
 //         }
 //       } catch (e) {
-//         fco.logi('save crop failed!');
+//         fco.logger.i('save crop failed!');
 //       }
-//       fco.logi('hiding progress bar...');
+//       fco.logger.i('hiding progress bar...');
 //       fco.showCircularProgressIndicator(false,
 //           reason: 'Cropped/Zoomed an Image');
-//       fco.logi('hid progress bar');
+//       fco.logger.i('hid progress bar');
 //     } else {
 //       widget.changedF.call(null);
 //     }
@@ -560,7 +560,7 @@
 //     canvas.clipRect(Rect.fromLTWH(0, 0, calloutSize.width, calloutSize.height));
 //     canvas.translate(parent.panOffset.dx, parent.panOffset.dy);
 //     double zoom = parent.zoom;
-//     // fco.logi('zoom: $zoom');
+//     // fco.logger.i('zoom: $zoom');
 //     canvas.scale(zoom, zoom);
 //     canvas.drawImage(parent.widget.image, Offset.zero,
 //         Paint()..color = Color.fromARGB(128, 0, 0, 0));

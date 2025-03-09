@@ -14,7 +14,7 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PositionedNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -34,8 +34,8 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   static double? _$right(PositionedNode v) => v.right;
   static const Field<PositionedNode, double> _f$right =
       Field('right', _$right, opt: true);
-  static STreeNode? _$child(PositionedNode v) => v.child;
-  static const Field<PositionedNode, STreeNode> _f$child =
+  static SNode? _$child(PositionedNode v) => v.child;
+  static const Field<PositionedNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(PositionedNode v) => v.uid;
   static const Field<PositionedNode, String> _f$uid =
@@ -48,11 +48,6 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
   static const Field<PositionedNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(PositionedNode v) =>
-      v.nodeWidgetGK;
-  static const Field<PositionedNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<PositionedNode> fields = const {
@@ -64,7 +59,6 @@ class PositionedNodeMapper extends SubClassMapperBase<PositionedNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -137,14 +131,10 @@ extension PositionedNodeValueCopy<$R, $Out>
 abstract class PositionedNodeCopyWith<$R, $In extends PositionedNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
-      {double? top,
-      double? left,
-      double? bottom,
-      double? right,
-      STreeNode? child});
+      {double? top, double? left, double? bottom, double? right, SNode? child});
   PositionedNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -158,7 +148,7 @@ class _PositionedNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PositionedNode> $mapper =
       PositionedNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(

@@ -22,7 +22,7 @@ enum MappableDecorationShapeEnum {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,
@@ -65,7 +65,7 @@ enum MappableDecorationShapeEnum {
     int? starPoints,
   }) {
     // if (this != DecorationShapeEnum.rectangle) {
-    //   print('blah');
+    //   fco.logger.d('blah');
     // }
     // if no fill colors supplied, default to black.
     // if only one color supplied use that as color param

@@ -9,7 +9,7 @@ bool isShowingTargetDurationCallout() => fco.anyPresent(["duration"]);
 
 void removeTargetDurationCallout() {
   if (fco.anyPresent(["duration"])) {
-    fco.logi("removeStartTimeCallout");
+    fco.logger.i("removeStartTimeCallout");
     fco.dismiss("duration");
   }
 }
@@ -40,7 +40,7 @@ Future<void> showTargetDurationCallout(
         initialTargetAlignment: Alignment.centerRight,
         initialCalloutAlignment: Alignment.centerLeft,
         finalSeparation: 30,
-        barrier: CalloutBarrier(
+        barrier: CalloutBarrierConfig(
           opacity: 0.1,
           onTappedF: () async {
             removeTargetDurationCallout();
@@ -54,7 +54,7 @@ Future<void> showTargetDurationCallout(
         fillColor: Colors.purpleAccent,
         // showCloseButton: true,
         // onTopRightButtonPressF: () {
-        //   fco.logi("closed");
+        //   fco.logger.i("closed");
         // },
         // closeButtonColor: Colors.white,
         scaleTarget: tc.transformScale,

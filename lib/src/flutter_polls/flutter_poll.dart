@@ -208,7 +208,7 @@ class FlutterPollState extends State<FlutterPoll> {
 
   Future<PollBloC> _initPoll() async {
     // localstorage
-    voterId = fco.hiveBox?.get("vea") ?? 'anon';
+    voterId = fco.localStorage.read("vea") ?? 'anon';
     // firestore
     OptionVoteCountMap counts =
         await FlutterContentApp.capiBloc.modelRepo.getPollOptionVoteCounts(
@@ -253,13 +253,13 @@ class FlutterPollState extends State<FlutterPoll> {
                         String starts = widget.startDate! > now
                             ? DateFormat('MMMMd').format(startDT)
                             : timeago.format(startDT);
-                        // debugPrint(timeago.format(startDT));
+                        // fco.logger.d(timeago.format(startDT));
                         final endDT = DateTime.fromMillisecondsSinceEpoch(
                             widget.endDate!);
                         String ends = now < widget.endDate!
                             ? DateFormat('MMMMd').format(endDT)
                             : timeago.format(endDT, allowFromNow: true);
-                        // debugPrint(timeago.format(endDT));
+                        // fco.logger.d(timeago.format(endDT));
                         dates =
                             'poll ${widget.startDate! < now ? 'started' : 'starts'}: '
                             '$starts, and '
@@ -326,7 +326,7 @@ class FlutterPollState extends State<FlutterPoll> {
   //         initialTargetAlignment: Alignment.topLeft,
   //         initialCalloutAlignment: Alignment.bottomRight,
   //         finalSeparation: 60,
-  //         barrier: CalloutBarrier(
+  //         barrier: CalloutBarrierConfig(
   //           opacity: .5,
   //           onTappedF: () async {
   //             fco.dismiss("voter-ea");

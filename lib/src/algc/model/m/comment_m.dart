@@ -66,7 +66,7 @@ class CommentM with HasImageInFBStorage, StringEncoderDecoder {
         // ..fsTop = theBVComment.fsTop
         ..imageSize = theBVComment.imageSize;
     } catch (e) {
-      fco.loge('commentBV2M: ${e.toString()}');
+      fco.logger.e('commentBV2M: ${e.toString()}');
     }
     return mComment;
   }

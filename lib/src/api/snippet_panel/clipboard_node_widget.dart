@@ -31,7 +31,7 @@ class ClipboardNodeWidget extends StatelessWidget {
 
         String displayedNodeName = entry.node is SnippetRootNode && (entry.node as SnippetRootNode).name.isNotEmpty
             ? (entry.node as SnippetRootNode).name
-            : (entry.node as STreeNode).toString();
+            : (entry.node as SNode).toString();
 
         Size textSize = calculateTextSize(
           text: displayedNodeName,

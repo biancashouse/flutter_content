@@ -24,7 +24,7 @@ enum CrossAxisAlignmentEnum  {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,
@@ -44,7 +44,7 @@ enum CrossAxisAlignmentEnum  {
       );
 
   Widget toMenuItem(bool isRow) {
-    // fco.logi("isRow:$isRow CrossAxisAlignment toWidget ${name}");
+    // fco.logger.i("isRow:$isRow CrossAxisAlignment toWidget ${name}");
     return Container(
       padding: const EdgeInsets.all(8),
       height: isRow ? 50 : 90,

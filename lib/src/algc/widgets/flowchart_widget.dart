@@ -27,7 +27,7 @@ class FlowchartWidget extends StatelessWidget {
 
       return FlowchartWidgetStack(f);
     } catch (e) {
-      print(e);
+      fco.logger.e('', error:e);
       return Error("FlowchartWidget", color: Colors.red, size: 32, errorMsg: e.toString(), key:GlobalKey());
     }
   }
@@ -40,7 +40,7 @@ class FlowchartWidgetStack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    fco.logi('FlowchartWidgetStack build');
+    fco.logger.i('FlowchartWidgetStack build');
     double w = FlowchartM.PAGE_VISIBLE_OVERFLOW + f.screenPaperW;
     double h =
         FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);
@@ -204,7 +204,7 @@ class FlowchartWidgetStack extends StatelessWidget {
   }
 
   Widget _positionedFlowchartSteps(FlowchartM f) {
-    //fco.logi('starting _positionedFlowchartSteps');
+    //fco.logger.i('starting _positionedFlowchartSteps');
     // create the child step widgets
     List<PkgStepWidget> columnChildren =
         f.stepsShowingChanges.map((step) => PkgStepWidget(f, step)).toList();

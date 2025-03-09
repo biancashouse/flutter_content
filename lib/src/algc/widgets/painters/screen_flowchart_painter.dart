@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
 import 'package:flutter_content/src/algc/widgets/painters/dashed_line_helper.dart';
@@ -38,7 +38,7 @@ class FlowchartSkeletonPainter extends CustomPainter with WidgetHelperMixin {
     double screenPaperW = _fbe.screenPaperW;
     double screenPaperH = _fbe.screenPaperH;
     // page border - red outside boundary - ONLY when not a selection present
-    //fco.logi('showing adders: ${_flowchart.showAdders}');
+    //fco.logger.i('showing adders: ${_flowchart.showAdders}');
     if (!skipDashedBorder) {
       drawDashedLine(
           from: Offset(PdfPageOffset.dx, PdfPageOffset.dy),
@@ -85,7 +85,7 @@ class FlowchartSkeletonPainter extends CustomPainter with WidgetHelperMixin {
     // if (!possibleThicker)
     //   possibleThicker = App.editorBloc.state is Editor_Showing_StepType_Menu && (App.editorBloc.state as Editor_Showing_StepType_Menu)?.beginStepTapped ?? false;
 
-    // fco.logi('y = $y');
+    // fco.logger.i('y = $y');
 
     double beginTxtW = _fbe.beginTxtW;
 

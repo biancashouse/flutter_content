@@ -26,8 +26,8 @@ class YTNode extends CL with YTNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'Youtube Url',
           stringValue: ytUrl,
@@ -35,28 +35,28 @@ class YTNode extends CL with YTNodeMappable {
           calloutButtonSize: const Size(280, 20),
           calloutWidth: 280,
         ),
-    IntPropertyValueNode(
+    IntPNode(
       snode: this,
       name: 'starts (secs)',
       intValue: startAtSecs,
       onIntChange: (newValue) => refreshWithUpdate(() => startAtSecs = newValue),
       calloutButtonSize: const Size(120, 20),
     ),
-    IntPropertyValueNode(
+    IntPNode(
       snode: this,
       name: 'ends (secs)',
       intValue: endAtSecs,
       onIntChange: (newValue) => refreshWithUpdate(() => endAtSecs = newValue),
       calloutButtonSize: const Size(120, 20),
     ),
-    DecimalPropertyValueNode(
+    DecimalPNode(
       snode: this,
       name: 'iframeWidth',
       decimalValue: iframeWidth,
       onDoubleChange: (newValue) => refreshWithUpdate(() => iframeWidth = newValue ?? 800),
       calloutButtonSize: const Size(90, 20),
     ),
-    DecimalPropertyValueNode(
+    DecimalPNode(
       snode: this,
       name: 'iframeHeight',
       decimalValue: iframeHeight,
@@ -66,7 +66,7 @@ class YTNode extends CL with YTNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -84,7 +84,7 @@ class YTNode extends CL with YTNodeMappable {
       return SizedBox(width: iframeWidth, height: iframeHeight,
               child: AspectRatio(aspectRatio: 16/9,
               child: IFrame(
-                key: createNodeGK(),
+                key: createNodeWidgetGK(),
                 src: embedUrl,
                 iframeW: iframeWidth,
                 iframeH: iframeHeight,
@@ -93,7 +93,7 @@ class YTNode extends CL with YTNodeMappable {
             ),
           );
     } catch (e) {
-     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+     return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
 
     // YoutubePlayer(

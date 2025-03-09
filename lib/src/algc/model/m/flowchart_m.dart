@@ -36,7 +36,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
           serializers.deserializeWith(FlowchartBV.serializer, theJson)!;
       result = flowchartBV2M(deserializedFlowchart);
     } catch (e) {
-      fco.logi(e.toString());
+      fco.logger.i(e.toString());
     }
     return result;
   }
@@ -45,15 +45,15 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
     late FlowchartM result;
     try {
       Map<String, dynamic> decodedJson = json.decode(theJson);
-      debugPrint('FlowchartM.fromJsonString:');
-      // debugPrint(decodedJson.toString());
-      debugPrint('----------------------------------------------------------');
+      fco.logger.d('FlowchartM.fromJsonString:');
+      // fco.logger.d(decodedJson.toString());
+      fco.logger.d('----------------------------------------------------------');
       FlowchartBV deserializedFlowchart =
           serializers.deserializeWith(FlowchartBV.serializer, decodedJson)!;
-      debugPrint('deserialized OK');
+      fco.logger.d('deserialized OK');
       result = flowchartBV2M(deserializedFlowchart);
     } catch (e) {
-      fco.logi(e.toString());
+      fco.logger.i(e.toString());
       rethrow;
     }
     return result;
@@ -82,11 +82,11 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   /// for Firestore dto usage ----------------------------------------------------
   factory FlowchartM.fromFirestoreMap(Map<String, dynamic> data) {
-    debugPrint('FlowchartM.fromFirestoreMap--------------');
+    fco.logger.d('FlowchartM.fromFirestoreMap--------------');
     FlowchartM flowchart = FlowchartM.fromJsonString(data['json']);
     Timestamp ts = data['created'];
     if (flowchart.createdMs != ts.millisecondsSinceEpoch) {
-      fco.logi('Flowchart in firestore has created != json createdMs');
+      fco.logger.i('Flowchart in firestore has created != json createdMs');
     }
     ts = data['updated'];
     if (flowchart.lastModifiedMs != ts.millisecondsSinceEpoch) {
@@ -156,7 +156,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   //   // if (!skipCPI) {
   //   //   fco.showCircularProgressIndicator(true, reason: 'saving flowchart');
   //   // }
-  //   // fco.logi('****** save *******');
+  //   // fco.logger.i('****** save *******');
   //   // FlowchartM copy = copyOf(generateNewKey: false);
   //   // //copy.dirty = true;
   //   // if (!skipUpdatingLastMod) copy.lastModifiedMs = (lastModifiedMs = DateTime.now().millisecondsSinceEpoch);
@@ -243,7 +243,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   // void restoreScrollOffsetsAfterNextBuild() {
   //   _saveScrollOffsets();
   //   fco.afterNextBuildDo(() {
-  //     fco.logi('restoreScrollOffsetsAfterNextBuild');
+  //     fco.logger.i('restoreScrollOffsetsAfterNextBuild');
   //     if (scrollControllerOffset != null && editingPageState!.vSC.hasClients) {
   //       editingPageState!.vSC.jumpTo(scrollControllerOffset!);
   //     }
@@ -277,7 +277,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   void setStepGK(int stepId, GlobalKey gk) {
     _stepGKs[stepId] = gk;
-    // fco.logi('${_stepGKs.length} step GKs');
+    // fco.logger.i('${_stepGKs.length} step GKs');
   }
 
   // NOTE - BEGIN and END are keys used to store the begin & end gks with all the step gks
@@ -302,13 +302,13 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   //TDOO StepM findStep(int id) => steps.where((s) => s.id == id)?.first;
 
   // StepWidgetDndState? stepStateDnd(int? stepId) {
-  //   //fco.logi('step ${stepId}');
+  //   //fco.logger.i('step ${stepId}');
   //   var gk = _stepGKs[stepId];
   //   return gk?.currentContext?.findAncestorStateOfType<StepWidgetDndState>();
   // }
 
   // StepWidgetState? stepState(int? stepId) {
-  //   //fco.logi('step ${stepId}');
+  //   //fco.logger.i('step ${stepId}');
   //   var gk = _stepGKs[stepId];
   //   return gk?.currentContext?.findAncestorStateOfType<StepWidgetState>();
   // }
@@ -322,7 +322,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   // set flowchartEditorPageGK(
   //     GlobalKey<FlowchartEditorPageState>? flowchartPageGK) {
   //   if (_flowchartEditorPageGK != flowchartPageGK) {
-  //     fco.logi(
+  //     fco.logger.i(
   //         '******** flowchart pageState GlobalKey changed. ********************************');
   //     _flowchartEditorPageGK = flowchartPageGK;
   //   }
@@ -340,7 +340,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   //
   // set flowchartBodyGK(GlobalKey<FlowchartEditorBodyState>? flowchartBodyGK) {
   //   if (_flowchartBodyGK != flowchartBodyGK) {
-  //     fco.logi(
+  //     fco.logger.i(
   //         '******** flowchart BodyState GlobalKey changed. ********************************');
   //     _flowchartBodyGK = flowchartBodyGK;
   //   }
@@ -359,7 +359,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   // set flowchartWidgetsGK(
   //     GlobalKey<FlowchartWidgetStackState>? flowchartWidgetsGK) {
   //   if (_flowchartWidgetsGK != flowchartWidgetsGK) {
-  //     fco.logi(
+  //     fco.logger.i(
   //         '******** flowchartWidgetsState GlobalKey changed. ********************************');
   //     _flowchartWidgetsGK = flowchartWidgetsGK;
   //   }
@@ -377,7 +377,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   // set commentsPanelGK(GlobalKey<CommentsPanelState>? commentsPanelGK) {
   //   if (_commentsPanelGK != commentsPanelGK) {
-  //     fco.logi('******** commentsPanelState GlobalKey changed. ********************************');
+  //     fco.logger.i('******** commentsPanelState GlobalKey changed. ********************************');
   //     _commentsPanelGK = commentsPanelGK;
   //   }
   // }
@@ -387,7 +387,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
   // Editor comments panel state ===========================================================================================
 
 // void setBodyState(GlobalKey<FlowchartEditorBody3State> theBodyGK) {
-//   fco.logi('flowchart bodyState set.');
+//   fco.logger.i('flowchart bodyState set.');
 //   flowchartBodyGK = theBodyGK;
 // }
 
@@ -784,14 +784,14 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
 //   double get totalHeight {
 //     //var sumOfHeights = sumOfHeightsOf(steps);
-// //    fco.logi('flowchart ${title}');
+// //    fco.logger.i('flowchart ${title}');
 //     double totalH = MMM + PPP + beginTxtH + PPP + sumOfHeightsOf(steps) + MMM + endTxtH + PPP;
-// //    fco.logi('---------------------');
-// //    fco.logi('-- sumOfHeightsOf(steps) = ${sumOfHeightsOf(steps)} ----');
-// //    fco.logi('-- total height = $totalH ----');
-// //    fco.logi('-- paper height = $paperH ----');
-// //    fco.logi('-- totalH / paperH = ${paperH/totalH} ----');
-// //    fco.logi('---------------------');
+// //    fco.logger.i('---------------------');
+// //    fco.logger.i('-- sumOfHeightsOf(steps) = ${sumOfHeightsOf(steps)} ----');
+// //    fco.logger.i('-- total height = $totalH ----');
+// //    fco.logger.i('-- paper height = $paperH ----');
+// //    fco.logger.i('-- totalH / paperH = ${paperH/totalH} ----');
+// //    fco.logger.i('---------------------');
 //     return totalH;
 //   }
 
@@ -950,7 +950,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //     // SharedPreferences sp = App.repo.prefs;
 //     String s = App.repo.prefs.getString(imageUrl)!;
 //     data = base64.decode(s);
-//     fco.logi('$imageUrl taken from Pref ------------------------------');
+//     fco.logger.i('$imageUrl taken from Pref ------------------------------');
 //   } else {
 //     data = (await NetworkAssetBundle(Uri.parse(imageUrl)).load('')).buffer.asUint8List();
 //     if (data != null) {
@@ -1016,12 +1016,12 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
             .where((step) => step.changeType != ChangeType.trashedStep)
             .toList();
       }
-      //theSteps.forEach((s) => fco.logi('step ${s.shape} width: ${s.width()}'));
+      //theSteps.forEach((s) => fco.logger.i('step ${s.shape} width: ${s.width()}'));
       if (theSteps.isNotEmpty) {
         widest = theSteps.map((step) => step.width()).reduce(max);
       }
     }
-    //fco.logi('--widestStep = $widest');
+    //fco.logger.i('--widestStep = $widest');
     return widest;
   }
 
@@ -1198,7 +1198,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
       isAnAdderIconPresent = true;
     } else if (theStepType == STEP_MOVER) {
       isAMoverIconPresent = true;
-      // fco.logi('isAMoverIconPresent = true');
+      // fco.logger.i('isAMoverIconPresent = true');
     }
     StepM inserter = StepM(this, randomKey())
       ..shape = theStepType
@@ -1566,7 +1566,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
         steps.length == 1 && steps[0].shape == STEP_ADDER ? steps[0].id : null;
     steps =
         removeInsertersAndMovers_(steps, theExceptionId: possiblySingleAdderId);
-    // fco.logi('${steps.length} steps');
+    // fco.logger.i('${steps.length} steps');
     isAnAdderIconPresent = (possiblySingleAdderId != null);
     isAMoverIconPresent = false;
     return steps;
@@ -1574,7 +1574,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   List<StepM>? removeInsertersAndMovers({int? theExceptionId}) {
     steps = removeInsertersAndMovers_(steps, theExceptionId: theExceptionId);
-    // fco.logi('${steps.length} steps');
+    // fco.logger.i('${steps.length} steps');
     isAnAdderIconPresent = false;
     isAMoverIconPresent = false;
     return steps;
@@ -1727,21 +1727,21 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //    }
   }
 
-  void stepsdebugPrint(List<StepM> theList) {
+  void stepsLogger(List<StepM> theList) {
     for (var theStep in theList) {
-      //fco.logi('${theStep!.shape} - ${theStep.id}');
+      //fco.logger.i('${theStep!.shape} - ${theStep.id}');
       theStep.childStepLists.forEach((String key, List<StepM> theChildList) {
-        fco.logi('  $key children: ${theChildList.length}');
-        stepsdebugPrint(theChildList);
+        fco.logger.i('  $key children: ${theChildList.length}');
+        stepsLogger(theChildList);
       });
     }
   }
 
-  void selectedFlowchartDebugPrint(String calledFrom) {
-    fco.logi(
+  void selectedFlowchartLogger(String calledFrom) {
+    fco.logger.i(
         '---==================---===========---===============------==============--------======');
-    fco.logi(calledFrom);
-    stepsdebugPrint(steps);
+    fco.logger.i(calledFrom);
+    stepsLogger(steps);
   }
 
   late int commentCount;
@@ -1942,7 +1942,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
       try {
         newFlowchart.stepsMap[int.parse(key)] = newList;
       } catch (error) {
-        fco.logi('parse error - key = $key');
+        fco.logger.i('parse error - key = $key');
       }
     }
 // prev versions
@@ -2084,7 +2084,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
         }
       }
     } catch (e) {
-      fco.logi(e.toString());
+      fco.logger.i(e.toString());
     }
     return mStep;
   }
@@ -2097,7 +2097,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
   /// this creates a copy with its own key, including some transient properties
   FlowchartM copyOf({required bool generateNewKey}) {
-    debugPrint('FlowchartM.copyOf--------------');
+    fco.logger.d('FlowchartM.copyOf--------------');
     var json = toJsonString();
     var copy = FlowchartM.fromJsonString(json);
 
@@ -2231,7 +2231,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //    */
 //   void resetTransients() {
 //     // commentBeingEditedIndex = commentBeingEditedStepId = null;
-//     // fco.logi('*** resetTransients ***');
+//     // fco.logger.i('*** resetTransients ***');
 //     // regardless of whether a step was already selected
 //     // moversOffset = 0.0;
 //     //step2BMoved = null;
@@ -2262,7 +2262,7 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //   // already cached ?
 //   if (imageBytes?.isNotEmpty ?? false) {
 //     imageSize = imageBytes!.lengthInBytes; // resetting the size is redundant, hopefully ?
-//     fco.logi('getImage() returned memory-cached bytes: $imageSize');
+//     fco.logger.i('getImage() returned memory-cached bytes: $imageSize');
 //     // await setImage(flowchart, stepId, _bytes); // assuming would already be in prefs
 //     return imageBytes;
 //   }
@@ -2274,26 +2274,26 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //     imageBytes = base64Decode(s);
 //     if (imageBytes != null) {
 //       imageSize = imageBytes!.lengthInBytes;
-//       fco.logi('getImage() returned pref-cached bytes: $imageSize');
+//       fco.logger.i('getImage() returned pref-cached bytes: $imageSize');
 //       return imageBytes;
 //     }
 //   }
 //
 //   if (!localOnly) {
 //     // so not found locally, is it in firebase ?
-//     fco.logi('Downloading flowchart descr image from Firebase (flowchart:$id}, $title');
+//     fco.logger.i('Downloading flowchart descr image from Firebase (flowchart:$id}, $title');
 //     firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 //     firebase_storage.Reference ref = storage.ref(imgKey);
 //     // func to do the fb download
 //     Future<Uint8List?> downloadImageData() async {
 //       Uint8List? downloadedData = await ref.getData();
-//       fco.logi('getImage() downloaded $imageSize bytes from FB Storage');
+//       fco.logger.i('getImage() downloaded $imageSize bytes from FB Storage');
 //       imageBytes = downloadedData;
 //       imageSize = imageBytes!.lengthInBytes;
 //       // save to local storage
 //       String s = base64Encode(imageBytes!);
 //       await App.localStore.setString(imgKey, s);
-//       fco.logi('saved to local store: $imgKey');
+//       fco.logger.i('saved to local store: $imgKey');
 //
 //       // don't set dirty - may need to reinstate later ?
 //       //flowchart.dirty = true;
@@ -2304,15 +2304,15 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 //       Uint8List? data = await downloadImageData();
 //       return data;
 //     } on firebase_storage.FirebaseException catch (e) {
-//       fco.logi('\n*** firebase error: ${e.message} ***\n');
-//       fco.logi('imageKey $imgKey $title');
-//       fco.logi('\nSign in, and try again...\n');
+//       fco.logger.i('\n*** firebase error: ${e.message} ***\n');
+//       fco.logger.i('imageKey $imgKey $title');
+//       fco.logger.i('\nSign in, and try again...\n');
 //       await RepoWithFirestore.ensureCurrentEaSignedInToFirebase(FirebaseAuth.instance);
 //       try {
 //         Uint8List? data = await downloadImageData();
 //         return data;
 //       } on firebase_storage.FirebaseException catch (e) {
-//         fco.logi('\n*** firebase error again: ${e.message} ***\n');
+//         fco.logger.i('\n*** firebase error again: ${e.message} ***\n');
 //       }
 //     }
 //   }

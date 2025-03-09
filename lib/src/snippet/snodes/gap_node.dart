@@ -14,8 +14,8 @@ class GapNode extends CL with GapNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'gap',
           decimalValue: gap,
@@ -38,12 +38,12 @@ class GapNode extends CL with GapNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     return Gap(
-      key: createNodeGK(), gap,
+      key: createNodeWidgetGK(), gap,
       // crossAxisExtent: 10,
     );
   }

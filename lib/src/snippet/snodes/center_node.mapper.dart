@@ -14,7 +14,7 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CenterNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,8 +22,8 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   @override
   final String id = 'CenterNode';
 
-  static STreeNode? _$child(CenterNode v) => v.child;
-  static const Field<CenterNode, STreeNode> _f$child =
+  static SNode? _$child(CenterNode v) => v.child;
+  static const Field<CenterNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(CenterNode v) => v.uid;
   static const Field<CenterNode, String> _f$uid =
@@ -36,11 +36,6 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
   static const Field<CenterNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(CenterNode v) =>
-      v.nodeWidgetGK;
-  static const Field<CenterNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<CenterNode> fields = const {
@@ -48,7 +43,6 @@ class CenterNodeMapper extends SubClassMapperBase<CenterNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -114,9 +108,9 @@ extension CenterNodeValueCopy<$R, $Out>
 abstract class CenterNodeCopyWith<$R, $In extends CenterNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({STreeNode? child});
+  $R call({SNode? child});
   CenterNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -129,7 +123,7 @@ class _CenterNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CenterNode> $mapper =
       CenterNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({Object? child = $none}) =>

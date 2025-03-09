@@ -12,7 +12,7 @@ import 'package:mockito/mockito.dart';
 import 'repo_test_suite.dart';
 import 'unit_test.mocks.dart';
 
-late STreeNode firstTabNode;
+late SNode firstTabNode;
 
 MockModelRepository setupMockRepo() {
   MockModelRepository mockRepository = MockModelRepository();

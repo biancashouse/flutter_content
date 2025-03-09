@@ -26,8 +26,8 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -36,7 +36,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'folderId',
           stringValue: folderId,
@@ -45,7 +45,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'resourceKey',
           stringValue: resourceKey,
@@ -54,7 +54,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'iframeWidth',
           decimalValue: iframeWidth,
@@ -62,7 +62,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
               refreshWithUpdate(() => iframeWidth = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'iframeHeight',
           decimalValue: iframeHeight,
@@ -137,7 +137,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   Widget? savedWidget;
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -147,7 +147,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
 //        'https://drive.google.com/embeddedfolderview?id=$folderId&resourcekey=$resourceKey#list" style="width:100%; height:600px; border:0;"';
 
       return SizedBox(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             width: iframeWidth,
             height: iframeHeight,
             child: IFrame(
@@ -160,7 +160,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
             ),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

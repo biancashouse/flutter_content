@@ -28,7 +28,8 @@ class CalloutConfigToolbar extends StatefulWidget {
 
   static const CID = 'callout-config-toolbar';
 
-  static double CALLOUT_CONFIG_TOOLBAR_W(TargetModel tc) => 700;
+  static double CALLOUT_CONFIG_TOOLBAR_W(TargetModel tc) =>
+      tc.hasAHotspot() ? 700 : 500;
 
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
@@ -55,43 +56,46 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
           children: [
             toolbarVFlipIcon(),
             const VerticalDivider(color: Colors.white, width: 2),
-            Column(
-              children: [
-                fco.coloredText('zoom', color: Colors.white70),
-                Tooltip(
-                  message: 'edit the zoom...',
-                  child: SizedBox(
-                    width: 200,
-                    child: ResizeSlider(
-                        value: tc.transformScale,
-                        //icon: Icons.zoom_in,
-                        iconSize: 30,
-                        color: Colors.white,
-                        onDragStartF: () => removeSnippetContentCallout(tc),
-                        onDragEndF: () {
-                          tc.changed_saveRootSnippet();
-                          STreeNode.showAllTargetBtns();
-                          STreeNode.showAllTargetCovers();
-                          // fco.dismiss(CalloutConfigToolbar.CID);
-                          showSnippetContentCallout(
-                            tc: tc,
-                            justPlaying: false,
-                            wrapperRect: widget.wrapperRect,
-                            scName: widget.scName,
-                          );
-                        },
-                        onChangeF: (value) {
-                          tc.transformScale = value;
-                          TargetsWrapperState? state = tc.targetsWrapperState();
-                          state?.zoomer?.zoomImmediately(value, value);
-                        },
-                        min: 1.0,
-                        max: 3.0),
+            if (tc.hasAHotspot())
+              Column(
+                children: [
+                  fco.coloredText('zoom', color: Colors.white70),
+                  Tooltip(
+                    message: 'edit the zoom...',
+                    child: SizedBox(
+                      width: 200,
+                      child: ResizeSlider(
+                          value: tc.transformScale,
+                          //icon: Icons.zoom_in,
+                          iconSize: 30,
+                          color: Colors.white,
+                          onDragStartF: () => removeSnippetContentCallout(tc),
+                          onDragEndF: () {
+                            tc.changed_saveRootSnippet();
+                            SNode.showAllTargetBtns();
+                            SNode.showAllHotspotTargetCovers();
+                            // fco.dismiss(CalloutConfigToolbar.CID);
+                            showSnippetContentCallout(
+                              tc: tc,
+                              justPlaying: false,
+                              wrapperRect: widget.wrapperRect,
+                              scName: widget.scName,
+                            );
+                          },
+                          onChangeF: (value) {
+                            tc.transformScale = value;
+                            TargetsWrapperState? state =
+                                tc.targetsWrapperState();
+                            state?.zoomer?.zoomImmediately(value, value);
+                          },
+                          min: 1.0,
+                          max: 3.0),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const VerticalDivider(color: Colors.white, width: 2),
+                ],
+              ),
+            if (tc.hasAHotspot())
+              const VerticalDivider(color: Colors.white, width: 2),
             Column(
               children: [
                 fco.coloredText('target size', color: Colors.white70),
@@ -114,8 +118,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                         },
                         onDragEndF: () {
                           tc.changed_saveRootSnippet();
-                          STreeNode.showAllTargetBtns();
-                          STreeNode.showAllTargetCovers();
+                          SNode.showAllTargetBtns();
+                          SNode.showAllHotspotTargetCovers();
                           TargetsWrapper.configureTarget(
                             tc,
                             widget.wrapperRect,
@@ -265,7 +269,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 ),
                 onPressed: () {
                   SnippetRootNode? rootNode =
-                      tc.parentHotspotNode?.rootNodeOfSnippet();
+                      tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
                   if (rootNode == null) return;
                   tc
                       .targetsWrapperState()
@@ -283,8 +287,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       afterTransformF: () {
                     fco.afterMsDelayDo(2000, () {
                       tc.targetsWrapperState()?.refresh(() {
-                        STreeNode.showAllTargetCovers();
-                        STreeNode.showAllTargetBtns();
+                        SNode.showAllHotspotTargetCovers();
+                        SNode.showAllTargetBtns();
                       });
                     });
                     tc.targetsWrapperState()?.refresh(() {});
@@ -299,28 +303,47 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 fco.dismiss(CalloutConfigToolbar.CID);
-                tc.targetsWrapperState()?.refresh(() {
-                  tc.targetsWrapperState()?.zoomer?.resetTransform(
-                      afterTransformF: () {
+                if (tc.hasAHotspot()) {
+                  tc.targetsWrapperState()?.refresh(() {
+                    tc.targetsWrapperState()?.zoomer?.resetTransform(
+                        afterTransformF: () {
+                      // tc.changed_saveRootSnippet();
+                      SNode.showAllTargetBtns();
+                      SNode.showAllHotspotTargetCovers();
+                      // fco.currentPageState?.unhideFAB();
+                      removeSnippetContentCallout(tc);
+                      fco.afterNextBuildDo(() {
+                        // save hotspot's parent snippet
+                        var rootNode =
+                            tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                        if (rootNode != null) {
+                          fco.cacheAndSaveANewSnippetVersion(
+                            snippetName: rootNode.name,
+                            rootNode: rootNode,
+                          );
+                        }
+                      });
+                    });
+                  });
+                } else {
+                  tc.targetsWrapperState()?.refresh(() {
                     // tc.changed_saveRootSnippet();
-                    STreeNode.showAllTargetBtns();
-                    STreeNode.showAllTargetCovers();
-                    // fco.currentPageState?.unhideFAB();
+                    SNode.showAllTargetBtns();
+                    SNode.showAllHotspotTargetCovers();
                     removeSnippetContentCallout(tc);
                     fco.afterNextBuildDo(() {
-                      // save hotspot's parent snippet
-                      var rootNode = tc.parentHotspotNode?.rootNodeOfSnippet();
+                      // save parent snippet
+                      var rootNode =
+                          tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
                       if (rootNode != null) {
-                        fco
-                            .cacheAndSaveANewSnippetVersion(
-                              snippetName: rootNode.name,
-                              rootNode: rootNode,
-                            )
-                            .then((_) {});
+                        fco.cacheAndSaveANewSnippetVersion(
+                          snippetName: rootNode.name,
+                          rootNode: rootNode,
+                        );
                       }
                     });
                   });
-                });
+                }
               },
             ),
             const VerticalDivider(color: Colors.white, width: 2),

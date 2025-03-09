@@ -12,7 +12,7 @@ void main() {
   late SnippetRootNode snippet;
   late CAPIBloC capiBloc;
   late CAPIState selectedState;
-  late STreeNode sel;
+  late SNode sel;
   late RichTextNode rtNode;
 
   late CenterNode sc1;
@@ -27,7 +27,7 @@ void main() {
     rtNode = RichTextNode(text: TextSpanNode(text: 'rich text'));
   });
 
-  void test_snippet_setup(STreeNode child, {STreeNode? select}) {
+  void test_snippet_setup(SNode child, {SNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
 
@@ -49,7 +49,7 @@ void main() {
   }
 
   /// reusable expected states
-  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) =>
+  expectedState_SelectedNode(CAPIBloC bloc, SNode node) =>
       bloc.state.copyWith(
         snippetBeingEdited: SnippetBeingEdited(
           rootNode: snippet,
@@ -74,7 +74,7 @@ void main() {
       bloc.add(const CAPIEvent.wrapSelectionWith(type: RowNode));
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(capiBloc, sel.getParent() as STreeNode),
+      expectedState_SelectedNode(capiBloc, sel.getParent() as SNode),
     ],
     verify: (bloc) {
       expect(sel.getParent(), isA<RowNode>());
@@ -108,7 +108,7 @@ void main() {
       bloc.add(const CAPIEvent.wrapSelectionWith(type: ColumnNode));
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(capiBloc, sel.getParent() as STreeNode),
+      expectedState_SelectedNode(capiBloc, sel.getParent() as SNode),
     ],
     verify: (bloc) {
       expect(sel.getParent(), isA<ColumnNode>());
@@ -142,7 +142,7 @@ void main() {
       bloc.add(const CAPIEvent.wrapSelectionWith(type: StackNode));
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(capiBloc, sel.getParent() as STreeNode),
+      expectedState_SelectedNode(capiBloc, sel.getParent() as SNode),
     ],
     verify: (bloc) {
       expect(sel.getParent(), isA<StackNode>());
@@ -178,7 +178,7 @@ void main() {
     },
     expect: () => <CAPIState>[
       expectedState_SelectedNode(
-          capiBloc, sel.getParent()?.getParent() as STreeNode),
+          capiBloc, sel.getParent()?.getParent() as SNode),
     ],
     verify: (bloc) {
       expect(sel.getParent(), isA<PollNode>());
@@ -222,7 +222,7 @@ void main() {
       bloc.add(const CAPIEvent.wrapSelectionWith(type: StepperNode));
     },
     expect: () => <CAPIState>[
-      expectedState_SelectedNode(capiBloc, sel.getParent() as STreeNode),
+      expectedState_SelectedNode(capiBloc, sel.getParent() as SNode),
     ],
     verify: (bloc) {
       expect(sel.getParent(), isA<StepperNode>());
@@ -276,11 +276,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

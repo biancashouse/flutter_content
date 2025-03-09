@@ -49,7 +49,7 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
             if (renderBox != null) {
               final size = renderBox.size;
               widget.onSizedF(size);
-              print('Image size: $size');
+              fco.logger.d('Image size: $size');
             }
           }
 
@@ -191,11 +191,11 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
       if (response.statusCode == 200) {
         return response.bodyBytes;
       } else {
-        print('Error fetching PNG: ${response.statusCode}');
+        fco.logger.w('Error fetching PNG: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error fetching PNG: $e');
+      fco.logger.w('Error fetching PNG: $e');
       return null;
     }
   }

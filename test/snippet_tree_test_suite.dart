@@ -9,8 +9,8 @@ void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late CAPIBloC capiBloc;
-  late STreeNode placeholderNode;
-  late STreeNode nodeTBD;
+  late SNode placeholderNode;
+  late SNode nodeTBD;
 
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
@@ -19,7 +19,7 @@ void main() {
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
-    // print('Setting up common resources...');
+    // fco.logger.d('Setting up common resources...');
   });
 
   test('snippet comprises just a placeholder node', () async {
@@ -29,11 +29,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

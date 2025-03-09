@@ -17,8 +17,8 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -33,15 +33,15 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   String toSource(BuildContext context) => "";
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       SnippetPanelState? ss = SnippetPanel.of(context);
       if (!(ss?.mounted ?? false)) {
         return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           "FlowchartWidget",
           color: Colors.green,
-          size: 32,
+          size: 16,
           errorMsg: "SnippetPanel.of(context) not mounted!",
         );
       }
@@ -49,7 +49,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
       // TreeController<Node> treeC = FCO.capiBloc.state.directoryTreeCMap[ss!.widget.sName] = TreeController<Node>(
       SnippetTreeController treeC = SnippetTreeController(
         roots: [this],
-        childrenProvider: (STreeNode node) {
+        childrenProvider: (SNode node) {
           if (node is FileNode) {
             return [];
           }
@@ -59,7 +59,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           // unexpected
           return [];
         },
-        parentProvider: (STreeNode node) => node.getParent() as STreeNode?,
+        parentProvider: (SNode node) => node.getParent() as SNode?,
       );
       int nodeCount = treeC.countNodesInTree(this);
       // treeC.expand(this);
@@ -72,25 +72,25 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           : _widget(nodeCount, treeC);
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }
 
   Widget _widget(nodeCount, treeC) => Container(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         width: 800,
         height: nodeCount * 60,
         padding: const EdgeInsets.all(10),
-        child: TreeView<STreeNode>(
+        child: TreeView<SNode>(
           // physics: const NeverScrollableScrollPhysics(),
           treeController: treeC,
           shrinkWrap: true,
           // filter or all
-          nodeBuilder: (BuildContext context, TreeEntry<STreeNode> entry) {
+          nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) {
             return TreeIndentation(
               guide: const IndentGuide.connectingLines(
                   // indent: 40.0,

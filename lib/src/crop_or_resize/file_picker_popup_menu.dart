@@ -113,11 +113,11 @@
 //       Uint8List? pickedFileBytes = file.bytes;
 //       if (pickedFileBytes != null && pickedFileBytes.lengthInBytes > 0) {
 //         ui.Image img = await bytesToUiImage(file.bytes!);
-//         fco.logi(
+//         fco.logger.i(
 //             'actual size (${img.width} v ${img.height}) storage: ${file.bytes?.toList().length} bytes');
 //         // _bytes = await compressImage(file.bytes!, min(512,img.width.toDouble()), .85);
 //         // ui.Image compressedImg = await bytesToUiImage(_bytes!);
-//         // fco.logi('scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${_bytes?.toList().length} bytes');
+//         // fco.logger.i('scaled down size (${compressedImg.width} v ${compressedImg.height}) storage: ${_bytes?.toList().length} bytes');
 //         // FlowchartM cleanClone = widget.flowchart.cleanClone();
 //         // if (widget.comment != null) {
 //         //   widget.flowchart.editingPageState?.editorBloc.add(EditorEvent.commentImageChanged(newBytes: file.bytes, stepId: widget.stepId!, skipUndoCreation: true));

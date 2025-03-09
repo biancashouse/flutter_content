@@ -3,55 +3,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_view.dart';
+import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
+import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class EditablePage extends StatefulWidget {
   final RoutePath routePath;
   final Widget child;
+  final bool provideNamedScrollController;
 
   const EditablePage({
     required this.routePath,
     required this.child,
+    this.provideNamedScrollController = false,
     // this.dontShowLockIcon = false,
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
-  static void refreshSelectedNodeWidgetBorderOverlay() {
+  static void refreshSelectedNodeWidgetBorderOverlay(scName) {
     fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-    FlutterContentApp.selectedNode?.showNodeWidgetOverlay();
+    FlutterContentApp.selectedNode
+        ?.showNodeWidgetOverlay(scName: scName, followScroll: false);
   }
 
   static void removeAllNodeWidgetOverlays() {
-    // fco.logi('removeAllNodeWidgetOverlays - start');
-    for (GlobalKey nodeWidgetGK in fco.gkSTreeNodeMap.keys) {
+    // fco.logger.i('removeAllNodeWidgetOverlays - start');
+    for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
       fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
     }
-    // fco.logi('removeAllNodeWidgetOverlays - ended');
+    // fco.logger.i('removeAllNodeWidgetOverlays - ended');
     fco.showingNodeBoundaryOverlays = false;
   }
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) =>
-      context.findAncestorStateOfType<EditablePageState>();
+  static EditablePageState? of(BuildContext context) => context.mounted
+      ? context.findAncestorStateOfType<EditablePageState>()
+      : null;
 
-  static String name(context) =>
-      of(context)?.widget.routePath ?? 'no ancestor EditablePage!';
+  static String? scName(context) => of(context)?.namedSC?.name;
 
-  static ScrollController? ancestorSc(BuildContext context, Axis axis) {
-    ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
-    return scrollableState?.widget.controller;
-  }
+  // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
+  //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
+  //   return scrollableState?.widget.controller;
+  // }
 
   @override
   State<EditablePage> createState() => EditablePageState();
 }
 
 class EditablePageState extends State<EditablePage> {
-  late NamedScrollController sC;
   late MultiSplitViewController msvC;
-  late ScrollControllerName scName;
+  late NamedScrollController? namedSC;
 
-  final focusNode = FocusNode();
+  SnippetBeingEdited? get snippetBeingEdited =>
+      FlutterContentApp.snippetBeingEdited;
+
+  SNode? get selectedNode => FlutterContentApp.selectedNode;
 
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
@@ -60,12 +69,10 @@ class EditablePageState extends State<EditablePage> {
   void initState() {
     super.initState();
 
-    scName = EditablePage.name(context);
-    sC = NamedScrollController(scName, Axis.vertical);
-
     msvC = MultiSplitViewController();
+    namedSC = NamedScrollController(widget.routePath, Axis.vertical);
 
-    fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
+    // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
     fco.currentEditablePagePath = widget.routePath;
 
     fco.afterNextBuildDo(() {
@@ -75,11 +82,18 @@ class EditablePageState extends State<EditablePage> {
     });
   }
 
-  // @override
-  // void dispose() {
-  //   sC?.dispose();
-  //   super.dispose();
-  // }
+  // ScrollControllerName? scName(ctx) => EditablePage.name(ctx);
+  //
+  // NamedScrollController? sC(ctx) => scName(ctx) != null
+  //   ? NamedScrollController(scName(ctx)!, Axis.vertical)
+  //   : null;
+
+  @override
+  void dispose() {
+    if (!mounted) return;
+    namedSC?.dispose(); // Dispose of the ScrollController
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -98,24 +112,31 @@ class EditablePageState extends State<EditablePage> {
         //   return true || nodeChanged || selectionChanged;
         // },
         builder: (context, state) {
-      bool showEditorArea = state.snippetBeingEdited != null;
-      bool showProperties = state.snippetBeingEdited?.showProperties ?? false;
+      // fco.logger.i('editable page build() -----------------------------------');
+      bool showNodeTree() => snippetBeingEdited != null;
+      bool showPropertiesTree() =>
+          showNodeTree() && selectedNode?.pTreeC != null;
+
+      // set up areas
       List<Area> areas = [];
-      if (showEditorArea) {
-        areas.add(_treeArea(state));
+      if (showNodeTree()) {
+        areas.add(
+          Area(
+            builder: (ctx, area) => _nodeTree(),
+            flex: 1,
+          ),
+        );
       }
       areas.add(Area(
         builder: (ctx, area) {
-          return _pageContent(context);
+          return _pageContentArea();
         },
-        flex: 2.5,
+        flex: 2,
       ));
-      if (showEditorArea ||
-          (showProperties && FlutterContentApp.selectedNode?.pTreeC != null)) {
-        areas.add(_propertiesArea());
-      }
+
       msvC.areas = areas;
-      return MultiSplitViewTheme(
+
+      var msvt = MultiSplitViewTheme(
         data: MultiSplitViewThemeData(
           dividerThickness: 24,
           dividerPainter: DividerPainters.grooved1(
@@ -134,248 +155,89 @@ class EditablePageState extends State<EditablePage> {
           onDividerDragEnd: (_) {
             fco.afterMsDelayDo(500, () {
               FlutterContentApp.snippetBeingEdited?.selectedNode
-                  ?.showNodeWidgetOverlay();
+                  ?.showNodeWidgetOverlay(
+                      scName: widget.routePath, followScroll: true);
             });
           },
+        ),
+      );
+
+      return Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(child: msvt),
+            if (showPropertiesTree())
+              SizedBox(
+                width: 320,
+                child: _propertiesTree(),
+              )
+          ],
         ),
       );
     });
   }
 
-  Area _treeArea(CAPIState state) => Area(
-        builder: (ctx, area) {
-          STreeNode? rootNode = state.snippetBeingEdited?.treeC.roots.first;
-          if (rootNode is SnippetRootNode) {
-            SnippetName snippetName = rootNode.name;
-            SnippetInfoModel? snippetInfo =
-                SnippetInfoModel.cachedSnippet(snippetName);
-            String title =
-                FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
-                    'snippet name?';
-            if (snippetInfo != null) {
-              //state.snippetBeingEdited?.treeC.rebuild();
-              return GestureDetector(
-                onTap: () {
-                  FlutterContentApp.capiBloc
-                      .add(CAPIEvent.clearNodeSelection(scName));
-                  fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-                  fco.hide("floating-clipboard");
-                },
-                child: Column(
-                  children: [
-                    Container(
-                      color: Colors.purple.shade200,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Tooltip(
-                            message:
-                                'snippet: $title, versionId: ${snippetInfo.editingVersionId}'
-                                '${snippetInfo.editingVersionId != snippetInfo.publishedVersionId ? "\n\nSnippet name in RED indicates that this "
-                                    "\nversion is not the PUBLISHED version" : ""}',
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Container(
-                                margin: EdgeInsets.zero,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                ),
-                                alignment: Alignment.center,
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: fco.coloredText(
-                                    title,
-                                    fontSize: 14.0,
-                                    color: snippetInfo.editingVersionId !=
-                                            snippetInfo.publishedVersionId
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                hoverColor: Colors.white30,
-                                onPressed: () async {
-                                  if (!snippetInfo.isFirstVersion()) {
-                                    VersionId? prevId =
-                                        snippetInfo.previousVersionId();
-                                    revertToVersion(prevId, snippetInfo, state);
-                                  }
-                                },
-                                icon: Icon(Icons.undo,
-                                    color: !snippetInfo
-                                            .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
-                                        ? Colors.white
-                                        : Colors.white54),
-                                tooltip: 'previous version',
-                              ),
-                              IconButton(
-                                hoverColor: Colors.white30,
-                                onPressed: () {
-                                  if (!snippetInfo.isLatestVersion()) {
-                                    VersionId? nextId =
-                                        snippetInfo.nextVersionId();
-                                    revertToVersion(nextId, snippetInfo, state);
-                                  }
-                                },
-                                icon: Icon(Icons.redo,
-                                    color: !snippetInfo
-                                            .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
-                                        ? Colors.white
-                                        : Colors.white54),
-                                tooltip: 'next version',
-                              ),
-                              IconButton(
-                                hoverColor: Colors.white30,
-                                onPressed: () async {},
-                                icon: VersionsMenuAnchor(
-                                    snippetInfo: snippetInfo),
-                                tooltip: 'version...',
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  STreeNode.unhighlightSelectedNode();
-                                  var pinkOverlayFeature =
-                                      PINK_OVERLAY_NON_TAPPABLE;
-                                  fco.dismiss(pinkOverlayFeature);
-                                  fco.unhide(CalloutConfigToolbar.CID);
-                                  fco.hideClipboard();
-                                  fco.inEditMode.value = false;
-                                  FlutterContentApp.capiBloc
-                                      .add(const CAPIEvent.popSnippetEditor());
-                                  // fco.afterNextBuildDo(() {
-                                  //   NamedScrollController.restoreOffset(scName);
-                                  // });
-                                },
-                                icon: Icon(Icons.close),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: SnippetTreePane(snippetInfo, null),
-                    ),
-                  ],
-                ),
-              );
-            }
-            return const Offstage();
-          } else {
-            return const Offstage();
-          }
-        },
-        flex: 1,
-      );
-
-  Area _propertiesArea() => Area(
-        builder: (ctx, area) {
-          FlutterContentApp.selectedNode?.pTreeC(context).expandAll();
-          return !FlutterContentApp.aNodeIsSelected
-              ? const Offstage()
-              : Container(
-                  color: Colors.purple.shade50,
-                  child: ListView(
-                    controller:
-                        FlutterContentApp.selectedNode!.propertiesPaneSC(),
-                    shrinkWrap: true,
-                    children: [
-                      // icon buttons
-                      // ExpansionTile(
-                      //   title: fco.coloredText('widget actions',
-                      //       color: Colors.white54,
-                      //       fontSize: 14),
-                      //   backgroundColor: Colors.black,
-                      //   collapsedBackgroundColor: Colors.black,
-                      //   onExpansionChanged: (bool isExpanded) =>
-                      //       fco.showingNodeButtons = isExpanded,
-                      //   initiallyExpanded:
-                      //       fco.showingNodeButtons,
-                      //   children: [nodeButtons(context, scName)],
-                      // ),
-                      // NODE PROPERTIES TREE
-                      if (FlutterContentApp.selectedNode!
-                          .pTreeC(context)
-                          .roots
-                          .isEmpty)
-                        Material(
-                          color: Colors.purpleAccent[50],
-                          child: fco.coloredText(
-                              ' (${FlutterContentApp.selectedNode.toString()} has no properties)',
-                              color: Colors.white),
-                        ),
-                      Material(
-                          color: Colors.purpleAccent[50],
-                          child: PropertiesTreeView(
-                            treeC:
-                                FlutterContentApp.selectedNode!.pTreeC(context),
-                          )),
-                      // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-                    ],
-                  ),
-                );
-        },
-        flex: 1,
-      );
-
-  Widget _pageContent(BuildContext context) {
+  Widget _pageContentArea() {
     // FCO.initWithContext(context);
+
+    GlobalKey zoomerGk = GlobalKey();
+
+    bool aSnippetIsBeingEdited = FlutterContentApp.snippetBeingEdited != null;
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
-        fco.logi("FlutterContentApp SizeChangedLayoutNotification}");
+        // fco.logger.i("FlutterContentApp SizeChangedLayoutNotification}");
         fco.dismissAll(exceptFeatures: ["FAB"]);
         fco.afterMsDelayDo(300, () {
           // FCO.refreshMQ(context);
           if (fco.showingNodeBoundaryOverlays ?? false) {
             EditablePage.removeAllNodeWidgetOverlays();
+            // show a barrier for any parts of page not being edited
             showAllNodeWidgetOverlays();
+            fco.afterNextBuildDo(() {});
           }
         });
         return true;
       },
       child: SizeChangedLayoutNotifier(
-        child: KeyboardListener(
-          autofocus: true,
-          focusNode: focusNode, // <-- more magic
-          onKeyEvent: (KeyEvent event) {
-            bool isEsc = event.logicalKey == LogicalKeyboardKey.escape;
-            if (fco.inEditMode.value && isEsc) {
-              // exitEditMode();
-              fco.inEditMode.value = false;
-            }
-            // _enterOrExitEditMode(event, lastTapTime, tapCount);
+        child: GestureDetector(
+          onTap: () {
+            // exitEditMode();
+            fco.inEditMode.value = false;
           },
-          child: GestureDetector(
-            onTap: () {
-              // exitEditMode();
-              fco.inEditMode.value = false;
-            },
-            child: Material(
-              child: Stack(
-                children: [
+          child: Material(
+            child: Stack(
+              children: [
+                if (aSnippetIsBeingEdited) widget.child,
+                if (!aSnippetIsBeingEdited)
                   Zoomer(
-                    child: BlocBuilder<CAPIBloC, CAPIState>(
-                        builder: (blocContext, state) {
-                      return widget.child;
-                    }),
+                    key: zoomerGk,
+                    child: widget.child,
+                    // child: BlocBuilder<CAPIBloC, CAPIState>(
+                    //     builder: (blocContext, state) {
+                    //   return widget.child;
+                    // }),
                   ),
-                ],
-              ),
+                // Builder(
+                //   builder: (context) {
+                //     Widget? cutout;
+                //     if (capiState.cutoutRect != null) {
+                //       cutout = CustomPaint(
+                //         foregroundPainter: CutoutPainter(
+                //           cutoutRect: capiState.cutoutRect!,
+                //         ),
+                //         size: Size.infinite,
+                //       );
+                //     }
+                //     return cutout ?? const Offstage();
+                //   },
+                // ),
+              ],
             ),
-            // ),
           ),
+          // ),
         ),
       ),
     );
@@ -385,40 +247,246 @@ class EditablePageState extends State<EditablePage> {
         : builtWidget;
   }
 
+  Widget _nodeTree() {
+    SNode? rootNode = snippetBeingEdited?.treeC.roots.first.rootNodeOfSnippet();
+    if (rootNode is SnippetRootNode) {
+      SnippetName snippetName = rootNode.name;
+      SnippetInfoModel? snippetInfo =
+          SnippetInfoModel.cachedSnippet(snippetName);
+      if (snippetInfo != null) {
+        String title =
+            FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
+                'snippet name?';
+        //snippetBeingEdited?.treeC.rebuild();
+        return GestureDetector(
+          onTap: () {
+            FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection());
+            fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+            fco.hide("floating-clipboard");
+          },
+          child: Column(
+            children: [
+              Container(
+                color: Colors.purple.shade200,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Spacer(),
+                    // Tooltip(
+                    //   message:
+                    //       'snippet: $title, versionId: ${snippetInfo.editingVersionId}'
+                    //       '${snippetInfo.editingVersionId != snippetInfo.publishedVersionId ? "\n\nSnippet name in RED indicates that this "
+                    //           "\nversion is not the PUBLISHED version" : ""}',
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(left: 10.0),
+                    //     child: Container(
+                    //       margin: EdgeInsets.zero,
+                    //       padding: const EdgeInsets.symmetric(
+                    //           horizontal: 8, vertical: 4),
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.black,
+                    //         borderRadius: BorderRadius.all(Radius.circular(30)),
+                    //       ),
+                    //       alignment: Alignment.center,
+                    //       child: Material(
+                    //         color: Colors.transparent,
+                    //         child: fco.coloredText(
+                    //           title,
+                    //           fontSize: 14.0,
+                    //           color: snippetInfo.editingVersionId !=
+                    //                   snippetInfo.publishedVersionId
+                    //               ? Colors.red
+                    //               : Colors.grey,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    Row(
+                      children: [
+                        IconButton(
+                          hoverColor: Colors.white30,
+                          onPressed: () async {
+                            CAPIState capiState = FlutterContentApp.capiState;
+                            if (!snippetInfo.isFirstVersion()) {
+                              VersionId? prevId =
+                                  snippetInfo.previousVersionId();
+                              revertToVersion(prevId, snippetInfo, capiState);
+                            }
+                          },
+                          icon: Icon(Icons.undo,
+                              color: !snippetInfo
+                                      .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
+                                  ? Colors.white
+                                  : Colors.white54),
+                          tooltip: 'previous version',
+                        ),
+                        IconButton(
+                          hoverColor: Colors.white30,
+                          onPressed: () {
+                            CAPIState capiState = FlutterContentApp.capiState;
+                            if (!snippetInfo.isLatestVersion()) {
+                              VersionId? nextId = snippetInfo.nextVersionId();
+                              revertToVersion(nextId, snippetInfo, capiState);
+                            }
+                          },
+                          icon: Icon(Icons.redo,
+                              color: !snippetInfo
+                                      .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
+                                  ? Colors.white
+                                  : Colors.white54),
+                          tooltip: 'next version',
+                        ),
+                        IconButton(
+                          hoverColor: Colors.white30,
+                          onPressed: () async {},
+                          icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
+                          tooltip: 'version...',
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            SNode.unhighlightSelectedNode();
+                            var pinkOverlayFeature = PINK_OVERLAY_NON_TAPPABLE;
+                            fco.dismiss(pinkOverlayFeature);
+                            // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
+                            fco.unhide(CalloutConfigToolbar.CID);
+                            fco.hideClipboard();
+                            fco.inEditMode.value = false;
+                            FlutterContentApp.capiBloc
+                                .add(const CAPIEvent.popSnippetEditor());
+                            // fco.afterNextBuildDo(() {
+                            //   NamedScrollController.restoreOffset(scName);
+                            // });
+                          },
+                          icon: Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                // child: Offstage()
+                child: SnippetTreePane(snippetInfo, widget.routePath),
+              ),
+            ],
+          ),
+        );
+      }
+      return const Offstage();
+    } else {
+      return const Offstage();
+    }
+  }
+
+  Widget _propertiesTree() {
+    bool showingProperties = FlutterContentApp.aNodeIsSelected;
+    ScrollController? propertiesPaneSC = selectedNode?.propertiesPaneSC();
+    // selectedNode?.pTreeC(context).expandAll();
+    return !showingProperties || propertiesPaneSC == null
+        ? const Offstage()
+        : Container(
+            color: Colors.purple.shade50,
+            child: ListView(
+              controller: selectedNode!.propertiesPaneSC(),
+              shrinkWrap: true,
+              children: [
+                // icon buttons
+                // ExpansionTile(
+                //   title: fco.coloredText('widget actions',
+                //       color: Colors.white54,
+                //       fontSize: 14),
+                //   backgroundColor: Colors.black,
+                //   collapsedBackgroundColor: Colors.black,
+                //   onExpansionChanged: (bool isExpanded) =>
+                //       fco.showingNodeButtons = isExpanded,
+                //   initiallyExpanded:
+                //       fco.showingNodeButtons,
+                //   children: [nodeButtons(context, scName)],
+                // ),
+                // NODE PROPERTIES TREE
+                if ((selectedNode?.pTreeC(context).roots.isEmpty) ?? false)
+                  Material(
+                    color: Colors.purpleAccent[50],
+                    child: fco.coloredText(
+                        ' (${selectedNode.toString()} has no properties)',
+                        color: Colors.black87),
+                  ),
+                Material(
+                  color: Colors.purpleAccent[50],
+                  child: PropertiesTreeView(
+                      treeC: FlutterContentApp.selectedNode!.pTreeC(context),
+                      sNode: FlutterContentApp.selectedNode!),
+                ),
+                // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+              ],
+            ),
+          );
+  }
+
+  // void showCutoutOverlay({
+  //   ScrollControllerName? scName,
+  // }) {
+  //   fco.dismiss(CUTOUT_OVERLAY_NON_TAPPABLE);
+  //   Rect? r = nodeWidgetGK?.globalPaintBounds(
+  //     skipWidthConstraintWarning: true,
+  //     skipHeightConstraintWarning: true,
+  //   );
+  //   if (r != null) {
+  //     Rect borderRect = r; //_borderRect(r);
+  //     CalloutConfig cc = _cc(
+  //       cId: CUTOUT_OVERLAY_NON_TAPPABLE,
+  //       borderRect: borderRect,
+  //       scName: scName,
+  //     );
+  //     Widget cutout = CustomPaint(foregroundPainter: CutoutPainter(cutoutRect:
+  //     Rect.fromLTWH(0, 0, cc.calloutW!, cc.calloutH!)
+  //     ));
+  //     fco.showOverlay(
+  //       ensureLowestOverlay: true,
+  //       calloutContent: cutout,
+  //       calloutConfig: cc,
+  //       targetGkF: () => nodeWidgetGK,
+  //     );
+  //   }
+  // }
+
   // only called with MaterialAppWrapper context
   void showAllNodeWidgetOverlays() {
-    // fco.logi('showAllNodeWidgetOverlays...');
+    // fco.logger.i('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
     // bool configuringATarget = fco.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
 
     void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
-      // fco.logi('traverseAndMeasure(${el.toString()})');
+      // fco.logger.i('traverseAndMeasure(${el.toString()})');
 
-      if ((fco.gkSTreeNodeMap.containsKey(el.widget.key))) {
+      if ((fco.nodesByGK.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = fco.gkSTreeNodeMap[gk];
-        // fco.logi("traverseAndMeasure: ${node.toString()}");
+        SNode? node = fco.nodesByGK[gk];
+        // fco.logger.i("traverseAndMeasure: ${node.toString()}");
         if (node != null && node.canShowTappableNodeWidgetOverlay) {
           // if (node.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured) {
-          // fco.logi("targetSnippetBeingConfigured: ${node.toString()}");
+          // fco.logger.i("targetSnippetBeingConfigured: ${node.toString()}");
           // }
-          // fco.logi('Rect? r = gk.globalPaintBounds...');
+          // fco.logger.i('Rect? r = gk.globalPaintBounds...');
 // measure node
           Rect? r = gk.globalPaintBounds(
               skipWidthConstraintWarning: true,
               skipHeightConstraintWarning: true);
           // if (node is PlaceholderNode) {
-          //   fco.logi('PlaceholderNode');
+          //   fco.logger.i('PlaceholderNode');
           // }
           if (r != null) {
             // node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
             r = fco.restrictRectToScreen(r);
-            // fco.logi("========>  r restricted to ${r.toString()}");
-            // fco.logi('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+            // fco.logger.i("========>  r restricted to ${r.toString()}");
+            // fco.logger.i('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
             // node.setParent(parent);
             // parent = node;
-            // fco.logi('_showNodeWidgetOverlay...');
+            // fco.logger.i('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
@@ -436,10 +504,27 @@ class EditablePageState extends State<EditablePage> {
     var pageContext = context;
     traverseAndMeasure(pageContext, true);
     fco.showingNodeBoundaryOverlays = true;
-    // fco.logi('traverseAndMeasure(context) finished.');
+    // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 
   void editorPasswordDialog() {
+    fco.registerKeystrokeHandler('editor-password', (KeyEvent event) {
+      final key = event.logicalKey.keyLabel;
+
+      // if (event is KeyDownEvent) {
+      //   print("Key down: $key");
+      // } else if (event is KeyUpEvent) {
+      //   print("Key up: $key");
+      // } else if (event is KeyRepeatEvent) {
+      //   print("Key repeat: $key");
+      // }
+
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
+        fco.dismiss("editor-password");
+      }
+
+      return false;
+    });
     fco.showOverlay(
       calloutContent: Column(
         mainAxisSize: MainAxisSize.max,
@@ -455,22 +540,25 @@ class EditablePageState extends State<EditablePage> {
               inputType: String,
               prompt: () => 'password',
               originalS: '',
-              onTextChangedF: (s) async {
-                if (s == (kDebugMode ? " " : fco.editorPassword)) {
-                  fco.dismiss("EditorPassword");
-                  fco.setCanEditContent(true);
-                  // await FC.loadLatestSnippetMap();
-                  // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
-                  // fco.afterNextBuildDo(() {
-                  //   FC()
-                  //       .capiBloc
-                  //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
-                  //   showDevToolsFAB();
-                  // });
-                  // fco.dismiss("EditorPassword");
-                  FlutterContentApp.capiBloc.add(
-                      const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-                }
+              onTextChangedF: (String s) async {
+                if (kDebugMode && s != " ") return;
+                if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
+                fco.dismiss("editor-password");
+                fco.setCanEditContent(true);
+                // await FC.loadLatestSnippetMap();
+                // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+                // fco.afterNextBuildDo(() {
+                //   FC()
+                //       .capiBloc
+                //       .add(const CAPIEvent.unhideAllTargetGroupsAndBtns());
+                //   showDevToolsFAB();
+                // });
+                // fco.dismiss("editor-password");
+                FlutterContentApp.capiBloc.add(
+                    const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+              },
+              onEscapedF: (_) {
+                fco.dismiss("editor-password");
               },
               dontAutoFocus: false,
               isPassword: true,
@@ -487,22 +575,24 @@ class EditablePageState extends State<EditablePage> {
         ],
       ),
       calloutConfig: CalloutConfig(
-        cId: "EditorPassword",
-        initialTargetAlignment: Alignment.topRight,
-        initialCalloutAlignment: Alignment.bottomLeft,
-        finalSeparation: 150,
-        barrier: CalloutBarrier(
-          opacity: .5,
-          onTappedF: () async {
-            fco.dismiss("EditorPassword");
-          },
-        ),
-        initialCalloutW: 240,
-        initialCalloutH: 150,
-        borderRadius: 12,
-        fillColor: Colors.white,
-        scrollControllerName: sC.name,
-      ),
+          cId: "editor-password",
+          initialTargetAlignment: Alignment.topRight,
+          initialCalloutAlignment: Alignment.bottomLeft,
+          finalSeparation: 150,
+          barrier: CalloutBarrierConfig(
+            opacity: .5,
+            onTappedF: () async {
+              fco.dismiss("editor-password");
+            },
+          ),
+          initialCalloutW: 240,
+          initialCalloutH: 150,
+          borderRadius: 12,
+          fillColor: Colors.white,
+          scrollControllerName: widget.routePath,
+          onDismissedF: () {
+            fco.removeKeystrokeHandler('editor-password');
+          }),
     );
   }
 
@@ -517,8 +607,8 @@ class EditablePageState extends State<EditablePage> {
     );
     fco.afterNextBuildDo(() async {
       // current snippet version will now be changed to prevId
-      fco.logi('reverted to previous version.');
-      STreeNode.unhighlightSelectedNode();
+      fco.logger.i('reverted to previous version.');
+      SNode.unhighlightSelectedNode();
       // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
       fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
@@ -540,7 +630,7 @@ class EditablePageState extends State<EditablePage> {
         newTreeC.expand(revertedVersion);
         newTreeC.rebuild();
 
-        state.snippetBeingEdited!
+        snippetBeingEdited!
           ..setRootNode(revertedVersion)
           ..selectedNode = revertedVersion.child
           ..showProperties = false

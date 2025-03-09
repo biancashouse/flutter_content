@@ -20,11 +20,11 @@ void main() {
   late RowNode mc1;
   late TabBarNode tb2;
   late TabBarViewNode tbv1;
-  late STreeNode selPl;
+  late SNode selPl;
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
-    // print('Setting up common resources...');
+    // fco.logger.d('Setting up common resources...');
   });
 
   setUp(() {
@@ -61,7 +61,7 @@ void main() {
     );
   });
 
-  void test_snippet_setup(STreeNode child, {STreeNode? select}) {
+  void test_snippet_setup(SNode child, {SNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
     treeC = SnippetTreeController(
@@ -203,11 +203,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

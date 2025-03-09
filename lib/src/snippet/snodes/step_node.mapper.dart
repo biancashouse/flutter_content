@@ -42,11 +42,6 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
   static const Field<StepNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(StepNode v) =>
-      v.nodeWidgetGK;
-  static const Field<StepNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<StepNode> fields = const {
@@ -56,7 +51,6 @@ class StepNodeMapper extends SubClassMapperBase<StepNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

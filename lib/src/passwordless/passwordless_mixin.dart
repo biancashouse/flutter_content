@@ -7,7 +7,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:http/http.dart' as http;
 
 mixin PasswordlessMixin {
-
   void showPasswordlessStepper({
     TargetKeyFunc? targetGkF,
     required String gcrServerUrl,
@@ -17,8 +16,7 @@ mixin PasswordlessMixin {
     fco.showOverlay(
       targetGkF: targetGkF,
       calloutContent: PasswordlessStepper(
-          gcrServerUrl: gcrServerUrl,
-          onSignedInF: onSignedInF),
+          gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
       calloutConfig: CalloutConfig(
         cId: "passwordless-stepper",
         initialCalloutW: 600,
@@ -29,7 +27,7 @@ mixin PasswordlessMixin {
         arrowColor: Colors.blue[900],
         finalSeparation: 60,
         // fillColor: Colors.purpleAccent,
-        barrier: CalloutBarrier(
+        barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {
             fco.dismiss("passwordless-stepper");
@@ -49,7 +47,8 @@ class PasswordlessStepper extends StatefulWidget {
   const PasswordlessStepper({
     required this.gcrServerUrl,
     required this.onSignedInF,
-    super.key,});
+    super.key,
+  });
 
   @override
   State<PasswordlessStepper> createState() => PasswordlessStepperState();
@@ -104,6 +103,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
 
   @override
   void dispose() {
+    if (!mounted) return;
     focusNode.dispose();
     eaController.dispose();
     super.dispose();
@@ -141,7 +141,7 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
   }
 
   bool userHasConfirmed() {
-    return fco.hiveBox?.get('vea') == ea;
+    return fco.localStorage.read('vea') == ea;
   }
 
   @override
@@ -197,7 +197,6 @@ class PasswordlessStepperState extends State<PasswordlessStepper> {
 class Step1 extends StatelessWidget {
   final PasswordlessStepperState parentState;
   final String gcrServerUrl;
-
 
   const Step1(
       {required this.gcrServerUrl, required this.parentState, super.key});
@@ -328,9 +327,10 @@ class Step2 extends StatelessWidget {
                 // check user is actually signed in now by checking firestore
                 if (parentState.token != null &&
                     await fco.modelRepo.tokenConfirmed(parentState.token!)) {
-                  final String? vea = fco.hiveBox?.get('vea');
+                  final String? vea = fco.localStorage.read('vea');
                   if (vea != parentState.ea) {
-                    await fco.hiveBox?.put('vea', parentState.ea);
+                    await fco.localStorage.write(
+                        'vea', parentState.ea ?? 'anon');
                   }
                   parentState.widget.onSignedInF(parentState.ea!);
                   fco.dismiss("passwordless-stepper");

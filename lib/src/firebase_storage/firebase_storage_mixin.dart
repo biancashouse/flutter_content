@@ -12,17 +12,17 @@ mixin FirebaseStorageMixin {
     Uint8List? bytes = await imageOwner.getImage(storageKey, localOnly: true);
     if (bytes != null) {
       try {
-        fco.logi('writing image data to storage key: $storageKey');
+        fco.logger.i('writing image data to storage key: $storageKey');
         FirebaseStorage storage = FirebaseStorage.instance;
         Reference ref = storage.ref(storageKey);
         /* FullMetadata metadata = */
         await ref.getMetadata();
         await ref.putData(bytes);
         imageOwner.imageSize = bytes.lengthInBytes;
-        debugPrint(
+        fco.logger.d(
             'wrote new image of ${imageOwner.imageSize} bytes to FB Storage.');
       } on FirebaseException catch (e) {
-        debugPrint("Firestore Image Update failure: ${e.message}");
+        fco.logger.d("Firestore Image Update failure: ${e.message}");
       }
     }
   }
@@ -38,7 +38,7 @@ mixin FirebaseStorageMixin {
         try {
           ref.delete();
         } on FirebaseException catch (e) {
-          debugPrint(
+          fco.logger.d(
               "failed to remove image (${ref.fullPath}) from FB Storage: ${e.message}");
         } finally {
           imageOwner.imageSize = null;
@@ -54,17 +54,17 @@ mixin FirebaseStorageMixin {
             if ((metadata.size ?? 0) != imageOwner.imageSize) {
               // doesn't match existing image, so rewrite
               await ref.putData(imageBytes);
-              debugPrint(
+              fco.logger.d(
                   'rewrote image of ${imageOwner.imageSize} bytes to FB Storage.');
             }
           } on FirebaseException catch (e) {
             if (e.code == 'object-not-found') {
               //not yet in storage, now try to save
               await ref.putData(imageBytes);
-              debugPrint(
+              fco.logger.d(
                   'wrote image of ${imageOwner.imageSize} bytes to FB Storage. (${imageOwner.storageKey})');
             } else {
-              debugPrint("Firestore Image Update failure: ${e.message}");
+              fco.logger.d("Firestore Image Update failure: ${e.message}");
             }
           }
         }
@@ -79,7 +79,7 @@ mixin FirebaseStorageMixin {
       Reference ref = storage.ref(storageUrl);
       _deleteFolderContents(ref.fullPath);
     } on FirebaseException catch (e) {
-      debugPrint("Firestore Storage delete folder failure: ${e.message}");
+      fco.logger.d("Firestore Storage delete folder failure: ${e.message}");
     }
   }
 
@@ -101,7 +101,7 @@ mixin FirebaseStorageMixin {
     Reference ref = storage.ref(pathToFile);
     Reference childRef = ref.child(fileName);
     childRef.delete();
-    debugPrint("Firestore Storage deleted file: $fileName");
+    fco.logger.d("Firestore Storage deleted file: $fileName");
   }
 
   Future<String> downloadUrl(String storageUrl) async {

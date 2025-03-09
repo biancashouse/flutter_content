@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
@@ -70,7 +72,7 @@ const List<Type> childlessSubClasses = [
   AssetImageNode,
   ChipNode,
   FileNode,
-  FirebaseStorageImageNode,
+  // FirebaseStorageImageNode,
   FSImageNode,
   GapNode,
   GoogleDriveIFrameNode,
@@ -95,7 +97,7 @@ const List<Type> singleChildSubClasses = [
   ExpandedNode,
   FlexibleNode,
   GenericSingleChildNode,
-  HotspotsNode,
+  TargetsWrapperNode,
   PaddingNode,
   PositionedNode,
   SingleChildScrollViewNode,
@@ -127,7 +129,7 @@ const List<Type> buttonSubClasses = [
   IconButtonNode,
   MenuItemButtonNode,
   // // TargetButtonNode,
-  // HotspotsNode,
+  // TargetsWrapperNode,
 ];
 
 const List<Type> flexSubClasses = [
@@ -155,13 +157,13 @@ enum NodeAction {
   MC,
   InlineSpanNode,
 ])
-abstract class STreeNode extends Node with STreeNodeMappable {
+abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
 
   // GlobalKey? gk;
-  PTreeNodeTreeController? _pTreeC;
+  PNodeTreeController? _pTreeC;
   ScrollController? _propertiesPaneSC;
-  List<PTreeNode>? _properties;
+  List<PNode>? _properties;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   bool isExpanded = false;
@@ -169,23 +171,27 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Rect? measuredRect;
 
-  PTreeNodeTreeController pTreeC(BuildContext context) {
+  PNodeTreeController pTreeC(BuildContext context) {
     // var prevExpansions = _pTreeC?.expandedNodes;
     // for (PTreeNode node in prevExpansions??[]) {
-    //   fco.logi(node.name);
+    //   fco.logger.i(node.name);
     // }
-    _pTreeC ??= PTreeNodeTreeController(
-      roots: _properties ??= properties(context),
+    _pTreeC ??= PNodeTreeController(
+      roots: _properties /*??*/ = properties(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
-    );
+    )..rebuild;;
     // if (prevExpansions != null) {
     //   //_pTreeC!.expandedNodes = prevExpansions;
     //   for (PTreeNode node in prevExpansions) {
     //     _pTreeC!.setExpansionState(node, true);
     //   }
     // }
-    _pTreeC!.rebuild;
     return _pTreeC!;
+  }
+
+  void refreshPTreeC(context) {
+    _pTreeC = null;
+    pTreeC(context);
   }
 
   double propertiesPaneScrollPos() => propertiesPaneSC().offset;
@@ -203,17 +209,24 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   bool? hidePropertiesWhileDragging;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  GlobalKey? nodeWidgetGK; // gets used in toWidget()
+  GlobalKey? _nodeWidgetGK; // gets used in toWidget()
 
-  SnippetRootNode? rootNodeOfSnippet() =>
-      findNearestAncestor<SnippetRootNode>();
+  SnippetRootNode? rootNodeOfSnippet() => this is SnippetRootNode
+      ? this as SnippetRootNode
+      : findNearestAncestor<SnippetRootNode>();
 
-  List<PTreeNode> properties(BuildContext context);
+  List<PNode> properties(BuildContext context, SNode? parentSNode);
+
+  // overidden by SNodes having text style props, such as TextNode, TextSpanNode, TabBarNode, DefaultTextStyleName and ChipNode
+  TextStyleProperties? textStyleProperties() => null;
+  void setTextStyleProperties(TextStyleProperties newProps) {}
+  ButtonStyleProperties? buttonStyleProperties() => null;
+  void setButtonStyleProperties(ButtonStyleProperties newProps) {}
 
   // // selection always uses this gk
   // static GlobalKey get selectedWidgetGK {
   //   if (_selectedWidgetGK.currentState == null) return _selectedWidgetGK;
-  //   fco.logi("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
+  //   fco.logger.i("selectionGK in use: ${_selectedWidgetGK.currentWidget.runtimeType}");
   //   return GlobalKey(debugLabel: 'selectionGK was in use');
   // }
   //
@@ -238,6 +251,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
         scName: scName,
+        followScroll: false,
       );
       fco.showOverlay(
         ensureLowestOverlay: false,
@@ -262,7 +276,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   }
 
   void _tappedToEditSnipperNode(ScrollControllerName? scName) {
-    // fco.logi("${toString()} tapped");
+    // fco.logger.i("${toString()} tapped");
     SnippetRootNode? rootNode = (this is SnippetRootNode)
         ? this as SnippetRootNode
         : rootNodeOfSnippet();
@@ -287,18 +301,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     // bool isMOunted = cc?.mounted ?? false;
     // var cw = nodeWidgetGK?.currentWidget;
 
-    double savedOffset = NamedScrollController.scrollOffset(scName);
+    // var savedOffsets = fco.saveScrollOffsets();
 
     pushThenShowNamedSnippetWithNodeSelected(
       snippetName,
       this,
-      this,
       scName: scName,
     );
-    fco.afterMsDelayDo(1300, () {
-      // restore scroll offset
-      NamedScrollController.restoreOffsetTo(scName, savedOffset);
-    });
   }
 
   // void _tappedToExitEditMode() {
@@ -306,16 +315,56 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //   EditablePage.removeAllNodeWidgetOverlays();
   // }
 
+  // void showNodeWidgetCutoutOverlay({
+  //   ScrollControllerName? scName,
+  // }) {
+  //   fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+  //   Rect? r = nodeWidgetGK?.globalPaintBounds(
+  //       skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+  //   if (r != null) {
+  //     CalloutConfig cc = CalloutConfig(
+  //       cId: PINK_OVERLAY_NON_TAPPABLE,
+  //       initialCalloutW: double.infinity,
+  //       initialCalloutH: double.infinity,
+  //       initialCalloutPos: Offset.zero,
+  //       fillColor: Colors.transparent,
+  //       arrowType: ArrowType.NONE,
+  //       draggable: false,
+  //       scrollControllerName: scName,
+  //       skipOnScreenCheck: true,
+  //     );
+  //     fco.showOverlay(
+  //       ensureLowestOverlay: true,
+  //       calloutContent: CustomPaint(
+  //         foregroundPainter: CutoutPainter(
+  //           cutoutRect: r,
+  //         ),
+  //         size: Size.infinite,
+  //       ),
+  //       calloutConfig: cc,
+  //       targetGkF: () => nodeWidgetGK,
+  //     );
+  //   }
+  // }
+
   void showNodeWidgetOverlay({
     bool whiteBarrier = false,
     // bool skipMeasure = false,
     ScrollControllerName? scName,
+    required bool followScroll,
   }) {
     fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
     var gkState = nodeWidgetGK?.currentState;
     var gkCtx = nodeWidgetGK?.currentContext;
     Rect? r = nodeWidgetGK?.globalPaintBounds(
-        skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+      skipWidthConstraintWarning: true,
+      skipHeightConstraintWarning: true,
+    );
+    // images don't have a node gk, so use parent's gk
+    r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
+          skipWidthConstraintWarning: true,
+          skipHeightConstraintWarning: true,
+        );
     if (r != null) {
       Rect borderRect = r; //_borderRect(r);
       CalloutConfig cc = _cc(
@@ -323,6 +372,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
         scName: scName,
+        followScroll: followScroll,
       );
       fco.showOverlay(
         ensureLowestOverlay: true,
@@ -336,6 +386,31 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         calloutConfig: cc,
         targetGkF: () => nodeWidgetGK,
       );
+      fco.afterMsDelayDo(1000, () {
+        cc.followScroll = true;
+      });
+      // fco.afterMsDelayDo(200, () {
+      //   if (gkCtx != null) {
+      //     var zoomerState = Zoomer.of(gkCtx);
+      //     GlobalKey? zoomerKey = zoomerState?.widget.key as GlobalKey?;
+      //     if (zoomerKey != null) {
+      //       Rect? zoomerRect = zoomerKey.globalPaintBounds(
+      //         skipWidthConstraintWarning: true,
+      //         skipHeightConstraintWarning: true,
+      //       );
+      //       if (zoomerRect != null) {
+      //         Rect cutoutRect = Rect.fromLTWH(
+      //           r.left - zoomerRect.left,
+      //           r.top - zoomerRect.top,
+      //           r.width,
+      //           r.height,
+      //         );
+      //         FlutterContentApp.capiBloc
+      //             .add(CAPIEvent.showCutout(cutoutRect: cutoutRect));
+      //       }
+      //     }
+      //   }
+      // });
     }
   }
 
@@ -353,6 +428,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     required Rect borderRect,
     bool whiteBarrier = false,
     ScrollControllerName? scName,
+    bool? followScroll,
   }) =>
       CalloutConfig(
         cId: cId,
@@ -365,7 +441,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         fillColor: Colors.transparent,
         arrowType: ArrowType.NONE,
         barrier: whiteBarrier
-            ? CalloutBarrier(
+            ? CalloutBarrierConfig(
                 opacity: .5,
                 color: Colors.white,
                 onTappedF: () {
@@ -376,6 +452,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         draggable: false,
         scrollControllerName: scName,
         skipOnScreenCheck: true,
+        followScroll: followScroll ?? true,
       );
 
   Decoration _decoration({bool transparent = true}) => BoxDecoration(
@@ -406,21 +483,20 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   // selection is poss a current (lower) selection in the tree
   static Future<void> pushThenShowNamedSnippetWithNodeSelected(
     SnippetName snippetName,
-    STreeNode startingAtNode,
-    STreeNode selectedNode, {
+    SNode selectedNode, {
     TargetModel? targetBeingConfigured,
     ScrollControllerName? scName,
   }) async {
-    debugPrint(
-        "pushThenShowNamedSnippetWithNodeSelected($snippetName, ${selectedNode.toString()})");
-    STreeNode? highestNode;
-    if (startingAtNode is SnippetRootNode) {
-      highestNode = startingAtNode.child; //JIC
-    } else if (startingAtNode is ScaffoldNode) {
-      highestNode = startingAtNode;
-    } else {
-      highestNode = (startingAtNode.getParent() ?? startingAtNode) as STreeNode;
-    }
+    // fco.logger.d(
+    //     "pushThenShowNamedSnippetWithNodeSelected($snippetName, ${selectedNode.toString()})");
+    // SNode? highestNode;
+    // if (startingAtNode is SnippetRootNode) {
+    //   highestNode = startingAtNode.child; //JIC
+    // } else if (startingAtNode is ScaffoldNode) {
+    //   highestNode = startingAtNode;
+    // } else {
+    //   highestNode = (startingAtNode.getParent() ?? startingAtNode) as SNode;
+    // }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
@@ -430,12 +506,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     if (rootNode == null) return;
     FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(
       rootNode: rootNode,
-      visibleDecendantNode: highestNode,
+      selectedNode: selectedNode,
     ));
     // fco.afterNextBuildDo(() {
     // });
     // return;
-    // fco.logi('after pushSnippetBloc');
+    // fco.logger.i('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     fco.afterNextBuildDo(() {
       fco.inEditMode.value = true;
@@ -448,11 +524,11 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       // var cw = nodeGK?.currentWidget;
 
       if (FlutterContentApp.snippetBeingEdited != null) {
-        FlutterContentApp.snippetBeingEdited?.treeC.expandAll();
-        FlutterContentApp.snippetBeingEdited?.treeC.rebuild();
+        // FlutterContentApp.snippetBeingEdited?.treeC.expandAll();
+        // FlutterContentApp.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
         if (!fco.clipboardIsEmpty) {
-          fco.showFloatingClipboard(scName);
+          fco.showFloatingClipboard(scName: scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
 
@@ -473,7 +549,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
 //             // fco.dismiss(TREENODE_MENU_CALLOUT);
 //             fco.hideClipboard();
-//             debugPrint(
+//             fco.logger.d(
 //                 "onDismissedF - $snippetName, ${selectedNode.toString()})");
 //             fco.inEditMode.value = false;
 //             FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
@@ -528,9 +604,10 @@ abstract class STreeNode extends Node with STreeNodeMappable {
           EditablePage.removeAllNodeWidgetOverlays();
           bool snippetBeingEdited =
               FlutterContentApp.snippetBeingEdited != null;
-          print('snippetBeingEdited: $snippetBeingEdited');
+          // fco.logger.d('snippetBeingEdited: $snippetBeingEdited');
           fco.afterMsDelayDo(500, () {
-            selectedNode.showNodeWidgetOverlay();
+            selectedNode.showNodeWidgetOverlay(
+                scName: scName, followScroll: false);
           });
           // create selected node's properties tree
         });
@@ -566,7 +643,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     fco.forceRefresh();
     fco.afterNextBuildDo(() {
       fco.saveNewVersion(snippet: rootNodeOfSnippet());
-      FlutterContentApp.selectedNode?.showNodeWidgetOverlay();
+      FlutterContentApp.selectedNode?.showNodeWidgetOverlay(followScroll: true);
     });
   }
 
@@ -646,26 +723,36 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     if (this is StepNode) return true;
     if (this is PollOptionNode) return true;
     if (this is MC && (this as MC).children.length > 1) return false;
-    ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
-    // if (this is RichTextNode) return false;
-    if (scaffold?.appBar?.bottom?.child is TabBarNode) {
-      TabBarNode? tabBar = scaffold?.appBar?.bottom?.child as TabBarNode?;
-      TabBarViewNode? tabBarView = scaffold?.body?.child as TabBarViewNode?;
-      var firstTab = tabBar?.children.firstOrNull;
-      var firstTabView = tabBar?.children.firstOrNull;
-      int numTabs = tabBar?.children.length ?? 99;
-      int numTabBiews = tabBarView?.children.length ?? 99;
-      if (firstTab == this && numTabs < 2) {
-        return false;
-      }
-      if (firstTabView == this && numTabBiews < 2) {
-        return false;
-      }
-    }
-    if (this is MenuBarNode && scaffold?.appBar?.bottom?.child is MenuBarNode) {
-      MenuBarNode menuBar = scaffold?.appBar?.bottom?.child as MenuBarNode;
-      return menuBar.children.isEmpty;
-    }
+    // ScaffoldNode? scaffold = findNearestAncestor<ScaffoldNode>();
+    // // if (this is RichTextNode) return false;
+    // STreeNode? bottomChild;
+    // if (scaffold?.appBar is AppBarNode) {
+    //   AppBarNode appbar = scaffold?.appBar as AppBarNode;
+    //   bottomChild = appbar.bottom?.child;
+    // } else if (scaffold?.appBar is AppBarWithTabBarNode) {
+    //   AppBarWithTabBarNode appbar = scaffold?.appBar as AppBarWithTabBarNode;
+    //   bottomChild = appbar.bottom?.child;
+    // } else if (scaffold?.appBar is AppBarWithMenuBarNode) {
+    //   AppBarWithMenuBarNode appbar = scaffold?.appBar as AppBarWithMenuBarNode;
+    //   bottomChild = appbar.bottom?.child;
+    // }
+    // if (bottomChild is TabBarNode) {
+    //   TabBarNode? tabBar = bottomChild;
+    //   TabBarViewNode? tabBarView = scaffold?.body?.child as TabBarViewNode?;
+    //   var firstTab = tabBar.children.firstOrNull;
+    //   var firstTabView = tabBar.children.firstOrNull;
+    //   int numTabs = tabBar.children.length ?? 99;
+    //   int numTabBiews = tabBarView?.children.length ?? 99;
+    //   if (firstTab == this && numTabs < 2) {
+    //     return false;
+    //   }
+    //   if (firstTabView == this && numTabBiews < 2) {
+    //     return false;
+    //   }
+    // }
+    // if (bottomChild is MenuBarNode) {
+    //   return bottomChild.children.isEmpty;
+    // }
     return true;
   }
 
@@ -679,15 +766,28 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
   // List<String> sensibleParents() => const [];
 
-  GlobalKey createNodeGK() {
-    // fco.logi('--- createNodeGK --- ${toString()}');
-    nodeWidgetGK = GlobalKey(debugLabel: toString());
-    if (fco.gkSTreeNodeMap.containsKey(nodeWidgetGK)) {
-      print('Trying to use GlobalKey twice!');
+  GlobalKey createNodeWidgetGK() {
+    // fco.logger.i('--- createNodeGK --- ${toString()}');
+    _nodeWidgetGK ??= GlobalKey(debugLabel: toString());
+    // if (fco.nodesByGK.containsKey(nodeWidgetGK)) {
+    //   fco.logger.d('Trying to use GlobalKey twice!');
+    // }
+    if (!fco.nodesByGK.containsKey(_nodeWidgetGK)) {
+      fco.nodesByGK[_nodeWidgetGK!] = this;
     }
-    fco.gkSTreeNodeMap[nodeWidgetGK!] = this;
-    return nodeWidgetGK!;
+    return _nodeWidgetGK!;
   }
+
+  GlobalKey? get nodeWidgetGK => _nodeWidgetGK;
+
+  set nodeWidgetGK(GlobalKey? newGK) => _nodeWidgetGK = newGK;
+
+  // ScrollController get nodeSC {
+  //   // fco.logger.i('--- createNodeSC --- ${toString()}');
+  //   ScrollController sC = ScrollController();
+  //   fco.sCsNodeMap[nodeWidgetGK!] ??= sC;
+  //   return sC;
+  // }
 
   void validateTree() {
     _setParents(null);
@@ -705,26 +805,26 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
     } else if ((tabBar?.children.length ?? 0) <
         (tabBarView?.children.length ?? 0)) {
-      tabBar?.children.add(TextNode(text: ' fixed tab')..setParent(tabBar));
+      tabBar?.children.add(TextNode(text: ' fixed tab', tsPropGroup: TextStyleProperties())..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
-    // fco.logi("missing parents: $doubleCheck");
+    // fco.logger.i("missing parents: $doubleCheck");
     // if (tabBar != null) {
-    //   fco.logi("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
+    //   fco.logger.i("TabBar: ${tabBar.children.length}, TabBarView: ${tabBarView?.children.length} views");
     // }
   }
 
-  void _setParents(STreeNode? parent) {
+  void _setParents(SNode? parent) {
     setParent(parent);
     var children = Node.snippetTreeChildrenProvider(this);
-    for (STreeNode child in children) {
+    for (SNode child in children) {
       child._setParents(this);
     }
   }
 
   bool anyMissingParents() {
     var children = Node.snippetTreeChildrenProvider(this);
-    for (STreeNode child in children) {
+    for (SNode child in children) {
       bool foundAMissingParent =
           child.getParent() != this || child.anyMissingParents();
       if (foundAMissingParent) {
@@ -752,13 +852,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return node is StepNode && (node.title == this || node.content == this);
   }
 
-  STreeNode? findDescendant(Type type) {
+  SNode? findDescendant(Type type) {
     //
-    STreeNode? foundChild;
+    SNode? foundChild;
 
-    void findMatchingChild(STreeNode parent) {
+    void findMatchingChild(SNode parent) {
       bool keepSearching = true;
-      for (STreeNode child in Node.snippetTreeChildrenProvider(parent)) {
+      for (SNode child in Node.snippetTreeChildrenProvider(parent)) {
         if (!keepSearching) return;
         if (child.runtimeType == type) {
           foundChild = child;
@@ -774,12 +874,12 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     return foundChild;
   }
 
-  List<STreeNode> findDescendantsOfType(Type type) {
+  List<SNode> findDescendantsOfType(Type type) {
     //
-    List<STreeNode> foundNodes = [];
+    List<SNode> foundNodes = [];
 
-    void findMatchingDescendants(STreeNode node) {
-      for (STreeNode child in Node.snippetTreeChildrenProvider(node)) {
+    void findMatchingDescendants(SNode node) {
+      for (SNode child in Node.snippetTreeChildrenProvider(node)) {
         if (child.runtimeType == type) {
           foundNodes.add(child);
         } else {
@@ -803,9 +903,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       } else {
         return null;
       }
-      // fco.logi(node.runtimeType.toString());
+      // fco.logger.i(node.runtimeType.toString());
       // if (node.runtimeType == FSBucketNode) {
-      //   print('x');
+      //   fco.logger.d('x');
       // }
     }
 
@@ -830,8 +930,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
     }
   }
 
-  static void showAllTargetCovers() {
+  static void showAllHotspotTargetCovers() {
     for (TargetModel tc in allTargets()) {
+      // if (tc.hasAHotspot())
       tc.showCover = true;
     }
   }
@@ -852,25 +953,25 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       if (snippetInfo == null) return foundTargets;
       VersionId? versionId = snippetInfo.currentVersionId();
       if (versionId == null) return foundTargets;
-      List<STreeNode> tws = snippetInfo
+      List<SNode> tws = snippetInfo
               .currentVersionFromCache()
-              ?.findDescendantsOfType(HotspotsNode) ??
+              ?.findDescendantsOfType(TargetsWrapperNode) ??
           [];
-      for (STreeNode tw in tws) {
-        foundTargets.addAll((tw as HotspotsNode).targets);
+      for (SNode tw in tws) {
+        foundTargets.addAll((tw as TargetsWrapperNode).targets);
       }
     }
     return foundTargets;
   }
 
 // check nodes are identical
-  bool isSame(STreeNode otherNode) => toJson() == otherNode.toJson();
+  bool isSame(SNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget toWidget(BuildContext context, STreeNode? parentNode) =>
+  Widget toWidget(BuildContext context, SNode? parentNode,
+          {bool showTriangle = false}) =>
       const Placeholder();
 
-  Widget possiblyCheckHeightConstraint(
-      STreeNode? parentNode, Widget actualWidget) {
+  Widget possiblyCheckHeightConstraint(SNode? parentNode, Widget actualWidget) {
     /*
       use LayoutBuilder to check for infinite maxHeight error.
       skip the check if parent is a SizedBox or a SingleChildScrollView.
@@ -911,7 +1012,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
   //       double w = r.width + thickness * 2;
   //       double h = r.height + thickness * 2;
   //       Offset translate = Offset(-thickness, -thickness);
-  //       // fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
+  //       // fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
   //       fco.showOverlay(
   //         ensureLowestOverlay: true,
   //         calloutConfig: CalloutConfig(
@@ -964,7 +1065,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 // //   thickness = 10;
 // //   translate = Offset.zero;
 // // }
-//             fco.logi("Showing $SELECTED_NODE_BORDER_CALLOUT");
+//             fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
 //             fco.showOverlay(
 //               ensureLowestOverlay: true,
 //               calloutConfig: CalloutConfig(
@@ -1018,7 +1119,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 //   MenuItemButton? pasteMI,
 //   ValueChanged<Type>? onPressedF,
 // }) {
-//   // fco.logi(nodeTypeCandidates.toString());
+//   // fco.logger.i(nodeTypeCandidates.toString());
 //   List<Widget> widgets = [];
 //   //
 //   if (pasteMI != null) widgets.add(pasteMI);
@@ -1172,7 +1273,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
 
 // Text menuItemText(Type type) {
 //   String typeString = type.toString();
-//   fco.logi(typeString);
+//   fco.logger.i(typeString);
 //   return Text(typeString.substring(0, typeString.length - 4));
 // }
 
@@ -1258,7 +1359,9 @@ abstract class STreeNode extends Node with STreeNodeMappable {
                     controller.open();
                   }
                 },
-                icon: const Icon(Icons.add),
+                icon: action == NodeAction.replaceWith
+                    ? const Icon(Icons.refresh)
+                    : const Icon(Icons.add),
                 label: Text(title),
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(
@@ -1369,7 +1472,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         child: fco.coloredText("container", fontWeight: FontWeight.normal),
       ),
       menuItemButton("SplitView", SplitViewNode, action, scName),
-      menuItemButton("Hotspots", HotspotsNode, action, scName),
+      menuItemButton("Hotspots", TargetsWrapperNode, action, scName),
       menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action, scName),
       menuItemButton("Aspect Ratio", AspectRatioNode, action, scName),
     ];
@@ -1474,7 +1577,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       menuItemButton("SplitView", SplitViewNode, action, scName),
       menuItemButton("Stepper", StepperNode, action, scName),
       menuItemButton("Gap", GapNode, action, scName),
-      menuItemButton("Hotspots", HotspotsNode, action, scName),
+      menuItemButton("Hotspots", TargetsWrapperNode, action, scName),
       menuItemButton("Poll", PollNode, action, scName),
       menuItemButton("Placeholder", PlaceholderNode, action, scName),
       menuItemButton("Youtube", YTNode, action, scName),
@@ -1496,10 +1599,8 @@ abstract class STreeNode extends Node with STreeNodeMappable {
       ],
       if (getParent() is StepperNode)
         menuItemButton("Step", StepNode, action, scName),
-
       if (getParent() is PollNode)
         menuItemButton("PollOption", PollOptionNode, action, scName),
-
       if (getParent() is StackNode)
         menuItemButton("Positioned", PositionedNode, action, scName),
       if (getParent() is StackNode)
@@ -1526,7 +1627,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("WidgetSpan", WidgetSpanNode, action, scName),
       ],
       if (getParent() is! PollNode)
-      ...menuAnchorWidgets_Append(action, true, scName),
+        ...menuAnchorWidgets_Append(action, true, scName),
     ];
   }
 
@@ -1649,7 +1750,7 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuItemButton("Stepper", StepperNode, action, scName),
         menuItemButton("Gap", GapNode, action, scName),
         // menuItemButton("TargetWrapper", TargetButtonNode, action, scName),
-        menuItemButton("Hotspots", HotspotsNode, action, scName),
+        menuItemButton("Hotspots", TargetsWrapperNode, action, scName),
         menuItemButton("Poll", PollNode, action, scName),
         menuItemButton("PollOption", PollOptionNode, action, scName),
         menuItemButton("Placeholder", PlaceholderNode, action, scName),
@@ -1685,44 +1786,44 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         onPressed: () {
           if (action == NodeAction.wrapWith) {
             var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
-            bool navUp = this == treeC?.roots.firstOrNull;
+            // bool navUp = this == treeC?.roots.firstOrNull;
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.wrapSelectionWith(type: childType));
             // in case need to show more of the tree (higher up)
-            fco.afterNextBuildDo(() {
-              if (navUp) {
-                SnippetTreePane.navigateUpTree(scName);
-              }
-              fco.dismiss('node-actions');
-              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
-            });
+            // fco.afterNextBuildDo(() {
+            //   if (navUp) {
+            //     SnippetTreePane.navigateUpTree(scName);
+            //   }
+            //   fco.dismiss('node-actions');
+            //   EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
+            // });
           } else if (action == NodeAction.replaceWith) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.replaceSelectionWith(type: childType));
             fco.afterNextBuildDo(() {
               fco.dismiss('node-actions');
-              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
             });
           } else if (action == NodeAction.addChild) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.appendChild(type: childType));
             fco.afterNextBuildDo(() {
               fco.dismiss('node-actions');
-              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
             });
           } else if (action == NodeAction.addSiblingBefore) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.addSiblingBefore(type: childType));
             fco.afterNextBuildDo(() {
               fco.dismiss('node-actions');
-              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
             });
           } else if (action == NodeAction.addSiblingAfter) {
             FlutterContentApp.capiBloc
                 .add(CAPIEvent.addSiblingAfter(type: childType));
             fco.afterNextBuildDo(() {
               fco.dismiss('node-actions');
-              EditablePage.refreshSelectedNodeWidgetBorderOverlay();
+              EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
             });
           }
         },
@@ -1840,9 +1941,13 @@ abstract class STreeNode extends Node with STreeNodeMappable {
         menuChildren: snippetMIs, child: const Text('snippet'));
   }
 
-  STreeNode clone() {
+  SNode clone() {
     String jsonS = toJson();
-    return STreeNodeMapper.fromJson(jsonS);
+    var clonedNode = SNodeMapper.fromJson(jsonS);
+    if (nodeWidgetGK != null && nodeWidgetGK == clonedNode.nodeWidgetGK) {
+      fco.logger.d('gk cloned !)');
+    }
+    return clonedNode;
   }
 }
 

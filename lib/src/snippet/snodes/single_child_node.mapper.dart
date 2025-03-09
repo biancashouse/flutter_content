@@ -13,7 +13,7 @@ class SCMapper extends SubClassMapperBase<SC> {
   static SCMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SCMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       GenericSingleChildNodeMapper.ensureInitialized();
       AlignNodeMapper.ensureInitialized();
       AspectRatioNodeMapper.ensureInitialized();
@@ -23,13 +23,13 @@ class SCMapper extends SubClassMapperBase<SC> {
       DefaultTextStyleNodeMapper.ensureInitialized();
       ExpandedNodeMapper.ensureInitialized();
       FlexibleNodeMapper.ensureInitialized();
-      HotspotsNodeMapper.ensureInitialized();
+      TargetsWrapperNodeMapper.ensureInitialized();
       PaddingNodeMapper.ensureInitialized();
       PositionedNodeMapper.ensureInitialized();
       SingleChildScrollViewNodeMapper.ensureInitialized();
       SizedBoxNodeMapper.ensureInitialized();
       SnippetRootNodeMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -37,9 +37,8 @@ class SCMapper extends SubClassMapperBase<SC> {
   @override
   final String id = 'SC';
 
-  static STreeNode? _$child(SC v) => v.child;
-  static const Field<SC, STreeNode> _f$child =
-      Field('child', _$child, opt: true);
+  static SNode? _$child(SC v) => v.child;
+  static const Field<SC, SNode> _f$child = Field('child', _$child, opt: true);
 
   @override
   final MappableFields<SC> fields = const {
@@ -51,7 +50,7 @@ class SCMapper extends SubClassMapperBase<SC> {
   @override
   final dynamic discriminatorValue = 'SC';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static SC _instantiate(DecodingData data) {
     throw MapperException.missingSubclass('SC', 'sc', '${data.value['sc']}');
@@ -76,9 +75,9 @@ mixin SCMappable {
 }
 
 abstract class SCCopyWith<$R, $In extends SC, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+    implements SNodeCopyWith<$R, $In, $Out> {
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({STreeNode? child});
+  $R call({SNode? child});
   SCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

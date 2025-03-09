@@ -4,8 +4,8 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void showSaveAsCallout({
-  required STreeNode selectedNode,
-  STreeNode? selectionParentNode,
+  required SNode selectedNode,
+  SNode? selectionParentNode,
   // required TargetKeyFunc targetGKF,
   required ValueChanged<String> saveModelF,
   required ScrollControllerName? scName,
@@ -13,11 +13,11 @@ void showSaveAsCallout({
   fco.showOverlay(
       // targetGkF: targetGKF,
       calloutContent: InputSnippetName(
-            selectedNode: selectedNode,
-            selectionParentNode: selectionParentNode,
-            // targetGKF: targetGKF,
-            saveModelF: saveModelF,
-          ),
+        selectedNode: selectedNode,
+        selectionParentNode: selectionParentNode,
+        // targetGKF: targetGKF,
+        saveModelF: saveModelF,
+      ),
       calloutConfig: CalloutConfig(
         cId: "input-snippet-name",
         initialCalloutW: 400,
@@ -28,7 +28,7 @@ void showSaveAsCallout({
         arrowColor: Colors.blue[900],
         finalSeparation: 60,
         fillColor: Colors.purpleAccent,
-        barrier: CalloutBarrier(
+        barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {
             fco.dismiss("input-snippet-name");
@@ -40,8 +40,8 @@ void showSaveAsCallout({
 }
 
 class InputSnippetName extends StatefulWidget {
-  final STreeNode selectedNode;
-  final STreeNode? selectionParentNode;
+  final SNode selectedNode;
+  final SNode? selectionParentNode;
 
   // final TargetKeyFunc targetGKF;
   final ValueChanged<String> saveModelF;
@@ -77,8 +77,10 @@ class InputSnippetNameState extends State<InputSnippetName> {
 
   @override
   void dispose() {
+    if (!mounted) return;
     _focusNode?.dispose();
     _txtController.dispose();
+
     super.dispose();
   }
 
@@ -135,7 +137,8 @@ class InputSnippetNameState extends State<InputSnippetName> {
             style: ElevatedButton.styleFrom(
               backgroundColor: buttonColor,
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0)),
               elevation: 2,
             ),
             child: const Row(

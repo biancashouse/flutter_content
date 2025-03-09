@@ -12,14 +12,14 @@ void main() {
   late SnippetTreeController treeC;
   late CAPIBloC capiBloc;
   late CAPIState selectedState;
-  late STreeNode sel;
+  late SNode sel;
   late RichTextNode rt2;
 
   late TextNode cl1;
   late CenterNode sc1;
 
   /// reusable expected states
-  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) =>
+  expectedState_SelectedNode(CAPIBloC bloc, SNode node) =>
       bloc.state.copyWith(
         snippetBeingEdited: SnippetBeingEdited(
           selectedNode: node,
@@ -32,7 +32,7 @@ void main() {
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
-    // print('Setting up common resources...');
+    // fco.logger.d('Setting up common resources...');
   });
 
   setUp(() {
@@ -41,7 +41,7 @@ void main() {
     rt2 = RichTextNode(text: WidgetSpanNode());
   });
 
-  void test_snippet_setup(STreeNode child, {STreeNode? select}) {
+  void test_snippet_setup(SNode child, {SNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
     treeC = SnippetTreeController(
@@ -230,11 +230,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

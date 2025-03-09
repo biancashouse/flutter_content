@@ -16,8 +16,8 @@ class PaddingNode extends SC with PaddingNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EdgeInsetsPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EdgeInsetsPNode(
           snode: this,
           name: 'padding',
           eiValue: padding ?? EdgeInsetsValue(),
@@ -26,12 +26,12 @@ class PaddingNode extends SC with PaddingNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     return Padding(
-      key: createNodeGK(),
+      key: createNodeWidgetGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
       child: child?.toWidget(context, this),
     );

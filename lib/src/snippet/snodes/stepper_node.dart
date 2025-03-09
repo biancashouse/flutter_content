@@ -21,15 +21,15 @@ class StepperNode extends MC with StepperNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<StepperTypeEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<StepperTypeEnum?>(
           snode: this,
           name: 'type',
           valueIndex: type.index,
           onIndexChange: (newValue) => refreshWithUpdate(() =>
               type = StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -42,7 +42,7 @@ class StepperNode extends MC with StepperNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -51,15 +51,15 @@ class StepperNode extends MC with StepperNodeMappable {
         parentNode,
         FCStepper(
           this,
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
         ),
       );
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }
@@ -86,8 +86,8 @@ class StepperNode extends MC with StepperNodeMappable {
     ];
   }
 
-  @override
-  List<Type> addChildOnly() => [StepNode];
+  // @override
+  // List<Type> addChildOnly() => [StepNode];
 
   @override
   String toString() => FLUTTER_TYPE;

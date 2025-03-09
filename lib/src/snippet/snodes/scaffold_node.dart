@@ -1,11 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+// import 'package:flutter_content/src/snippet/snodes/appbar_with_menubar_node.dart';
+// import 'package:flutter_content/src/snippet/snodes/appbar_with_tabbar_node.dart';
 
 part 'scaffold_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'sc')
-class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
+class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   int? bgColorValue;
   AppBarNode? appBar;
   GenericSingleChildNode? body;
@@ -22,10 +24,10 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) {
-    // fco.logi("ContainerNode.properties()...");
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    // fco.logger.i("ContainerNode.properties()...");
     return [
-      ColorPropertyValueNode(
+      ColorPNode(
         snode: this,
         name: 'background color',
         colorValue: bgColorValue,
@@ -33,7 +35,7 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
             refreshWithUpdate(() => bgColorValue = newValue),
         calloutButtonSize: const Size(200, 20),
       ),
-      // IntPropertyValueNode(
+      // IntPNode(
       //   snode: this,
       //   name: 'Number of Tabs',
       //   intValue: numTabs,
@@ -44,20 +46,21 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-    late Widget scaffold;
+    Widget? bodyWidget() => body?.toWidgetProperty(context, this) ?? const Placeholder();
+
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
-    scaffold = Scaffold(
-      key: createNodeGK(),
+    Widget scaffold = Scaffold(
+      key: createNodeWidgetGK(),
       backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
       appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
       // guaranteed the widget is actually an AppBar
-      body: body?.toWidgetProperty(context, this) ?? const Placeholder(),
+      body: bodyWidget(),
     );
 
     try {
@@ -85,10 +88,10 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
       );
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }
@@ -104,7 +107,10 @@ class ScaffoldNode extends STreeNode with ScaffoldNodeMappable {
   ) {
     return [
       ...super.menuAnchorWidgets_Heading(action, scName),
-      menuItemButton("PollOption", PollOptionNode, action, scName),
+      menuItemButton("AppBar", AppBarNode, action, scName),
+      // menuItemButton("AppBar with TabBar", AppBarWithTabBarNode, action, scName),
+      // menuItemButton("AppBar with MenuBar", AppBarWithMenuBarNode, action, scName),
+      // menuItemButton("PollOption", PollOptionNode, action, scName),
     ];
   }
 

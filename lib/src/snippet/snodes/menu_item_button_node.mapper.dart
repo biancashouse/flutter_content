@@ -15,9 +15,9 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
       MapperContainer.globals.use(_instance = MenuItemButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SnippetTemplateEnumMapper.ensureInitialized();
-      ButtonStyleGroupMapper.ensureInitialized();
-      CalloutConfigGroupMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      ButtonStylePropertiesMapper.ensureInitialized();
+      CalloutConfigPropertiesMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -45,19 +45,20 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
       v.destinationSnippetName;
   static const Field<MenuItemButtonNode, String> _f$destinationSnippetName =
       Field('destinationSnippetName', _$destinationSnippetName, opt: true);
-  static ButtonStyleGroup? _$buttonStyle(MenuItemButtonNode v) => v.buttonStyle;
-  static const Field<MenuItemButtonNode, ButtonStyleGroup> _f$buttonStyle =
-      Field('buttonStyle', _$buttonStyle, opt: true);
+  static ButtonStyleProperties _$bsPropsGroup(MenuItemButtonNode v) =>
+      v.bsPropsGroup;
+  static const Field<MenuItemButtonNode, ButtonStyleProperties>
+      _f$bsPropsGroup = Field('bsPropsGroup', _$bsPropsGroup);
   static String? _$onTapHandlerName(MenuItemButtonNode v) => v.onTapHandlerName;
   static const Field<MenuItemButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigGroup? _$calloutConfigGroup(MenuItemButtonNode v) =>
+  static CalloutConfigProperties? _$calloutConfigGroup(MenuItemButtonNode v) =>
       v.calloutConfigGroup;
-  static const Field<MenuItemButtonNode, CalloutConfigGroup>
+  static const Field<MenuItemButtonNode, CalloutConfigProperties>
       _f$calloutConfigGroup =
       Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
-  static STreeNode? _$child(MenuItemButtonNode v) => v.child;
-  static const Field<MenuItemButtonNode, STreeNode> _f$child =
+  static SNode? _$child(MenuItemButtonNode v) => v.child;
+  static const Field<MenuItemButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(MenuItemButtonNode v) => v.uid;
   static const Field<MenuItemButtonNode, String> _f$uid =
@@ -70,12 +71,6 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   static const Field<MenuItemButtonNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          MenuItemButtonNode v) =>
-      v.nodeWidgetGK;
-  static const Field<MenuItemButtonNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<MenuItemButtonNode> fields = const {
@@ -83,14 +78,13 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     #template: _f$template,
     #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
-    #buttonStyle: _f$buttonStyle,
+    #bsPropsGroup: _f$bsPropsGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -108,7 +102,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
         destinationPanelOrPlaceholderName:
             data.dec(_f$destinationPanelOrPlaceholderName),
         destinationSnippetName: data.dec(_f$destinationSnippetName),
-        buttonStyle: data.dec(_f$buttonStyle),
+        bsPropsGroup: data.dec(_f$bsPropsGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -170,23 +164,23 @@ extension MenuItemButtonNodeValueCopy<$R, $Out>
 abstract class MenuItemButtonNodeCopyWith<$R, $In extends MenuItemButtonNode,
     $Out> implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
-  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyle;
+  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+      ButtonStyleProperties> get bsPropsGroup;
   @override
-  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
-      get calloutConfigGroup;
+  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
+      CalloutConfigProperties>? get calloutConfigGroup;
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
       String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
-      ButtonStyleGroup? buttonStyle,
+      ButtonStyleProperties? bsPropsGroup,
       String? onTapHandlerName,
-      CalloutConfigGroup? calloutConfigGroup,
-      STreeNode? child});
+      CalloutConfigProperties? calloutConfigGroup,
+      SNode? child});
   MenuItemButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -200,15 +194,17 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MenuItemButtonNode> $mapper =
       MenuItemButtonNodeMapper.ensureInitialized();
   @override
-  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyle =>
-          $value.buttonStyle?.copyWith.$chain((v) => call(buttonStyle: v));
+  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>
+      get bsPropsGroup =>
+          $value.bsPropsGroup.copyWith.$chain((v) => call(bsPropsGroup: v));
   @override
-  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
+  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
+          CalloutConfigProperties>?
       get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
           .$chain((v) => call(calloutConfigGroup: v));
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
@@ -216,7 +212,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
           Object? template = $none,
           Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
-          Object? buttonStyle = $none,
+          ButtonStyleProperties? bsPropsGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
@@ -228,7 +224,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
           #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
         if (destinationSnippetName != $none)
           #destinationSnippetName: destinationSnippetName,
-        if (buttonStyle != $none) #buttonStyle: buttonStyle,
+        if (bsPropsGroup != null) #bsPropsGroup: bsPropsGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -245,7 +241,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
           or: $value.destinationPanelOrPlaceholderName),
       destinationSnippetName:
           data.get(#destinationSnippetName, or: $value.destinationSnippetName),
-      buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),
+      bsPropsGroup: data.get(#bsPropsGroup, or: $value.bsPropsGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

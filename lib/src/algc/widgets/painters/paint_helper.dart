@@ -103,7 +103,7 @@ drawTxtBox(
 
   // draw txt box
 
-  // fco.logi('model.calculatedTxtSize.height is ${model.calculatedTxtSize.height}');
+  // fco.logger.i('model.calculatedTxtSize.height is ${model.calculatedTxtSize.height}');
 
   Rect rect = Rect.fromPoints(
       Offset(left = model.MMM * 2, top = model.MMM),
@@ -302,7 +302,7 @@ drawAwaitTxtBox(StepM model, double radius, {required Canvas theCanvas}) {
 
 possiblyDrawTopStepConnector(StepM model,
     {required Canvas theCanvas, double canvasX = 0.0, double canvasY = 0.0}) {
-  //fco.logi('possiblyDrawTopStepConnector - ${_step.stepType} - isFirstStep: ${_step.isFirstStep()} - parentListType: ${_step.parentListType}');
+  //fco.logger.i('possiblyDrawTopStepConnector - ${_step.stepType} - isFirstStep: ${_step.isFirstStep()} - parentListType: ${_step.parentListType}');
   if (model.isFirstStep() && model.parentListType != ROOT_STEPS) return;
 
   double y = (model.MMM + model.PPP + model.TTT + model.PPP + model.MMM) / 2;

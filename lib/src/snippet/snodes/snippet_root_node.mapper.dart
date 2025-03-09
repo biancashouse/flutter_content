@@ -14,7 +14,7 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SnippetRootNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -27,8 +27,8 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static String _$tags(SnippetRootNode v) => v.tags;
   static const Field<SnippetRootNode, String> _f$tags =
       Field('tags', _$tags, opt: true, def: '');
-  static STreeNode? _$child(SnippetRootNode v) => v.child;
-  static const Field<SnippetRootNode, STreeNode> _f$child =
+  static SNode? _$child(SnippetRootNode v) => v.child;
+  static const Field<SnippetRootNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(SnippetRootNode v) => v.uid;
   static const Field<SnippetRootNode, String> _f$uid =
@@ -41,11 +41,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static const Field<SnippetRootNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(SnippetRootNode v) =>
-      v.nodeWidgetGK;
-  static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<SnippetRootNode> fields = const {
@@ -55,7 +50,6 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -128,9 +122,9 @@ extension SnippetRootNodeValueCopy<$R, $Out>
 abstract class SnippetRootNodeCopyWith<$R, $In extends SnippetRootNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({String? name, String? tags, STreeNode? child});
+  $R call({String? name, String? tags, SNode? child});
   SnippetRootNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -144,7 +138,7 @@ class _SnippetRootNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SnippetRootNode> $mapper =
       SnippetRootNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({String? name, String? tags, Object? child = $none}) =>

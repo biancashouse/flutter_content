@@ -29,7 +29,7 @@ enum FontWeightEnum  {
   static
   Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,

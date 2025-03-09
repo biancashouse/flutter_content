@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class PropertyCalloutButton extends StatelessWidget {
-  final Feature cId;
+  final CalloutId cId;
   final Alignment alignment;
   final String? label;
   final String? tooltip;
@@ -58,7 +58,7 @@ class PropertyCalloutButton extends StatelessWidget {
         // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
       },
       movedOrResizedNotifier: notifier,
-      barrier: CalloutBarrier(
+      barrier: CalloutBarrierConfig(
         opacity: .1,
         onTappedF: () async {
           // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
@@ -66,8 +66,8 @@ class PropertyCalloutButton extends StatelessWidget {
         },
       ),
       containsTextField: true,
-      resizeableH: true,
-      resizeableV: true,
+      resizeableH: false,
+      resizeableV: false,
       borderRadius: 16,
       onDismissedF: onDismissedF,
       scrollControllerName: scName,
@@ -88,9 +88,9 @@ class PropertyCalloutButton extends StatelessWidget {
             width: calloutButtonSize.width,
             height: calloutButtonSize.height,
             // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            color: labelWidget != null ? null : Colors.white70,
+            color: Colors.purpleAccent,
             alignment: alignment,
-            child: labelWidget ?? (label != null ? Text(label!) : const Offstage()),
+            child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
           ),
         ),
       ),

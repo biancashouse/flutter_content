@@ -4,137 +4,165 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class FSFoldersAndImagePicker extends HookWidget {
-  final FirebaseStorage initialStorage; // ref starts at specified root folder
+FirebaseStorage? _fbStorage;
+FirebaseUIStorageConfiguration? _config;
+FSFolderNode? _rootFSFolderNode;
+TreeController<FSFolderNode>? _treeC;
+
+class FSFoldersAndImagePicker extends StatefulWidget {
   final ValueChanged<String?> onChangeF;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
   const FSFoldersAndImagePicker({
-    required this.initialStorage,
     required this.onChangeF,
     this.ancestorHScrollController,
     this.ancestorVScrollController,
     super.key,
   });
 
-  // static SnippetNode nearestRoot(TreeEntry<Node> entry) {
-  //   TreeEntry<Node> _entry = entry;
-  //   while (_entry.node is! SnippetNode) {
-  //     _entry = _entry.parent!;
-  //   }
-  //   return _entry.node as SnippetNode;
-  // }
+  @override
+  State<FSFoldersAndImagePicker> createState() =>
+      FSFoldersAndImagePickerState();
+}
 
-  Future<FirebaseStorage> _configureUpload(
-      FirebaseStorage storage, Reference newRef) async {
-    final config = FirebaseUIStorageConfiguration(
-      storage: storage,
-      uploadRoot: newRef,
-      namingPolicy: const UuidFileUploadNamingPolicy(),
-      // optional, will generate a UUID for each uploaded file
-    );
-    await FirebaseUIStorage.configure(config);
-    return storage;
+class FSFoldersAndImagePickerState extends State<FSFoldersAndImagePicker> {
+  String? _selectedFolderPath;
+
+  Reference appFSStorageRootRef(String folderPath) =>
+      _fbStorage!.ref('/${fco.appName}$folderPath');
+
+  Future<void> _fbStorageTreePossiblyCreate() async {
+    try {
+      if (_fbStorage == null) {
+        _fbStorage = FirebaseStorage.instance;
+        await FirebaseUIStorage.configure(
+          _config = FirebaseUIStorageConfiguration(
+            storage: _fbStorage,
+            uploadRoot: appFSStorageRootRef('/'),
+            namingPolicy: const UuidFileUploadNamingPolicy(),
+            // optional, will generate a UUID for each uploaded file
+          ),
+        );
+
+        _rootFSFolderNode = await fco.modelRepo.createAndPopulateFolderNode(
+            ref: _fbStorage!.ref('/${fco.appName}'));
+
+        _selectedFolderPath = _rootFSFolderNode?.ref.fullPath;
+
+        _treeC = TreeController<FSFolderNode>(
+          roots: [_rootFSFolderNode!],
+          childrenProvider: (FSFolderNode node) => node.children,
+          parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
+        );
+
+        // treeC.expandCascading([rootNode]);
+        _treeC!.expand(_rootFSFolderNode!);
+
+      }
+    } catch (e) {
+      fco.logger.e('', error:e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    fco.logi('folder+images build');
-    // final msvC = useState<MultiSplitViewController>(
-    //     MultiSplitViewController(areas: [Area(flex: 7)]));
-    // final selectedFolderRef = useState<Reference>(fco.rootFSFolderNode!.ref);
-    final storage = useState<FirebaseStorage>(initialStorage);
+    fco.logger.i('folder+images build');
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.0), // Adjust radius as needed
-      child: Scaffold(
-        backgroundColor: Colors.purpleAccent.shade100,
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: fco.coloredText(
-            'Firebase Storage Image Picker (${fco.rootFSFolderNode!.ref.bucket})',
-            fontSize: 16.0,
-            color: Colors.white,
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: MultiSplitViewTheme(
-            data: MultiSplitViewThemeData(dividerThickness: 24),
-            child: MultiSplitView(
-              axis: Axis.horizontal,
-              // controller: msvC.value,
-              // onWeightChange: () => setState(() {}),
-              dividerBuilder:
-                  (axis, index, resizable, dragging, highlighted, themeData) {
-                return Container(
-                  color: dragging
-                      ? Colors.purpleAccent[200]
-                      : Colors.purpleAccent[100],
-                  child: Icon(
-                    Icons.drag_indicator,
-                    color: highlighted ? Colors.blueAccent : Colors.white,
+    return FutureBuilder<void>(
+      future: _fbStorageTreePossiblyCreate(),
+      builder: (ctx, snap) {
+        if (snap.connectionState != ConnectionState.done && !snap.hasData) {
+          return const CircularProgressIndicator();
+        } else {
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            // Adjust radius as needed
+            child: Scaffold(
+              backgroundColor: Colors.purpleAccent.shade100,
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                backgroundColor: Colors.black,
+                title: fco.coloredText(
+                  'Firebase Storage Image Picker (${_rootFSFolderNode?.ref.bucket})',
+                  fontSize: 16.0,
+                  color: Colors.white,
+                ),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: MultiSplitViewTheme(
+                  data: MultiSplitViewThemeData(dividerThickness: 24),
+                  child: MultiSplitView(
+                    axis: Axis.horizontal,
+                    // controller: msvC.value,
+                    // onWeightChange: () => setState(() {}),
+                    dividerBuilder: (axis, index, resizable, dragging,
+                        highlighted, themeData) {
+                      return Container(
+                        color: dragging
+                            ? Colors.purpleAccent[200]
+                            : Colors.purpleAccent[100],
+                        child: Icon(
+                          Icons.drag_indicator,
+                          color: highlighted ? Colors.blueAccent : Colors.white,
+                        ),
+                      );
+                    },
+                    initialAreas: [
+                      Area(
+                        builder: (ctx, area) {
+                          return fsFolderPane(onSelectionF: (newRef) async {
+                            setState(() {
+                              _config!.uploadRoot = newRef;
+                              _selectedFolderPath = newRef.fullPath;
+                            });
+                          });
+                        },
+                      ),
+                      Area(
+                        builder: (ctx, area) {
+                          return FolderImagesGridView(
+                            storage: _fbStorage!,
+                            folderRef:
+                                _config!.uploadRoot,
+                            onChangeF: widget.onChangeF,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                );
-              },
-              initialAreas: [
-                Area(
-                  builder: (ctx, area) {
-                    return fsFolderPane(
-                        storage: storage.value,
-                        onSelectionF: (newRef) async {
-                          storage.value =
-                              await _configureUpload(storage.value, newRef);
-                        });
-                  },
                 ),
-                Area(
-                  builder: (ctx, area) {
-                    return FolderImagesGridView(
-                      storage: storage.value,
-                      onChangeF: onChangeF,
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+      },
     );
   }
 
-  Widget fsFolderPane(
-      {required FirebaseStorage storage,
-      required ValueChanged<Reference> onSelectionF}) {
-    if (fco.rootFSFolderNode == null) {
+  Widget fsFolderPane({
+    required ValueChanged<Reference> onSelectionF,
+  }) {
+    if (_rootFSFolderNode == null) {
       return const Icon(
         Icons.warning,
         color: Colors.red,
       );
     }
 
-    FSFolderNode rootNode = fco.rootFSFolderNode!;
-    TreeController<FSFolderNode> treeC = TreeController<FSFolderNode>(
-      roots: [rootNode],
-      childrenProvider: (FSFolderNode node) => node.children,
-      parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
-    );
-    treeC.expandCascading([rootNode]);
-    // setParent(parentNode);
     return TreeView<FSFolderNode>(
         // physics: const NeverScrollableScrollPhysics(),
-        treeController: treeC,
+        treeController: _treeC!,
         shrinkWrap: true,
         nodeBuilder: (BuildContext context, TreeEntry<FSFolderNode> entry) {
           return InkWell(
-            onTap: () => treeC.toggleExpansion(entry.node),
+            onTap: () {
+              if (entry.hasChildren) _treeC!.toggleExpansion(entry.node);
+            },
             child: TreeIndentation(
               entry: entry,
               guide: const IndentGuide.connectingLines(color: Colors.white),
@@ -166,23 +194,24 @@ class FSFoldersAndImagePicker extends HookWidget {
                             entry.node.ref.name.isEmpty
                                 ? '/'
                                 : entry.node.ref.name,
-                            color: Colors.white),
+                            color: entry.node.ref.fullPath == _selectedFolderPath ? Colors.blue : Colors.white),
                       ),
-                      if (entry.hasChildren)
-                        ExpandIcon(
-                          key: GlobalObjectKey(entry.node),
-                          isExpanded: treeC.getExpansionState(entry.node),
-                          //entry.isExpanded,
-                          padding: EdgeInsets.zero,
-                          onPressed: (_) {
-                            if (treeC.getExpansionState(entry.node)) {
-                              treeC.toggleExpansion(entry.node);
-                            } else {
-                              // instead of expanding current node, do a cascading expand
-                              treeC.expand(entry.node);
-                            }
-                          },
-                        ),
+                      // if (entry.hasChildren)
+                      //   ExpandIcon(
+                      //     color: Colors.red,
+                      //     // key: GlobalObjectKey(entry.node.ref),
+                      //     isExpanded: treeC.getExpansionState(entry.node),
+                      //     //entry.isExpanded,
+                      //     padding: EdgeInsets.zero,
+                      //     onPressed: (_) {
+                      //       if (treeC.getExpansionState(entry.node)) {
+                      //         treeC.toggleExpansion(entry.node);
+                      //       } else {
+                      //         // instead of expanding current node, do a cascading expand
+                      //         treeC.expand(entry.node);
+                      //       }
+                      //     },
+                      //   ),
                     ],
                   ),
                 ),
@@ -194,44 +223,51 @@ class FSFoldersAndImagePicker extends HookWidget {
 }
 
 class FolderImagesGridView extends StatelessWidget {
+  final FirebaseStorage storage;
+  final Reference folderRef;
+
   const FolderImagesGridView({
-    super.key,
     required this.storage,
+    required this.folderRef,
+    super.key,
     required this.onChangeF,
   });
 
   final ValueChanged<String?> onChangeF;
-  final FirebaseStorage storage;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextButton.icon(
-            onPressed: () async {
-              final Uri url = Uri.parse(
-                  'https://console.cloud.google.com/storage/bconst rowser/bh-apps.appspot.com/${fco.appName}?project=bh-apps');
-              if (!await launchUrl(url)) {
-                throw Exception('Could not launch $url');
-              }
-            },
-            label: const Icon(Icons.link),
-            icon: const Text(' Cloud Storage Console')),
-        MyUploadButton(storage: storage),
-        Expanded(
-          child: Container(
+    return SizedBox(
+      width: 300,
+      height: 600,
+      child: ListView(
+        children: [
+          TextButton.icon(
+              onPressed: () async {
+                final Uri url = Uri.parse(
+                    'https://console.cloud.google.com/storage/browser/bh-apps.appspot.com/${fco.appName}?project=bh-apps');
+                if (!await launchUrl(url)) {
+                  throw Exception('Could not launch $url');
+                }
+              },
+              label: const Icon(Icons.link),
+              icon: const Text(' Cloud Storage Console')),
+          MyUploadButton(storage: storage),
+          Container(
             color: Colors.purple,
+            width: 300,
+            height: 400,
             child: StorageGridView(
               key: UniqueKey(),
-              loadingController: PaginatedLoadingController(ref: storage.ref()),
-              // ref: selectedFolderRef,
+              loadingController: PaginatedLoadingController(ref: folderRef),
+              ref: folderRef,
               // loadingBuilder: (context) {
               //   return const Center(
               //     child: Text('Loading...'),
               //   );
               // },
               itemBuilder: (context, ref) {
-                print('item: ref:${ref.fullPath}');
+                fco.logger.d('item: ref:${ref.fullPath}');
                 return InkWell(
                   onTap: () {
                     onChangeF(ref.fullPath);
@@ -248,8 +284,8 @@ class FolderImagesGridView extends StatelessWidget {
               },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -262,7 +298,7 @@ class MyUploadButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Tooltip(
-      message: 'to folder: ${storage.ref().fullPath}',
+      message: 'to folder: ${_config!.uploadRoot.fullPath}',
       child: UploadButton(
         storage: storage,
         extensions: const ['jpg', 'png', 'gif'],

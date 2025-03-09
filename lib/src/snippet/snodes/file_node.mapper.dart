@@ -36,11 +36,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
   static const Field<FileNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(FileNode v) =>
-      v.nodeWidgetGK;
-  static const Field<FileNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<FileNode> fields = const {
@@ -49,7 +44,6 @@ class FileNodeMapper extends SubClassMapperBase<FileNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

@@ -23,27 +23,33 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart'
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/text_styles/search_anchor.dart';
+import 'package:flutter_content/src/text_styles/text_style_name_editor.dart';
 
 import 'pnodes/editors/date_button.dart';
 import 'pnodes/editors/date_range_button.dart';
 import 'pnodes/editors/property_callout_button_UML.dart';
 import 'pnodes/enums/enum_flex_fit.dart';
 import 'pnodes/enums/mappable_enum_decoration.dart';
-import 'pnodes/groups/button_style_group.dart';
-import 'pnodes/groups/outlined_border_group.dart';
+import 'pnodes/groups/button_style_properties.dart';
+import 'pnodes/groups/outlined_border_properties.dart';
 import 'snodes/upto6color_values.dart';
 
-abstract class PTreeNode extends Node {
+class PNode extends Node {
   final PropertyName name;
   final String? tooltip;
-  final STreeNode snode;
+  final SNode snode;
+  List<PNode>? children;
+  bool expanded;
 
-  PTreeNode({
+  PNode({
     required this.name,
     this.tooltip,
     required this.snode,
+    this.children,
+    this.expanded = false,
   });
 
   Widget toPropertyNodeContents(BuildContext context) {
@@ -56,7 +62,7 @@ abstract class PTreeNode extends Node {
   // selection always uses this gk
   static GlobalKey get selectedPropertyGK {
     if (_selectedPropertyGK.currentState == null) return _selectedPropertyGK;
-    fco.logi(
+    fco.logger.i(
         "_selectedPropertyGK in use: ${_selectedPropertyGK.currentWidget.runtimeType}");
     return GlobalKey(debugLabel: '_selectedPropertyGK was in use');
   }
@@ -70,213 +76,221 @@ abstract class PTreeNode extends Node {
       GlobalKey(debugLabel: "PTreeNode.selectionGK");
 }
 
-class PropertyGroup extends PTreeNode {
-  List<PTreeNode> children;
+// class PNode/*Group*/ extends PNode {
+//   List<PNode> children;
+//
+//   PNode/*Group*/({
+//     required super.snode,
+//     required super.name,
+//     required this.children,
+//   });
+//
+//   @override
+//   void revertToOriginalValue() {
+//     snode.refreshWithUpdate(() {
+//       for (PNode pNode in children) {
+//         pNode.revertToOriginalValue();
+//       }
+//     });
+//   }
+// }
 
-  PropertyGroup({
-    required super.snode,
+class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
+  final TextStyleProperties textStyleProperties;
+  final ValueChanged<TextStyleProperties> onGroupChange;
+
+  TextStyleWithoutColorPNode /*Group*/ ({
     required super.name,
-    required this.children,
-  });
-
-  @override
-  void revertToOriginalValue() {
-    snode.refreshWithUpdate(() {
-      for (PTreeNode pNode in children) {
-        pNode.revertToOriginalValue();
-      }
-    });
-  }
-}
-
-class TextStylePropertyGroup extends PropertyGroup {
-  TextStyleGroup? textStyleGroup;
-  final ValueChanged<TextStyleGroup> onGroupChange;
-
-  TextStylePropertyGroup({
-    required super.name,
-    required this.textStyleGroup,
+    required this.textStyleProperties,
     required this.onGroupChange,
     required super.snode,
     super.children = const [],
   }) {
     super.children = [
-      StringPropertyValueNode(
+      TextStyleSearchPNode(
         snode: super.snode,
-        name: 'namedTextStyle',
-        nameOnSeparateLine: true,
-        expands: true,
-        stringValue: textStyleGroup?.namedTextStyle,
-        options: fco.namedTextStyles.keys.toList(),
-        onStringChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.namedTextStyle = newValue;
-          onGroupChange.call(textStyleGroup!);
-        },
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
+        name: 'TextStyle search',
       ),
-      ColorPropertyValueNode(
-        snode: super.snode,
-        name: 'color',
-        colorValue: textStyleGroup?.colorValue,
-        onColorIntChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.colorValue = newValue;
-          onGroupChange.call(textStyleGroup!);
-        },
-      ),
-      FontFamilyPropertyValueNode(
+      if (snode is ButtonNode)
+        FYIPNode(
+            fyiMsg: "Button's f/g color defines\nthe button's text color",
+            snode: snode,
+            name: 'fyi'),
+      if (snode is TabBarNode)
+        FYIPNode(
+            fyiMsg: "TabBar's selected and unselected\ncolors define the text color",
+            snode: snode,
+            name: 'fyi'),
+      FontFamilyPNode(
         snode: super.snode,
         name: 'fontFamily',
-        fontFamily: textStyleGroup?.fontFamily,
+        fontFamily: textStyleProperties.fontFamily,
         onFontFamilyChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.fontFamily = newValue;
+          textStyleProperties.fontFamily = newValue;
           fco.forceRefresh();
-          onGroupChange.call(textStyleGroup!);
+          onGroupChange.call(textStyleProperties);
         },
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'fontSize',
-        decimalValue: textStyleGroup?.fontSize,
+        decimalValue: textStyleProperties.fontSize,
         onDoubleChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.fontSize = newValue;
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.fontSize = newValue;
+          onGroupChange.call(textStyleProperties);
         },
         calloutButtonSize: const Size(96, 30),
       ),
-      EnumPropertyValueNode<Material3TextSizeEnum?>(
+      EnumPNode<Material3TextSizeEnum?>(
         snode: super.snode,
         name: 'M3 textSize',
-        valueIndex: textStyleGroup?.fontSizeName?.index,
+        valueIndex: textStyleProperties.fontSizeName?.index,
         onIndexChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.fontSizeName = Material3TextSizeEnum.of(newValue);
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.fontSizeName = Material3TextSizeEnum.of(newValue);
+          onGroupChange.call(textStyleProperties);
         },
       ),
-      EnumPropertyValueNode<FontStyleEnum?>(
+      EnumPNode<FontStyleEnum?>(
         snode: super.snode,
         name: 'fontStyle',
-        valueIndex: textStyleGroup?.fontStyle?.index,
+        valueIndex: textStyleProperties.fontStyle?.index,
         onIndexChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.fontStyle = FontStyleEnum.of(newValue);
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.fontStyle = FontStyleEnum.of(newValue);
+          onGroupChange.call(textStyleProperties);
         },
       ),
-      EnumPropertyValueNode<FontWeightEnum?>(
+      EnumPNode<FontWeightEnum?>(
         snode: super.snode,
         name: 'fontWeight',
-        valueIndex: textStyleGroup?.fontWeight?.index,
+        valueIndex: textStyleProperties.fontWeight?.index,
         onIndexChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.fontWeight = FontWeightEnum.of(newValue);
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.fontWeight = FontWeightEnum.of(newValue);
+          onGroupChange.call(textStyleProperties);
         },
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'lineHeight',
-        decimalValue: textStyleGroup?.lineHeight,
+        decimalValue: textStyleProperties.lineHeight,
         onDoubleChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.lineHeight = newValue;
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.lineHeight = newValue;
+          onGroupChange.call(textStyleProperties);
         },
         calloutButtonSize: const Size(120, 30),
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'letterSpacing',
-        decimalValue: textStyleGroup?.letterSpacing,
+        decimalValue: textStyleProperties.letterSpacing,
         onDoubleChange: (newValue) {
-          textStyleGroup ??= TextStyleGroup();
-          textStyleGroup!.letterSpacing = newValue;
-          onGroupChange.call(textStyleGroup!);
+          textStyleProperties.letterSpacing = newValue;
+          onGroupChange.call(textStyleProperties);
         },
         calloutButtonSize: const Size(140, 30),
       ),
+      TextStyleSavePNode(
+        snode: super.snode,
+        name: 'save TextStyle',
+      ),
     ];
   }
-
-// List<PTreeNode> get children => [
-//       FontFamilyPropertyValueNode(
-//         name: 'fontFamily',
-//         fontFamily: textStyleGroup?.fontFamily,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.fontFamily = newValue;
-//           onChange.call(textStyleGroup!);
-//         },
-//       ),
-//       DecimalPropertyValueNode(
-//         name: 'fontSize',
-//         decimalValue: textStyleGroup?.fontSize,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.fontSize = newValue;
-//         },
-//       ),
-//       EnumPropertyValueNode<Material3TextSizeEnum?>(
-//         name: 'M3 textSize',
-//         valueIndex: textStyleGroup?.fontSizeName?.index,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.fontSizeName = Material3TextSizeEnum.of(newValue);
-//         },
-//       ),
-//       EnumPropertyValueNode<FontStyleEnum?>(
-//         name: 'fontStyle',
-//         valueIndex: textStyleGroup?.fontStyle?.index,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.fontStyle = FontStyleEnum.of(newValue);
-//         },
-//       ),
-//       EnumPropertyValueNode<FontWeightEnum?>(
-//         name: 'fontStyle',
-//         valueIndex: textStyleGroup?.fontWeight?.index,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.fontWeight = FontWeightEnum.of(newValue);
-//         },
-//       ),
-//       DecimalPropertyValueNode(
-//         name: 'lineHeight',
-//         decimalValue: textStyleGroup?.lineHeight,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.lineHeight = newValue;
-//         },
-//       ),
-//       DecimalPropertyValueNode(
-//         name: 'letterSpacing',
-//         decimalValue: textStyleGroup?.letterSpacing,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.letterSpacing = newValue;
-//         },
-//       ),
-//       ColorPropertyValueNode(
-//         name: 'color',
-//         colorValue: textStyleGroup?.colorValue,
-//         onChange: (newValue) {
-//           textStyleGroup ??= TextStyleGroup();
-//           textStyleGroup!.colorValue = newValue;
-//         },
-//       ),
-//     ];
 }
 
-class ButtonStylePropertyGroup extends PropertyGroup {
-  ButtonStyleGroup? buttonStyleGroup;
-  final ValueChanged<ButtonStyleGroup> onGroupChange;
+class TextStylePNode /*Group*/ extends TextStyleWithoutColorPNode /*Group*/ {
+  TextStylePNode /*Group*/ ({
+    required super.name,
+    required super.textStyleProperties,
+    required super.onGroupChange,
+    required super.snode,
+  }) {
+    super.children?.insert(
+        1, // after font family
+        ColorPNode(
+          snode: super.snode,
+          name: 'color',
+          colorValue: textStyleProperties.colorValue,
+          onColorIntChange: (newValue) {
+            textStyleProperties.colorValue = newValue;
+            onGroupChange.call(textStyleProperties);
+          },
+        ));
+  }
+}
 
-  ButtonStylePropertyGroup({
+class TextStyleSearchPNode extends PNode {
+  TextStyleSearchPNode /*Group*/ ({
+    required super.name,
+    required super.snode,
+  });
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      width: 170,
+      height: 60,
+      padding: EdgeInsets.only(top: 10),
+      child: StyleNameSearchAnchor(
+        searchStringTEC: TextEditingController(
+          text: fco.findTextStyleName(snode.textStyleProperties()!),
+        ),
+        suggestions: fco.namedTextStyles.keys.toList(),
+        suggestionWidgetBuilderF: (context, suggestion) => Text(
+          suggestion,
+          softWrap: false,
+          style: fco.namedTextStyles[suggestion]?.toTextStyle(context),
+          overflow: TextOverflow.clip,
+        ),
+        onSelectionF: (selectedSuggestion) {
+          // _updateProperty(selectedSuggestion);
+          snode.refreshWithUpdate(() {
+            var tsProps = fco.namedTextStyles[selectedSuggestion];
+            snode.setTextStyleProperties(
+                tsProps?.clone() ?? TextStyleProperties());
+            snode.refreshPTreeC(context);
+          });
+        },
+        debounceTimer: DebounceTimer(delayMs: 500),
+        tooltipMsg: 'find a saved TextStyle',
+      ),
+    );
+  }
+}
+
+class TextStyleSavePNode extends PNode {
+  TextStyleSavePNode /*Group*/ ({
+    required super.name,
+    required super.snode,
+  });
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) {
+    TextEditingController teC = TextEditingController();
+    return Container(
+      color: Colors.white,
+      width: 170,
+      height: 60,
+      padding: EdgeInsets.only(top: 10),
+      child: StyleNameEditor(
+        teC: teC,
+        onChangeF: () {},
+        onEditingCompleteF: () {
+          // StyleNameSearchAnchor.of(context)
+          //     ?.dismissSuggestionsOverlay();
+          fco.dismissTopFeature();
+        },
+        label: 'Save as',
+        tooltip: 'save text style as...',
+      ),
+    );
+  }
+}
+
+class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
+  ButtonStyleProperties buttonStyleGroup;
+  final ValueChanged<ButtonStyleProperties> onGroupChange;
+
+  ButtonStylePNode /*Group*/ ({
     super.name = 'buttonStyle',
     required this.buttonStyleGroup,
     required this.onGroupChange,
@@ -284,157 +298,169 @@ class ButtonStylePropertyGroup extends PropertyGroup {
     super.children = const [],
   }) {
     super.children = [
-      StringPropertyValueNode(
+      ButtonStyleSearchPNode(
         snode: super.snode,
-        name: 'namedButtonStyle',
-        nameOnSeparateLine: true,
-        expands: true,
-        stringValue: buttonStyleGroup?.namedButtonStyle,
-        options: fco.namedButtonStyles.keys.toList(),
-        onStringChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.namedButtonStyle = newValue;
-          onGroupChange.call(buttonStyleGroup!);
-        },
-        calloutButtonSize: const Size(280, 20),
-        calloutWidth: 280,
+        name: 'ButtonStyle search',
       ),
-      PropertyGroup(
+      PNode /*Group*/ (
         snode: super.snode,
         name: 'colour',
         children: [
-          ColorPropertyValueNode(
+          ColorPNode(
             snode: super.snode,
             name: 'f/g color',
-            colorValue: buttonStyleGroup?.fgColorValue,
+            colorValue: buttonStyleGroup.fgColorValue,
             onColorIntChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.fgColorValue = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.fgColorValue = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
           ),
-          ColorPropertyValueNode(
+          ColorPNode(
             snode: super.snode,
             name: 'b/g color',
-            colorValue: buttonStyleGroup?.bgColorValue,
+            colorValue: buttonStyleGroup.bgColorValue,
             onColorIntChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.bgColorValue = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.bgColorValue = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
           ),
         ],
       ),
+      // buttonStyle's textStyle: text color comes from button foregroundColor
+      TextStyleWithoutColorPNode(
+        name: 'textStyle',
+        textStyleProperties: buttonStyleGroup.tsPropGroup,
+        onGroupChange: (newTSGroup) {
+          buttonStyleGroup.tsPropGroup = newTSGroup.clone();
+          // onGroupChange.call(buttonStyleGroup);
+        },
+        snode: super.snode,
+      ),
       // TextStylePropertyGroup(
       //   snode: super.snode,
       //   name: 'textStyle',
-      //   textStyleGroup: buttonStyleGroup?.textStyle,
+      //   textStyleProperties: buttonStyleGroup?.textStyle,
       //   onGroupChange: (newValue) {
       //     buttonStyleGroup ??= ButtonStyleGroup();
       //     buttonStyleGroup!.textStyle = newValue;
       //     onGroupChange.call(buttonStyleGroup!);
       //   },
       // ),
-      EnumPropertyValueNode<OutlinedBorderEnum?>(
+      EnumPNode<OutlinedBorderEnum?>(
         snode: super.snode,
         name: 'shape',
-        valueIndex: buttonStyleGroup?.shape?.index,
+        valueIndex: buttonStyleGroup.shape?.index,
         onIndexChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.shape = OutlinedBorderEnum.of(newValue);
-          onGroupChange.call(buttonStyleGroup!);
+          buttonStyleGroup.shape = OutlinedBorderEnum.of(newValue);
+          onGroupChange.call(buttonStyleGroup);
         },
       ),
-      BorderSidePropertyGroup(
+      BorderSidePNode /*Group*/ (
         snode: super.snode,
         name: 'side',
-        borderSideGroup: buttonStyleGroup?.side,
+        borderSideGroup: buttonStyleGroup.side,
         onGroupChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.side = newValue;
-          onGroupChange.call(buttonStyleGroup!);
+          buttonStyleGroup.side = newValue;
+          onGroupChange.call(buttonStyleGroup);
         },
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'elevation',
-        decimalValue: buttonStyleGroup?.elevation,
+        decimalValue: buttonStyleGroup.elevation,
         onDoubleChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.elevation = newValue;
-          onGroupChange.call(buttonStyleGroup!);
+          buttonStyleGroup.elevation = newValue;
+          onGroupChange.call(buttonStyleGroup);
         },
         calloutButtonSize: const Size(80, 20),
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'padding',
-        decimalValue: buttonStyleGroup?.padding,
+        decimalValue: buttonStyleGroup.padding,
         onDoubleChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.padding = newValue;
-          onGroupChange.call(buttonStyleGroup!);
+          buttonStyleGroup.padding = newValue;
+          onGroupChange.call(buttonStyleGroup);
         },
         calloutButtonSize: const Size(80, 20),
       ),
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'radius',
-        decimalValue: buttonStyleGroup?.radius,
+        decimalValue: buttonStyleGroup.radius,
         onDoubleChange: (newValue) {
-          buttonStyleGroup ??= ButtonStyleGroup();
-          buttonStyleGroup!.radius = newValue;
-          onGroupChange.call(buttonStyleGroup!);
+          buttonStyleGroup.radius = newValue;
+          onGroupChange.call(buttonStyleGroup);
         },
         calloutButtonSize: const Size(80, 20),
       ),
-      PropertyGroup(
+      PNode /*Group*/ (
         snode: super.snode,
         name: 'size',
         children: [
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: super.snode,
             name: 'minWidth',
-            decimalValue: buttonStyleGroup?.minW,
+            decimalValue: buttonStyleGroup.minW,
             onDoubleChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.minW = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.minW = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
-            calloutButtonSize: const Size(80, 20),
+            calloutButtonSize: const Size(120, 20),
           ),
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: super.snode,
             name: 'minHeight',
-            decimalValue: buttonStyleGroup?.minH,
+            decimalValue: buttonStyleGroup.minH,
             onDoubleChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.minH = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.minH = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
-            calloutButtonSize: const Size(80, 20),
+            calloutButtonSize: const Size(120, 20),
           ),
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: super.snode,
             name: 'maxWidth',
-            decimalValue: buttonStyleGroup?.maxW,
+            decimalValue: buttonStyleGroup.maxW,
             onDoubleChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.maxW = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.maxW = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
-            calloutButtonSize: const Size(80, 20),
+            calloutButtonSize: const Size(120, 20),
           ),
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: super.snode,
             name: 'maxHeight',
-            decimalValue: buttonStyleGroup?.maxH,
+            decimalValue: buttonStyleGroup.maxH,
             onDoubleChange: (newValue) {
-              buttonStyleGroup ??= ButtonStyleGroup();
-              buttonStyleGroup!.maxH = newValue;
-              onGroupChange.call(buttonStyleGroup!);
+              buttonStyleGroup.maxH = newValue;
+              onGroupChange.call(buttonStyleGroup);
             },
-            calloutButtonSize: const Size(80, 20),
+            calloutButtonSize: const Size(120, 20),
+          ),
+          DecimalPNode(
+            snode: super.snode,
+            name: 'fixedWidth',
+            decimalValue: buttonStyleGroup.fixedW,
+            onDoubleChange: (newValue) {
+              buttonStyleGroup.fixedW = newValue;
+              onGroupChange.call(buttonStyleGroup);
+            },
+            calloutButtonSize: const Size(130, 20),
+          ),
+          DecimalPNode(
+            snode: super.snode,
+            name: 'fixedHeight',
+            decimalValue: buttonStyleGroup.fixedH,
+            onDoubleChange: (newValue) {
+              buttonStyleGroup.fixedH = newValue;
+              onGroupChange.call(buttonStyleGroup);
+            },
+            calloutButtonSize: const Size(130, 20),
+          ),
+          ButtonStyleSavePNode(
+            snode: super.snode,
+            name: 'save ButtonStyle',
           ),
         ],
       ),
@@ -442,11 +468,118 @@ class ButtonStylePropertyGroup extends PropertyGroup {
   }
 }
 
-class OutlinedBorderPropertyGroup extends PropertyGroup {
-  OutlinedBorderGroup? outlinedGroup;
-  final ValueChanged<OutlinedBorderGroup> onGroupChange;
+class ButtonStyleSearchPNode extends PNode {
+  ButtonStyleSearchPNode /*Group*/ ({
+    required super.name,
+    required super.snode,
+  });
 
-  OutlinedBorderPropertyGroup({
+  @override
+  Widget toPropertyNodeContents(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      width: 170,
+      height: 60,
+      padding: EdgeInsets.only(top: 10),
+      child: StyleNameSearchAnchor(
+        searchStringTEC: TextEditingController(
+            text: fco.findButtonStyleName(snode.buttonStyleProperties()!)),
+        suggestions: fco.namedButtonStyles.keys.toList(),
+        suggestionWidgetBuilderF: (context, suggestion) {
+          late ButtonNode buttonNode;
+          ButtonStyleProperties? bsPropsGroup =
+              fco.namedButtonStyles[suggestion];
+          TextNode buttonTextNode =
+              TextNode(text: suggestion, tsPropGroup: TextStyleProperties());
+          if (bsPropsGroup != null && snode is ElevatedButtonNode) {
+            buttonNode = ElevatedButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          } else if (bsPropsGroup != null && snode is OutlinedButtonNode) {
+            buttonNode = OutlinedButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          } else if (bsPropsGroup != null && snode is TextButtonNode) {
+            buttonNode = TextButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          } else if (bsPropsGroup != null && snode is FilledButtonNode) {
+            buttonNode = FilledButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          } else if (bsPropsGroup != null && snode is IconButtonNode) {
+            buttonNode = IconButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          } else if (bsPropsGroup != null && snode is MenuItemButtonNode) {
+            buttonNode = MenuItemButtonNode(
+                bsPropsGroup: bsPropsGroup, child: buttonTextNode);
+          }
+          return buttonNode.toWidget(context, null);
+        },
+        onSelectionF: (selectedSuggestion) {
+          // _updateProperty(selectedSuggestion);
+          snode.refreshWithUpdate(() {
+            var bsProps = fco.namedButtonStyles[selectedSuggestion];
+            snode.setButtonStyleProperties(bsProps?.clone() ??
+                ButtonStyleProperties(tsPropGroup: TextStyleProperties()));
+            snode.refreshPTreeC(context);
+          });
+        },
+        debounceTimer: DebounceTimer(delayMs: 500),
+        tooltipMsg: 'find a saved ButtonStyle',
+      ),
+    );
+  }
+}
+
+class ButtonStyleSavePNode extends PNode {
+  ButtonStyleSavePNode /*Group*/ ({
+    required super.name,
+    required super.snode,
+  });
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) {
+    TextEditingController teC = TextEditingController();
+    return Container(
+      color: Colors.white,
+      width: 170,
+      height: 60,
+      padding: EdgeInsets.only(top: 10),
+      child: StyleNameEditor(
+        teC: teC,
+        onChangeF: () {},
+        onEditingCompleteF: () async {
+          String bsName = teC.text;
+          fco.namedButtonStyles[bsName] =
+              snode.buttonStyleProperties()!.clone();
+          fco.appInfo.buttonStyles = fco.namedButtonStyles;
+          await fco.modelRepo.saveAppInfo();
+          fco.showToast(
+            calloutConfig: CalloutConfig(
+              cId: "saved-button-style",
+              gravity: Alignment.topCenter,
+              fillColor: Colors.yellow,
+              initialCalloutW: fco.scrW * .8,
+              initialCalloutH: 40,
+              scrollControllerName: null,
+            ),
+            calloutContent: Padding(
+              padding: const EdgeInsets.all(10),
+              child: fco.coloredText('Saved ButtonStyle as "$bsName".',
+                  color: Colors.blueAccent),
+            ),
+            removeAfterMs: 2000,
+          );
+        },
+        label: 'Save as',
+        tooltip: 'save button style as...',
+      ),
+    );
+  }
+}
+
+class OutlinedBorderPNode /*Group*/ extends PNode /*Group*/ {
+  OutlinedBorderProperties? outlinedGroup;
+  final ValueChanged<OutlinedBorderProperties> onGroupChange;
+
+  OutlinedBorderPNode /*Group*/ ({
     required super.name,
     required this.outlinedGroup,
     required this.onGroupChange,
@@ -454,22 +587,22 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
     super.children = const [],
   }) {
     super.children = [
-      EnumPropertyValueNode<OutlinedBorderEnum?>(
+      EnumPNode<OutlinedBorderEnum?>(
         snode: super.snode,
         name: outlinedGroup?.outlinedBorderType?.name ?? 'shape...',
         valueIndex: outlinedGroup?.outlinedBorderType?.index,
         onIndexChange: (newValue) {
-          outlinedGroup ??= OutlinedBorderGroup();
+          outlinedGroup ??= OutlinedBorderProperties();
           outlinedGroup!.outlinedBorderType = OutlinedBorderEnum.of(newValue);
           onGroupChange.call(outlinedGroup!);
         },
       ),
-      BorderSidePropertyGroup(
+      BorderSidePNode /*Group*/ (
         snode: super.snode,
         name: 'side',
         borderSideGroup: outlinedGroup?.side,
         onGroupChange: (newValue) {
-          outlinedGroup ??= OutlinedBorderGroup();
+          outlinedGroup ??= OutlinedBorderProperties();
           outlinedGroup!.side = newValue;
           onGroupChange.call(outlinedGroup!);
         },
@@ -490,7 +623,7 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //     super.children = const [],
 //   }) {
 //     super.children = [
-//       StringPropertyValueNode(
+//       StringPNode(
 //         snode: super.snode,
 //         name: 'name',
 //         stringValue: name,
@@ -499,7 +632,7 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //         calloutButtonSize: const Size(280, 20),
 //         calloutSize: const Size(280, 48),
 //       ),
-//       SnippetNamePropertyValueNode(
+//       SnippetNamePNode(
 //         stringValue: ccGroup?.contentSnippetName,
 //         onStringChange: (newValue) {
 //           ccGroup ??= CalloutConfigGroup();
@@ -511,7 +644,7 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //         snode: super.snode,
 //         name: name,
 //       ),
-//       EnumPropertyValueNode<AlignmentEnum?>(
+//       EnumPNode<AlignmentEnum?>(
 //         snode: super.snode,
 //         name: 'target alignment',
 //         valueIndex: ccGroup?.targetAlignment?.index,
@@ -521,7 +654,7 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //           onGroupChange.call(ccGroup!);
 //         },
 //       ),
-//       OffsetPropertyValueNode(
+//       OffsetPNode(
 //         topValue: ccGroup?.calloutPos?.dy,
 //         leftValue: ccGroup?.calloutPos?.dx,
 //         onOffsetChange: (newValue) {
@@ -536,11 +669,11 @@ class OutlinedBorderPropertyGroup extends PropertyGroup {
 //   }
 // }
 
-class BorderSidePropertyGroup extends PropertyGroup {
-  BorderSideGroup? borderSideGroup;
-  final ValueChanged<BorderSideGroup> onGroupChange;
+class BorderSidePNode /*Group*/ extends PNode /*Group*/ {
+  BorderSideProperties? borderSideGroup;
+  final ValueChanged<BorderSideProperties> onGroupChange;
 
-  BorderSidePropertyGroup({
+  BorderSidePNode /*Group*/ ({
     required super.name,
     required this.borderSideGroup,
     required this.onGroupChange,
@@ -548,23 +681,23 @@ class BorderSidePropertyGroup extends PropertyGroup {
     super.children = const [],
   }) {
     super.children = [
-      DecimalPropertyValueNode(
+      DecimalPNode(
         snode: super.snode,
         name: 'width',
         decimalValue: borderSideGroup?.width,
         onDoubleChange: (newValue) {
-          borderSideGroup ??= BorderSideGroup();
+          borderSideGroup ??= BorderSideProperties();
           borderSideGroup!.width = newValue;
           onGroupChange.call(borderSideGroup!);
         },
         calloutButtonSize: const Size(72, 30),
       ),
-      ColorPropertyValueNode(
+      ColorPNode(
         snode: super.snode,
         name: 'color',
         colorValue: borderSideGroup?.colorValue,
         onColorIntChange: (newValue) {
-          borderSideGroup ??= BorderSideGroup();
+          borderSideGroup ??= BorderSideProperties();
           borderSideGroup!.colorValue = newValue;
           onGroupChange.call(borderSideGroup!);
         },
@@ -573,11 +706,11 @@ class BorderSidePropertyGroup extends PropertyGroup {
   }
 }
 
-class BoolPropertyValueNode extends PTreeNode {
+class BoolPNode extends PNode {
   bool? boolValue;
   final ValueChanged<bool?> onBoolChange;
 
-  BoolPropertyValueNode({
+  BoolPNode({
     required this.boolValue,
     required this.onBoolChange,
     required super.name,
@@ -599,7 +732,7 @@ class BoolPropertyValueNode extends PTreeNode {
       );
 }
 
-// class SnippetRefPropertyValueNode extends PTreeNode {
+// class SnippetRefPNode extends PTreeNode {
 //   String? snippetName;
 //   final ValueChanged<String> onNameChange;
 //   final bool expands; // false means just a single line
@@ -607,7 +740,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //   final Size calloutButtonSize;
 //   final Size calloutSize;
 //
-//   SnippetRefPropertyValueNode({
+//   SnippetRefPNode({
 //     required this.snippetName,
 //     required this.onNameChange,
 //     this.expands = true,
@@ -631,7 +764,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             ? '$name: \n$snippetName'
 //             : '$name: $snippetName'
 //         : '$name...';
-//     // fco.logi('stringValue: $stringValue, displayedname: $displayedname');
+//     // fco.logger.i('stringValue: $stringValue, displayedname: $displayedname');
 //     // TODO use pushSnippet...
 //     return NodePropertyCalloutButton(
 //       cId: ,
@@ -663,7 +796,7 @@ class BoolPropertyValueNode extends PTreeNode {
 // // );
 // }
 
-// class StringPropertyValueNode extends PTreeNode {
+// class StringPNode extends PTreeNode {
 //   String? stringValue;
 //   final ValueChanged<String> onStringChange;
 //   final bool expands; // false means just a single line
@@ -674,7 +807,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //   final Size calloutSize;
 //   final int numLines;
 //
-//   StringPropertyValueNode({
+//   StringPNode({
 //     required this.stringValue,
 //     required this.onStringChange,
 //     this.expands = true,
@@ -700,7 +833,7 @@ class BoolPropertyValueNode extends PTreeNode {
 //             ? '$name: \n$stringValue'
 //             : '$name: $stringValue'
 //         : '$name...';
-//     // fco.logi('stringValue: $stringValue, displayedname: $displayedname');
+//     // fco.logger.i('stringValue: $stringValue, displayedname: $displayedname');
 //     return NodePropertyCalloutButton(
 //       labelWidget: Text(
 //         displayedName,
@@ -760,7 +893,22 @@ class BoolPropertyValueNode extends PTreeNode {
 //   },
 // );
 
-class StringPropertyValueNode extends PTreeNode {
+class FYIPNode extends PNode {
+  final String fyiMsg;
+
+  FYIPNode({
+    required this.fyiMsg,
+    required super.snode,
+    required super.name,
+  });
+
+  @override
+  Widget toPropertyNodeContents(BuildContext context) {
+    return fco.coloredText(fyiMsg, color: Colors.yellow);
+  }
+}
+
+class StringPNode extends PNode {
   String? stringValue;
   final ValueChanged<String?> onStringChange;
   final List<String>? options;
@@ -772,7 +920,7 @@ class StringPropertyValueNode extends PTreeNode {
   final double calloutWidth;
   final int numLines;
 
-  StringPropertyValueNode({
+  StringPNode({
     required this.stringValue,
     required this.onStringChange,
     this.options,
@@ -794,8 +942,8 @@ class StringPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
-    // fco.logi('toPropertyNodeContents');
+    ScrollControllerName? scName = EditablePage.scName(context);
+    // fco.logger.i('toPropertyNodeContents');
     return PropertyButton<String>(
       // originalText: (stringValue??'').isNotEmpty
       //     ? nameOnSeparateLine
@@ -824,13 +972,13 @@ class StringPropertyValueNode extends PTreeNode {
   }
 }
 
-class UMLStringPropertyValueNode extends PTreeNode {
+class UMLStringPNode extends PNode {
   UMLRecord umlRecord;
   final ValueChanged<UMLRecord> onUmlChange;
   final ValueChanged<Size> onSized;
   final Size calloutButtonSize;
 
-  UMLStringPropertyValueNode({
+  UMLStringPNode({
     required this.umlRecord,
     required this.onUmlChange,
     required this.onSized,
@@ -852,7 +1000,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButtonUML(
       originalUMLRecord: umlRecord,
       label: super.name,
@@ -867,7 +1015,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
   }
 }
 
-// class SnippetNamePropertyValueNode extends PTreeNode {
+// class SnippetNamePNode extends PTreeNode {
 //   String? stringValue;
 //   final ValueChanged<String> onStringChange;
 //   final bool expands;
@@ -878,7 +1026,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
 //   final double calloutWidth;
 //   final int numLines;
 //
-//   SnippetNamePropertyValueNode({
+//   SnippetNamePNode({
 //     required this.stringValue,
 //     required this.onStringChange,
 //     this.expands = false,
@@ -899,7 +1047,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
 //
 //   @override
 //   Widget toPropertyNodeContents(BuildContext context) {
-//     fco.logi('toPropertyNodeContents');
+//     fco.logger.i('toPropertyNodeContents');
 //     return PropertyButton<String>(
 //         originalText: stringValue ?? '',
 //         options: FCO.snippetInfoCache.keys.toList()..sort(),
@@ -920,7 +1068,7 @@ class UMLStringPropertyValueNode extends PTreeNode {
 //   }
 // }
 
-class DecimalPropertyValueNode extends PTreeNode {
+class DecimalPNode extends PNode {
   double? decimalValue;
   final ValueChanged<double?> onDoubleChange;
   final bool viaButton;
@@ -930,7 +1078,7 @@ class DecimalPropertyValueNode extends PTreeNode {
 
   // NodePropertyButton_String? button;
 
-  DecimalPropertyValueNode({
+  DecimalPNode({
     required this.decimalValue,
     required this.onDoubleChange,
     this.viaButton = false,
@@ -947,7 +1095,7 @@ class DecimalPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButton<double>(
       originalText: decimalValue != null ? decimalValue.toString() : '',
       label: super.name,
@@ -978,7 +1126,7 @@ class DecimalPropertyValueNode extends PTreeNode {
   }
 }
 
-class SizePropertyValueNode extends PTreeNode {
+class SizePNode extends PNode {
   double? widthValue;
   double? heightValue;
   final ValueChanged<(double?, double?)> onSizeChange;
@@ -987,7 +1135,7 @@ class SizePropertyValueNode extends PTreeNode {
 
   // NodePropertyButton_String? button;
 
-  SizePropertyValueNode({
+  SizePNode({
     required this.widthValue,
     required this.heightValue,
     required this.onSizeChange,
@@ -1002,7 +1150,7 @@ class SizePropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return SizedBox(
       width: 200,
       child: Row(
@@ -1070,7 +1218,7 @@ class SizePropertyValueNode extends PTreeNode {
   }
 }
 
-class OffsetPropertyValueNode extends PTreeNode {
+class OffsetPNode extends PNode {
   double? topValue;
   double? leftValue;
   final ValueChanged<(double?, double?)> onOffsetChange;
@@ -1079,7 +1227,7 @@ class OffsetPropertyValueNode extends PTreeNode {
 
   // NodePropertyButton_String? button;
 
-  OffsetPropertyValueNode({
+  OffsetPNode({
     required this.topValue,
     required this.leftValue,
     required this.onOffsetChange,
@@ -1094,7 +1242,7 @@ class OffsetPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return SizedBox(
       width: 200,
       child: Row(
@@ -1162,7 +1310,7 @@ class OffsetPropertyValueNode extends PTreeNode {
   }
 }
 
-class IntPropertyValueNode extends PTreeNode {
+class IntPNode extends PNode {
   int? intValue;
   final ValueChanged<int?> onIntChange;
   final bool viaButton;
@@ -1170,7 +1318,7 @@ class IntPropertyValueNode extends PTreeNode {
 
   // final Size calloutSize;
 
-  IntPropertyValueNode({
+  IntPNode({
     required this.intValue,
     required this.onIntChange,
     required super.snode,
@@ -1187,7 +1335,7 @@ class IntPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButton<int>(
       originalText: intValue != null ? intValue.toString() : '',
       label: super.name,
@@ -1203,11 +1351,11 @@ class IntPropertyValueNode extends PTreeNode {
   }
 }
 
-class DatePropertyValueNode extends PTreeNode {
+class DatePNode extends PNode {
   int? dtValue;
   final ValueChanged<int?> onDateChange;
 
-  DatePropertyValueNode({
+  DatePNode({
     required this.dtValue,
     required this.onDateChange,
     required super.snode,
@@ -1229,12 +1377,12 @@ class DatePropertyValueNode extends PTreeNode {
       );
 }
 
-class DateRangePropertyValueNode extends PTreeNode {
+class DateRangePNode extends PNode {
   int? fromValue;
   int? untilValue;
   final ValueChanged<DateRange?> onRangeChange;
 
-  DateRangePropertyValueNode({
+  DateRangePNode({
     required this.fromValue,
     required this.untilValue,
     required this.onRangeChange,
@@ -1249,7 +1397,7 @@ class DateRangePropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return DateRangeButton(
       from: fromValue,
       until: untilValue,
@@ -1263,18 +1411,18 @@ class DateRangePropertyValueNode extends PTreeNode {
   }
 }
 
-class ColorPropertyValueNode extends PTreeNode {
+class ColorPNode extends PNode {
   int? colorValue;
   final ValueChanged<int?> onColorIntChange;
   final Size calloutButtonSize;
 
-  ColorPropertyValueNode({
+  ColorPNode({
     required this.colorValue,
     required this.onColorIntChange,
     required super.snode,
     required super.name,
     super.tooltip,
-    this.calloutButtonSize = const Size(120, 20),
+    this.calloutButtonSize = const Size(120, 24),
   });
 
   @override
@@ -1284,7 +1432,7 @@ class ColorPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButtonColor(
       cId: name,
       label: name,
@@ -1301,11 +1449,11 @@ class ColorPropertyValueNode extends PTreeNode {
   }
 }
 
-class GradientPropertyValueNode extends PTreeNode {
+class GradientPNode extends PNode {
   UpTo6ColorValues? colorValues;
   final void Function(UpTo6ColorValues?) onColorChange;
 
-  GradientPropertyValueNode({
+  GradientPNode({
     required this.colorValues,
     required this.onColorChange,
     required super.snode,
@@ -1319,7 +1467,7 @@ class GradientPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return Tooltip(
       message: name,
       child: SizedBox(
@@ -1496,12 +1644,12 @@ class GradientPropertyValueNode extends PTreeNode {
   }
 }
 
-class FSImagePathPropertyValueNode extends PTreeNode {
+class FSImagePathPNode extends PNode {
   String? stringValue;
   final ValueChanged<String?> onPathChange;
   final Size calloutButtonSize;
 
-  FSImagePathPropertyValueNode({
+  FSImagePathPNode({
     required this.stringValue,
     required this.onPathChange,
     required super.snode,
@@ -1517,7 +1665,7 @@ class FSImagePathPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButtonFSBrowser(
       label: name,
       tooltip: tooltip,
@@ -1533,11 +1681,11 @@ class FSImagePathPropertyValueNode extends PTreeNode {
   }
 }
 
-class FontFamilyPropertyValueNode extends PTreeNode {
+class FontFamilyPNode extends PNode {
   String? fontFamily;
   final ValueChanged<String?> onFontFamilyChange;
 
-  FontFamilyPropertyValueNode({
+  FontFamilyPNode({
     required this.fontFamily,
     required this.onFontFamilyChange,
     required super.snode,
@@ -1551,7 +1699,7 @@ class FontFamilyPropertyValueNode extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     return PropertyButtonFontFamily(
       label: "fontFamily",
       originalFontFamily: fontFamily,
@@ -1566,11 +1714,11 @@ class FontFamilyPropertyValueNode extends PTreeNode {
   }
 }
 
-class EdgeInsetsPropertyValueNode extends PTreeNode {
+class EdgeInsetsPNode extends PNode {
   EdgeInsetsValue? eiValue;
   final ValueChanged<EdgeInsetsValue> onEIChangedF;
 
-  EdgeInsetsPropertyValueNode({
+  EdgeInsetsPNode({
     required super.name,
     required this.eiValue,
     required this.onEIChangedF,
@@ -1594,11 +1742,11 @@ class EdgeInsetsPropertyValueNode extends PTreeNode {
   }
 }
 
-class EnumPropertyValueNode<T> extends PTreeNode {
+class EnumPNode<T> extends PNode {
   int? valueIndex;
   final ValueChanged<int?> onIndexChange;
 
-  EnumPropertyValueNode({
+  EnumPNode({
     required this.valueIndex,
     required this.onIndexChange,
     required super.name,
@@ -1612,7 +1760,7 @@ class EnumPropertyValueNode<T> extends PTreeNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     // just show name for null property value
     // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
@@ -1711,7 +1859,7 @@ class EnumPropertyValueNode<T> extends PTreeNode {
     }
     // CrossAxisAlignment -------------
     if (_sameType<T, CrossAxisAlignmentEnum?>()) {
-      ScrollControllerName? scName = EditablePage.name(context);
+      ScrollControllerName? scName = EditablePage.scName(context);
       return CrossAxisAlignmentEnum.propertyNodeContents(
         snode: snode,
         label: name,

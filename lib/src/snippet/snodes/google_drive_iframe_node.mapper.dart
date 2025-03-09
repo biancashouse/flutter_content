@@ -49,12 +49,6 @@ class GoogleDriveIFrameNodeMapper
       _f$hidePropertiesWhileDragging = Field(
           'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          GoogleDriveIFrameNode v) =>
-      v.nodeWidgetGK;
-  static const Field<GoogleDriveIFrameNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
   static Widget? _$savedWidget(GoogleDriveIFrameNode v) => v.savedWidget;
   static const Field<GoogleDriveIFrameNode, Widget> _f$savedWidget =
       Field('savedWidget', _$savedWidget, mode: FieldMode.member);
@@ -69,7 +63,6 @@ class GoogleDriveIFrameNodeMapper
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
     #savedWidget: _f$savedWidget,
   };
 

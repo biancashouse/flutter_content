@@ -5,88 +5,122 @@ import 'dart:math';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tabbar_node.mapper.dart';
 
 @MappableClass()
 class TabBarNode extends MC with TabBarNodeMappable {
+  String name;
   int? bgColorValue;
-  TextStyleGroup? labelStyleGroup;
+  TextStyleProperties labelTSPropGroup;
   int? selectedLabelColorValue;
   int? unselectedLabelColorValue;
   int? indicatorColorValue;
-  EdgeInsetsValue? padding;
   double? indicatorWeight;
   int? selection;
 
   TabBarNode({
+    required this.name,
     this.bgColorValue,
-    this.labelStyleGroup,
+    required this.labelTSPropGroup,
     this.selectedLabelColorValue,
     this.unselectedLabelColorValue,
     this.indicatorColorValue,
-    this.padding,
     this.indicatorWeight = 2.0,
     this.selection,
     required super.children,
   });
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  // used when a TabBar and TabBarView are used in a snippet's Scaffold
+  TabController? tabC;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final List<int> prevTabQ = [];
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final prevTabQSize = ValueNotifier<int>(0);
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  // allow the listener to know when to skip adding index back onto Q after a back btn
+  bool? backBtnPressed;
+
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        ColorPropertyValueNode(
+  TextStyleProperties? textStyleProperties() => labelTSPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) =>
+      labelTSPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
-          name: 'b/g Color',
-          colorValue: bgColorValue,
-          onColorIntChange: (newValue) =>
-              refreshWithUpdate(() => bgColorValue = newValue),
-          calloutButtonSize: const Size(160, 20),
+          name: 'name',
+          stringValue: name,
+          skipHelperText: true,
+          onStringChange: (newValue) =>
+              refreshWithUpdate(() => name = newValue!),
+          calloutButtonSize: const Size(280, 70),
+          calloutWidth: 400,
+          numLines: 1,
         ),
-        TextStylePropertyGroup(
+        PNode /*Group*/ (
           snode: this,
-          name: 'labelStyle',
-          textStyleGroup: labelStyleGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => labelStyleGroup = newValue),
-        ),
-        ColorPropertyValueNode(
-          snode: this,
-          name: 'selected label Color',
-          colorValue: selectedLabelColorValue,
-          onColorIntChange: (newValue) =>
-              refreshWithUpdate(() => selectedLabelColorValue = newValue),
-          calloutButtonSize: const Size(160, 20),
-        ),
-        ColorPropertyValueNode(
-          snode: this,
-          name: 'unselected label Color',
-          colorValue: unselectedLabelColorValue,
-          onColorIntChange: (newValue) =>
-              refreshWithUpdate(() => unselectedLabelColorValue = newValue),
-          calloutButtonSize: const Size(180, 20),
-        ),
-        ColorPropertyValueNode(
-          snode: this,
-          name: 'indicatorColor',
-          colorValue: indicatorColorValue,
-          onColorIntChange: (newValue) =>
-              refreshWithUpdate(() => indicatorColorValue = newValue),
-          calloutButtonSize: const Size(120, 20),
-        ),
-        PropertyGroup(
-          snode: this,
-          name: 'padding',
+          name: 'colours',
           children: [
-            EdgeInsetsPropertyValueNode(
+            ColorPNode(
               snode: this,
-              name: 'padding',
-              eiValue: padding,
-              onEIChangedF: (newValue) =>
-                  refreshWithUpdate(() => padding = newValue),
+              name: 'b/g Color',
+              colorValue: bgColorValue,
+              onColorIntChange: (newValue) =>
+                  refreshWithUpdate(() => bgColorValue = newValue),
+              calloutButtonSize: const Size(160, 20),
+            ),
+            ColorPNode(
+              snode: this,
+              name: 'selected label Color',
+              colorValue: selectedLabelColorValue,
+              onColorIntChange: (newValue) =>
+                  refreshWithUpdate(() => selectedLabelColorValue = newValue),
+              calloutButtonSize: const Size(160, 20),
+            ),
+            ColorPNode(
+              snode: this,
+              name: 'unselected label Color',
+              colorValue: unselectedLabelColorValue,
+              onColorIntChange: (newValue) =>
+                  refreshWithUpdate(() => unselectedLabelColorValue = newValue),
+              calloutButtonSize: const Size(180, 20),
             ),
           ],
         ),
-        DecimalPropertyValueNode(
+        // TextStyleNamePNode(
+        //   textStyleName: labelTextStyleName,
+        //   snode: this,
+        //   name: 'namedLabelTextStyle',
+        //   onChange: (newValue) {
+        //     refreshWithUpdate(() => labelTextStyleName = newValue);
+        //   },
+        // ),
+        TextStyleWithoutColorPNode /*Group*/ (
+          snode: this,
+          name: 'labelStyle',
+          textStyleProperties: labelTSPropGroup,
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => labelTSPropGroup = newValue),
+        ),
+        // ColorPNode(
+        //   snode: this,
+        //   name: 'indicatorColor',
+        //   colorValue: indicatorColorValue,
+        //   onColorIntChange: (newValue) =>
+        //       refreshWithUpdate(() => indicatorColorValue = newValue),
+        //   calloutButtonSize: const Size(120, 20),
+        // ),
+        DecimalPNode(
           snode: this,
           name: 'indicatorWeight',
           decimalValue: indicatorWeight,
@@ -97,19 +131,55 @@ class TabBarNode extends MC with TabBarNodeMappable {
         ),
       ];
 
+  void _tabListenerF() {
+    if (!(tabC?.indexIsChanging ?? true)) {
+      if (!(backBtnPressed ?? false)) {
+        prevTabQ.add(selection ?? 0);
+        selection = tabC!.index;
+        prevTabQSize.value = prevTabQ.length;
+        fco.logger.i("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+      } else {
+        selection = tabC!.index;
+        backBtnPressed = false;
+      }
+    }
+  }
+
+  void _createTabController(SnippetPanelState? spState, int numTabs) {
+    if (!(spState?.mounted ?? false)) return;
+    tabC?.dispose();
+    tabC = TabController(vsync: spState!, length: numTabs);
+    tabC!.addListener(_tabListenerF);
+    spState.tabBars[name] = this;
+
+    // tabC!.addListener(() {
+    //   setState(() {
+    //     _tabQ.clear();
+    //     tabC?.animateTo(tabC?.index??0);
+    //   });
+    // });
+  }
+
+  void resetTabQandC() {
+    prevTabQ.clear();
+    selection = 0;
+    tabC?.index = 0;
+  }
+
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       // find transformable scaffold node then its corr state object
       // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
       // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
       SnippetPanelState? spState = SnippetPanel.of(context);
-      spState?.createTabController(children.length);
+      _createTabController(spState, children.length);
       List<Widget> tabs = [];
-      for (STreeNode node in children) {
+      for (SNode node in children) {
         tabs.add(Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
@@ -119,8 +189,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
         ));
       }
       final tabBar = TabBar(
-        key: spState?.tabBarGK = createNodeGK(),
-        controller: spState?.tabC,
+        key: createNodeWidgetGK(),
+        controller: tabC,
         tabs: tabs,
         labelColor: selectedLabelColorValue != null
             ? Color(selectedLabelColorValue!)
@@ -128,8 +198,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
         unselectedLabelColor: unselectedLabelColorValue != null
             ? Color(unselectedLabelColorValue!)
             : null,
-        labelPadding: const EdgeInsets.all(10),
-        labelStyle: labelStyleGroup?.toTextStyle(context),
+        labelPadding: EdgeInsets.all(10),
+        labelStyle: labelTSPropGroup.toTextStyle(context),
         indicatorColor:
             indicatorColorValue != null ? Color(indicatorColorValue!) : null,
         indicatorWeight: indicatorWeight = 2.0,
@@ -137,9 +207,8 @@ class TabBarNode extends MC with TabBarNodeMappable {
           border: Border.all(color: Colors.white, width: 2),
           borderRadius: BorderRadius.circular(10.0),
         ),
-        padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(10),
       );
-      spState?.tabC?.index = min(selection ?? 0, children.length - 1);
+      tabC?.index = min(selection ?? 0, children.length - 1);
       try {
         return PreferredSize(
           preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
@@ -149,17 +218,22 @@ class TabBarNode extends MC with TabBarNodeMappable {
           ),
         );
       } catch (e) {
-        fco.logi('TabBarNode.toWidget() failed! ${e.toString()}');
-        return Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString());
+        fco.logger.i('TabBarNode.toWidget() failed! ${e.toString()}');
+        return Error(
+            key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
       }
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE,
-          color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
+  bool canBeDeleted() => false;
 
   @override
   String toString() => FLUTTER_TYPE;

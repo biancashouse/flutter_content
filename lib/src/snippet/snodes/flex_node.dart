@@ -22,22 +22,22 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<MainAxisAlignmentEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<MainAxisAlignmentEnum?>(
           snode: this,
           name: 'mainAxisAlignment',
           valueIndex: mainAxisAlignment?.index,
           onIndexChange: (newValue) => refreshWithUpdate(
               () => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
         ),
-        EnumPropertyValueNode<MainAxisSizeEnum?>(
+        EnumPNode<MainAxisSizeEnum?>(
           snode: this,
           name: 'mainAxisSize',
           valueIndex: mainAxisSize?.index,
           onIndexChange: (newValue) => refreshWithUpdate(
               () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
         ),
-        EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
+        EnumPNode<CrossAxisAlignmentEnum?>(
           snode: this,
           name: 'crossAxisAlignment',
           valueIndex: crossAxisAlignment?.index,
@@ -61,7 +61,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -72,7 +72,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
           // bool constraintsError = (this is RowNode && constraints.maxWidth == double.infinity) || (this is ColumnNode && constraints.maxHeight == double.infinity);
           return Flex(
             direction: this is RowNode ? Axis.horizontal : Axis.vertical,
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             mainAxisAlignment:
                 mainAxisAlignment?.flutterValue ?? MainAxisAlignment.start,
             mainAxisSize: mainAxisSize?.flutterValue ?? MainAxisSize.max,
@@ -85,16 +85,16 @@ abstract class FlexNode extends MC with FlexNodeMappable {
         });
       } catch (e) {
         w = _Error();
-        fco.logi(
+        fco.logger.i(
             'Flex() failed to render properly. ===============================================');
       }
       return w;
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

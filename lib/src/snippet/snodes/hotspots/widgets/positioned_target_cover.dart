@@ -3,18 +3,18 @@ import 'package:flutter_content/flutter_content.dart';
 
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
-
-  // final TargetsWrapperState parentWrapperState;
   final TargetModel tc;
   final int index;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
+  final GlobalKey? gk; // only for pulsingPoint
 
   const TargetCover(
     this.tc,
     this.index, {
     required this.wrapperRect,
     this.scName,
+    this.gk,
     super.key,
   });
 
@@ -40,81 +40,116 @@ class TargetCover extends StatelessWidget {
   }
 
   Widget _draggableTargetCover(TargetModel tc) {
-    // fco.logi('_draggableTarget');
+    // fco.logger.i('_draggableTarget');
+    double radius = tc.getScale() * tc.radius;
     return Visibility(
       visible: true, //FlutterContentApp.snippetBeingEdited == null,
       child: SizedBox(
         width: tc.radius * 2,
         height: tc.radius * 2,
-        child: _TargetCover(
-          tc,
-          index,
-          wrapperRect,
-          scName,
+        child: GestureDetector(
+          onTap: () {
+            if (tc.targetsWrapperState() == null ||
+                FlutterContentApp.snippetBeingEdited != null) {
+              return;
+            }
+
+            if (tc.hasAHotspot() &&
+                !fco.anyPresent([CalloutConfigToolbar.CID])) {
+              fco.showToastPurpleOnLightWhite(
+                cId: 'hotspot-advice',
+                msg:
+                    "\nTap this target's hotspot instead\n(or double-tap to configure it's callout)\n",
+                removeAfterMs: 5000,
+                widthPC: 40,
+              );
+              return;
+            }
+
+            if (fco.anyPresent([tc.contentCId])) {
+              fco.dismiss(tc.contentCId);
+            } else {
+              final playList =
+                  tc.targetsWrapperState()!.widget.parentNode.playList.toList();
+              playList.add(tc);
+              playTarget(tc, wrapperRect, scName);
+            }
+          },
+          onDoubleTap: () async {
+            if (FlutterContentApp.snippetBeingEdited != null) return;
+            TargetsWrapper.configureTarget(
+              tc,
+              wrapperRect,
+              scName,
+            );
+          },
+          child: Stack(
+            key: gk,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: 2 * radius,
+                  height: 2 * radius,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(.25),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: CustomPaint(
+                  foregroundPainter: TargetPainter(),
+                  size: Size(10 + radius * 2, 10 + radius * 2),
+                ),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: IntegerCircleAvatar(
+                  tc,
+                  num: index + 1,
+                  bgColor: tc.calloutColor().withOpacity(.5),
+                  radius: radius,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
 
-class _TargetCover extends StatelessWidget {
-  final TargetModel tc;
-  final int index;
-  final Rect wrapperRect;
-  final ScrollControllerName? scName;
+  static void playTarget(
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollControllerName? scName,
+  ) {
+    if (tc.targetsWrapperState() == null) return;
 
-  const _TargetCover(
-    this.tc,
-    this.index,
-    this.wrapperRect,
-    this.scName,
-  );
+    // cover will now have been rendered with its gk
+    var coverGK = fco.getTargetGk(tc.uid);
+    // fco.logger.i('getTargetGK: $coverGK');
+    if (coverGK == null) return;
+    // var cc = coverGK?.currentContext;
+    // bool mounted = cc?.mounted??false;
+    Rect? targetRect = coverGK.globalPaintBounds();
+    if (targetRect == null) return;
 
-  @override
-  Widget build(BuildContext context) {
-    // fco.logi('TargetCover');
-    double radius = tc.getScale() * tc.radius;
-    return GestureDetector(
-      onDoubleTap: () async {
-        TargetsWrapper.configureTarget(
-          tc,
-          wrapperRect,
-          scName,
-        );
-      },
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              width: 2 * radius,
-              height: 2 * radius,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(.25),
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: CustomPaint(
-              foregroundPainter: TargetPainter(),
-              size: Size(10 + radius * 2, 10 + radius * 2),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: IntegerCircleAvatar(
-              tc,
-              num: index + 1,
-              bgColor: tc.calloutColor().withOpacity(.5),
-              radius: radius,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
+    Alignment? ta =
+        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+
+    // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
+
+    tc.ensureContentSnippetPresent().then((_) {
+      showSnippetContentCallout(
+        tc: tc,
+        justPlaying: true,
+        wrapperRect: wrapperRect,
+        scName: scName,
+      );
+    });
   }
 }
 
@@ -123,7 +158,7 @@ class TargetPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // fco.logi('TargetPainter');
+    // fco.logger.i('TargetPainter');
 
     double radius = size.width / 2;
     Paint paintWhite() => Paint()

@@ -8,21 +8,40 @@ part 'tabbarview_node.mapper.dart';
 
 @MappableClass()
 class TabBarViewNode extends MC with TabBarViewNodeMappable {
+  String tabBarName;
+
   TabBarViewNode({
+    required this.tabBarName,
     required super.children,
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+    StringPNode(
+      snode: this,
+      name: 'TabBar name',
+      stringValue: tabBarName,
+      skipHelperText: true,
+      onStringChange: (newValue) =>
+          refreshWithUpdate(() => tabBarName = newValue!),
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 400,
+      numLines: 1,
+    ),
+  ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
       SnippetPanelState? spState = SnippetPanel.of(context);
-      int numTabNodes = spState?.tabC?.length ?? 0;
+      TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
+      if (tabBarNode == null) {
+        return Placeholder();
+      }
+      int numTabNodes = tabBarNode.tabC?.length ?? 0;
       List<Widget> childWidgets = children
           .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
           .toList();
@@ -32,18 +51,18 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
               'TabBar and TabBarView do not have matching number of children!');
         } else {
           return TabBarView(
-            key: createNodeGK(),
-            controller: spState!.tabC,
+            key: createNodeWidgetGK(),
+            controller: tabBarNode.tabC,
             children: childWidgets,
           );
         }
       } catch (e) {
-        fco.logi('TabBarViewNode.toWidget() failed!');
-        return Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString());
+        fco.logger.i('TabBarViewNode.toWidget() failed!');
+        return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
       }
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE,
-          color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
+          color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

@@ -13,33 +13,33 @@ class CenterNode extends SC with CenterNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
 
   @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Center";
 
-  @override
-  String toSource(BuildContext context) {
-    return '''Center(
-      child: ${child?.toSource(context)}
-      )''';
-  }
+  // @override
+  // String toSource(BuildContext context) {
+  //   return '''Center(
+  //     child: ${child?.toSource(context)}
+  //     )''';
+  // }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    try {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+    // try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
       return Center(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             child: child?.toWidget(context, this),
           );
-    } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
-    }
+    // } catch (e) {
+    //   return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+    // }
   }
 }

@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'target_model.mapper.dart';
 
+/// TargetModel is used to model either:
+///
+///   1. A Hotspot (has a target + play btn + callout)
+///     or
+///   2. An Auto-played Callout (has a target + callout)
 @MappableClass()
 class TargetModel with TargetModelMappable {
   TargetId uid;
@@ -19,7 +25,7 @@ class TargetModel with TargetModelMappable {
   //
   // if target is part of a TargetsWrapper, it's parent node will be this property
   @JsonKey(includeFromJson: false, includeToJson: false)
-  HotspotsNode? parentHotspotNode;
+  TargetsWrapperNode? parentTargetsWrapperNode;
 
   // bool single;
   double? targetLocalPosLeftPc;
@@ -35,6 +41,7 @@ class TargetModel with TargetModelMappable {
   bool showBtn;
   bool canResizeH;
   bool canResizeV;
+  bool followScroll;
   double calloutWidth;
   double calloutHeight;
   int calloutDurationMs;
@@ -77,6 +84,7 @@ class TargetModel with TargetModelMappable {
     this.showBtn = true,
     this.canResizeH = true,
     this.canResizeV = true,
+    this.followScroll = true,
     this.calloutFillColorValue,
     this.calloutBorderColorValue,
     this.calloutDecorationShape = MappableDecorationShapeEnum.rectangle,
@@ -94,7 +102,10 @@ class TargetModel with TargetModelMappable {
     // fontWeightIndex = FontWeight.normal.index;
   }
 
-  GlobalKey? get targetsWrapperGK => parentHotspotNode?.nodeWidgetGK;
+  // if target does not have a hotspot, callout will autoplay
+  bool hasAHotspot() => btnLocalTopPc != null && btnLocalLeftPc != null;
+
+  GlobalKey? get targetsWrapperGK => parentTargetsWrapperNode?.nodeWidgetGK;
 
   TargetsWrapperState? targetsWrapperState() {
     return targetsWrapperGK?.currentState as TargetsWrapperState?;
@@ -166,7 +177,7 @@ class TargetModel with TargetModelMappable {
         snippetName: contentSnippetName,
         snippetRootNode: SnippetRootNode(
           name: contentCId,
-          child: CenterNode(child: TextNode(text: contentCId)),
+          child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties())),
         ),
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
@@ -254,7 +265,7 @@ class TargetModel with TargetModelMappable {
     btnLocalLeftPc = max(0, btnLocalLeftPc!);
     btnLocalLeftPc = min(btnLocalLeftPc!, 1);
 
-    // fco.logi("${btnLocalLeftPc}, ${btnLocalTopPc}");
+    // fco.logger.i("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
   Offset getCalloutPos() => Offset(
@@ -285,7 +296,7 @@ class TargetModel with TargetModelMappable {
   // GlobalKey generateNewGK() => _gk = GlobalKey();
 
   Future<void> changed_saveRootSnippet() async {
-    SnippetRootNode? rootNode = parentHotspotNode?.rootNodeOfSnippet();
+    SnippetRootNode? rootNode = parentTargetsWrapperNode?.rootNodeOfSnippet();
     if (rootNode != null) {
       fco.dismissAll(onlyToasts: true);
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());

@@ -3,8 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 
 part 'menu_item_button_node.mapper.dart';
 
@@ -18,7 +18,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     super.template,
     super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
-    super.buttonStyle,
+    required super.bsPropsGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -28,11 +28,11 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   }
 
   // @override
-  // List<PTreeNode> properties(BuildContext context) => [];
+  // List<PTreeNode> properties(BuildContext context, SNode? parentSNode) => [];
   // {
   //   return [
   //     if (child != null)
-  //       StringPropertyValueNode(
+  //       StringPNode(
   //         snode: this,
   //         name: 'item label',
   //         stringValue: itemLabel,
@@ -49,13 +49,13 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.name(context);
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+    ScrollControllerName? scName = EditablePage.scName(context);
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
-      final gk = createNodeGK();
+      final gk = createNodeWidgetGK();
       return MenuItemButton(
             key: gk,
             onPressed: () {
@@ -74,7 +74,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
             child: child?.toWidget(context, this),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

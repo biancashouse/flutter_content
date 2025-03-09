@@ -15,9 +15,9 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
       MapperContainer.globals.use(_instance = TextButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SnippetTemplateEnumMapper.ensureInitialized();
-      ButtonStyleGroupMapper.ensureInitialized();
-      CalloutConfigGroupMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      ButtonStylePropertiesMapper.ensureInitialized();
+      CalloutConfigPropertiesMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -45,18 +45,20 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
       v.destinationSnippetName;
   static const Field<TextButtonNode, String> _f$destinationSnippetName =
       Field('destinationSnippetName', _$destinationSnippetName, opt: true);
-  static ButtonStyleGroup? _$buttonStyle(TextButtonNode v) => v.buttonStyle;
-  static const Field<TextButtonNode, ButtonStyleGroup> _f$buttonStyle =
-      Field('buttonStyle', _$buttonStyle, opt: true);
+  static ButtonStyleProperties _$bsPropsGroup(TextButtonNode v) =>
+      v.bsPropsGroup;
+  static const Field<TextButtonNode, ButtonStyleProperties> _f$bsPropsGroup =
+      Field('bsPropsGroup', _$bsPropsGroup);
   static String? _$onTapHandlerName(TextButtonNode v) => v.onTapHandlerName;
   static const Field<TextButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigGroup? _$calloutConfigGroup(TextButtonNode v) =>
+  static CalloutConfigProperties? _$calloutConfigGroup(TextButtonNode v) =>
       v.calloutConfigGroup;
-  static const Field<TextButtonNode, CalloutConfigGroup> _f$calloutConfigGroup =
+  static const Field<TextButtonNode, CalloutConfigProperties>
+      _f$calloutConfigGroup =
       Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
-  static STreeNode? _$child(TextButtonNode v) => v.child;
-  static const Field<TextButtonNode, STreeNode> _f$child =
+  static SNode? _$child(TextButtonNode v) => v.child;
+  static const Field<TextButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(TextButtonNode v) => v.uid;
   static const Field<TextButtonNode, String> _f$uid =
@@ -69,11 +71,6 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   static const Field<TextButtonNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(TextButtonNode v) =>
-      v.nodeWidgetGK;
-  static const Field<TextButtonNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<TextButtonNode> fields = const {
@@ -81,14 +78,13 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
     #template: _f$template,
     #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
-    #buttonStyle: _f$buttonStyle,
+    #bsPropsGroup: _f$bsPropsGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -106,7 +102,7 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
         destinationPanelOrPlaceholderName:
             data.dec(_f$destinationPanelOrPlaceholderName),
         destinationSnippetName: data.dec(_f$destinationSnippetName),
-        buttonStyle: data.dec(_f$buttonStyle),
+        bsPropsGroup: data.dec(_f$bsPropsGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -166,23 +162,23 @@ extension TextButtonNodeValueCopy<$R, $Out>
 abstract class TextButtonNodeCopyWith<$R, $In extends TextButtonNode, $Out>
     implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
-  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyle;
+  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+      ButtonStyleProperties> get bsPropsGroup;
   @override
-  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
-      get calloutConfigGroup;
+  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
+      CalloutConfigProperties>? get calloutConfigGroup;
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
       String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
-      ButtonStyleGroup? buttonStyle,
+      ButtonStyleProperties? bsPropsGroup,
       String? onTapHandlerName,
-      CalloutConfigGroup? calloutConfigGroup,
-      STreeNode? child});
+      CalloutConfigProperties? calloutConfigGroup,
+      SNode? child});
   TextButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -196,15 +192,17 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TextButtonNode> $mapper =
       TextButtonNodeMapper.ensureInitialized();
   @override
-  ButtonStyleGroupCopyWith<$R, ButtonStyleGroup, ButtonStyleGroup>?
-      get buttonStyle =>
-          $value.buttonStyle?.copyWith.$chain((v) => call(buttonStyle: v));
+  ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>
+      get bsPropsGroup =>
+          $value.bsPropsGroup.copyWith.$chain((v) => call(bsPropsGroup: v));
   @override
-  CalloutConfigGroupCopyWith<$R, CalloutConfigGroup, CalloutConfigGroup>?
+  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
+          CalloutConfigProperties>?
       get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
           .$chain((v) => call(calloutConfigGroup: v));
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
@@ -212,7 +210,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
           Object? template = $none,
           Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
-          Object? buttonStyle = $none,
+          ButtonStyleProperties? bsPropsGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
@@ -224,7 +222,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
           #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
         if (destinationSnippetName != $none)
           #destinationSnippetName: destinationSnippetName,
-        if (buttonStyle != $none) #buttonStyle: buttonStyle,
+        if (bsPropsGroup != null) #bsPropsGroup: bsPropsGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -241,7 +239,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
           or: $value.destinationPanelOrPlaceholderName),
       destinationSnippetName:
           data.get(#destinationSnippetName, or: $value.destinationSnippetName),
-      buttonStyle: data.get(#buttonStyle, or: $value.buttonStyle),
+      bsPropsGroup: data.get(#bsPropsGroup, or: $value.bsPropsGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

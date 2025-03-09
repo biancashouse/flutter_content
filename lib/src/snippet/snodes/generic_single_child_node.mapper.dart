@@ -15,7 +15,7 @@ class GenericSingleChildNodeMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GenericSingleChildNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -26,8 +26,8 @@ class GenericSingleChildNodeMapper
   static String _$propertyName(GenericSingleChildNode v) => v.propertyName;
   static const Field<GenericSingleChildNode, String> _f$propertyName =
       Field('propertyName', _$propertyName);
-  static STreeNode? _$child(GenericSingleChildNode v) => v.child;
-  static const Field<GenericSingleChildNode, STreeNode> _f$child =
+  static SNode? _$child(GenericSingleChildNode v) => v.child;
+  static const Field<GenericSingleChildNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(GenericSingleChildNode v) => v.uid;
   static const Field<GenericSingleChildNode, String> _f$uid =
@@ -41,12 +41,6 @@ class GenericSingleChildNodeMapper
       _f$hidePropertiesWhileDragging = Field(
           'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          GenericSingleChildNode v) =>
-      v.nodeWidgetGK;
-  static const Field<GenericSingleChildNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<GenericSingleChildNode> fields = const {
@@ -55,7 +49,6 @@ class GenericSingleChildNodeMapper
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -128,9 +121,9 @@ abstract class GenericSingleChildNodeCopyWith<
     $In extends GenericSingleChildNode,
     $Out> implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({String? propertyName, STreeNode? child});
+  $R call({String? propertyName, SNode? child});
   GenericSingleChildNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -145,7 +138,7 @@ class _GenericSingleChildNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GenericSingleChildNode> $mapper =
       GenericSingleChildNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({String? propertyName, Object? child = $none}) =>

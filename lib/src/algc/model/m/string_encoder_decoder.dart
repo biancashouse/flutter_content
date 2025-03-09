@@ -2,9 +2,9 @@ mixin StringEncoderDecoder {
   String encodeString(String s, {int? commentIndex}) {
     if (containsUnicode(s)) {
       if (commentIndex != null) {
-        // fco.logi("unicode detected in comment $commentIndex");
+        // fco.logger.i("unicode detected in comment $commentIndex");
       }
-      // fco.logi("unicode detected: $s".substring(0, min(s.length - 1, 60)));
+      // fco.logger.i("unicode detected: $s".substring(0, min(s.length - 1, 60)));
     }
     return s
         .replaceAll("'", '`')

@@ -3,7 +3,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
@@ -31,14 +30,14 @@ class FSImageNode extends CL with FSImageNodeMappable {
   });
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  GlobalKey? _gk;
+  bool _mustReloadedAfter100Ms = true;
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  Uint8List? cachedPngBytes;
+  // @JsonKey(includeFromJson: false, includeToJson: false)
+  // Uint8List? cachedPngBytes;
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        FSImagePathPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FSImagePathPNode(
           snode: this,
           name: 'image picker',
           stringValue: fsFullPath,
@@ -47,7 +46,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
                   'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
           calloutButtonSize: const Size(280, 70),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
@@ -55,7 +54,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
               refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'height',
           decimalValue: height,
@@ -63,7 +62,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
               refreshWithUpdate(() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'scale',
           decimalValue: scale,
@@ -71,14 +70,14 @@ class FSImageNode extends CL with FSImageNodeMappable {
               refreshWithUpdate(() => scale = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        EnumPropertyValueNode<BoxFitEnum?>(
+        EnumPNode<BoxFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit?.index,
           onIndexChange: (newValue) =>
               refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
         ),
-        EnumPropertyValueNode<AlignmentEnum?>(
+        EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
@@ -88,19 +87,27 @@ class FSImageNode extends CL with FSImageNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
 
-      if (_gk == null) {
-        _gk = createNodeGK();
-        fco.afterMsDelayDo(100, () => fco.forceRefresh());
+      // sometimes the image hasn't been loaded yet
+      if (_mustReloadedAfter100Ms) {
+        fco.afterMsDelayDo(100, () {
+          fco.forceRefresh();
+          _mustReloadedAfter100Ms = false;
+        });
+      }
+
+      GlobalKey? gk;
+      if (parentNode is! CarouselNode) {
+        gk = createNodeWidgetGK();
       }
 
       Widget widget = StorageImage(
-        key: _gk,
+        key: gk,
         fit: fit?.flutterValue,
         width: width,
         height: height,
@@ -112,10 +119,10 @@ class FSImageNode extends CL with FSImageNodeMappable {
       return widget;
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

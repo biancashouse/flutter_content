@@ -61,6 +61,6 @@
 //
 //     await tester.pumpAndSettle(const Duration(seconds: 1));
 //
-//     print("size: ${calloutSize.toString()}");
+//     fco.logger.i("size: ${calloutSize.toString()}");
 //   });
 // }

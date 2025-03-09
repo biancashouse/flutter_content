@@ -24,7 +24,7 @@ enum WrapAlignmentEnum {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,
@@ -84,9 +84,9 @@ enum WrapAlignmentEnum {
         ),
       );
 
-  // static EnumPropertyValueNode toEnumPropertyValueNode(
+  // static EnumPNode toEnumPNode(
   //         WrapAlignmentEnum? value, Node snippetTreeNode, String label, ValueChanged<int?> onChange, bool isRow) =>
-  //     EnumPropertyValueNode(
+  //     EnumPNode(
   //       snippetTreeNode: snippetTreeNode,
   //       label: label,
   //       value: value,

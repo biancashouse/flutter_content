@@ -11,7 +11,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   String itemLabel;
 
   // Node? child; always just use a Text(itemLabel)
-  List<STreeNode> menuChildren;
+  List<SNode> menuChildren;
 
   SubmenuButtonNode({
     this.itemLabel = 'label?',
@@ -20,8 +20,8 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   }) : super(children: menuChildren);
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'itemLabel',
           stringValue: itemLabel,
@@ -51,13 +51,13 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     //Icon(Icons.info, size: 28, color: Colors.red);
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     return SubmenuButton(
-      key: createNodeGK(),
+      key: createNodeWidgetGK(),
       style: fco.buttonStyle(36),
       menuStyle: MenuStyle(
         backgroundColor: WidgetStateProperty.resolveWith<Color?>(

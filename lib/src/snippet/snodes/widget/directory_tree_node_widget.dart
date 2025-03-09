@@ -4,7 +4,7 @@ import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 class DirectoryTreeNodeWidget extends StatelessWidget {
   final SnippetTreeController treeController;
-  final TreeEntry<STreeNode> entry;
+  final TreeEntry<SNode> entry;
   final ScrollController? ancestorHScrollController;
   final ScrollController? ancestorVScrollController;
 
@@ -27,7 +27,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
         _name(context),
         if (entry.hasChildren)
           ExpandIcon(
-            key: GlobalKey(), //GlobalObjectKey(widget.entry.node),
+            // key: GlobalObjectKey(entry.node.uid),
             color: Colors.grey,
             isExpanded: entry.isExpanded,
             padding: EdgeInsets.zero,

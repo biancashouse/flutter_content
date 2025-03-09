@@ -15,7 +15,7 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
       MapperContainer.globals.use(_instance = CarouselNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       AxisEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -41,8 +41,8 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   static AxisEnum _$axis(CarouselNode v) => v.axis;
   static const Field<CarouselNode, AxisEnum> _f$axis =
       Field('axis', _$axis, opt: true, def: AxisEnum.horizontal);
-  static List<STreeNode> _$children(CarouselNode v) => v.children;
-  static const Field<CarouselNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(CarouselNode v) => v.children;
+  static const Field<CarouselNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(CarouselNode v) => v.uid;
   static const Field<CarouselNode, String> _f$uid =
@@ -55,11 +55,6 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
   static const Field<CarouselNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(CarouselNode v) =>
-      v.nodeWidgetGK;
-  static const Field<CarouselNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<CarouselNode> fields = const {
@@ -73,7 +68,6 @@ class CarouselNodeMapper extends SubClassMapperBase<CarouselNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -147,8 +141,7 @@ extension CarouselNodeValueCopy<$R, $Out>
 abstract class CarouselNodeCopyWith<$R, $In extends CarouselNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {bool? autoPlay,
@@ -157,7 +150,7 @@ abstract class CarouselNodeCopyWith<$R, $In extends CarouselNode, $Out>
       double? aspectRatio,
       double? height,
       AxisEnum? axis,
-      List<STreeNode>? children});
+      List<SNode>? children});
   CarouselNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -170,9 +163,9 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CarouselNode> $mapper =
       CarouselNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {bool? autoPlay,
@@ -181,7 +174,7 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
           double? aspectRatio,
           Object? height = $none,
           AxisEnum? axis,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (autoPlay != null) #autoPlay: autoPlay,
         if (autoPlayIntervalSecs != null)

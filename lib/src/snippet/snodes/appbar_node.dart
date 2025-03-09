@@ -6,39 +6,56 @@ import 'package:gap/gap.dart';
 
 part 'appbar_node.mapper.dart';
 
-@MappableClass(discriminatorKey: 'ab')
-class AppBarNode extends STreeNode with AppBarNodeMappable {
+@MappableClass()
+class AppBarNode extends SNode with AppBarNodeMappable {
+  String? tabBarName;
   int? bgColorValue;
   int? fgColorValue;
-  double? height;
+  double? toolbarHeight;
   GenericSingleChildNode? leading;
   GenericSingleChildNode? title;
   GenericSingleChildNode? bottom;
   GenericMultiChildNode? actions;
 
   AppBarNode({
+    this.tabBarName,
     this.bgColorValue,
     this.fgColorValue,
-    this.height,
+    this.toolbarHeight,
     this.leading,
     this.title,
     this.bottom,
     this.actions,
   });
 
+  bool hasTabBar() => tabBarName != null && bottom?.child is TabBarNode;
+
+  bool hasMenuBar() => bottom?.child is MenuBarNode;
+
   @override
-  List<PTreeNode> properties(BuildContext context) {
-    // fco.logi("ContainerNode.properties()...");
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    // fco.logger.i("ContainerNode.properties()...");
     return [
-      DecimalPropertyValueNode(
+      StringPNode(
         snode: this,
-        name: 'height',
-        decimalValue: height,
-        onDoubleChange: (newValue) =>
-            refreshWithUpdate(() => height = newValue),
-        calloutButtonSize: const Size(90, 20),
+        name: 'TabBar name',
+        stringValue: tabBarName,
+        skipHelperText: true,
+        onStringChange: (newValue) =>
+            refreshWithUpdate(() => tabBarName = newValue!),
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 400,
+        numLines: 1,
       ),
-      ColorPropertyValueNode(
+      DecimalPNode(
+        snode: this,
+        name: 'toolbarHeight',
+        decimalValue: toolbarHeight,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(() => toolbarHeight = newValue),
+        calloutButtonSize: const Size(130, 20),
+      ),
+      ColorPNode(
         snode: this,
         name: 'bg color',
         tooltip: "The fill color to use for an app bar's Material.",
@@ -47,7 +64,7 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
             refreshWithUpdate(() => bgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
-      ColorPropertyValueNode(
+      ColorPNode(
         snode: this,
         name: 'fg color',
         tooltip: 'The default color for Text and Icons within the app bar.',
@@ -60,67 +77,38 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  // no tabbar nor menubar
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
-      //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
 
-      // find scaffold node
-      // add a back button if scaffold has tabs
-      SnippetPanelState? spState = SnippetPanel.of(context);
-      Widget leadingWidget() {
-        if (spState != null) {
-          if (spState.prevTabQ.isNotEmpty) {
-            return IconButton(
-              onPressed: () {
-                if (spState.prevTabQ.isNotEmpty) {
-                  int prev = spState.prevTabQ.removeLast();
-                  spState.backBtnPressed = true;
-                  spState.tabC?.index = prev;
-                  spState.prevTabQSize.value = spState.prevTabQ.length;
-                  fco.logi(
-                      "back to tab: $prev,  ${spState.prevTabQ.toString()}");
-                }
-              },
-              icon: const Icon(Icons.arrow_back),
-            );
-          } else {
-            return const Offstage();
-          }
-        } else {
-          return const Offstage();
-        }
-      }
-
-      var bottomWidget = bottom?.toWidgetProperty(context, this);
-      if (bottomWidget is! PreferredSizeWidget?) {
-        fco.logi("Oops.");
-      }
       var actionWidgets = actions?.toWidgetProperty(context, this);
       var titleWidget = title?.toWidgetProperty(context, this);
 
+      if (hasTabBar()) {
+        toolbarHeight = kToolbarHeight;
+      } else if (hasMenuBar()) toolbarHeight = kToolbarHeight;
+
+      PreferredSizeWidget? bottomWidget;
+      if (toolbarHeight != null) {
+        bottomWidget = bottom?.toPreferredSizeWidgetProperty(
+            context, 80, this);
+      }
+
       try {
         var appBar = AppBar(
-          key: createNodeGK(),
-          leading: leading != null
-              ? ListenableBuilder(
-                  listenable: spState!.prevTabQSize,
-                  builder: (_, __) => leadingWidget())
-              : null,
+          key: createNodeWidgetGK(),
           title: titleWidget,
-          toolbarHeight: height,
-          bottom: bottomWidget as PreferredSizeWidget?,
+          // centerTitle: true,
+          toolbarHeight: toolbarHeight,
           actions: actionWidgets,
           backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
           foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
+          bottom: bottomWidget,
         );
-        return height != null
-            ? PreferredSize(
-                preferredSize: Size.fromHeight(height!), child: appBar)
-            : appBar;
+        return appBar;
       } catch (e) {
-        fco.logi('AppBarNode.toWidget() failed!');
+        fco.logger.i('AppBarNode.toWidget() failed!');
         return Material(
           textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
           child: SingleChildScrollView(
@@ -137,10 +125,10 @@ class AppBarNode extends STreeNode with AppBarNodeMappable {
       }
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

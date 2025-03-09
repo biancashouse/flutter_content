@@ -13,7 +13,7 @@ class MCMapper extends SubClassMapperBase<MC> {
   static MCMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MCMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       GenericMultiChildNodeMapper.ensureInitialized();
       CarouselNodeMapper.ensureInitialized();
       DirectoryNodeMapper.ensureInitialized();
@@ -27,7 +27,7 @@ class MCMapper extends SubClassMapperBase<MC> {
       TabBarNodeMapper.ensureInitialized();
       TabBarViewNodeMapper.ensureInitialized();
       WrapNodeMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -35,8 +35,8 @@ class MCMapper extends SubClassMapperBase<MC> {
   @override
   final String id = 'MC';
 
-  static List<STreeNode> _$children(MC v) => v.children;
-  static const Field<MC, List<STreeNode>> _f$children =
+  static List<SNode> _$children(MC v) => v.children;
+  static const Field<MC, List<SNode>> _f$children =
       Field('children', _$children);
 
   @override
@@ -49,7 +49,7 @@ class MCMapper extends SubClassMapperBase<MC> {
   @override
   final dynamic discriminatorValue = 'MC';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static MC _instantiate(DecodingData data) {
     throw MapperException.missingSubclass('MC', 'mc', '${data.value['mc']}');
@@ -74,7 +74,7 @@ mixin MCMappable {
 }
 
 abstract class MCCopyWith<$R, $In extends MC, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   @override
   $R call();
   MCCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);

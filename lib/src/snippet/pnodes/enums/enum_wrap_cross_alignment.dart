@@ -22,7 +22,7 @@ enum WrapCrossAlignmentEnum  {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,
@@ -42,7 +42,7 @@ enum WrapCrossAlignmentEnum  {
       );
 
   Widget toMenuItem(bool isRow) {
-    // fco.logi("isRow:$isRow WrapCrossAlignment toWidget ${name}");
+    // fco.logger.i("isRow:$isRow WrapCrossAlignment toWidget ${name}");
     return Container(
       padding: const EdgeInsets.all(8),
       height: 50,

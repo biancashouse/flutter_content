@@ -15,7 +15,7 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
       MapperContainer.globals.use(_instance = AlignNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
       AlignmentEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -26,8 +26,8 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   static AlignmentEnum _$alignment(AlignNode v) => v.alignment;
   static const Field<AlignNode, AlignmentEnum> _f$alignment =
       Field('alignment', _$alignment);
-  static STreeNode? _$child(AlignNode v) => v.child;
-  static const Field<AlignNode, STreeNode> _f$child =
+  static SNode? _$child(AlignNode v) => v.child;
+  static const Field<AlignNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(AlignNode v) => v.uid;
   static const Field<AlignNode, String> _f$uid =
@@ -40,11 +40,6 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
   static const Field<AlignNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(AlignNode v) =>
-      v.nodeWidgetGK;
-  static const Field<AlignNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<AlignNode> fields = const {
@@ -53,7 +48,6 @@ class AlignNodeMapper extends SubClassMapperBase<AlignNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -119,9 +113,9 @@ extension AlignNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, AlignNode, $Out> {
 abstract class AlignNodeCopyWith<$R, $In extends AlignNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({AlignmentEnum? alignment, STreeNode? child});
+  $R call({AlignmentEnum? alignment, SNode? child});
   AlignNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -134,7 +128,7 @@ class _AlignNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AlignNode> $mapper =
       AlignNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({AlignmentEnum? alignment, Object? child = $none}) =>

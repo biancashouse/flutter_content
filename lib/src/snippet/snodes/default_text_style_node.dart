@@ -5,37 +5,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 
-import '../pnodes/groups/text_style_group.dart';
+import '../pnodes/groups/text_style_properties.dart';
 
 part 'default_text_style_node.mapper.dart';
 
 @MappableClass()
 class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
-  TextStyleGroup? textStyleGroup;
+  TextStyleProperties tsPropGroup;
   TextAlignEnum? textAlign;
 
   // bool softWrap;
 
   DefaultTextStyleNode({
-    this.textStyleGroup,
+    required this.tsPropGroup,
     this.textAlign,
     // this.softWrap = true,
     super.child,
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        TextStylePropertyGroup(
+  TextStyleProperties? textStyleProperties() => tsPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) =>
+      tsPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        // TextStyleNamePNode(
+        //   textStyleName: textStyleName,
+        //   snode: this,
+        //   name: 'namedTextStyle',
+        //   onChange: (newValue) {
+        //     refreshWithUpdate(() => textStyleName = newValue);
+        //   },
+        // ),
+        TextStylePNode /*Group*/ (
           snode: this,
           name: 'textStyle',
-          textStyleGroup: textStyleGroup,
-          onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
+          textStyleProperties: tsPropGroup,
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => tsPropGroup = newValue),
         ),
-        EnumPropertyValueNode<TextAlignEnum?>(
+        EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => TextAlignEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => TextAlignEnum.of(newValue)),
         ),
       ];
 
@@ -43,7 +60,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   // String toSource(BuildContext context) {
   //   return child != null
   //       ? '''DefaultTextStyle.merge(
-  //     style: ${textStyleGroup?.toSource(context)},
+  //     style: ${textStyleProperties?.toSource(context)},
   //     textAlign: ${textAlign?.toSource()},
   //     child: ${child!.toSource(context)},
   //   )'''
@@ -51,21 +68,27 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   // }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
       return child != null
-              ? DefaultTextStyle.merge(
-                  key: createNodeGK(),
-                  style: textStyleGroup?.toTextStyle(context),
-                  textAlign: textAlign?.flutterValue,
-                  child: child!.toWidget(context, this),
-                )
-              : const Offstage();
+          ? DefaultTextStyle.merge(
+              key: createNodeWidgetGK(),
+              style: tsPropGroup.toTextStyle(context),
+              textAlign: textAlign?.flutterValue,
+              child: child!.toWidget(context, this),
+            )
+          : const Offstage();
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 

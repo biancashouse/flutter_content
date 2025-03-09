@@ -19,8 +19,8 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        IntPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        IntPNode(
           snode: this,
           name: 'flex',
           intValue: flex,
@@ -28,7 +28,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
               refreshWithUpdate(() => flex = newValue ?? 1),
           calloutButtonSize: const Size(70, 30),
         ),
-        EnumPropertyValueNode<FlexFitEnum?>(
+        EnumPNode<FlexFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
@@ -38,13 +38,13 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
       return Flexible(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             flex: flex,
             fit: fit.flutterValue,
             child: child?.toWidget(context, this) ??
@@ -54,7 +54,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
                 ),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

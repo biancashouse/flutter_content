@@ -63,7 +63,7 @@
 //     TargetConfig tc = CAPIBloC.state.imageTargetListMap["widget-1"]![0];
 //     tc.init(CAPIBloC, GlobalKey(), FocusNode());
 //
-//     print(CAPIBloC.toString());
+//     fco.logger.i(CAPIBloC.toString());
 //
 //     CAPIBloC.add(CAPIEvent.selectTarget(tc: tc));
 //
@@ -73,15 +73,15 @@
 //     // Assert that the current state is in sync with the stubbed stream.
 //     expect(CAPIBloC.state, equals(initialState));
 //
-//     print(tc.recordedM4list);
-//     print("scale     ${tc.getScale(testing: true)}");
-//     print("translate ${tc.getTranslate(testing: true)}");
+//     fco.logger.i(tc.recordedM4list);
+//     fco.logger.i("scale     ${tc.getScale(testing: true)}");
+//     fco.logger.i("translate ${tc.getTranslate(testing: true)}");
 //
 //     ImageWrapperManual capiWidgetWrapper = ImageWrapperManual(twName: "main", iwName: "widget", child: Container());
 //
 //     // Offset globalPos = tc.setTargetStackPosPc(globalPos);
 //     //
-//     // print("globalPos: ${globalPos.toString()}");
+//     // fco.logger.i("globalPos: ${globalPos.toString()}");
 //     //
 //     // Offset globalPos = targetGlobalFromPc(
 //     //     ivGlobalPos: Offset(100, 100),
@@ -91,7 +91,7 @@
 //     //     ivTranslate: Offset.zero,
 //     //     ivChildMeasuredRect: Rect.fromLTWH(100, 100, 300, 200));
 //     //
-//     // print("globalPos: ${globalPos.toString()}");
+//     // fco.logger.i("globalPos: ${globalPos.toString()}");
 //     //
 //     // Offset pcPos = globalToPc(
 //     //     globalPos: globalPos,

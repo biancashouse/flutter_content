@@ -3,8 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-
-import '../pnodes/groups/text_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 part 'textspan_node.mapper.dart';
 
@@ -13,19 +12,27 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   String? text;
 
   // bool isRootTextSpan;
-  TextStyleGroup? textStyleGroup;
+  @MappableField(hook: TextStyleHook())
+  TextStyleProperties tsPropGroup;
   List<InlineSpanNode>? children;
 
   TextSpanNode({
     this.text,
     // this.isRootTextSpan = false,
-    this.textStyleGroup,
+    required this.tsPropGroup,
     this.children,
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  TextStyleProperties? textStyleProperties() => tsPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) =>
+      tsPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'text',
           numLines: 6,
@@ -35,18 +42,26 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
-        // BoolPropertyValueNode(
+        // BoolPNode(
         //   snode: this,
         //   name: 'isRootTextSpan',
         //   boolValue: isRootTextSpan,
         //   onBoolChange: (newValue) => refreshWithUpdate(() => isRootTextSpan = newValue ?? false),
         // ),
-        TextStylePropertyGroup(
+        // TextStyleNamePNode(
+        //   textStyleName: textStyleName,
+        //   snode: this,
+        //   name: 'namedTextStyle',
+        //   onChange: (newValue) {
+        //     refreshWithUpdate(() => textStyleName = newValue);
+        //   },
+        // ),
+        TextStylePNode /*Group*/ (
           snode: this,
           name: 'textStyle',
-          textStyleGroup: textStyleGroup,
+          textStyleProperties: tsPropGroup,
           onGroupChange: (newValue) =>
-              refreshWithUpdate(() => textStyleGroup = newValue),
+              refreshWithUpdate(() => tsPropGroup = newValue),
         ),
       ];
 
@@ -54,35 +69,35 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   InlineSpan toInlineSpan(BuildContext context) {
     // TextStyle? test_ts = textStyle?.toTextStyle(context);
     // var parentNode = getParent();
-    // print('parent is ${parentNode.toString()}');
+    // fco.logger.d('parent is ${parentNode.toString()}');
     // start with possible named style, or DefaultTextStyle
-    // TextStyle? ts = textStyleGroup?.toTextStyle(context)
+    // TextStyle? ts = textStyleProperties?.toTextStyle(context)
     //     ?? DefaultTextStyle.of(context).style;
     // merge with individual text style properties
-    // if (textStyleGroup != null) {
+    // if (textStyleProperties != null) {
     // ts = ts.merge(
     //   TextStyle(
-    //     color: textStyleGroup?.colorValue != null ? Color(textStyleGroup!.colorValue!) : null,
-    //     fontFamily: textStyleGroup?.fontFamily != null ? textStyleGroup!.fontFamily! : null,
-    //     fontSize: textStyleGroup?.fontSize != null ? textStyleGroup!.fontSize! : null,
+    //     color: textStyleProperties?.colorValue != null ? Color(textStyleProperties!.colorValue!) : null,
+    //     fontFamily: textStyleProperties?.fontFamily != null ? textStyleProperties!.fontFamily! : null,
+    //     fontSize: textStyleProperties?.fontSize != null ? textStyleProperties!.fontSize! : null,
     //   ),
     // );
-    // ts.merge(textStyleGroup?.toTextStyle(context));
+    // ts.merge(textStyleProperties?.toTextStyle(context));
     // }
     try {
       return TextSpan(
         text: text ?? "",
-        style: textStyleGroup?.toTextStyle(context),
+        style: tsPropGroup.toTextStyle(context),
         children: children
             ?.map<InlineSpan>(
                 (inlinespanNode) => inlinespanNode.toInlineSpan(context))
             .toList(),
       );
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
+      fco.logger.i('cannot render $FLUTTER_TYPE!');
       return WidgetSpan(
-          child:
-              Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
+          child: Error(
+              key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
   }
 
@@ -170,7 +185,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   //                 value: textStyle?.fontStyle == FontStyleEnum.italic,
   //                 fillColor: const WidgetStatePropertyAll(Colors.purple),
   //                 onChanged: (bool? isChecked) {
-  //                   fco.logi("checked: $isChecked");
+  //                   fco.logger.i("checked: $isChecked");
   //                   textStyle ??= TextStyleNodeProperty();
   //                   textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
   //                   bloc.add(const CAPIEvent.forceRefresh());

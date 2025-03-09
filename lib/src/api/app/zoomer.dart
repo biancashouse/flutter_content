@@ -18,11 +18,11 @@ class Zoomer extends StatefulWidget {
 
   static ZoomerState? of(BuildContext context) {
     if (!context.mounted) {
-      fco.logi('context not mounted!');
+      fco.logger.i('context not mounted!');
     }
     var result = context.findAncestorStateOfType<ZoomerState>();
     if (result == null) {
-      fco.logi('Zoomer not found!');
+      fco.logger.i('Zoomer not found!');
     }
     return result;
   }
@@ -31,12 +31,13 @@ class Zoomer extends StatefulWidget {
   State<Zoomer> createState() => ZoomerState();
 }
 
-class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBindingObserver {
+class ZoomerState extends State<Zoomer>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   BuildContext? updatedContext;
 
   // late MaterialSPAState? parentAppState;
   late Animation<Matrix4> _matrix4Animation;
-  late AnimationController _aController;
+  AnimationController? _aController;
   late Alignment _transformAlignment;
   double currentScale = 1.0;
 
@@ -47,14 +48,15 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
   // called when refreshing from slider change (zero duration etc)
   zoomImmediately(final double scaleX, final double scaleY,
       {final Alignment? alignment}) {
+    if (!mounted || _aController == null) return;
     _matrix4Animation = Matrix4Tween(
-        begin: Matrix4.identity(),
-        end: Matrix4.identity().scaled(currentScale=scaleX, scaleY))
-        .animate(_aController);
+            begin: Matrix4.identity(),
+            end: Matrix4.identity().scaled(currentScale = scaleX, scaleY))
+        .animate(_aController!);
     // if (alignment != null) {
     //   _transformAlignment ??= alignment;
     // }
-    _aController
+    _aController!
       ..duration = const Duration()
       ..reset()
       ..forward();
@@ -65,38 +67,47 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
   }
 
   void applyTransform(
-      final double scaleX,
-      final double scaleY,
-      final Alignment alignment, {
-        required VoidCallback afterTransformF, bool quickly = false,
-      }) {
+    final double scaleX,
+    final double scaleY,
+    final Alignment alignment, {
+    required VoidCallback afterTransformF,
+    bool quickly = false,
+  }) {
+    if (!mounted || _aController == null) return;
     currentScale = scaleX;
-    if (scaleX == 1.0 ) {
+    if (scaleX == 1.0) {
       afterTransformF.call();
-    }
-    else {
+    } else {
       _matrix4Animation = Matrix4Tween(
-          begin: Matrix4.identity(),
-          end: (Matrix4.identity().scaled(scaleX, scaleY)))
-          .animate(_aController);
+              begin: Matrix4.identity(),
+              end: (Matrix4.identity().scaled(scaleX, scaleY)))
+          .animate(_aController!);
       _transformAlignment = alignment;
-      _aController
-        ..duration = scaleX > 1 ? (quickly ? Zoomer.ZOOM_IMMEDIATELY : Zoomer.ZOOM_TRANSITION_DURATION_MS) : Zoomer
-            .ZOOM_IMMEDIATELY
+      _aController!
+        ..duration = scaleX > 1
+            ? (quickly
+                ? Zoomer.ZOOM_IMMEDIATELY
+                : Zoomer.ZOOM_TRANSITION_DURATION_MS)
+            : Zoomer.ZOOM_IMMEDIATELY
         ..reset()
-        ..forward().then((value) => afterTransformF.call());
+        ..forward().then((value) {
+          if (mounted) {
+            afterTransformF.call();
+          }
+        });
     }
   }
 
   void resetTransform(
       {required VoidCallback afterTransformF, bool quickly = false}) {
+    if (!mounted || _aController == null) return;
     currentScale = 1.0;
-    Duration? savedDuration = _aController.duration;
-    _aController
+    Duration? savedDuration = _aController!.duration;
+    _aController!
       ..duration = Duration(milliseconds: quickly ? 0 : 200)
       ..reverse().then((value) {
-        _aController.duration = savedDuration;
-        afterTransformF.call();
+        _aController!.duration = savedDuration;
+        if (mounted) afterTransformF.call();
       });
   }
 
@@ -106,7 +117,7 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
 
     currentScale = 1.0;
 
-    // fco.logi('*** Zoomer() ***');
+    // fco.logger.i('*** Zoomer() ***');
 
     // parentAppState =
     //     MaterialSPA.of(context.mounted ? context : updatedContext!);
@@ -120,22 +131,21 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
     _matrix4Animation = Matrix4Tween(
       begin: Matrix4.identity(),
       end: Matrix4.identity(),
-    ).animate(_aController);
+    ).animate(_aController!);
 
     _transformAlignment = Alignment.center;
 
     // _aController.addListener(() {
-    //   fco.logi("_aController: ${_aController.toStringDetails()}");
+    //   fco.logger.i("_aController: ${_aController.toStringDetails()}");
     // });
     //
     // _aController.addStatusListener((status) {
-    //   fco.logi("_aController status: $status");
+    //   fco.logger.i("_aController status: $status");
     // });
 
     // _aController.forward();
 
     // zoomImmediately(2.0, 2.0);
-
 
     // Future.delayed(const Duration(seconds: 2), (){
     //   resetTransform();
@@ -143,7 +153,8 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
   }
 
   void _initializeFields() {
-    _aController.duration = Zoomer.ZOOM_TRANSITION_DURATION_MS;
+    if (!mounted || _aController == null) return;
+    _aController!.duration = Zoomer.ZOOM_TRANSITION_DURATION_MS;
   }
 
   @override
@@ -154,7 +165,8 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
 
   @override
   dispose() {
-    _aController.dispose();
+    if (!mounted || _aController == null) return;
+    _aController!.dispose();
     super.dispose();
   }
 
@@ -167,16 +179,24 @@ class ZoomerState extends State<Zoomer> with TickerProviderStateMixin, WidgetsBi
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _aController,
-        builder: (BuildContext context, _) {
-          return Transform(
+    return _aController != null
+        ? AnimatedBuilder(
+            animation: _aController!,
+            builder: (BuildContext context, _) {
+              return Transform(
+                transform: _matrix4Animation.value,
+                alignment: _transformAlignment,
+                child: widget.child,
+                // child: BlocBuilder<CAPIBloC, CAPIState>(
+                //     builder: (context, state) => widget.child),
+              );
+            })
+        : Transform(
             transform: _matrix4Animation.value,
             alignment: _transformAlignment,
             child: widget.child,
             // child: BlocBuilder<CAPIBloC, CAPIState>(
             //     builder: (context, state) => widget.child),
           );
-        });
   }
 }

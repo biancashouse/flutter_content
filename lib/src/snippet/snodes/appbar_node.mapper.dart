@@ -13,7 +13,7 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   static AppBarNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AppBarNodeMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       GenericSingleChildNodeMapper.ensureInitialized();
       GenericMultiChildNodeMapper.ensureInitialized();
     }
@@ -23,15 +23,18 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   @override
   final String id = 'AppBarNode';
 
+  static String? _$tabBarName(AppBarNode v) => v.tabBarName;
+  static const Field<AppBarNode, String> _f$tabBarName =
+      Field('tabBarName', _$tabBarName, opt: true);
   static int? _$bgColorValue(AppBarNode v) => v.bgColorValue;
   static const Field<AppBarNode, int> _f$bgColorValue =
       Field('bgColorValue', _$bgColorValue, opt: true);
   static int? _$fgColorValue(AppBarNode v) => v.fgColorValue;
   static const Field<AppBarNode, int> _f$fgColorValue =
       Field('fgColorValue', _$fgColorValue, opt: true);
-  static double? _$height(AppBarNode v) => v.height;
-  static const Field<AppBarNode, double> _f$height =
-      Field('height', _$height, opt: true);
+  static double? _$toolbarHeight(AppBarNode v) => v.toolbarHeight;
+  static const Field<AppBarNode, double> _f$toolbarHeight =
+      Field('toolbarHeight', _$toolbarHeight, opt: true);
   static GenericSingleChildNode? _$leading(AppBarNode v) => v.leading;
   static const Field<AppBarNode, GenericSingleChildNode> _f$leading =
       Field('leading', _$leading, opt: true);
@@ -55,17 +58,13 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   static const Field<AppBarNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(AppBarNode v) =>
-      v.nodeWidgetGK;
-  static const Field<AppBarNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<AppBarNode> fields = const {
+    #tabBarName: _f$tabBarName,
     #bgColorValue: _f$bgColorValue,
     #fgColorValue: _f$fgColorValue,
-    #height: _f$height,
+    #toolbarHeight: _f$toolbarHeight,
     #leading: _f$leading,
     #title: _f$title,
     #bottom: _f$bottom,
@@ -73,7 +72,6 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -81,13 +79,14 @@ class AppBarNodeMapper extends SubClassMapperBase<AppBarNode> {
   @override
   final dynamic discriminatorValue = 'AppBarNode';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static AppBarNode _instantiate(DecodingData data) {
     return AppBarNode(
+        tabBarName: data.dec(_f$tabBarName),
         bgColorValue: data.dec(_f$bgColorValue),
         fgColorValue: data.dec(_f$fgColorValue),
-        height: data.dec(_f$height),
+        toolbarHeight: data.dec(_f$toolbarHeight),
         leading: data.dec(_f$leading),
         title: data.dec(_f$title),
         bottom: data.dec(_f$bottom),
@@ -144,7 +143,7 @@ extension AppBarNodeValueCopy<$R, $Out>
 }
 
 abstract class AppBarNodeCopyWith<$R, $In extends AppBarNode, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
       GenericSingleChildNode>? get leading;
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
@@ -155,9 +154,10 @@ abstract class AppBarNodeCopyWith<$R, $In extends AppBarNode, $Out>
       GenericMultiChildNode>? get actions;
   @override
   $R call(
-      {int? bgColorValue,
+      {String? tabBarName,
+      int? bgColorValue,
       int? fgColorValue,
-      double? height,
+      double? toolbarHeight,
       GenericSingleChildNode? leading,
       GenericSingleChildNode? title,
       GenericSingleChildNode? bottom,
@@ -191,17 +191,19 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
       get actions => $value.actions?.copyWith.$chain((v) => call(actions: v));
   @override
   $R call(
-          {Object? bgColorValue = $none,
+          {Object? tabBarName = $none,
+          Object? bgColorValue = $none,
           Object? fgColorValue = $none,
-          Object? height = $none,
+          Object? toolbarHeight = $none,
           Object? leading = $none,
           Object? title = $none,
           Object? bottom = $none,
           Object? actions = $none}) =>
       $apply(FieldCopyWithData({
+        if (tabBarName != $none) #tabBarName: tabBarName,
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
         if (fgColorValue != $none) #fgColorValue: fgColorValue,
-        if (height != $none) #height: height,
+        if (toolbarHeight != $none) #toolbarHeight: toolbarHeight,
         if (leading != $none) #leading: leading,
         if (title != $none) #title: title,
         if (bottom != $none) #bottom: bottom,
@@ -209,9 +211,10 @@ class _AppBarNodeCopyWithImpl<$R, $Out>
       }));
   @override
   AppBarNode $make(CopyWithData data) => AppBarNode(
+      tabBarName: data.get(#tabBarName, or: $value.tabBarName),
       bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
       fgColorValue: data.get(#fgColorValue, or: $value.fgColorValue),
-      height: data.get(#height, or: $value.height),
+      toolbarHeight: data.get(#toolbarHeight, or: $value.toolbarHeight),
       leading: data.get(#leading, or: $value.leading),
       title: data.get(#title, or: $value.title),
       bottom: data.get(#bottom, or: $value.bottom),

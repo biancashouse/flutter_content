@@ -13,7 +13,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static ScaffoldNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScaffoldNodeMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       AppBarNodeMapper.ensureInitialized();
       GenericSingleChildNodeMapper.ensureInitialized();
     }
@@ -48,11 +48,6 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static const Field<ScaffoldNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(ScaffoldNode v) =>
-      v.nodeWidgetGK;
-  static const Field<ScaffoldNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<ScaffoldNode> fields = const {
@@ -63,7 +58,6 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -71,7 +65,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   @override
   final dynamic discriminatorValue = 'ScaffoldNode';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static ScaffoldNode _instantiate(DecodingData data) {
     return ScaffoldNode(
@@ -132,7 +126,7 @@ extension ScaffoldNodeValueCopy<$R, $Out>
 }
 
 abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   AppBarNodeCopyWith<$R, AppBarNode, AppBarNode>? get appBar;
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
       GenericSingleChildNode>? get body;

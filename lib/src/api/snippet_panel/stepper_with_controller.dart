@@ -16,7 +16,7 @@ class FCStepperState extends State<FCStepper> {
 
   @override
   Widget build(BuildContext context) {
-    List<STreeNode> children = widget.stepperNode.children;
+    List<SNode> children = widget.stepperNode.children;
     List<Step> steps = [];
     children.forEachIndexed((i, childNode) {
       if (childNode is StepNode) {
@@ -35,7 +35,7 @@ class FCStepperState extends State<FCStepper> {
       onStepContinue: () {
         final isLastStep = currentStep == steps.length - 1;
         if (isLastStep) {
-          fco.logi("steps completed.");
+          fco.logger.i("steps completed.");
         } else {
           if (currentStep <= steps.length) {
             setState(() {

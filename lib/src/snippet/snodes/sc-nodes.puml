@@ -56,7 +56,7 @@ class DefaultTextStyleNode extends SC
 class ExpandedNode extends SC
 class FlexibleNode extends SC
 class GenericSingleChildNode extends SC
-class HotspotsNode extends SC
+class TargetsWrapperNode extends SC
 class PaddingNode extends SC
 class PositionedNode extends SC
 class SingleChildScrollViewNode extends SC

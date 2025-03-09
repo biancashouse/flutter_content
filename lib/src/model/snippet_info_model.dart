@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -18,13 +17,11 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   static final Map<SnippetName, SnippetInfoModel> _snippetInfoCache = {};
 
   static SnippetInfoModel? cachedSnippet(String snippetName) {
-    return _snippetInfoCache.containsKey(snippetName)
-        ? _snippetInfoCache[snippetName]
-        : _snippetInfoCache['/$snippetName'];
+    return _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName];
   }
 
   static void cacheSnippetInfo(String snippetName, SnippetInfoModel sni) {
-    _snippetInfoCache[snippetName] = sni;
+    _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName] = sni;
   }
 
   static List<String> cachedSnippetNames() => _snippetInfoCache.keys.toList();
@@ -35,12 +32,12 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     var snippetInfoCache = SnippetInfoModel._snippetInfoCache;
     for (SnippetName name in snippetInfoCache.keys) {
       List<VersionId> versionIds = snippetInfoCache[name]?.cachedVersionIds ?? [];
-      debugPrint('$name: ${versionIds.toString()}');
+      // fco.logger.d('$name: ${versionIds.toString()}');
       for (VersionId versionId in versionIds) {
         SnippetRootNode? rootNode = snippetInfoCache[name]?.cachedVersions[versionId];
-        debugPrint('$versionId: ${rootNode?.child.toString()}');
+        // fco.logger.d('$versionId: ${rootNode?.child.toString()}');
       }
-      debugPrint('$name: ${versionIds.toString()}');
+      // fco.logger.d('$name: ${versionIds.toString()}');
     }
   }
 

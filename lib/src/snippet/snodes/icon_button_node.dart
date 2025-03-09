@@ -4,8 +4,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 
 part 'icon_button_node.mapper.dart';
 
@@ -27,7 +27,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     super.template,
     super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
-    super.buttonStyle,
+    required super.bsPropsGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -76,20 +76,20 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => IconButton.styleFrom();
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.name(context);
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+    ScrollControllerName? scName = EditablePage.scName(context);
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
     void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
     setParent(parentNode);
 
-    final gk = createNodeGK();
+    final gk = createNodeWidgetGK();
 
-    ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
+    ButtonStyle? btnStyle = bsPropsGroup?.toButtonStyle(context, defaultButtonStyle());
 
     IconButton button = IconButton(
       // if feature specified, must be a callout
-      key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
+      key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context, gk, scName),
       style: btnStyle,
       icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),

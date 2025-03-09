@@ -14,7 +14,7 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SubmenuButtonNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,8 +25,8 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static String _$itemLabel(SubmenuButtonNode v) => v.itemLabel;
   static const Field<SubmenuButtonNode, String> _f$itemLabel =
       Field('itemLabel', _$itemLabel, opt: true, def: 'label?');
-  static List<STreeNode> _$menuChildren(SubmenuButtonNode v) => v.menuChildren;
-  static const Field<SubmenuButtonNode, List<STreeNode>> _f$menuChildren =
+  static List<SNode> _$menuChildren(SubmenuButtonNode v) => v.menuChildren;
+  static const Field<SubmenuButtonNode, List<SNode>> _f$menuChildren =
       Field('menuChildren', _$menuChildren);
   static String _$uid(SubmenuButtonNode v) => v.uid;
   static const Field<SubmenuButtonNode, String> _f$uid =
@@ -39,14 +39,8 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
   static const Field<SubmenuButtonNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          SubmenuButtonNode v) =>
-      v.nodeWidgetGK;
-  static const Field<SubmenuButtonNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
-  static List<STreeNode> _$children(SubmenuButtonNode v) => v.children;
-  static const Field<SubmenuButtonNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(SubmenuButtonNode v) => v.children;
+  static const Field<SubmenuButtonNode, List<SNode>> _f$children =
       Field('children', _$children, mode: FieldMode.member);
 
   @override
@@ -56,7 +50,6 @@ class SubmenuButtonNodeMapper extends SubClassMapperBase<SubmenuButtonNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
     #children: _f$children,
   };
 
@@ -128,10 +121,9 @@ extension SubmenuButtonNodeValueCopy<$R, $Out>
 
 abstract class SubmenuButtonNodeCopyWith<$R, $In extends SubmenuButtonNode,
     $Out> implements MCCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get menuChildren;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get menuChildren;
   @override
-  $R call({String? itemLabel, List<STreeNode>? menuChildren});
+  $R call({String? itemLabel, List<SNode>? menuChildren});
   SubmenuButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -145,11 +137,11 @@ class _SubmenuButtonNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SubmenuButtonNode> $mapper =
       SubmenuButtonNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get menuChildren => ListCopyWith($value.menuChildren,
-          (v, t) => v.copyWith.$chain(t), (v) => call(menuChildren: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get menuChildren =>
+      ListCopyWith($value.menuChildren, (v, t) => v.copyWith.$chain(t),
+          (v) => call(menuChildren: v));
   @override
-  $R call({String? itemLabel, List<STreeNode>? menuChildren}) =>
+  $R call({String? itemLabel, List<SNode>? menuChildren}) =>
       $apply(FieldCopyWithData({
         if (itemLabel != null) #itemLabel: itemLabel,
         if (menuChildren != null) #menuChildren: menuChildren

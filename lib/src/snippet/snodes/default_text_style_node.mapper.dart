@@ -15,9 +15,9 @@ class DefaultTextStyleNodeMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = DefaultTextStyleNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      TextStyleGroupMapper.ensureInitialized();
+      TextStylePropertiesMapper.ensureInitialized();
       TextAlignEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,15 +25,15 @@ class DefaultTextStyleNodeMapper
   @override
   final String id = 'DefaultTextStyleNode';
 
-  static TextStyleGroup? _$textStyleGroup(DefaultTextStyleNode v) =>
-      v.textStyleGroup;
-  static const Field<DefaultTextStyleNode, TextStyleGroup> _f$textStyleGroup =
-      Field('textStyleGroup', _$textStyleGroup, opt: true);
+  static TextStyleProperties _$tsPropGroup(DefaultTextStyleNode v) =>
+      v.tsPropGroup;
+  static const Field<DefaultTextStyleNode, TextStyleProperties> _f$tsPropGroup =
+      Field('tsPropGroup', _$tsPropGroup);
   static TextAlignEnum? _$textAlign(DefaultTextStyleNode v) => v.textAlign;
   static const Field<DefaultTextStyleNode, TextAlignEnum> _f$textAlign =
       Field('textAlign', _$textAlign, opt: true);
-  static STreeNode? _$child(DefaultTextStyleNode v) => v.child;
-  static const Field<DefaultTextStyleNode, STreeNode> _f$child =
+  static SNode? _$child(DefaultTextStyleNode v) => v.child;
+  static const Field<DefaultTextStyleNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(DefaultTextStyleNode v) => v.uid;
   static const Field<DefaultTextStyleNode, String> _f$uid =
@@ -47,22 +47,15 @@ class DefaultTextStyleNodeMapper
       _f$hidePropertiesWhileDragging = Field(
           'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          DefaultTextStyleNode v) =>
-      v.nodeWidgetGK;
-  static const Field<DefaultTextStyleNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<DefaultTextStyleNode> fields = const {
-    #textStyleGroup: _f$textStyleGroup,
+    #tsPropGroup: _f$tsPropGroup,
     #textAlign: _f$textAlign,
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -74,7 +67,7 @@ class DefaultTextStyleNodeMapper
 
   static DefaultTextStyleNode _instantiate(DecodingData data) {
     return DefaultTextStyleNode(
-        textStyleGroup: data.dec(_f$textStyleGroup),
+        tsPropGroup: data.dec(_f$tsPropGroup),
         textAlign: data.dec(_f$textAlign),
         child: data.dec(_f$child));
   }
@@ -136,15 +129,15 @@ abstract class DefaultTextStyleNodeCopyWith<
     $R,
     $In extends DefaultTextStyleNode,
     $Out> implements SCCopyWith<$R, $In, $Out> {
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get textStyleGroup;
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get tsPropGroup;
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
-      {TextStyleGroup? textStyleGroup,
+      {TextStyleProperties? tsPropGroup,
       TextAlignEnum? textAlign,
-      STreeNode? child});
+      SNode? child});
   DefaultTextStyleNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -158,25 +151,25 @@ class _DefaultTextStyleNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<DefaultTextStyleNode> $mapper =
       DefaultTextStyleNodeMapper.ensureInitialized();
   @override
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get textStyleGroup => $value.textStyleGroup?.copyWith
-          .$chain((v) => call(textStyleGroup: v));
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get tsPropGroup =>
+          $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(
-          {Object? textStyleGroup = $none,
+          {TextStyleProperties? tsPropGroup,
           Object? textAlign = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
-        if (textStyleGroup != $none) #textStyleGroup: textStyleGroup,
+        if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
         if (textAlign != $none) #textAlign: textAlign,
         if (child != $none) #child: child
       }));
   @override
   DefaultTextStyleNode $make(CopyWithData data) => DefaultTextStyleNode(
-      textStyleGroup: data.get(#textStyleGroup, or: $value.textStyleGroup),
+      tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
       textAlign: data.get(#textAlign, or: $value.textAlign),
       child: data.get(#child, or: $value.child));
 

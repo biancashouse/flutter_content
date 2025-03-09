@@ -7,14 +7,14 @@ part 'widgetspan_node.mapper.dart';
 
 @MappableClass()
 class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
-  STreeNode? child;
+  SNode? child;
 
   WidgetSpanNode({
     this.child,
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
 
   @override
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
@@ -26,10 +26,10 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
                 child: const Text("missing child!"), bgColor: Colors.red),
       );
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
+      fco.logger.i('cannot render $FLUTTER_TYPE!');
       return WidgetSpan(
           child:
-              Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString()));
+              Error(key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
   }
 

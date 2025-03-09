@@ -27,13 +27,13 @@ void main() {
   // sample data -----------
   SnippetRootNode emptySnippetRoot =
       SnippetTemplateEnum.empty.templateSnippet();
-  late STreeNode firstTabViewNode;
-  late STreeNode? columnNode;
-  STreeNode? paddingNode = PaddingNode();
-  STreeNode? firstTextNode = TextNode();
-  STreeNode? secondTextNode = TextNode();
-  STreeNode? firstSizedBoxNode = SizedBoxNode();
-  STreeNode? secondSizedBoxNode = SizedBoxNode();
+  late SNode firstTabViewNode;
+  late SNode? columnNode;
+  SNode? paddingNode = PaddingNode();
+  SNode? firstTextNode = TextNode();
+  SNode? secondTextNode = TextNode();
+  SNode? firstSizedBoxNode = SizedBoxNode();
+  SNode? secondSizedBoxNode = SizedBoxNode();
 
   final modelSnippetRoot = SnippetRootNode(
     name: snippetName,
@@ -45,6 +45,7 @@ void main() {
         bottom: GenericSingleChildNode(
           propertyName: 'bottom',
           child: TabBarNode(
+            name: 'tabbar1',
             children: [
               TextNode(text: 'tab 1'),
               TextNode(text: 'Tab 2'),
@@ -55,6 +56,7 @@ void main() {
       body: GenericSingleChildNode(
         propertyName: 'body',
         child: TabBarViewNode(
+          tabBarName: 'tabbar1',
           children: [
             firstTabViewNode = PlaceholderNode(),
             PlaceholderNode(),
@@ -72,7 +74,7 @@ void main() {
         parentProvider: Node.snippetTreeParentProvider,
       );
 
-  void test_snippet_setup(STreeNode child, {STreeNode? select}) {
+  void test_snippet_setup(SNode child, {SNode? select}) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
 
@@ -102,6 +104,7 @@ void main() {
           bottom: GenericSingleChildNode(
             propertyName: 'bottom',
             child: selTabBar = TabBarNode(
+              name: 'who cares',
               children: [
                 selText = TextNode(text: 'Stepper Tab'),
                 TextNode(text: 'Tab 2'),
@@ -112,6 +115,7 @@ void main() {
         body: GenericSingleChildNode(
           propertyName: 'body',
           child: selTabBarView = TabBarViewNode(
+            tabBarName: 'who cares',
             children: [
               stepper1 = StepperNode(children: [
                 step1 = StepNode(
@@ -157,7 +161,7 @@ void main() {
       expect(rootNode.name, snippetName);
 
       SnippetTreeController treeC = newTreeC(rootNode);
-      STreeNode? searchResult = treeC.findNodeTypeInTree(rootNode, TextNode);
+      SNode? searchResult = treeC.findNodeTypeInTree(rootNode, TextNode);
       expect(searchResult, isNotNull);
       expect(searchResult is TextNode, isTrue);
       expect((searchResult as TextNode?)?.text, 'my title');
@@ -264,7 +268,7 @@ void main() {
             ),
           );
         } else {
-          print("selection nul!");
+          fco.logger.w("selection nul!");
         }
       },
       skip: 1,
@@ -315,7 +319,7 @@ void main() {
             ),
           );
         } else {
-          print("selection nul!");
+          fco.logger.w("selection nul!");
         }
       },
       skip: 1,
@@ -337,6 +341,7 @@ void main() {
       act: (bloc) {
         bloc.add(CAPIEvent.cutNode(
           node: step3,
+          scName: '',
           skipSave: true,
         ));
         bloc.add(CAPIEvent.selectNode(node: step1));

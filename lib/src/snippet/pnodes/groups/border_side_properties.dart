@@ -1,14 +1,14 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 
-part 'border_side_group.mapper.dart';
+part 'border_side_properties.mapper.dart';
 
 @MappableClass(discriminatorKey: 'side', includeSubClasses: [])
-class BorderSideGroup with BorderSideGroupMappable {
+class BorderSideProperties with BorderSidePropertiesMappable {
   double? width;
   int? colorValue;
 
-  BorderSideGroup({
+  BorderSideProperties({
     this.width,
     this.colorValue,
   });

@@ -16,7 +16,7 @@ void main() {
   late SnippetRootNode snippet;
   late SnippetTreeController treeC;
   late SnippetRootNode snippetWithScaffoldAnd3Tabs;
-  late STreeNode nodeTBD;
+  late SNode nodeTBD;
   late RichTextNode rtNode;
 
   late TextNode cl1;
@@ -29,8 +29,8 @@ void main() {
   late RowNode mc2;
   late TabBarNode tb1;
   late TabBarViewNode tbv1;
-  late STreeNode sel;
-  late STreeNode text1;
+  late SNode sel;
+  late SNode text1;
   late GenericSingleChildNode stepTitleProperty;
   late AppBarNode appBar;
 
@@ -70,7 +70,7 @@ void main() {
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
-    // print('Setting up common resources...');
+    // fco.logger.d('Setting up common resources...');
   });
 
   setUp(() {
@@ -131,7 +131,7 @@ void main() {
     });
   });
 
-  void test_snippet_setup(STreeNode child) {
+  void test_snippet_setup(SNode child) {
     snippet = SnippetRootNode(name: 'test-snippet', child: child)
       ..validateTree();
     treeC = SnippetTreeController(
@@ -162,7 +162,7 @@ void main() {
         ),
       );
 
-  expectedState_SelectedNode(CAPIBloC bloc, STreeNode node) =>
+  expectedState_SelectedNode(CAPIBloC bloc, SNode node) =>
       bloc.state.copyWith(
         snippetBeingEdited: SnippetBeingEdited(
           selectedNode: node,
@@ -174,7 +174,7 @@ void main() {
         ),
       );
 
-  expectedState_NodeBeingDeleted(CAPIBloC bloc, STreeNode node) =>
+  expectedState_NodeBeingDeleted(CAPIBloC bloc, SNode node) =>
       bloc.state.copyWith(
         snippetBeingEdited: SnippetBeingEdited(
           selectedNode: node,
@@ -859,11 +859,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

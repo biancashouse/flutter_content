@@ -80,8 +80,8 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
 
     // TODO
     // widget.tc.imageUrlFocusNode().addListener(() {
-    //   fco.logi("Has focus: ${widget.tc.imageUrlFocusNode().hasFocus}");
-    //   // fco.logi("fco.anyPresent([-4] is ${fco.anyPresent([-4])}");
+    //   fco.logger.i("Has focus: ${widget.tc.imageUrlFocusNode().hasFocus}");
+    //   // fco.logger.i("fco.anyPresent([-4] is ${fco.anyPresent([-4])}");
     // });
     //
     // widget.tc.imageUrlFocusNode().onKey = (node, event) {
@@ -110,6 +110,7 @@ class FilePickerPopupMenuState extends State<FilePickerPopupMenu> {
 
   @override
   void dispose() {
+    if (!mounted) return;
     _txtController?.dispose();
     super.dispose();
   }

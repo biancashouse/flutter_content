@@ -13,7 +13,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static AppInfoModelMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AppInfoModelMapper._());
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
+      TextStylePropertiesMapper.ensureInitialized();
+      ButtonStylePropertiesMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -21,8 +23,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   @override
   final String id = 'AppInfoModel';
 
-  static STreeNode? _$clipboard(AppInfoModel v) => v.clipboard;
-  static const Field<AppInfoModel, STreeNode> _f$clipboard =
+  static SNode? _$clipboard(AppInfoModel v) => v.clipboard;
+  static const Field<AppInfoModel, SNode> _f$clipboard =
       Field('clipboard', _$clipboard, opt: true);
   static bool _$autoPublishDefault(AppInfoModel v) => v.autoPublishDefault;
   static const Field<AppInfoModel, bool> _f$autoPublishDefault =
@@ -30,19 +32,33 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static List<String> _$snippetNames(AppInfoModel v) => v.snippetNames;
   static const Field<AppInfoModel, List<String>> _f$snippetNames =
       Field('snippetNames', _$snippetNames, opt: true, def: const []);
+  static Map<String, TextStyleProperties> _$textStyles(AppInfoModel v) =>
+      v.textStyles;
+  static const Field<AppInfoModel, Map<String, TextStyleProperties>>
+      _f$textStyles =
+      Field('textStyles', _$textStyles, opt: true, def: const {});
+  static Map<String, ButtonStyleProperties> _$buttonStyles(AppInfoModel v) =>
+      v.buttonStyles;
+  static const Field<AppInfoModel, Map<String, ButtonStyleProperties>>
+      _f$buttonStyles =
+      Field('buttonStyles', _$buttonStyles, opt: true, def: const {});
 
   @override
   final MappableFields<AppInfoModel> fields = const {
     #clipboard: _f$clipboard,
     #autoPublishDefault: _f$autoPublishDefault,
     #snippetNames: _f$snippetNames,
+    #textStyles: _f$textStyles,
+    #buttonStyles: _f$buttonStyles,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
     return AppInfoModel(
         clipboard: data.dec(_f$clipboard),
         autoPublishDefault: data.dec(_f$autoPublishDefault),
-        snippetNames: data.dec(_f$snippetNames));
+        snippetNames: data.dec(_f$snippetNames),
+        textStyles: data.dec(_f$textStyles),
+        buttonStyles: data.dec(_f$buttonStyles));
   }
 
   @override
@@ -97,12 +113,26 @@ extension AppInfoModelValueCopy<$R, $Out>
 
 abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard;
+  SNodeCopyWith<$R, SNode, SNode>? get clipboard;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get snippetNames;
+  MapCopyWith<
+      $R,
+      String,
+      TextStyleProperties,
+      TextStylePropertiesCopyWith<$R, TextStyleProperties,
+          TextStyleProperties>> get textStyles;
+  MapCopyWith<
+      $R,
+      String,
+      ButtonStyleProperties,
+      ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>> get buttonStyles;
   $R call(
-      {STreeNode? clipboard,
+      {SNode? clipboard,
       bool? autoPublishDefault,
-      List<String>? snippetNames});
+      List<String>? snippetNames,
+      Map<String, TextStyleProperties>? textStyles,
+      Map<String, ButtonStyleProperties>? buttonStyles});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -115,7 +145,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AppInfoModel> $mapper =
       AppInfoModelMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get clipboard =>
+  SNodeCopyWith<$R, SNode, SNode>? get clipboard =>
       $value.clipboard?.copyWith.$chain((v) => call(clipboard: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
@@ -124,21 +154,45 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(snippetNames: v));
   @override
+  MapCopyWith<
+      $R,
+      String,
+      TextStyleProperties,
+      TextStylePropertiesCopyWith<$R, TextStyleProperties,
+          TextStyleProperties>> get textStyles => MapCopyWith($value.textStyles,
+      (v, t) => v.copyWith.$chain(t), (v) => call(textStyles: v));
+  @override
+  MapCopyWith<
+      $R,
+      String,
+      ButtonStyleProperties,
+      ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
+          ButtonStyleProperties>> get buttonStyles => MapCopyWith(
+      $value.buttonStyles,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(buttonStyles: v));
+  @override
   $R call(
           {Object? clipboard = $none,
           bool? autoPublishDefault,
-          List<String>? snippetNames}) =>
+          List<String>? snippetNames,
+          Map<String, TextStyleProperties>? textStyles,
+          Map<String, ButtonStyleProperties>? buttonStyles}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
-        if (snippetNames != null) #snippetNames: snippetNames
+        if (snippetNames != null) #snippetNames: snippetNames,
+        if (textStyles != null) #textStyles: textStyles,
+        if (buttonStyles != null) #buttonStyles: buttonStyles
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
       clipboard: data.get(#clipboard, or: $value.clipboard),
       autoPublishDefault:
           data.get(#autoPublishDefault, or: $value.autoPublishDefault),
-      snippetNames: data.get(#snippetNames, or: $value.snippetNames));
+      snippetNames: data.get(#snippetNames, or: $value.snippetNames),
+      textStyles: data.get(#textStyles, or: $value.textStyles),
+      buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

@@ -14,7 +14,7 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ExpandedNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,8 +25,8 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static int _$flex(ExpandedNode v) => v.flex;
   static const Field<ExpandedNode, int> _f$flex =
       Field('flex', _$flex, opt: true, def: 1);
-  static STreeNode? _$child(ExpandedNode v) => v.child;
-  static const Field<ExpandedNode, STreeNode> _f$child =
+  static SNode? _$child(ExpandedNode v) => v.child;
+  static const Field<ExpandedNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(ExpandedNode v) => v.uid;
   static const Field<ExpandedNode, String> _f$uid =
@@ -39,11 +39,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
   static const Field<ExpandedNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(ExpandedNode v) =>
-      v.nodeWidgetGK;
-  static const Field<ExpandedNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<ExpandedNode> fields = const {
@@ -52,7 +47,6 @@ class ExpandedNodeMapper extends SubClassMapperBase<ExpandedNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -119,9 +113,9 @@ extension ExpandedNodeValueCopy<$R, $Out>
 abstract class ExpandedNodeCopyWith<$R, $In extends ExpandedNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({int? flex, STreeNode? child});
+  $R call({int? flex, SNode? child});
   ExpandedNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -134,7 +128,7 @@ class _ExpandedNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ExpandedNode> $mapper =
       ExpandedNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({int? flex, Object? child = $none}) => $apply(FieldCopyWithData(

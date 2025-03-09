@@ -4,7 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
 
 class PropertyButtonColor extends StatelessWidget {
-  final Feature cId;
+  final CalloutId cId;
   final String label;
   final String? tooltip;
   final Color? originalColor;

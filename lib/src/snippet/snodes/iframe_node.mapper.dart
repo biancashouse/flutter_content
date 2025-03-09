@@ -41,11 +41,6 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
   static const Field<IFrameNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(IFrameNode v) =>
-      v.nodeWidgetGK;
-  static const Field<IFrameNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<IFrameNode> fields = const {
@@ -55,7 +50,6 @@ class IFrameNodeMapper extends SubClassMapperBase<IFrameNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

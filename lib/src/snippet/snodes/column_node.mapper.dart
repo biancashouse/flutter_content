@@ -17,7 +17,7 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
       MainAxisAlignmentEnumMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
       CrossAxisAlignmentEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -36,8 +36,8 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
       v.crossAxisAlignment;
   static const Field<ColumnNode, CrossAxisAlignmentEnum> _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
-  static List<STreeNode> _$children(ColumnNode v) => v.children;
-  static const Field<ColumnNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(ColumnNode v) => v.children;
+  static const Field<ColumnNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(ColumnNode v) => v.uid;
   static const Field<ColumnNode, String> _f$uid =
@@ -50,11 +50,6 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
   static const Field<ColumnNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(ColumnNode v) =>
-      v.nodeWidgetGK;
-  static const Field<ColumnNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<ColumnNode> fields = const {
@@ -65,7 +60,6 @@ class ColumnNodeMapper extends SubClassMapperBase<ColumnNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -135,14 +129,13 @@ extension ColumnNodeValueCopy<$R, $Out>
 abstract class ColumnNodeCopyWith<$R, $In extends ColumnNode, $Out>
     implements FlexNodeCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {MainAxisAlignmentEnum? mainAxisAlignment,
       MainAxisSizeEnum? mainAxisSize,
       CrossAxisAlignmentEnum? crossAxisAlignment,
-      List<STreeNode>? children});
+      List<SNode>? children});
   ColumnNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -155,15 +148,15 @@ class _ColumnNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ColumnNode> $mapper =
       ColumnNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {Object? mainAxisAlignment = $none,
           Object? mainAxisSize = $none,
           Object? crossAxisAlignment = $none,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (mainAxisAlignment != $none) #mainAxisAlignment: mainAxisAlignment,
         if (mainAxisSize != $none) #mainAxisSize: mainAxisSize,

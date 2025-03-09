@@ -2,6 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 
@@ -18,6 +19,8 @@ class SnippetPanel extends StatefulWidget {
   // or by providing tree of nodes
   final SnippetRootNode? snippetRootNode;
   final Map<String, void Function(BuildContext)>? handlers;
+
+  final bool justPlaying;
 
   // final bool allowButtonCallouts;
   // final bool justPlaying;
@@ -38,6 +41,7 @@ class SnippetPanel extends StatefulWidget {
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
     required this.scName, // force dev to be scroll aware
+    this.justPlaying = false,
     super.key,
   }) : snippetName = null;
 
@@ -53,6 +57,7 @@ class SnippetPanel extends StatefulWidget {
     // this.iconColor,
     // this.iconSize,
     required this.scName, // force dev to be scroll aware
+    this.justPlaying = false,
     super.key,
   }) : snippetRootNode = null;
 
@@ -77,17 +82,10 @@ class SnippetPanel extends StatefulWidget {
 
 class SnippetPanelState extends State<SnippetPanel>
     with TickerProviderStateMixin {
-  // late String snippetNameToUse;
-  // NOTE - tabcontroller will only be instantiated if a TabBar calls createTabController
-  TabController?
-      tabC; // used when a TabBar and TabBarView are used in a snippet's Scaffold
-  GlobalKey? tabBarGK;
-  late List<int> prevTabQ;
-  bool?
-      backBtnPressed; // allow the listener to know when to skip adding index back onto Q after a back btn
-  final prevTabQSize = ValueNotifier<int>(0);
+  Map<String, TabBarNode> tabBars = {};
 
-  String? snippetName() => widget.snippetName ?? widget.snippetRootNode?.name;
+  // will be snippetName or rootNode name
+  String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
 
@@ -98,58 +96,18 @@ class SnippetPanelState extends State<SnippetPanel>
   //   return tabBarNode?.children.length ?? 0;
   // }
 
-  void createTabController(int numTabs) {
-    tabC?.dispose();
-    tabC = TabController(vsync: this, length: numTabs);
-
-    tabC!.addListener(() {
-      if (!(tabC?.indexIsChanging ?? true)) {
-        if (tabBarGK != null) {
-          TabBarNode? tbNode = fco.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
-          if (tbNode != null && !(backBtnPressed ?? false)) {
-            prevTabQ.add(tbNode.selection ?? 0);
-            tbNode.selection = tabC!.index;
-            prevTabQSize.value = prevTabQ.length;
-            fco.logi("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
-          } else {
-            tbNode?.selection = tabC!.index;
-            backBtnPressed = false;
-          }
-        }
-      }
-    });
-
-    // tabC!.addListener(() {
-    //   setState(() {
-    //     _tabQ.clear();
-    //     tabC?.animateTo(tabC?.index??0);
-    //   });
-    // });
-  }
-
   @override
   void initState() {
     super.initState();
 
     widget.handlers?.forEach((key, value) {
       fco.registerHandler(key, value);
-      fco.logi("registered handler '$key'");
+      fco.logger.i("registered handler '$key'");
     });
 
     if (widget.panelName != null &&
         !fco.placeNames.contains(widget.panelName)) {
       fco.placeNames.add(widget.panelName!);
-    }
-
-    prevTabQ = [];
-  }
-
-  void resetTabQandC() {
-    prevTabQ = [];
-    if (tabBarGK != null) {
-      TabBarNode? tbNode = fco.gkSTreeNodeMap[tabBarGK] as TabBarNode?;
-      tbNode?.selection = 0;
-      tabC?.index = 0;
     }
   }
 
@@ -179,14 +137,18 @@ class SnippetPanelState extends State<SnippetPanel>
             ? fco.panelGkMap[widget.panelName!] =
                 GlobalKey(debugLabel: 'Panel[${widget.panelName}]')
             : null,
-        buildWhen: (previous, current) => !current.onlyTargetsWrappers,
+        buildWhen: (previous, current) {
+          // fco.logger.i(
+          //     'BlocBuilder - current.onlyTargetsWrappers: ${current.onlyTargetsWrappers}');
+          return !current.onlyTargetsWrappers;
+        },
         builder: (blocContext, state) {
-          var snippetInfo = SnippetInfoModel.cachedSnippet(snippetName()!);
-          bool isPublishedVersion = snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
+          // fco.logger.d('\nSnippetPanel builder:\n');
+
           return FutureBuilder<SnippetRootNode?>(
               future: SnippetRootNode
                   .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                snippetName: snippetName() ?? 'unnamed snippet',
+                snippetName: snippetName(),
                 snippetRootNode: widget.snippetRootNode,
               ),
               builder: (futureContext, snapshot) {
@@ -198,82 +160,82 @@ class SnippetPanelState extends State<SnippetPanel>
                 // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[snippetName()];
                 // SnippetInfoModel.debug();
 
-                Widget snippetWidget;
-                try {
-                  // in case did a revert, ignore snapshot data and use the AppInfo instead
-                  // String sName = snippetName();
-
-                  SnippetRootNode? snippet = snapshot.data;
-
-                  Color triangleColor = Colors.purpleAccent;  // in edit mode
-                  if (!isPublishedVersion) triangleColor = Colors.deepOrange;
-
-                  snippet?.validateTree();
-                  // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-                  snippetWidget = snippet == null
-                      ? Error("SnippetPanel",
-                          color: Colors.red,
-                          size: 32,
-                          errorMsg: "null snippet!",
-                          key: GlobalKey())
-                      : ValueListenableBuilder<bool>(
-                          valueListenable: fco.inEditMode,
-                          builder: (context, value, child) {
-                            print('inEditMode: ${fco.inEditMode.value}');
-                            return Stack(
-                              children: [
-                                snippet.toWidget(futureContext, null),
-                                if (!isPublishedVersion && !fco.canEditContent.value)
-                                  Align(alignment: Alignment.topLeft,
-                                  child: Container(color:Colors.deepOrange, height:6, width:double.infinity),),
-                                if (fco.canEditContent.value)
-                                  Align(
-                                      alignment: Alignment.topRight,
-                                      child: Tooltip(
-                                        message: 'tap here to enter EDIT mode',
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            fco.inEditMode.value = true;
-                                            showSnippetNodeWidgetOverlays();
-                                          },
-                                          child: fco.inEditMode.value
-                                              ? fco.blink(CustomPaint(
-                                                  size: const Size(40, 40),
-                                                  painter: TRTriangle(
-                                                      triangleColor),
-                                                ))
-                                              : CustomPaint(
-                                                  size: const Size(40, 40),
-                                                  painter: TRTriangle(
-                                                      triangleColor),
-                                                ),
-                                        ),
-                                      )),
-                              ],
-                            );
-                          });
-                } catch (e) {
-                  fco.logi('snippetRootNode.toWidget() failed!');
-                  snippetWidget = Material(
-                    textStyle:
-                        const TextStyle(fontFamily: 'monospace', fontSize: 12),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Error("FlowchartWidget",
-                          color: Colors.red,
-                          size: 32,
-                          errorMsg: e.toString(),
-                          key: GlobalKey()),
-                    ),
-                  );
+                if (snapshot.data == null) {
+                  return Error("SnippetPanel",
+                      color: Colors.red,
+                      size: 32,
+                      errorMsg: "null snippet!",
+                      key: GlobalKey());
                 }
+
+                bool isPublishedVersion =
+                    fco.isEditingVersionPublished(snippetName());
+
+                SnippetRootNode snippet = snapshot.data!;
+
+                // test whether snippet is in the cache
+                AppInfoModel appInfo = fco.appInfo;
+                bool namePresent = appInfo.snippetNames.contains(snippetName());
+
+                Color triangleColor = Colors.purpleAccent; // in edit mode
+                if (!isPublishedVersion) triangleColor = Colors.deepOrange;
+
+                snippet.validateTree();
+                // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+
+                bool playing = widget.justPlaying;
+
+                Widget snippetWidget = Stack(
+                  children: [
+                    snippet.toWidget(futureContext, null),
+                    if (!widget.justPlaying &&
+                        !isPublishedVersion &&
+                        !fco.canEditContent.value)
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                            color: Colors.deepOrange,
+                            height: 6,
+                            width: double.infinity),
+                      ),
+                    if (!playing && fco.canEditContent.value)
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: Tooltip(
+                            message: 'tap here to enter EDIT mode',
+                            child: GestureDetector(
+                              onTap: () {
+                                if (FlutterContentApp.snippetBeingEdited !=
+                                    null) {
+                                  return;
+                                }
+
+                                // var savedOffsets =
+                                //     fco.saveScrollOffsets();
+                                // bool test = fco.inEditMode.value;
+                                fco.inEditMode.value = true;
+                                showSnippetNodeWidgetOverlays();
+                                // fco.afterMsDelayDo(100, (){
+                                // fco.restoreScrollOffsets(
+                                //     savedOffsets);
+                                // });
+                              },
+                              child: CustomPaint(
+                                size: const Size(40, 40),
+                                painter: TRTriangle(triangleColor),
+                              ),
+                            ),
+                          )),
+                  ],
+                );
+
                 return fco.canEditContent.value
                     ? Banner(
                         message:
                             isPublishedVersion ? 'published' : 'not published',
                         location: BannerLocation.topEnd,
                         color: isPublishedVersion
-                            ? Colors.limeAccent.withOpacity(.5)
+                            ? Colors.limeAccent.withValues(alpha: .5)
                             : Colors.pink.shade100,
                         textStyle: TextStyle(color: Colors.black, fontSize: 10),
                         child: snippetWidget)
@@ -283,33 +245,44 @@ class SnippetPanelState extends State<SnippetPanel>
   }
 
   void showSnippetNodeWidgetOverlays() {
+
+    // no need to de-reigister once set up
+    fco.registerKeystrokeHandler('tappable-widget-overlays', (KeyEvent event) {
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
+        if (fco.inEditMode.value && FlutterContentApp.snippetBeingEdited == null) {
+          fco.dismissAll();
+        }
+      }
+      return false;
+    });
+
     bool barrierApplied = false;
     void traverseAndMeasure(BuildContext el) {
-      if ((fco.gkSTreeNodeMap.containsKey(el.widget.key))) {
+      if ((fco.nodesByGK.containsKey(el.widget.key))) {
         // || (el.widget.key != null && gkSTreeNodeMap[el.widget.key]?.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured)) {
         GlobalKey gk = el.widget.key as GlobalKey;
-        STreeNode? node = fco.gkSTreeNodeMap[gk];
-        // fco.logi("traverseAndMeasure: ${node.toString()}");
+        SNode? node = fco.nodesByGK[gk];
+        // fco.logger.i("traverseAndMeasure: ${node.toString()}");
         if (node != null && node.canShowTappableNodeWidgetOverlay) {
           // if (node.rootNodeOfSnippet() == FCO.targetSnippetBeingConfigured) {
-          // fco.logi("targetSnippetBeingConfigured: ${node.toString()}");
+          // fco.logger.i("targetSnippetBeingConfigured: ${node.toString()}");
           // }
-          // fco.logi('Rect? r = gk.globalPaintBounds...');
+          // fco.logger.i('Rect? r = gk.globalPaintBounds...');
 // measure node
           Rect? r = gk.globalPaintBounds(
               skipWidthConstraintWarning: true,
               skipHeightConstraintWarning: true);
           // if (node is PlaceholderNode) {
-          //   fco.logi('PlaceholderNode');
+          //   fco.logger.i('PlaceholderNode');
           // }
           if (r != null) {
             // node.measuredRect = Rect.fromLTWH(r.left, r.top, r.width, r.height);
             r = fco.restrictRectToScreen(r);
-            // fco.logi("========>  r restricted to ${r.toString()}");
-            // fco.logi('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
+            // fco.logger.i("========>  r restricted to ${r.toString()}");
+            // fco.logger.i('${node.runtimeType.toString()} - size: (${r != null ? r.size.toString() : ""})');
             // node.setParent(parent);
             // parent = node;
-            // fco.logi('_showNodeWidgetOverlay...');
+            // fco.logger.i('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
@@ -326,9 +299,9 @@ class SnippetPanelState extends State<SnippetPanel>
     }
 
     var pageContext = context;
-    traverseAndMeasure(pageContext);  // root node overlay must have barrier
+    traverseAndMeasure(pageContext); // root node overlay must have barrier
     fco.showingNodeBoundaryOverlays = true;
-    // fco.logi('traverseAndMeasure(context) finished.');
+    // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 
 // _renderSnippet(context) {
@@ -346,7 +319,7 @@ class SnippetPanelState extends State<SnippetPanel>
 //           snippetWidget =
 //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
 //         } catch (e) {
-//           fco.logi('snippetRootNode.toWidget() failed!');
+//           fco.logger.i('snippetRootNode.toWidget() failed!');
 //           snippetWidget = Material(
 //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
 //             child: SingleChildScrollView(

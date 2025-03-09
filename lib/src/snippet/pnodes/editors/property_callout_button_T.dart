@@ -40,19 +40,22 @@ class PropertyButton<T> extends StatelessWidget {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       String editedText = originalText;
-      // print('editedText: $editedText');
-      // print('label: $label');
-      String textLabel() => skipLabelText
-          ? editedText
+      // fco.logger.d('editedText: $editedText');
+      // fco.logger.d('label: $label');
+      Text textLabel() => skipLabelText
+          ? fco.coloredText(editedText, color: Colors.white, fontWeight: FontWeight.bold)
           : editedText.isNotEmpty
-              ? '$label: $editedText'
-              : '$label...';
-      Widget labelWidget = Text(
-        textLabel(),
-        style: const TextStyle(color: Colors.white),
-        overflow: TextOverflow.ellipsis,
-      );
-      // print('labelWidget: $labelWidget');
+              ? Text.rich(TextSpan(
+                  text: '$label: ',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w100),
+                  children: [
+                      TextSpan(
+                          text: editedText,
+                          style: TextStyle(fontWeight: FontWeight.bold))
+                    ]))
+              : fco.coloredText('$label...', color: Colors.white, fontWeight: FontWeight.w100);
+      Widget labelWidget = textLabel();
+      // fco.logger.d('labelWidget: $labelWidget');
       return GestureDetector(
         onTap: () {
           String inputDecorationLabel() =>
@@ -63,7 +66,7 @@ class PropertyButton<T> extends StatelessWidget {
             cId: 'te',
             scrollControllerName: scName,
             containsTextField: true,
-            barrier: CalloutBarrier(
+            barrier: CalloutBarrierConfig(
                 opacity: .25,
                 onTappedF: () {
                   fco.dismiss('matches');
@@ -130,12 +133,12 @@ class PropertyButton<T> extends StatelessWidget {
             calloutConfig: teCC,
             calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
                 ? Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ListView(
+                    padding: const EdgeInsets.all(12.0),
+                    child: ListView(
                       padding: const EdgeInsets.all(10),
                       children: [teContent],
                     ),
-                )
+                  )
                 : teContent,
             targetGkF: () => propertyBtnGK,
           );

@@ -17,7 +17,7 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
       StackFitEnumMapper.ensureInitialized();
       ClipEnumMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -34,8 +34,8 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
   static AlignmentEnum _$alignment(StackNode v) => v.alignment;
   static const Field<StackNode, AlignmentEnum> _f$alignment =
       Field('alignment', _$alignment, opt: true, def: AlignmentEnum.topLeft);
-  static List<STreeNode> _$children(StackNode v) => v.children;
-  static const Field<StackNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(StackNode v) => v.children;
+  static const Field<StackNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(StackNode v) => v.uid;
   static const Field<StackNode, String> _f$uid =
@@ -48,11 +48,6 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
   static const Field<StackNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(StackNode v) =>
-      v.nodeWidgetGK;
-  static const Field<StackNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<StackNode> fields = const {
@@ -63,7 +58,6 @@ class StackNodeMapper extends SubClassMapperBase<StackNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -132,14 +126,13 @@ extension StackNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, StackNode, $Out> {
 abstract class StackNodeCopyWith<$R, $In extends StackNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {StackFitEnum? fit,
       ClipEnum? clipBehavior,
       AlignmentEnum? alignment,
-      List<STreeNode>? children});
+      List<SNode>? children});
   StackNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -152,15 +145,15 @@ class _StackNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<StackNode> $mapper =
       StackNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {StackFitEnum? fit,
           ClipEnum? clipBehavior,
           AlignmentEnum? alignment,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (fit != null) #fit: fit,
         if (clipBehavior != null) #clipBehavior: clipBehavior,

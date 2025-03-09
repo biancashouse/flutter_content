@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 
 import 'model_repo.dart';
 
 late FirebaseApp fbApp;
-late FirebaseStorage fbStorage;
+
+List<SnippetName> alreadyRequestedSnippetInfoNames = [];
 
 class FireStoreModelRepository implements IModelRepository {
   final FirebaseOptions? fbOptions;
@@ -17,12 +17,11 @@ class FireStoreModelRepository implements IModelRepository {
 
   Future<FirebaseApp> possiblyInitFireStoreRelatedAPIs(
       {bool useEmulator = false}) async {
-    fco.logi(
-        'possiblyInitFireStoreRelatedAPIs start. ${fco.stopwatch.elapsedMilliseconds}');
+    // fco.logger.i('possiblyInitFireStoreRelatedAPIs start. ${fco.stopwatch.elapsedMilliseconds}');
     try {
-      fco.logi('init FB... ${fco.stopwatch.elapsedMilliseconds}');
+      // fco.logger.i('init FB... ${fco.stopwatch.elapsedMilliseconds}');
       fbApp = await Firebase.initializeApp(options: fbOptions);
-      fco.logi('init FB done. ${fco.stopwatch.elapsedMilliseconds}');
+      // fco.logger.i('init FB done. ${fco.stopwatch.elapsedMilliseconds}');
       // emulator if in non-prod mode
       if (useEmulator) {
         FirebaseFirestore.instance.settings = Settings(
@@ -32,18 +31,9 @@ class FireStoreModelRepository implements IModelRepository {
         );
       }
     } catch (e) {
-      fco.loge(e.toString());
+      fco.logger.e('possiblyInitFireStoreRelatedAPIs', error:e);
     }
 
-    // firebase storage
-
-    fbStorage = FirebaseStorage.instance;
-    final config = FirebaseUIStorageConfiguration(
-      storage: fbStorage,
-    );
-    await FirebaseUIStorage.configure(config);
-    fco.logi(
-        'possiblyInitFireStoreRelatedAPIs end. ${fco.stopwatch.elapsedMilliseconds}');
     return fbApp;
   }
 
@@ -54,15 +44,15 @@ class FireStoreModelRepository implements IModelRepository {
   //       /*.where("capital", isEqualTo: true)*/ .get()
   //       .then(
   //     (querySnapshot) {
-  //       print("Successfully completed");
+  //       fco.logger.i("Successfully completed");
   //       for (var docSnapshot in querySnapshot.docs) {
-  //         print('${docSnapshot.id} => ${docSnapshot.data()}');
+  //         fco.logger.d('${docSnapshot.id} => ${docSnapshot.data()}');
   //         Map<String, dynamic> data =
   //             docSnapshot.data() as Map<String, dynamic>;
   //         return SnippetRootNodeMapper.fromMap(data);
   //       }
   //     },
-  //     onError: (e) => print("Error completing: $e"),
+  //     onError: (e) => fco.logger.i("Error completing: $e"),
   //   );
   //   DocumentReference versionedSnippetDocRef = versionsRef.doc(versionId);
   //   var snap = await versionedSnippetDocRef.get();
@@ -74,20 +64,39 @@ class FireStoreModelRepository implements IModelRepository {
   // }
 
   @override
-  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB(
-      {required SnippetName snippetName}) async {
-    // may be already in cache
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
-    if (snippetInfo != null) {
-      // if (FCO.currentSnippet(snippetName) != null) {
-      return snippetInfo;
+  Future<SnippetInfoModel?> getSnippetInfoFromCacheOrFB({required SnippetName snippetName}) async {
+    SnippetInfoModel? snippetInfo;
+
+    // if already requested this snippet info, then possibly wait to get it from the cache
+    if (alreadyRequestedSnippetInfoNames.contains(snippetName)) {
+      // try a max of 3 times, i.e. up to 3s wait then give up
+      for (int i=0; i<3; i++) {
+        snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+        if (snippetInfo != null) {
+          // if (FCO.currentSnippet(snippetName) != null) {
+          return snippetInfo;
+        } else {
+          await Future.delayed(Duration(milliseconds: 1000));
+        }
+      }
+    } else {
+      alreadyRequestedSnippetInfoNames.add(snippetName);
     }
 
-    fco.logi('--- LOADING SNIPPET INFO FROM FB ----------');
-    fco.logi('--- snippet ($snippetName)  ---------------');
-    fco.logi('-------------------------------------------');
+    // // may be already in cache
+    // SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    // if (snippetInfo != null) {
+    //   // if (FCO.currentSnippet(snippetName) != null) {
+    //   return snippetInfo;
+    // }
 
-    fco.snippetsBeingReadFromFB.add(snippetName);
+    if (fco.snippetsBeingReadFromFB.contains(snippetName)) {
+      // fco.logger.i(
+      //     '--- STILL LOADING SNIPPET INFO ($snippetName) FROM FB ----------');
+    } else {
+      // fco.logger.i('--- LOADING SNIPPET INFO ($snippetName) FROM FB ----------');
+      fco.snippetsBeingReadFromFB.add(snippetName);
+    }
 
     DocumentReference snippetInfoDocRef =
         appDocRef.collection('snippets').doc(snippetName);
@@ -97,9 +106,11 @@ class FireStoreModelRepository implements IModelRepository {
         final data = snippetInfoDoc.data() as Map<String, dynamic>;
         snippetInfo = SnippetInfoModelMapper.fromMap(data);
         // set or update cache
+
         SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
+        // fco.logger.i('$snippetName CACHED ----------');
       } catch (e) {
-        print(e);
+        fco.logger.e('', error:e);
       }
       // populate snippetInfo with its version ids
       try {
@@ -111,12 +122,13 @@ class FireStoreModelRepository implements IModelRepository {
         snippetInfo?.cachedVersionIds = [...versionIds];
       } catch (e) {
         // Handle errors
-        print(e.toString());
+        fco.logger.w(e.toString());
       }
     }
+
     fco.snippetsBeingReadFromFB.remove(snippetName);
 
-    fco.logi('--- versions: ${snippetInfo?.cachedVersions.toString()}');
+    // fco.logger.i('--- versions: ${snippetInfo?.cachedVersions.toString()}');
 
     return snippetInfo;
   }
@@ -132,18 +144,15 @@ class FireStoreModelRepository implements IModelRepository {
 
     if (version != null) {
       // ALREADY IN CACHE
-      fco.logi('--- snippet (${snippetInfo.name}) version $versionId ------');
-      fco.logi('--- Already in Cache. -------------------------------------');
+      fco.logger.i('--- snippet (${snippetInfo.name}) version $versionId ------\n'
+          '--- Already in Cache. -------------------------------------');
       return version;
     }
 
-    fco.logi('--- LOADING SNIPPET INTO CACHE ------------------------------');
-    fco.logi('--- snippet (${snippetInfo.name}) version $versionId --------');
-    fco.logi('-------------------------------------------------------------');
+    // fco.logger.i('--- LOADING FB SNIPPET (${snippetInfo.name}) version $versionId INTO CACHE --------');
 
     // read snippet properties (saving then restoring the transient props)
-    DocumentReference snippetInfoDocRef =
-        appDocRef.collection('snippets').doc(snippetInfo.name);
+    DocumentReference snippetInfoDocRef = appDocRef.collection('snippets').doc(snippetInfo.name);
     // DocumentSnapshot snippetInfoDoc = await snippetInfoDocRef.get();
     // if (snippetInfoDoc.exists) {
     try {
@@ -159,13 +168,14 @@ class FireStoreModelRepository implements IModelRepository {
           version = SnippetRootNodeMapper.fromMap(data);
           // cache it
           snippetInfo.cachedVersions[versionId] = version;
-          fco.logi('--- LOADED--------------------------------------------');
+          // fco.logger.i(
+          //     '--- ${snippetInfo.name} LOADED---');
         } catch (e) {
-          print(e);
+          fco.logger.e('', error:e);
         }
       }
     } catch (e) {
-      print(e);
+      fco.logger.e('', error:e);
     }
     // }
     return version;
@@ -181,10 +191,10 @@ class FireStoreModelRepository implements IModelRepository {
         final data = doc.data() as Map<String, dynamic>;
         return data['latest'];
       } catch (e) {
-        print(e);
+        fco.logger.e('', error:e);
       }
     } else {
-      fco.logi("gcr-bh-apps-dart doc does not exist.");
+      fco.logger.i("gcr-bh-apps-dart doc does not exist.");
       return null;
     }
     return null;
@@ -200,10 +210,10 @@ class FireStoreModelRepository implements IModelRepository {
         AppInfoModel result = AppInfoModelMapper.fromMap(data);
         return result;
       } catch (e) {
-        print(e);
+        fco.logger.e('', error:e);
       }
     } else {
-      fco.logi("getAppInfo doc does not exist.");
+      fco.logger.i("getAppInfo doc does not exist.");
       return AppInfoModel();
     }
     return null;
@@ -211,6 +221,8 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   Future<void> saveAppInfo() async {
+    fco.appInfo.textStyles = fco.namedTextStyles;
+    fco.appInfo.buttonStyles = fco.namedButtonStyles;
     var map = fco.appInfoAsMap;
     await appDocRef.set(
       map,
@@ -226,8 +238,7 @@ class FireStoreModelRepository implements IModelRepository {
     required VersionId newVersionId,
     required SnippetRootNode newVersion,
   }) async {
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return false;
 
     // create the actual version doc
@@ -239,10 +250,10 @@ class FireStoreModelRepository implements IModelRepository {
           .doc(newVersionId)
           .set(newVersion.toMap()..addAll({'name': snippetName}));
 
-      fco.logi('--- SAVED --------------------------------------------------');
-      fco.logi('wrote snippet ($snippetName) version to FB:');
-      fco.logi('versionId: $newVersionId');
-      fco.logi('------------------------------------------------------------');
+      fco.logger.i('--- SAVED --------------------------------------------------');
+      fco.logger.i('wrote snippet ($snippetName) version to FB:');
+      fco.logger.i('versionId: $newVersionId');
+      fco.logger.i('------------------------------------------------------------');
 
       // set the snippet properties
       // await snippetInfoDocRef.set(snippetInfo!.toMap());
@@ -261,14 +272,15 @@ class FireStoreModelRepository implements IModelRepository {
 
       return true;
     } catch (e) {
-      print(e);
+      fco.logger.e('', error:e);
       return false;
     }
   }
 
   @override
   Future<void> deleteSnippet(final String snippetName) async {
-    DocumentReference snippetDocRef = appDocRef.collection('snippets').doc(snippetName);
+    DocumentReference snippetDocRef =
+        appDocRef.collection('snippets').doc(snippetName);
     snippetDocRef.delete();
   }
 
@@ -295,8 +307,7 @@ class FireStoreModelRepository implements IModelRepository {
   }) async {
     // var fc = FC();
 
-    SnippetInfoModel? snippetInfo =
-        SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
     if (snippetInfo == null) return;
 
     // set the snippet properties
@@ -318,12 +329,12 @@ class FireStoreModelRepository implements IModelRepository {
       snippetInfo.publishedVersionId = publishingVersionId;
     }
 
-    fco.logi('--- UPDATED SNIPPET PROPERTIES ------------------------------');
-    fco.logi('wrote snippet ($snippetName) properties to FB:');
-    fco.logi('editing: ${snippetInfo.editingVersionId}');
-    fco.logi('published: ${snippetInfo.publishedVersionId}');
-    fco.logi('autoPublish: ${snippetInfo.autoPublish}');
-    fco.logi('-------------------------------------------------------------');
+    fco.logger.i('--- UPDATED SNIPPET PROPERTIES ------------------------------');
+    fco.logger.i('wrote snippet ($snippetName) properties to FB:');
+    fco.logger.i('editing: ${snippetInfo.editingVersionId}');
+    fco.logger.i('published: ${snippetInfo.publishedVersionId}');
+    fco.logger.i('autoPublish: ${snippetInfo.autoPublish}');
+    fco.logger.i('-------------------------------------------------------------');
   }
 
   @override
@@ -346,14 +357,14 @@ class FireStoreModelRepository implements IModelRepository {
             optionCountsMap[key] = intValue;
           } else {
             // Handle the case where the value cannot be converted to int
-            fco.logi(
+            fco.logger.i(
                 "Warning: Value for key '$key' cannot be converted to int.");
           }
         } else if (value is double) {
           optionCountsMap[key] = value.toInt();
         } else {
           // Handle the case where the value is of an unsupported type
-          fco.logi("Warning: Value for key '$key' is of unsupported type.");
+          fco.logger.i("Warning: Value for key '$key' is of unsupported type.");
         }
       });
       return optionCountsMap;
@@ -386,7 +397,7 @@ class FireStoreModelRepository implements IModelRepository {
 //   //   DocumentSnapshot snap = await voterDocRef.get();
 //   //   if (snap.exists) {
 //   //     Map<String, dynamic> data = snap.data() as Map<String, dynamic>;
-//   //     fco.logi("user voted ${data['when']}");
+//   //     fco.logger.i("user voted ${data['when']}");
 //   //     userVotedForOption = pollOptionId;
 //   //   }
 //   // }
@@ -467,7 +478,7 @@ class FireStoreModelRepository implements IModelRepository {
       Map<String, dynamic> voterData = snap.data() as Map<String, dynamic>;
       Timestamp when = voterData['when'];
       PollOptionId votedFor = voterData['option-id'];
-      fco.logi('already voted for option $votedFor,  $when');
+      fco.logger.i('already voted for option $votedFor,  $when');
     }
   }
 
@@ -525,12 +536,12 @@ class FireStoreModelRepository implements IModelRepository {
 //     final usersSnapshot = await fromUsersRef.get();
 //     for (final document in usersSnapshot.docs) {
 //       await toCollectionRef.doc(document.id).set(document.data());
-//       print('Document ${document.id} migrated successfully');
+//       fco.logger.d('Document ${document.id} migrated successfully');
 //     }
 //     // Optionally delete the old collection after migration
 //     // await oldCollectionRef.doc(document.id).delete();
 //   } catch (e) {
-//     print('Error during migration: $e');
+//     fco.logger.w('Error during migration: $e');
 //     // Handle errors appropriately
 //   }
 // }
@@ -562,12 +573,12 @@ class FireStoreModelRepository implements IModelRepository {
 //         bhFs.collection('/apps/algc/fs-users/${fromUserDoc.id}/flowcharts');
 //         await toUserFlowchartsRef.doc(fromFlowchartDoc.id).set(fromFlowchartDoc.data());
 //       }
-//       print('Document ${fromUserDoc.id} migrated successfully');
+//       fco.logger.d('Document ${fromUserDoc.id} migrated successfully');
 //     }
 //     // Optionally delete the old collection after migration
 //     // await oldCollectionRef.doc(document.id).delete();
 //   } catch (e) {
-//     print('Error during migration: $e');
+//     fco.logger.w('Error during migration: $e');
 //     // Handle errors appropriately
 //   }
 // }
@@ -583,12 +594,12 @@ class FireStoreModelRepository implements IModelRepository {
 //     final flowchartsSnapshot = await fromUserFlowchartsRef.get();
 //     for (final flowchartDoc in flowchartsSnapshot.docs) {
 //       await toUserFlowchartsRef.doc(flowchartDoc.id).set(flowchartDoc.data());
-//       print('Flowchart Document ${flowchartDoc.id} copied successfully');
+//       fco.logger.d('Flowchart Document ${flowchartDoc.id} copied successfully');
 //     }
 //     // Optionally delete the old collection after migration
 //     // await oldCollectionRef.doc(document.id).delete();
 //   } catch (e) {
-//     print('Error during migration: $e');
+//     fco.logger.w('Error during migration: $e');
 //     // Handle errors appropriately
 //   }
 // }
@@ -604,7 +615,7 @@ class FireStoreModelRepository implements IModelRepository {
 //   final usersSnapshot = await users.get();
 //
 //   for (final user in usersSnapshot.docs) {
-//     print(user.data());
+//     fco.logger.i(user.data());
 //   }
 // }
 
@@ -617,12 +628,12 @@ class FireStoreModelRepository implements IModelRepository {
 //     final querySnapshot =await oldCollectionRef.get();
 //     for (final document in querySnapshot.docs) {
 //       await newCollectionRef.doc(document.id).set(document.data());
-//       print('Document ${document.id} migrated successfully');
+//       fco.logger.d('Document ${document.id} migrated successfully');
 //     }
 //     // Optionally delete the old collection after migration
 //     // await oldCollectionRef.doc(document.id).delete();
 //   } catch (e) {
-//     print('Error during migration: $e');
+//     fco.logger.w('Error during migration: $e');
 //     // Handle errors appropriately
 //   }
 // }

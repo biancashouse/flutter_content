@@ -14,7 +14,7 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AspectRatioNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,8 +25,8 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static double _$aspectRatio(AspectRatioNode v) => v.aspectRatio;
   static const Field<AspectRatioNode, double> _f$aspectRatio =
       Field('aspectRatio', _$aspectRatio, opt: true, def: 1.0);
-  static STreeNode? _$child(AspectRatioNode v) => v.child;
-  static const Field<AspectRatioNode, STreeNode> _f$child =
+  static SNode? _$child(AspectRatioNode v) => v.child;
+  static const Field<AspectRatioNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(AspectRatioNode v) => v.uid;
   static const Field<AspectRatioNode, String> _f$uid =
@@ -39,11 +39,6 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
   static const Field<AspectRatioNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(AspectRatioNode v) =>
-      v.nodeWidgetGK;
-  static const Field<AspectRatioNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<AspectRatioNode> fields = const {
@@ -52,7 +47,6 @@ class AspectRatioNodeMapper extends SubClassMapperBase<AspectRatioNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -121,9 +115,9 @@ extension AspectRatioNodeValueCopy<$R, $Out>
 abstract class AspectRatioNodeCopyWith<$R, $In extends AspectRatioNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? aspectRatio, STreeNode? child});
+  $R call({double? aspectRatio, SNode? child});
   AspectRatioNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -137,7 +131,7 @@ class _AspectRatioNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AspectRatioNode> $mapper =
       AspectRatioNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({double? aspectRatio, Object? child = $none}) =>

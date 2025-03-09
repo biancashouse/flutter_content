@@ -107,10 +107,12 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$autoPlay(TargetModel v) => v.autoPlay;
   static const Field<TargetModel, bool> _f$autoPlay =
       Field('autoPlay', _$autoPlay, opt: true, def: false);
-  static HotspotsNode? _$parentHotspotNode(TargetModel v) =>
-      v.parentHotspotNode;
-  static const Field<TargetModel, HotspotsNode> _f$parentHotspotNode =
-      Field('parentHotspotNode', _$parentHotspotNode, mode: FieldMode.member);
+  static TargetsWrapperNode? _$parentTargetsWrapperNode(TargetModel v) =>
+      v.parentTargetsWrapperNode;
+  static const Field<TargetModel, TargetsWrapperNode>
+      _f$parentTargetsWrapperNode = Field(
+          'parentTargetsWrapperNode', _$parentTargetsWrapperNode,
+          mode: FieldMode.member);
 
   @override
   final MappableFields<TargetModel> fields = const {
@@ -140,7 +142,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #calloutArrowColorValue: _f$calloutArrowColorValue,
     #animateArrow: _f$animateArrow,
     #autoPlay: _f$autoPlay,
-    #parentHotspotNode: _f$parentHotspotNode,
+    #parentTargetsWrapperNode: _f$parentTargetsWrapperNode,
   };
 
   static TargetModel _instantiate(DecodingData data) {

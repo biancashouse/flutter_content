@@ -52,14 +52,6 @@ class FSImageNodeMapper extends SubClassMapperBase<FSImageNode> {
   static const Field<FSImageNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(FSImageNode v) =>
-      v.nodeWidgetGK;
-  static const Field<FSImageNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
-  static Uint8List? _$cachedPngBytes(FSImageNode v) => v.cachedPngBytes;
-  static const Field<FSImageNode, Uint8List> _f$cachedPngBytes =
-      Field('cachedPngBytes', _$cachedPngBytes, mode: FieldMode.member);
 
   @override
   final MappableFields<FSImageNode> fields = const {
@@ -72,8 +64,6 @@ class FSImageNodeMapper extends SubClassMapperBase<FSImageNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
-    #cachedPngBytes: _f$cachedPngBytes,
   };
 
   @override

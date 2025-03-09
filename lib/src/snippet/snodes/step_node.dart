@@ -20,7 +20,7 @@ class StepNode extends CL with StepNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [];
 
   Step toStep(BuildContext context, int index, FCStepperState parent) {
     setParent(parent.widget.stepperNode);

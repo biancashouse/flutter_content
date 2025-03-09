@@ -17,8 +17,8 @@ class AlignNode extends SC with AlignNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<AlignmentEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
@@ -55,19 +55,19 @@ class AlignNode extends SC with AlignNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
       return Align(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             alignment: alignment.flutterValue,
             child: child?.toWidget(context, this),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

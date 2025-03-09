@@ -5,58 +5,107 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 
-import '../pnodes/groups/text_style_group.dart';
+import '../pnodes/groups/text_style_properties.dart';
 
 part 'text_node.mapper.dart';
+
+class TextStyleHook extends MappingHook {
+  const TextStyleHook();
+
+  @override
+  Object? beforeDecode(Object? value) {
+    return value ?? {'tsPropGroup': TextStyleProperties().toJson()};
+  }
+}
 
 @MappableClass()
 class TextNode extends CL with TextNodeMappable {
   String text;
-  TextStyleGroup? textStyleGroup;
+  @MappableField(hook: TextStyleHook())
+  TextStyleProperties
+      tsPropGroup; // always store group, even if its pros are all null
   TextAlignEnum? textAlign;
 
   TextNode({
     this.text = '',
-    this.textStyleGroup,
+    required this.tsPropGroup,
     this.textAlign,
-  });
+  }) {
+    // fco.logger.i('TextNode(uid:$uid) created');
+  }
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
-          snode: this,
-          name: 'text',
-          // options: ['aardvark', 'blah', 'apple', 'oranges', 'bananas', 'grapes', 'coconut'],
-          nameOnSeparateLine: true,
-          expands: true,
-          numLines: 3,
-          stringValue: text,
-          onStringChange: (newValue) {
-            refreshWithUpdate(() => text = newValue??'');
-          },
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 300,
-        ),
-        TextStylePropertyGroup(
+  TextStyleProperties? textStyleProperties() => tsPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) =>
+      tsPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    return [
+      StringPNode(
+        snode: this,
+        name: 'text',
+        // options: ['aardvark', 'blah', 'apple', 'oranges', 'bananas', 'grapes', 'coconut'],
+        nameOnSeparateLine: true,
+        expands: true,
+        numLines: 3,
+        stringValue: text,
+        onStringChange: (newValue) {
+          refreshWithUpdate(() => text = newValue ?? '');
+        },
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 300,
+      ),
+      // if (parentSNode is! TabBarNode)
+      //   StringPNode(
+      //     snode: this,
+      //     name: 'textStyle name',
+      //     stringValue: textStyleName,
+      //     onStringChange: (newValue) {
+      //       refreshWithUpdate(() => textStyleName = newValue);
+      //     },
+      //     options: fco.namedTextStyles.keys.toList(),
+      //     calloutButtonSize: const Size(280, 70),
+      //     calloutWidth: 280,
+      //   ),
+      if (parentSNode is! TabBarNode && parentSNode is! ButtonNode)
+        TextStylePNode /*Group*/ (
           snode: this,
           name: 'textStyle',
-          textStyleGroup: textStyleGroup,
-          onGroupChange: (newValue) => refreshWithUpdate(() => textStyleGroup = newValue),
+          textStyleProperties: tsPropGroup,
+          onGroupChange: (newValue) =>
+              refreshWithUpdate(() => tsPropGroup = newValue),
         ),
-        EnumPropertyValueNode<TextAlignEnum?>(
+      if (parentSNode is TabBarNode)
+        FYIPNode(
+            fyiMsg: "for text styling see\nparent TabBar's labelStyle",
+            snode: this,
+            name: 'fyi'),
+      if (parentSNode is ButtonNode)
+        FYIPNode(
+            fyiMsg:
+                "for text styling see parent Button's\nButtonStyle, which has a TextStyle",
+            snode: this,
+            name: 'fyi'),
+      if (parentSNode is! ButtonNode && parentSNode?.getParent() is! AppBarNode)
+        EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => textAlign = TextAlignEnum.of(newValue)),
+          onIndexChange: (newValue) =>
+              refreshWithUpdate(() => textAlign = TextAlignEnum.of(newValue)),
         ),
-      ];
+    ];
+  }
 
   // @override
   // List<PTreeNode> properties() => [ PropertyGroup(snode: this,
   //       toString: 'Text properties',
   //
   //       children: [
-  //         StringPropertyValueNode(
+  //         StringPNode(
   //             toString: 'text',
   //             labelOnSeparateLine: true,
   //             stringValue: text,
@@ -67,18 +116,18 @@ class TextNode extends CL with TextNodeMappable {
   //             calloutSize: const Size(200, 240)),
   //         TextStylePropertyGroup(snode: this,
   //           toString: 'textStyle',
-  //           textStyleGroup: textStyleGroup,
-  //           onGroupChange: (newValue) => textStyleGroup = newValue,
+  //           textStyleProperties: textStyleProperties,
+  //           onGroupChange: (newValue) => textStyleProperties = newValue,
   //
   //         ),
-  //         StringPropertyValueNode(
+  //         StringPNode(
   //           toString: 'namedTextStyle',
   //           stringValue: namedTextStyle,
   //           onStringChange: (newValue) => namedTextStyle = newValue,
   //           expands: false,
   //           calloutSize: const Size(200, 64),
   //         ),
-  //         EnumPropertyValueNode<TextAlignEnum?>(
+  //         EnumPNode<TextAlignEnum?>(
   //           toString: 'textAlign',
   //           valueIndex: textAlign?.index,
   //           onIndexChange: (newValue) {
@@ -178,7 +227,7 @@ class TextNode extends CL with TextNodeMappable {
   //                             value: textStyle?.fontStyle == FontStyleEnum.italic,
   //                             fillColor: const WidgetStatePropertyAll(Colors.purple),
   //                             onChanged: (bool? isChecked) {
-  //                               fco.logi("checked: $isChecked");
+  //                               fco.logger.i("checked: $isChecked");
   //                               textStyle ??= TextStyleNodeProperty();
   //                               textStyle!.fontStyle = (isChecked ?? false) ? FontStyleEnum.italic : null;
   //                               bloc.add(const CAPIEvent.forceRefresh());
@@ -240,33 +289,35 @@ class TextNode extends CL with TextNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
-    TextStyle? ts = textStyleGroup?.toTextStyle(context);
+
     try {
       Text t = Text(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         text,
-        style: ts,
+        style: tsPropGroup.toTextStyle(context),
         textAlign: textAlign?.flutterValue,
       );
       return t;
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
-      return  Error(key: createNodeGK(), FLUTTER_TYPE, errorMsg: e.toString());
+      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      return Error(
+          key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
     }
   }
 
-  // @override
-  // String toSource(BuildContext context) {
-  //   return '''Text(
-  //       $text,
-  //       style: ${textStyle?.toSource(context, namedTextStyle: namedTextStyle)},
-  //       textAlign: ${textAlign?.toSource()},
-  //     )''';
-  // }
+// @override
+// String toSource(BuildContext context) {
+//   return '''Text(
+//       $text,
+//       style: ${textStyle?.toSource(context, namedTextStyle: namedTextStyle)},
+//       textAlign: ${textAlign?.toSource()},
+//     )''';
+// }
 
   @override
   String toString() => FLUTTER_TYPE;

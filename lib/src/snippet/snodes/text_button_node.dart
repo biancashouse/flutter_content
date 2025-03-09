@@ -3,8 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 
 part 'text_button_node.mapper.dart';
 
@@ -15,7 +15,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
     super.template,
     super.destinationPanelOrPlaceholderName,
     super.destinationSnippetName,
-    super.buttonStyle,
+    required super.bsPropsGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -25,10 +25,10 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => TextButton.styleFrom();
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.name(context);
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+    ScrollControllerName? scName = EditablePage.scName(context);
     try {
-      ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context, defaultButtonStyle());
+      ButtonStyle? btnStyle = bsPropsGroup?.toButtonStyle(context, defaultButtonStyle());
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
@@ -36,14 +36,14 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-      final gk = createNodeGK();
+      final gk = createNodeWidgetGK();
 
       return Container(
             // container only for possble selection gk
             key: gk,
             child: TextButton(
               // if feature specified, must be a callout
-              key: feature != null ? fco.setCalloutGk(feature!, GlobalKey()) : null,
+              key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: ()=>f?.call(context),
               style: btnStyle,
@@ -51,7 +51,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
             ),
           );
     } catch (e) {
-     return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+     return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

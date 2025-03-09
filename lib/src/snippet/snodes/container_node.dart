@@ -8,7 +8,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 
-import '../pnodes/groups/outlined_border_group.dart';
+import '../pnodes/groups/outlined_border_properties.dart';
 
 part 'container_node.mapper.dart';
 
@@ -42,7 +42,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   double? badgeHeight;
   BadgePositionEnum? badgeCorner;
   String? badgeText;
-  OutlinedBorderGroup? outlinedBorderGroup;
+  OutlinedBorderProperties? outlinedBorderGroup;
 
   ContainerNode({
     this.fillColorValues,
@@ -67,7 +67,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) {
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
     String paddingLabel = padding == null
         ? 'padding'
         : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
@@ -76,7 +76,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
 
     return [
-      SizePropertyValueNode(
+      SizePNode(
         snode: this,
         name: 'size',
         widthValue: width,
@@ -91,11 +91,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
           fco.dismissTopFeature();
         }),
       ),
-      PropertyGroup(
+      PNode/*Group*/(
         snode: this,
         name: marginLabel,
         children: [
-          EdgeInsetsPropertyValueNode(
+          EdgeInsetsPNode(
             snode: this,
             name: 'margin',
             eiValue: margin,
@@ -104,11 +104,11 @@ class ContainerNode extends SC with ContainerNodeMappable {
           ),
         ],
       ),
-      PropertyGroup(
+      PNode/*Group*/(
         snode: this,
         name: paddingLabel,
         children: [
-          EdgeInsetsPropertyValueNode(
+          EdgeInsetsPNode(
             snode: this,
             name: 'padding',
             eiValue: padding,
@@ -117,13 +117,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
           ),
         ],
       ),
-      PropertyGroup(
+      PNode/*Group*/(
         snode: this,
         name: 'decoration',
         children: [
           // SHAPE
           // FILL COLOR(s)
-          GradientPropertyValueNode(
+          GradientPNode(
             snode: this,
             name: 'fill color(s)',
             colorValues: fillColorValues,
@@ -131,14 +131,14 @@ class ContainerNode extends SC with ContainerNodeMappable {
               fillColorValues = newValues;
               // var oes = fco.OEs;
               // for (var oe in oes) {
-              //   fco.logi(oe.calloutConfig.feature);
+              //   fco.logger.i(oe.calloutConfig.feature);
               // }
               // fco.hide('easy-color-picker');
               // fco.hideOP('easy-color-picker');
             }),
           ),
           // FILL COLOR(s)
-          GradientPropertyValueNode(
+          GradientPNode(
             snode: this,
             name: 'border color(s)',
             colorValues: borderColorValues,
@@ -149,7 +149,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
               // fco.hideOP('easy-color-picker');
             }),
           ),
-          EnumPropertyValueNode<MappableDecorationShapeEnum?>(
+          EnumPNode<MappableDecorationShapeEnum?>(
             snode: this,
             name: 'shape',
             valueIndex: decoration.index,
@@ -157,7 +157,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
                 MappableDecorationShapeEnum.of(newValue) ??
                     MappableDecorationShapeEnum.rectangle),
           ),
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: this,
             name: 'thickness',
             decimalValue: borderThickness,
@@ -165,7 +165,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
                 refreshWithUpdate(() => borderThickness = newValue),
             calloutButtonSize: const Size(90, 20),
           ),
-          DecimalPropertyValueNode(
+          DecimalPNode(
             snode: this,
             name: 'radius',
             decimalValue: borderRadius,
@@ -175,7 +175,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
           ),
         ],
       ),
-      EnumPropertyValueNode<AlignmentEnum?>(
+      EnumPNode<AlignmentEnum?>(
         snode: this,
         name: 'alignment',
         valueIndex: alignment?.index,
@@ -189,20 +189,20 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //   snode: this,
       //   name: 'border properties',
       //   children: [
-      //     DecimalPropertyValueNode(
+      //     DecimalPNode(
       //       snode: this,
       //       name: 'thickness',
       //       decimalValue: borderThickness,
       //       onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
       //       calloutButtonSize: const Size(90, 30),
       //     ),
-      //     ColorPropertyValueNode(
+      //     ColorPNode(
       //       snode: this,
       //       name: 'color',
       //       colorValue: borderColorValue,
       //       onColorIntChange: (newValue) => refreshWithUpdate(() => borderColorValue = newValue),
       //     ),
-      //     DecimalPropertyValueNode(
+      //     DecimalPNode(
       //       snode: this,
       //       name: 'radius',
       //       decimalValue: borderRadius,
@@ -214,7 +214,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //       }),
       //       calloutButtonSize: const Size(70, 30),
       //     ),
-      //     OutlinedBorderPropertyGroup(
+      //     OutlinedBorderPNode/*Group*/(
       //       snode: this,
       //       name: 'OutlinedBorder...',
       //       outlinedGroup: outlinedBorderGroup,
@@ -226,18 +226,18 @@ class ContainerNode extends SC with ContainerNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
-    var gk = createNodeGK();
+    var gk = createNodeWidgetGK();
     // debugging
-    fco.afterNextBuildDo((){
-      Rect? r = gk.globalPaintBounds(
-          skipWidthConstraintWarning: true,
-          skipHeightConstraintWarning: true);
-      print("Container GK: $gk, $r");
-    });
+    // fco.afterNextBuildDo((){
+    //   Rect? r = gk.globalPaintBounds(
+    //       skipWidthConstraintWarning: true,
+    //       skipHeightConstraintWarning: true);
+    //   fco.logger.i("Container GK: $gk, $r");
+    // });
     try {
       return Container(
         key: gk,
@@ -260,7 +260,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         child: child?.toWidget(context, this),
       );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

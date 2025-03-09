@@ -13,7 +13,7 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   static InlineSpanNodeMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = InlineSpanNodeMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       TextSpanNodeMapper.ensureInitialized();
       WidgetSpanNodeMapper.ensureInitialized();
     }
@@ -34,18 +34,12 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   static const Field<InlineSpanNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(InlineSpanNode v) =>
-      v.nodeWidgetGK;
-  static const Field<InlineSpanNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<InlineSpanNode> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -53,7 +47,7 @@ class InlineSpanNodeMapper extends SubClassMapperBase<InlineSpanNode> {
   @override
   final dynamic discriminatorValue = 'InlineSpanNode';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static InlineSpanNode _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
@@ -80,7 +74,7 @@ mixin InlineSpanNodeMappable {
 }
 
 abstract class InlineSpanNodeCopyWith<$R, $In extends InlineSpanNode, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   @override
   $R call();
   InlineSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(

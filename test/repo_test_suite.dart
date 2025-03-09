@@ -11,7 +11,7 @@ void main() {
 
   late MockModelRepository mockRepo;
   late CAPIBloC capiBloc;
-  late STreeNode titleTextNode;
+  late SNode titleTextNode;
   late SnippetTreeController scaffoldWithTabsTreeC;
   late SnippetTreeController emptyTreeC;
   // late SnippetTreeUR ur;
@@ -24,13 +24,13 @@ void main() {
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {
-    // print('Setting up common resources...');
+    // fco.logger.d('Setting up common resources...');
     mockRepo = MockModelRepository();
   });
 
   // setup() runs before each test in the suite
   setUp(() async {
-    // print('Setting up resources for a test...\n\n');
+    // fco.logger.d('Setting up resources for a test...\n\n');
     mockRepo = MockModelRepository();
 
     emptyTreeC = SnippetTreeController(
@@ -71,11 +71,11 @@ void main() {
 
   // tearDown() runs after each test in the suite
   tearDown(() {
-    // print('\nTearing down resources after a test...');
+    // fco.logger.d('\nTearing down resources after a test...');
   });
 
   // tearDownAll() runs once after all tests in the suite
   tearDownAll(() {
-    // print('\nTearing down common resources...');
+    // fco.logger.d('\nTearing down common resources...');
   });
 }

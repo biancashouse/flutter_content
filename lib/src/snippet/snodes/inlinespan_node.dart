@@ -7,7 +7,7 @@ part 'inlinespan_node.mapper.dart';
 const List<Type> inlinespanSubClasses = [TextSpanNode, WidgetSpanNode];
 
 @MappableClass(discriminatorKey: 'is', includeSubClasses: inlinespanSubClasses)
-abstract class InlineSpanNode extends STreeNode with InlineSpanNodeMappable {
+abstract class InlineSpanNode extends SNode with InlineSpanNodeMappable {
   InlineSpanNode();
 
   InlineSpan toInlineSpan(BuildContext context) {
@@ -21,5 +21,5 @@ abstract class InlineSpanNode extends STreeNode with InlineSpanNodeMappable {
   // });
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => const Text('InlineSpan is a Node!');
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) => const Text('InlineSpan is a Node!');
 }

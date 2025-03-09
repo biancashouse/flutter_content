@@ -19,7 +19,7 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
       MainAxisAlignmentEnumMapper.ensureInitialized();
       MainAxisSizeEnumMapper.ensureInitialized();
       CrossAxisAlignmentEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -38,8 +38,8 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
       v.crossAxisAlignment;
   static const Field<FlexNode, CrossAxisAlignmentEnum> _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
-  static List<STreeNode> _$children(FlexNode v) => v.children;
-  static const Field<FlexNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(FlexNode v) => v.children;
+  static const Field<FlexNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(FlexNode v) => v.uid;
   static const Field<FlexNode, String> _f$uid =
@@ -52,11 +52,6 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
   static const Field<FlexNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(FlexNode v) =>
-      v.nodeWidgetGK;
-  static const Field<FlexNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<FlexNode> fields = const {
@@ -67,7 +62,6 @@ class FlexNodeMapper extends SubClassMapperBase<FlexNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -103,13 +97,12 @@ mixin FlexNodeMappable {
 abstract class FlexNodeCopyWith<$R, $In extends FlexNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {MainAxisAlignmentEnum? mainAxisAlignment,
       MainAxisSizeEnum? mainAxisSize,
       CrossAxisAlignmentEnum? crossAxisAlignment,
-      List<STreeNode>? children});
+      List<SNode>? children});
   FlexNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

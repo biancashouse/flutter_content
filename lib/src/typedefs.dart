@@ -26,6 +26,8 @@ typedef UMLRecord = ({
 });
 
 typedef TextStyleName = String;
+typedef ButtonStyleName = String;
+typedef GoogleFontName = String;
 typedef SnippetName = String;
 typedef BucketName = String;
 typedef BranchName = String;
@@ -61,7 +63,6 @@ typedef VersionedSnippet = (VersionId, SnippetRootNode);
 // typedef EncodedJson = String;
 typedef SnippetMap = Map<SnippetName, SnippetRootNode>;
 // typedef EncodedSnippetJson = String;
-// typedef JsonMap = Map<String, dynamic>;
 // typedef SizeFunc = Size Function();
 // typedef PosFunc = Offset Function();
 
@@ -76,9 +77,12 @@ typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();
 typedef CAPIBlocFunc = CAPIBloC Function();
 
-typedef GksByFeature = Map<Feature, GlobalKey>;
+typedef GksByFeature = Map<CalloutId, GlobalKey>;
 typedef GksByTargetId = Map<TargetId, GlobalKey>;
-typedef FeatureList = List<Feature>;
+typedef FeatureList = List<CalloutId>;
+
+typedef TextStyleNameChangeCallback = void Function(String? selectedSuggestion);
+typedef SuggestionSelectionCallback = void Function(String selectedSuggestion);
 
 // typedef FeaturedWidgetHelpContentBuilder = Widget Function(
 //     BuildContext context, FeaturedWidget? parent);

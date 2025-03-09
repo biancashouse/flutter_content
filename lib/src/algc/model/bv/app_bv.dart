@@ -24,7 +24,7 @@
 //       result = serializers.deserializeWith(AppBV.serializer, json.decode(jsonString));
 //     } catch (e) {
 //       // ignore: avoid_print
-//       fco.logi(e.toString());
+//       fco.logger.i(e.toString());
 //     }
 //     return result;
 //   }

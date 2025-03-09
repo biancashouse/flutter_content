@@ -20,15 +20,15 @@ class PositionedNode extends SC with PositionedNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'top',
           decimalValue: top,
           onDoubleChange: (newValue) => refreshWithUpdate(() => top = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'left',
           decimalValue: left,
@@ -36,7 +36,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
               refreshWithUpdate(() => left = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'bottom',
           decimalValue: bottom,
@@ -44,7 +44,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
               refreshWithUpdate(() => bottom = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'right',
           decimalValue: right,
@@ -55,12 +55,12 @@ class PositionedNode extends SC with PositionedNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     return Positioned(
-      key: createNodeGK(),
+      key: createNodeWidgetGK(),
       top: top,
       left: left,
       bottom: bottom,

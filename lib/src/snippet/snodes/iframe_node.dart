@@ -24,8 +24,8 @@ class IFrameNode extends CL with IFrameNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        // StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        // StringPNode(
         //   snode: this,
         //   name: 'name',
         //   stringValue: name,
@@ -33,7 +33,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
         //   calloutButtonSize: const Size(280, 70),
         //   calloutSize: const Size(280, 80),
         // ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'src',
           stringValue: src,
@@ -41,7 +41,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'iframeWidth',
           decimalValue: iframeWidth,
@@ -49,7 +49,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
               refreshWithUpdate(() => iframeWidth = newValue ?? 800),
           calloutButtonSize: const Size(160, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'iframeHeight',
           decimalValue: iframeHeight,
@@ -113,7 +113,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -126,7 +126,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
                   ? extractUrlFromIframe(src!)!
                   : src!;
       return Center(
-                  key: createNodeGK(),
+                  key: createNodeWidgetGK(),
                   child: IFrame(
                     //name: name,
                     // src: src ??
@@ -138,7 +138,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
                   ),
                 );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

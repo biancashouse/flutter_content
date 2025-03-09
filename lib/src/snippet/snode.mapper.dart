@@ -6,13 +6,13 @@
 
 part of 'snode.dart';
 
-class STreeNodeMapper extends ClassMapperBase<STreeNode> {
-  STreeNodeMapper._();
+class SNodeMapper extends ClassMapperBase<SNode> {
+  SNodeMapper._();
 
-  static STreeNodeMapper? _instance;
-  static STreeNodeMapper ensureInitialized() {
+  static SNodeMapper? _instance;
+  static SNodeMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = STreeNodeMapper._());
+      MapperContainer.globals.use(_instance = SNodeMapper._());
       ScaffoldNodeMapper.ensureInitialized();
       AppBarNodeMapper.ensureInitialized();
       SCMapper.ensureInitialized();
@@ -24,58 +24,52 @@ class STreeNodeMapper extends ClassMapperBase<STreeNode> {
   }
 
   @override
-  final String id = 'STreeNode';
+  final String id = 'SNode';
 
-  static String _$uid(STreeNode v) => v.uid;
-  static const Field<STreeNode, String> _f$uid =
+  static String _$uid(SNode v) => v.uid;
+  static const Field<SNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
-  static bool _$isExpanded(STreeNode v) => v.isExpanded;
-  static const Field<STreeNode, bool> _f$isExpanded =
+  static bool _$isExpanded(SNode v) => v.isExpanded;
+  static const Field<SNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
-  static bool? _$hidePropertiesWhileDragging(STreeNode v) =>
+  static bool? _$hidePropertiesWhileDragging(SNode v) =>
       v.hidePropertiesWhileDragging;
-  static const Field<STreeNode, bool> _f$hidePropertiesWhileDragging = Field(
+  static const Field<SNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(STreeNode v) =>
-      v.nodeWidgetGK;
-  static const Field<STreeNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
-  final MappableFields<STreeNode> fields = const {
+  final MappableFields<SNode> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
-  static STreeNode _instantiate(DecodingData data) {
+  static SNode _instantiate(DecodingData data) {
     throw MapperException.missingSubclass(
-        'STreeNode', 'snode', '${data.value['snode']}');
+        'SNode', 'snode', '${data.value['snode']}');
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static STreeNode fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<STreeNode>(map);
+  static SNode fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SNode>(map);
   }
 
-  static STreeNode fromJson(String json) {
-    return ensureInitialized().decodeJson<STreeNode>(json);
+  static SNode fromJson(String json) {
+    return ensureInitialized().decodeJson<SNode>(json);
   }
 }
 
-mixin STreeNodeMappable {
+mixin SNodeMappable {
   String toJson();
   Map<String, dynamic> toMap();
-  STreeNodeCopyWith<STreeNode, STreeNode, STreeNode> get copyWith;
+  SNodeCopyWith<SNode, SNode, SNode> get copyWith;
 }
 
-abstract class STreeNodeCopyWith<$R, $In extends STreeNode, $Out>
+abstract class SNodeCopyWith<$R, $In extends SNode, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   $R call();
-  STreeNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  SNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

@@ -17,7 +17,7 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
       AxisEnumMapper.ensureInitialized();
       WrapAlignmentEnumMapper.ensureInitialized();
       WrapCrossAlignmentEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -44,8 +44,8 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
       v.crossAxisAlignment;
   static const Field<WrapNode, WrapCrossAlignmentEnum> _f$crossAxisAlignment =
       Field('crossAxisAlignment', _$crossAxisAlignment, opt: true);
-  static List<STreeNode> _$children(WrapNode v) => v.children;
-  static const Field<WrapNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(WrapNode v) => v.children;
+  static const Field<WrapNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(WrapNode v) => v.uid;
   static const Field<WrapNode, String> _f$uid =
@@ -58,11 +58,6 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
   static const Field<WrapNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(WrapNode v) =>
-      v.nodeWidgetGK;
-  static const Field<WrapNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<WrapNode> fields = const {
@@ -76,7 +71,6 @@ class WrapNodeMapper extends SubClassMapperBase<WrapNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -147,8 +141,7 @@ extension WrapNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, WrapNode, $Out> {
 abstract class WrapNodeCopyWith<$R, $In extends WrapNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {AxisEnum? direction,
@@ -157,7 +150,7 @@ abstract class WrapNodeCopyWith<$R, $In extends WrapNode, $Out>
       WrapAlignmentEnum? alignment,
       WrapAlignmentEnum? runAlignment,
       WrapCrossAlignmentEnum? crossAxisAlignment,
-      List<STreeNode>? children});
+      List<SNode>? children});
   WrapNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -170,9 +163,9 @@ class _WrapNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<WrapNode> $mapper =
       WrapNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {AxisEnum? direction,
@@ -181,7 +174,7 @@ class _WrapNodeCopyWithImpl<$R, $Out>
           Object? alignment = $none,
           Object? runAlignment = $none,
           Object? crossAxisAlignment = $none,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (direction != null) #direction: direction,
         if (spacing != $none) #spacing: spacing,

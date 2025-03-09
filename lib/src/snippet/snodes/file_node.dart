@@ -48,8 +48,8 @@ class FileNode extends CL with FileNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -58,7 +58,7 @@ class FileNode extends CL with FileNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'src',
           stringValue: src,
@@ -90,13 +90,13 @@ class FileNode extends CL with FileNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
       return SizedBox(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             width: 200,
             height: 30,
             child: Row(
@@ -112,7 +112,7 @@ class FileNode extends CL with FileNodeMappable {
             ),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

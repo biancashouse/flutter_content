@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:bh_shared/bh_shared.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
 import 'package:flutter_content/src/algc/widgets/painters/paint_helper.dart';
 
@@ -17,11 +17,11 @@ class StepPainter extends CustomPainter with WidgetHelperMixin {
     double y;
     double radius;
 
-    //fco.logi('*** PAINT ${_step.stepType} - ${_step.key} ***');
+    //fco.logger.i('*** PAINT ${_step.stepType} - ${_step.key} ***');
 
     if (model.parentListType == SUCCEED_STEPS) {
 //      List<StepM> parentSteps = _step.getParentList();
-      //fco.logi('parent steps: ${parentSteps.length}');
+      //fco.logger.i('parent steps: ${parentSteps.length}');
     }
 
     switch (model.shape) {

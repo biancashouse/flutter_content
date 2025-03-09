@@ -128,8 +128,8 @@ line 3
 """});
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'data',
           nameOnSeparateLine: true,
@@ -145,13 +145,13 @@ line 3
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
       return Markdown(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             data: data,
             styleSheet: MarkdownStyleSheet(
               h1: const TextStyle(color: Colors.red),
@@ -168,14 +168,14 @@ line 3
                     throw Exception('Could not launch $href');
                   }
                 } catch (e) {
-                  print('Following exception ignored:');
-                  print(e);
+                  fco.logger.d('Following exception ignored:');
+                  fco.logger.e('', error:e);
                 }
               }
             },
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

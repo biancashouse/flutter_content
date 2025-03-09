@@ -33,7 +33,7 @@ class PollBloC extends Bloc<PollEvent, PollState> {
     Map<PollOptionId, int> newMap = Map<PollOptionId, int>.of(state.optionVoteCounts);
     newMap[event.optionId] = state.optionVoteCount(event.optionId) + 1;
 
-    final voterId = fco.hiveBox?.get('vea') ?? 'anon';
+    final voterId = fco.localStorage.read('vea') ?? 'anon';
     // save to firestore
     modelRepo.saveVote(
       pollName: state.pollName,

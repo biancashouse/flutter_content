@@ -16,14 +16,14 @@ class DynamicPageRoute extends GoRoute {
           },
           builder: (BuildContext context, GoRouterState state) {
             return FutureBuilder<void>(
-              future: fco.initLocalStorage(),
+              future: Future.delayed(Duration.zero),
               builder: (ctx, snap) {
                 if (snap.connectionState != ConnectionState.done &&
                     !snap.hasData) {
                   return const CircularProgressIndicator();
                 } else {
                   String routePath = state.path ?? 'missing route path!';
-                  fco.currentRoute = routePath;
+                  // fco.currentRoute = routePath;
                   return EditablePage(
                     key: GlobalKey(), // provides access to state later
                     routePath: routePath,

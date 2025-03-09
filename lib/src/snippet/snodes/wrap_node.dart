@@ -30,34 +30,34 @@ class WrapNode extends MC with WrapNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<AxisEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: direction.index,
           onIndexChange: (newValue) => refreshWithUpdate(() => direction = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'spacing',
           decimalValue: spacing,
           onDoubleChange: (newValue) => refreshWithUpdate(() => spacing = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'runSpacing',
           decimalValue: runSpacing,
           onDoubleChange: (newValue) => refreshWithUpdate(() => runSpacing = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
-        EnumPropertyValueNode<WrapAlignmentEnum?>(
+        EnumPNode<WrapAlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
           onIndexChange: (newValue) => refreshWithUpdate(() => alignment = WrapAlignmentEnum.of(newValue)),
         ),
-        EnumPropertyValueNode<CrossAxisAlignmentEnum?>(
+        EnumPNode<CrossAxisAlignmentEnum?>(
           snode: this,
           name: 'crossAlignment',
           valueIndex: crossAxisAlignment?.index,
@@ -66,12 +66,12 @@ class WrapNode extends MC with WrapNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     return Wrap(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         direction: direction.flutterValue,
         alignment: alignment?.flutterValue ?? WrapAlignment.start,
         runAlignment: runAlignment?.flutterValue ?? WrapAlignment.start,

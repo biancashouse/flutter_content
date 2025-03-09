@@ -52,11 +52,6 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
   static const Field<AssetImageNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(AssetImageNode v) =>
-      v.nodeWidgetGK;
-  static const Field<AssetImageNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<AssetImageNode> fields = const {
@@ -69,7 +64,6 @@ class AssetImageNodeMapper extends SubClassMapperBase<AssetImageNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

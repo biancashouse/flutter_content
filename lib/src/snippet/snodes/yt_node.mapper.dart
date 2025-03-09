@@ -47,10 +47,6 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
   static const Field<YTNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(YTNode v) =>
-      v.nodeWidgetGK;
-  static const Field<YTNode, GlobalKey<State<StatefulWidget>>> _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<YTNode> fields = const {
@@ -62,7 +58,6 @@ class YTNodeMapper extends SubClassMapperBase<YTNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

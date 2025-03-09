@@ -12,7 +12,7 @@ class Pages extends StatefulWidget {
 class _PagesState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
-    print('pages build');
+    fco.logger.d('pages build');
     var pages = fco.pageList;
     final scaffold = Scaffold(
       appBar: AppBar(
@@ -29,7 +29,7 @@ class _PagesState extends State<Pages> {
             children: [
               TextButton(
                 onPressed: () {
-                  context.go(label);
+                  context.replace(label);
                 },
                 child: Text(label),
               ),

@@ -49,6 +49,8 @@ mixin _$CAPIState {
       throw _privateConstructorUsedError; // String? jsonRootDirectoryNode,
 // EncodedJson? jsonClipboardForMove,
   bool get showClipboardContent => throw _privateConstructorUsedError;
+  Rect? get cutoutRect => throw _privateConstructorUsedError;
+  int? get cutoutDuration => throw _privateConstructorUsedError;
   int get force =>
       throw _privateConstructorUsedError; // hacky way to force a transition
   bool get onlyTargetsWrappers =>
@@ -89,6 +91,8 @@ abstract class $CAPIStateCopyWith<$Res> {
       String? selectedPanel,
       bool trainerIsSignedn,
       bool showClipboardContent,
+      Rect? cutoutRect,
+      int? cutoutDuration,
       int force,
       bool onlyTargetsWrappers,
       String? routeName,
@@ -123,6 +127,8 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? selectedPanel = freezed,
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
+    Object? cutoutRect = freezed,
+    Object? cutoutDuration = freezed,
     Object? force = null,
     Object? onlyTargetsWrappers = null,
     Object? routeName = freezed,
@@ -178,6 +184,14 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.showClipboardContent
           : showClipboardContent // ignore: cast_nullable_to_non_nullable
               as bool,
+      cutoutRect: freezed == cutoutRect
+          ? _value.cutoutRect
+          : cutoutRect // ignore: cast_nullable_to_non_nullable
+              as Rect?,
+      cutoutDuration: freezed == cutoutDuration
+          ? _value.cutoutDuration
+          : cutoutDuration // ignore: cast_nullable_to_non_nullable
+              as int?,
       force: null == force
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
@@ -223,6 +237,8 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
       String? selectedPanel,
       bool trainerIsSignedn,
       bool showClipboardContent,
+      Rect? cutoutRect,
+      int? cutoutDuration,
       int force,
       bool onlyTargetsWrappers,
       String? routeName,
@@ -255,6 +271,8 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? selectedPanel = freezed,
     Object? trainerIsSignedn = null,
     Object? showClipboardContent = null,
+    Object? cutoutRect = freezed,
+    Object? cutoutDuration = freezed,
     Object? force = null,
     Object? onlyTargetsWrappers = null,
     Object? routeName = freezed,
@@ -310,6 +328,14 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.showClipboardContent
           : showClipboardContent // ignore: cast_nullable_to_non_nullable
               as bool,
+      cutoutRect: freezed == cutoutRect
+          ? _value.cutoutRect
+          : cutoutRect // ignore: cast_nullable_to_non_nullable
+              as Rect?,
+      cutoutDuration: freezed == cutoutDuration
+          ? _value.cutoutDuration
+          : cutoutDuration // ignore: cast_nullable_to_non_nullable
+              as int?,
       force: null == force
           ? _value.force
           : force // ignore: cast_nullable_to_non_nullable
@@ -350,6 +376,8 @@ class _$CAPIStateImpl extends _CAPIState {
       this.selectedPanel,
       this.trainerIsSignedn = false,
       this.showClipboardContent = true,
+      this.cutoutRect,
+      this.cutoutDuration,
       this.force = 0,
       this.onlyTargetsWrappers = false,
       this.routeName,
@@ -413,6 +441,10 @@ class _$CAPIStateImpl extends _CAPIState {
   @JsonKey()
   final bool showClipboardContent;
   @override
+  final Rect? cutoutRect;
+  @override
+  final int? cutoutDuration;
+  @override
   @JsonKey()
   final int force;
 // hacky way to force a transition
@@ -437,7 +469,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, cutoutRect: $cutoutRect, cutoutDuration: $cutoutDuration, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -471,6 +503,10 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.trainerIsSignedn == trainerIsSignedn) &&
             (identical(other.showClipboardContent, showClipboardContent) ||
                 other.showClipboardContent == showClipboardContent) &&
+            (identical(other.cutoutRect, cutoutRect) ||
+                other.cutoutRect == cutoutRect) &&
+            (identical(other.cutoutDuration, cutoutDuration) ||
+                other.cutoutDuration == cutoutDuration) &&
             (identical(other.force, force) || other.force == force) &&
             (identical(other.onlyTargetsWrappers, onlyTargetsWrappers) ||
                 other.onlyTargetsWrappers == onlyTargetsWrappers) &&
@@ -483,25 +519,28 @@ class _$CAPIStateImpl extends _CAPIState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      hideIframes,
-      hideSnippetPencilIcons,
-      snippetTreeCalloutW,
-      snippetTreeCalloutH,
-      directoryTreeCalloutInitialPos,
-      directoryTreeCalloutW,
-      directoryTreeCalloutH,
-      newestTarget,
-      selectedTarget,
-      selectedPanel,
-      trainerIsSignedn,
-      showClipboardContent,
-      force,
-      onlyTargetsWrappers,
-      routeName,
-      snippetBeingEdited,
-      ONLY_TESTING);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        hideIframes,
+        hideSnippetPencilIcons,
+        snippetTreeCalloutW,
+        snippetTreeCalloutH,
+        directoryTreeCalloutInitialPos,
+        directoryTreeCalloutW,
+        directoryTreeCalloutH,
+        newestTarget,
+        selectedTarget,
+        selectedPanel,
+        trainerIsSignedn,
+        showClipboardContent,
+        cutoutRect,
+        cutoutDuration,
+        force,
+        onlyTargetsWrappers,
+        routeName,
+        snippetBeingEdited,
+        ONLY_TESTING
+      ]);
 
   /// Create a copy of CAPIState
   /// with the given fields replaced by the non-null parameter values.
@@ -526,6 +565,8 @@ abstract class _CAPIState extends CAPIState {
       final String? selectedPanel,
       final bool trainerIsSignedn,
       final bool showClipboardContent,
+      final Rect? cutoutRect,
+      final int? cutoutDuration,
       final int force,
       final bool onlyTargetsWrappers,
       final String? routeName,
@@ -576,6 +617,10 @@ abstract class _CAPIState extends CAPIState {
 // EncodedJson? jsonClipboardForMove,
   @override
   bool get showClipboardContent;
+  @override
+  Rect? get cutoutRect;
+  @override
+  int? get cutoutDuration;
   @override
   int get force; // hacky way to force a transition
   @override

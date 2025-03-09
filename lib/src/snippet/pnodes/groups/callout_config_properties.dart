@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
 
-part 'callout_config_group.mapper.dart';
+part 'callout_config_properties.mapper.dart';
 
 @MappableClass()
-class CalloutConfigGroup with CalloutConfigGroupMappable {
-  String? contentSnippetName;
+class CalloutConfigProperties with CalloutConfigPropertiesMappable {
+  String? cid;
   AlignmentEnum? targetAlignment;
   // AlignmentEnum? calloutAlignment;
   double? calloutTop;
@@ -22,8 +22,8 @@ class CalloutConfigGroup with CalloutConfigGroupMappable {
   bool showCloseButton;
   double? closeAfterMs;
 
-  CalloutConfigGroup({
-    this.contentSnippetName,
+  CalloutConfigProperties({
+    this.cid,
     this.targetAlignment,
     // this.calloutAlignment,
     this.calloutTop,

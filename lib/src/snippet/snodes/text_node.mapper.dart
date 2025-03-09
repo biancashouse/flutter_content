@@ -14,7 +14,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TextNodeMapper._());
       CLMapper.ensureInitialized().addSubMapper(_instance!);
-      TextStyleGroupMapper.ensureInitialized();
+      TextStylePropertiesMapper.ensureInitialized();
       TextAlignEnumMapper.ensureInitialized();
     }
     return _instance!;
@@ -26,9 +26,9 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static String _$text(TextNode v) => v.text;
   static const Field<TextNode, String> _f$text =
       Field('text', _$text, opt: true, def: '');
-  static TextStyleGroup? _$textStyleGroup(TextNode v) => v.textStyleGroup;
-  static const Field<TextNode, TextStyleGroup> _f$textStyleGroup =
-      Field('textStyleGroup', _$textStyleGroup, opt: true);
+  static TextStyleProperties _$tsPropGroup(TextNode v) => v.tsPropGroup;
+  static const Field<TextNode, TextStyleProperties> _f$tsPropGroup =
+      Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
   static TextAlignEnum? _$textAlign(TextNode v) => v.textAlign;
   static const Field<TextNode, TextAlignEnum> _f$textAlign =
       Field('textAlign', _$textAlign, opt: true);
@@ -43,21 +43,15 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static const Field<TextNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(TextNode v) =>
-      v.nodeWidgetGK;
-  static const Field<TextNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<TextNode> fields = const {
     #text: _f$text,
-    #textStyleGroup: _f$textStyleGroup,
+    #tsPropGroup: _f$tsPropGroup,
     #textAlign: _f$textAlign,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -70,7 +64,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static TextNode _instantiate(DecodingData data) {
     return TextNode(
         text: data.dec(_f$text),
-        textStyleGroup: data.dec(_f$textStyleGroup),
+        tsPropGroup: data.dec(_f$tsPropGroup),
         textAlign: data.dec(_f$textAlign));
   }
 
@@ -123,11 +117,13 @@ extension TextNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, TextNode, $Out> {
 
 abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get textStyleGroup;
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get tsPropGroup;
   @override
   $R call(
-      {String? text, TextStyleGroup? textStyleGroup, TextAlignEnum? textAlign});
+      {String? text,
+      TextStyleProperties? tsPropGroup,
+      TextAlignEnum? textAlign});
   TextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -140,23 +136,23 @@ class _TextNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TextNode> $mapper =
       TextNodeMapper.ensureInitialized();
   @override
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get textStyleGroup => $value.textStyleGroup?.copyWith
-          .$chain((v) => call(textStyleGroup: v));
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get tsPropGroup =>
+          $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
   $R call(
           {String? text,
-          Object? textStyleGroup = $none,
+          TextStyleProperties? tsPropGroup,
           Object? textAlign = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
-        if (textStyleGroup != $none) #textStyleGroup: textStyleGroup,
+        if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
         if (textAlign != $none) #textAlign: textAlign
       }));
   @override
   TextNode $make(CopyWithData data) => TextNode(
       text: data.get(#text, or: $value.text),
-      textStyleGroup: data.get(#textStyleGroup, or: $value.textStyleGroup),
+      tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
       textAlign: data.get(#textAlign, or: $value.textAlign));
 
   @override

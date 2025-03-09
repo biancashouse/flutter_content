@@ -16,8 +16,8 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'aspectRatio',
           decimalValue: aspectRatio,
@@ -27,19 +27,19 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
       return AspectRatio(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         aspectRatio: aspectRatio,
         child: child?.toWidget(context, this),
       );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

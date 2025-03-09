@@ -33,8 +33,8 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   Uint8List? cachedPngBytes;
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -45,7 +45,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           calloutWidth: 400,
           numLines: 1,
         ),
-        UMLStringPropertyValueNode(
+        UMLStringPNode(
           snode: this,
           name: 'uml',
           umlRecord: (
@@ -73,7 +73,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
       // ScrollControllerName? scName = EditablePage.name(context);
@@ -92,14 +92,14 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
             }
 
             if (_gk == null) {
-              _gk = createNodeGK();
+              _gk = createNodeWidgetGK();
               fco.afterMsDelayDo(100, () => fco.forceRefresh());
             }
 
             // UMLRecord? umlRecord = snapshot.data;
             return GestureDetector(
               child: Image.memory(
-                key: _gk,
+                // key: _gk,
                 // scale: 3.0,
                 cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
                 fit: BoxFit.fill,
@@ -120,7 +120,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           key: _gk,
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }
@@ -159,11 +159,11 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   //     if (response.statusCode == 200) {
   //       return response.bodyBytes;
   //     } else {
-  //       print('Error fetching PNG: ${response.statusCode}');
+  //       fco.logger.w('Error fetching PNG: ${response.statusCode}');
   //       return null;
   //     }
   //   } catch (e) {
-  //     print('Error fetching PNG: $e');
+  //     fco.logger.w('Error fetching PNG: $e');
   //     return null;
   //   }
   // }

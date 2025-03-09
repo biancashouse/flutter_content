@@ -54,11 +54,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
   static const Field<RichTextNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(RichTextNode v) =>
-      v.nodeWidgetGK;
-  static const Field<RichTextNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<RichTextNode> fields = const {
@@ -71,7 +66,6 @@ class RichTextNodeMapper extends SubClassMapperBase<RichTextNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

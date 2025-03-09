@@ -41,8 +41,12 @@ class _DateRangeButtonState extends State<DateRangeButton> {
   @override
   void initState() {
     super.initState();
-    startOfPeriod = widget.from != null ? DateTime.fromMillisecondsSinceEpoch(widget.from!) : DateTime.now();
-    endOfPeriod = widget.until != null ? DateTime.fromMillisecondsSinceEpoch(widget.until!) : DateTime.now().add(const Duration(days: 7));
+    startOfPeriod = widget.from != null
+        ? DateTime.fromMillisecondsSinceEpoch(widget.from!)
+        : DateTime.now();
+    endOfPeriod = widget.until != null
+        ? DateTime.fromMillisecondsSinceEpoch(widget.until!)
+        : DateTime.now().add(const Duration(days: 7));
     if (endOfPeriod.isBefore(startOfPeriod)) startOfPeriod = endOfPeriod;
     config = _pickerConfig();
 
@@ -54,9 +58,11 @@ class _DateRangeButtonState extends State<DateRangeButton> {
 
   @override
   void dispose() {
-    fco.logi('*** disposing DateRangeButton');
+    if (!mounted) return;
+    fco.logger.i('*** disposing DateRangeButton');
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     CalloutConfig calloutConfig = CalloutConfig(
@@ -106,8 +112,10 @@ class _DateRangeButtonState extends State<DateRangeButton> {
       );
 
   CalendarDatePicker2WithActionButtonsConfig _pickerConfig() {
-    const dayTextStyle = TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
-    final weekendTextStyle = TextStyle(color: Colors.grey[500], fontWeight: FontWeight.w600);
+    const dayTextStyle =
+        TextStyle(color: Colors.black, fontWeight: FontWeight.w700);
+    final weekendTextStyle =
+        TextStyle(color: Colors.grey[500], fontWeight: FontWeight.w600);
     final anniversaryTextStyle = TextStyle(
       color: Colors.red[400],
       fontWeight: FontWeight.w700,
@@ -133,7 +141,8 @@ class _DateRangeButtonState extends State<DateRangeButton> {
       selectedDayTextStyle: dayTextStyle.copyWith(color: Colors.white),
       dayTextStylePredicate: ({required date}) {
         TextStyle? textStyle;
-        if (date.weekday == DateTime.saturday || date.weekday == DateTime.sunday) {
+        if (date.weekday == DateTime.saturday ||
+            date.weekday == DateTime.sunday) {
           textStyle = weekendTextStyle;
         }
         if (DateUtils.isSameDay(date, DateTime(2021, 1, 25))) {
@@ -168,7 +177,9 @@ class _DateRangeButtonState extends State<DateRangeButton> {
                       width: 4,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: isSelected == true ? Colors.white : Colors.grey[500],
+                        color: isSelected == true
+                            ? Colors.white
+                            : Colors.grey[500],
                       ),
                     ),
                   ),
@@ -249,13 +260,15 @@ class _DateRangeButtonState extends State<DateRangeButton> {
               },
               onValueChanged: (List<DateTime?> newDTs) {
                 // ignore: avoid_print
-                fco.logi(_getValueText(
+                fco.logger.i(_getValueText(
                   config.calendarType,
                   newDTs,
                 ));
                 startOfPeriod = newDTs[0] ?? DateTime.now();
                 endOfPeriod = newDTs[1] ?? startOfPeriod;
-                widget.onChangeF(DateRange(from: startOfPeriod.millisecondsSinceEpoch, until: endOfPeriod.millisecondsSinceEpoch));
+                widget.onChangeF(DateRange(
+                    from: startOfPeriod.millisecondsSinceEpoch,
+                    until: endOfPeriod.millisecondsSinceEpoch));
               },
             ),
           ],
@@ -268,14 +281,22 @@ String _getValueText(
   List<DateTime?> values,
 ) {
   values = values.map((e) => e != null ? DateUtils.dateOnly(e) : null).toList();
-  var valueText = (values.isNotEmpty ? values[0] : null).toString().replaceAll('00:00:00.000', '');
+  var valueText = (values.isNotEmpty ? values[0] : null)
+      .toString()
+      .replaceAll('00:00:00.000', '');
 
   if (datePickerType == CalendarDatePicker2Type.multi) {
-    valueText = values.isNotEmpty ? values.map((v) => v.toString().replaceAll('00:00:00.000', '')).join(', ') : 'null';
+    valueText = values.isNotEmpty
+        ? values
+            .map((v) => v.toString().replaceAll('00:00:00.000', ''))
+            .join(', ')
+        : 'null';
   } else if (datePickerType == CalendarDatePicker2Type.range) {
     if (values.isNotEmpty) {
       final startDate = values[0].toString().replaceAll('00:00:00.000', '');
-      final endDate = values.length > 1 ? values[1].toString().replaceAll('00:00:00.000', '') : 'null';
+      final endDate = values.length > 1
+          ? values[1].toString().replaceAll('00:00:00.000', '')
+          : 'null';
       valueText = '$startDate to $endDate';
     } else {
       return 'null';

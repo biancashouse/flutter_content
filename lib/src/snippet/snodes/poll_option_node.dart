@@ -16,8 +16,8 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'text',
           stringValue: text,
@@ -29,8 +29,8 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.name(context);
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+    ScrollControllerName? scName = EditablePage.scName(context);
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -39,25 +39,25 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
         PollNode parentPoll = getParent() as PollNode;
         int pos = parentPoll.children.indexOf(this);
         return FlutterPollOption(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           optionId: pos.toString(),
           optionWidget: Text(text),
           scName: scName,
         );
       } else {
         return Error(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             FLUTTER_TYPE,
             color: Colors.red,
-            size: 32,
+            size: 16,
             errorMsg: "getParent() is not a PollNode!");
       }
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

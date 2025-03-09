@@ -14,9 +14,8 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TabBarNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      TextStyleGroupMapper.ensureInitialized();
-      EdgeInsetsValueMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      TextStylePropertiesMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -24,12 +23,15 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   @override
   final String id = 'TabBarNode';
 
+  static String _$name(TabBarNode v) => v.name;
+  static const Field<TabBarNode, String> _f$name = Field('name', _$name);
   static int? _$bgColorValue(TabBarNode v) => v.bgColorValue;
   static const Field<TabBarNode, int> _f$bgColorValue =
       Field('bgColorValue', _$bgColorValue, opt: true);
-  static TextStyleGroup? _$labelStyleGroup(TabBarNode v) => v.labelStyleGroup;
-  static const Field<TabBarNode, TextStyleGroup> _f$labelStyleGroup =
-      Field('labelStyleGroup', _$labelStyleGroup, opt: true);
+  static TextStyleProperties _$labelTSPropGroup(TabBarNode v) =>
+      v.labelTSPropGroup;
+  static const Field<TabBarNode, TextStyleProperties> _f$labelTSPropGroup =
+      Field('labelTSPropGroup', _$labelTSPropGroup);
   static int? _$selectedLabelColorValue(TabBarNode v) =>
       v.selectedLabelColorValue;
   static const Field<TabBarNode, int> _f$selectedLabelColorValue =
@@ -42,17 +44,14 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static int? _$indicatorColorValue(TabBarNode v) => v.indicatorColorValue;
   static const Field<TabBarNode, int> _f$indicatorColorValue =
       Field('indicatorColorValue', _$indicatorColorValue, opt: true);
-  static EdgeInsetsValue? _$padding(TabBarNode v) => v.padding;
-  static const Field<TabBarNode, EdgeInsetsValue> _f$padding =
-      Field('padding', _$padding, opt: true);
   static double? _$indicatorWeight(TabBarNode v) => v.indicatorWeight;
   static const Field<TabBarNode, double> _f$indicatorWeight =
       Field('indicatorWeight', _$indicatorWeight, opt: true, def: 2.0);
   static int? _$selection(TabBarNode v) => v.selection;
   static const Field<TabBarNode, int> _f$selection =
       Field('selection', _$selection, opt: true);
-  static List<STreeNode> _$children(TabBarNode v) => v.children;
-  static const Field<TabBarNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(TabBarNode v) => v.children;
+  static const Field<TabBarNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(TabBarNode v) => v.uid;
   static const Field<TabBarNode, String> _f$uid =
@@ -65,27 +64,37 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static const Field<TabBarNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(TabBarNode v) =>
-      v.nodeWidgetGK;
-  static const Field<TabBarNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
+  static TabController? _$tabC(TabBarNode v) => v.tabC;
+  static const Field<TabBarNode, TabController> _f$tabC =
+      Field('tabC', _$tabC, mode: FieldMode.member);
+  static List<int> _$prevTabQ(TabBarNode v) => v.prevTabQ;
+  static const Field<TabBarNode, List<int>> _f$prevTabQ =
+      Field('prevTabQ', _$prevTabQ, mode: FieldMode.member);
+  static ValueNotifier<int> _$prevTabQSize(TabBarNode v) => v.prevTabQSize;
+  static const Field<TabBarNode, ValueNotifier<int>> _f$prevTabQSize =
+      Field('prevTabQSize', _$prevTabQSize, mode: FieldMode.member);
+  static bool? _$backBtnPressed(TabBarNode v) => v.backBtnPressed;
+  static const Field<TabBarNode, bool> _f$backBtnPressed =
+      Field('backBtnPressed', _$backBtnPressed, mode: FieldMode.member);
 
   @override
   final MappableFields<TabBarNode> fields = const {
+    #name: _f$name,
     #bgColorValue: _f$bgColorValue,
-    #labelStyleGroup: _f$labelStyleGroup,
+    #labelTSPropGroup: _f$labelTSPropGroup,
     #selectedLabelColorValue: _f$selectedLabelColorValue,
     #unselectedLabelColorValue: _f$unselectedLabelColorValue,
     #indicatorColorValue: _f$indicatorColorValue,
-    #padding: _f$padding,
     #indicatorWeight: _f$indicatorWeight,
     #selection: _f$selection,
     #children: _f$children,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
+    #tabC: _f$tabC,
+    #prevTabQ: _f$prevTabQ,
+    #prevTabQSize: _f$prevTabQSize,
+    #backBtnPressed: _f$backBtnPressed,
   };
 
   @override
@@ -97,12 +106,12 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
 
   static TabBarNode _instantiate(DecodingData data) {
     return TabBarNode(
+        name: data.dec(_f$name),
         bgColorValue: data.dec(_f$bgColorValue),
-        labelStyleGroup: data.dec(_f$labelStyleGroup),
+        labelTSPropGroup: data.dec(_f$labelTSPropGroup),
         selectedLabelColorValue: data.dec(_f$selectedLabelColorValue),
         unselectedLabelColorValue: data.dec(_f$unselectedLabelColorValue),
         indicatorColorValue: data.dec(_f$indicatorColorValue),
-        padding: data.dec(_f$padding),
         indicatorWeight: data.dec(_f$indicatorWeight),
         selection: data.dec(_f$selection),
         children: data.dec(_f$children));
@@ -159,23 +168,21 @@ extension TabBarNodeValueCopy<$R, $Out>
 
 abstract class TabBarNodeCopyWith<$R, $In extends TabBarNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get labelStyleGroup;
-  EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get labelTSPropGroup;
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
-      {int? bgColorValue,
-      TextStyleGroup? labelStyleGroup,
+      {String? name,
+      int? bgColorValue,
+      TextStyleProperties? labelTSPropGroup,
       int? selectedLabelColorValue,
       int? unselectedLabelColorValue,
       int? indicatorColorValue,
-      EdgeInsetsValue? padding,
       double? indicatorWeight,
       int? selection,
-      List<STreeNode>? children});
+      List<SNode>? children});
   TabBarNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -188,52 +195,50 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TabBarNode> $mapper =
       TabBarNodeMapper.ensureInitialized();
   @override
-  TextStyleGroupCopyWith<$R, TextStyleGroup, TextStyleGroup>?
-      get labelStyleGroup => $value.labelStyleGroup?.copyWith
-          .$chain((v) => call(labelStyleGroup: v));
+  TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
+      get labelTSPropGroup => $value.labelTSPropGroup.copyWith
+          .$chain((v) => call(labelTSPropGroup: v));
   @override
-  EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding =>
-      $value.padding?.copyWith.$chain((v) => call(padding: v));
-  @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
-          {Object? bgColorValue = $none,
-          Object? labelStyleGroup = $none,
+          {String? name,
+          Object? bgColorValue = $none,
+          TextStyleProperties? labelTSPropGroup,
           Object? selectedLabelColorValue = $none,
           Object? unselectedLabelColorValue = $none,
           Object? indicatorColorValue = $none,
-          Object? padding = $none,
           Object? indicatorWeight = $none,
           Object? selection = $none,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
+        if (name != null) #name: name,
         if (bgColorValue != $none) #bgColorValue: bgColorValue,
-        if (labelStyleGroup != $none) #labelStyleGroup: labelStyleGroup,
+        if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
         if (selectedLabelColorValue != $none)
           #selectedLabelColorValue: selectedLabelColorValue,
         if (unselectedLabelColorValue != $none)
           #unselectedLabelColorValue: unselectedLabelColorValue,
         if (indicatorColorValue != $none)
           #indicatorColorValue: indicatorColorValue,
-        if (padding != $none) #padding: padding,
         if (indicatorWeight != $none) #indicatorWeight: indicatorWeight,
         if (selection != $none) #selection: selection,
         if (children != null) #children: children
       }));
   @override
   TabBarNode $make(CopyWithData data) => TabBarNode(
+      name: data.get(#name, or: $value.name),
       bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
-      labelStyleGroup: data.get(#labelStyleGroup, or: $value.labelStyleGroup),
+      labelTSPropGroup:
+          data.get(#labelTSPropGroup, or: $value.labelTSPropGroup),
       selectedLabelColorValue: data.get(#selectedLabelColorValue,
           or: $value.selectedLabelColorValue),
       unselectedLabelColorValue: data.get(#unselectedLabelColorValue,
           or: $value.unselectedLabelColorValue),
       indicatorColorValue:
           data.get(#indicatorColorValue, or: $value.indicatorColorValue),
-      padding: data.get(#padding, or: $value.padding),
       indicatorWeight: data.get(#indicatorWeight, or: $value.indicatorWeight),
       selection: data.get(#selection, or: $value.selection),
       children: data.get(#children, or: $value.children));

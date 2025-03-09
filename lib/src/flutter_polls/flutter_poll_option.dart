@@ -136,7 +136,7 @@ class FlutterPollOption extends HookWidget {
                       // }
 
                       if (!pollBloc.state.userAlreadyVoted()) {
-                        final String? vea = fco.hiveBox?.get('vea');
+                        final String? vea = fco.localStorage.read('vea');
                         if (vea == null) {
                           final gcrServerUrl = fco.gcrServerUrl;
                           if (gcrServerUrl != null) {
@@ -154,7 +154,7 @@ class FlutterPollOption extends HookWidget {
                               scName: scName,
                             );
                           } else {
-                            debugPrint('missing gcr-bh-apps-dart');
+                            fco.logger.d('missing gcr-bh-apps-dart');
                           }
                         } else {
                           pollBloc.add(

@@ -148,7 +148,7 @@ class DateButton extends HookWidget {
           );
           if (values != null) {
             // ignore: avoid_print
-            fco.logi(_getValueText(
+            fco.logger.i(_getValueText(
               config.calendarType,
               values,
             ));

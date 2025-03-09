@@ -17,7 +17,7 @@ class SingleChildScrollViewNodeMapper
           .use(_instance = SingleChildScrollViewNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
       EdgeInsetsValueMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -28,8 +28,8 @@ class SingleChildScrollViewNodeMapper
   static EdgeInsetsValue? _$padding(SingleChildScrollViewNode v) => v.padding;
   static const Field<SingleChildScrollViewNode, EdgeInsetsValue> _f$padding =
       Field('padding', _$padding, opt: true);
-  static STreeNode? _$child(SingleChildScrollViewNode v) => v.child;
-  static const Field<SingleChildScrollViewNode, STreeNode> _f$child =
+  static SNode? _$child(SingleChildScrollViewNode v) => v.child;
+  static const Field<SingleChildScrollViewNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(SingleChildScrollViewNode v) => v.uid;
   static const Field<SingleChildScrollViewNode, String> _f$uid =
@@ -43,12 +43,6 @@ class SingleChildScrollViewNodeMapper
       _f$hidePropertiesWhileDragging = Field(
           'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          SingleChildScrollViewNode v) =>
-      v.nodeWidgetGK;
-  static const Field<SingleChildScrollViewNode,
-          GlobalKey<State<StatefulWidget>>> _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<SingleChildScrollViewNode> fields = const {
@@ -57,7 +51,6 @@ class SingleChildScrollViewNodeMapper
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -133,9 +126,9 @@ abstract class SingleChildScrollViewNodeCopyWith<
     $Out> implements SCCopyWith<$R, $In, $Out> {
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({EdgeInsetsValue? padding, STreeNode? child});
+  $R call({EdgeInsetsValue? padding, SNode? child});
   SingleChildScrollViewNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -153,7 +146,7 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding =>
       $value.padding?.copyWith.$chain((v) => call(padding: v));
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({Object? padding = $none, Object? child = $none}) =>

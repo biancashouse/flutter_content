@@ -19,6 +19,6 @@ Canvas? theCanvas, Paint? thePaint, double offsetX=0.0, double offsetY=0.0}) {
     theCanvas!.drawLine(Offset(savedPos.x,savedPos.y), Offset(pos.x,pos.y), purplePaint);
     pos += gapVec;
     savedPos = pos.clone();
-    //fco.logi('pos.length: ${pos.length.round()}, pos: ${pos.toString()}, lineVec.length: ${lineVec.length.round()}');
+    //fco.logger.i('pos.length: ${pos.length.round()}, pos: ${pos.toString()}, lineVec.length: ${lineVec.length.round()}');
   }
 }

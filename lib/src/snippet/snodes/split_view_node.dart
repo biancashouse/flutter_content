@@ -19,15 +19,15 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<AxisEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
           onIndexChange: (newValue) => refreshWithUpdate(
               () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
-        BoolPropertyValueNode(
+        BoolPNode(
           snode: this,
           name: 'resizeable',
           boolValue: resizeable,
@@ -64,7 +64,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -75,9 +75,9 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                 constraints.maxHeight == double.infinity) ||
             (svAxis == Axis.horizontal &&
                 constraints.maxWidth == double.infinity)) {
-          return Error(key: createNodeGK(), FLUTTER_TYPE,
+          return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
               color: Colors.red,
-              size: 32,
+              size: 16,
               errorMsg: 'MultiSplitView has infinite constraint!');
         } else {
           List<Area> areas = super
@@ -94,7 +94,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
                     color: Colors.indigo[100]!,
                     highlightedColor: Colors.indigo[900]!)),
             child: MultiSplitView(
-              key: createNodeGK(),
+              key: createNodeWidgetGK(),
               axis: svAxis,
               initialAreas: areas,
             ),
@@ -102,9 +102,9 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
         }
       });
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE,
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

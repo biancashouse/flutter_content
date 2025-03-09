@@ -1,8 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/button_style_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:go_router/go_router.dart';
 
 import '../pnodes/enums/enum_alignment.dart';
@@ -19,18 +20,18 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   String? destinationRoutePathSnippetName;
   SnippetTemplateEnum? template;
 
-  ButtonStyleGroup? buttonStyle;
+  ButtonStyleProperties bsPropsGroup;
   String?
       onTapHandlerName; // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
-  CalloutConfigGroup? calloutConfigGroup;
+  CalloutConfigProperties? calloutConfigGroup;
 
   ButtonNode({
     this.destinationPanelOrPlaceholderName,
     this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
     this.template,
-    this.buttonStyle,
+    required this.bsPropsGroup,
     this.onTapHandlerName,
     this.calloutConfigGroup,
     super.child,
@@ -43,12 +44,26 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        PropertyGroup(
+  ButtonStyleProperties? buttonStyleProperties() => bsPropsGroup;
+
+  @override
+  void setButtonStyleProperties(ButtonStyleProperties newProps) =>
+      bsPropsGroup = newProps;
+
+  @override
+  TextStyleProperties? textStyleProperties() => bsPropsGroup.tsPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) =>
+      bsPropsGroup.tsPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        PNode/*Group*/(
           snode: this,
           name: 'goto Page...',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Route Path',
               stringValue: destinationRoutePathSnippetName,
@@ -57,16 +72,16 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
                     () => destinationRoutePathSnippetName = newValue);
               },
               options: fco.pageList,
-              calloutButtonSize: const Size(280, 70),
+              calloutButtonSize: const Size(240, 70),
               calloutWidth: 280,
             ),
           ],
         ),
-        PropertyGroup(
+        PNode/*Group*/(
           snode: this,
           name: 'show Snippet in Panel...',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Panel Name',
               stringValue: destinationPanelOrPlaceholderName,
@@ -74,44 +89,44 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
                 refreshWithUpdate(
                     () => destinationPanelOrPlaceholderName = newValue);
               },
-              calloutButtonSize: const Size(280, 70),
+              calloutButtonSize: const Size(240, 70),
               calloutWidth: 280,
             ),
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Snippet Name',
               stringValue: destinationSnippetName,
               onStringChange: (newValue) {
                 refreshWithUpdate(() => destinationSnippetName = newValue);
               },
-              calloutButtonSize: const Size(280, 70),
+              calloutButtonSize: const Size(240, 70),
               calloutWidth: 280,
             )
           ],
         ),
-        ButtonStylePropertyGroup(
+        ButtonStylePNode/*Group*/(
           snode: this,
-          buttonStyleGroup: buttonStyle,
+          buttonStyleGroup: bsPropsGroup,
           onGroupChange: (newValue) =>
-              refreshWithUpdate(() => buttonStyle = newValue),
+              refreshWithUpdate(() => bsPropsGroup = newValue),
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'onTapHandlerName',
           stringValue: onTapHandlerName,
           onStringChange: (newValue) =>
               refreshWithUpdate(() => onTapHandlerName = newValue),
-          calloutButtonSize: const Size(280, 70),
+          calloutButtonSize: const Size(240, 70),
           calloutWidth: 280,
         ),
-        PropertyGroup(
+        PNode/*Group*/(
           snode: this,
           name: 'calloutConfig',
           children: [],
         )
       ];
 
-  Feature? get feature => calloutConfigGroup?.contentSnippetName;
+  CalloutId? get cid => calloutConfigGroup?.cid;
 
   void onPressed(
     BuildContext context,
@@ -119,22 +134,22 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     ScrollControllerName? scName,
   ) {
     if (onTapHandlerName != null) {
-      fco.getNamedCallback(onTapHandlerName!)?.call(context, gk);
-    } else if (feature != null) {
+      fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
+    } else if (cid != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
       Future.delayed(
         const Duration(seconds: 1),
         () => fco.showOverlay(
-            targetGkF: () => fco.getCalloutGk(feature),
+            targetGkF: () => fco.getCalloutGk(cid),
             calloutContent: SnippetPanel.fromSnippet(
-              panelName: calloutConfigGroup!.contentSnippetName!,
+              panelName: calloutConfigGroup!.cid!,
               snippetName: BODY_PLACEHOLDER,
               // allowButtonCallouts: false,
               scName: scName,
             ),
             calloutConfig: CalloutConfig(
-                cId: feature!,
+                cId: cid!,
                 initialTargetAlignment: calloutConfigGroup!.targetAlignment !=
                         null
                     ? calloutConfigGroup!.targetAlignment!.flutterValue
@@ -149,10 +164,10 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
                 arrowType: calloutConfigGroup!.arrowType?.flutterValue ??
                     ArrowType.POINTY,
                 finalSeparation: 100,
-                barrier: CalloutBarrier(
+                barrier: CalloutBarrierConfig(
                   opacity: 0.1,
                   onTappedF: () async {
-                    fco.dismiss(feature!);
+                    fco.dismiss(cid!);
                   },
                 ),
                 fillColor: calloutConfigGroup?.colorValue != null
@@ -164,7 +179,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       fco.addSubRoute(
           newPath: destinationRoutePathSnippetName!,
           template: SnippetTemplateEnum.empty);
-      context.go(destinationRoutePathSnippetName!);
+      context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null &&
         destinationSnippetName != null) {
@@ -187,12 +202,12 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //
   //           children: [],
   //         ),
-  //         StringPropertyValueNode(
+  //         StringPNode(
   //           toString: 'namedButtonStyle',
   //           stringValue: namedButtonStyle,
   //           onStringChange: (newValue) => namedButtonStyle = newValue,
   //         ),
-  //         StringPropertyValueNode(
+  //         StringPNode(
   //           toString: 'onTapHandlerName',
   //           stringValue: onTapHandlerName,
   //           onStringChange: (newValue) => onTapHandlerName = newValue,
@@ -234,7 +249,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   //           if (scrollNotification is ScrollStartNotification) {
   //           } else if (scrollNotification is ScrollUpdateNotification) {
   //           } else if (scrollNotification is ScrollEndNotification) {
-  //             // fco.logi('ScrollEndNotification');
+  //             // fco.logger.i('ScrollEndNotification');
   //             fco.removeOverlay(CAPI.CALLOUT_CONFIG_TOOLBAR_CALLOUT.index);
   //             CalloutConfigEditorState? cceState = calloutConfigEditorGK.currentState;
   //             cceState?.reShow();

@@ -16,7 +16,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
 
   @override
   String toSource(BuildContext context) => '''MenuBar(
@@ -25,7 +25,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -35,7 +35,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
       try {
             return PreferredSizeMenuBar(
               MenuBar(
-                key: createNodeGK(),
+                key: createNodeWidgetGK(),
                 children: super.children.map((child) =>
                     child.toWidget(context, this)).toList(),
               ),
@@ -43,16 +43,16 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
               height ?? 60,
             );
           } catch (e) {
-            fco.logi('MenuBarNode.toWidget() failed!');
-            return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+            fco.logger.i('MenuBarNode.toWidget() failed!');
+            return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
       }
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 
   @override
-  bool canBeDeleted() => children.isEmpty;
+  bool canBeDeleted() => false;
 
   @override
   String toString() => FLUTTER_TYPE;

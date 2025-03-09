@@ -16,7 +16,7 @@
 //   }
 //
 //   void _pushUndo(EncodedSnippetJson theESJ) {
-//     // fco.logi('num steps: ${theF.steps.length}');
+//     // fco.logger.i('num steps: ${theF.steps.length}');
 //     undoQ.addFirst(theESJ);
 //   }
 //
@@ -27,7 +27,7 @@
 //   EncodedSnippetJson? _popUndo() {
 //     if (undoQ.isNotEmpty) {
 //       EncodedSnippetJson poppedF = undoQ.removeFirst();
-//       // fco.logi('num steps: ${poppedF.steps.length}');
+//       // fco.logger.i('num steps: ${poppedF.steps.length}');
 //       return poppedF;
 //     } else {
 //       return null;
@@ -47,8 +47,8 @@
 //     // _pushUndo(pushClone ? snippet.cleanClone() : snippet);
 //     // _pushUndo(snippet.toJson());
 //     // redoQ.clear();
-//     // fco.logi('undoQ: ${undoQs.length}');
-//     // fco.logi('redoQ: ${redoQs.length}');
+//     // fco.logger.i('undoQ: ${undoQs.length}');
+//     // fco.logger.i('redoQ: ${redoQs.length}');
 //     fco.cacheAndSaveANewSnippetVersion(
 //       snippetName: snippet.name,
 //       rootNode: snippet,
@@ -66,9 +66,9 @@
 //       EncodedSnippetJson? esj = capiBloc.state.snippetBeingEdited?.rootNode.toJson();
 //       if (esj != null && !skipRedo) _pushRedo(esj);
 //       restored = _popUndo();
-//       // fco.logi('num steps after undo: ${App.userBloc.state.clipboard(id).steps.length}');
-//       // fco.logi('undoQ: ${undoQs.length}');
-//       // fco.logi('redoQ: ${redoQs.length}');
+//       // fco.logger.i('num steps after undo: ${App.userBloc.state.clipboard(id).steps.length}');
+//       // fco.logger.i('undoQ: ${undoQs.length}');
+//       // fco.logger.i('redoQ: ${redoQs.length}');
 //       return restored != null ? SnippetRootNodeMapper.fromJson(restored) : null;
 //     }
 //     return null;
@@ -85,8 +85,8 @@
 //       EncodedSnippetJson? esj = capiBloc.state.snippetBeingEdited?.rootNode.toJson();
 //       if (esj != null) _pushUndo(esj);
 //       redid = _popRedo();
-//       // fco.logi('undoQ: ${undoQs.length}');
-//       // fco.logi('redoQ: ${redoQs.length}');
+//       // fco.logger.i('undoQ: ${undoQs.length}');
+//       // fco.logger.i('redoQ: ${redoQs.length}');
 //       return redid != null ? SnippetRootNodeMapper.fromJson(redid) : null;
 //     }
 //     return null;

@@ -119,7 +119,7 @@
 //           alignment: WrapAlignment.center,
 //           children: List.generate(colors.length, (index) {
 //             Color tickColor = index != 0 ? selectedIconColor : Colors.black;
-//             // fco.logi("tickColor: ${tickColor.value} (white is ${Colors.white.value}");
+//             // fco.logger.i("tickColor: ${tickColor.value} (white is ${Colors.white.value}");
 //             return Container(
 //                 width: colorSelectorSize,
 //                 margin: EdgeInsets.all(optionsMargin),

@@ -51,6 +51,8 @@ class CAPIState with _$CAPIState {
     // String? jsonRootDirectoryNode,
     // EncodedJson? jsonClipboardForMove,
     @Default(true) bool showClipboardContent,
+    Rect? cutoutRect,
+    int? cutoutDuration,
     @Default(0) int force, // hacky way to force a transition
     @Default(false) bool onlyTargetsWrappers, // hacky way to force a transition
 
@@ -69,7 +71,6 @@ class CAPIState with _$CAPIState {
   }) = _CAPIState;
 
   // bool aTargetIsSelected() => selectedTarget != null;
-
 
   // TargetGroupModel? imageConfig(String tgName) => targetGroupMap[tgName];
 
@@ -108,6 +109,6 @@ class CAPIState with _$CAPIState {
 
   final double CAPI_TARGET_BTN_RADIUS = 15.0;
 
-/// total duration is sum(target durations) + transition time for each
+  /// total duration is sum(target durations) + transition time for each
 // int totalDurationMs() => (imageTargetListMap..map((t) => t.calloutDurationMs).reduce((a, b) => a + b)) + TRANSITION_DURATION_MS * (targets.length + 1);
 }

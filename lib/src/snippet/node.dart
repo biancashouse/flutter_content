@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:gap/gap.dart';
 
 abstract class Node extends Object {
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -12,11 +10,11 @@ abstract class Node extends Object {
   Node? getParent() => _parent;
   void setParent(Node? parentNode) => _parent = parentNode;
 
-  static STreeNode? snippetTreeParentProvider(Node node) => node.getParent() as STreeNode?;
+  static SNode? snippetTreeParentProvider(Node node) => node.getParent() as SNode?;
 
-  static Iterable<STreeNode> snippetTreeChildrenProvider(STreeNode node) {
+  static Iterable<SNode> snippetTreeChildrenProvider(SNode node) {
     node.getParent();
-    Iterable<STreeNode> children = [];
+    Iterable<SNode> children = [];
 
     if (node is SnippetRootNode && node.getParent() != null) {
         children = [];
@@ -59,31 +57,31 @@ abstract class Node extends Object {
     return children;
   }
 
-  static Iterable<PTreeNode> propertyTreeChildrenProvider(PTreeNode node) {
+  static Iterable<PNode> propertyTreeChildrenProvider(PNode node) {
 
     // // custom logic to hide style props when a named style prop is not null
     // if (node.snode is TextSpanNode) {
     //   TextSpanNode tsNode = node.snode as TextSpanNode;
-    //   if (tsNode.textStyleGroup?.namedTextStyle != null)
-    //     return [tsNode.textStyleGroup.];
+    //   if (tsNode.textStyleProperties?.namedTextStyle != null)
+    //     return [tsNode.textStyleProperties.];
     // }
 
-    if (node is PropertyGroup) {
+    if (node.children != null/*Group*/) {
       // named text style hides individual text style properties
-      if (node is TextStylePropertyGroup) {
-        var namedTextStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedTextStyle';});
-        if (namedTextStyleNode is StringPropertyValueNode && namedTextStyleNode.stringValue != null) {
-          return [namedTextStyleNode];
-        }
-      }
+      // if (node is TextStylePropertyGroup) {
+      //   var namedTextStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedTextStyle';});
+      //   if (namedTextStyleNode is StringPNode && namedTextStyleNode.stringValue != null) {
+      //     return [namedTextStyleNode];
+      //   }
+      // }
       // ditto for button styles
-      if (node is ButtonStylePropertyGroup) {
-        var namedButtonStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedButtonStyle';});
-        if (namedButtonStyleNode is StringPropertyValueNode && namedButtonStyleNode.stringValue != null) {
-          return [namedButtonStyleNode];
-        }
-      }
-      return node.children;
+      // if (node is ButtonStylePNode/*Group*/) {
+      //   var namedButtonStyleNode = node.children!.toList().firstWhere((tsgNode){return tsgNode.name == 'namedButtonStyle';});
+      //   if (namedButtonStyleNode is StringPNode && namedButtonStyleNode.stringValue != null) {
+      //     return [namedButtonStyleNode];
+      //   }
+      // }
+      return node.children!;
     }
 
     return [];
@@ -92,7 +90,7 @@ abstract class Node extends Object {
   // Node? findNearestAncestorOfType(Type type) {
   //   Node? node = this;
   //   while (node != null && node.runtimeType != type) {
-  //     fco.logi(node.toString());
+  //     fco.logger.i(node.toString());
   //     node = node.parent;
   //   }
   //   return node;
@@ -113,8 +111,8 @@ abstract class Node extends Object {
   Node();
 }
 
-class SnippetTreeController extends TreeController<STreeNode> {
-  Set<STreeNode>? _expandedNodesCache;
+class SnippetTreeController extends TreeController<SNode> {
+  Set<SNode>? _expandedNodesCache;
 
   SnippetTreeController({
     required super.roots,
@@ -122,22 +120,22 @@ class SnippetTreeController extends TreeController<STreeNode> {
     required super.parentProvider,
   });
 
-  Set<STreeNode> get expandedNodes => _expandedNodesCache ??= <STreeNode>{};
+  Set<SNode> get expandedNodes => _expandedNodesCache ??= <SNode>{};
 
-  set expandedNodes(Set<STreeNode> nodes) => _expandedNodesCache = nodes;
+  set expandedNodes(Set<SNode> nodes) => _expandedNodesCache = nodes;
 
   @override
-  bool getExpansionState(STreeNode node) => node.isExpanded;
+  bool getExpansionState(SNode node) => node.isExpanded;
 
   // Do not call `notifyListeners` from this method as it is called many
   // times recursively in cascading operations.
   @override
-  void setExpansionState(STreeNode node, bool expanded) {
+  void setExpansionState(SNode node, bool expanded) {
     node.isExpanded = expanded;
   }
 
-  List<STreeNode> getExpandedNodes(STreeNode startingNode) {
-    List<STreeNode> expandedNodes = [];
+  List<SNode> getExpandedNodes(SNode startingNode) {
+    List<SNode> expandedNodes = [];
     breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
@@ -149,7 +147,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
     return expandedNodes;
   }
 
-  void restoreExpansions(STreeNode startingNode, List<STreeNode> nodes) {
+  void restoreExpansions(SNode startingNode, List<SNode> nodes) {
     breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
@@ -162,7 +160,7 @@ class SnippetTreeController extends TreeController<STreeNode> {
     );
   }
 
-  int countNodesInTree(STreeNode startingNode) {
+  int countNodesInTree(SNode startingNode) {
     int nodeCount = 0;
     breadthFirstSearch(
       startingNodes: [startingNode],
@@ -174,22 +172,22 @@ class SnippetTreeController extends TreeController<STreeNode> {
   }
 
   // find 1st node with the supplied type
-  STreeNode? findNodeTypeInTree(STreeNode? startingNode, Type type) {
+  SNode? findNodeTypeInTree(SNode? startingNode, Type type) {
     if (startingNode == null) return null;
-    STreeNode? foundNode;
+    SNode? foundNode;
     foundNode = breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
       returnCondition: (node) => node.runtimeType == type,
       // onxTraverse: (node) {
-      //   fco.logi(node.toString());
+      //   fco.logger.i(node.toString());
       // },
     );
     return foundNode;
   }
 
- bool nodeIsADescendantOf(STreeNode startingNode, STreeNode nodeToFind) {
-    STreeNode? foundNode;
+ bool nodeIsADescendantOf(SNode startingNode, SNode nodeToFind) {
+    SNode? foundNode;
     foundNode = breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
@@ -198,15 +196,15 @@ class SnippetTreeController extends TreeController<STreeNode> {
     return foundNode != null;
   }
 
-  STreeNode rootNode(TreeEntry<STreeNode> theEntry) {
-    TreeEntry<STreeNode> entry = theEntry;
+  SNode rootNode(TreeEntry<SNode> theEntry) {
+    TreeEntry<SNode> entry = theEntry;
     while (entry.parent != null) {
       entry = entry.parent!;
     }
     return entry.node;
   }
 
-  int indexOf(STreeNode? selectedNode) {
+  int indexOf(SNode? selectedNode) {
     if (selectedNode == null) return -1;
     int result = -1;
     int i = 0;
@@ -220,9 +218,9 @@ class SnippetTreeController extends TreeController<STreeNode> {
     return result;
   }
 
-  STreeNode? nodeAt(int selectionIndex) {
+  SNode? nodeAt(int selectionIndex) {
     if (selectionIndex == -1) return null;
-    STreeNode? result;
+    SNode? result;
     int i = 0;
     depthFirstTraversal(onTraverse: (entry) {
       if (i++ == selectionIndex) {
@@ -233,9 +231,9 @@ class SnippetTreeController extends TreeController<STreeNode> {
   }
 
   SnippetTreeController clone() {
-    STreeNode rootNode = roots.first;
+    SNode rootNode = roots.first;
     String jsonS = rootNode.toJson();
-    STreeNode clonedRootNode = STreeNodeMapper.fromJson(jsonS);
+    SNode clonedRootNode = SNodeMapper.fromJson(jsonS);
     // String newJsonS = clonedRootNode.toJson();
     return SnippetTreeController(
       roots: [clonedRootNode],
@@ -245,29 +243,29 @@ class SnippetTreeController extends TreeController<STreeNode> {
   }
 }
 
-class PTreeNodeTreeController extends TreeController<PTreeNode> {
-  Set<PTreeNode>? _expandedNodesCache;
+class PNodeTreeController extends TreeController<PNode> {
+  Set<PNode>? _expandedNodesCache;
 
-  Set<PTreeNode> get _expandedNodes => _expandedNodesCache ??= <PTreeNode>{};
+  Set<PNode> get _expandedNodes => _expandedNodesCache ??= <PNode>{};
 
-  Set<PTreeNode> get expandedNodes => _expandedNodesCache ??= <PTreeNode>{};
+  Set<PNode> get expandedNodes => _expandedNodesCache ??= <PNode>{};
 
-  set expandedNodes(Set<PTreeNode> newSet) => _expandedNodesCache = newSet;
-
-  @override
-  bool getExpansionState(PTreeNode node) => _expandedNodesCache?.contains(node) ?? false;
+  set expandedNodes(Set<PNode> newSet) => _expandedNodesCache = newSet;
 
   @override
-  void setExpansionState(PTreeNode node, bool expanded) => expanded ? _expandedNodes.add(node) : _expandedNodes.remove(node);
+  bool getExpansionState(PNode node) => _expandedNodesCache?.contains(node) ?? false;
 
-  PTreeNodeTreeController({
+  @override
+  void setExpansionState(PNode node, bool expanded) => expanded ? _expandedNodes.add(node) : _expandedNodes.remove(node);
+
+  PNodeTreeController({
     required super.roots,
     required super.childrenProvider,
     super.parentProvider,
   });
 
-  List<PTreeNode> getExpandedNodes(PTreeNode startingNode) {
-    List<PTreeNode> expandedNodes = [];
+  List<PNode> getExpandedNodes(PNode startingNode) {
+    List<PNode> expandedNodes = [];
     breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
@@ -279,7 +277,7 @@ class PTreeNodeTreeController extends TreeController<PTreeNode> {
     return expandedNodes;
   }
 
-  void restoreExpansions(PTreeNode startingNode, List<PTreeNode> nodes) {
+  void restoreExpansions(PNode startingNode, List<PNode> nodes) {
     breadthFirstSearch(
       startingNodes: [startingNode],
       descendCondition: (_) => true,
@@ -292,7 +290,7 @@ class PTreeNodeTreeController extends TreeController<PTreeNode> {
     );
   }
 
-  int countNodesInTree(PTreeNode startingNode) {
+  int countNodesInTree(PNode startingNode) {
     int nodeCount = 0;
     breadthFirstSearch(
       startingNodes: [startingNode],
@@ -303,8 +301,8 @@ class PTreeNodeTreeController extends TreeController<PTreeNode> {
     return nodeCount;
   }
 
-  PTreeNode rootNode(TreeEntry<PTreeNode> theEntry) {
-    TreeEntry<PTreeNode> entry = theEntry;
+  PNode rootNode(TreeEntry<PNode> theEntry) {
+    TreeEntry<PNode> entry = theEntry;
     while (entry.parent != null) {
       entry = entry.parent!;
     }

@@ -27,7 +27,7 @@
 //   void initState() {
 //     super.initState();
 //
-//     fco.logi("IFrame initState");
+//     fco.logger.i("IFrame initState");
 //
 //     _iframeElement = IFrameElement();
 //     _iframeElement.src = widget.src;

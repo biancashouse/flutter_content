@@ -14,7 +14,7 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SizedBoxNodeMapper._());
       SCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -28,8 +28,8 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   static double? _$height(SizedBoxNode v) => v.height;
   static const Field<SizedBoxNode, double> _f$height =
       Field('height', _$height, opt: true);
-  static STreeNode? _$child(SizedBoxNode v) => v.child;
-  static const Field<SizedBoxNode, STreeNode> _f$child =
+  static SNode? _$child(SizedBoxNode v) => v.child;
+  static const Field<SizedBoxNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(SizedBoxNode v) => v.uid;
   static const Field<SizedBoxNode, String> _f$uid =
@@ -42,11 +42,6 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   static const Field<SizedBoxNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(SizedBoxNode v) =>
-      v.nodeWidgetGK;
-  static const Field<SizedBoxNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<SizedBoxNode> fields = const {
@@ -56,7 +51,6 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -126,9 +120,9 @@ extension SizedBoxNodeValueCopy<$R, $Out>
 abstract class SizedBoxNodeCopyWith<$R, $In extends SizedBoxNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({double? width, double? height, STreeNode? child});
+  $R call({double? width, double? height, SNode? child});
   SizedBoxNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -141,7 +135,7 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SizedBoxNode> $mapper =
       SizedBoxNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call(

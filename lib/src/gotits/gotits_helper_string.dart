@@ -5,7 +5,7 @@
 //   static List<String>? _features;
 //
 //   static List<String> features({bool notUsingHydratedStorage = false}) {
-//     //fco.logi(_features.toString());
+//     //fco.logger.i(_features.toString());
 //
 //     if (_features == null) {
 //       if (notUsingHydratedStorage) {
@@ -24,18 +24,18 @@
 //       features(notUsingHydratedStorage:notUsingHydratedStorage).add(theFeatureIndex);
 //       HydratedBloc.storage.write('gotits', features(notUsingHydratedStorage:notUsingHydratedStorage).toString());
 //     }
-//     // fco.logi("GotitsHelper.gotit");
+//     // fco.logger.i("GotitsHelper.gotit");
 //   }
 //
 //   static bool alreadyGotit(String feature, {bool notUsingHydratedStorage = false}) {
-//     // fco.logi("GotitsHelper.alreadyGotit");
+//     // fco.logger.i("GotitsHelper.alreadyGotit");
 //     return features(notUsingHydratedStorage:notUsingHydratedStorage).contains(feature);
 //   }
 //
 //   static void clearGotits({bool notUsingHydratedStorage = false}) {
 //     if (!notUsingHydratedStorage) HydratedBloc.storage.delete('gotits');
 //     features(notUsingHydratedStorage:notUsingHydratedStorage).clear();
-//     // fco.logi("GotitsHelper.clearGotits");
+//     // fco.logger.i("GotitsHelper.clearGotits");
 //   }
 //
 //   static Widget gotitButton({required String feature, required double iconSize, bool notUsingHydratedStorage = false}) => IconButton(

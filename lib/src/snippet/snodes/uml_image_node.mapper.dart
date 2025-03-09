@@ -47,11 +47,6 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
   static const Field<UMLImageNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(UMLImageNode v) =>
-      v.nodeWidgetGK;
-  static const Field<UMLImageNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
   static Uint8List? _$cachedPngBytes(UMLImageNode v) => v.cachedPngBytes;
   static const Field<UMLImageNode, Uint8List> _f$cachedPngBytes =
       Field('cachedPngBytes', _$cachedPngBytes, mode: FieldMode.member);
@@ -66,7 +61,6 @@ class UMLImageNodeMapper extends SubClassMapperBase<UMLImageNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
     #cachedPngBytes: _f$cachedPngBytes,
   };
 

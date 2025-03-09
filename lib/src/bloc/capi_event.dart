@@ -109,7 +109,7 @@ class CAPIEvent with _$CAPIEvent {
   }) = ForceRefresh;
 
   const factory CAPIEvent.updateClipboard({
-    required STreeNode? newContent,
+    required SNode? newContent,
     required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = UpdateClipboard;
@@ -177,12 +177,17 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.pushSnippetEditor({
     required SnippetRootNode rootNode,
-    STreeNode? visibleDecendantNode,
+    SNode? selectedNode,
   }) = PushSnippetEditor;
 
   const factory CAPIEvent.popSnippetEditor({
     @Default(false) bool save,
   }) = PopSnippetEditor;
+
+  const factory CAPIEvent.showCutout({
+    required Rect cutoutRect,
+    @Default(1000) int durationMs,
+  }) = ShowCutout;
 
   // const factory CAPIEvent.restoredSnippetBloc({
   //   required SnippetBloC restoredBloc,
@@ -217,7 +222,7 @@ class CAPIEvent with _$CAPIEvent {
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
   const factory CAPIEvent.selectNode({
-    required STreeNode node,
+    required SNode node,
     // required GlobalKey selectedWidgetGK,
     // required GlobalKey selectedTreeNodeGK,
     // TargetModel? imageTC,
@@ -225,11 +230,11 @@ class CAPIEvent with _$CAPIEvent {
   }) = SelectNode;
 
   const factory CAPIEvent.clearNodeSelection(
-      ScrollControllerName? scName,
+      // ScrollControllerName? scName,
       ) = ClearNodeSelection;
 
   const factory CAPIEvent.saveNodeAsSnippet({
-    required STreeNode node,
+    required SNode node,
     required String newSnippetName,
   }) = SaveNodeAsSnippet;
 
@@ -248,33 +253,33 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.replaceSelectionWith({
     Type? type,
     SnippetName? snippetName, // only used when type is SnippetRefNode
-    STreeNode? testNode,
+    SNode? testNode,
   }) = ReplaceSelectionWith;
 
   const factory CAPIEvent.wrapSelectionWith({
     Type? type,
     SnippetName? snippetName, // only used when type is SnippetRefNode
-    STreeNode? testNode,
+    SNode? testNode,
   }) = WrapSelectionWith;
 
   const factory CAPIEvent.appendChild({
     Type? type,
-    STreeNode? testNode,
+    SNode? testNode,
     SnippetName? snippetName, // only used when type is SnippetRefNode
     Type? widgetSpanChildType,
-    STreeNode? testWidgetSpanChildNode,
+    SNode? testWidgetSpanChildNode,
   }) = AppendChild;
 
   const factory CAPIEvent.addSiblingBefore({
     Type? type,
     SnippetName? snippetName, // only used when type is SnippetRefNode
-    STreeNode? testNode,
+    SNode? testNode,
   }) = AddSiblingBefore;
 
   const factory CAPIEvent.addSiblingAfter({
     Type? type,
     SnippetName? snippetName, // only used when type is SnippetRefNode
-    STreeNode? testNode,
+    SNode? testNode,
   }) = AddSiblingAfter;
 
   // // reorder sibling in 2 actions: remove, then insert
@@ -299,7 +304,7 @@ class CAPIEvent with _$CAPIEvent {
   const factory CAPIEvent.pasteChild({
     // required STreeNode clipboardNode,
     Type? widgetSpanChildType,
-    STreeNode? testWidgetSpanChildNode,
+    SNode? testWidgetSpanChildNode,
   }) = PasteChild;
 
   const factory CAPIEvent.pasteSiblingBefore() = PasteSiblingBefore;
@@ -321,13 +326,13 @@ class CAPIEvent with _$CAPIEvent {
       ReplaceSnippetFromJson;
 
   const factory CAPIEvent.copyNode({
-    required STreeNode node,
+    required SNode node,
     required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = CopyNode;
 
   const factory CAPIEvent.cutNode({
-    required STreeNode node,
+    required SNode node,
     required ScrollControllerName? scName,
     @Default(false) skipSave,
   }) = CutNode;
@@ -338,7 +343,7 @@ class CAPIEvent with _$CAPIEvent {
 
   const factory CAPIEvent.selectedDirectoryOrNode({
     required SnippetName snippetName,
-    required STreeNode? selectedNode, // null means clear selection
+    required SNode? selectedNode, // null means clear selection
   }) = SelectedDirectoryOrNode;
 
   // const factory CAPIEvent.selectedFSDirectoryOrNode({

@@ -24,8 +24,11 @@ enum BoxFitEnum {
   String toSource() => 'BoxFit.$name';
 
   Widget toMenuItem() => Container(
-      width:280, height:60,
-  decoration: BoxDecoration(color: Colors.purple[700]), child: _toMenuItem(),);
+      width:240, height:60,
+  decoration: BoxDecoration(color: Colors.purple[700]), child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: _toMenuItem(),
+  ),);
 
   Widget _toMenuItem() => switch (this) {
         BoxFitEnum.fill => fco.coloredText('$name - fill box by distorting aspect ratio', color: Colors.white),
@@ -47,7 +50,7 @@ enum BoxFitEnum {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,

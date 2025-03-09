@@ -23,8 +23,8 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           expands: false,
@@ -37,7 +37,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
           calloutButtonSize: const Size(150, 20),
           calloutWidth: 150,
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
@@ -45,7 +45,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
               refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'height',
           decimalValue: height,
@@ -56,7 +56,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -81,12 +81,12 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                     buildWhen: (previous, current) =>
                         !current.onlyTargetsWrappers,
                     builder: (blocContext, state) {
-                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState>");
-                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
-                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
+                      // fco.logger.i("BlocBuilder<CAPIBloC, CAPIState>");
+                      // fco.logger.i("BlocBuilder<CAPIBloC, CAPIState> SnippetPanel: ${widget.panelName}");
+                      // fco.logger.i("BlocBuilder<CAPIBloC, CAPIState> SnippetName: ${snippetName()}\n");
                       // // var fc = FC();
                       // SnippetInfoModel? snippetInfo = FCO.snippetInfoCache[snippetName()];
-                      // fco.logi("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
+                      // fco.logger.i("BlocBuilder<CAPIBloC, CAPIState> VersionId: ${snippetInfo!.currentVersionId}\n");
                       // // snippet panel renders a canned snippet or a supplied snippet tree
                       //return _renderSnippet(context);
                       Widget snippetWidget;
@@ -96,21 +96,22 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                         snippet?.validateTree();
                         // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                         snippetWidget = snippet == null
-                            ? Error(key: createNodeGK(), FLUTTER_TYPE,
+                            ? Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
                                 color: Colors.red,
-                                size: 32,
+                                size: 16,
                                 errorMsg: "null snippet!")
                             : snippet.child?.toWidget(futureContext, snippet) ??
                                 const Placeholder();
                       } catch (e) {
-                        fco.logi('snippetRootNode.toWidget() failed!');
-                        snippetWidget = Error(key: createNodeGK(), FLUTTER_TYPE,
+                        fco.logger.i('snippetRootNode.toWidget() failed!');
+                        snippetWidget = Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
                             color: Colors.red,
-                            size: 32,
+                            size: 16,
                             errorMsg: e.toString());
                       }
+                      var gk = createNodeWidgetGK();
                       return Placeholder(
-                        key: createNodeGK(),
+                        key: gk,
                         fallbackWidth: width ?? 400,
                         fallbackHeight: height ?? 400,
                         child: snippetWidget,
@@ -119,8 +120,10 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
                   );
           });
     } else {
+      var gk = createNodeWidgetGK();
+      // fco.logger.i('PlaceholderNode created with uid:$uid, gk: $gk');
       return Placeholder(
-        key: createNodeGK(),
+        key: gk,
         fallbackWidth: width ?? 400,
         fallbackHeight: height ?? 400,
         child: childWidget,

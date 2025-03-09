@@ -30,27 +30,27 @@ mixin HasImageInFBStorage {
     if (imageBytes?.isNotEmpty ?? false) {
       imageSize = imageBytes!
           .lengthInBytes; // resetting the size is redundant, hopefully ?
-      fco.logi(
+      fco.logger.i(
         'getImage() returned memory-cached bytes: $imageSize',
       );
       return imageBytes;
     }
 
     // stored in local srore i.e. prefs or indexedDB ?
-    // fco.logi('getting local-store-cached...', name: 'mixin HasImageInFBStorage');
-    final s = fco.hiveBox?.get(storageKey);
+    // fco.logger.i('getting local-store-cached...', name: 'mixin HasImageInFBStorage');
+    final s = fco.localStorage.read(storageKey);
     if (s != null) {
       imageBytes = base64Decode(s);
       if (imageBytes != null) {
         imageSize = imageBytes!.lengthInBytes;
-        // fco.logi('getImage() returned local-store-cached bytes: $imageSize', name: 'mixin HasImageInFBStorage');
+        // fco.logger.i('getImage() returned local-store-cached bytes: $imageSize', name: 'mixin HasImageInFBStorage');
         return imageBytes;
       }
     }
 
     if (!localOnly) {
       // so not found locally, is it in firebase ?
-      fco.logi('Downloading image from Firebase $storageKey...');
+      fco.logger.i('Downloading image from Firebase $storageKey...');
       firebase_storage.FirebaseStorage storage =
           firebase_storage.FirebaseStorage.instance;
       firebase_storage.Reference ref = storage.ref(storageKey);
@@ -67,16 +67,16 @@ mixin HasImageInFBStorage {
         imageSize = 0;
         Uint8List? downloadedData = await ref.getData();
         // String url = await ref.getDownloadURL();
-        // fco.logi('*** $url ***', name: 'mixin HasImageInFBStorage');
+        // fco.logger.i('*** $url ***', name: 'mixin HasImageInFBStorage');
         // Image image = Image(image:PCacheImage(url));
-        fco.logi(
+        fco.logger.i(
             'getImage() returned downloaded bytes from FB Storage: $imageSize');
         imageBytes = downloadedData;
         imageSize = imageBytes!.lengthInBytes;
         // save to local storage
         String s = base64Encode(imageBytes!);
-        await fco.hiveBox?.put(storageKey, s);
-        fco.logi('saved to local store: $storageKey');
+        await fco.localStorage.write(storageKey, s);
+        fco.logger.i('saved to local store: $storageKey');
         return downloadedData;
       }
 
@@ -84,7 +84,7 @@ mixin HasImageInFBStorage {
         Uint8List? data = await downloadImageData();
         return data;
       } on firebase_storage.FirebaseException catch (e) {
-        fco.loge('_ensureCommentImagesExistInStorage error: ${e.message}');
+        fco.logger.e('_ensureCommentImagesExistInStorage error: ${e.message}');
         // fco.loge('\nSign in, and try again...\n');
         // await App.bloc.ensureCurrentEaSignedInToFirebase(FirebaseAuth.instance);
         // try {
@@ -92,7 +92,7 @@ mixin HasImageInFBStorage {
         //   // save to local storage
         //   String s = base64Encode(data!);
         //   await fco.hiveBox.put(storageKey, s);
-        //   fco.logi('saved to local store: $storageKey');
+        //   fco.logger.i('saved to local store: $storageKey');
         //   return data;
         // } on firebase_storage.FirebaseException catch (e) {
         //   fco.loge(

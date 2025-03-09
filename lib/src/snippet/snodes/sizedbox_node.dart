@@ -16,15 +16,15 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
           onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'height',
           decimalValue: height,
@@ -34,14 +34,14 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
     // var targetGK = nodeWidgetGK;
     return SizedBox(
       // key: targetGK,
-      key: createNodeGK(),
+      key: createNodeWidgetGK(),
       width: width,
       height: height,
       child: child?.toWidget(context, this),

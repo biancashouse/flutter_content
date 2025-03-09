@@ -1,20 +1,21 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/hotspots/widgets/targets_wrapper_ontap_menu.dart';
 
 import 'positioned_target_cover.dart';
 import 'positioned_target_play_btn.dart';
 
 class TargetsWrapper extends StatefulWidget {
-  final HotspotsNode parentNode;
+  final TargetsWrapperNode parentNode;
   final Widget? child;
   final bool hardEdge;
   final ScrollControllerName? scName;
 
   const TargetsWrapper(
-      {
-      required this.parentNode,
+      {required this.parentNode,
       this.child,
       this.hardEdge = true,
       this.scName,
@@ -23,8 +24,8 @@ class TargetsWrapper extends StatefulWidget {
   @override
   State<TargetsWrapper> createState() => TargetsWrapperState();
 
-// static TargetsWrapperState? of(BuildContext context) =>
-//     context.findAncestorStateOfType<TargetsWrapperState>();
+  static TargetsWrapperState? of(BuildContext context) =>
+      context.findAncestorStateOfType<TargetsWrapperState>();
 
   /// the following statics are actually all UI-related and span all blocs...
 // can have multiple transformable widgets and preferredSize widgets under the MaterialApp
@@ -56,12 +57,14 @@ class TargetsWrapper extends StatefulWidget {
 //   }
 // }
 
-  static void configureTarget( TargetModel tc,
-      Rect wrapperRect, ScrollControllerName? scName,
+  static void configureTarget(
+      TargetModel tc, Rect wrapperRect, ScrollControllerName? scName,
       {bool quickly = false}) {
     if (!fco.canEditContent.value) return;
 
     if (tc.targetsWrapperState() == null) return;
+
+    fco.dismissAll();
 
     var coverGK = fco.getTargetGk(tc.uid);
     Rect? targetRect = coverGK!.globalPaintBounds();
@@ -70,8 +73,25 @@ class TargetsWrapper extends StatefulWidget {
     Alignment? ta =
         fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
 
-    tc.targetsWrapperState()?.zoomer?.applyTransform(
-        tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+    if (tc.hasAHotspot()) {
+      tc.targetsWrapperState()?.zoomer?.applyTransform(
+          tc.transformScale, tc.transformScale, ta, afterTransformF: () {
+        showSnippetContentCallout(
+          tc: tc,
+          justPlaying: false,
+          wrapperRect: wrapperRect,
+          scName: scName,
+        );
+        // show config toolbar in a toast
+        tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
+        showConfigToolbar(
+          tc,
+          wrapperRect,
+          scName,
+        );
+        // fco.currentPageState?.hideFAB();
+      }, quickly: quickly);
+    } else {
       showSnippetContentCallout(
         tc: tc,
         justPlaying: false,
@@ -85,9 +105,7 @@ class TargetsWrapper extends StatefulWidget {
         wrapperRect,
         scName,
       );
-
-      // fco.currentPageState?.hideFAB();
-    }, quickly: quickly);
+    }
   }
 
   static void showConfigToolbar(
@@ -112,6 +130,7 @@ class TargetsWrapper extends StatefulWidget {
           fco.setCalloutConfigToolbarPos(newPos);
         },
         dragHandleHeight: 30,
+        followScroll: false,
       ),
       calloutContent: CalloutConfigToolbar(
         tc: tc,
@@ -133,6 +152,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
   // bool _needToMeasurePos = true;
   bool _needToMeasureWrapperRect = true;
   late Rect wrapperRect;
+
+  Offset? pulsingPointPos;
+  late GlobalKey pulsingPointGK;
 
   // Offset? wrapperPos;
   // Size? _wrapperSize;
@@ -159,7 +181,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     if (context.mounted) {
       return Zoomer.of(context)!;
     } else {
-      fco.logi('zoomer context NOT MOUNTED!');
+      fco.logger.i('zoomer context NOT MOUNTED!');
     }
     return null;
   }
@@ -171,13 +193,21 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     });
   }
 
+  void hidePossibleNewTarget() {
+    setState(() {
+      pulsingPointPos = null;
+    });
+  }
+
   @override
   void initState() {
-    fco.logi('TargetsWrapperState initState');
+    fco.logger.i('TargetsWrapperState initState');
     super.initState();
 
+    pulsingPointGK = GlobalKey();
+
     for (TargetModel tc in widget.parentNode.targets) {
-      tc.parentHotspotNode = widget.parentNode;
+      tc.parentTargetsWrapperNode = widget.parentNode;
     }
 
     fco.afterNextBuildDo(
@@ -190,14 +220,26 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         // }
 
         fco.afterMsDelayDo(1000, () {
-          measureIWPosAndSize();
+          if (mounted) {
+            measureIWPosAndSize();
+            // autoplay callouts when not in editing mode
+            if (!fco.canEditContent.value) {
+              fco.afterNextBuildDo(() {
+                for (TargetModel tc in widget.parentNode.targets) {
+                  if (!tc.hasAHotspot()) {
+                    TargetCover.playTarget(tc, wrapperRect, null);
+                  }
+                }
+              });
+            }
+          }
         });
       },
     );
   }
 
   void measureIWPosAndSize() {
-    // fco.logi('measureIWPosAndSize');
+    // fco.logger.i('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
 
     Offset? globalPos;
@@ -207,9 +249,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         NamedScrollController.vScrollOffset(widget.scName),
       );
       if (globalPos != null) {
-        // fco.logi('globalPos != null');
-        // fco.logi('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
-        // fco.logi('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
+        // fco.logger.i('globalPos != null');
+        // fco.logger.i('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
+        // fco.logger.i('TargetGroupWrapper.iwSizeMap[${widget.name}] = ${newPosAndSize.$2!}');
         Size wrapperSize = newPosAndSize.$2!;
         if (wrapperSize.width == 0 && wrapperSize.height == 0) {
           wrapperSize = fco.scrSize;
@@ -220,8 +262,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           wrapperSize.width,
           wrapperSize.height,
         );
-        fco.logi('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
-        fco.logi(
+        fco.logger
+            .i('measureIWPosAndSize: wrapper is ${wrapperSize.toString()}');
+        fco.logger.i(
             'measureIWPosAndSize: aspect ratio is ${wrapperSize.aspectRatio}');
         setState(() {
           widget.parentNode.aspectRatio ??= wrapperSize.aspectRatio;
@@ -230,7 +273,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       }
     } catch (e) {
       // ignore but then don't update pos
-      fco.logi('measureIWPosAndSize! ${e.toString()}');
+      fco.logger.i('measureIWPosAndSize! ${e.toString()}');
     }
   }
 
@@ -250,7 +293,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       }
 
       // get current scrollOffset
-      String? editablePageName = EditablePage.name(context);
+      String? editablePageName = EditablePage.scName(context);
       double hOffset = NamedScrollController.hScrollOffset(editablePageName);
       double vOffset = NamedScrollController.vScrollOffset(editablePageName);
       refresh(() {
@@ -281,39 +324,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     }
 
     //
-    Future<void> createTarget(TapDownDetails details) async {
-      if (!fco.canEditContent.value) return;
-      SnippetName? snippetName = widget.parentNode.rootNodeOfSnippet()?.name;
-      if (snippetName == null) return;
-
-      TargetId newTargetId = DateTime.now().millisecondsSinceEpoch;
-      TargetModel newTC = TargetModel(
-        uid: newTargetId, //event.wName.hashCode,
-      )..parentHotspotNode = widget.parentNode;
-      Offset newGlobalPos = details.globalPosition.translate(
-        NamedScrollController.hScrollOffset(widget.scName),
-        NamedScrollController.vScrollOffset(widget.scName),
-      );
-      newTC.setTargetStackPosPc(
-        newGlobalPos,
-      );
-      bool onLeft = newTC.targetLocalPosLeftPc! < .5;
-      newTC.btnLocalTopPc = newTC.targetLocalPosTopPc;
-      newTC.btnLocalLeftPc =
-          newTC.targetLocalPosLeftPc! + (onLeft ? .02 : -.02);
-
-      widget.parentNode.targets = [...widget.parentNode.targets, newTC];
-      // widget.parentNode.targets.add(newTC);
-      FlutterContentApp.capiBloc
-          .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-
-      fco.cacheAndSaveANewSnippetVersion(
-        snippetName: snippetName,
-        rootNode: widget.parentNode.rootNodeOfSnippet()!,
-      );
-    }
-
-    List<TargetModel> tcs = widget.parentNode.targets;
 
     return SizedBox.fromSize(
         size: wrapperRect.size,
@@ -326,12 +336,59 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 return SizedBox.fromSize(
                   size: wrapperRect.size,
                   child: GestureDetector(
-                    onTap: () {
-                      fco.logi('TAP');
-                    },
-                    onDoubleTapDown: (TapDownDetails details) async {
-                      fco.logi('DOUBLE TAP');
-                      await createTarget(details);
+                    onTapDown: (TapDownDetails details) async {
+                      // ignore if not in editing mode or if currently showing config toolbar
+                      if (!fco.canEditContent.value ||
+                          fco.anyPresent([CalloutConfigToolbar.CID]) ||
+                          FlutterContentApp.snippetBeingEdited != null) {
+                        return;
+                      }
+                      CalloutConfig cc = CalloutConfig(
+                          cId: 'create-target-menu',
+                          initialTargetAlignment: Alignment.topRight,
+                          initialCalloutAlignment: Alignment.bottomLeft,
+                          initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
+                          initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
+                          // contentTranslateX: 1,
+                          // contentTranslateY: 1,
+                          barrier: CalloutBarrierConfig(
+                            opacity: 0.1,
+                          ),
+                          // finalSeparation: 50,
+                          arrowColor: Colors.purpleAccent,
+                          animate: true,
+                          fillColor: Colors.purpleAccent,
+                          scrollControllerName: null,
+                          showCloseButton: true,
+                          closeButtonPos: Offset(10,10),
+                          closeButtonColor: Colors.white,
+                          borderRadius: 16,
+                          onDismissedF: () {
+                            hidePossibleNewTarget();
+                          });
+                      // show pulsing indicator
+                      setState(() {
+                        pulsingPointPos =
+                            details.localPosition.translate(-32, -32);
+                        fco.showOverlay(
+                          targetGkF: () => pulsingPointGK,
+                          calloutConfig: cc,
+                          calloutContent: Padding(
+                            padding: const EdgeInsets.all(48.0),
+                            child: TargetsWrapperOnTapMenu(
+                              details,
+                              widget.parentNode,
+                              wrapperRect,
+                              widget.scName,
+                            ),
+                          ),
+                        );
+                      });
+
+                      // hide pulsing indicator
+                      // setState(() {
+                      //   pulsingPointPos = null;
+                      // });
                     },
                     child: _childBuild(),
                     // onLongPressEnd: (LongPressEndDetails details) async =>
@@ -348,7 +405,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             // _childBuild(),
 
             // TARGET COVERS
-            for (TargetModel tc in tcs)
+            for (TargetModel tc in widget.parentNode.targets)
               Positioned(
                 top: tc.targetStackPos().dy - tc.radius,
                 left: tc.targetStackPos().dx - tc.radius,
@@ -367,8 +424,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               ),
 
             // TARGET BUTTONS
-            for (TargetModel tc in tcs)
-              if (playingTc == null)
+            for (TargetModel tc in widget.parentNode.targets)
+              if (playingTc == null && tc.hasAHotspot())
                 Positioned(
                   top: tc.btnStackPos().dy -
                       FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
@@ -381,6 +438,24 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     scName: widget.scName,
                   ),
                 ),
+
+            if (pulsingPointPos != null)
+              Positioned(
+                top: pulsingPointPos!.dy,
+                left: pulsingPointPos!.dx,
+                child: TargetCover(
+                  gk: pulsingPointGK,
+                  TargetModel(uid: -1)
+                    ..parentTargetsWrapperNode = widget.parentNode,
+                  widget.parentNode.targets.length,
+                  wrapperRect: wrapperRect,
+                  scName: widget.scName,
+                )
+                    .animate(
+                        onPlay: (controller) =>
+                            controller.repeat(reverse: true))
+                    .scale(duration: 500.milliseconds),
+              ),
           ],
         ));
   }
@@ -408,6 +483,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 class IntegerCircleAvatar extends StatelessWidget {
   final TargetModel tc;
   final int? num;
+
   // final Color textColor;
   final Color bgColor;
   final double radius;
@@ -430,30 +506,32 @@ class IntegerCircleAvatar extends StatelessWidget {
     double luminance = bgColor.computeLuminance();
     bool needsDarkText = luminance > 0.5;
     return CircleAvatar(
-        backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
-        radius: radius,// + 2,
+      backgroundColor: const Color.fromRGBO(255, 0, 0, .01),
+      radius: radius, // + 2,
+      child: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: radius, // + 1,
         child: CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: radius,// + 1,
-          child: CircleAvatar(
-            foregroundColor: needsDarkText ? Colors.black : Colors.white,
-            backgroundColor: bgColor,
-            radius: radius,
-            child: Container(
-                // decoration: ShapeDecoration(
-                //     color: bgColor,
-                //     shape: const CircleBorder(
-                //       side: BorderSide(color: Colors.white),
-                //     )),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    '$num',
-                    style: TextStyle(color: needsDarkText ? Colors.black : Colors.white, fontSize: fontSize),
-                  ),
-                )),
-          ),
+          foregroundColor: needsDarkText ? Colors.black : Colors.white,
+          backgroundColor: bgColor,
+          radius: radius,
+          child: Container(
+              // decoration: ShapeDecoration(
+              //     color: bgColor,
+              //     shape: const CircleBorder(
+              //       side: BorderSide(color: Colors.white),
+              //     )),
+              child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Text(
+              '$num',
+              style: TextStyle(
+                  color: needsDarkText ? Colors.black : Colors.white,
+                  fontSize: fontSize),
+            ),
+          )),
         ),
-      );
+      ),
+    );
   }
 }

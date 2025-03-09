@@ -38,8 +38,8 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   GlobalKey? _gk;
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
@@ -49,7 +49,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
@@ -57,7 +57,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
               refreshWithUpdate(() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'height',
           decimalValue: height,
@@ -65,7 +65,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
               refreshWithUpdate(() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'scale',
           decimalValue: scale,
@@ -73,14 +73,14 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
               refreshWithUpdate(() => scale = newValue ?? 1.0),
           calloutButtonSize: const Size(80, 20),
         ),
-        EnumPropertyValueNode<BoxFitEnum?>(
+        EnumPNode<BoxFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit?.index,
           onIndexChange: (newValue) =>
               refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
         ),
-        EnumPropertyValueNode<AlignmentEnum?>(
+        EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
@@ -166,14 +166,14 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
 
       if (_gk == null) {
-        _gk = createNodeGK();
+        _gk = createNodeWidgetGK();
         fco.afterMsDelayDo(1000, () => fco.forceRefresh());
       }
 
@@ -189,12 +189,12 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
               //     : constraints.maxHeight != double.infinity
               //     ? constraints.maxHeight*scale
               //     : null;
-              // fco.logi('Constrints: ${constraints.toString()}');
+              // fco.logger.i('Constrints: ${constraints.toString()}');
               return SizedBox(
                 width: w,
                 //height: h,
                 child: Image.asset(
-                  key: _gk,
+                  // key: parentNode?.nodeWidgetGK, // use parent key instead for image
                   name!,
                   // scale: scale,
                   fit: fit?.flutterValue,
@@ -202,7 +202,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                   // package: 'flutter_content',
                   errorBuilder: (context, o, stackTrace) {
                     return Error(
-                      key: _gk = createNodeGK(),
+                      key: _gk = createNodeWidgetGK(),
                       FLUTTER_TYPE,
                       color: Colors.red,
                       size: 18,
@@ -248,7 +248,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //                     : constraints.maxHeight != double.infinity
   //                     ? constraints.maxHeight*scale
   //                     : null;
-  //               // fco.logi('Constrints: ${constraints.toString()}');
+  //               // fco.logger.i('Constrints: ${constraints.toString()}');
   //                 return SizedBox(
   //                   width: w,
   //                   height: h,
@@ -270,7 +270,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
   //                 fallbackHeight: (height ?? 300) * (scale ?? 1.0),
   //               );
   //   } catch (e) {
-  //     print(e);
+  //     fco.logger.e('', error:e);
   //     return const Column(
   //       children: [
   //         Text(FLUTTER_TYPE),

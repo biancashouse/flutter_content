@@ -34,11 +34,6 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
   static const Field<GapNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(GapNode v) =>
-      v.nodeWidgetGK;
-  static const Field<GapNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<GapNode> fields = const {
@@ -46,7 +41,6 @@ class GapNodeMapper extends SubClassMapperBase<GapNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override

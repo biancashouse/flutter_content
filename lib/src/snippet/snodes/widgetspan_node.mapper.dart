@@ -14,7 +14,7 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = WidgetSpanNodeMapper._());
       InlineSpanNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,8 +22,8 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   @override
   final String id = 'WidgetSpanNode';
 
-  static STreeNode? _$child(WidgetSpanNode v) => v.child;
-  static const Field<WidgetSpanNode, STreeNode> _f$child =
+  static SNode? _$child(WidgetSpanNode v) => v.child;
+  static const Field<WidgetSpanNode, SNode> _f$child =
       Field('child', _$child, opt: true);
   static String _$uid(WidgetSpanNode v) => v.uid;
   static const Field<WidgetSpanNode, String> _f$uid =
@@ -36,11 +36,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
   static const Field<WidgetSpanNode, bool> _f$hidePropertiesWhileDragging =
       Field('hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(WidgetSpanNode v) =>
-      v.nodeWidgetGK;
-  static const Field<WidgetSpanNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<WidgetSpanNode> fields = const {
@@ -48,7 +43,6 @@ class WidgetSpanNodeMapper extends SubClassMapperBase<WidgetSpanNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -116,9 +110,9 @@ extension WidgetSpanNodeValueCopy<$R, $Out>
 
 abstract class WidgetSpanNodeCopyWith<$R, $In extends WidgetSpanNode, $Out>
     implements InlineSpanNodeCopyWith<$R, $In, $Out> {
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child;
+  SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
-  $R call({STreeNode? child});
+  $R call({SNode? child});
   WidgetSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -132,7 +126,7 @@ class _WidgetSpanNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<WidgetSpanNode> $mapper =
       WidgetSpanNodeMapper.ensureInitialized();
   @override
-  STreeNodeCopyWith<$R, STreeNode, STreeNode>? get child =>
+  SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
   @override
   $R call({Object? child = $none}) =>

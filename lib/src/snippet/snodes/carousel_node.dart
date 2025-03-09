@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
 
@@ -39,8 +40,8 @@ class CarouselNode extends MC with CarouselNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        DecimalPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        DecimalPNode(
           snode: this,
           name: 'aspectRatio',
           decimalValue: aspectRatio,
@@ -48,7 +49,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
               refreshWithUpdate(() => aspectRatio = newValue ?? 1.0),
           calloutButtonSize: const Size(130, 30),
         ),
-        IntPropertyValueNode(
+        IntPNode(
             snode: this,
             name: 'autoPlayInterval (secs)',
             intValue: autoPlayIntervalSecs,
@@ -56,21 +57,21 @@ class CarouselNode extends MC with CarouselNodeMappable {
                 refreshWithUpdate(() => autoPlayIntervalSecs = newValue ?? 2),
             calloutButtonSize: const Size(180, 30),
             viaButton: false),
-        BoolPropertyValueNode(
+        BoolPNode(
           snode: this,
           name: 'autoPlay',
           boolValue: autoPlay,
           onBoolChange: (newValue) =>
               refreshWithUpdate(() => autoPlay = newValue ?? true),
         ),
-        BoolPropertyValueNode(
+        BoolPNode(
           snode: this,
           name: 'enlargeCenterPage',
           boolValue: enlargeCenterPage,
           onBoolChange: (newValue) =>
               refreshWithUpdate(() => enlargeCenterPage = newValue ?? true),
         ),
-        EnumPropertyValueNode<AxisEnum?>(
+        EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
@@ -86,7 +87,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       List<Widget> images = super.children.isEmpty
@@ -109,9 +110,9 @@ class CarouselNode extends MC with CarouselNodeMappable {
                   .toList()
               : super
                   .children
-                  .map((STreeNode node) => node is AssetImageNode
+                  .map((SNode node) => node is AssetImageNode
                       ? node.toWidget(context, this)
-                      : node is FirebaseStorageImageNode
+                      : node is FSImageNode
                           ? node.toWidget(context, this)
                           : const Placeholder(
                               child: Text('not an asset image!'),
@@ -143,7 +144,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
       // );
 
       return CarouselSlider.builder(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             itemCount: images.length,
             options: CarouselOptions(
               autoPlay: autoPlay,
@@ -160,15 +161,15 @@ class CarouselNode extends MC with CarouselNodeMappable {
             },
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 
   @override
   bool canBeDeleted() => children.isEmpty;
 
-  @override
-  List<Type> addChildOnly() => [AssetImageNode, FirebaseStorageImageNode];
+  // @override
+  // List<Type> addChildOnly() => [AssetImageNode, FSImageNode];
 
   @override
   String toString() => FLUTTER_TYPE;

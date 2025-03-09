@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
-import 'package:gap/gap.dart';
 
 part 'poll_node.mapper.dart';
 
@@ -32,8 +31,8 @@ class PollNode extends MC with PollNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'name',
           expands: false,
@@ -46,7 +45,7 @@ class PollNode extends MC with PollNodeMappable {
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'title',
           stringValue: title,
@@ -57,7 +56,7 @@ class PollNode extends MC with PollNodeMappable {
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
-        DateRangePropertyValueNode(
+        DateRangePNode(
           snode: this,
           name: 'duration',
           fromValue: startDate,
@@ -83,7 +82,7 @@ class PollNode extends MC with PollNodeMappable {
             }
           }),
         ),
-        // StringPropertyValueNode(
+        // StringPNode(
         //   snode: this,
         //   name: 'voter pool',
         //   nameOnSeparateLine: true,
@@ -95,7 +94,7 @@ class PollNode extends MC with PollNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -106,14 +105,16 @@ class PollNode extends MC with PollNodeMappable {
         builder: (context, constraints) {
           List<Widget> optionWidgets = [];
           for (int i = 0; i < children.length; i++) {
-            PollOptionNode optionNode = children[i] as PollOptionNode;
-            optionWidgets.add(optionNode.toWidget(context, this));
+            SNode child = children[i];
+            if (child is PollOptionNode) {
+              optionWidgets.add(child.toWidget(context, this));
+            }
           }
           return SizedBox(
             width: 300,
             height: 100.0 + 60.0 * (children.length),
             child: FlutterPoll(
-              key: createNodeGK(),
+              key: createNodeWidgetGK(),
               poll: this,
               titleWidget: Center(
                   child: fco.coloredText(title,
@@ -129,10 +130,10 @@ class PollNode extends MC with PollNodeMappable {
       );
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }

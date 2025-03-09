@@ -15,7 +15,7 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
       MapperContainer.globals.use(_instance = StepperNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
       StepperTypeEnumMapper.ensureInitialized();
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -29,8 +29,8 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
   static String? _$name(StepperNode v) => v.name;
   static const Field<StepperNode, String> _f$name =
       Field('name', _$name, opt: true);
-  static List<STreeNode> _$children(StepperNode v) => v.children;
-  static const Field<StepperNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(StepperNode v) => v.children;
+  static const Field<StepperNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(StepperNode v) => v.uid;
   static const Field<StepperNode, String> _f$uid =
@@ -43,11 +43,6 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
   static const Field<StepperNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(StepperNode v) =>
-      v.nodeWidgetGK;
-  static const Field<StepperNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<StepperNode> fields = const {
@@ -57,7 +52,6 @@ class StepperNodeMapper extends SubClassMapperBase<StepperNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -126,10 +120,9 @@ extension StepperNodeValueCopy<$R, $Out>
 abstract class StepperNodeCopyWith<$R, $In extends StepperNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({StepperTypeEnum? type, String? name, List<STreeNode>? children});
+  $R call({StepperTypeEnum? type, String? name, List<SNode>? children});
   StepperNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -142,14 +135,14 @@ class _StepperNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<StepperNode> $mapper =
       StepperNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {StepperTypeEnum? type,
           Object? name = $none,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (type != null) #type: type,
         if (name != $none) #name: name,

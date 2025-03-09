@@ -14,8 +14,8 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        IntPropertyValueNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        IntPNode(
             snode: this,
             name: 'flex',
             intValue: flex,
@@ -25,13 +25,13 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
       return Expanded(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             flex: flex,
             child: child?.toWidget(context, this) ??
                 const Icon(
@@ -40,7 +40,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
                 ),
           );
     } catch (e) {
-      return Error(key: createNodeGK(), FLUTTER_TYPE, color: Colors.red, size: 32, errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

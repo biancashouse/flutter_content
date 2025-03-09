@@ -13,12 +13,12 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) => fco.coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) => fco.coloredText('GenericMultiChildNode - Use toWidgetProperty() instead of toWidget() !', fontSize: 36);
 
-  List<Widget>? toWidgetProperty(BuildContext context, STreeNode? parentNode) {
+  List<Widget>? toWidgetProperty(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -26,7 +26,7 @@ class GenericMultiChildNode extends MC with GenericMultiChildNodeMappable {
       List<Widget> childWidgets = children.map((node) => node.toWidget(context, this)).toList();
       return childWidgets;
     } catch (e) {
-      print(e);
+      fco.logger.e('', error:e);
       return [];
     }
   }

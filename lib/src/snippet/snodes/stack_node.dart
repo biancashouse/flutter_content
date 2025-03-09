@@ -23,9 +23,9 @@ class StackNode extends MC with StackNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) =>
+  List<PNode> properties(BuildContext context, SNode? parentSNode) =>
       [
-        EnumPropertyValueNode<StackFitEnum?>(
+        EnumPNode<StackFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
@@ -34,7 +34,7 @@ class StackNode extends MC with StackNodeMappable {
                       () =>
                   fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
         ),
-        EnumPropertyValueNode<ClipEnum?>(
+        EnumPNode<ClipEnum?>(
           snode: this,
           name: 'clipBehavior',
           valueIndex: clipBehavior.index,
@@ -43,7 +43,7 @@ class StackNode extends MC with StackNodeMappable {
                       () =>
                   clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
         ),
-        EnumPropertyValueNode<AlignmentEnum?>(
+        EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
@@ -54,7 +54,7 @@ class StackNode extends MC with StackNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -63,14 +63,14 @@ class StackNode extends MC with StackNodeMappable {
         builder: (context, constraints) {
           return constraints.maxHeight == double.infinity
               ? Error(
-              key: createNodeGK(),
+              key: createNodeWidgetGK(),
               FLUTTER_TYPE,
               color: Colors.red,
-              size: 32,
+              size: 16,
               errorMsg:
               'Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?')
               : Stack(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             fit: fit.flutterValue,
             clipBehavior: clipBehavior.flutterValue,
             alignment: alignment.flutterValue,
@@ -82,9 +82,9 @@ class StackNode extends MC with StackNodeMappable {
       );
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
-          color: Colors.red, size: 32, errorMsg: e.toString());
+          color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 

@@ -13,12 +13,11 @@ class CLMapper extends SubClassMapperBase<CL> {
   static CLMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CLMapper._());
-      STreeNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      SNodeMapper.ensureInitialized().addSubMapper(_instance!);
       AlgCNodeMapper.ensureInitialized();
       AssetImageNodeMapper.ensureInitialized();
       ChipNodeMapper.ensureInitialized();
       FileNodeMapper.ensureInitialized();
-      FirebaseStorageImageNodeMapper.ensureInitialized();
       FSImageNodeMapper.ensureInitialized();
       GapNodeMapper.ensureInitialized();
       GoogleDriveIFrameNodeMapper.ensureInitialized();
@@ -49,17 +48,12 @@ class CLMapper extends SubClassMapperBase<CL> {
   static const Field<CL, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(CL v) =>
-      v.nodeWidgetGK;
-  static const Field<CL, GlobalKey<State<StatefulWidget>>> _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<CL> fields = const {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -67,7 +61,7 @@ class CLMapper extends SubClassMapperBase<CL> {
   @override
   final dynamic discriminatorValue = 'CL';
   @override
-  late final ClassMapperBase superMapper = STreeNodeMapper.ensureInitialized();
+  late final ClassMapperBase superMapper = SNodeMapper.ensureInitialized();
 
   static CL _instantiate(DecodingData data) {
     throw MapperException.missingSubclass('CL', 'cl', '${data.value['cl']}');
@@ -92,7 +86,7 @@ mixin CLMappable {
 }
 
 abstract class CLCopyWith<$R, $In extends CL, $Out>
-    implements STreeNodeCopyWith<$R, $In, $Out> {
+    implements SNodeCopyWith<$R, $In, $Out> {
   @override
   $R call();
   CLCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);

@@ -28,29 +28,29 @@ class RichTextNode extends CL with RichTextNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        EnumPropertyValueNode<TextAlignEnum?>(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
           onIndexChange: (newValue) =>
               refreshWithUpdate(() => TextAlignEnum.of(newValue)),
         ),
-        BoolPropertyValueNode(
+        BoolPNode(
           snode: this,
           name: 'softWrap',
           boolValue: softWrap ?? true,
           onBoolChange: (newValue) =>
               refreshWithUpdate(() => softWrap = newValue),
         ),
-        EnumPropertyValueNode<TextOverflowEnum?>(
+        EnumPNode<TextOverflowEnum?>(
           snode: this,
           name: 'overflow',
           valueIndex: overflow?.index,
           onIndexChange: (newValue) =>
               refreshWithUpdate(() => TextOverflowEnum.of(newValue)),
         ),
-        DecimalPropertyValueNode(
+        DecimalPNode(
           snode: this,
           name: 'textScaleFactor',
           decimalValue: textScaleFactor,
@@ -58,7 +58,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
               refreshWithUpdate(() => textScaleFactor = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
-        EnumPropertyValueNode<TextDirectionEnum?>(
+        EnumPNode<TextDirectionEnum?>(
           snode: this,
           name: 'textDirection',
           valueIndex: textDirection?.index,
@@ -68,14 +68,14 @@ class RichTextNode extends CL with RichTextNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context)) as TextSpan;
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
       RichText rt = RichText(
-        key: createNodeGK(),
+        key: createNodeWidgetGK(),
         text: rootTextSpan,
         textAlign: textAlign?.flutterValue ?? TextAlign.start,
         textDirection: textDirection?.flutterValue ?? TextDirection.ltr,
@@ -85,9 +85,9 @@ class RichTextNode extends CL with RichTextNodeMappable {
       );
       return rt;
     } catch (e) {
-      fco.logi('cannot render $FLUTTER_TYPE!');
-      return Error(key: createNodeGK(), FLUTTER_TYPE,
-          color: Colors.red, size: 32, errorMsg: e.toString());
+      fco.logger.i('cannot render $FLUTTER_TYPE!');
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
+          color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 
@@ -163,8 +163,8 @@ class RichTextNode extends CL with RichTextNodeMappable {
   //   return toMenuItems(context, nodeTypeCandidates: candidateTypes, onPressedF: onPressed);
   // }
   //
-  @override
-  List<Type> addChildOnly() => [TextSpanNode];
+  // @override
+  // List<Type> addChildOnly() => [TextSpanNode];
 
   @override
   String toString() => FLUTTER_TYPE;

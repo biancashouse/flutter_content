@@ -4,26 +4,26 @@ import 'package:flutter_content/flutter_content.dart';
 class MyGlobalObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
-    fco.logi('========================== ${event.runtimeType.toString()}');
+    fco.logger.i('========================== ${event.toString()}');
     super.onEvent(bloc, event);
-    // fco.logi('${bloc.runtimeType} $event');
+    // fco.logger.i('${bloc.runtimeType} $event');
   }
 
   // @override
   // void onChange(BlocBase bloc, Change change) {
   //   super.onChange(bloc, change);
-  //   fco.logi('${bloc.runtimeType} $change');
+  //   fco.logger.i('${bloc.runtimeType} $change');
   // }
   //
   // @override
   // void onTransition(Bloc bloc, Transition transition) {
   //   super.onTransition(bloc, transition);
-  //   fco.logi('${bloc.runtimeType} $transition');
+  //   fco.logger.i('${bloc.runtimeType} $transition');
   // }
   //
   // @override
   // void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-  //   fco.logi('${bloc.runtimeType} $error $stackTrace');
+  //   fco.logger.i('${bloc.runtimeType} $error $stackTrace');
   //   super.onError(bloc, error, stackTrace);
   // }
 }

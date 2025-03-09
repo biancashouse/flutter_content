@@ -56,7 +56,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
                 cId: 'uml-te',
                 scrollControllerName: widget.scName,
                 containsTextField: true,
-                barrier: CalloutBarrier(
+                barrier: CalloutBarrierConfig(
                     opacity: .25,
                     onTappedF: () {
                       fco.dismiss('uml-te');

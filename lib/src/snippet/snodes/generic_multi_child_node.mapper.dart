@@ -15,7 +15,7 @@ class GenericMultiChildNodeMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = GenericMultiChildNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -26,8 +26,8 @@ class GenericMultiChildNodeMapper
   static String _$propertyName(GenericMultiChildNode v) => v.propertyName;
   static const Field<GenericMultiChildNode, String> _f$propertyName =
       Field('propertyName', _$propertyName);
-  static List<STreeNode> _$children(GenericMultiChildNode v) => v.children;
-  static const Field<GenericMultiChildNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(GenericMultiChildNode v) => v.children;
+  static const Field<GenericMultiChildNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(GenericMultiChildNode v) => v.uid;
   static const Field<GenericMultiChildNode, String> _f$uid =
@@ -41,12 +41,6 @@ class GenericMultiChildNodeMapper
       _f$hidePropertiesWhileDragging = Field(
           'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
           mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(
-          GenericMultiChildNode v) =>
-      v.nodeWidgetGK;
-  static const Field<GenericMultiChildNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<GenericMultiChildNode> fields = const {
@@ -55,7 +49,6 @@ class GenericMultiChildNodeMapper
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -129,10 +122,9 @@ abstract class GenericMultiChildNodeCopyWith<
     $In extends GenericMultiChildNode,
     $Out> implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({String? propertyName, List<STreeNode>? children});
+  $R call({String? propertyName, List<SNode>? children});
   GenericMultiChildNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -146,11 +138,11 @@ class _GenericMultiChildNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<GenericMultiChildNode> $mapper =
       GenericMultiChildNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
-  $R call({String? propertyName, List<STreeNode>? children}) =>
+  $R call({String? propertyName, List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (propertyName != null) #propertyName: propertyName,
         if (children != null) #children: children

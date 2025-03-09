@@ -2,8 +2,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_group.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:go_router/go_router.dart';
 
 part 'chip_node.mapper.dart';
@@ -11,7 +11,7 @@ part 'chip_node.mapper.dart';
 @MappableClass()
 class ChipNode extends CL with ChipNodeMappable {
   String label;
-  TextStyleGroup? labelStyle;
+  TextStyleProperties labelTSPropGroup;
   EdgeInsetsValue? labelPadding;
   int? bgColorValue;
   int? disabledColorValue;
@@ -28,11 +28,11 @@ class ChipNode extends CL with ChipNodeMappable {
 
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
   String? onTapHandlerName;
-  CalloutConfigGroup? calloutConfigGroup;
+  CalloutConfigProperties? calloutConfigGroup;
 
   ChipNode({
     this.label = 'chip-name?',
-    this.labelStyle,
+    required this.labelTSPropGroup,
     this.labelPadding,
     this.bgColorValue,
     this.disabledColorValue,
@@ -51,8 +51,14 @@ class ChipNode extends CL with ChipNodeMappable {
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        StringPropertyValueNode(
+  TextStyleProperties? textStyleProperties() => labelTSPropGroup;
+
+  @override
+  void setTextStyleProperties(TextStyleProperties newProps) => labelTSPropGroup = newProps;
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        StringPNode(
           snode: this,
           name: 'label',
           expands: false,
@@ -63,18 +69,18 @@ class ChipNode extends CL with ChipNodeMappable {
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
-        TextStylePropertyGroup(
+        TextStylePNode /*Group*/ (
           snode: this,
           name: 'labelStyle',
-          textStyleGroup: labelStyle,
+          textStyleProperties: labelTSPropGroup,
           onGroupChange: (newValue) =>
-              refreshWithUpdate(() => labelStyle = newValue),
+              refreshWithUpdate(() => labelTSPropGroup = newValue),
         ),
-        PropertyGroup(
+        PNode /*Group*/ (
           snode: this,
           name: 'padding',
           children: [
-            EdgeInsetsPropertyValueNode(
+            EdgeInsetsPNode(
               snode: this,
               name: 'labelPadding',
               eiValue: labelPadding ?? EdgeInsetsValue(),
@@ -83,7 +89,7 @@ class ChipNode extends CL with ChipNodeMappable {
             ),
           ],
         ),
-        ColorPropertyValueNode(
+        ColorPNode(
           snode: this,
           name: 'b/g color',
           tooltip: "The chip's b/g color.",
@@ -92,7 +98,7 @@ class ChipNode extends CL with ChipNodeMappable {
               refreshWithUpdate(() => bgColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
-        ColorPropertyValueNode(
+        ColorPNode(
           snode: this,
           name: 'disabled color',
           tooltip: "The color to use for an unselected chip.",
@@ -101,7 +107,7 @@ class ChipNode extends CL with ChipNodeMappable {
               refreshWithUpdate(() => disabledColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
-        ColorPropertyValueNode(
+        ColorPNode(
           snode: this,
           name: 'selected color',
           tooltip: 'The color for a selected chip.',
@@ -110,18 +116,18 @@ class ChipNode extends CL with ChipNodeMappable {
               refreshWithUpdate(() => selectedColorValue = newValue),
           calloutButtonSize: const Size(130, 20),
         ),
-        BoolPropertyValueNode(
+        BoolPNode(
           snode: this,
           name: 'enabled',
           boolValue: enabled,
           onBoolChange: (newValue) =>
               refreshWithUpdate(() => enabled = newValue ?? true),
         ),
-        PropertyGroup(
+        PNode /*Group*/ (
           snode: this,
           name: 'goto Page...',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Route Path',
               stringValue: destinationRoutePathSnippetName,
@@ -135,11 +141,11 @@ class ChipNode extends CL with ChipNodeMappable {
             ),
           ],
         ),
-        PropertyGroup(
+        PNode /*Group*/ (
           snode: this,
           name: 'show Snippet in Panel...',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Panel Name',
               stringValue: destinationPanelOrPlaceholderName,
@@ -150,7 +156,7 @@ class ChipNode extends CL with ChipNodeMappable {
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 280,
             ),
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'destination Snippet Name',
               stringValue: destinationSnippetName,
@@ -162,7 +168,7 @@ class ChipNode extends CL with ChipNodeMappable {
             )
           ],
         ),
-        StringPropertyValueNode(
+        StringPNode(
           snode: this,
           name: 'onTapHandlerName',
           stringValue: onTapHandlerName,
@@ -174,11 +180,10 @@ class ChipNode extends CL with ChipNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
-    ScrollControllerName? scName = EditablePage.name(context);
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
+    ScrollControllerName? scName = EditablePage.scName(context);
     try {
-      TextStyle? ts = labelStyle?.toTextStyle(context);
-
       // possible handler
       // void Function(BuildContext)? f =
       //         onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
@@ -187,7 +192,7 @@ class ChipNode extends CL with ChipNodeMappable {
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
 
-      GlobalKey gk = createNodeGK();
+      GlobalKey gk = createNodeWidgetGK();
 
       return InkWell(
         onTap: () => onPressed(context, gk, scName),
@@ -195,20 +200,20 @@ class ChipNode extends CL with ChipNodeMappable {
           key: gk,
           label: Text(label),
           // onLongPress: f != null ? () => f.call(context) : null,
-          labelStyle: ts,
+          labelStyle: labelTSPropGroup.toTextStyle(context),
         ),
       );
     } catch (e) {
       return Error(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           FLUTTER_TYPE,
           color: Colors.red,
-          size: 32,
+          size: 16,
           errorMsg: e.toString());
     }
   }
 
-  Feature? get feature => calloutConfigGroup?.contentSnippetName;
+  CalloutId? get feature => calloutConfigGroup?.cid;
 
   void onPressed(
     BuildContext context,
@@ -216,7 +221,7 @@ class ChipNode extends CL with ChipNodeMappable {
     ScrollControllerName? scName,
   ) {
     if (onTapHandlerName != null) {
-      fco.getNamedCallback(onTapHandlerName!)?.call(context, gk);
+      fco.namedCallbacks[onTapHandlerName!]?.call(context, gk);
     } else if (feature != null) {
       // possible callout
       // Widget contents = SnippetPanel.getWidget(calloutConfig!.contentSnippetName!, context);
@@ -225,7 +230,7 @@ class ChipNode extends CL with ChipNodeMappable {
         () => fco.showOverlay(
           targetGkF: () => fco.getCalloutGk(feature),
           calloutContent: SnippetPanel.fromSnippet(
-            panelName: calloutConfigGroup!.contentSnippetName!,
+            panelName: calloutConfigGroup!.cid!,
             snippetName: BODY_PLACEHOLDER,
             // allowButtonCallouts: false,
             scName: scName,
@@ -243,7 +248,7 @@ class ChipNode extends CL with ChipNodeMappable {
             arrowType:
                 calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
             finalSeparation: 100,
-            barrier: CalloutBarrier(
+            barrier: CalloutBarrierConfig(
               opacity: 0.1,
               onTappedF: () async {
                 fco.dismiss(feature!);
@@ -260,7 +265,7 @@ class ChipNode extends CL with ChipNodeMappable {
       fco.addSubRoute(
           newPath: destinationRoutePathSnippetName!,
           template: SnippetTemplateEnum.empty);
-      context.go(destinationRoutePathSnippetName!);
+      context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     } else if (destinationPanelOrPlaceholderName != null &&
         destinationSnippetName != null) {

@@ -178,7 +178,7 @@ class PkgStepWidget extends StatelessWidget {
         }
         break;
       case LOOP:
-        //fco.logi('loop with key: ${model.key} with ${loopStepListOf(model).length} children');
+        //fco.logger.i('loop with key: ${model.key} with ${loopStepListOf(model).length} children');
         if (step.childStepListShowingChanges(LOOP_STEPS).isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, LOOP_STEPS, step));
         }
@@ -222,7 +222,7 @@ class PkgStepWidget extends StatelessWidget {
       final String theChildListType, final StepM theStep) {
     List<StepM>? stepList =
         theStep.childStepListShowingChanges(theChildListType);
-    if (stepList.isEmpty) fco.logi('empty childList! *******');
+    if (stepList.isEmpty) fco.logger.i('empty childList! *******');
     if (stepList.isNotEmpty) {
       List<PkgStepWidget> stepWidgets = stepList
           .map((step) => PkgStepWidget(
@@ -230,7 +230,7 @@ class PkgStepWidget extends StatelessWidget {
                 step,
               ))
           .toList();
-//    fco.logi(stepWidgets[0].runtimeType.toString());
+//    fco.logger.i(stepWidgets[0].runtimeType.toString());
       return stepWidgets;
     }
     return [];

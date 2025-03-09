@@ -14,7 +14,7 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PollNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -43,8 +43,8 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static bool _$locked(PollNode v) => v.locked;
   static const Field<PollNode, bool> _f$locked =
       Field('locked', _$locked, opt: true, def: false);
-  static List<STreeNode> _$children(PollNode v) => v.children;
-  static const Field<PollNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(PollNode v) => v.children;
+  static const Field<PollNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(PollNode v) => v.uid;
   static const Field<PollNode, String> _f$uid =
@@ -57,11 +57,6 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
   static const Field<PollNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(PollNode v) =>
-      v.nodeWidgetGK;
-  static const Field<PollNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<PollNode> fields = const {
@@ -76,7 +71,6 @@ class PollNodeMapper extends SubClassMapperBase<PollNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -149,8 +143,7 @@ abstract class PollNodeCopyWith<$R, $In extends PollNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get voterPool;
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {String? name,
@@ -160,7 +153,7 @@ abstract class PollNodeCopyWith<$R, $In extends PollNode, $Out>
       String? createdBy,
       List<String>? voterPool,
       bool? locked,
-      List<STreeNode>? children});
+      List<SNode>? children});
   PollNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -177,9 +170,9 @@ class _PollNodeCopyWithImpl<$R, $Out>
       ListCopyWith($value.voterPool, (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(voterPool: v));
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {String? name,
@@ -189,7 +182,7 @@ class _PollNodeCopyWithImpl<$R, $Out>
           Object? createdBy = $none,
           List<String>? voterPool,
           bool? locked,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (title != null) #title: title,

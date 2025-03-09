@@ -3,36 +3,43 @@
 // library flutter_content;
 
 import 'dart:async';
-import 'dart:math';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/button_styles.dart';
+import 'package:flutter_content/google_font_names.dart';
+
+// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
-import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/text_styles.dart';
+
+// import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
+import 'src/api/app/dynamic_page_route.dart';
+import 'src/api/app/editable_page.dart';
+import 'src/api/app/fc_app.dart';
 import 'src/api/snippet_panel/clipboard_view.dart';
-import 'src/bloc/bloc_observer.dart';
+import 'src/api/snippet_panel/snippet_panel.dart';
+import 'src/api/snippet_panel/snippet_templates.dart';
+import 'src/bloc/capi_bloc.dart';
+import 'src/bloc/capi_event.dart';
+import 'src/model/app_info_model.dart';
 import 'src/model/model_repo.dart';
+import 'src/model/snippet_info_model.dart';
 import 'src/nav/nav_mixin.dart';
+import 'src/passwordless/passwordless_mixin.dart';
+import 'src/snippet/pnode.dart';
+import 'src/snippet/snode.dart';
+import 'src/snippet/snodes/snippet_root_node.dart';
+import 'src/typedefs.dart';
 
-export 'package:bh_shared/src/canvas/canvas_mixin.dart';
-
-// re-export
-export 'package:bh_shared/src/debouncer/debouncer.dart';
-export 'package:bh_shared/src/gotits_mixin.dart';
-export 'package:bh_shared/src/local_storage_mixin.dart';
-export 'package:bh_shared/src/system_mixin.dart';
-export 'package:bh_shared/src/widget/blink.dart';
-export 'package:bh_shared/src/widget/constant_scroll_behavior.dart';
-export 'package:bh_shared/src/widget/error.dart';
-export 'package:bh_shared/src/widget/widget_helper_mixin.dart';
 export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
@@ -43,11 +50,25 @@ export 'package:flutter_callouts/src/api/callouts/decoration_shape_enum.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
 export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
 export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
+// import 'src/nav/nav_mixin.dart';
+
+export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
+
+// re-export
+export 'package:flutter_callouts/src/debouncer/debouncer.dart';
+export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
+export 'package:flutter_callouts/src/feature_discovery/featured_widget.dart';
+export 'package:flutter_callouts/src/feature_discovery/flat_icon_button_with_callout_player.dart';
+export 'package:flutter_callouts/src/gotits_mixin.dart';
 export 'package:flutter_callouts/src/measuring/measure_sizebox.dart';
+export 'package:flutter_callouts/src/system_mixin.dart';
 export 'package:flutter_callouts/src/text_editing/string_editor.dart';
 export 'package:flutter_callouts/src/text_editing/textfield_callout.dart';
 export 'package:flutter_callouts/src/typedefs.dart';
-export 'package:flutter_content/src/api/snippet_panel/callout_snippet_tree_and_properties_content.dart';
+export 'package:flutter_callouts/src/widget/blink.dart';
+export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
+export 'package:flutter_callouts/src/widget/error.dart';
+export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
 
 export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/editable_page.dart';
@@ -75,8 +96,8 @@ export 'src/model/app_info_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
 export 'src/model/target_model.dart';
-export 'src/passwordless/passwordless_mixin.dart';
 export 'src/nav/nav_mixin.dart';
+export 'src/passwordless/passwordless_mixin.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
@@ -103,7 +124,8 @@ export 'src/snippet/snodes/filled_button_node.dart';
 export 'src/snippet/snodes/firebase_storage_image_node.dart';
 export 'src/snippet/snodes/flex_node.dart';
 export 'src/snippet/snodes/flexible_node.dart';
-export 'src/snippet/snodes/fs_folder_node.dart';
+
+// export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
 export 'src/snippet/snodes/generic_multi_child_node.dart';
 export 'src/snippet/snodes/generic_single_child_node.dart';
@@ -173,6 +195,7 @@ export 'src/typedefs.dart';
 FlutterContentMixins fco = FlutterContentMixins._instance;
 
 const String PINK_OVERLAY_NON_TAPPABLE = 'pink-border-overlay-non-tappable';
+const String CUTOUT_OVERLAY_NON_TAPPABLE = 'cutout-overlay-non-tappable';
 const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 // const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 // const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
@@ -184,6 +207,8 @@ class FlutterContentMixins
         CalloutMixin,
         RootContextMixin,
         SystemMixin,
+        KeystrokesMixin,
+        LocalStorageMixin,
         WidgetHelperMixin,
         CanvasMixin,
         RootContextMixin,
@@ -191,12 +216,10 @@ class FlutterContentMixins
         CanvasMixin,
         GotitsMixin,
         PasswordlessMixin,
-        NavMixin,
-        // ImageCaptureMixin,
-        LocalStorageMixin {
+        NavMixin {
   FlutterContentMixins._internal() {
     // Private constructor
-    logi('FlutterContentMixins._internal() private constructor');
+    // logi('FlutterContentMixins._internal() private constructor');
   }
 
   static final FlutterContentMixins _instance =
@@ -207,43 +230,37 @@ class FlutterContentMixins
   // called by _initApp() to set the late variables
   Future<CAPIBloC> init({
     required String appName,
-    required String editorPassword,
+    required List<String> editorPasswords,
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
     bool useFBStorage = false,
     final IModelRepository? testModelRepo,
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
-    List<String> googleFontNames = const [
-      'Roboto',
-      'Roboto Mono',
-      'Merriweather',
-      'Merriweather Sans',
-    ],
     Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
-    Map<String, TextStyle> namedTextStyles = const {},
-    Map<String, ButtonStyle> namedButtonStyles = const {},
     required RoutingConfig routingConfig,
     required String initialRoutePath,
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
-    stopwatch.start();
+    await fca.initLocalStorage();
 
-    debugPrint('init() ${stopwatch.elapsedMilliseconds}');
+    // fco.logger.d('init() ${stopwatch.elapsedMilliseconds}');
+
+    loadGoogleFontNames(googleFontNames);
 
     _appName = appName;
-    _editorPassword = editorPassword;
-    _googleFontNames = googleFontNames;
-    _namedTextStyles = namedTextStyles;
-    _namedButtonStyles = namedButtonStyles;
-    Bloc.observer = MyGlobalObserver();
+    _editorPasswords = editorPasswords;
+
+    // Bloc.observer = MyGlobalObserver();
+
+    usingFBStorage = useFBStorage;
 
     // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
     // setPathUrlStrategy();
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
-      debugLogDiagnostics: true,
+      debugLogDiagnostics: false,
       initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,
 
@@ -305,7 +322,7 @@ class FlutterContentMixins
                   TextButton(
                     child: const Text('Cancel'),
                     onPressed: () {
-                      context.go('/');
+                      context.replace('/');
                     },
                   ),
                   TextButton(
@@ -346,7 +363,7 @@ class FlutterContentMixins
                   TextButton(
                     child: const Text('ok'),
                     onPressed: () {
-                      context.go('/');
+                      context.replace('/');
                     },
                   ),
                 ],
@@ -366,30 +383,40 @@ class FlutterContentMixins
     }
 
     List<String> routePaths = [];
-    logi('starting parseRouteConfig');
+    // logi('starting parseRouteConfig');
     parseRouteConfig(routePaths, router.configuration.routes);
-    logi('finished parseRouteConfig');
+    // logi('finished parseRouteConfig');
 
-    logi('RoutingConfig Routes------------');
-    logi(routePaths.toString());
-    logi('--------------------------------');
+    // logi('RoutingConfig Routes------------');
+    // logi(routePaths.toString());
+    // logi('--------------------------------');
 
     if (fbOptions != null) {
-      fco.logi('init 1. ${fco.stopwatch.elapsedMilliseconds}');
+      // fco.logger.i('init 1. ${fco.stopwatch.elapsedMilliseconds}');
 
       modelRepo = FireStoreModelRepository(fbOptions);
       await (modelRepo as FireStoreModelRepository)
           .possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
 
-      fco.logi('init 2. ${fco.stopwatch.elapsedMilliseconds}');
+      // fco.logger.i('init 2. ${fco.stopwatch.elapsedMilliseconds}');
 
       // fetch model
       AppInfoModel? fbAppInfo = await modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
 
+      // text and button styles get saved in the AppInfo
+      try {
+        namedTextStyles.addAll(cannedTextStyles());
+        namedTextStyles.addAll(_appInfo.textStyles);
+        namedButtonStyles.addAll(cannedButtonStyles());
+        namedButtonStyles.addAll(_appInfo.buttonStyles);
+      } catch (e) {
+        logger.e(e);
+      }
+
       _gcrServerUrl = await modelRepo.getGcrServerUrl();
 
-      fco.logi('init 3. ${fco.stopwatch.elapsedMilliseconds}');
+      // fco.logger.i('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
       // add more routes from the snippet names to below the "/" route
       // RouteBase home = routingConfig.routes.first;
@@ -402,40 +429,35 @@ class FlutterContentMixins
 
       // await loadLatestSnippetMap();
 
-      fco.logi('init 4. ${fco.stopwatch.elapsedMilliseconds}');
-
-      if (useFBStorage) {
-        loadFirebaseStorageFolders();
-      }
+      // fco.logger.i('init 4. ${fco.stopwatch.elapsedMilliseconds}');
     }
 
-    fco.logi('init 5. ${fco.stopwatch.elapsedMilliseconds}');
-    await initLocalStorage();
-    fco.logi('init 6. ${fco.stopwatch.elapsedMilliseconds}');
+    // fco.logger.i('init 5. ${fco.stopwatch.elapsedMilliseconds}');
+    // await initLocalStorage();
+    // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    bool b = hiveBox?.get("canEditContent") ?? false;
+    bool b = localStorage.read("canEditContent") ?? false;
     canEditContent = ValueNotifier<bool>(b);
 
     // FutureBuilder requires this return
     CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
 
-    fco.logi('init 7. ${fco.stopwatch.elapsedMilliseconds}');
+    // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
     return capiBloc;
   }
 
   bool emailIsValid(String theEA) => EmailValidator.validate(theEA);
-
-  final stopwatch = Stopwatch();
 
   late IModelRepository modelRepo;
 
   // set by .init()
   String get appName => _appName;
 
-  String get editorPassword => _editorPassword;
+  List<String> get editorPasswords => _editorPasswords;
 
   late String _appName;
-  late String _editorPassword;
+  late bool usingFBStorage;
+  late List<String> _editorPasswords;
 
   late AppInfoModel _appInfo; // must be instantiated in init()
   late String? _gcrServerUrl;
@@ -444,7 +466,7 @@ class FlutterContentMixins
 
   String? get gcrServerUrl => _gcrServerUrl;
 
-  Map<String, dynamic> get appInfoAsMap => _appInfo.toMap();
+  JsonMap get appInfoAsMap => _appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
@@ -509,12 +531,11 @@ class FlutterContentMixins
   //   _appInfo.versionIds = newVersionIds;
   // }
 
-  STreeNode? get clipboard => _appInfo.clipboard;
+  SNode? get clipboard => _appInfo.clipboard;
 
   bool get clipboardIsEmpty => _appInfo.clipboard == null;
 
-  void setClipboard(STreeNode? newClipboard) =>
-      _appInfo.clipboard = newClipboard;
+  void setClipboard(SNode? newClipboard) => _appInfo.clipboard = newClipboard;
 
   List<SnippetName> snippetsBeingReadFromFB = [];
 
@@ -574,7 +595,7 @@ class FlutterContentMixins
     required SnippetRootNode rootNode,
     bool? publish,
   }) async {
-    logi('cacheAndSaveANewSnippetVersion($snippetName)');
+    logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
 
     // snippet has changed
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -620,7 +641,8 @@ class FlutterContentMixins
     );
 
     if (!fbSuccess) {
-      logi('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSucess !');
+      logger
+          .i('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSucess !');
     } else {
       // reset current version to before change
       if (currVersionId != null) {
@@ -637,7 +659,10 @@ class FlutterContentMixins
     }
   }
 
-  late FSFolderNode? rootFSFolderNode;
+  bool isEditingVersionPublished(SnippetName name) {
+    var snippetInfo = SnippetInfoModel.cachedSnippet(name);
+    return snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
+  }
 
   /// The package name. `bundleIdentifier` on iOS, `getPackageName` on Android.
 
@@ -649,11 +674,12 @@ class FlutterContentMixins
   /// Note, on iOS if an app has no buildNumber specified this property will return version
   /// Docs about CFBundleVersion: https://developer.apple.com/documentation/bundleresources/information_property_list/cfbundleversion
 
-  late List<String> _googleFontNames;
-  final Map<String, void Function(BuildContext, GlobalKey)> _namedCallbacks =
-      {};
-  late Map<String, TextStyle> _namedTextStyles;
-  late Map<String, ButtonStyle> _namedButtonStyles;
+  final List<String> googleFontNames = [];
+  final Map<String, void Function(BuildContext, GlobalKey)> namedCallbacks = {};
+
+  Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
+  Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
+
   Offset? _devToolsFABPos;
 
   // ---- callout config tool pos -------------------------
@@ -661,8 +687,8 @@ class FlutterContentMixins
   bool calloutConfigToolbarAtTopOfScreen = false;
 
   // ---- callout config tool pos -------------------------
-  bool skipEditModeEscape =
-      false; // property editors can set this to prevent exit from EditMode
+  // bool skipEditModeEscape =
+  //     false; // property editors can set this to prevent exit from EditMode
 
   final inEditMode = ValueNotifier<bool>(false);
 
@@ -673,7 +699,7 @@ class FlutterContentMixins
 
   Future<void> setCanEditContent(bool b) async {
     canEditContent.value = b;
-    return hiveBox?.put("canEditContent", b);
+    return await localStorage.write("canEditContent", b);
   }
 
   Offset calloutConfigToolbarPos() =>
@@ -702,43 +728,31 @@ class FlutterContentMixins
   String? currentEditablePagePath; // gets set by EditablePage initState()
 
   // each snippet panel has a gk, a last selected node, and a ur
-  final Map<RouteName, GlobalKey> pageGKs = {};
+  // final Map<RouteName, GlobalKey> pageGKs = {};
 
   // if a page has a scrollable, its offset can be stored in this map to avoid rebuild losing it
-  final Map<String, double> scrollControllerOffsets = {};
+  // final Map<String, double> scrollControllerOffsets = {};
   String? currentRoute;
 
-  final Map<GlobalKey, STreeNode> gkSTreeNodeMap =
-      {}; // every node's toWidget() creates a GK
+  // every node's toWidget() creates a (resusable) GK
+  // knowing a node's GK you can establish it ScrolController? or TabController?
+  final Map<GlobalKey, SNode> nodesByGK = {};
+
   // final Map<PanelName, SnippetName> snippetPlacementMap = {};
   final List<SnippetPlaceName> placeNames = [];
   final Map<SnippetPlaceName, SnippetName> snippetPlacementMap = {};
 
-  EditablePageState? get currentPageState {
-    return currentRoute != null
-        ? pageGKs[currentRoute]?.currentState as EditablePageState?
-        : null;
-  }
+  // EditablePageState? get currentPageState {
+  //   return currentRoute != null
+  //       ? pageGKs[currentRoute]?.currentState as EditablePageState?
+  //       : null;
+  // }
 
   final Map<PanelName, GlobalKey> panelGkMap = {};
-  final Map<STreeNode, Set<PTreeNode>> expandedNodes = {};
+  final Map<SNode, Set<PNode>> expandedNodes = {};
   final Map<HandlerName, void Function(BuildContext)> _handlers = {};
 
   bool showingNodeButtons = true;
-
-  List<String> get googleFontNames => _googleFontNames;
-
-  void Function(BuildContext, GlobalKey)? getNamedCallback(
-          String callbackName) =>
-      _namedCallbacks[callbackName];
-
-  void setNamedCallback(String callbackName,
-          void Function(BuildContext, GlobalKey) callback) =>
-      _namedCallbacks[callbackName] = callback;
-
-  Map<String, TextStyle> get namedTextStyles => _namedTextStyles;
-
-  Map<String, ButtonStyle> get namedButtonStyles => _namedButtonStyles;
 
   // PTreeNodeTreeController? selectedNodePTree;
   SnippetRootNode? targetSnippetBeingConfigured;
@@ -762,7 +776,7 @@ class FlutterContentMixins
 
   GlobalKey? getCalloutGk(feature) => _calloutGkMap[feature];
 
-  GlobalKey setCalloutGk(Feature feature, GlobalKey gk) {
+  GlobalKey setCalloutGk(CalloutId feature, GlobalKey gk) {
     _calloutGkMap[feature] = gk;
     return gk;
   }
@@ -778,12 +792,16 @@ class FlutterContentMixins
 
   final GksByTargetId _targetGK = {};
 
-  GlobalKey? getTargetGk(TargetId targetId) => _targetGK[targetId];
+  GlobalKey? getTargetGk(TargetId targetId) {
+    // fco.logger.d('getTargetGk($targetId)');
+    return _targetGK[targetId];
+  }
 
   GlobalKey setTargetGk(TargetId targetId, GlobalKey gk) {
     // if (_targetGK.containsKey(targetId) && _targetGK != gk) {
     //   logi('target changed.');
     // }
+    // fco.logger.d('setTargetGk($targetId)');
     _targetGK[targetId] = gk;
     return gk;
   }
@@ -799,7 +817,7 @@ class FlutterContentMixins
 
   void hideClipboard() => dismiss("floating-clipboard");
 
-  void showFloatingClipboard(ScrollControllerName? scName) {
+  void showFloatingClipboard({ScrollControllerName? scName}) {
     dismiss("floating-clipboard");
     fco.showOverlay(
         calloutContent: const ClipboardView(),
@@ -815,180 +833,211 @@ class FlutterContentMixins
         ));
   }
 
-  //  Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
-  //   Map<String, TargetGroupModel> imageTargetListMap = {};
-  //   if (model.TargetGroupModels.isNotEmpty) {
-  //     try {
-  //       for (String name in model.TargetGroupModels.keys) {
-  //         TargetGroupModel? imageConfig = model.TargetGroupModels[name];
-  //         if (imageConfig != null && imageConfig.targets.isNotEmpty) {
-  //           imageTargetListMap[name] = imageConfig;
-  //         }
-  //       }
-  //     } catch (e) {
-  //       logi("_parseImageTargets(): ${e.toString()}");
-  //       rethrow;
-  //     }
-  //   }
-  //   return imageTargetListMap;
-  // }
-
-  //  Future<void> loadLatestSnippetMap() async {
-  //   var versionToLoad = canEditContent
-  //       ? appInfo.editingVersionId
-  //       : appInfo.publishedVersionId;
-  //   snippets = (versionToLoad == null)
-  //       ? SnippetMapModel({})
-  //       : await FC()
-  //               .fbModelRepo
-  //               .getVersionedSnippetMap(versionId: versionToLoad) ??
-  //           SnippetMapModel({});
-  // }
-
-  Future<void> loadFirebaseStorageFolders() async {
-    var rootRef = fbStorage.ref('/$appName'); // .child("/");
-    rootFSFolderNode =
-        await modelRepo.createAndPopulateFolderNode(ref: rootRef);
+  /// inspect the named text styles for a match, and return the name of that matching style
+  TextStyleName? findTextStyleName(TextStyleProperties props) {
+    for (TextStyleName tsName in _appInfo.textStyles.keys) {
+      TextStyleProperties namedTSProps = appInfo.textStyles[tsName]!;
+      if (namedTSProps.colorValue == props.colorValue &&
+          namedTSProps.fontWeight == props.fontWeight &&
+          namedTSProps.fontSize == props.fontSize &&
+          namedTSProps.fontSizeName == props.fontSizeName &&
+          namedTSProps.fontFamily == props.fontFamily &&
+          namedTSProps.fontStyle == props.fontStyle &&
+          namedTSProps.letterSpacing == props.letterSpacing &&
+          namedTSProps.lineHeight == props.lineHeight) return tsName;
+    }
+    return null;
   }
 
-  // snippet editing
-  CalloutConfig snippetTreeCalloutConfig({
-    required String cId,
-    required VoidCallback onDismissedF,
-    ScrollControllerName? scName,
-  }) {
-    double width() {
-      double? w = fco.hiveBox?.get("snippet-tree-callout-width");
-      if (w != null) return w.abs();
-
-      // if (root?.child == null) return 190;
-      w = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
-      return w > 0 ? w : 500;
+  ButtonStyleName? findButtonStyleName(ButtonStyleProperties props) {
+    for (ButtonStyleName bsName in _appInfo.buttonStyles.keys) {
+      ButtonStyleProperties namedBSProps = _appInfo.buttonStyles[bsName]!;
+      if (namedBSProps.bgColorValue == props.bgColorValue &&
+          namedBSProps.fgColorValue == props.fgColorValue &&
+          namedBSProps.elevation == props.elevation &&
+          namedBSProps.padding == props.padding &&
+          namedBSProps.shape == props.shape &&
+          namedBSProps.fixedH == props.fixedH &&
+          namedBSProps.fixedW == props.fixedW &&
+          namedBSProps.maxH == props.maxH &&
+          namedBSProps.maxW == props.maxW &&
+          namedBSProps.minH == props.minW &&
+          namedBSProps.maxH == props.maxW &&
+          namedBSProps.radius == props.radius &&
+          namedBSProps.side?.colorValue == props.side?.colorValue &&
+          namedBSProps.side?.width == props.side?.width) return bsName;
     }
+    return null;
+  }
 
-    double height() {
-      double? h = fco.hiveBox?.get("snippet-tree-callout-height");
-      if (h != null) return h.abs();
-
-      // if (root?.child == null) return 60;
-// int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
-// double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-      h = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500,
-          fco.scrH - 50);
-      return h > 0 ? h : 500;
-    }
-
-    return CalloutConfig(
-      cId: cId,
-      // frameTarget: true,
-      arrowType: ArrowType.NONE,
-      barrier: CalloutBarrier(
-        opacity: .1,
-        // closeOnTapped: false,
-        // hideOnTapped: true,
-      ),
-      onDismissedF: onDismissedF,
-// onHiddenF: () {
-//   STreeNode.unhighlightSelectedNode();
-//   FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-//   fco.dismiss(TREENODE_MENU_CALLOUT);
-//   MaterialAppWrapper.showAllPinkSnippetOverlays();
-//   if (snippetBloc.state.canUndo()) {
-//     FCO.capiBloc.add(const CAPIEvent.saveModel());
+//  Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
+//   Map<String, TargetGroupModel> imageTargetListMap = {};
+//   if (model.TargetGroupModels.isNotEmpty) {
+//     try {
+//       for (String name in model.TargetGroupModels.keys) {
+//         TargetGroupModel? imageConfig = model.TargetGroupModels[name];
+//         if (imageConfig != null && imageConfig.targets.isNotEmpty) {
+//           imageTargetListMap[name] = imageConfig;
+//         }
+//       }
+//     } catch (e) {
+//       logi("_parseImageTargets(): ${e.toString()}");
+//       rethrow;
+//     }
 //   }
-// },
-      initialCalloutW: width(),
-      initialCalloutH: height(),
-//calloutH ?? 500,
-// barrierOpacity: .1,
-// arrowType: ArrowType.POINTY,
-// color: Colors.purpleAccent.shade100,
-      borderRadius: 16,
-// initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
-      finalSeparation: 40,
-// onBarrierTappedF: () async {
-//   // also check whether any snippet change
-//   var newSnippetMap = CAPIBloc.getSnippetJsonsFromTree(bloc.state.snippetTreeC);
-//   bool changeOccurred = true || !mapEquals(originalSnippetMap, newSnippetMap) || originalClipboardJson != bloc.state.jsonClipboard;
-//   bloc.add(CAPIEvent.hideSnippetTree(save: changeOccurred));
-//   removeSnippetTreeCallout(snippetName);
-//   onClosedF.call();
-// },
-// draggable: false,
-      dragHandleHeight: 40,
-      resizeableH: true,
-      resizeableV: true,
-      onResizeF: (newSize) {
-        // keep size in localstorage for future use
-        fco.hiveBox?.put("snippet-tree-callout-width", newSize.width);
-        fco.hiveBox?.put("snippet-tree-callout-height", newSize.height);
-      },
-      onDragStartedF: () {
-        FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = true;
-      },
-      onDragEndedF: (_) {
-        FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = false;
-      },
-      scrollControllerName: scName,
-    );
-  }
+//   return imageTargetListMap;
+// }
 
-  void showSnippetTreeAndPropertiesCallout({
-    required TargetKeyFunc targetGKF,
-    ScrollControllerName? scName,
-    required VoidCallback onDismissedF,
-    required STreeNode startingAtNode,
-    required STreeNode selectedNode,
-    // required STreeNode tappedNode,
-    bool allowButtonCallouts = false,
-    TargetModel? targetBeingConfigured,
-  }) async {
-    SnippetRootNode? rootNode =
-        FlutterContentApp.snippetBeingEdited?.getRootNode();
-    if (rootNode == null) return;
+//  Future<void> loadLatestSnippetMap() async {
+//   var versionToLoad = canEditContent
+//       ? appInfo.editingVersionId
+//       : appInfo.publishedVersionId;
+//   snippets = (versionToLoad == null)
+//       ? SnippetMapModel({})
+//       : await FC()
+//               .fbModelRepo
+//               .getVersionedSnippetMap(versionId: versionToLoad) ??
+//           SnippetMapModel({});
+// }
 
-    // dismiss any pink border overlays
-    fco.dismissAll(exceptFeatures: [
-      rootNode.name,
-      CalloutConfigToolbar.CID,
-      targetBeingConfigured?.contentCId ?? 'n/a',
-    ]);
+// snippet editing
+//   CalloutConfig snippetTreeCalloutConfig({
+//     required String cId,
+//     required VoidCallback onDismissedF,
+//     ScrollControllerName? scName,
+//   }) {
+//     double width() {
+//       double? w = localStorage.read("snippet-tree-callout-width");
+//       if (w != null) return w.abs();
+//
+//       // if (root?.child == null) return 190;
+//       w = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
+//       return w > 0 ? w : 500;
+//     }
+//
+//     double height() {
+//       double? h = localStorage.read("snippet-tree-callout-height");
+//       if (h != null) return h.abs();
+//
+//       // if (root?.child == null) return 60;
+// // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
+// // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
+//       h = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500,
+//           fco.scrH - 50);
+//       return h > 0 ? h : 500;
+//     }
+//
+//     return CalloutConfig(
+//       cId: cId,
+//       // frameTarget: true,
+//       arrowType: ArrowType.NONE,
+//       barrier: CalloutBarrierConfig(
+//         opacity: .1,
+//         // closeOnTapped: false,
+//         // hideOnTapped: true,
+//       ),
+//       onDismissedF: onDismissedF,
+// // onHiddenF: () {
+// //   STreeNode.unhighlightSelectedNode();
+// //   FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+// //   fco.dismiss(TREENODE_MENU_CALLOUT);
+// //   MaterialAppWrapper.showAllPinkSnippetOverlays();
+// //   if (snippetBloc.state.canUndo()) {
+// //     FCO.capiBloc.add(const CAPIEvent.saveModel());
+// //   }
+// // },
+//       initialCalloutW: width(),
+//       initialCalloutH: height(),
+// //calloutH ?? 500,
+// // barrierOpacity: .1,
+// // arrowType: ArrowType.POINTY,
+// // color: Colors.purpleAccent.shade100,
+//       borderRadius: 16,
+// // initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
+//       finalSeparation: 40,
+// // onBarrierTappedF: () async {
+// //   // also check whether any snippet change
+// //   var newSnippetMap = CAPIBloc.getSnippetJsonsFromTree(bloc.state.snippetTreeC);
+// //   bool changeOccurred = true || !mapEquals(originalSnippetMap, newSnippetMap) || originalClipboardJson != bloc.state.jsonClipboard;
+// //   bloc.add(CAPIEvent.hideSnippetTree(save: changeOccurred));
+// //   removeSnippetTreeCallout(snippetName);
+// //   onClosedF.call();
+// // },
+// // draggable: false,
+//       dragHandleHeight: 40,
+//       resizeableH: true,
+//       resizeableV: true,
+//       onResizeF: (newSize) {
+//         // keep size in localstorage for future use
+//         localStorage.write("snippet-tree-callout-width", newSize.width);
+//         localStorage.write("snippet-tree-callout-height", newSize.height);
+//       },
+//       onDragStartedF: () {
+//         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = true;
+//       },
+//       onDragEndedF: (_) {
+//         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = false;
+//       },
+//       scrollControllerName: scName,
+//     );
+//   }
 
-    // if (rootNode == null) return;
-
-    // to check for any change
-    // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
-    // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-    // String? originalClipboardJson = FlutterContentApp.capiBloc.state.jsonClipboard;
-    // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
-
-    // CalloutConfig cc = snippetTreeCalloutConfig(
-    //   cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
-    //   onDismissedF: onDismissedF,
-    // );
-    //
-    // Widget content = SnippetTreeAndPropertiesCalloutContents(
-    //   scName: scName,
-    //   allowButtonCallouts: allowButtonCallouts,
-    // );
-    //
-    // fco.showOverlay(
-    //   calloutConfig: cc,
-    //   calloutContent: content,
-    //   targetGkF: targetGKF,
-    // );
-
-    // imm select a node
-    STreeNode sel = selectedNode;
-    FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
-      node: sel,
-      //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-// imageTC: tc,
-    ));
-    fco.afterMsDelayDo(100, () {
-      selectedNode.showNodeWidgetOverlay();
-    });
-  }
+//   void showSnippetTreeAndPropertiesCallout({
+//     required TargetKeyFunc targetGKF,
+//     ScrollControllerName? scName,
+//     required VoidCallback onDismissedF,
+//     required STreeNode startingAtNode,
+//     required STreeNode selectedNode,
+//     // required STreeNode tappedNode,
+//     bool allowButtonCallouts = false,
+//     TargetModel? targetBeingConfigured,
+//   }) async {
+//     SnippetRootNode? rootNode =
+//         FlutterContentApp.snippetBeingEdited?.getRootNode();
+//     if (rootNode == null) return;
+//
+//     // dismiss any pink border overlays
+//     fco.dismissAll(exceptFeatures: [
+//       rootNode.name,
+//       CalloutConfigToolbar.CID,
+//       targetBeingConfigured?.contentCId ?? 'n/a',
+//     ]);
+//
+//     // if (rootNode == null) return;
+//
+//     // to check for any change
+//     // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
+//     // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
+//     // String? originalClipboardJson = FlutterContentApp.capiBloc.state.jsonClipboard;
+//     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
+//
+//     // CalloutConfig cc = snippetTreeCalloutConfig(
+//     //   cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
+//     //   onDismissedF: onDismissedF,
+//     // );
+//     //
+//     // Widget content = SnippetTreeAndPropertiesCalloutContents(
+//     //   scName: scName,
+//     //   allowButtonCallouts: allowButtonCallouts,
+//     // );
+//     //
+//     // fco.showOverlay(
+//     //   calloutConfig: cc,
+//     //   calloutContent: content,
+//     //   targetGkF: targetGKF,
+//     // );
+//
+//     // imm select a node
+//     STreeNode sel = selectedNode;
+//     FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
+//       node: sel,
+//       //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
+// // imageTC: tc,
+//     ));
+//     fco.afterMsDelayDo(500, () {
+//       selectedNode.showNodeWidgetOverlay(scName: scName);
+//     });
+//   }
 }
 
 //   String encodeAllSnippets() {

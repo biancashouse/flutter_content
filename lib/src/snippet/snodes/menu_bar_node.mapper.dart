@@ -14,7 +14,7 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MenuBarNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
-      STreeNodeMapper.ensureInitialized();
+      SNodeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -28,8 +28,8 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   static double? _$height(MenuBarNode v) => v.height;
   static const Field<MenuBarNode, double> _f$height =
       Field('height', _$height, opt: true);
-  static List<STreeNode> _$children(MenuBarNode v) => v.children;
-  static const Field<MenuBarNode, List<STreeNode>> _f$children =
+  static List<SNode> _$children(MenuBarNode v) => v.children;
+  static const Field<MenuBarNode, List<SNode>> _f$children =
       Field('children', _$children);
   static String _$uid(MenuBarNode v) => v.uid;
   static const Field<MenuBarNode, String> _f$uid =
@@ -42,11 +42,6 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
   static const Field<MenuBarNode, bool> _f$hidePropertiesWhileDragging = Field(
       'hidePropertiesWhileDragging', _$hidePropertiesWhileDragging,
       mode: FieldMode.member);
-  static GlobalKey<State<StatefulWidget>>? _$nodeWidgetGK(MenuBarNode v) =>
-      v.nodeWidgetGK;
-  static const Field<MenuBarNode, GlobalKey<State<StatefulWidget>>>
-      _f$nodeWidgetGK =
-      Field('nodeWidgetGK', _$nodeWidgetGK, mode: FieldMode.member);
 
   @override
   final MappableFields<MenuBarNode> fields = const {
@@ -56,7 +51,6 @@ class MenuBarNodeMapper extends SubClassMapperBase<MenuBarNode> {
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
-    #nodeWidgetGK: _f$nodeWidgetGK,
   };
 
   @override
@@ -125,10 +119,9 @@ extension MenuBarNodeValueCopy<$R, $Out>
 abstract class MenuBarNodeCopyWith<$R, $In extends MenuBarNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children;
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
-  $R call({double? width, double? height, List<STreeNode>? children});
+  $R call({double? width, double? height, List<SNode>? children});
   MenuBarNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -141,14 +134,14 @@ class _MenuBarNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MenuBarNode> $mapper =
       MenuBarNodeMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, STreeNode, STreeNodeCopyWith<$R, STreeNode, STreeNode>>
-      get children => ListCopyWith($value.children,
-          (v, t) => v.copyWith.$chain(t), (v) => call(children: v));
+  ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
+      ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
+          (v) => call(children: v));
   @override
   $R call(
           {Object? width = $none,
           Object? height = $none,
-          List<STreeNode>? children}) =>
+          List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (width != $none) #width: width,
         if (height != $none) #height: height,

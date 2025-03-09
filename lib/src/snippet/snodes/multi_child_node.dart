@@ -4,8 +4,8 @@ import 'package:flutter_content/flutter_content.dart';
 part 'multi_child_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'mc', includeSubClasses: multiChildSubClasses)
-abstract class MC extends STreeNode with MCMappable {
-  List<STreeNode> children;
+abstract class MC extends SNode with MCMappable {
+  List<SNode> children;
 
   MC({required this.children});
 }

@@ -9,7 +9,7 @@
 //
 //   // setupAll() runs once before any test in the suite
 //   setUpAll(() async {
-//     // print('Setting up common resources...');
+//     // fco.logger.d('Setting up common resources...');
 //   });
 //
 //   // setup() runs before each test in the suite
@@ -34,12 +34,12 @@
 //
 //   // tearDown() runs after each test in the suite
 //   tearDown(() {
-//     // print('\nTearing down resources after a test...');
+//     // fco.logger.d('\nTearing down resources after a test...');
 //   });
 //
 //   // tearDownAll() runs once after all tests in the suite
 //   tearDownAll(() {
-//     // print('\nTearing down common resources...');
+//     // fco.logger.d('\nTearing down common resources...');
 //   });
 //
 // }

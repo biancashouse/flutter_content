@@ -22,23 +22,23 @@ class AlgCNode extends CL with AlgCNodeMappable {
   });
 
   @override
-  List<PTreeNode> properties(BuildContext context) => [
-        PropertyGroup(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        PNode/*Group*/(
           snode: this,
           name: 'by email + id',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'email address',
               stringValue: ea,
               skipHelperText: true,
               onStringChange: (newValue) =>
                   refreshWithUpdate(() => ea = newValue),
-              calloutButtonSize: const Size(280, 70),
+              calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 1,
             ),
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'flowchart id',
               stringValue: fId,
@@ -51,18 +51,18 @@ class AlgCNode extends CL with AlgCNodeMappable {
             ),
           ],
         ),
-        PropertyGroup(
+        PNode/*Group*/(
           snode: this,
           name: 'direct json entry',
           children: [
-            StringPropertyValueNode(
+            StringPNode(
               snode: this,
               name: 'json',
               stringValue: flowchartJsonString,
               skipHelperText: true,
               onStringChange: (newValue) =>
                   refreshWithUpdate(() => flowchartJsonString = newValue),
-              calloutButtonSize: const Size(280, 70),
+              calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 6,
             ),
@@ -71,7 +71,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, STreeNode? parentNode) {
+  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -80,27 +80,27 @@ class AlgCNode extends CL with AlgCNodeMappable {
       // use stored json
       try {
         return FlowchartWidget(
-          key: createNodeGK(),
+          key: createNodeWidgetGK(),
           flowchartJsonString ?? '',
         );
       } catch (e) {
         return Error(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             FLUTTER_TYPE,
             color: Colors.green,
-            size: 32,
+            size: 16,
             errorMsg: e.toString());
       }
     } else {
       // try to fetch from algc firestore using ea and fid
-      String? vea = fco.hiveBox?.get('vea');
+      String? vea = fco.localStorage.read('vea');
       vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
       if (vea.isEmpty) {
         return Error(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             FLUTTER_TYPE,
             color: Colors.green,
-            size: 32,
+            size: 16,
             errorMsg: "vea.isEmpty!");
       }
       if ((vea.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
@@ -115,32 +115,32 @@ class AlgCNode extends CL with AlgCNodeMappable {
                 flowchartJsonString = snapshot.data;
                 try {
                   return FlowchartWidget(
-                    key: createNodeGK(),
+                    key: createNodeWidgetGK(),
                     flowchartJsonString ?? '',
                   );
                 } catch (e) {
                   return Error(
-                      key: createNodeGK(),
+                      key: createNodeWidgetGK(),
                       FLUTTER_TYPE,
                       color: Colors.red,
-                      size: 32,
+                      size: 16,
                       errorMsg: e.toString());
                 }
               });
         } catch (e) {
           return Error(
-              key: createNodeGK(),
+              key: createNodeWidgetGK(),
               FLUTTER_TYPE,
               color: Colors.red,
-              size: 32,
+              size: 16,
               errorMsg: e.toString());
         }
       } else {
         return Error(
-            key: createNodeGK(),
+            key: createNodeWidgetGK(),
             FLUTTER_TYPE,
             color: Colors.red,
-            size: 32,
+            size: 16,
             errorMsg:
                 "$FLUTTER_TYPE - Either specify your email address and flowchart id, or the json !");
       }

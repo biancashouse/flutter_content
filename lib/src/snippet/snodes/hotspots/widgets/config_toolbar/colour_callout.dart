@@ -117,7 +117,7 @@ class TargetColourTool extends StatelessWidget {
         fillColor: Colors.purpleAccent,
         borderRadius: 16,
         arrowType: ArrowType.NONE,
-        barrier: CalloutBarrier(
+        barrier: CalloutBarrierConfig(
           opacity: 0.1,
         ),
         notUsingHydratedStorage: true,

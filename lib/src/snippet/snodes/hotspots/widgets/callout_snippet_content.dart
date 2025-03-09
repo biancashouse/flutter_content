@@ -62,40 +62,17 @@ Future<void> showSnippetContentCallout({
         panelName: tc.contentCId, // never used
         snippetName: tc.contentSnippetName,
         scName: scName,
+        justPlaying: justPlaying,
       );
 
-  Widget editableContent() => GestureDetector(
-        onTap: () async {
-          SnippetInfoModel? snippetInfo =
-              SnippetInfoModel.cachedSnippet(tc.contentSnippetName);
-          SnippetRootNode? snippet =
-              await snippetInfo?.currentVersionFromCacheOrFB();
-          String? snippetName = snippet?.name;
-          // maybe a page snippet, so check name in appInfo: maybe prefix with /
-          if (fco.appInfo.snippetNames.contains('/$snippetName}')) {
-            snippetName = '/$snippetName';
-          }
-          STreeNode.pushThenShowNamedSnippetWithNodeSelected(
-            snippetName ?? tc.contentSnippetName,
-            snippet!,
-            snippet.child ?? snippet,
-            targetBeingConfigured: tc,
-          );
-          fco.afterMsDelayDo(2000, () {
-            fco.refresh(tc.contentCId);
-          });
-        },
-        child: Container(
-            // width: cc.calloutW,
-            // height: cc.calloutH,
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: 2,
-                  color: Colors.purpleAccent,
-                  style: BorderStyle.solid),
-            ),
-            child: content()),
-      );
+  Widget editableContent() => Container(
+      // width: cc.calloutW,
+      // height: cc.calloutH,
+      decoration: BoxDecoration(
+        border: Border.all(
+            width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
+      ),
+      child: content());
 
   Widget possiblyEditableContent() =>
       fco.canEditContent.value && !justPlaying ? editableContent() : content();
@@ -139,6 +116,7 @@ Future<void> showSnippetContentCallout({
       resizeableV: !justPlaying && tc.canResizeV,
       // containsTextField: true,
       // alwaysReCalcSize: true,
+      followScroll: tc.followScroll,
       onResizeF: (Size newSize) {
         tc
           ..calloutWidth = newSize.width
@@ -157,7 +135,7 @@ Future<void> showSnippetContentCallout({
           // tc.setTextCalloutPos(newPos);
         }
       },
-      draggable: true,
+      draggable: !justPlaying,
       // frameTarget: true,
       scaleTarget: tc.transformScale,
       // separation: 100,

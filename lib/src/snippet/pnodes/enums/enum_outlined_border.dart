@@ -4,7 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/border_side_group.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
 
 part 'enum_outlined_border.mapper.dart';
 
@@ -26,7 +26,7 @@ enum OutlinedBorderEnum {
 
   static Widget propertyNodeContents({
     int? enumValueIndex,
-    required STreeNode snode,
+    required SNode snode,
     required String label,
     ValueChanged<int?>? onChangedF,
     required ScrollControllerName? scName,
@@ -45,7 +45,7 @@ enum OutlinedBorderEnum {
         scName: scName,
       );
 
-  OutlinedBorder toFlutterWidget({BorderSideGroup? nodeSide, double? nodeRadius}) {
+  OutlinedBorder toFlutterWidget({BorderSideProperties? nodeSide, double? nodeRadius}) {
     BorderSide side = (nodeSide != null) ? nodeSide.toBorderSide() : BorderSide.none;
     BorderRadius radius = (nodeRadius != null) ? BorderRadius.all(Radius.circular(nodeRadius)) : BorderRadius.zero;
     return switch (this) {

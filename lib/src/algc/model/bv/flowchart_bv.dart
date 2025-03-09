@@ -118,7 +118,7 @@ abstract class FlowchartBV implements Built<FlowchartBV, FlowchartBVBuilder> {
 }
 
 //FlowchartBV rebuildFlowchartRootSteps(FlowchartBV theFunc, BuiltList<StepBV> theNewSteps) {
-//  fco.logi('rebuilding function ${theFunc.lastModified}');
+//  fco.logger.i('rebuilding function ${theFunc.lastModified}');
 //  int newLastModified = DateTime.now().millisecondsSinceEpoch;
 //  return theFunc.rebuild((f) => f
 //    ..steps = theNewSteps.toBuilder()
@@ -127,7 +127,7 @@ abstract class FlowchartBV implements Built<FlowchartBV, FlowchartBVBuilder> {
 
 //FlowchartBV rebuildFunctionTitle(FlowchartBV theFunc, String theTitle) {
 //  FlowchartBV rebuiltFunc;
-//  fco.logi('rebuilding function ${theFunc.lastModified}');
+//  fco.logger.i('rebuilding function ${theFunc.lastModified}');
 //  int newLastModified = DateTime.now().millisecondsSinceEpoch;
 //  rebuiltFunc = theTitle != null
 //      ? theFunc.rebuild((f) => f
@@ -139,7 +139,7 @@ abstract class FlowchartBV implements Built<FlowchartBV, FlowchartBVBuilder> {
 //
 //FlowchartBV rebuildFunctionDescr(FlowchartBV theFunc, String theDescr) {
 //  FlowchartBV rebuiltFunc;
-//  fco.logi('rebuilding function ${theFunc.lastModified}');
+//  fco.logger.i('rebuilding function ${theFunc.lastModified}');
 //  int newLastModified = DateTime.now().millisecondsSinceEpoch;
 //  rebuiltFunc = theDescr != null
 //      ? theFunc.rebuild((f) => f
@@ -151,7 +151,7 @@ abstract class FlowchartBV implements Built<FlowchartBV, FlowchartBVBuilder> {
 //
 //FlowchartBV rebuildFunctionVer(FlowchartBV theFunc, String theVer) {
 //  FlowchartBV rebuiltFunc;
-//  fco.logi('rebuilding function ${theFunc.lastModified}');
+//  fco.logger.i('rebuilding function ${theFunc.lastModified}');
 //  int newLastModified = DateTime.now().millisecondsSinceEpoch;
 //  rebuiltFunc = theVer != null
 //      ? theFunc.rebuild((f) => f

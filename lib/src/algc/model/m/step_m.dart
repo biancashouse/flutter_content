@@ -156,7 +156,7 @@ class StepM with StringEncoderDecoder {
 
   // changes aware
   List<StepM> childStepListShowingChanges(String theListType) {
-    //if (_childStepLists == null) fco.logi('ooooo');
+    //if (_childStepLists == null) fco.logger.i('ooooo');
     List<StepM> list = _childStepLists[theListType]!;
     if (parentFlowchart.version > 0 && parentFlowchart.showingChanges) {
       return list;
@@ -279,7 +279,7 @@ class StepM with StringEncoderDecoder {
       return parentFlowchart.steps;
     } else {
       // if (parentStep!.childStepList(parentListType) == null)
-      //   fco.logi('empty childList[$parentListType]');
+      //   fco.logger.i('empty childList[$parentListType]');
       return parentStep?.childStepList(parentListType) ?? [];
     }
   }
@@ -290,7 +290,7 @@ class StepM with StringEncoderDecoder {
             calculatedTxtSize.width +
             parentFlowchart.MMM +
             (isFuncCallStep() ? parentFlowchart.PPP : 0);
-    //fco.logi('boxW = $w');
+    //fco.logger.i('boxW = $w');
     return w;
   }
 
@@ -303,7 +303,7 @@ class StepM with StringEncoderDecoder {
         calculatedTxtSize.height +
         //parentFlowchart.PPP +
         parentFlowchart.MMM);
-//    fco.logi('boxH = $h');
+//    fco.logger.i('boxH = $h');
     return h;
   }
 
@@ -529,7 +529,7 @@ class StepM with StringEncoderDecoder {
             parentFlowchart.PPP;
     }
 
-//    fco.logi('--widthWithoutChildren = $w');
+//    fco.logger.i('--widthWithoutChildren = $w');
 
     if (iconIndex > 0) w += 24;
 
@@ -555,12 +555,12 @@ class StepM with StringEncoderDecoder {
       case ASYNC_FUNC_CALL:
         steps = stepListOf(SUCCEED_STEPS);
         if (steps.isNotEmpty) {
-          //steps.forEach((s)=>fco.logi('${s.shape} step width: ${s.width()/clipboard.zoom}'));
+          //steps.forEach((s)=>fco.logger.i('${s.shape} step width: ${s.width()/clipboard.zoom}'));
           wList.add(steps.map((s) => s.width()).reduce(max));
         }
         steps = stepListOf(FAIL_STEPS);
         if (steps.isNotEmpty) {
-          //steps.forEach((s)=>fco.logi('${s.shape} step width: ${s.width()/clipboard.zoom}'));
+          //steps.forEach((s)=>fco.logger.i('${s.shape} step width: ${s.width()/clipboard.zoom}'));
           wList.add(
               parentFlowchart.stepListOffsetLeft(FAIL_STEPS, theStep: this) +
                   steps.map((s) => s.width()).reduce(max));
@@ -601,7 +601,7 @@ class StepM with StringEncoderDecoder {
         wList.reduce(max) +
         20 /*doh!*/;
     result = result > maxW ? maxW : result;
-//    fco.logi('--width = $result ($shape)');
+//    fco.logger.i('--width = $result ($shape)');
 
     return result;
   }
@@ -650,7 +650,7 @@ class StepM with StringEncoderDecoder {
   int numSiblings() {
     List<StepM> plist = getParentList();
 //    if (parentListType == SUCCEED_STEPS)
-//      fco.logi('isLastStep = ${isLastStep()}');
+//      fco.logger.i('isLastStep = ${isLastStep()}');
     if (parentFlowchart.version > 0 && parentFlowchart.showingChanges) {
       return plist.length - 1;
     } else {
@@ -918,7 +918,7 @@ class StepM with StringEncoderDecoder {
         });
       }
     } catch (e) {
-      fco.loge(e.toString());
+      fco.logger.e(e.toString());
     }
     return clonedStep;
   }
@@ -1020,7 +1020,7 @@ Map<String, ByteData> iconImages = {};
 // // not async, so will load all in parallel ?
 // void readAllIconImages() {
 //   stepIcons.forEach((en, path) {
-//     fco.logi(path);
+//     fco.logger.i(path);
 //     Image image = Image(image: AssetImage(path));
 //     rootBundle.load(path).then((ByteData imageData) => iconImages[en] = imageData);
 //   });
