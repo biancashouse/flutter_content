@@ -3,188 +3,214 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_corner.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
-
-import '../pnodes/groups/outlined_border_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/container_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/container_style_hook.dart';
 
 part 'container_node.mapper.dart';
 
 @MappableClass()
 class ContainerNode extends SC with ContainerNodeMappable {
-  UpTo6ColorValues? fillColorValues;
-  EdgeInsetsValue? margin;
-  EdgeInsetsValue? padding;
-  double? width;
-  double? height;
-  AlignmentEnum? alignment;
-  MappableDecorationShapeEnum decoration;
-  double? borderThickness;
-  UpTo6ColorValues? borderColorValues;
-  int? borderColor2Value;
-  int? borderColor3Value;
-  int? borderColor4Value;
-  int? borderColor5Value;
-  int? borderColor6Value;
-  double? borderRadius;
+  @MappableField(hook: ContainerStyleHook())
+  ContainerStyleProperties csPropGroup;
 
-  // star shape
-  int? starPoints;
-
-  // dotted or dashed
-  int? dash;
-  int? gap;
-
-  // corner badge
-  double? badgeWidth;
-  double? badgeHeight;
-  BadgePositionEnum? badgeCorner;
-  String? badgeText;
-  OutlinedBorderProperties? outlinedBorderGroup;
+  // UpTo6ColorValues? fillColorValues;
+  // EdgeInsetsValue? margin;
+  // EdgeInsetsValue? padding;
+  // double? width;
+  // double? height;
+  // AlignmentEnum? alignment;
+  // MappableDecorationShapeEnum decoration;
+  // double? borderThickness;
+  // UpTo6ColorValues? borderColorValues;
+  // int? borderColor2Value;
+  // int? borderColor3Value;
+  // int? borderColor4Value;
+  // int? borderColor5Value;
+  // int? borderColor6Value;
+  // double? borderRadius;
+  //
+  // // star shape
+  // int? starPoints;
+  //
+  // // dotted or dashed
+  // int? dash;
+  // int? gap;
+  //
+  // // corner badge
+  // double? badgeWidth;
+  // double? badgeHeight;
+  // BadgePositionEnum? badgeCorner;
+  // String? badgeText;
+  // OutlinedBorderProperties? outlinedBorderGroup;
 
   ContainerNode({
-    this.fillColorValues,
-    this.margin,
-    this.padding,
-    this.width,
-    this.height,
-    this.alignment,
-    this.decoration = MappableDecorationShapeEnum.rectangle,
-    this.borderThickness,
-    this.borderColorValues,
-    this.borderRadius,
-    this.starPoints,
-    this.dash,
-    this.gap,
-    this.badgeWidth,
-    this.badgeHeight,
-    this.badgeCorner,
-    this.badgeText,
-    this.outlinedBorderGroup,
+    required this.csPropGroup,
+    // this.fillColorValues,
+    // this.margin,
+    // this.padding,
+    // this.width,
+    // this.height,
+    // this.alignment,
+    // this.decoration = MappableDecorationShapeEnum.rectangle,
+    // this.borderThickness,
+    // this.borderColorValues,
+    // this.borderRadius,
+    // this.starPoints,
+    // this.dash,
+    // this.gap,
+    // this.badgeWidth,
+    // this.badgeHeight,
+    // this.badgeCorner,
+    // this.badgeText,
+    // this.outlinedBorderGroup,
     super.child,
   });
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    String paddingLabel = padding == null
-        ? 'padding'
-        : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
-    String marginLabel = margin == null
-        ? 'margin'
-        : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
+    var containerStyleName = fco.findContainerStyleName(csPropGroup);
+    containerStyleName =
+        containerStyleName != null ? ': $containerStyleName' : '';
+
+    // String paddingLabel = padding == null
+    //     ? 'padding'
+    //     : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
+    // String marginLabel = margin == null
+    //     ? 'margin'
+    //     : 'margin (${margin!.top},${margin!.left},${margin!.bottom},${margin!.right})';
 
     return [
-      SizePNode(
+      FlutterDocPNode(
+          buttonLabel: 'Container',
+          webLink:
+              'https://api.flutter.dev/flutter/widgets/Container-class.html',
+          snode: this,
+          name: 'fyi'),
+      ContainerStylePNode /*Group*/ (
         snode: this,
-        name: 'size',
-        widthValue: width,
-        heightValue: height,
-        onSizeChange: (newValues) => refreshWithUpdate(() {
-          if (newValues.$1 != width) {
-            width = newValues.$1;
-          }
-          if (newValues.$2 != height) {
-            height = newValues.$2;
-          }
-          fco.dismissTopFeature();
-        }),
+        name: 'container style$containerStyleName',
+        containerStyleGroup: csPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            csPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
       ),
-      PNode/*Group*/(
-        snode: this,
-        name: marginLabel,
-        children: [
-          EdgeInsetsPNode(
-            snode: this,
-            name: 'margin',
-            eiValue: margin,
-            onEIChangedF: (newValue) =>
-                refreshWithUpdate(() => margin = newValue),
-          ),
-        ],
-      ),
-      PNode/*Group*/(
-        snode: this,
-        name: paddingLabel,
-        children: [
-          EdgeInsetsPNode(
-            snode: this,
-            name: 'padding',
-            eiValue: padding,
-            onEIChangedF: (newValue) =>
-                refreshWithUpdate(() => padding = newValue),
-          ),
-        ],
-      ),
-      PNode/*Group*/(
-        snode: this,
-        name: 'decoration',
-        children: [
-          // SHAPE
-          // FILL COLOR(s)
-          GradientPNode(
-            snode: this,
-            name: 'fill color(s)',
-            colorValues: fillColorValues,
-            onColorChange: (newValues) => refreshWithUpdate(() {
-              fillColorValues = newValues;
-              // var oes = fco.OEs;
-              // for (var oe in oes) {
-              //   fco.logger.i(oe.calloutConfig.feature);
-              // }
-              // fco.hide('easy-color-picker');
-              // fco.hideOP('easy-color-picker');
-            }),
-          ),
-          // FILL COLOR(s)
-          GradientPNode(
-            snode: this,
-            name: 'border color(s)',
-            colorValues: borderColorValues,
-            onColorChange: (newValues) => refreshWithUpdate(() {
-              borderColorValues = newValues;
-              // var oes = fco.OEs;
-              // fco.hide('easy-color-picker');
-              // fco.hideOP('easy-color-picker');
-            }),
-          ),
-          EnumPNode<MappableDecorationShapeEnum?>(
-            snode: this,
-            name: 'shape',
-            valueIndex: decoration.index,
-            onIndexChange: (newValue) => refreshWithUpdate(() => decoration =
-                MappableDecorationShapeEnum.of(newValue) ??
-                    MappableDecorationShapeEnum.rectangle),
-          ),
-          DecimalPNode(
-            snode: this,
-            name: 'thickness',
-            decimalValue: borderThickness,
-            onDoubleChange: (newValue) =>
-                refreshWithUpdate(() => borderThickness = newValue),
-            calloutButtonSize: const Size(90, 20),
-          ),
-          DecimalPNode(
-            snode: this,
-            name: 'radius',
-            decimalValue: borderRadius,
-            onDoubleChange: (newValue) =>
-                refreshWithUpdate(() => borderRadius = newValue),
-            calloutButtonSize: const Size(90, 20),
-          ),
-        ],
-      ),
-      EnumPNode<AlignmentEnum?>(
-        snode: this,
-        name: 'alignment',
-        valueIndex: alignment?.index,
-        onIndexChange: (newValue) => refreshWithUpdate(
-          () {
-            alignment = AlignmentEnum.of(newValue);
-          },
-        ),
-      ),
+
+      // SizePNode(
+      //   snode: this,
+      //   name: 'size',
+      //   widthValue: width,
+      //   heightValue: height,
+      //   onSizeChange: (newValues) => refreshWithUpdate(context,() {
+      //     if (newValues.$1 != width) {
+      //       width = newValues.$1;
+      //     }
+      //     if (newValues.$2 != height) {
+      //       height = newValues.$2;
+      //     }
+      //     fco.dismissTopFeature();
+      //   }),
+      // ),
+      // PNode/*Group*/(
+      //   snode: this,
+      //   name: marginLabel,
+      //   children: [
+      //     EdgeInsetsPNode(
+      //       snode: this,
+      //       name: 'margin',
+      //       eiValue: margin,
+      //       onEIChangedF: (newValue) =>
+      //           refreshWithUpdate(context,() => margin = newValue),
+      //     ),
+      //   ],
+      // ),
+      // PNode/*Group*/(
+      //   snode: this,
+      //   name: paddingLabel,
+      //   children: [
+      //     EdgeInsetsPNode(
+      //       snode: this,
+      //       name: 'padding',
+      //       eiValue: padding,
+      //       onEIChangedF: (newValue) =>
+      //           refreshWithUpdate(context,() => padding = newValue),
+      //     ),
+      //   ],
+      // ),
+      // PNode/*Group*/(
+      //   snode: this,
+      //   name: 'decoration',
+      //   children: [
+      //     // SHAPE
+      //     // FILL COLOR(s)
+      //     GradientPNode(
+      //       snode: this,
+      //       name: 'fill color(s)',
+      //       colorValues: fillColorValues,
+      //       onColorChange: (newValues) => refreshWithUpdate(context,() {
+      //         fillColorValues = newValues;
+      //         // var oes = fco.OEs;
+      //         // for (var oe in oes) {
+      //         //   fco.logger.i(oe.calloutConfig.feature);
+      //         // }
+      //         // fco.hide('easy-color-picker');
+      //         // fco.hideOP('easy-color-picker');
+      //       }),
+      //     ),
+      //     // FILL COLOR(s)
+      //     GradientPNode(
+      //       snode: this,
+      //       name: 'border color(s)',
+      //       colorValues: borderColorValues,
+      //       onColorChange: (newValues) => refreshWithUpdate(context,() {
+      //         borderColorValues = newValues;
+      //         // var oes = fco.OEs;
+      //         // fco.hide('easy-color-picker');
+      //         // fco.hideOP('easy-color-picker');
+      //       }),
+      //     ),
+      //     EnumPNode<MappableDecorationShapeEnum?>(
+      //       snode: this,
+      //       name: 'shape',
+      //       valueIndex: decoration.index,
+      //       onIndexChange: (newValue) => refreshWithUpdate(context,() => decoration =
+      //           MappableDecorationShapeEnum.of(newValue) ??
+      //               MappableDecorationShapeEnum.rectangle),
+      //     ),
+      //     DecimalPNode(
+      //       snode: this,
+      //       name: 'thickness',
+      //       decimalValue: borderThickness,
+      //       onDoubleChange: (newValue) =>
+      //           refreshWithUpdate(context,() => borderThickness = newValue),
+      //       calloutButtonSize: const Size(90, 20),
+      //     ),
+      //     DecimalPNode(
+      //       snode: this,
+      //       name: 'radius',
+      //       decimalValue: borderRadius,
+      //       onDoubleChange: (newValue) =>
+      //           refreshWithUpdate(context,() => borderRadius = newValue),
+      //       calloutButtonSize: const Size(90, 20),
+      //     ),
+      //   ],
+      // ),
+      // EnumPNode<AlignmentEnum?>(
+      //   snode: this,
+      //   name: 'alignment',
+      //   valueIndex: alignment?.index,
+      //   onIndexChange: (newValue) => refreshWithUpdate(context,
+      //     () {
+      //       alignment = AlignmentEnum.of(newValue);
+      //     },
+      //   ),
+      // ),
       // PropertyGroup(
       //   snode: this,
       //   name: 'border properties',
@@ -193,20 +219,20 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //       snode: this,
       //       name: 'thickness',
       //       decimalValue: borderThickness,
-      //       onDoubleChange: (newValue) => refreshWithUpdate(() => borderThickness = newValue),
+      //       onDoubleChange: (newValue) => refreshWithUpdate(context,() => borderThickness = newValue),
       //       calloutButtonSize: const Size(90, 30),
       //     ),
       //     ColorPNode(
       //       snode: this,
       //       name: 'color',
       //       colorValue: borderColorValue,
-      //       onColorIntChange: (newValue) => refreshWithUpdate(() => borderColorValue = newValue),
+      //       onColorIntChange: (newValue) => refreshWithUpdate(context,() => borderColorValue = newValue),
       //     ),
       //     DecimalPNode(
       //       snode: this,
       //       name: 'radius',
       //       decimalValue: borderRadius,
-      //       onDoubleChange: (newValue) => refreshWithUpdate(() {
+      //       onDoubleChange: (newValue) => refreshWithUpdate(context,() {
       //         borderRadius = newValue;
       //         if ((borderRadius ?? 0.0) > 0.0 && (borderThickness ?? 0.0) == 0.0) {
       //           borderThickness = 1.0;
@@ -218,7 +244,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       //       snode: this,
       //       name: 'OutlinedBorder...',
       //       outlinedGroup: outlinedBorderGroup,
-      //       onGroupChange: (newValue) => refreshWithUpdate(() => outlinedBorderGroup = newValue),
+      //       onGroupChange: (newValue) => refreshWithUpdate(context,() => outlinedBorderGroup = newValue),
       //     ),
       //   ],
       // ),
@@ -226,7 +252,8 @@ class ContainerNode extends SC with ContainerNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -241,26 +268,32 @@ class ContainerNode extends SC with ContainerNodeMappable {
     try {
       return Container(
         key: gk,
-        decoration: decoration.toDecoration(
-          fillColorValues: fillColorValues,
-          borderColorValues: borderColorValues,
-          borderRadius: borderRadius,
-          thickness: borderThickness,
-          starPoints: starPoints,
+        decoration: csPropGroup.decoration.toDecoration(
+          fillColorValues: csPropGroup.fillColorValues,
+          radialGradient: csPropGroup.radialGradient,
+          borderColorValues: csPropGroup.borderColorValues,
+          borderRadius: csPropGroup.borderRadius,
+          thickness: csPropGroup.borderThickness,
+          starPoints: csPropGroup.starPoints,
         ),
         // decoration: ShapeDecoration(
         //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
         //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
         // ),
-        padding: padding?.toEdgeInsets(),
-        margin: margin?.toEdgeInsets(),
-        width: width,
-        height: height,
-        alignment: alignment?.flutterValue,
+        padding: csPropGroup.padding?.toEdgeInsets(),
+        margin: csPropGroup.margin?.toEdgeInsets(),
+        width: csPropGroup.width,
+        height: csPropGroup.height,
+        alignment: csPropGroup.alignment?.flutterValue,
         child: child?.toWidget(context, this),
       );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 

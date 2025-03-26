@@ -4,8 +4,10 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 
 part 'icon_button_node.mapper.dart';
 
@@ -25,9 +27,9 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     this.iconSize,
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelOrPlaceholderName,
-    super.destinationSnippetName,
-    required super.bsPropsGroup,
+    // super.destinationPanelOrPlaceholderName,
+    // super.destinationSnippetName,
+    required super.bsPropGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -76,6 +78,16 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => IconButton.styleFrom();
 
   @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+        buttonLabel: 'IconButton',
+        webLink: 'https://api.flutter.dev/flutter/material/IconButton-class.html',
+        snode: this,
+        name: 'fyi'),
+    ...super.properties(context, parentSNode),
+  ];
+
+  @override
   Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     ScrollControllerName? scName = EditablePage.scName(context);
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
@@ -85,7 +97,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
 
     final gk = createNodeWidgetGK();
 
-    ButtonStyle? btnStyle = bsPropsGroup?.toButtonStyle(context, defaultButtonStyle());
+    ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
 
     IconButton button = IconButton(
       // if feature specified, must be a callout

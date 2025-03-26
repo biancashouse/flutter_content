@@ -3,6 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'padding_node.mapper.dart';
 
@@ -17,16 +19,24 @@ class PaddingNode extends SC with PaddingNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'EdgeInsets',
+            webLink:
+                'https://api.flutter.dev/flutter/painting/EdgeInsets-class.html',
+            snode: this,
+            name: 'fyi'),
         EdgeInsetsPNode(
           snode: this,
           name: 'padding',
           eiValue: padding ?? EdgeInsetsValue(),
-          onEIChangedF: (newValue) => refreshWithUpdate(() => padding = newValue),
+          onEIChangedF: (newValue) =>
+              refreshWithUpdate(context, () => padding = newValue),
         ),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);

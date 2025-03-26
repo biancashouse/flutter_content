@@ -3,7 +3,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 
 part 'textspan_node.mapper.dart';
 
@@ -31,39 +35,40 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        StringPNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    var textStyleName = fco.findTextStyleName(tsPropGroup);
+    textStyleName = textStyleName != null ? ': $textStyleName' : '';
+    return [
+      FlutterDocPNode(
+          buttonLabel: 'TextSpan',
+          webLink: 'https://api.flutter.dev/flutter/painting/TextSpan-class.html',
           snode: this,
-          name: 'text',
-          numLines: 6,
-          stringValue: text,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(() => text = newValue),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 300,
-        ),
-        // BoolPNode(
-        //   snode: this,
-        //   name: 'isRootTextSpan',
-        //   boolValue: isRootTextSpan,
-        //   onBoolChange: (newValue) => refreshWithUpdate(() => isRootTextSpan = newValue ?? false),
-        // ),
-        // TextStyleNamePNode(
-        //   textStyleName: textStyleName,
-        //   snode: this,
-        //   name: 'namedTextStyle',
-        //   onChange: (newValue) {
-        //     refreshWithUpdate(() => textStyleName = newValue);
-        //   },
-        // ),
-        TextStylePNode /*Group*/ (
-          snode: this,
-          name: 'textStyle',
-          textStyleProperties: tsPropGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => tsPropGroup = newValue),
-        ),
-      ];
+          name: 'fyi'),
+      StringPNode(
+        snode: this,
+        name: 'text',
+        numLines: 6,
+        stringValue: text,
+        onStringChange: (newValue) =>
+            refreshWithUpdate(context, () => text = newValue),
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 300,
+      ),
+      TextStylePNode /*Group*/ (
+        snode: this,
+        name: 'textStyle$textStyleName',
+        textStyleProperties: tsPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            tsPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
+      ),
+    ];
+  }
 
   @override
   InlineSpan toInlineSpan(BuildContext context) {

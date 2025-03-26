@@ -1,22 +1,23 @@
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_button.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
 
-class PropertyButtonTextStyleSearch extends StatelessWidget {
+class PropertyButtonTextStyleNameSearch extends StatelessWidget {
   final CalloutId cId;
-  final String label;
   final String? tooltip;
-  final Color? originalColor;
-  final ValueChanged<Color?> onChangeF;
+  final TextStyleProperties textStyle;
+  final ValueChanged<TextStyleProperties> onHoveredF;
+  final ValueChanged<TextStyleProperties> onChangeF;
   final Size calloutButtonSize;
   final ScrollControllerName? scName;
 
-  const PropertyButtonTextStyleSearch({
+  const PropertyButtonTextStyleNameSearch({
     required this.cId,
-    required this.label,
     this.tooltip,
-    required this.originalColor,
+    required this.textStyle,
+    required this.onHoveredF,
     required this.onChangeF,
     required this.calloutButtonSize,
     required this.scName,
@@ -25,79 +26,66 @@ class PropertyButtonTextStyleSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void propagateChangeAndClose(Color newColor) {
-      onChangeF(newColor);
-      fco.dismiss(cId);
-    }
+    var textStyleName = fco.findTextStyleName(textStyle);
 
-    Widget colorLabel = originalColor != null
-        ? Row(children: [
-            Text(label,
-                style: const TextStyle(
-                  color: Colors.white,
-                )),
-            Icon(Icons.square, color: originalColor),
-          ])
-        : Text('$label...',
-            style: const TextStyle(
-              color: Colors.white,
-            ));
+    // Widget labelWidget = textStyleName != null
+    //     ? fco.coloredText('style name: $textStyleName', color: Colors.white)
+    //     : Text('style search...',
+    //         style: const TextStyle(
+    //           color: Colors.white,
+    //         ));
     return PropertyCalloutButton(
       cId: cId,
       scName: scName,
-      labelWidget: colorLabel,
+      labelWidget: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey,
+            width: 1,
+            style: BorderStyle.solid, // You can change the style here
+          ),
+            borderRadius: BorderRadius.all(Radius.circular(4))
+        ),
+        child: Icon(Icons.search, color: Colors.grey,),
+      ),
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: Alignment.bottomCenter,
-      initialTargetAlignment: Alignment.topCenter,
+      calloutButtonColor: Colors.white,
+      menuBgColor: Colors.white,
+      initialCalloutAlignment: Alignment.center,
+      initialTargetAlignment: Alignment.center,
       calloutContents: (ctx) {
-        return Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all<Color>(Colors.black),
-                    ),
-                    onPressed: () => propagateChangeAndClose(Colors.black),
-                    child: fco.coloredText('black', color: Colors.white),
-                  ),
-                  TextButton(
-                    onPressed: () => propagateChangeAndClose(Colors.transparent),
-                    child: const Text('transparent'),
-                  ),
-                  TextButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all<Color>(Colors.white),
-                    ),
-                    onPressed: () => propagateChangeAndClose(Colors.white),
-                    child: const Text('white'),
-                  ),
-                ],
-              ),
-              ColorPicker(
-                // Use the screenPickerColor as color.
-                color: originalColor ?? Colors.blue,
-                // Update the screenPickerColor using the callback.
-                onColorChanged: (Color color) => propagateChangeAndClose(color),
-                // onCompleted: () => fco.dismiss(cId),
-                width: 32,
-                height: 32,
-                borderRadius: 16,
-                subheading: const Divider(height: 30),
-              ),
-            ],
-          ),
-        );
+        TextStyleNameSearchAnchor anchor = fco.textStyleNameAnchor ??
+            TextStyleNameSearchAnchor(
+              parentCId: cId,
+              textStyle: textStyle,
+              onHoveredF: (selectedSuggestion) {
+                TextStyleProperties tsProps =
+                    fco.namedTextStyles[selectedSuggestion]?.clone() ??
+                        TextStyleProperties();
+                onHoveredF(tsProps);
+              },
+              onSelectionF: (selectedSuggestion) {
+                TextStyleProperties tsProps =
+                    fco.namedTextStyles[selectedSuggestion]?.clone() ??
+                        TextStyleProperties();
+                // if (!tsProps.same(originalTextStyle)) {
+                //   fco.logger.d('PropertyButtonTextStyleNameSearch.onChange()');
+                onChangeF(tsProps);
+                // }
+                // snode.refreshWithUpdate(context,() {
+                //   snode.setTextStyleProperties(
+                //       tsProps?.clone() ?? TextStyleProperties());
+                //   snode.refreshPTreeC(context);
+                // });
+              },
+              debounceTimer: DebounceTimer(delayMs: 200),
+              tooltipMsg: 'find a saved TextStyle',
+            );
+        return anchor;
       },
-      calloutSize: const Size(320, 380),
+      calloutSize: const Size(320, 40),
       notifier: ValueNotifier<int>(0),
     );
   }

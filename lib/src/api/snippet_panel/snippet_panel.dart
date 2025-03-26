@@ -105,11 +105,21 @@ class SnippetPanelState extends State<SnippetPanel>
       fco.logger.i("registered handler '$key'");
     });
 
-    if (widget.panelName != null &&
-        !fco.placeNames.contains(widget.panelName)) {
-      fco.placeNames.add(widget.panelName!);
-    }
+    // removed snippet place naming functionality - use tab bar instead
+    // if (widget.panelName != null &&
+    //     !fco.placeNames.contains(widget.panelName)) {
+    //   fco.placeNames.add(widget.panelName!);
+    // }
   }
+
+  // removed snippet place naming functionality - use tab bar instead
+  // @override
+  // void dispose() {
+  //   if (widget.panelName != null && fco.placeNames.contains(widget.panelName)) {
+  //     fco.placeNames.remove(widget.panelName!);
+  //   }
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -245,11 +255,11 @@ class SnippetPanelState extends State<SnippetPanel>
   }
 
   void showSnippetNodeWidgetOverlays() {
-
     // no need to de-reigister once set up
     fco.registerKeystrokeHandler('tappable-widget-overlays', (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        if (fco.inEditMode.value && FlutterContentApp.snippetBeingEdited == null) {
+        if (fco.inEditMode.value &&
+            FlutterContentApp.snippetBeingEdited == null) {
           fco.dismissAll();
         }
       }

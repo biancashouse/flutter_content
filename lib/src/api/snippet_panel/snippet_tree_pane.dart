@@ -18,6 +18,8 @@ class SnippetTreePane extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: InteractiveViewer(
+          transformationController: fco.snippetTreeTC,
+          // trackpadScrollCausesScale: true,
           alignment: Alignment.topLeft,
           constrained: false,
           // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),

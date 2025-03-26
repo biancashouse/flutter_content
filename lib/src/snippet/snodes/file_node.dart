@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:gap/gap.dart';
 
 part 'file_node.mapper.dart';
@@ -54,7 +55,7 @@ class FileNode extends CL with FileNodeMappable {
           name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue??''),
+              refreshWithUpdate(context,() => name = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -62,7 +63,7 @@ class FileNode extends CL with FileNodeMappable {
           snode: this,
           name: 'src',
           stringValue: src,
-          onStringChange: (newValue) => refreshWithUpdate(() => src = newValue??''),
+          onStringChange: (newValue) => refreshWithUpdate(context,() => src = newValue??''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

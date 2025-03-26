@@ -5,8 +5,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:flutter_content/src/snippet/pnodes/fs_image_path_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'fs_image_node.mapper.dart';
@@ -41,7 +44,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
           snode: this,
           name: 'image picker',
           stringValue: fsFullPath,
-          onPathChange: (newValue) => refreshWithUpdate(() => fsFullPath =
+          onPathChange: (newValue) => refreshWithUpdate(context,() => fsFullPath =
               newValue ??
                   'gs://bh-apps.appspot.com/flutter-content-pkg/missing-image.png'),
           calloutButtonSize: const Size(280, 70),
@@ -51,7 +54,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
           name: 'width',
           decimalValue: width,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => width = newValue),
+              refreshWithUpdate(context,() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -59,7 +62,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
           name: 'height',
           decimalValue: height,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => height = newValue),
+              refreshWithUpdate(context,() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -67,7 +70,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
           name: 'scale',
           decimalValue: scale,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => scale = newValue),
+              refreshWithUpdate(context,() => scale = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         EnumPNode<BoxFitEnum?>(
@@ -75,14 +78,14 @@ class FSImageNode extends CL with FSImageNodeMappable {
           name: 'fit',
           valueIndex: fit?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
+              refreshWithUpdate(context,() => fit = BoxFitEnum.of(newValue)),
         ),
         EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+              refreshWithUpdate(context,() => alignment = AlignmentEnum.of(newValue)),
         ),
       ];
 

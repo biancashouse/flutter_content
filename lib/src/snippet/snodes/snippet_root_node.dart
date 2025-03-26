@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/tr_triangle_painter.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'snippet_root_node.mapper.dart';
 
@@ -49,7 +50,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           name: 'tags',
           stringValue: tags.toString(),
           onStringChange: (newValue) {
-            refreshWithUpdate(() => tags = newValue ?? '');
+            refreshWithUpdate(context,() => tags = newValue ?? '');
           },
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
@@ -58,7 +59,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         //   snode: this,
         //   name: 'Snippet Name',
         //   stringValue: name,
-        //   onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+        //   onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
         //   calloutButtonSize: const Size(280, 70),
         //   calloutWidth: 280,
         // ),
@@ -70,7 +71,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         //       snode: this,
         //       name: 'Snippet Name',
         //       stringValue: name,
-        //       onStringChange: (newValue) => refreshWithUpdate(() => name = newValue??''),
+        //       onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue??''),
         //       calloutButtonSize: const Size(280, 70),
         //       calloutWidth: 280,
         //     ),
@@ -78,7 +79,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         //   snode: this,
         //   name: 'Route Path',
         //   stringValue: routePath,
-        //   onStringChange: (newValue) => refreshWithUpdate(() => routePath = newValue),
+        //   onStringChange: (newValue) => refreshWithUpdate(context,() => routePath = newValue),
         //   calloutButtonSize: const Size(280, 70),
         //   calloutWidth: 280,
         // ),
@@ -88,7 +89,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
         //   snode: this,
         //   name: 'isEmbedded',
         //   boolValue: isEmbedded,
-        //   onBoolChange: (newValue) => refreshWithUpdate(() => isEmbedded = newValue ?? false),
+        //   onBoolChange: (newValue) => refreshWithUpdate(context,() => isEmbedded = newValue ?? false),
         // ),
       ];
 

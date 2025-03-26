@@ -2,6 +2,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'widgetspan_node.mapper.dart';
 
@@ -14,7 +15,14 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'WidgetSpan',
+            webLink:
+                'https://api.flutter.dev/flutter/painting/WidgetSpan-class.html',
+            snode: this,
+            name: 'fyi')
+      ];
 
   @override
   InlineSpan toInlineSpan(BuildContext context, {bool isRoot = false}) {
@@ -28,8 +36,8 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     } catch (e) {
       fco.logger.i('cannot render $FLUTTER_TYPE!');
       return WidgetSpan(
-          child:
-              Error(key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));
+          child: Error(
+              key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString()));
     }
   }
 

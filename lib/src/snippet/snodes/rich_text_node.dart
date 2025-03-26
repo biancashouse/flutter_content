@@ -3,9 +3,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_direction.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_overflow.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'rich_text_node.mapper.dart';
 
@@ -29,33 +33,39 @@ class RichTextNode extends CL with RichTextNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        EnumPNode<TextAlignEnum?>(
+    FlutterDocPNode(
+        buttonLabel: 'RichText',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/RichText-class.html',
+        snode: this,
+        name: 'fyi'),
+    EnumPNode<TextAlignEnum?>(
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => TextAlignEnum.of(newValue)),
+              refreshWithUpdate(context,() => TextAlignEnum.of(newValue)),
         ),
         BoolPNode(
           snode: this,
           name: 'softWrap',
           boolValue: softWrap ?? true,
           onBoolChange: (newValue) =>
-              refreshWithUpdate(() => softWrap = newValue),
+              refreshWithUpdate(context,() => softWrap = newValue),
         ),
         EnumPNode<TextOverflowEnum?>(
           snode: this,
           name: 'overflow',
           valueIndex: overflow?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => TextOverflowEnum.of(newValue)),
+              refreshWithUpdate(context,() => TextOverflowEnum.of(newValue)),
         ),
         DecimalPNode(
           snode: this,
           name: 'textScaleFactor',
           decimalValue: textScaleFactor,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => textScaleFactor = newValue),
+              refreshWithUpdate(context,() => textScaleFactor = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
         EnumPNode<TextDirectionEnum?>(
@@ -63,7 +73,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
           name: 'textDirection',
           valueIndex: textDirection?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => TextDirectionEnum.of(newValue)),
+              refreshWithUpdate(context,() => TextDirectionEnum.of(newValue)),
         ),
       ];
 

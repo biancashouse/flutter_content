@@ -34,7 +34,7 @@ class SnippetTreeView extends StatelessWidget {
       );
     }
     return TreeView<SNode>(
-      physics: const NeverScrollableScrollPhysics(),
+      //physics: const NeverScrollableScrollPhysics(),
       treeController: treeC,
       // filter or all
       nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) {

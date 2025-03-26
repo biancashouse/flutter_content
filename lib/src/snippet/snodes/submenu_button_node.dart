@@ -3,6 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'submenu_button_node.mapper.dart';
 
@@ -21,12 +23,17 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        StringPNode(
+    FlutterDocPNode(
+        buttonLabel: 'SubMenuItemButton',
+        webLink: 'https://api.flutter.dev/flutter/material/SubmenuButton-class.html',
+        snode: this,
+        name: 'fyi'),
+    StringPNode(
           snode: this,
           name: 'itemLabel',
           stringValue: itemLabel,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => itemLabel = newValue ?? ''),
+              refreshWithUpdate(context,() => itemLabel = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

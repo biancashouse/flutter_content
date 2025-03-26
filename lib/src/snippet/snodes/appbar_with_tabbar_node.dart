@@ -38,7 +38,7 @@
 //         stringValue: tabBarName,
 //         skipHelperText: true,
 //         onStringChange: (newValue) =>
-//             refreshWithUpdate(() => tabBarName = newValue!),
+//             refreshWithUpdate(context,() => tabBarName = newValue!),
 //         calloutButtonSize: const Size(280, 70),
 //         calloutWidth: 400,
 //         numLines: 1,
@@ -48,7 +48,7 @@
 //         name: 'height',
 //         decimalValue: height,
 //         onDoubleChange: (newValue) =>
-//             refreshWithUpdate(() => height = newValue),
+//             refreshWithUpdate(context,() => height = newValue),
 //         calloutButtonSize: const Size(90, 20),
 //       ),
 //       ColorPNode(
@@ -57,7 +57,7 @@
 //         tooltip: "The fill color to use for an app bar's Material.",
 //         colorValue: bgColorValue,
 //         onColorIntChange: (newValue) =>
-//             refreshWithUpdate(() => bgColorValue = newValue),
+//             refreshWithUpdate(context,() => bgColorValue = newValue),
 //         calloutButtonSize: const Size(130, 20),
 //       ),
 //       ColorPNode(
@@ -66,7 +66,7 @@
 //         tooltip: 'The default color for Text and Icons within the app bar.',
 //         colorValue: fgColorValue,
 //         onColorIntChange: (newValue) =>
-//             refreshWithUpdate(() => fgColorValue = newValue),
+//             refreshWithUpdate(context,() => fgColorValue = newValue),
 //         calloutButtonSize: const Size(130, 20),
 //       ),
 //     ];

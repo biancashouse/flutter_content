@@ -184,10 +184,10 @@ class CAPIEvent with _$CAPIEvent {
     @Default(false) bool save,
   }) = PopSnippetEditor;
 
-  const factory CAPIEvent.showCutout({
-    required Rect cutoutRect,
-    @Default(1000) int durationMs,
-  }) = ShowCutout;
+  // const factory CAPIEvent.showCutout({
+  //   required Rect cutoutRect,
+  //   @Default(1000) int durationMs,
+  // }) = ShowCutout;
 
   // const factory CAPIEvent.restoredSnippetBloc({
   //   required SnippetBloC restoredBloc,

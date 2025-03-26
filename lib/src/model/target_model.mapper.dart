@@ -69,6 +69,9 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
   static bool _$canResizeV(TargetModel v) => v.canResizeV;
   static const Field<TargetModel, bool> _f$canResizeV =
       Field('canResizeV', _$canResizeV, opt: true, def: true);
+  static bool _$followScroll(TargetModel v) => v.followScroll;
+  static const Field<TargetModel, bool> _f$followScroll =
+      Field('followScroll', _$followScroll, opt: true, def: true);
   static int? _$calloutFillColorValue(TargetModel v) => v.calloutFillColorValue;
   static const Field<TargetModel, int> _f$calloutFillColorValue =
       Field('calloutFillColorValue', _$calloutFillColorValue, opt: true);
@@ -132,6 +135,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
     #showBtn: _f$showBtn,
     #canResizeH: _f$canResizeH,
     #canResizeV: _f$canResizeV,
+    #followScroll: _f$followScroll,
     #calloutFillColorValue: _f$calloutFillColorValue,
     #calloutBorderColorValue: _f$calloutBorderColorValue,
     #calloutDecorationShape: _f$calloutDecorationShape,
@@ -163,6 +167,7 @@ class TargetModelMapper extends ClassMapperBase<TargetModel> {
         showBtn: data.dec(_f$showBtn),
         canResizeH: data.dec(_f$canResizeH),
         canResizeV: data.dec(_f$canResizeV),
+        followScroll: data.dec(_f$followScroll),
         calloutFillColorValue: data.dec(_f$calloutFillColorValue),
         calloutBorderColorValue: data.dec(_f$calloutBorderColorValue),
         calloutDecorationShape: data.dec(_f$calloutDecorationShape),
@@ -243,6 +248,7 @@ abstract class TargetModelCopyWith<$R, $In extends TargetModel, $Out>
       bool? showBtn,
       bool? canResizeH,
       bool? canResizeV,
+      bool? followScroll,
       int? calloutFillColorValue,
       int? calloutBorderColorValue,
       MappableDecorationShapeEnum? calloutDecorationShape,
@@ -282,6 +288,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
           bool? showBtn,
           bool? canResizeH,
           bool? canResizeV,
+          bool? followScroll,
           Object? calloutFillColorValue = $none,
           Object? calloutBorderColorValue = $none,
           MappableDecorationShapeEnum? calloutDecorationShape,
@@ -311,6 +318,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
         if (showBtn != null) #showBtn: showBtn,
         if (canResizeH != null) #canResizeH: canResizeH,
         if (canResizeV != null) #canResizeV: canResizeV,
+        if (followScroll != null) #followScroll: followScroll,
         if (calloutFillColorValue != $none)
           #calloutFillColorValue: calloutFillColorValue,
         if (calloutBorderColorValue != $none)
@@ -350,6 +358,7 @@ class _TargetModelCopyWithImpl<$R, $Out>
       showBtn: data.get(#showBtn, or: $value.showBtn),
       canResizeH: data.get(#canResizeH, or: $value.canResizeH),
       canResizeV: data.get(#canResizeV, or: $value.canResizeV),
+      followScroll: data.get(#followScroll, or: $value.followScroll),
       calloutFillColorValue:
           data.get(#calloutFillColorValue, or: $value.calloutFillColorValue),
       calloutBorderColorValue: data.get(#calloutBorderColorValue,

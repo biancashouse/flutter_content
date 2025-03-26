@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 part 'text_style_properties.mapper.dart';
@@ -17,6 +18,11 @@ class TextStyleProperties with TextStylePropertiesMappable {
   double? lineHeight;
   double? letterSpacing;
   int? colorValue;
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  TextStyleName? lastHoveredSuggestion;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  TextStyleName? lastSearchString;
 
   TextStyleProperties({
     this.fontFamily,
@@ -80,4 +86,14 @@ class TextStyleProperties with TextStylePropertiesMappable {
       lineHeight == null &&
       letterSpacing == null &&
       colorValue == null;
+
+  bool same(TextStyleProperties other) =>
+      fontFamily == other.fontFamily &&
+          fontWeight == other.fontWeight &&
+          fontStyle == other.fontStyle &&
+          fontSize == other.fontSize &&
+          fontSizeName == other.fontSizeName &&
+          lineHeight == other.lineHeight &&
+          letterSpacing == other.letterSpacing &&
+          colorValue == other.colorValue;
 }

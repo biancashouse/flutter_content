@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 part 'app_info_model.mapper.dart';
@@ -12,6 +13,7 @@ class AppInfoModel with AppInfoModelMappable {
   List<SnippetName> snippetNames; // a snippet may be a Page snippet; i.e. also has a Route Path property
   Map<TextStyleName, TextStyleProperties> textStyles;
   Map<ButtonStyleName, ButtonStyleProperties> buttonStyles;
+  Map<ContainerStyleName, ContainerStyleProperties> containerStyles;
 
   AppInfoModel({
     this.clipboard,
@@ -19,6 +21,7 @@ class AppInfoModel with AppInfoModelMappable {
     this.snippetNames = const [],
     this.textStyles = const {},
     this.buttonStyles = const {},
+    this.containerStyles = const {},
   });
 }
 

@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/button_styles.dart';
+import 'package:flutter_content/container_styles.dart';
 import 'package:flutter_content/google_font_names.dart';
 
 // import 'package:flutter_content/flutter_content.dart';
@@ -16,7 +17,11 @@ import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
+import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
+import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
 import 'package:flutter_content/text_styles.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
@@ -141,7 +146,7 @@ export 'src/snippet/snodes/markdown_node.dart';
 export 'src/snippet/snodes/menu_bar_node.dart';
 export 'src/snippet/snodes/menu_item_button_node.dart';
 export 'src/snippet/snodes/multi_child_node.dart';
-export 'src/snippet/snodes/named_text_style.dart';
+// export 'src/snippet/snodes/named_text_style.dart';
 
 // content
 export 'src/snippet/snodes/outlined_button_node.dart';
@@ -410,6 +415,12 @@ class FlutterContentMixins
         namedTextStyles.addAll(_appInfo.textStyles);
         namedButtonStyles.addAll(cannedButtonStyles());
         namedButtonStyles.addAll(_appInfo.buttonStyles);
+        namedContainerStyles.addAll(cannedContainerStyles());
+        namedContainerStyles.addAll(_appInfo.containerStyles);
+        if (cannedButtonStyles().length != _appInfo.buttonStyles.length
+        || cannedTextStyles().length != _appInfo.textStyles.length) {
+          await modelRepo.saveAppInfo();
+        }
       } catch (e) {
         logger.e(e);
       }
@@ -455,6 +466,11 @@ class FlutterContentMixins
 
   List<String> get editorPasswords => _editorPasswords;
 
+  // reusable across all PNodes
+  TextStyleNameSearchAnchor? textStyleNameAnchor;
+  ButtonStyleNameSearchAnchor? buttonStyleNameAnchor;
+  ContainerStyleNameSearchAnchor? containerStyleNameAnchor;
+
   late String _appName;
   late bool usingFBStorage;
   late List<String> _editorPasswords;
@@ -471,6 +487,10 @@ class FlutterContentMixins
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
   late ValueNotifier<bool> canEditContent;
+
+  GlobalKey signinIconGK = GlobalKey();
+
+  final snippetTreeTC = TransformationController();
 
   late GoRouter router;
 
@@ -679,6 +699,7 @@ class FlutterContentMixins
 
   Map<TextStyleName, TextStyleProperties> namedTextStyles = {};
   Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
+  Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles = {};
 
   Offset? _devToolsFABPos;
 
@@ -738,9 +759,9 @@ class FlutterContentMixins
   // knowing a node's GK you can establish it ScrolController? or TabController?
   final Map<GlobalKey, SNode> nodesByGK = {};
 
-  // final Map<PanelName, SnippetName> snippetPlacementMap = {};
-  final List<SnippetPlaceName> placeNames = [];
-  final Map<SnippetPlaceName, SnippetName> snippetPlacementMap = {};
+  // removed snippet place naming functionality - use tab bar instead
+  // final List<SnippetPlaceName> placeNames = [];
+  // final Map<SnippetPlaceName, SnippetName> snippetPlacementMap = {};
 
   // EditablePageState? get currentPageState {
   //   return currentRoute != null
@@ -751,6 +772,8 @@ class FlutterContentMixins
   final Map<PanelName, GlobalKey> panelGkMap = {};
   final Map<SNode, Set<PNode>> expandedNodes = {};
   final Map<HandlerName, void Function(BuildContext)> _handlers = {};
+
+  List<HandlerName> handlers() => _handlers.keys.toList();
 
   bool showingNodeButtons = true;
 
@@ -865,7 +888,41 @@ class FlutterContentMixins
           namedBSProps.maxH == props.maxW &&
           namedBSProps.radius == props.radius &&
           namedBSProps.side?.colorValue == props.side?.colorValue &&
-          namedBSProps.side?.width == props.side?.width) return bsName;
+          namedBSProps.side?.width == props.side?.width) {
+        return bsName;
+      } else {
+        print('stop here');
+      }
+    }
+    return null;
+  }
+
+  ContainerStyleName? findContainerStyleName(ContainerStyleProperties props) {
+    for (ContainerStyleName csName in _appInfo.containerStyles.keys) {
+      ContainerStyleProperties namedCSProps = _appInfo.containerStyles[csName]!;
+      if (namedCSProps.outlinedBorderGroup == props.outlinedBorderGroup &&
+          namedCSProps.badgeWidth == props.badgeWidth &&
+          namedCSProps.badgeText == props.badgeText &&
+          namedCSProps.badgeHeight == props.badgeHeight &&
+          namedCSProps.badgeCorner == props.badgeCorner &&
+          namedCSProps.dash == props.dash &&
+          namedCSProps.starPoints == props.starPoints &&
+          namedCSProps.borderRadius == props.borderRadius &&
+          namedCSProps.borderColorValues == props.borderColorValues &&
+          namedCSProps.borderThickness == props.borderThickness &&
+          namedCSProps.decoration == props.decoration &&
+          namedCSProps.height == props.height &&
+          namedCSProps.width == props.width &&
+          namedCSProps.alignment == props.alignment &&
+          namedCSProps.padding == props.padding &&
+          namedCSProps.margin == props.margin &&
+          namedCSProps.fillColorValues == props.fillColorValues &&
+          namedCSProps.gap == props.gap
+      ) {
+        return csName;
+      } else {
+        print('stop here');
+      }
     }
     return null;
   }

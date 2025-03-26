@@ -3,8 +3,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'asset_image_node.mapper.dart';
@@ -45,7 +48,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           stringValue: name,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(context,() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
         ),
@@ -54,7 +57,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'width',
           decimalValue: width,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => width = newValue),
+              refreshWithUpdate(context,() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -62,7 +65,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'height',
           decimalValue: height,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => height = newValue),
+              refreshWithUpdate(context,() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -70,7 +73,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'scale',
           decimalValue: scale,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => scale = newValue ?? 1.0),
+              refreshWithUpdate(context,() => scale = newValue ?? 1.0),
           calloutButtonSize: const Size(80, 20),
         ),
         EnumPNode<BoxFitEnum?>(
@@ -78,14 +81,14 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
           name: 'fit',
           valueIndex: fit?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
+              refreshWithUpdate(context,() => fit = BoxFitEnum.of(newValue)),
         ),
         EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
           onIndexChange: (newValue) =>
-              refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+              refreshWithUpdate(context,() => alignment = AlignmentEnum.of(newValue)),
         ),
       ];
 

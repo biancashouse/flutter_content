@@ -1,10 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:gap/gap.dart';
+
+import '../pnodes/fyi_pnodes.dart';
 
 part 'flex_node.mapper.dart';
 
@@ -23,11 +26,17 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Flex',
+            webLink:
+                'https://api.flutter.dev/flutter/widgets/Flex-class.html',
+            snode: this,
+            name: 'fyi'),
         EnumPNode<MainAxisAlignmentEnum?>(
           snode: this,
           name: 'mainAxisAlignment',
           valueIndex: mainAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
+          onIndexChange: (newValue) => refreshWithUpdate(context,
               () => mainAxisAlignment = MainAxisAlignmentEnum.of(newValue)),
         ),
         EnumPNode<MainAxisSizeEnum?>(
@@ -35,13 +44,13 @@ abstract class FlexNode extends MC with FlexNodeMappable {
           name: 'mainAxisSize',
           valueIndex: mainAxisSize?.index,
           onIndexChange: (newValue) => refreshWithUpdate(
-              () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
+              context, () => mainAxisSize = MainAxisSizeEnum.of(newValue)),
         ),
         EnumPNode<CrossAxisAlignmentEnum?>(
           snode: this,
           name: 'crossAxisAlignment',
           valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
+          onIndexChange: (newValue) => refreshWithUpdate(context,
               () => crossAxisAlignment = CrossAxisAlignmentEnum.of(newValue)),
         ),
       ];
@@ -61,11 +70,12 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       Widget w;
       try {
         w = LayoutBuilder(builder: (context, constraints) {

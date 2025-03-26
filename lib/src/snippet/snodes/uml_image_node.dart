@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_editor.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'uml_image_node.mapper.dart';
@@ -40,7 +42,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           stringValue: name,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(context,() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
           numLines: 1,
@@ -56,7 +58,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
             height: height,
           ),
           onUmlChange: (newValue) {
-            refreshWithUpdate(() {
+            refreshWithUpdate(context,() {
               umlText = newValue.text;
               encodedText = newValue.encodedText;
               cachedPngBytes = newValue.bytes;

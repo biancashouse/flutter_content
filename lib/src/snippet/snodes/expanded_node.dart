@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
 
 part 'expanded_node.mapper.dart';
 
@@ -15,32 +17,45 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Expanded',
+            webLink:
+                'https://api.flutter.dev/flutter/widgets/Expanded-class.html',
+            snode: this,
+            name: 'fyi'),
         IntPNode(
             snode: this,
             name: 'flex',
             intValue: flex,
-            onIntChange: (newValue) => refreshWithUpdate(() => flex = newValue ?? 1),
+            onIntChange: (newValue) =>
+                refreshWithUpdate(context, () => flex = newValue ?? 1),
             calloutButtonSize: const Size(70, 30),
             viaButton: false),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       // ScrollControllerName? scName = EditablePage.name(context);
       // possiblyHighlightSelectedNode(scName);
       return Expanded(
-            key: createNodeWidgetGK(),
-            flex: flex,
-            child: child?.toWidget(context, this) ??
-                const Icon(
-                  Icons.square,
-                  color: Colors.red,
-                ),
-          );
+        key: createNodeWidgetGK(),
+        flex: flex,
+        child: child?.toWidget(context, this) ??
+            const Icon(
+              Icons.square,
+              color: Colors.red,
+            ),
+      );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 
@@ -89,14 +104,13 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   // }
 
   @override
-  List<Type> replaceWithRecommendations() => [ExpandedNode,FlexibleNode];
+  List<Type> replaceWithRecommendations() => [ExpandedNode, FlexibleNode];
 
   @override
   List<Type> wrapCandidates() => [FlexNode];
 
   @override
-  List<Type> wrapWithOnly() => [RowNode,ColumnNode];
-
+  List<Type> wrapWithOnly() => [RowNode, ColumnNode];
 
   @override
   String toString() => FLUTTER_TYPE;

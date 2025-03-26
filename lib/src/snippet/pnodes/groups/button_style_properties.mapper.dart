@@ -68,6 +68,15 @@ class ButtonStylePropertiesMapper
   static double? _$fixedH(ButtonStyleProperties v) => v.fixedH;
   static const Field<ButtonStyleProperties, double> _f$fixedH =
       Field('fixedH', _$fixedH, opt: true);
+  static String? _$lastHoveredSuggestion(ButtonStyleProperties v) =>
+      v.lastHoveredSuggestion;
+  static const Field<ButtonStyleProperties, String> _f$lastHoveredSuggestion =
+      Field('lastHoveredSuggestion', _$lastHoveredSuggestion,
+          mode: FieldMode.member);
+  static String? _$lastSearchString(ButtonStyleProperties v) =>
+      v.lastSearchString;
+  static const Field<ButtonStyleProperties, String> _f$lastSearchString =
+      Field('lastSearchString', _$lastSearchString, mode: FieldMode.member);
 
   @override
   final MappableFields<ButtonStyleProperties> fields = const {
@@ -85,6 +94,8 @@ class ButtonStylePropertiesMapper
     #maxH: _f$maxH,
     #fixedW: _f$fixedW,
     #fixedH: _f$fixedH,
+    #lastHoveredSuggestion: _f$lastHoveredSuggestion,
+    #lastSearchString: _f$lastSearchString,
   };
 
   static ButtonStyleProperties _instantiate(DecodingData data) {

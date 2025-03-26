@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -129,7 +131,13 @@ line 3
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        StringPNode(
+    FlutterDocPNode(
+        buttonLabel: 'Markdown',
+        webLink:
+        'https://pub.dev/packages/flutter_markdown',
+        snode: this,
+        name: 'fyi'),
+    StringPNode(
           snode: this,
           name: 'data',
           nameOnSeparateLine: true,
@@ -137,7 +145,7 @@ line 3
           numLines: 9999,
           stringValue: data,
           onStringChange: (newValue) {
-            refreshWithUpdate(() => data = newValue ?? '');
+            refreshWithUpdate(context,() => data = newValue ?? '');
           },
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,

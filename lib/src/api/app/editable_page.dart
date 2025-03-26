@@ -169,8 +169,9 @@ class EditablePageState extends State<EditablePage> {
           children: [
             Expanded(child: msvt),
             if (showPropertiesTree())
-              SizedBox(
+              Container(
                 width: 320,
+                color: Colors.purpleAccent[100],
                 child: _propertiesTree(),
               )
           ],
@@ -267,7 +268,7 @@ class EditablePageState extends State<EditablePage> {
           child: Column(
             children: [
               Container(
-                color: Colors.purple.shade200,
+                color: Colors.purple,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -388,7 +389,7 @@ class EditablePageState extends State<EditablePage> {
     return !showingProperties || propertiesPaneSC == null
         ? const Offstage()
         : Container(
-            color: Colors.purple.shade50,
+            color: Colors.blue[50],
             child: ListView(
               controller: selectedNode!.propertiesPaneSC(),
               shrinkWrap: true,
@@ -409,13 +410,13 @@ class EditablePageState extends State<EditablePage> {
                 // NODE PROPERTIES TREE
                 if ((selectedNode?.pTreeC(context).roots.isEmpty) ?? false)
                   Material(
-                    color: Colors.purpleAccent[50],
+                    // color: Colors.purpleAccent[50],
                     child: fco.coloredText(
                         ' (${selectedNode.toString()} has no properties)',
                         color: Colors.black87),
                   ),
                 Material(
-                  color: Colors.purpleAccent[50],
+                  color: Colors.blue[50],
                   child: PropertiesTreeView(
                       treeC: FlutterContentApp.selectedNode!.pTreeC(context),
                       sNode: FlutterContentApp.selectedNode!),
@@ -576,9 +577,9 @@ class EditablePageState extends State<EditablePage> {
       ),
       calloutConfig: CalloutConfig(
           cId: "editor-password",
-          initialTargetAlignment: Alignment.topRight,
-          initialCalloutAlignment: Alignment.bottomLeft,
-          finalSeparation: 150,
+          initialTargetAlignment: Alignment.bottomLeft,
+          initialCalloutAlignment: Alignment.topRight,
+          finalSeparation: 200,
           barrier: CalloutBarrierConfig(
             opacity: .5,
             onTappedF: () async {
@@ -588,11 +589,13 @@ class EditablePageState extends State<EditablePage> {
           initialCalloutW: 240,
           initialCalloutH: 150,
           borderRadius: 12,
+          arrowType: ArrowType.THIN_REVERSED,
           fillColor: Colors.white,
           scrollControllerName: widget.routePath,
           onDismissedF: () {
             fco.removeKeystrokeHandler('editor-password');
           }),
+      targetGkF: ()=> fco.signinIconGK,
     );
   }
 

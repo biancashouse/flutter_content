@@ -221,6 +221,7 @@ class FireStoreModelRepository implements IModelRepository {
 
   @override
   Future<void> saveAppInfo() async {
+    fco.logger.d('***********   saveAppInfo   ****************');
     fco.appInfo.textStyles = fco.namedTextStyles;
     fco.appInfo.buttonStyles = fco.namedButtonStyles;
     var map = fco.appInfoAsMap;

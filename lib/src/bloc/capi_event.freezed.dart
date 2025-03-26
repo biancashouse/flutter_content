@@ -39,7 +39,6 @@ mixin _$CAPIEvent {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -98,7 +97,6 @@ mixin _$CAPIEvent {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -153,7 +151,6 @@ mixin _$CAPIEvent {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -205,7 +202,6 @@ mixin _$CAPIEvent {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -250,7 +246,6 @@ mixin _$CAPIEvent {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -293,7 +288,6 @@ mixin _$CAPIEvent {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -441,7 +435,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -503,7 +496,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -561,7 +553,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -619,7 +610,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -667,7 +657,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -713,7 +702,6 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -879,7 +867,6 @@ class _$OverrideTargetGKImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -941,7 +928,6 @@ class _$OverrideTargetGKImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -999,7 +985,6 @@ class _$OverrideTargetGKImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -1057,7 +1042,6 @@ class _$OverrideTargetGKImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -1105,7 +1089,6 @@ class _$OverrideTargetGKImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -1151,7 +1134,6 @@ class _$OverrideTargetGKImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -1302,7 +1284,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -1364,7 +1345,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -1422,7 +1402,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -1480,7 +1459,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -1528,7 +1506,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -1574,7 +1551,6 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -1740,7 +1716,6 @@ class _$UpdateClipboardImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -1802,7 +1777,6 @@ class _$UpdateClipboardImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -1860,7 +1834,6 @@ class _$UpdateClipboardImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -1918,7 +1891,6 @@ class _$UpdateClipboardImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -1966,7 +1938,6 @@ class _$UpdateClipboardImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -2012,7 +1983,6 @@ class _$UpdateClipboardImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -2175,7 +2145,6 @@ class _$PublishSnippetImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -2237,7 +2206,6 @@ class _$PublishSnippetImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -2295,7 +2263,6 @@ class _$PublishSnippetImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -2353,7 +2320,6 @@ class _$PublishSnippetImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -2401,7 +2367,6 @@ class _$PublishSnippetImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -2447,7 +2412,6 @@ class _$PublishSnippetImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -2607,7 +2571,6 @@ class _$RevertSnippetImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -2669,7 +2632,6 @@ class _$RevertSnippetImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -2727,7 +2689,6 @@ class _$RevertSnippetImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -2785,7 +2746,6 @@ class _$RevertSnippetImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -2833,7 +2793,6 @@ class _$RevertSnippetImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -2879,7 +2838,6 @@ class _$RevertSnippetImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -3026,7 +2984,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -3088,7 +3045,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -3146,7 +3102,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -3204,7 +3159,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -3252,7 +3206,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -3298,7 +3251,6 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -3449,7 +3401,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -3511,7 +3462,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -3569,7 +3519,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -3627,7 +3576,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -3675,7 +3623,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -3721,7 +3668,6 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -3870,7 +3816,6 @@ class _$AutoPublishDefaultImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -3932,7 +3877,6 @@ class _$AutoPublishDefaultImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -3990,7 +3934,6 @@ class _$AutoPublishDefaultImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -4048,7 +3991,6 @@ class _$AutoPublishDefaultImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -4096,7 +4038,6 @@ class _$AutoPublishDefaultImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -4142,7 +4083,6 @@ class _$AutoPublishDefaultImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -4286,7 +4226,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -4348,7 +4287,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -4406,7 +4344,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -4464,7 +4401,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -4512,7 +4448,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -4558,7 +4493,6 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -4717,7 +4651,6 @@ class _$SetPanelSnippetImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -4779,7 +4712,6 @@ class _$SetPanelSnippetImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -4837,7 +4769,6 @@ class _$SetPanelSnippetImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -4895,7 +4826,6 @@ class _$SetPanelSnippetImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -4943,7 +4873,6 @@ class _$SetPanelSnippetImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -4989,7 +4918,6 @@ class _$SetPanelSnippetImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -5149,7 +5077,6 @@ class _$PushSnippetEditorImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -5211,7 +5138,6 @@ class _$PushSnippetEditorImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -5269,7 +5195,6 @@ class _$PushSnippetEditorImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -5327,7 +5252,6 @@ class _$PushSnippetEditorImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -5375,7 +5299,6 @@ class _$PushSnippetEditorImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -5421,7 +5344,6 @@ class _$PushSnippetEditorImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -5571,7 +5493,6 @@ class _$PopSnippetEditorImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -5633,7 +5554,6 @@ class _$PopSnippetEditorImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -5691,7 +5611,6 @@ class _$PopSnippetEditorImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -5749,7 +5668,6 @@ class _$PopSnippetEditorImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -5797,7 +5715,6 @@ class _$PopSnippetEditorImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -5843,7 +5760,6 @@ class _$PopSnippetEditorImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -5886,436 +5802,6 @@ abstract class PopSnippetEditor implements CAPIEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PopSnippetEditorImplCopyWith<_$PopSnippetEditorImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ShowCutoutImplCopyWith<$Res> {
-  factory _$$ShowCutoutImplCopyWith(
-          _$ShowCutoutImpl value, $Res Function(_$ShowCutoutImpl) then) =
-      __$$ShowCutoutImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Rect cutoutRect, int durationMs});
-}
-
-/// @nodoc
-class __$$ShowCutoutImplCopyWithImpl<$Res>
-    extends _$CAPIEventCopyWithImpl<$Res, _$ShowCutoutImpl>
-    implements _$$ShowCutoutImplCopyWith<$Res> {
-  __$$ShowCutoutImplCopyWithImpl(
-      _$ShowCutoutImpl _value, $Res Function(_$ShowCutoutImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CAPIEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? cutoutRect = null,
-    Object? durationMs = null,
-  }) {
-    return _then(_$ShowCutoutImpl(
-      cutoutRect: null == cutoutRect
-          ? _value.cutoutRect
-          : cutoutRect // ignore: cast_nullable_to_non_nullable
-              as Rect,
-      durationMs: null == durationMs
-          ? _value.durationMs
-          : durationMs // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$ShowCutoutImpl with DiagnosticableTreeMixin implements ShowCutout {
-  const _$ShowCutoutImpl({required this.cutoutRect, this.durationMs = 1000});
-
-  @override
-  final Rect cutoutRect;
-  @override
-  @JsonKey()
-  final int durationMs;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CAPIEvent.showCutout(cutoutRect: $cutoutRect, durationMs: $durationMs)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CAPIEvent.showCutout'))
-      ..add(DiagnosticsProperty('cutoutRect', cutoutRect))
-      ..add(DiagnosticsProperty('durationMs', durationMs));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ShowCutoutImpl &&
-            (identical(other.cutoutRect, cutoutRect) ||
-                other.cutoutRect == cutoutRect) &&
-            (identical(other.durationMs, durationMs) ||
-                other.durationMs == durationMs));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, cutoutRect, durationMs);
-
-  /// Create a copy of CAPIEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ShowCutoutImplCopyWith<_$ShowCutoutImpl> get copyWith =>
-      __$$ShowCutoutImplCopyWithImpl<_$ShowCutoutImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(String? panelName) selectPanel,
-    required TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
-        overrideTargetGK,
-    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
-    required TResult Function(
-            SNode? newContent, String? scName, dynamic skipSave)
-        updateClipboard,
-    required TResult Function(String snippetName, String versionId)
-        publishSnippet,
-    required TResult Function(String snippetName, String versionId)
-        revertSnippet,
-    required TResult Function(String pathName) deletePage,
-    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
-    required TResult Function(bool b) autoPublishDefault,
-    required TResult Function(bool hide) hideIframes,
-    required TResult Function(String snippetName, String panelName)
-        setPanelOrPlaceholderSnippet,
-    required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
-        pushSnippetEditor,
-    required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
-    required TResult Function() showDirectoryTree,
-    required TResult Function(bool save) removeDirectoryTree,
-    required TResult Function(SNode node) selectNode,
-    required TResult Function() clearNodeSelection,
-    required TResult Function(SNode node, String newSnippetName)
-        saveNodeAsSnippet,
-    required TResult Function(Type? type, String? snippetName, SNode? testNode)
-        replaceSelectionWith,
-    required TResult Function(Type? type, String? snippetName, SNode? testNode)
-        wrapSelectionWith,
-    required TResult Function(Type? type, SNode? testNode, String? snippetName,
-            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
-        appendChild,
-    required TResult Function(Type? type, String? snippetName, SNode? testNode)
-        addSiblingBefore,
-    required TResult Function(Type? type, String? snippetName, SNode? testNode)
-        addSiblingAfter,
-    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
-    required TResult Function(
-            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
-        pasteChild,
-    required TResult Function() pasteSiblingBefore,
-    required TResult Function() pasteSiblingAfter,
-    required TResult Function() deleteNodeTapped,
-    required TResult Function() completeDeletion,
-    required TResult Function(SnippetRootNode rootNode)
-        copySnippetJsonToClipboard,
-    required TResult Function(String? snippetJson) replaceSnippetFromJson,
-    required TResult Function(SNode node, String? scName, dynamic skipSave)
-        copyNode,
-    required TResult Function(SNode node, String? scName, dynamic skipSave)
-        cutNode,
-    required TResult Function(String snippetName, SNode? selectedNode)
-        selectedDirectoryOrNode,
-    required TResult Function(Uint8List? newBytes) imageChanged,
-    required TResult Function() forceSnippetRefresh,
-  }) {
-    return showCutout(cutoutRect, durationMs);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String? panelName)? selectPanel,
-    TResult? Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult? Function(SNode? newContent, String? scName, dynamic skipSave)?
-        updateClipboard,
-    TResult? Function(String snippetName, String versionId)? publishSnippet,
-    TResult? Function(String snippetName, String versionId)? revertSnippet,
-    TResult? Function(String pathName)? deletePage,
-    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
-    TResult? Function(bool b)? autoPublishDefault,
-    TResult? Function(bool hide)? hideIframes,
-    TResult? Function(String snippetName, String panelName)?
-        setPanelOrPlaceholderSnippet,
-    TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
-        pushSnippetEditor,
-    TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
-    TResult? Function()? showDirectoryTree,
-    TResult? Function(bool save)? removeDirectoryTree,
-    TResult? Function(SNode node)? selectNode,
-    TResult? Function()? clearNodeSelection,
-    TResult? Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
-        replaceSelectionWith,
-    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
-        wrapSelectionWith,
-    TResult? Function(Type? type, SNode? testNode, String? snippetName,
-            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
-        appendChild,
-    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
-        addSiblingBefore,
-    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
-        addSiblingAfter,
-    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
-    TResult? Function(
-            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
-        pasteChild,
-    TResult? Function()? pasteSiblingBefore,
-    TResult? Function()? pasteSiblingAfter,
-    TResult? Function()? deleteNodeTapped,
-    TResult? Function()? completeDeletion,
-    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
-    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult? Function(SNode node, String? scName, dynamic skipSave)? copyNode,
-    TResult? Function(SNode node, String? scName, dynamic skipSave)? cutNode,
-    TResult? Function(String snippetName, SNode? selectedNode)?
-        selectedDirectoryOrNode,
-    TResult? Function(Uint8List? newBytes)? imageChanged,
-    TResult? Function()? forceSnippetRefresh,
-  }) {
-    return showCutout?.call(cutoutRect, durationMs);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String? panelName)? selectPanel,
-    TResult Function(
-            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
-        overrideTargetGK,
-    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
-    TResult Function(SNode? newContent, String? scName, dynamic skipSave)?
-        updateClipboard,
-    TResult Function(String snippetName, String versionId)? publishSnippet,
-    TResult Function(String snippetName, String versionId)? revertSnippet,
-    TResult Function(String pathName)? deletePage,
-    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
-    TResult Function(bool b)? autoPublishDefault,
-    TResult Function(bool hide)? hideIframes,
-    TResult Function(String snippetName, String panelName)?
-        setPanelOrPlaceholderSnippet,
-    TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
-        pushSnippetEditor,
-    TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
-    TResult Function()? showDirectoryTree,
-    TResult Function(bool save)? removeDirectoryTree,
-    TResult Function(SNode node)? selectNode,
-    TResult Function()? clearNodeSelection,
-    TResult Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
-    TResult Function(Type? type, String? snippetName, SNode? testNode)?
-        replaceSelectionWith,
-    TResult Function(Type? type, String? snippetName, SNode? testNode)?
-        wrapSelectionWith,
-    TResult Function(Type? type, SNode? testNode, String? snippetName,
-            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
-        appendChild,
-    TResult Function(Type? type, String? snippetName, SNode? testNode)?
-        addSiblingBefore,
-    TResult Function(Type? type, String? snippetName, SNode? testNode)?
-        addSiblingAfter,
-    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
-    TResult Function(Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
-        pasteChild,
-    TResult Function()? pasteSiblingBefore,
-    TResult Function()? pasteSiblingAfter,
-    TResult Function()? deleteNodeTapped,
-    TResult Function()? completeDeletion,
-    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
-    TResult Function(String? snippetJson)? replaceSnippetFromJson,
-    TResult Function(SNode node, String? scName, dynamic skipSave)? copyNode,
-    TResult Function(SNode node, String? scName, dynamic skipSave)? cutNode,
-    TResult Function(String snippetName, SNode? selectedNode)?
-        selectedDirectoryOrNode,
-    TResult Function(Uint8List? newBytes)? imageChanged,
-    TResult Function()? forceSnippetRefresh,
-    required TResult orElse(),
-  }) {
-    if (showCutout != null) {
-      return showCutout(cutoutRect, durationMs);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(SelectPanel value) selectPanel,
-    required TResult Function(OverrideTargetGK value) overrideTargetGK,
-    required TResult Function(ForceRefresh value) forceRefresh,
-    required TResult Function(UpdateClipboard value) updateClipboard,
-    required TResult Function(PublishSnippet value) publishSnippet,
-    required TResult Function(RevertSnippet value) revertSnippet,
-    required TResult Function(DeletePage value) deletePage,
-    required TResult Function(ToggleAutoPublishingOfSnippet value)
-        toggleAutoPublishingOfSnippet,
-    required TResult Function(AutoPublishDefault value) autoPublishDefault,
-    required TResult Function(HideIframes value) hideIframes,
-    required TResult Function(SetPanelSnippet value)
-        setPanelOrPlaceholderSnippet,
-    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
-    required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
-    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
-    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
-    required TResult Function(SelectNode value) selectNode,
-    required TResult Function(ClearNodeSelection value) clearNodeSelection,
-    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
-    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
-    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
-    required TResult Function(AppendChild value) appendChild,
-    required TResult Function(AddSiblingBefore value) addSiblingBefore,
-    required TResult Function(AddSiblingAfter value) addSiblingAfter,
-    required TResult Function(PasteReplacement value) pasteReplacement,
-    required TResult Function(PasteChild value) pasteChild,
-    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
-    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
-    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
-    required TResult Function(CompleteDeletion value) completeDeletion,
-    required TResult Function(CopySnippetJsonToClipboard value)
-        copySnippetJsonToClipboard,
-    required TResult Function(ReplaceSnippetFromJson value)
-        replaceSnippetFromJson,
-    required TResult Function(CopyNode value) copyNode,
-    required TResult Function(CutNode value) cutNode,
-    required TResult Function(SelectedDirectoryOrNode value)
-        selectedDirectoryOrNode,
-    required TResult Function(ImageChanged value) imageChanged,
-    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
-  }) {
-    return showCutout(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(SelectPanel value)? selectPanel,
-    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult? Function(ForceRefresh value)? forceRefresh,
-    TResult? Function(UpdateClipboard value)? updateClipboard,
-    TResult? Function(PublishSnippet value)? publishSnippet,
-    TResult? Function(RevertSnippet value)? revertSnippet,
-    TResult? Function(DeletePage value)? deletePage,
-    TResult? Function(ToggleAutoPublishingOfSnippet value)?
-        toggleAutoPublishingOfSnippet,
-    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
-    TResult? Function(HideIframes value)? hideIframes,
-    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
-    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
-    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
-    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    TResult? Function(SelectNode value)? selectNode,
-    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
-    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
-    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
-    TResult? Function(AppendChild value)? appendChild,
-    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
-    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
-    TResult? Function(PasteReplacement value)? pasteReplacement,
-    TResult? Function(PasteChild value)? pasteChild,
-    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
-    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
-    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
-    TResult? Function(CompleteDeletion value)? completeDeletion,
-    TResult? Function(CopySnippetJsonToClipboard value)?
-        copySnippetJsonToClipboard,
-    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
-    TResult? Function(CopyNode value)? copyNode,
-    TResult? Function(CutNode value)? cutNode,
-    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
-    TResult? Function(ImageChanged value)? imageChanged,
-    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
-  }) {
-    return showCutout?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(SelectPanel value)? selectPanel,
-    TResult Function(OverrideTargetGK value)? overrideTargetGK,
-    TResult Function(ForceRefresh value)? forceRefresh,
-    TResult Function(UpdateClipboard value)? updateClipboard,
-    TResult Function(PublishSnippet value)? publishSnippet,
-    TResult Function(RevertSnippet value)? revertSnippet,
-    TResult Function(DeletePage value)? deletePage,
-    TResult Function(ToggleAutoPublishingOfSnippet value)?
-        toggleAutoPublishingOfSnippet,
-    TResult Function(AutoPublishDefault value)? autoPublishDefault,
-    TResult Function(HideIframes value)? hideIframes,
-    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
-    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
-    TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
-    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
-    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
-    TResult Function(SelectNode value)? selectNode,
-    TResult Function(ClearNodeSelection value)? clearNodeSelection,
-    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
-    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
-    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
-    TResult Function(AppendChild value)? appendChild,
-    TResult Function(AddSiblingBefore value)? addSiblingBefore,
-    TResult Function(AddSiblingAfter value)? addSiblingAfter,
-    TResult Function(PasteReplacement value)? pasteReplacement,
-    TResult Function(PasteChild value)? pasteChild,
-    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
-    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
-    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
-    TResult Function(CompleteDeletion value)? completeDeletion,
-    TResult Function(CopySnippetJsonToClipboard value)?
-        copySnippetJsonToClipboard,
-    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
-    TResult Function(CopyNode value)? copyNode,
-    TResult Function(CutNode value)? cutNode,
-    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
-    TResult Function(ImageChanged value)? imageChanged,
-    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
-    required TResult orElse(),
-  }) {
-    if (showCutout != null) {
-      return showCutout(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ShowCutout implements CAPIEvent {
-  const factory ShowCutout(
-      {required final Rect cutoutRect,
-      final int durationMs}) = _$ShowCutoutImpl;
-
-  Rect get cutoutRect;
-  int get durationMs;
-
-  /// Create a copy of CAPIEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ShowCutoutImplCopyWith<_$ShowCutoutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -6389,7 +5875,6 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -6451,7 +5936,6 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -6509,7 +5993,6 @@ class _$ShowDirectoryTreeImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -6567,7 +6050,6 @@ class _$ShowDirectoryTreeImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -6615,7 +6097,6 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -6661,7 +6142,6 @@ class _$ShowDirectoryTreeImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -6800,7 +6280,6 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -6862,7 +6341,6 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -6920,7 +6398,6 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -6978,7 +6455,6 @@ class _$RemoveDirectoryTreeImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -7026,7 +6502,6 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -7072,7 +6547,6 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -7216,7 +6690,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -7278,7 +6751,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -7336,7 +6808,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -7394,7 +6865,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -7442,7 +6912,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -7488,7 +6957,6 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -7604,7 +7072,6 @@ class _$ClearNodeSelectionImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -7666,7 +7133,6 @@ class _$ClearNodeSelectionImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -7724,7 +7190,6 @@ class _$ClearNodeSelectionImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -7782,7 +7247,6 @@ class _$ClearNodeSelectionImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -7830,7 +7294,6 @@ class _$ClearNodeSelectionImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -7876,7 +7339,6 @@ class _$ClearNodeSelectionImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -8025,7 +7487,6 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -8087,7 +7548,6 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -8145,7 +7605,6 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -8203,7 +7662,6 @@ class _$SaveNodeAsSnippetImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -8251,7 +7709,6 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -8297,7 +7754,6 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -8469,7 +7925,6 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -8531,7 +7986,6 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -8589,7 +8043,6 @@ class _$ReplaceSelectionWithImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -8647,7 +8100,6 @@ class _$ReplaceSelectionWithImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -8695,7 +8147,6 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -8741,7 +8192,6 @@ class _$ReplaceSelectionWithImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -8913,7 +8363,6 @@ class _$WrapSelectionWithImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -8975,7 +8424,6 @@ class _$WrapSelectionWithImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -9033,7 +8481,6 @@ class _$WrapSelectionWithImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -9091,7 +8538,6 @@ class _$WrapSelectionWithImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -9139,7 +8585,6 @@ class _$WrapSelectionWithImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -9185,7 +8630,6 @@ class _$WrapSelectionWithImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -9387,7 +8831,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -9450,7 +8893,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -9509,7 +8951,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -9568,7 +9009,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -9616,7 +9056,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -9662,7 +9101,6 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -9838,7 +9276,6 @@ class _$AddSiblingBeforeImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -9900,7 +9337,6 @@ class _$AddSiblingBeforeImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -9958,7 +9394,6 @@ class _$AddSiblingBeforeImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -10016,7 +9451,6 @@ class _$AddSiblingBeforeImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -10064,7 +9498,6 @@ class _$AddSiblingBeforeImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -10110,7 +9543,6 @@ class _$AddSiblingBeforeImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -10282,7 +9714,6 @@ class _$AddSiblingAfterImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -10344,7 +9775,6 @@ class _$AddSiblingAfterImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -10402,7 +9832,6 @@ class _$AddSiblingAfterImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -10460,7 +9889,6 @@ class _$AddSiblingAfterImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -10508,7 +9936,6 @@ class _$AddSiblingAfterImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -10554,7 +9981,6 @@ class _$AddSiblingAfterImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -10707,7 +10133,6 @@ class _$PasteReplacementImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -10769,7 +10194,6 @@ class _$PasteReplacementImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -10827,7 +10251,6 @@ class _$PasteReplacementImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -10885,7 +10308,6 @@ class _$PasteReplacementImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -10933,7 +10355,6 @@ class _$PasteReplacementImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -10979,7 +10400,6 @@ class _$PasteReplacementImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -11140,7 +10560,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -11202,7 +10621,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -11260,7 +10678,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -11318,7 +10735,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -11366,7 +10782,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -11412,7 +10827,6 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -11532,7 +10946,6 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -11594,7 +11007,6 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -11652,7 +11064,6 @@ class _$PasteSiblingBeforeImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -11710,7 +11121,6 @@ class _$PasteSiblingBeforeImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -11758,7 +11168,6 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -11804,7 +11213,6 @@ class _$PasteSiblingBeforeImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -11912,7 +11320,6 @@ class _$PasteSiblingAfterImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -11974,7 +11381,6 @@ class _$PasteSiblingAfterImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -12032,7 +11438,6 @@ class _$PasteSiblingAfterImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -12090,7 +11495,6 @@ class _$PasteSiblingAfterImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -12138,7 +11542,6 @@ class _$PasteSiblingAfterImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -12184,7 +11587,6 @@ class _$PasteSiblingAfterImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -12292,7 +11694,6 @@ class _$DeleteNodeTappedImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -12354,7 +11755,6 @@ class _$DeleteNodeTappedImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -12412,7 +11812,6 @@ class _$DeleteNodeTappedImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -12470,7 +11869,6 @@ class _$DeleteNodeTappedImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -12518,7 +11916,6 @@ class _$DeleteNodeTappedImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -12564,7 +11961,6 @@ class _$DeleteNodeTappedImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -12672,7 +12068,6 @@ class _$CompleteDeletionImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -12734,7 +12129,6 @@ class _$CompleteDeletionImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -12792,7 +12186,6 @@ class _$CompleteDeletionImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -12850,7 +12243,6 @@ class _$CompleteDeletionImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -12898,7 +12290,6 @@ class _$CompleteDeletionImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -12944,7 +12335,6 @@ class _$CompleteDeletionImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -13085,7 +12475,6 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -13147,7 +12536,6 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -13205,7 +12593,6 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -13263,7 +12650,6 @@ class _$CopySnippetJsonToClipboardImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -13311,7 +12697,6 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -13357,7 +12742,6 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -13508,7 +12892,6 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -13570,7 +12953,6 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -13628,7 +13010,6 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -13686,7 +13067,6 @@ class _$ReplaceSnippetFromJsonImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -13734,7 +13114,6 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -13780,7 +13159,6 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -13942,7 +13320,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -14004,7 +13381,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -14062,7 +13438,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -14120,7 +13495,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -14168,7 +13542,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -14214,7 +13587,6 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -14380,7 +13752,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -14442,7 +13813,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -14500,7 +13870,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -14558,7 +13927,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -14606,7 +13974,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -14652,7 +14019,6 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -14817,7 +14183,6 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -14879,7 +14244,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -14937,7 +14301,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -14995,7 +14358,6 @@ class _$SelectedDirectoryOrNodeImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -15043,7 +14405,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -15089,7 +14450,6 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -15236,7 +14596,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -15298,7 +14657,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -15356,7 +14714,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -15414,7 +14771,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -15462,7 +14818,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -15508,7 +14863,6 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,
@@ -15626,7 +14980,6 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
-    required TResult Function(Rect cutoutRect, int durationMs) showCutout,
     required TResult Function() showDirectoryTree,
     required TResult Function(bool save) removeDirectoryTree,
     required TResult Function(SNode node) selectNode,
@@ -15688,7 +15041,6 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
-    TResult? Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult? Function()? showDirectoryTree,
     TResult? Function(bool save)? removeDirectoryTree,
     TResult? Function(SNode node)? selectNode,
@@ -15746,7 +15098,6 @@ class _$ForceSnippetRefreshImpl
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
-    TResult Function(Rect cutoutRect, int durationMs)? showCutout,
     TResult Function()? showDirectoryTree,
     TResult Function(bool save)? removeDirectoryTree,
     TResult Function(SNode node)? selectNode,
@@ -15804,7 +15155,6 @@ class _$ForceSnippetRefreshImpl
         setPanelOrPlaceholderSnippet,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
-    required TResult Function(ShowCutout value) showCutout,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
     required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
     required TResult Function(SelectNode value) selectNode,
@@ -15852,7 +15202,6 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult? Function(ShowCutout value)? showCutout,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult? Function(SelectNode value)? selectNode,
@@ -15898,7 +15247,6 @@ class _$ForceSnippetRefreshImpl
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
-    TResult Function(ShowCutout value)? showCutout,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
     TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
     TResult Function(SelectNode value)? selectNode,

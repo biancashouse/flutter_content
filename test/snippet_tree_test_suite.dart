@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -15,7 +16,7 @@ void main() {
   final selectedWidgetGK = GlobalKey(debugLabel: 'selectedWidgetGK');
   final selectedTreeNodeGK = GlobalKey(debugLabel: 'selectedTreeNodeGK');
   // final ur = SnippetTreeUR();
-  final textNode = TextNode(text: 'abc');
+  final textNode = TextNode(text: 'abc', tsPropGroup: TextStyleProperties());
 
   // setupAll() runs once before any test in the suite
   setUpAll(() async {

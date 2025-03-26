@@ -4,7 +4,10 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll.dart';
+import 'package:flutter_content/src/snippet/pnodes/date_range_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/date_range_button.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'poll_node.mapper.dart';
 
@@ -32,6 +35,12 @@ class PollNode extends MC with PollNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Poll',
+            webLink:
+                'https://pub.dev/packages/flutter_polls',
+            snode: this,
+            name: 'fyi'),
         StringPNode(
           snode: this,
           name: 'name',
@@ -41,7 +50,7 @@ class PollNode extends MC with PollNodeMappable {
           // skipLabelText: true,
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue ?? ''),
+              refreshWithUpdate(context, () => name = newValue ?? ''),
           calloutButtonSize: const Size(300, 20),
           calloutWidth: 300,
         ),
@@ -52,7 +61,7 @@ class PollNode extends MC with PollNodeMappable {
           expands: false,
           numLines: 3,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => title = newValue ?? ''),
+              refreshWithUpdate(context, () => title = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
@@ -61,7 +70,8 @@ class PollNode extends MC with PollNodeMappable {
           name: 'duration',
           fromValue: startDate,
           untilValue: endDate,
-          onRangeChange: (DateRange? newValues) => refreshWithUpdate(() {
+          onRangeChange: (DateRange? newValues) =>
+              refreshWithUpdate(context, () {
             if (newValues != null) {
               DateTime startDT =
                   DateTime.fromMillisecondsSinceEpoch(newValues.from!);
@@ -87,18 +97,19 @@ class PollNode extends MC with PollNodeMappable {
         //   name: 'voter pool',
         //   nameOnSeparateLine: true,
         //   stringValue: voterPool.toString(),
-        //   onStringChange: (newValue) => refreshWithUpdate(() => voterPoolCSV),
+        //   onStringChange: (newValue) => refreshWithUpdate(context,() => voterPoolCSV),
         //   calloutButtonSize: const Size(280, 70),
         //   calloutSize: const Size(280, 140),
         // ),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
 
       // find
       return LayoutBuilder(

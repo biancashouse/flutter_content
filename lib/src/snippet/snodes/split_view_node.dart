@@ -3,6 +3,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 part 'split_view_node.mapper.dart';
@@ -20,11 +23,17 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        EnumPNode<AxisEnum?>(
+    FlutterDocPNode(
+        buttonLabel: 'MultiSplitView',
+        webLink:
+        'https://pub.dev/packages/multi_split_view',
+        snode: this,
+        name: 'fyi'),
+    EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
+          onIndexChange: (newValue) => refreshWithUpdate(context,
               () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
         BoolPNode(
@@ -32,7 +41,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
           name: 'resizeable',
           boolValue: resizeable,
           onBoolChange: (newValue) =>
-              refreshWithUpdate(() => resizeable = newValue ?? true),
+              refreshWithUpdate(context,() => resizeable = newValue ?? true),
         ),
       ];
 

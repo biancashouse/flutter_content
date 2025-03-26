@@ -221,18 +221,26 @@ class SNodeWidget extends StatelessWidget {
         initialCalloutH: 200,
         initialTargetAlignment: Alignment.centerRight,
         initialCalloutAlignment: Alignment.centerLeft,
+        finalSeparation: 100,
         arrowType: ArrowType.THIN,
         arrowColor: Colors.white,
-        barrier: CalloutBarrierConfig(),
+        animate: true,
+        barrier: CalloutBarrierConfig(
+          color: Colors.black,
+          opacity: .4,
+          // excludeTargetFromBarrier: true,
+          cutoutPadding: 40,
+        ),
+        toDelta: -20,
       ),
       calloutContent: nodeButtons(context, scName, node),
       targetGkF: () => targetGK,
     );
 
-    double savedOffset = NamedScrollController.scrollOffset(scName);
-
-    bool thisWasAlreadySelected =
-        (entry.node == FlutterContentApp.selectedNode);
+    // double savedOffset = NamedScrollController.scrollOffset(scName);
+    //
+    // bool thisWasAlreadySelected =
+    //     (entry.node == FlutterContentApp.selectedNode);
 
     // clear sel
     if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected) {

@@ -48,6 +48,15 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
   static int? _$colorValue(TextStyleProperties v) => v.colorValue;
   static const Field<TextStyleProperties, int> _f$colorValue =
       Field('colorValue', _$colorValue, opt: true);
+  static String? _$lastHoveredSuggestion(TextStyleProperties v) =>
+      v.lastHoveredSuggestion;
+  static const Field<TextStyleProperties, String> _f$lastHoveredSuggestion =
+      Field('lastHoveredSuggestion', _$lastHoveredSuggestion,
+          mode: FieldMode.member);
+  static String? _$lastSearchString(TextStyleProperties v) =>
+      v.lastSearchString;
+  static const Field<TextStyleProperties, String> _f$lastSearchString =
+      Field('lastSearchString', _$lastSearchString, mode: FieldMode.member);
 
   @override
   final MappableFields<TextStyleProperties> fields = const {
@@ -59,6 +68,8 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
     #lineHeight: _f$lineHeight,
     #letterSpacing: _f$letterSpacing,
     #colorValue: _f$colorValue,
+    #lastHoveredSuggestion: _f$lastHoveredSuggestion,
+    #lastSearchString: _f$lastSearchString,
   };
 
   static TextStyleProperties _instantiate(DecodingData data) {

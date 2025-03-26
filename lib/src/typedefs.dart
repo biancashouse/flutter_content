@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 typedef VoterId = String;
 typedef PollOptionId = String;
@@ -27,6 +30,7 @@ typedef UMLRecord = ({
 
 typedef TextStyleName = String;
 typedef ButtonStyleName = String;
+typedef ContainerStyleName = String;
 typedef GoogleFontName = String;
 typedef SnippetName = String;
 typedef BucketName = String;
@@ -81,8 +85,11 @@ typedef GksByFeature = Map<CalloutId, GlobalKey>;
 typedef GksByTargetId = Map<TargetId, GlobalKey>;
 typedef FeatureList = List<CalloutId>;
 
-typedef TextStyleNameChangeCallback = void Function(String? selectedSuggestion);
+typedef StyleNameChangeCallback = void Function(String? styleName);
 typedef SuggestionSelectionCallback = void Function(String selectedSuggestion);
+typedef TextStylePropertiesChangeCallback = void Function(TextStyleProperties newTSProps, bool refreshPTree);
+typedef ButtonStylePropertiesChangeCallback = void Function(ButtonStyleProperties newBSProps, bool refreshPTree);
+typedef ContainerStylePropertiesChangeCallback = void Function(ContainerStyleProperties newCSProps, bool refreshPTree);
 
 // typedef FeaturedWidgetHelpContentBuilder = Widget Function(
 //     BuildContext context, FeaturedWidget? parent);

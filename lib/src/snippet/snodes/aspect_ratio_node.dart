@@ -3,6 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'aspect_ratio_node.mapper.dart';
 
@@ -17,11 +19,16 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        DecimalPNode(
+    FlutterDocPNode(
+        buttonLabel: 'AssetImage',
+        webLink: 'https://api.flutter.dev/flutter/painting/AssetImage-class.html',
+        snode: this,
+        name: 'fyi'),
+    DecimalPNode(
           snode: this,
           name: 'aspectRatio',
           decimalValue: aspectRatio,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => aspectRatio = newValue ?? 1.0),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
           calloutButtonSize: const Size(140, 30),
         ),
       ];

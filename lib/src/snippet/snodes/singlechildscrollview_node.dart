@@ -1,6 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'singlechildscrollview_node.mapper.dart';
@@ -21,25 +24,32 @@ class SingleChildScrollViewNode extends SC
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-    StringPNode(
-      snode: this,
-      name: 'ScrollController name',
-      stringValue: _scName,
-      skipHelperText: true,
-      onStringChange: (newValue) {
-        if (newValue != null) {
-          _scName = newValue;
-        } else {
-          if (_scName != null) NamedScrollController.instance(_scName!)?.dispose();
-          _scName = null;
-        }
-        refreshWithUpdate(() => _scName!);
-      },
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
-    ),
-    PNode/*Group*/(
+        FlutterDocPNode(
+            buttonLabel: 'SingleChildScrollView',
+            webLink:
+                'https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html',
+            snode: this,
+            name: 'fyi'),
+        StringPNode(
+          snode: this,
+          name: 'ScrollController name',
+          stringValue: _scName,
+          skipHelperText: true,
+          onStringChange: (newValue) {
+            if (newValue != null) {
+              _scName = newValue;
+            } else {
+              if (_scName != null)
+                NamedScrollController.instance(_scName!)?.dispose();
+              _scName = null;
+            }
+            refreshWithUpdate(context, () => _scName!);
+          },
+          calloutButtonSize: const Size(280, 70),
+          calloutWidth: 400,
+          numLines: 1,
+        ),
+        PNode /*Group*/ (
           snode: this,
           name: 'padding',
           children: [
@@ -48,14 +58,15 @@ class SingleChildScrollViewNode extends SC
               name: 'padding',
               eiValue: padding,
               onEIChangedF: (newValue) =>
-                  refreshWithUpdate(() => padding = newValue),
+                  refreshWithUpdate(context, () => padding = newValue),
             ),
           ],
         ),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -96,7 +107,7 @@ class SingleChildScrollViewNode extends SC
             FLUTTER_TYPE,
             color: Colors.red,
             size: 16,
-            errorMsg:'You must give the ScrollController a name');
+            errorMsg: 'You must give the ScrollController a name');
       }
     } catch (e) {
       return Error(

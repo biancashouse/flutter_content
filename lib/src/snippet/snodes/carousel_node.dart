@@ -3,6 +3,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_options.dart';
 // import 'package:flutter_content/src/carousel_slider_4.2.1x/carousel_slider.dart';
@@ -41,12 +46,17 @@ class CarouselNode extends MC with CarouselNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        DecimalPNode(
+    FlutterDocPNode(
+        buttonLabel: 'Carousel',
+        webLink: 'https://pub.dev/packages/carousel_slider',
+        snode: this,
+        name: 'fyi'),
+    DecimalPNode(
           snode: this,
           name: 'aspectRatio',
           decimalValue: aspectRatio,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => aspectRatio = newValue ?? 1.0),
+              refreshWithUpdate(context,() => aspectRatio = newValue ?? 1.0),
           calloutButtonSize: const Size(130, 30),
         ),
         IntPNode(
@@ -54,7 +64,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
             name: 'autoPlayInterval (secs)',
             intValue: autoPlayIntervalSecs,
             onIntChange: (newValue) =>
-                refreshWithUpdate(() => autoPlayIntervalSecs = newValue ?? 2),
+                refreshWithUpdate(context,() => autoPlayIntervalSecs = newValue ?? 2),
             calloutButtonSize: const Size(180, 30),
             viaButton: false),
         BoolPNode(
@@ -62,20 +72,20 @@ class CarouselNode extends MC with CarouselNodeMappable {
           name: 'autoPlay',
           boolValue: autoPlay,
           onBoolChange: (newValue) =>
-              refreshWithUpdate(() => autoPlay = newValue ?? true),
+              refreshWithUpdate(context,() => autoPlay = newValue ?? true),
         ),
         BoolPNode(
           snode: this,
           name: 'enlargeCenterPage',
           boolValue: enlargeCenterPage,
           onBoolChange: (newValue) =>
-              refreshWithUpdate(() => enlargeCenterPage = newValue ?? true),
+              refreshWithUpdate(context,() => enlargeCenterPage = newValue ?? true),
         ),
         EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: axis.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
+          onIndexChange: (newValue) => refreshWithUpdate(context,
               () => axis = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
       ];

@@ -36,7 +36,7 @@
 //           stringValue: name,
 //           skipHelperText: true,
 //           onStringChange: (newValue) =>
-//               refreshWithUpdate(() => name = newValue ?? ''),
+//               refreshWithUpdate(context,() => name = newValue ?? ''),
 //           calloutButtonSize: const Size(280, 70),
 //           calloutWidth: 400,
 //         ),
@@ -46,7 +46,7 @@
 //           stringValue: fsUrl,
 //           skipHelperText: true,
 //           onStringChange: (newValue) =>
-//               refreshWithUpdate(() => name = newValue ?? ''),
+//               refreshWithUpdate(context,() => name = newValue ?? ''),
 //           calloutButtonSize: const Size(280, 70),
 //           calloutWidth: 400,
 //         ),
@@ -55,7 +55,7 @@
 //           name: 'width',
 //           decimalValue: width,
 //           onDoubleChange: (newValue) =>
-//               refreshWithUpdate(() => width = newValue),
+//               refreshWithUpdate(context,() => width = newValue),
 //           calloutButtonSize: const Size(80, 20),
 //         ),
 //         DecimalPNode(
@@ -63,7 +63,7 @@
 //           name: 'height',
 //           decimalValue: height,
 //           onDoubleChange: (newValue) =>
-//               refreshWithUpdate(() => height = newValue),
+//               refreshWithUpdate(context,() => height = newValue),
 //           calloutButtonSize: const Size(80, 20),
 //         ),
 //         EnumPNode<BoxFitEnum?>(
@@ -71,14 +71,14 @@
 //           name: 'fit',
 //           valueIndex: fit?.index,
 //           onIndexChange: (newValue) =>
-//               refreshWithUpdate(() => fit = BoxFitEnum.of(newValue)),
+//               refreshWithUpdate(context,() => fit = BoxFitEnum.of(newValue)),
 //         ),
 //         EnumPNode<AlignmentEnum?>(
 //           snode: this,
 //           name: 'alignment',
 //           valueIndex: alignment?.index,
 //           onIndexChange: (newValue) =>
-//               refreshWithUpdate(() => alignment = AlignmentEnum.of(newValue)),
+//               refreshWithUpdate(context,() => alignment = AlignmentEnum.of(newValue)),
 //         ),
 //       ];
 //

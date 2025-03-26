@@ -4,7 +4,10 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/stepper_with_controller.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'stepper_node.mapper.dart';
 
@@ -22,19 +25,27 @@ class StepperNode extends MC with StepperNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Stepper',
+            webLink:
+                'https://api.flutter.dev/flutter/material/Stepper-class.html',
+            snode: this,
+            name: 'fyi'),
         EnumPNode<StepperTypeEnum?>(
           snode: this,
           name: 'type',
           valueIndex: type.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() =>
-              type = StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              context,
+              () => type =
+                  StepperTypeEnum.of(newValue) ?? StepperTypeEnum.vertical),
         ),
         StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(context, () => name = newValue),
           expands: false,
           calloutButtonSize: const Size(280, 20),
           calloutWidth: 280,
@@ -42,11 +53,12 @@ class StepperNode extends MC with StepperNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       return possiblyCheckHeightConstraint(
         parentNode,
         FCStepper(

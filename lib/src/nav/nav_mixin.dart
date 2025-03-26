@@ -11,6 +11,7 @@ mixin NavMixin {
             bool showPencil = !value;
             if (showPencil) {
               return IconButton(
+                key: fco.signinIconGK,
                   tooltip: 'sign in as a Content Editor',
                   onPressed: () {
                     // ask user to sign in as editor

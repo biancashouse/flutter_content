@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:gap/gap.dart';
 
 part 'gap_node.mapper.dart';
@@ -15,12 +17,18 @@ class GapNode extends CL with GapNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Gap',
+            webLink:
+                'https://pub.dev/packages/gap',
+            snode: this,
+            name: 'fyi'),
         DecimalPNode(
           snode: this,
           name: 'gap',
           decimalValue: gap,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => gap = newValue ?? 0),
+              refreshWithUpdate(context, () => gap = newValue ?? 0),
           calloutButtonSize: const Size(60, 30),
         ),
       ];
@@ -38,7 +46,8 @@ class GapNode extends CL with GapNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);

@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 
 part 'hotspots_node.mapper.dart';
 
@@ -32,7 +33,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
           name: 'width',
           decimalValue: width,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => width = newValue),
+              refreshWithUpdate(context,() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
     DecimalPNode(
@@ -40,7 +41,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
       name: 'height',
       decimalValue: height,
       onDoubleChange: (newValue) =>
-          refreshWithUpdate(() => height = newValue),
+          refreshWithUpdate(context,() => height = newValue),
       calloutButtonSize: const Size(80, 20),
     ),
     DecimalPNode(
@@ -48,7 +49,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
       name: 'borderRadius',
       decimalValue: borderRadius,
       onDoubleChange: (newValue) =>
-          refreshWithUpdate(() => borderRadius = newValue??0.0),
+          refreshWithUpdate(context,() => borderRadius = newValue??0.0),
       calloutButtonSize: const Size(80, 20),
     ),
         // StringPNode(
@@ -56,7 +57,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
         //   name: 'wrapper name',
         //   stringValue: name,
         //   onStringChange: (newValue) =>
-        //       refreshWithUpdate(() => name = newValue),
+        //       refreshWithUpdate(context,() => name = newValue),
         //   calloutButtonSize: const Size(280, 80),
         //   calloutSize: const Size(280, 80),
         // ),

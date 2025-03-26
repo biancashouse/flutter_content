@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'positioned_node.mapper.dart';
 
@@ -21,11 +23,17 @@ class PositionedNode extends SC with PositionedNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        DecimalPNode(
+    FlutterDocPNode(
+        buttonLabel: 'Positioned',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/Positioned-class.html',
+        snode: this,
+        name: 'fyi'),
+    DecimalPNode(
           snode: this,
           name: 'top',
           decimalValue: top,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => top = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => top = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -33,7 +41,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
           name: 'left',
           decimalValue: left,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => left = newValue),
+              refreshWithUpdate(context,() => left = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -41,7 +49,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
           name: 'bottom',
           decimalValue: bottom,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => bottom = newValue),
+              refreshWithUpdate(context,() => bottom = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
@@ -49,7 +57,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
           name: 'right',
           decimalValue: right,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => right = newValue),
+              refreshWithUpdate(context,() => right = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];

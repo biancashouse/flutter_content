@@ -3,7 +3,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 
 import '../pnodes/groups/text_style_properties.dart';
 
@@ -31,30 +34,37 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
       tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        // TextStyleNamePNode(
-        //   textStyleName: textStyleName,
-        //   snode: this,
-        //   name: 'namedTextStyle',
-        //   onChange: (newValue) {
-        //     refreshWithUpdate(() => textStyleName = newValue);
-        //   },
-        // ),
-        TextStylePNode /*Group*/ (
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    var textStyleName = fco.findTextStyleName(tsPropGroup);
+    textStyleName = textStyleName != null ? ': $textStyleName' : '';
+    return [
+      FlutterDocPNode(
+          buttonLabel: 'DefaultTextStyle',
+          webLink: 'https://api.flutter.dev/flutter/widgets/DefaultTextStyle-class.html',
           snode: this,
-          name: 'textStyle',
-          textStyleProperties: tsPropGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => tsPropGroup = newValue),
-        ),
-        EnumPNode<TextAlignEnum?>(
-          snode: this,
-          name: 'textAlign',
-          valueIndex: textAlign?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(() => TextAlignEnum.of(newValue)),
-        ),
-      ];
+          name: 'fyi'),
+      TextStylePNode /*Group*/ (
+        snode: this,
+        name: 'textStyle$textStyleName',
+        textStyleProperties: tsPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            tsPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
+      ),
+      EnumPNode<TextAlignEnum?>(
+        snode: this,
+        name: 'textAlign',
+        valueIndex: textAlign?.index,
+        onIndexChange: (newValue) =>
+            refreshWithUpdate(context, () => TextAlignEnum.of(newValue)),
+      ),
+    ];
+  }
 
   // @override
   // String toSource(BuildContext context) {

@@ -34,21 +34,9 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   static SnippetTemplateEnum? _$template(TextButtonNode v) => v.template;
   static const Field<TextButtonNode, SnippetTemplateEnum> _f$template =
       Field('template', _$template, opt: true);
-  static String? _$destinationPanelOrPlaceholderName(TextButtonNode v) =>
-      v.destinationPanelOrPlaceholderName;
-  static const Field<TextButtonNode, String>
-      _f$destinationPanelOrPlaceholderName = Field(
-          'destinationPanelOrPlaceholderName',
-          _$destinationPanelOrPlaceholderName,
-          opt: true);
-  static String? _$destinationSnippetName(TextButtonNode v) =>
-      v.destinationSnippetName;
-  static const Field<TextButtonNode, String> _f$destinationSnippetName =
-      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
-  static ButtonStyleProperties _$bsPropsGroup(TextButtonNode v) =>
-      v.bsPropsGroup;
-  static const Field<TextButtonNode, ButtonStyleProperties> _f$bsPropsGroup =
-      Field('bsPropsGroup', _$bsPropsGroup);
+  static ButtonStyleProperties _$bsPropGroup(TextButtonNode v) => v.bsPropGroup;
+  static const Field<TextButtonNode, ButtonStyleProperties> _f$bsPropGroup =
+      Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
   static String? _$onTapHandlerName(TextButtonNode v) => v.onTapHandlerName;
   static const Field<TextButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -76,9 +64,7 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
   final MappableFields<TextButtonNode> fields = const {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
-    #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
-    #destinationSnippetName: _f$destinationSnippetName,
-    #bsPropsGroup: _f$bsPropsGroup,
+    #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -99,10 +85,7 @@ class TextButtonNodeMapper extends SubClassMapperBase<TextButtonNode> {
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
         template: data.dec(_f$template),
-        destinationPanelOrPlaceholderName:
-            data.dec(_f$destinationPanelOrPlaceholderName),
-        destinationSnippetName: data.dec(_f$destinationSnippetName),
-        bsPropsGroup: data.dec(_f$bsPropsGroup),
+        bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -163,7 +146,7 @@ abstract class TextButtonNodeCopyWith<$R, $In extends TextButtonNode, $Out>
     implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-      ButtonStyleProperties> get bsPropsGroup;
+      ButtonStyleProperties> get bsPropGroup;
   @override
   CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
       CalloutConfigProperties>? get calloutConfigGroup;
@@ -173,9 +156,7 @@ abstract class TextButtonNodeCopyWith<$R, $In extends TextButtonNode, $Out>
   $R call(
       {String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
-      String? destinationPanelOrPlaceholderName,
-      String? destinationSnippetName,
-      ButtonStyleProperties? bsPropsGroup,
+      ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigProperties? calloutConfigGroup,
       SNode? child});
@@ -194,8 +175,8 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
   @override
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
           ButtonStyleProperties>
-      get bsPropsGroup =>
-          $value.bsPropsGroup.copyWith.$chain((v) => call(bsPropsGroup: v));
+      get bsPropGroup =>
+          $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
   CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
           CalloutConfigProperties>?
@@ -208,9 +189,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
   $R call(
           {Object? destinationRoutePathSnippetName = $none,
           Object? template = $none,
-          Object? destinationPanelOrPlaceholderName = $none,
-          Object? destinationSnippetName = $none,
-          ButtonStyleProperties? bsPropsGroup,
+          ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
@@ -218,11 +197,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (template != $none) #template: template,
-        if (destinationPanelOrPlaceholderName != $none)
-          #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
-        if (destinationSnippetName != $none)
-          #destinationSnippetName: destinationSnippetName,
-        if (bsPropsGroup != null) #bsPropsGroup: bsPropsGroup,
+        if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -234,12 +209,7 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
       template: data.get(#template, or: $value.template),
-      destinationPanelOrPlaceholderName: data.get(
-          #destinationPanelOrPlaceholderName,
-          or: $value.destinationPanelOrPlaceholderName),
-      destinationSnippetName:
-          data.get(#destinationSnippetName, or: $value.destinationSnippetName),
-      bsPropsGroup: data.get(#bsPropsGroup, or: $value.bsPropsGroup),
+      bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

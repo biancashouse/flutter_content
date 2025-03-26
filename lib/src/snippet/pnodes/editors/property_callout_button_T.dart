@@ -56,116 +56,121 @@ class PropertyButton<T> extends StatelessWidget {
               : fco.coloredText('$label...', color: Colors.white, fontWeight: FontWeight.w100);
       Widget labelWidget = textLabel();
       // fco.logger.d('labelWidget: $labelWidget');
-      return GestureDetector(
-        onTap: () {
-          String inputDecorationLabel() =>
-              originalText.isNotEmpty && maxLines < 2
-                  ? '$label: $originalText'
-                  : '$label...';
-          CalloutConfig teCC = CalloutConfig(
-            cId: 'te',
-            scrollControllerName: scName,
-            containsTextField: true,
-            barrier: CalloutBarrierConfig(
-                opacity: .25,
-                onTappedF: () {
-                  fco.dismiss('matches');
-                  fco.dismiss('te');
-                }),
-            // arrowThickness: ArrowThickness.THIN,
-            fillColor: Colors.white,
-            // arrowColor: Colors.red,
-            arrowType: ArrowType.NONE,
-            finalSeparation: 0.0,
-            initialCalloutAlignment: Alignment.topLeft,
-            initialTargetAlignment: Alignment.topLeft,
-            modal: false,
-            initialCalloutW: calloutSize.width,
-            initialCalloutH: calloutSize.height,
-            resizeableH: maxLines > 1,
-            resizeableV: maxLines > 1,
-            onDismissedF: () {},
-            onAcceptedF: () {},
-            // containsTextField: true,
-            onResizeF: (Size newSize) {},
-            onDragF: (Offset newOffset) {},
-            targetTranslateX: 0,
-            targetTranslateY: 0,
-            draggable: false,
-            notUsingHydratedStorage: true,
-          );
-          Widget teContent = StringEditor_T(
-            inputType: T,
-            // key: calloutChildGK,
-            prompt: () => label ?? '',
-            inputDecorationLabel: inputDecorationLabel,
-            originalS: editedText,
-            onTextChangedF: (s) {
-              editedText = s;
-              fco.dismiss('matches');
-              // possibly show matching options
-              if ((options?.isNotEmpty ?? false) &&
-                  _matches(options, editedText).isNotEmpty) {
-                _showOptionMatches(
-                  options!,
-                  editedText,
-                  (s) {
-                    editedText = s;
-                    onChangeF(s);
-                  },
-                );
-              }
-            },
-            onEditingCompleteF: (s) {
-              editedText = s;
-              setState(() {});
-              onChangeF(s);
-              fco.dismiss('te');
-            },
-            dontAutoFocus: false,
-            bgColor: Colors.white,
-            maxLines: maxLines,
-          );
-          if (teCC.calloutH != null && teCC.calloutH! > 400) {
-            teCC.initialCalloutH = teCC.calloutH = 200;
-          }
-          fco.showOverlay(
-            calloutConfig: teCC,
-            calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
-                ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ListView(
-                      padding: const EdgeInsets.all(10),
-                      children: [teContent],
-                    ),
-                  )
-                : teContent,
-            targetGkF: () => propertyBtnGK,
-          );
-          // show options, if any
-          if ((options?.isNotEmpty ?? false) &&
-              _matches(options, editedText).isNotEmpty) {
-            _showOptionMatches(
-              options!,
-              editedText,
-              (s) {
-                editedText = s;
-                onChangeF(s);
-              },
+      return MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: () {
+            String inputDecorationLabel() =>
+                originalText.isNotEmpty && maxLines < 2
+                    ? '$label: $originalText'
+                    : '$label...';
+            CalloutConfig teCC = CalloutConfig(
+              cId: 'te',
+              scrollControllerName: scName,
+              containsTextField: true,
+              barrier: CalloutBarrierConfig(
+                  opacity: .25,
+                  onTappedF: () {
+                    fco.dismiss('matches');
+                    fco.dismiss('te');
+                  }),
+              // arrowThickness: ArrowThickness.THIN,
+              fillColor: Colors.white,
+              // arrowColor: Colors.red,
+              arrowType: ArrowType.THIN,
+              finalSeparation: 90.0,
+              toDelta: -20,
+              animate: true,
+              initialCalloutAlignment: Alignment.centerRight,
+              initialTargetAlignment: Alignment.centerLeft,
+              modal: false,
+              initialCalloutW: calloutSize.width,
+              initialCalloutH: calloutSize.height,
+              resizeableH: maxLines > 1,
+              resizeableV: maxLines > 1,
+              onDismissedF: () {},
+              onAcceptedF: () {},
+              // containsTextField: true,
+              onResizeF: (Size newSize) {},
+              onDragF: (Offset newOffset) {},
+              targetTranslateX: 0,
+              targetTranslateY: 0,
+              draggable: false,
+              notUsingHydratedStorage: true,
             );
-          }
-        },
-        child: Container(
-          // alignment: T != String ? Alignment.center : Alignment.centerLeft,
-          alignment: Alignment.centerLeft,
-          key: propertyBtnGK,
-          // margin: const EdgeInsets.only(top: 8),
-          width: calloutButtonSize.width,
-          height: calloutButtonSize.height,
-          // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-          // color: Colors.white70,
-          // alignment: Alignment.center,
-          child: labelWidget,
+            Widget teContent = StringEditor_T(
+              inputType: T,
+              // key: calloutChildGK,
+              prompt: () => label ?? '',
+              inputDecorationLabel: inputDecorationLabel,
+              originalS: editedText,
+              onTextChangedF: (s) {
+                editedText = s;
+                fco.dismiss('matches');
+                // possibly show matching options
+                if ((options?.isNotEmpty ?? false) &&
+                    _matches(options, editedText).isNotEmpty) {
+                  _showOptionMatches(
+                    options!,
+                    editedText,
+                    (s) {
+                      editedText = s;
+                      onChangeF(s);
+                    },
+                  );
+                }
+              },
+              onEditingCompleteF: (s) {
+                editedText = s;
+                setState(() {});
+                onChangeF(s);
+                fco.dismiss('te');
+              },
+              dontAutoFocus: false,
+              bgColor: Colors.white,
+              maxLines: maxLines,
+            );
+            if (teCC.calloutH != null && teCC.calloutH! > 400) {
+              teCC.initialCalloutH = teCC.calloutH = 200;
+            }
+            fco.showOverlay(
+              calloutConfig: teCC,
+              calloutContent: teCC.calloutH != null && teCC.calloutH! > 400
+                  ? Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ListView(
+                        padding: const EdgeInsets.all(10),
+                        children: [teContent],
+                      ),
+                    )
+                  : teContent,
+              targetGkF: () => propertyBtnGK,
+            );
+            // show options, if any
+            if ((options?.isNotEmpty ?? false) &&
+                _matches(options, editedText).isNotEmpty) {
+              _showOptionMatches(
+                options!,
+                editedText,
+                (s) {
+                  editedText = s;
+                  onChangeF(s);
+                },
+              );
+            }
+          },
+          child: Container(
+            // alignment: T != String ? Alignment.center : Alignment.centerLeft,
+            alignment: Alignment.centerLeft,
+            key: propertyBtnGK,
+            // margin: const EdgeInsets.only(top: 8),
+            width: calloutButtonSize.width,
+            height: calloutButtonSize.height,
+            // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            // color: Colors.white70,
+            // alignment: Alignment.center,
+            child: labelWidget,
+          ),
         ),
       );
     });

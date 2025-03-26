@@ -1,9 +1,13 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 import 'package:go_router/go_router.dart';
 
 import '../pnodes/enums/enum_alignment.dart';
@@ -12,26 +16,28 @@ part 'button_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
 abstract class ButtonNode extends SC with ButtonNodeMappable {
+  // deprecated: use tabbar instead
   // when populating a panel with a snippet
-  String? destinationPanelOrPlaceholderName;
-  String? destinationSnippetName;
+  // String? destinationPanelOrPlaceholderName;
+  // String? destinationSnippetName;
 
   // when navigating to path, which is also used as the page's snippet name
   String? destinationRoutePathSnippetName;
   SnippetTemplateEnum? template;
 
-  ButtonStyleProperties bsPropsGroup;
+  @MappableField(hook: ButtonStyleHook())
+  ButtonStyleProperties bsPropGroup;
   String?
       onTapHandlerName; // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
   CalloutConfigProperties? calloutConfigGroup;
 
   ButtonNode({
-    this.destinationPanelOrPlaceholderName,
-    this.destinationSnippetName,
+    // this.destinationPanelOrPlaceholderName,
+    // this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
     this.template,
-    required this.bsPropsGroup,
+    required this.bsPropGroup,
     this.onTapHandlerName,
     this.calloutConfigGroup,
     super.child,
@@ -44,87 +50,112 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   void setTapHandlerName(String newName) => onTapHandlerName = newName;
 
   @override
-  ButtonStyleProperties? buttonStyleProperties() => bsPropsGroup;
+  ButtonStyleProperties? buttonStyleProperties() => bsPropGroup;
 
   @override
   void setButtonStyleProperties(ButtonStyleProperties newProps) =>
-      bsPropsGroup = newProps;
+      bsPropGroup = newProps;
 
   @override
-  TextStyleProperties? textStyleProperties() => bsPropsGroup.tsPropGroup;
+  TextStyleProperties? textStyleProperties() => bsPropGroup.tsPropGroup;
 
   @override
   void setTextStyleProperties(TextStyleProperties newProps) =>
-      bsPropsGroup.tsPropGroup = newProps;
+      bsPropGroup.tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        PNode/*Group*/(
-          snode: this,
-          name: 'goto Page...',
-          children: [
-            StringPNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    var buttonStyleName = fco.findButtonStyleName(bsPropGroup);
+    buttonStyleName = buttonStyleName != null ? ': $buttonStyleName' : '';
+    return [
+      PNode /*Group*/ (
+        snode: this,
+        name: 'goto Page...',
+        children: [
+          FYIPNode(
+              label: "about page links...",
+              msg: "tapping the button\nnavigates the user to\nthe page defined by\n'destination Route Path'",
               snode: this,
-              name: 'destination Route Path',
-              stringValue: destinationRoutePathSnippetName,
-              onStringChange: (newValue) {
-                refreshWithUpdate(
-                    () => destinationRoutePathSnippetName = newValue);
-              },
-              options: fco.pageList,
-              calloutButtonSize: const Size(240, 70),
-              calloutWidth: 280,
-            ),
-          ],
-        ),
-        PNode/*Group*/(
-          snode: this,
-          name: 'show Snippet in Panel...',
-          children: [
-            StringPNode(
-              snode: this,
-              name: 'destination Panel Name',
-              stringValue: destinationPanelOrPlaceholderName,
-              onStringChange: (newValue) {
-                refreshWithUpdate(
-                    () => destinationPanelOrPlaceholderName = newValue);
-              },
-              calloutButtonSize: const Size(240, 70),
-              calloutWidth: 280,
-            ),
-            StringPNode(
-              snode: this,
-              name: 'destination Snippet Name',
-              stringValue: destinationSnippetName,
-              onStringChange: (newValue) {
-                refreshWithUpdate(() => destinationSnippetName = newValue);
-              },
-              calloutButtonSize: const Size(240, 70),
-              calloutWidth: 280,
-            )
-          ],
-        ),
-        ButtonStylePNode/*Group*/(
-          snode: this,
-          buttonStyleGroup: bsPropsGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => bsPropsGroup = newValue),
-        ),
+              name: 'page-linking'),
+          StringPNode(
+            snode: this,
+            name: 'destination Route Path',
+            stringValue: destinationRoutePathSnippetName,
+            onStringChange: (newValue) {
+              refreshWithUpdate(
+                  context,
+                  () => destinationRoutePathSnippetName =
+                      (newValue == null || newValue.startsWith('/')
+                          ? newValue
+                          : "/$newValue"));
+            },
+            options: fco.pageList,
+            calloutButtonSize: const Size(240, 70),
+            calloutWidth: 280,
+          ),
+        ],
+      ),
+      // removed snippet place naming functionality - use tab bar instead
+      // if (fco.placeNames.isNotEmpty)
+      //   PNode /*Group*/ (
+      //     snode: this,
+      //     name: 'show Snippet in Panel...',
+      //     children: [
+      //       StringPNode(
+      //         snode: this,
+      //         name: 'destination Panel Name',
+      //         options: fco.placeNames,
+      //         stringValue: destinationPanelOrPlaceholderName,
+      //         onStringChange: (newValue) {
+      //           refreshWithUpdate(context,
+      //               () => destinationPanelOrPlaceholderName = newValue);
+      //         },
+      //         calloutButtonSize: const Size(240, 70),
+      //         calloutWidth: 280,
+      //       ),
+      //       StringPNode(
+      //         snode: this,
+      //         name: 'destination Snippet Name',
+      //         stringValue: destinationSnippetName,
+      //         onStringChange: (newValue) {
+      //           refreshWithUpdate(
+      //               context, () => destinationSnippetName = newValue);
+      //         },
+      //         calloutButtonSize: const Size(240, 70),
+      //         calloutWidth: 280,
+      //       )
+      //     ],
+      //   ),
+      ButtonStylePNode /*Group*/ (
+        snode: this,
+        name: 'buttonStyle$buttonStyleName',
+        buttonStyleGroup: bsPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            bsPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
+      ),
+      if (fco.handlers().isNotEmpty)
         StringPNode(
           snode: this,
           name: 'onTapHandlerName',
           stringValue: onTapHandlerName,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => onTapHandlerName = newValue),
+              refreshWithUpdate(context, () => onTapHandlerName = newValue),
           calloutButtonSize: const Size(240, 70),
           calloutWidth: 280,
         ),
-        PNode/*Group*/(
-          snode: this,
-          name: 'calloutConfig',
-          children: [],
-        )
-      ];
+      // PNode /*Group*/ (
+      //   snode: this,
+      //   name: 'calloutConfig',
+      //   children: [],
+      // )
+    ];
+  }
 
   CalloutId? get cid => calloutConfigGroup?.cid;
 
@@ -181,14 +212,14 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
           template: SnippetTemplateEnum.empty);
       context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
-    } else if (destinationPanelOrPlaceholderName != null &&
-        destinationSnippetName != null) {
-      destinationSnippetName ??=
-          '$destinationPanelOrPlaceholderName:default-snippet';
-      capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-        snippetName: destinationSnippetName!,
-        panelName: destinationPanelOrPlaceholderName!,
-      ));
+    // } else if (destinationPanelOrPlaceholderName != null &&
+    //     destinationSnippetName != null) {
+    //   destinationSnippetName ??=
+    //       '$destinationPanelOrPlaceholderName:default-snippet';
+    //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+    //     snippetName: destinationSnippetName!,
+    //     panelName: destinationPanelOrPlaceholderName!,
+    //   ));
     }
   }
 

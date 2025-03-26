@@ -3,8 +3,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 
 part 'menu_item_button_node.mapper.dart';
 
@@ -16,9 +18,9 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     // this.itemLabel = '',
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelOrPlaceholderName,
-    super.destinationSnippetName,
-    required super.bsPropsGroup,
+    // super.destinationPanelOrPlaceholderName,
+    // super.destinationSnippetName,
+    required super.bsPropGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -37,7 +39,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   //         name: 'item label',
   //         stringValue: itemLabel,
   //         onStringChange: (newValue) =>
-  //             refreshWithUpdate(() => itemLabel = newValue ?? ''),
+  //             refreshWithUpdate(context,() => itemLabel = newValue ?? ''),
   //         expands: false,
   //         calloutButtonSize: const Size(280, 20),
   //         calloutWidth: 280,
@@ -47,6 +49,16 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
 
   @override
   ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+        buttonLabel: 'MenuItemButton',
+        webLink: 'https://api.flutter.dev/flutter/material/MenuItemButton-class.html',
+        snode: this,
+        name: 'fyi'),
+    ...super.properties(context, parentSNode),
+  ];
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
@@ -59,13 +71,14 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
       return MenuItemButton(
             key: gk,
             onPressed: () {
-              if (destinationPanelOrPlaceholderName != null) {
-                destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
-                capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-                  snippetName: destinationSnippetName!,
-                  panelName: destinationPanelOrPlaceholderName!,
-                ));
-              } else if (destinationRoutePathSnippetName != null) {
+              // if (destinationPanelOrPlaceholderName != null) {
+              //   destinationSnippetName ??= '$destinationPanelOrPlaceholderName:default-snippet';
+              //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+              //     snippetName: destinationSnippetName!,
+              //     panelName: destinationPanelOrPlaceholderName!,
+              //   ));
+              // } else
+                if (destinationRoutePathSnippetName != null) {
                 //context.goNamed(destinationRoutePathSnippetName!);
                 onPressed(context, gk, scName);
               }

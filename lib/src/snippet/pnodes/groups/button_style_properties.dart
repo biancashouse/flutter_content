@@ -4,6 +4,8 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'button_style_properties.mapper.dart';
 
@@ -27,6 +29,11 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
   double? fixedH;
   double? fixedW;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  TextStyleName? lastHoveredSuggestion;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  TextStyleName? lastSearchString;
+
   ButtonStyleProperties({
     required this.tsPropGroup,
     this.fgColorValue,
@@ -45,8 +52,7 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
     this.fixedH,
   });
 
-  ButtonStyle? toButtonStyle(
-      BuildContext context, ButtonStyle? defaultButtonStyle) {
+  ButtonStyle? toButtonStyle(BuildContext context, {ButtonStyle? defaultButtonStyle}) {
     OutlinedBorder ob = shape != null
         ? shape!.toFlutterWidget(nodeSide: side!, nodeRadius: radius)
         : RoundedRectangleBorder(

@@ -23,5 +23,14 @@ class UpTo6ColorValues with UpTo6ColorValuesMappable {
     this.color6Value,
   });
 
-
+  bool isAGradient() {
+    int count = 0;
+    if (color1Value != null) count++;
+    if (color2Value != null) count++;
+    if (color3Value != null) count++;
+    if (color4Value != null) count++;
+    if (color5Value != null) count++;
+    if (color6Value != null) count++;
+    return count > 1;
+  }
 }

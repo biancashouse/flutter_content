@@ -56,7 +56,7 @@ dependencies:
   flutter_fancy_tree_view: ^1.6.0
 #  webview_flutter_android: ^3.15.0
   webview_flutter_wkwebview: ^3.15.0
-  webview_flutter_web: ^0.2.3+2
+  webview_flutter_web: ^0.2.3+4
   webview_flutter_platform_interface: ^2.10.0
   percent_indicator: ^4.2.3
   on_screen_ruler: ^0.0.1
@@ -89,8 +89,8 @@ dependencies:
 
   routing_config_provider:  ^1.0.0
 
-  flutter_callouts: #^4.1.0
-    path: ../flutter_callouts_pkg
+  flutter_callouts: ^5.0.0
+#    path: ../flutter_callouts
 
   dart_mappable: ^4.2.2
   built_collection: ^5.1.1

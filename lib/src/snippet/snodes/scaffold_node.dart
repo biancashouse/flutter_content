@@ -1,6 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_menubar_node.dart';
 // import 'package:flutter_content/src/snippet/snodes/appbar_with_tabbar_node.dart';
 
@@ -27,32 +30,40 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
+      FlutterDocPNode(
+          buttonLabel: 'Scaffold',
+          webLink:
+              'https://api.flutter.dev/flutter/material/Scaffold-class.html',
+          snode: this,
+          name: 'fyi'),
       ColorPNode(
         snode: this,
         name: 'background color',
         colorValue: bgColorValue,
         onColorIntChange: (newValue) =>
-            refreshWithUpdate(() => bgColorValue = newValue),
+            refreshWithUpdate(context, () => bgColorValue = newValue),
         calloutButtonSize: const Size(200, 20),
       ),
       // IntPNode(
       //   snode: this,
       //   name: 'Number of Tabs',
       //   intValue: numTabs,
-      //   onIntChange: (newValue) => refreshWithUpdate(() => numTabs = newValue ?? 0),
+      //   onIntChange: (newValue) => refreshWithUpdate(context,() => numTabs = newValue ?? 0),
       //   calloutButtonSize: const Size(130, 20),
       // ),
     ];
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-    Widget? bodyWidget() => body?.toWidgetProperty(context, this) ?? const Placeholder();
+    Widget? bodyWidget() =>
+        body?.toWidgetProperty(context, this) ?? const Placeholder();
 
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
     Widget scaffold = Scaffold(

@@ -31,16 +31,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   @override
   final String id = 'ButtonNode';
 
-  static String? _$destinationPanelOrPlaceholderName(ButtonNode v) =>
-      v.destinationPanelOrPlaceholderName;
-  static const Field<ButtonNode, String> _f$destinationPanelOrPlaceholderName =
-      Field('destinationPanelOrPlaceholderName',
-          _$destinationPanelOrPlaceholderName,
-          opt: true);
-  static String? _$destinationSnippetName(ButtonNode v) =>
-      v.destinationSnippetName;
-  static const Field<ButtonNode, String> _f$destinationSnippetName =
-      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
   static String? _$destinationRoutePathSnippetName(ButtonNode v) =>
       v.destinationRoutePathSnippetName;
   static const Field<ButtonNode, String> _f$destinationRoutePathSnippetName =
@@ -50,9 +40,9 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   static SnippetTemplateEnum? _$template(ButtonNode v) => v.template;
   static const Field<ButtonNode, SnippetTemplateEnum> _f$template =
       Field('template', _$template, opt: true);
-  static ButtonStyleProperties _$bsPropsGroup(ButtonNode v) => v.bsPropsGroup;
-  static const Field<ButtonNode, ButtonStyleProperties> _f$bsPropsGroup =
-      Field('bsPropsGroup', _$bsPropsGroup);
+  static ButtonStyleProperties _$bsPropGroup(ButtonNode v) => v.bsPropGroup;
+  static const Field<ButtonNode, ButtonStyleProperties> _f$bsPropGroup =
+      Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
   static String? _$onTapHandlerName(ButtonNode v) => v.onTapHandlerName;
   static const Field<ButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -78,11 +68,9 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
 
   @override
   final MappableFields<ButtonNode> fields = const {
-    #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
-    #destinationSnippetName: _f$destinationSnippetName,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
-    #bsPropsGroup: _f$bsPropsGroup,
+    #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -124,18 +112,16 @@ mixin ButtonNodeMappable {
 abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-      ButtonStyleProperties> get bsPropsGroup;
+      ButtonStyleProperties> get bsPropGroup;
   CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
       CalloutConfigProperties>? get calloutConfigGroup;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
   $R call(
-      {String? destinationPanelOrPlaceholderName,
-      String? destinationSnippetName,
-      String? destinationRoutePathSnippetName,
+      {String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
-      ButtonStyleProperties? bsPropsGroup,
+      ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigProperties? calloutConfigGroup,
       SNode? child});

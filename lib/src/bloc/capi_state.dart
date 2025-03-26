@@ -51,8 +51,6 @@ class CAPIState with _$CAPIState {
     // String? jsonRootDirectoryNode,
     // EncodedJson? jsonClipboardForMove,
     @Default(true) bool showClipboardContent,
-    Rect? cutoutRect,
-    int? cutoutDuration,
     @Default(0) int force, // hacky way to force a transition
     @Default(false) bool onlyTargetsWrappers, // hacky way to force a transition
 

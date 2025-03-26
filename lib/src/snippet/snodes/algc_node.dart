@@ -5,6 +5,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:http/http.dart' as http;
 
 part 'algc_node.mapper.dart';
@@ -33,7 +34,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
               stringValue: ea,
               skipHelperText: true,
               onStringChange: (newValue) =>
-                  refreshWithUpdate(() => ea = newValue),
+                  refreshWithUpdate(context,() => ea = newValue),
               calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 1,
@@ -44,7 +45,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
               stringValue: fId,
               skipHelperText: true,
               onStringChange: (newValue) =>
-                  refreshWithUpdate(() => fId = newValue),
+                  refreshWithUpdate(context,() => fId = newValue),
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 400,
               numLines: 1,
@@ -61,7 +62,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
               stringValue: flowchartJsonString,
               skipHelperText: true,
               onStringChange: (newValue) =>
-                  refreshWithUpdate(() => flowchartJsonString = newValue),
+                  refreshWithUpdate(context,() => flowchartJsonString = newValue),
               calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 6,

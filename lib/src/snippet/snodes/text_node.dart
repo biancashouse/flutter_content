@@ -3,27 +3,33 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 
 import '../pnodes/groups/text_style_properties.dart';
 
 part 'text_node.mapper.dart';
 
-class TextStyleHook extends MappingHook {
-  const TextStyleHook();
-
-  @override
-  Object? beforeDecode(Object? value) {
-    return value ?? {'tsPropGroup': TextStyleProperties().toJson()};
-  }
-}
+// class TextStyleHook extends MappingHook {
+//   const TextStyleHook();
+//
+//   @override
+//   Object? beforeDecode(Object? value) {
+//     return value ?? {'tsPropGroup': TextStyleProperties().toJson()};
+//   }
+// }
 
 @MappableClass()
 class TextNode extends CL with TextNodeMappable {
   String text;
   @MappableField(hook: TextStyleHook())
-  TextStyleProperties
-      tsPropGroup; // always store group, even if its pros are all null
+  TextStyleProperties tsPropGroup;
+
+  // always store group, even if its props are all null
   TextAlignEnum? textAlign;
 
   TextNode({
@@ -43,7 +49,16 @@ class TextNode extends CL with TextNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    var textStyleName = fco.findTextStyleName(tsPropGroup);
+    textStyleName = textStyleName != null ? ': $textStyleName' : '';
+    // fco.logger.i('textStyleName is "$textStyleName"');
     return [
+      FlutterDocPNode(
+          buttonLabel: 'Text',
+          webLink:
+          'https://api.flutter.dev/flutter/widgets/Text-class.html',
+          snode: this,
+          name: 'fyi'),
       StringPNode(
         snode: this,
         name: 'text',
@@ -53,7 +68,7 @@ class TextNode extends CL with TextNodeMappable {
         numLines: 3,
         stringValue: text,
         onStringChange: (newValue) {
-          refreshWithUpdate(() => text = newValue ?? '');
+          refreshWithUpdate(context, () => text = newValue ?? '');
         },
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 300,
@@ -64,7 +79,7 @@ class TextNode extends CL with TextNodeMappable {
       //     name: 'textStyle name',
       //     stringValue: textStyleName,
       //     onStringChange: (newValue) {
-      //       refreshWithUpdate(() => textStyleName = newValue);
+      //       refreshWithUpdate(context,() => textStyleName = newValue);
       //     },
       //     options: fco.namedTextStyles.keys.toList(),
       //     calloutButtonSize: const Size(280, 70),
@@ -73,20 +88,28 @@ class TextNode extends CL with TextNodeMappable {
       if (parentSNode is! TabBarNode && parentSNode is! ButtonNode)
         TextStylePNode /*Group*/ (
           snode: this,
-          name: 'textStyle',
+          name: 'textStyle$textStyleName',
           textStyleProperties: tsPropGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => tsPropGroup = newValue),
+          onGroupChange: (newValue, refreshPTree) {
+            refreshWithUpdate(context, () {
+              tsPropGroup = newValue;
+              if (refreshPTree) {
+                forcePropertyTreeRefresh(context);
+              }
+            });
+          },
         ),
       if (parentSNode is TabBarNode)
         FYIPNode(
-            fyiMsg: "for text styling see\nparent TabBar's labelStyle",
+            label: "TabBar text styling...",
+            msg: "for text styling, see\nparent TabBar's labelStyle",
             snode: this,
             name: 'fyi'),
       if (parentSNode is ButtonNode)
         FYIPNode(
-            fyiMsg:
-                "for text styling see parent Button's\nButtonStyle, which has a TextStyle",
+            label: "Button text styling...",
+            msg:
+                "for text styling, see parent Button's\nButtonStyle, which has a TextStyle",
             snode: this,
             name: 'fyi'),
       if (parentSNode is! ButtonNode && parentSNode?.getParent() is! AppBarNode)
@@ -94,8 +117,8 @@ class TextNode extends CL with TextNodeMappable {
           snode: this,
           name: 'textAlign',
           valueIndex: textAlign?.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(() => textAlign = TextAlignEnum.of(newValue)),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              context, () => textAlign = TextAlignEnum.of(newValue)),
         ),
     ];
   }

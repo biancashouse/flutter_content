@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/iframe/iframe.dart';
 
 part 'google_drive_iframe_node.mapper.dart';
@@ -32,7 +34,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue ?? ''),
+              refreshWithUpdate(context,() => name = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -41,7 +43,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           name: 'folderId',
           stringValue: folderId,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => folderId = newValue ?? ''),
+              refreshWithUpdate(context,() => folderId = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -50,7 +52,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           name: 'resourceKey',
           stringValue: resourceKey,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => resourceKey = newValue ?? ''),
+              refreshWithUpdate(context,() => resourceKey = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),
@@ -59,7 +61,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           name: 'iframeWidth',
           decimalValue: iframeWidth,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => iframeWidth = newValue),
+              refreshWithUpdate(context,() => iframeWidth = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
         DecimalPNode(
@@ -67,7 +69,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
           name: 'iframeHeight',
           decimalValue: iframeHeight,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => iframeHeight = newValue),
+              refreshWithUpdate(context,() => iframeHeight = newValue),
           calloutButtonSize: const Size(120, 20),
         ),
       ];

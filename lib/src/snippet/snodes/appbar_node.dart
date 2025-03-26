@@ -2,6 +2,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:gap/gap.dart';
 
 part 'appbar_node.mapper.dart';
@@ -36,13 +40,18 @@ class AppBarNode extends SNode with AppBarNodeMappable {
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
+      FlutterDocPNode(
+          buttonLabel: 'AppBar',
+          webLink: 'https://api.flutter.dev/flutter/material/AppBar-class.html',
+          snode: this,
+          name: 'fyi'),
       StringPNode(
         snode: this,
         name: 'TabBar name',
         stringValue: tabBarName,
         skipHelperText: true,
         onStringChange: (newValue) =>
-            refreshWithUpdate(() => tabBarName = newValue!),
+            refreshWithUpdate(context,() => tabBarName = newValue!),
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 400,
         numLines: 1,
@@ -52,7 +61,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         name: 'toolbarHeight',
         decimalValue: toolbarHeight,
         onDoubleChange: (newValue) =>
-            refreshWithUpdate(() => toolbarHeight = newValue),
+            refreshWithUpdate(context,() => toolbarHeight = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
@@ -61,7 +70,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         tooltip: "The fill color to use for an app bar's Material.",
         colorValue: bgColorValue,
         onColorIntChange: (newValue) =>
-            refreshWithUpdate(() => bgColorValue = newValue),
+            refreshWithUpdate(context,() => bgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
@@ -70,7 +79,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         tooltip: 'The default color for Text and Icons within the app bar.',
         colorValue: fgColorValue,
         onColorIntChange: (newValue) =>
-            refreshWithUpdate(() => fgColorValue = newValue),
+            refreshWithUpdate(context,() => fgColorValue = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
     ];

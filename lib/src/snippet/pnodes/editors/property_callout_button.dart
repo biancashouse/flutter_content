@@ -14,6 +14,7 @@ class PropertyCalloutButton extends StatelessWidget {
   final Alignment? initialCalloutAlignment;
   final bool? draggable;
   final Size calloutButtonSize;
+  final Color calloutButtonColor;
   final Size calloutSize;
   final VoidCallback? onDismissedF;
   final ValueNotifier<int> notifier;
@@ -27,6 +28,7 @@ class PropertyCalloutButton extends StatelessWidget {
     this.labelWidget,
     required this.calloutContents,
     required this.calloutButtonSize,
+    this.calloutButtonColor = Colors.purpleAccent,
     required this.calloutSize,
     this.initialTargetAlignment,
     this.initialCalloutAlignment,
@@ -48,8 +50,8 @@ class PropertyCalloutButton extends StatelessWidget {
       // arrowColor: Colors.blueAccent,
       fillColor: menuBgColor,
       //alwaysReCalcSize: true,
-      initialTargetAlignment: initialTargetAlignment ?? Alignment.center,
-      initialCalloutAlignment: initialCalloutAlignment ?? Alignment.center,
+      initialTargetAlignment: initialTargetAlignment ?? Alignment.centerRight,
+      initialCalloutAlignment: initialCalloutAlignment ?? Alignment.centerLeft,
       draggable: draggable ?? true,
       onDragStartedF: () {
         // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
@@ -81,16 +83,19 @@ class PropertyCalloutButton extends StatelessWidget {
         onTap: (){
           fco.unhideParentCallout(ctx, animateSeparation: false);
         },
-        child: Tooltip(message: cId,
-          child: Container(
-            // key: propertyBtnGK,
-            // margin: const EdgeInsets.only(top: 8),
-            width: calloutButtonSize.width,
-            height: calloutButtonSize.height,
-            // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-            color: Colors.purpleAccent,
-            alignment: alignment,
-            child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Tooltip(message: cId,
+            child: Container(
+              // key: propertyBtnGK,
+              // margin: const EdgeInsets.only(top: 8),
+              width: calloutButtonSize.width,
+              height: calloutButtonSize.height,
+              // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              color: calloutButtonColor,
+              alignment: alignment,
+              child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
+            ),
           ),
         ),
       ),

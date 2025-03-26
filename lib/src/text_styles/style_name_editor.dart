@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/text_styles/search_anchor.dart';
 
 class StyleNameEditor extends StatelessWidget {
   final TextEditingController teC;
-  final VoidCallback onChangeF;
+  final FocusNode focusNode;
+  final ValueChanged<String> onChangeF;
   final VoidCallback onEditingCompleteF;
   final String label;
   final String? tooltip;
 
   const StyleNameEditor({
     required this.teC,
+    required this.focusNode,
     required this.onChangeF,
     required this.onEditingCompleteF,
     required this.label,
@@ -30,7 +30,8 @@ class StyleNameEditor extends StatelessWidget {
               message: tooltip,
               child: TextField(
                 controller: teC,
-                // focusNode: _focusNode,
+                focusNode: focusNode,
+                autofocus: false,
                 decoration: InputDecoration(
                   labelText: label,
                   suffixIcon: IconButton(
@@ -38,7 +39,7 @@ class StyleNameEditor extends StatelessWidget {
                     iconSize: 14,
                     onPressed: () {
                       teC.text = '';
-                      onChangeF();
+                      onChangeF('');
                     },
                   ),
                   border: const OutlineInputBorder(
@@ -46,7 +47,7 @@ class StyleNameEditor extends StatelessWidget {
                   ),
                 ),
                 onChanged: (s) {
-                  onChangeF();
+                  onChangeF(s);
                 },
                 onEditingComplete: () {
                   onEditingCompleteF();

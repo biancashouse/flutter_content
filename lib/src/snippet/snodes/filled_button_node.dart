@@ -3,8 +3,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 
 part 'filled_button_node.mapper.dart';
 
@@ -13,9 +15,9 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   FilledButtonNode({
     super.destinationRoutePathSnippetName,
     super.template,
-    super.destinationPanelOrPlaceholderName,
-    super.destinationSnippetName,
-    required super.bsPropsGroup,
+    // super.destinationPanelOrPlaceholderName,
+    // super.destinationSnippetName,
+    required super.bsPropGroup,
     super.onTapHandlerName,
     super.calloutConfigGroup,
     super.child,
@@ -23,11 +25,22 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
 
   @override
   ButtonStyle? defaultButtonStyle() => FilledButton.styleFrom();
+
+  @override
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+    FlutterDocPNode(
+        buttonLabel: 'FilledButton',
+        webLink: 'https://api.flutter.dev/flutter/material/FilledButton-class.html',
+        snode: this,
+        name: 'fyi'),
+    ...super.properties(context, parentSNode),
+  ];
+
   @override
   Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
-      ButtonStyle? btnStyle = bsPropsGroup.toButtonStyle(context, defaultButtonStyle());
+      ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
 
       //buttonStyle?.toButtonStyle(context);
       // possible handler

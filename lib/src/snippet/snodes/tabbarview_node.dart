@@ -3,6 +3,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'tabbarview_node.mapper.dart';
 
@@ -17,25 +19,32 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-    StringPNode(
-      snode: this,
-      name: 'TabBar name',
-      stringValue: tabBarName,
-      skipHelperText: true,
-      onStringChange: (newValue) =>
-          refreshWithUpdate(() => tabBarName = newValue!),
-      calloutButtonSize: const Size(280, 70),
-      calloutWidth: 400,
-      numLines: 1,
-    ),
-  ];
+        FlutterDocPNode(
+            buttonLabel: 'TabBarView',
+            webLink:
+                'https://api.flutter.dev/flutter/material/TabBarView-class.html',
+            snode: this,
+            name: 'fyi'),
+        StringPNode(
+          snode: this,
+          name: 'TabBar name',
+          stringValue: tabBarName,
+          skipHelperText: true,
+          onStringChange: (newValue) =>
+              refreshWithUpdate(context, () => tabBarName = newValue!),
+          calloutButtonSize: const Size(280, 70),
+          calloutWidth: 400,
+          numLines: 1,
+        ),
+      ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       SnippetPanelState? spState = SnippetPanel.of(context);
       TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
       if (tabBarNode == null) {
@@ -58,11 +67,16 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
         }
       } catch (e) {
         fco.logger.i('TabBarViewNode.toWidget() failed!');
-        return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
+        return Error(
+            key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
       }
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE,
-          color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 

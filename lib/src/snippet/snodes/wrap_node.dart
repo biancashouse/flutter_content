@@ -3,9 +3,12 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_cross_axis_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_wrap_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_wrap_cross_alignment.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'wrap_node.mapper.dart';
 
@@ -31,37 +34,42 @@ class WrapNode extends MC with WrapNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        EnumPNode<AxisEnum?>(
+    FlutterDocPNode(
+        buttonLabel: 'Wrap',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/Wrap-class.html',
+        snode: this,
+        name: 'fyi'), EnumPNode<AxisEnum?>(
           snode: this,
           name: 'axis',
           valueIndex: direction.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => direction = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
+          onIndexChange: (newValue) => refreshWithUpdate(context,() => direction = AxisEnum.of(newValue) ?? AxisEnum.horizontal),
         ),
         DecimalPNode(
           snode: this,
           name: 'spacing',
           decimalValue: spacing,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => spacing = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => spacing = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
         DecimalPNode(
           snode: this,
           name: 'runSpacing',
           decimalValue: runSpacing,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => runSpacing = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => runSpacing = newValue),
           calloutButtonSize: const Size(140, 30),
         ),
         EnumPNode<WrapAlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => alignment = WrapAlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) => refreshWithUpdate(context,() => alignment = WrapAlignmentEnum.of(newValue)),
         ),
         EnumPNode<CrossAxisAlignmentEnum?>(
           snode: this,
           name: 'crossAlignment',
           valueIndex: crossAxisAlignment?.index,
-          onIndexChange: (newValue) => refreshWithUpdate(() => crossAxisAlignment = WrapCrossAlignmentEnum.of(newValue)),
+          onIndexChange: (newValue) => refreshWithUpdate(context,() => crossAxisAlignment = WrapCrossAlignmentEnum.of(newValue)),
         ),
       ];
 

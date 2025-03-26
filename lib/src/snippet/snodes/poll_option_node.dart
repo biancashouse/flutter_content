@@ -4,6 +4,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/flutter_polls/flutter_poll_option.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'poll_option_node.mapper.dart';
 
@@ -17,12 +19,18 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        StringPNode(
+    FlutterDocPNode(
+        buttonLabel: 'PollOption',
+        webLink:
+        'https://pub.dev/documentation/flutter_polls/latest/flutter_polls/PollOption-class.html',
+        snode: this,
+        name: 'fyi'),
+    StringPNode(
           snode: this,
           name: 'text',
           stringValue: text,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => text = newValue ?? ''),
+              refreshWithUpdate(context,() => text = newValue ?? ''),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

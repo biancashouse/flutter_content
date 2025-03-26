@@ -2,6 +2,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/directory_tree_node_widget.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
@@ -23,7 +24,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
           name: 'name',
           stringValue: name,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue),
+              refreshWithUpdate(context,() => name = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
         ),

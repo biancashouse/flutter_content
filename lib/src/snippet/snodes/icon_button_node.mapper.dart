@@ -49,21 +49,9 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
   static SnippetTemplateEnum? _$template(IconButtonNode v) => v.template;
   static const Field<IconButtonNode, SnippetTemplateEnum> _f$template =
       Field('template', _$template, opt: true);
-  static String? _$destinationPanelOrPlaceholderName(IconButtonNode v) =>
-      v.destinationPanelOrPlaceholderName;
-  static const Field<IconButtonNode, String>
-      _f$destinationPanelOrPlaceholderName = Field(
-          'destinationPanelOrPlaceholderName',
-          _$destinationPanelOrPlaceholderName,
-          opt: true);
-  static String? _$destinationSnippetName(IconButtonNode v) =>
-      v.destinationSnippetName;
-  static const Field<IconButtonNode, String> _f$destinationSnippetName =
-      Field('destinationSnippetName', _$destinationSnippetName, opt: true);
-  static ButtonStyleProperties _$bsPropsGroup(IconButtonNode v) =>
-      v.bsPropsGroup;
-  static const Field<IconButtonNode, ButtonStyleProperties> _f$bsPropsGroup =
-      Field('bsPropsGroup', _$bsPropsGroup);
+  static ButtonStyleProperties _$bsPropGroup(IconButtonNode v) => v.bsPropGroup;
+  static const Field<IconButtonNode, ButtonStyleProperties> _f$bsPropGroup =
+      Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
   static String? _$onTapHandlerName(IconButtonNode v) => v.onTapHandlerName;
   static const Field<IconButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -96,9 +84,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #iconSize: _f$iconSize,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
-    #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
-    #destinationSnippetName: _f$destinationSnippetName,
-    #bsPropsGroup: _f$bsPropsGroup,
+    #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfigGroup: _f$calloutConfigGroup,
     #child: _f$child,
@@ -124,10 +110,7 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
         template: data.dec(_f$template),
-        destinationPanelOrPlaceholderName:
-            data.dec(_f$destinationPanelOrPlaceholderName),
-        destinationSnippetName: data.dec(_f$destinationSnippetName),
-        bsPropsGroup: data.dec(_f$bsPropsGroup),
+        bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfigGroup: data.dec(_f$calloutConfigGroup),
         child: data.dec(_f$child));
@@ -188,7 +171,7 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
     implements ButtonNodeCopyWith<$R, $In, $Out> {
   @override
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-      ButtonStyleProperties> get bsPropsGroup;
+      ButtonStyleProperties> get bsPropGroup;
   @override
   CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
       CalloutConfigProperties>? get calloutConfigGroup;
@@ -203,9 +186,7 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
       double? iconSize,
       String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
-      String? destinationPanelOrPlaceholderName,
-      String? destinationSnippetName,
-      ButtonStyleProperties? bsPropsGroup,
+      ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigProperties? calloutConfigGroup,
       SNode? child});
@@ -224,8 +205,8 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
   @override
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
           ButtonStyleProperties>
-      get bsPropsGroup =>
-          $value.bsPropsGroup.copyWith.$chain((v) => call(bsPropsGroup: v));
+      get bsPropGroup =>
+          $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
   CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
           CalloutConfigProperties>?
@@ -243,9 +224,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           Object? iconSize = $none,
           Object? destinationRoutePathSnippetName = $none,
           Object? template = $none,
-          Object? destinationPanelOrPlaceholderName = $none,
-          Object? destinationSnippetName = $none,
-          ButtonStyleProperties? bsPropsGroup,
+          ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfigGroup = $none,
           Object? child = $none}) =>
@@ -258,11 +237,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (template != $none) #template: template,
-        if (destinationPanelOrPlaceholderName != $none)
-          #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
-        if (destinationSnippetName != $none)
-          #destinationSnippetName: destinationSnippetName,
-        if (bsPropsGroup != null) #bsPropsGroup: bsPropsGroup,
+        if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfigGroup != $none)
           #calloutConfigGroup: calloutConfigGroup,
@@ -279,12 +254,7 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
       template: data.get(#template, or: $value.template),
-      destinationPanelOrPlaceholderName: data.get(
-          #destinationPanelOrPlaceholderName,
-          or: $value.destinationPanelOrPlaceholderName),
-      destinationSnippetName:
-          data.get(#destinationSnippetName, or: $value.destinationSnippetName),
-      bsPropsGroup: data.get(#bsPropsGroup, or: $value.bsPropsGroup),
+      bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfigGroup:

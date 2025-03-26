@@ -1,6 +1,8 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'sizedbox_node.mapper.dart';
 
@@ -17,18 +19,23 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        DecimalPNode(
+    FlutterDocPNode(
+        buttonLabel: 'SizedBox',
+        webLink:
+        'https://api.flutter.dev/flutter/widgets/SizedBox-class.html',
+        snode: this,
+        name: 'fyi'), DecimalPNode(
           snode: this,
           name: 'width',
           decimalValue: width,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => width = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => width = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
         DecimalPNode(
           snode: this,
           name: 'height',
           decimalValue: height,
-          onDoubleChange: (newValue) => refreshWithUpdate(() => height = newValue),
+          onDoubleChange: (newValue) => refreshWithUpdate(context,() => height = newValue),
           calloutButtonSize: const Size(80, 20),
         ),
       ];

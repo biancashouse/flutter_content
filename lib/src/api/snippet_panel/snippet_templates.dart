@@ -124,15 +124,15 @@ enum SnippetTemplateEnum {
                   MenuItemButtonNode(
                       child: TextNode(
                           text: 'item 1', tsPropGroup: TextStyleProperties()),
-                      bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+                      bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
                   MenuItemButtonNode(
                       child: TextNode(
                           text: 'item 2', tsPropGroup: TextStyleProperties()),
-                      bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+                      bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
                   MenuItemButtonNode(
                       child: TextNode(
                           text: 'item 3', tsPropGroup: TextStyleProperties()),
-                      bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+                      bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
                 ]),
               ),
             ),

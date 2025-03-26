@@ -3,7 +3,10 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_flex_fit.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
 
 part 'flexible_node.mapper.dart';
 
@@ -20,41 +23,52 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Flexible',
+            webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
+            snode: this,
+            name: 'fyi'),
         IntPNode(
           snode: this,
           name: 'flex',
           intValue: flex,
           onIntChange: (newValue) =>
-              refreshWithUpdate(() => flex = newValue ?? 1),
+              refreshWithUpdate(context, () => flex = newValue ?? 1),
           calloutButtonSize: const Size(70, 30),
         ),
         EnumPNode<FlexFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
-          onIndexChange: (newValue) => refreshWithUpdate(
+          onIndexChange: (newValue) => refreshWithUpdate(context,
               () => FlexFitEnum.of(newValue ?? FlexFitEnum.loose.index)),
         ),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       return Flexible(
-            key: createNodeWidgetGK(),
-            flex: flex,
-            fit: fit.flutterValue,
-            child: child?.toWidget(context, this) ??
-                const Icon(
-                  Icons.square,
-                  color: Colors.red,
-                ),
-          );
+        key: createNodeWidgetGK(),
+        flex: flex,
+        fit: fit.flutterValue,
+        child: child?.toWidget(context, this) ??
+            const Icon(
+              Icons.square,
+              color: Colors.red,
+            ),
+      );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 
@@ -126,7 +140,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   List<Type> wrapCandidates() => [FlexNode];
 
   @override
-  List<Type> wrapWithOnly() => [RowNode,ColumnNode];
+  List<Type> wrapWithOnly() => [RowNode, ColumnNode];
 
   @override
   String toString() => FLUTTER_TYPE;

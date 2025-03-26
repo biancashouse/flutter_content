@@ -16,6 +16,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       SNodeMapper.ensureInitialized();
       TextStylePropertiesMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
+      ContainerStylePropertiesMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -42,6 +43,12 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static const Field<AppInfoModel, Map<String, ButtonStyleProperties>>
       _f$buttonStyles =
       Field('buttonStyles', _$buttonStyles, opt: true, def: const {});
+  static Map<String, ContainerStyleProperties> _$containerStyles(
+          AppInfoModel v) =>
+      v.containerStyles;
+  static const Field<AppInfoModel, Map<String, ContainerStyleProperties>>
+      _f$containerStyles =
+      Field('containerStyles', _$containerStyles, opt: true, def: const {});
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -50,6 +57,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #snippetNames: _f$snippetNames,
     #textStyles: _f$textStyles,
     #buttonStyles: _f$buttonStyles,
+    #containerStyles: _f$containerStyles,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -58,7 +66,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         autoPublishDefault: data.dec(_f$autoPublishDefault),
         snippetNames: data.dec(_f$snippetNames),
         textStyles: data.dec(_f$textStyles),
-        buttonStyles: data.dec(_f$buttonStyles));
+        buttonStyles: data.dec(_f$buttonStyles),
+        containerStyles: data.dec(_f$containerStyles));
   }
 
   @override
@@ -127,12 +136,19 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       ButtonStyleProperties,
       ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
           ButtonStyleProperties>> get buttonStyles;
+  MapCopyWith<
+      $R,
+      String,
+      ContainerStyleProperties,
+      ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
+          ContainerStyleProperties>> get containerStyles;
   $R call(
       {SNode? clipboard,
       bool? autoPublishDefault,
       List<String>? snippetNames,
       Map<String, TextStyleProperties>? textStyles,
-      Map<String, ButtonStyleProperties>? buttonStyles});
+      Map<String, ButtonStyleProperties>? buttonStyles,
+      Map<String, ContainerStyleProperties>? containerStyles});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -172,18 +188,30 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       (v, t) => v.copyWith.$chain(t),
       (v) => call(buttonStyles: v));
   @override
+  MapCopyWith<
+      $R,
+      String,
+      ContainerStyleProperties,
+      ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
+          ContainerStyleProperties>> get containerStyles => MapCopyWith(
+      $value.containerStyles,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(containerStyles: v));
+  @override
   $R call(
           {Object? clipboard = $none,
           bool? autoPublishDefault,
           List<String>? snippetNames,
           Map<String, TextStyleProperties>? textStyles,
-          Map<String, ButtonStyleProperties>? buttonStyles}) =>
+          Map<String, ButtonStyleProperties>? buttonStyles,
+          Map<String, ContainerStyleProperties>? containerStyles}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
         if (snippetNames != null) #snippetNames: snippetNames,
         if (textStyles != null) #textStyles: textStyles,
-        if (buttonStyles != null) #buttonStyles: buttonStyles
+        if (buttonStyles != null) #buttonStyles: buttonStyles,
+        if (containerStyles != null) #containerStyles: containerStyles
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
@@ -192,7 +220,8 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           data.get(#autoPublishDefault, or: $value.autoPublishDefault),
       snippetNames: data.get(#snippetNames, or: $value.snippetNames),
       textStyles: data.get(#textStyles, or: $value.textStyles),
-      buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles));
+      buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles),
+      containerStyles: data.get(#containerStyles, or: $value.containerStyles));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

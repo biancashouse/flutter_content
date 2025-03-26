@@ -10,6 +10,7 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
@@ -57,15 +58,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         (event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
-    on<SetPanelSnippet>(
-        (event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
+    // removed snippet place naming functionality - use tab bar instead
+    // on<SetPanelSnippet>(
+    //     (event, emit) => _setPanelOrPlaceholderSnippet(event, emit));
     on<UpdateClipboard>((event, emit) => _updateClipboard(event, emit));
 
     //==========================================================================================
     //====  SNIPPET EDITING  ===================================================================
     //==========================================================================================
     on<SelectNode>((event, emit) => _selectNode(event, emit));
-    on<ShowCutout>((event, emit) => _showCutout(event, emit));
+    // on<ShowCutout>((event, emit) => _showCutout(event, emit));
     on<ClearNodeSelection>((event, emit) => _clearNodeSelection(event, emit));
     on<SaveNodeAsSnippet>((event, emit) => _saveNodeAsSnippet(event, emit));
     on<ForceSnippetRefresh>((event, emit) => _forceSnippetRefresh(event, emit));
@@ -327,16 +329,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       snippetBeingEdited: null,
       hideIframes: false,
       hideSnippetPencilIcons: false,
-      cutoutRect: null,
     ));
   }
 
-  void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
-    fco.snippetPlacementMap[event.panelName] = event.snippetName;
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
-  }
+  // void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
+  //   fco.snippetPlacementMap[event.panelName] = event.snippetName;
+  //   emit(state.copyWith(
+  //     force: state.force + 1,
+  //   ));
+  // }
 
 //==========================================================================================
 //====  SNIPPET EDITING  ===================================================================
@@ -385,7 +386,6 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // double savedOffset = NamedScrollController.scrollOffset(event.scName);
 
     emit(state.copyWith(
-      cutoutRect: null,
       force: state.force + 1,
     ));
 
@@ -440,21 +440,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     ));
   }
 
-  Future<void> _showCutout(ShowCutout event, emit) async {
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-
-    Rect? r =
-        state.snippetBeingEdited?.selectedNode?.nodeWidgetGK?.globalPaintBounds(
-      skipWidthConstraintWarning: true,
-      skipHeightConstraintWarning: true,
-    );
-    if (r != null) {
-      emit(state.copyWith(
-        cutoutRect: r,
-        force: state.force + 1,
-      ));
-    }
-  }
+  // Future<void> _showCutout(ShowCutout event, emit) async {
+  //   if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+  //
+  //   Rect? r =
+  //       state.snippetBeingEdited?.selectedNode?.nodeWidgetGK?.globalPaintBounds(
+  //     skipWidthConstraintWarning: true,
+  //     skipHeightConstraintWarning: true,
+  //   );
+  //   if (r != null) {
+  //     emit(state.copyWith(
+  //       force: state.force + 1,
+  //     ));
+  //   }
+  // }
 
   SNode _possiblyRemoveFromParentButNotChildren() {
     SNode sel = state.snippetBeingEdited!.selectedNode!;
@@ -665,8 +664,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
           children: childNode != null ? [childNode] : []),
       const (ContainerNode) =>
         state.snippetBeingEdited!.selectedNode?.getParent() is ContainerNode
-            ? ContainerNode(child: childNode, alignment: AlignmentEnum.center)
-            : ContainerNode(child: childNode),
+            ? ContainerNode(
+                csPropGroup:
+                    ContainerStyleProperties(alignment: AlignmentEnum.center),
+                child: childNode)
+            : ContainerNode(
+                csPropGroup: ContainerStyleProperties(), child: childNode),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
           child: childNode,
@@ -685,27 +688,32 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
             text: 'some-text',
             tsPropGroup: TextStyleProperties(),
           ),
-          bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (FileNode) => FileNode(name: '', src: ''),
       // const (FSFileNode) => FSFileNode(name: ''),
       const (FilledButtonNode) => FilledButtonNode(
           child:
               TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
-          bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (FlexibleNode) => FlexibleNode(child: childNode),
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
-      const (IconButtonNode) =>
-        IconButtonNode(bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+      const (IconButtonNode) => IconButtonNode(
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (IFrameNode) => IFrameNode(),
       const (MarkdownNode) => MarkdownNode(),
       const (MenuBarNode) => MenuBarNode(children: []),
       const (MenuItemButtonNode) => MenuItemButtonNode(
           child:
               TextNode(text: 'item-text', tsPropGroup: TextStyleProperties()),
-          bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
-      const (OutlinedButtonNode) =>
-        OutlinedButtonNode(bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+      const (OutlinedButtonNode) => OutlinedButtonNode(
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (PaddingNode) =>
         PaddingNode(padding: EdgeInsetsValue(), child: childNode),
       const (PlaceholderNode) => PlaceholderNode(),
@@ -748,12 +756,14 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               : [
                   CenterNode(
                       child: ContainerNode(
-                          fillColorValues:
-                              UpTo6ColorValues(color1Value: Colors.red.value))),
+                          csPropGroup: ContainerStyleProperties(
+                              fillColorValues: UpTo6ColorValues(
+                                  color1Value: Colors.red.value)))),
                   CenterNode(
                       child: ContainerNode(
-                          fillColorValues: UpTo6ColorValues(
-                              color1Value: Colors.blue.value))),
+                          csPropGroup: ContainerStyleProperties(
+                              fillColorValues: UpTo6ColorValues(
+                                  color1Value: Colors.blue.value)))),
                 ]),
       const (StackNode) =>
         StackNode(children: childNode != null ? [childNode] : []),
@@ -831,7 +841,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (TextButtonNode) => TextButtonNode(
           child:
               TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
-          bsPropsGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+          bsPropGroup:
+              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (TextNode) =>
         TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
       const (TextSpanNode) =>
@@ -895,10 +906,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         // wrap poll in a border
         final Node? pollParent = w.getParent();
         w = ContainerNode(
-            decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
-            borderColorValues:
-                UpTo6ColorValues(color1Value: Colors.black.value),
-            borderThickness: 4,
+            csPropGroup: ContainerStyleProperties(
+              decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
+              borderColorValues:
+                  UpTo6ColorValues(color1Value: Colors.black.value),
+              borderThickness: 4,
+            ),
             child: w)
           ..setParent((pollParent));
         w.child!.setParent(w);

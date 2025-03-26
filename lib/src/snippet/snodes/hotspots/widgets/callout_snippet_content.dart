@@ -154,6 +154,11 @@ Future<void> showSnippetContentCallout({
         // FCO.parentTW(twName)?.zoomer?.resetTransform();
         // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
       },
+      barrier: CalloutBarrierConfig(
+        color: Colors.grey,
+        opacity: .5,
+        excludeTargetFromBarrier: true,
+      )
     ),
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
     removeAfterMs: justPlaying ? tc.calloutDurationMs : null,

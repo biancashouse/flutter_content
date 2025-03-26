@@ -177,9 +177,11 @@ abstract class SNode extends Node with SNodeMappable {
     //   fco.logger.i(node.name);
     // }
     _pTreeC ??= PNodeTreeController(
-      roots: _properties /*??*/ = properties(context, getParent() as SNode?),
+      roots: _properties ??= properties(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
-    )..rebuild;;
+    );
+    _pTreeC!.expand(_pTreeC!.roots.first);
+    _pTreeC!.rebuild();
     // if (prevExpansions != null) {
     //   //_pTreeC!.expandedNodes = prevExpansions;
     //   for (PTreeNode node in prevExpansions) {
@@ -189,7 +191,8 @@ abstract class SNode extends Node with SNodeMappable {
     return _pTreeC!;
   }
 
-  void refreshPTreeC(context) {
+  void forcePropertyTreeRefresh(context) {
+    _properties = null;
     _pTreeC = null;
     pTreeC(context);
   }
@@ -635,11 +638,13 @@ abstract class SNode extends Node with SNodeMappable {
     });
   }
 
-  void refreshWithUpdate(VoidCallback assignF,
-      {bool alsoRefreshPropertiesView = false}) {
+  void refreshWithUpdate(context, VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
     // FlutterContentApp.capiState.snippetBeingEdited?.newVersion();
 
     assignF.call();
+    // if (alsoRefreshPropertiesView) {
+    //   forcePropertyTreeRefresh(context);
+    // }
     fco.forceRefresh();
     fco.afterNextBuildDo(() {
       fco.saveNewVersion(snippet: rootNodeOfSnippet());

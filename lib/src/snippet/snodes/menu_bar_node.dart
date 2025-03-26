@@ -1,6 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'menu_bar_node.mapper.dart';
 
@@ -16,7 +17,14 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
+  List<PNode> properties(BuildContext context, SNode? parentSNode) =>  [
+    FlutterDocPNode(
+        buttonLabel: 'MenuBar',
+        webLink:
+        'https://api.flutter.dev/flutter/material/MenuBar-class.html',
+        snode: this,
+        name: 'fyi')
+  ];
 
   @override
   String toSource(BuildContext context) => '''MenuBar(

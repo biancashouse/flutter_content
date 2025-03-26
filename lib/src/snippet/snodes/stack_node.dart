@@ -3,9 +3,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'stack_node.mapper.dart';
 
@@ -23,38 +25,40 @@ class StackNode extends MC with StackNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) =>
-      [
+  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Stack',
+            webLink: 'https://api.flutter.dev/flutter/widgets/Stack-class.html',
+            snode: this,
+            name: 'fyi'),
         EnumPNode<StackFitEnum?>(
           snode: this,
           name: 'fit',
           valueIndex: fit.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(
-                      () =>
-                  fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
+          onIndexChange: (newValue) => refreshWithUpdate(context,
+              () => fit = StackFitEnum.of(newValue) ?? StackFitEnum.loose),
         ),
         EnumPNode<ClipEnum?>(
           snode: this,
           name: 'clipBehavior',
           valueIndex: clipBehavior.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(
-                      () =>
-                  clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
+          onIndexChange: (newValue) => refreshWithUpdate(context,
+              () => clipBehavior = ClipEnum.of(newValue) ?? ClipEnum.hardEdge),
         ),
         EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
-          onIndexChange: (newValue) =>
-              refreshWithUpdate(() =>
-              alignment = AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
+          onIndexChange: (newValue) => refreshWithUpdate(
+              context,
+              () => alignment =
+                  AlignmentEnum.of(newValue) ?? AlignmentEnum.topLeft),
         ),
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -63,28 +67,30 @@ class StackNode extends MC with StackNodeMappable {
         builder: (context, constraints) {
           return constraints.maxHeight == double.infinity
               ? Error(
-              key: createNodeWidgetGK(),
-              FLUTTER_TYPE,
-              color: Colors.red,
-              size: 16,
-              errorMsg:
-              'Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?')
+                  key: createNodeWidgetGK(),
+                  FLUTTER_TYPE,
+                  color: Colors.red,
+                  size: 16,
+                  errorMsg:
+                      'Stack has infinite\nmaxHeight constraint!\nWrap in a SizedBox?')
               : Stack(
-            key: createNodeWidgetGK(),
-            fit: fit.flutterValue,
-            clipBehavior: clipBehavior.flutterValue,
-            alignment: alignment.flutterValue,
-            children: children
-                .map((node) => node.toWidget(context, this))
-                .toList(),
-          );
+                  key: createNodeWidgetGK(),
+                  fit: fit.flutterValue,
+                  clipBehavior: clipBehavior.flutterValue,
+                  alignment: alignment.flutterValue,
+                  children: children
+                      .map((node) => node.toWidget(context, this))
+                      .toList(),
+                );
         },
       );
     } catch (e) {
       return Error(
           key: createNodeWidgetGK(),
           FLUTTER_TYPE,
-          color: Colors.red, size: 16, errorMsg: e.toString());
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 

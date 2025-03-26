@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/container_style_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 class PNodeWidget extends StatefulWidget {
@@ -50,7 +55,9 @@ class _PNodeWidgetState extends State<PNodeWidget> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (propertyNode is TextStyleSearchPNode || propertyNode is TextStyleSavePNode
-            || propertyNode is ButtonStyleSearchPNode || propertyNode is ButtonStyleSavePNode)
+            || propertyNode is ButtonStyleSearchPNode || propertyNode is ButtonStyleSavePNode
+            || propertyNode is ContainerStyleSearchPNode || propertyNode is ContainerStyleSavePNode
+        )
           Container(
             margin: const EdgeInsets.all(6),
             // decoration: BoxDecoration(
@@ -65,10 +72,13 @@ class _PNodeWidgetState extends State<PNodeWidget> {
                 : _propertyButton(context),
           ),
         if (propertyNode is! TextStyleSearchPNode && propertyNode is! TextStyleSavePNode
-        && propertyNode is! ButtonStyleSearchPNode && propertyNode is! ButtonStyleSavePNode)
+            && propertyNode is! ButtonStyleSearchPNode && propertyNode is! ButtonStyleSavePNode
+            && propertyNode is! ContainerStyleSearchPNode && propertyNode is! ContainerStyleSavePNode
+        )
           Container(
             margin: const EdgeInsets.all(6),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+            padding: EdgeInsets.symmetric(horizontal: propertyNode is FYIPNode
+                ? 0:8, vertical: 0),
             decoration: BoxDecoration(
               color: propertyNode.children != null /*Group*/
                   ? Colors.white
@@ -129,8 +139,10 @@ class _PNodeWidgetState extends State<PNodeWidget> {
         onDoubleTap: () {
           setState(() {
             // _updateProperty(null);
-            widget.sNode.refreshWithUpdate(() {
+            widget.sNode.refreshWithUpdate(context,() {
               widget.sNode.setTextStyleProperties(TextStyleProperties());
+              widget.sNode.setButtonStyleProperties(ButtonStyleProperties(tsPropGroup: TextStyleProperties()));
+              widget.sNode.forcePropertyTreeRefresh(context);
             });
           });
         },
@@ -160,7 +172,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
         //                 suggestions: fco.namedTextStyles.keys.toList(),
         //                 onSelectionF: (selectedSuggestion) {
         //                   // _updateProperty(selectedSuggestion);
-        //                   widget.sNode.refreshWithUpdate(() {
+        //                   widget.sNode.refreshWithUpdate(context,() {
         //                     var tsProps = fco.namedTextStyles[selectedSuggestion];
         //                     widget.sNode.setTextStyleProperties(tsProps?.clone() ?? TextStyleProperties());
         //                   });
@@ -178,7 +190,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
   // update aware of possible text style group
   // void _updateProperty(String? newName) {
   //   // revert to original value
-  //   widget.sNode.refreshWithUpdate(() {
+  //   widget.sNode.refreshWithUpdate(context,() {
   //     if (_propertyNodeIsATextStyleGroup()) {
   //       widget.node.setT
   //       if (widget.sNode is TextNode) {
@@ -248,16 +260,16 @@ class _PNodeWidgetState extends State<PNodeWidget> {
 // }
 }
 
-class MySearchController extends SearchController {
-  @override
-  void openView() {
-    // TODO: implement openView
-    super.openView();
-  }
-
-  @override
-  void closeView(String? selectedText) {
-    // TODO: implement closeView
-    super.closeView(selectedText);
-  }
-}
+// class MySearchController extends SearchController {
+//   @override
+//   void openView() {
+//     // TODO: implement openView
+//     super.openView();
+//   }
+//
+//   @override
+//   void closeView(String? selectedText) {
+//     // TODO: implement closeView
+//     super.closeView(selectedText);
+//   }
+// }

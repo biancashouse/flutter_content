@@ -1,6 +1,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 import 'iframe/iframe.dart';
 
@@ -29,15 +32,21 @@ class IFrameNode extends CL with IFrameNodeMappable {
         //   snode: this,
         //   name: 'name',
         //   stringValue: name,
-        //   onStringChange: (newValue) => refreshWithUpdate(() => name = newValue),
+        //   onStringChange: (newValue) => refreshWithUpdate(context,() => name = newValue),
         //   calloutButtonSize: const Size(280, 70),
         //   calloutSize: const Size(280, 80),
         // ),
+        FlutterDocPNode(
+            buttonLabel: 'IFrame',
+            webLink: 'https://pub.dev/packages/webview_flutter_web',
+            snode: this,
+            name: 'fyi'),
         StringPNode(
           snode: this,
           name: 'src',
           stringValue: src,
-          onStringChange: (newValue) => refreshWithUpdate(() => src = newValue),
+          onStringChange: (newValue) =>
+              refreshWithUpdate(context, () => src = newValue),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 300,
         ),
@@ -46,7 +55,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
           name: 'iframeWidth',
           decimalValue: iframeWidth,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => iframeWidth = newValue ?? 800),
+              refreshWithUpdate(context, () => iframeWidth = newValue ?? 800),
           calloutButtonSize: const Size(160, 20),
         ),
         DecimalPNode(
@@ -54,7 +63,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
           name: 'iframeHeight',
           decimalValue: iframeHeight,
           onDoubleChange: (newValue) =>
-              refreshWithUpdate(() => iframeHeight = newValue ?? 800),
+              refreshWithUpdate(context, () => iframeHeight = newValue ?? 800),
           calloutButtonSize: const Size(160, 20),
         ),
       ];
@@ -113,32 +122,38 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode); // propagating parents down from root
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       // String folderId = '1J8PIKBTq1cbF1_D124SleDtw2GKSg2B7';
       // String resourceKey = '';
       String iframeSrc = src == null
-              ? "https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"
-              : (src?.contains('<iframe') ?? false)
-                  ? extractUrlFromIframe(src!)!
-                  : src!;
+          ? "https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"
+          : (src?.contains('<iframe') ?? false)
+              ? extractUrlFromIframe(src!)!
+              : src!;
       return Center(
-                  key: createNodeWidgetGK(),
-                  child: IFrame(
-                    //name: name,
-                    // src: src ??
-                    //     'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
-                    src: iframeSrc,
-                    iframeW: iframeWidth,
-                    iframeH: iframeHeight,
-                    forceRefresh: true,
-                  ),
-                );
+        key: createNodeWidgetGK(),
+        child: IFrame(
+          //name: name,
+          // src: src ??
+          //     'https://drive.google.com/embeddedfolderview?id=$FOLDER_ID&resourcekey=$RESOURCE_KEY#grid" style="width:100%; height:600px; border:0;"',
+          src: iframeSrc,
+          iframeW: iframeWidth,
+          iframeH: iframeHeight,
+          forceRefresh: true,
+        ),
+      );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 

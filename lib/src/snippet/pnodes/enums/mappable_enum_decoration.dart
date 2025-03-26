@@ -59,6 +59,7 @@ enum MappableDecorationShapeEnum {
 
   Decoration? toDecoration({
     UpTo6ColorValues? fillColorValues,
+    bool? radialGradient,
     UpTo6ColorValues? borderColorValues,
     double? thickness,
     double? borderRadius,
@@ -90,8 +91,13 @@ enum MappableDecorationShapeEnum {
     if (fillColorValues?.color6Value != null) {
       fillColors.add(Color(fillColorValues!.color6Value!));
     }
-    Gradient? fillGradient =
-        fillColors.length > 1 ? LinearGradient(colors: fillColors) : null;
+
+    Gradient? fillGradient;
+    if (fillColors.length > 1) {
+      fillGradient = radialGradient??false
+          ? RadialGradient(colors: fillColors)
+          : LinearGradient(colors: fillColors);
+    }
     if (fillColors.length == 1) fillColor = fillColors.first;
     if (fillColors.isEmpty) fillColor = Colors.white;
     List<Color> borderColors = [];

@@ -5,7 +5,12 @@ import 'dart:math';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
+import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'tabbar_node.mapper.dart';
@@ -55,14 +60,23 @@ class TabBarNode extends MC with TabBarNodeMappable {
       labelTSPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        StringPNode(
+  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+    var textStyleName = fco.findTextStyleName(labelTSPropGroup);
+    textStyleName = textStyleName != null ? ': $textStyleName' : '';
+    return [
+      FlutterDocPNode(
+          buttonLabel: 'TabBar',
+          webLink:
+          'https://api.flutter.dev/flutter/material/TabBar-class.html',
+          snode: this,
+          name: 'fyi'),
+      StringPNode(
           snode: this,
           name: 'name',
           stringValue: name,
           skipHelperText: true,
           onStringChange: (newValue) =>
-              refreshWithUpdate(() => name = newValue!),
+              refreshWithUpdate(context, () => name = newValue!),
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 400,
           numLines: 1,
@@ -76,60 +90,70 @@ class TabBarNode extends MC with TabBarNodeMappable {
               name: 'b/g Color',
               colorValue: bgColorValue,
               onColorIntChange: (newValue) =>
-                  refreshWithUpdate(() => bgColorValue = newValue),
+                  refreshWithUpdate(context, () => bgColorValue = newValue),
               calloutButtonSize: const Size(160, 20),
             ),
             ColorPNode(
               snode: this,
               name: 'selected label Color',
               colorValue: selectedLabelColorValue,
-              onColorIntChange: (newValue) =>
-                  refreshWithUpdate(() => selectedLabelColorValue = newValue),
+              onColorIntChange: (newValue) => refreshWithUpdate(
+                  context, () => selectedLabelColorValue = newValue),
               calloutButtonSize: const Size(160, 20),
             ),
             ColorPNode(
               snode: this,
               name: 'unselected label Color',
               colorValue: unselectedLabelColorValue,
-              onColorIntChange: (newValue) =>
-                  refreshWithUpdate(() => unselectedLabelColorValue = newValue),
+              onColorIntChange: (newValue) => refreshWithUpdate(
+                  context, () => unselectedLabelColorValue = newValue),
               calloutButtonSize: const Size(180, 20),
             ),
           ],
         ),
-        // TextStyleNamePNode(
-        //   textStyleName: labelTextStyleName,
+      TextStyleWithoutColorPNode /*Group*/ (
+        snode: this,
+        name: 'textStyle$textStyleName',
+        textStyleProperties: labelTSPropGroup,
+        onGroupChange: (newValue, refreshPTree) {
+          refreshWithUpdate(context, () {
+            labelTSPropGroup = newValue;
+            if (refreshPTree) {
+              forcePropertyTreeRefresh(context);
+            }
+          });
+        },
+      ),
+        // TextStyleWithoutColorPNode /*Group*/ (
         //   snode: this,
-        //   name: 'namedLabelTextStyle',
-        //   onChange: (newValue) {
-        //     refreshWithUpdate(() => labelTextStyleName = newValue);
+        //   name: 'labelStyle',
+        //   textStyleProperties: labelTSPropGroup,
+        //   onGroupChange: (newValue, refreshPTree) {
+        //     if (refreshPTree) {
+        //       forcePropertyTreeRefresh(context);
+        //     }
+        //     refreshWithUpdate(context, () => labelTSPropGroup = newValue);
         //   },
         // ),
-        TextStyleWithoutColorPNode /*Group*/ (
-          snode: this,
-          name: 'labelStyle',
-          textStyleProperties: labelTSPropGroup,
-          onGroupChange: (newValue) =>
-              refreshWithUpdate(() => labelTSPropGroup = newValue),
-        ),
         // ColorPNode(
         //   snode: this,
         //   name: 'indicatorColor',
         //   colorValue: indicatorColorValue,
         //   onColorIntChange: (newValue) =>
-        //       refreshWithUpdate(() => indicatorColorValue = newValue),
+        //       refreshWithUpdate(context,() => indicatorColorValue = newValue),
         //   calloutButtonSize: const Size(120, 20),
         // ),
         DecimalPNode(
           snode: this,
           name: 'indicatorWeight',
           decimalValue: indicatorWeight,
-          onDoubleChange: (newValue) => refreshWithUpdate(() {
+          onDoubleChange: (newValue) => refreshWithUpdate(context, () {
             if (newValue != indicatorWeight) indicatorWeight = newValue;
           }),
           calloutButtonSize: const Size(130, 20),
         ),
       ];
+  }
 
   void _tabListenerF() {
     if (!(tabC?.indexIsChanging ?? true)) {
@@ -137,7 +161,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
         prevTabQ.add(selection ?? 0);
         selection = tabC!.index;
         prevTabQSize.value = prevTabQ.length;
-        fco.logger.i("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
+        // fco.logger.i("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
       } else {
         selection = tabC!.index;
         backBtnPressed = false;

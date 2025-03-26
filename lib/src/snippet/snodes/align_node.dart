@@ -3,7 +3,9 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 
 part 'align_node.mapper.dart';
 
@@ -18,11 +20,19 @@ class AlignNode extends SC with AlignNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+        FlutterDocPNode(
+            buttonLabel: 'Align',
+            webLink: 'https://api.flutter.dev/flutter/widgets/Align-class.html',
+            snode: this,
+            name: 'fyi'),
         EnumPNode<AlignmentEnum?>(
           snode: this,
           name: 'alignment',
           valueIndex: alignment.index,
-          onIndexChange: (newIndex) => refreshWithUpdate(() => alignment = AlignmentEnum.of(newIndex ?? AlignmentEnum.topLeft.index)!),
+          onIndexChange: (newIndex) => refreshWithUpdate(
+              context,
+              () => alignment =
+                  AlignmentEnum.of(newIndex ?? AlignmentEnum.topLeft.index)!),
         ),
       ];
 
@@ -55,19 +65,25 @@ class AlignNode extends SC with AlignNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //possiblyHighlightSelectedNode(scName);
 
       return Align(
-            key: createNodeWidgetGK(),
-            alignment: alignment.flutterValue,
-            child: child?.toWidget(context, this),
-          );
+        key: createNodeWidgetGK(),
+        alignment: alignment.flutterValue,
+        child: child?.toWidget(context, this),
+      );
     } catch (e) {
-      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
+      return Error(
+          key: createNodeWidgetGK(),
+          FLUTTER_TYPE,
+          color: Colors.red,
+          size: 16,
+          errorMsg: e.toString());
     }
   }
 
