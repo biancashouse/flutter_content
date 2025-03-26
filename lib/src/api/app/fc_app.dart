@@ -3,14 +3,14 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
+// import 'package:logger/logger.dart';
 import 'package:routing_config_provider/routing_config_provider.dart';
 
 // conditional import for webview ------------------
@@ -222,14 +222,14 @@ class FlutterContentAppState extends State<FlutterContentApp>
   void initState() {
     super.initState();
 
-    if (kReleaseMode) {
-      // don't log anything below warning in production
-      Logger.root.level = Level.WARNING;
-    }
-    Logger.root.onRecord.listen((record) {
-      fco.logger.d('${record.level.name}: ${record.time}'
-          '${record.loggerName}: ${record.message}');
-    });
+    // if (kReleaseMode) {
+    //   // don't log anything below warning in production
+    //   Logger.root.level = Level.WARNING;
+    // }
+    // Logger.root.onRecord.listen((record) {
+    //   fco.logger.d('${record.level.name}: ${record.time}'
+    //       '${record.loggerName}: ${record.message}');
+    // });
 
     if (widget.hideStatusBar) {
       // fco.logger.i('hiding status bar');

@@ -867,7 +867,9 @@ class FlutterContentMixins
           namedTSProps.fontFamily == props.fontFamily &&
           namedTSProps.fontStyle == props.fontStyle &&
           namedTSProps.letterSpacing == props.letterSpacing &&
-          namedTSProps.lineHeight == props.lineHeight) return tsName;
+          namedTSProps.lineHeight == props.lineHeight) {
+        return tsName;
+      }
     }
     return null;
   }

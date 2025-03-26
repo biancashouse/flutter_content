@@ -39,8 +39,9 @@ class SingleChildScrollViewNode extends SC
             if (newValue != null) {
               _scName = newValue;
             } else {
-              if (_scName != null)
+              if (_scName != null) {
                 NamedScrollController.instance(_scName!)?.dispose();
+              }
               _scName = null;
             }
             refreshWithUpdate(context, () => _scName!);

@@ -57,8 +57,9 @@ class FYIPNode extends PNode {
                 foregroundColor: WidgetStatePropertyAll(Colors.black),
               ),
               onPressed: () async {
-                if (await canLaunchUrlString(webLink!))
+                if (await canLaunchUrlString(webLink!)) {
                   launchUrlString(webLink!);
+                }
               },
               child: Text('Understanding Constraints'),
             ),
@@ -95,8 +96,9 @@ class FlutterDocPNode extends PNode {
           foregroundColor: WidgetStatePropertyAll(Colors.black),
         ),
         onPressed: () async {
-          if (await canLaunchUrlString(webLink!))
+          if (await canLaunchUrlString(webLink!)) {
             launchUrlString(webLink!);
+          }
         },
         label: Text(buttonLabel!),
       ),

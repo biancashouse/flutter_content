@@ -40,7 +40,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
-      ButtonStyle? btnStyle = bsPropGroup?.toButtonStyle(context, defaultButtonStyle:defaultButtonStyle());
+      ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle:defaultButtonStyle());
       // possible handler
       void Function(BuildContext)? f = onTapHandlerName != null ? fco.namedHandler(onTapHandlerName!) : null;
 
