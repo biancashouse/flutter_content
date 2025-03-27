@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -171,30 +173,35 @@ abstract class SNode extends Node with SNodeMappable {
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Rect? measuredRect;
 
-  PNodeTreeController pTreeC(BuildContext context) {
-    // var prevExpansions = _pTreeC?.expandedNodes;
-    // for (PTreeNode node in prevExpansions??[]) {
-    //   fco.logger.i(node.name);
-    // }
+  PNodeTreeController pTreeC(BuildContext context, Map<PropertyName, bool> prevExpansions) {
     _pTreeC ??= PNodeTreeController(
       roots: _properties ??= properties(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
     );
-    _pTreeC!.expand(_pTreeC!.roots.first);
+    // _pTreeC!.expand(_pTreeC!.roots.first);
+      //_pTreeC!.expandedNodes = prevExpansions;
+      for (PropertyName pNodeName in prevExpansions.keys) {
+        fco.logger.i('restoring ${pNodeName} ${prevExpansions[pNodeName]}');
+        // find pNode by its name
+        PNode? pNode = fco.pNodes[pNodeName];
+        bool? expanded = prevExpansions[pNodeName];
+        if (pNode != null && expanded != null) {
+          _pTreeC!.setExpansionState(pNode, expanded);
+        }
+      }
     _pTreeC!.rebuild();
-    // if (prevExpansions != null) {
-    //   //_pTreeC!.expandedNodes = prevExpansions;
-    //   for (PTreeNode node in prevExpansions) {
-    //     _pTreeC!.setExpansionState(node, true);
-    //   }
-    // }
     return _pTreeC!;
   }
 
   void forcePropertyTreeRefresh(context) {
+    // only related to group node, which are exandable
+    Map<PropertyName, bool> prevExpansions = {};
+    for (PNode pNode in _pTreeC?.expandedNodes??[]) {
+      prevExpansions[pNode.name] = pNode.expanded;
+    }
     _properties = null;
     _pTreeC = null;
-    pTreeC(context);
+    pTreeC(context, prevExpansions);
   }
 
   double propertiesPaneScrollPos() => propertiesPaneSC().offset;

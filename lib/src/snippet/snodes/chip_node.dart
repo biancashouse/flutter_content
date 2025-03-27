@@ -86,7 +86,7 @@ class ChipNode extends CL with ChipNodeMappable {
       ),
       TextStylePNode /*Group*/ (
         snode: this,
-        name: 'textStyle$textStyleName',
+        name: 'textStyle',
         textStyleProperties: labelTSPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {

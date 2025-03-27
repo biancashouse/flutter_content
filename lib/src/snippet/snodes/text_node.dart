@@ -49,8 +49,7 @@ class TextNode extends CL with TextNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(tsPropGroup);
-    textStyleName = textStyleName != null ? ': $textStyleName' : '';
+
     // fco.logger.i('textStyleName is "$textStyleName"');
     return [
       FlutterDocPNode(
@@ -88,7 +87,7 @@ class TextNode extends CL with TextNodeMappable {
       if (parentSNode is! TabBarNode && parentSNode is! ButtonNode)
         TextStylePNode /*Group*/ (
           snode: this,
-          name: 'textStyle$textStyleName',
+          name: 'textStyle',
           textStyleProperties: tsPropGroup,
           onGroupChange: (newValue, refreshPTree) {
             refreshWithUpdate(context, () {

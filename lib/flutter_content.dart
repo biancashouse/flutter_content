@@ -701,6 +701,9 @@ class FlutterContentMixins
   Map<ButtonStyleName, ButtonStyleProperties> namedButtonStyles = {};
   Map<ContainerStyleName, ContainerStyleProperties> namedContainerStyles = {};
 
+  // used to restore expanded state on pnodes
+  Map<PropertyName, PNode> pNodes = {};
+
   Offset? _devToolsFABPos;
 
   // ---- callout config tool pos -------------------------
@@ -879,6 +882,7 @@ class FlutterContentMixins
       ButtonStyleProperties namedBSProps = _appInfo.buttonStyles[bsName]!;
       if (namedBSProps.bgColorValue == props.bgColorValue &&
           namedBSProps.fgColorValue == props.fgColorValue &&
+          namedBSProps.tsPropGroup == props.tsPropGroup &&
           namedBSProps.elevation == props.elevation &&
           namedBSProps.padding == props.padding &&
           namedBSProps.shape == props.shape &&
@@ -892,8 +896,6 @@ class FlutterContentMixins
           namedBSProps.side?.colorValue == props.side?.colorValue &&
           namedBSProps.side?.width == props.side?.width) {
         return bsName;
-      } else {
-        print('stop here');
       }
     }
     return null;
@@ -922,8 +924,6 @@ class FlutterContentMixins
           namedCSProps.gap == props.gap
       ) {
         return csName;
-      } else {
-        print('stop here');
       }
     }
     return null;

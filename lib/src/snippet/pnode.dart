@@ -16,7 +16,13 @@ class PNode extends Node {
     required this.snode,
     this.children,
     this.expanded = false,
-  });
+  }) {
+    fco.pNodes[name] = this;
+    fco.logger.i('pNode:$name');
+  }
+
+  // a group, like TextStyleWithoutColorPNode can override to include current style
+  String propertyLabel() => name;
 
   Widget toPropertyNodeContents(BuildContext context) {
     // not used in a property group node

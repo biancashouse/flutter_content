@@ -46,7 +46,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
         FYIPNode(
             label: "about constraints...",
             msg:
-            "If you find the width or\nheight being ignored,\ntap this button",
+                "If you find the width or\nheight being ignored,\ntap this button",
             webLink: 'https://docs.flutter.dev/ui/layout/constraints',
             snode: snode,
             name: 'fyi'),
@@ -170,12 +170,18 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
       )
     ];
   }
+
+  @override
+  String propertyLabel() {
+    var containerStyleName = fco.findContainerStyleName(containerStyleGroup);
+    return containerStyleName != null ? '$name: $containerStyleName' : name;
+  }
 }
 
 class ContainerStyleSearchPNode extends PNode {
   ContainerStyleProperties containerStyleProps;
   final ValueChanged<ContainerStyleProperties>
-  onAnyContainerStylePropertyChangeF;
+      onAnyContainerStylePropertyChangeF;
   final Size calloutButtonSize;
 
   ContainerStyleSearchPNode /*Group*/ ({

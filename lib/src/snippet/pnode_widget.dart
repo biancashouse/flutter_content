@@ -146,7 +146,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
             });
           });
         },
-        child: fco.coloredText(propertyNode.name, color: Colors.purple),
+        child: fco.coloredText(propertyNode.propertyLabel(), color: Colors.purple),
         // // if textStyleName is not null, means display a button to the right of the group label
         // child: !_propertyNodeIsATextStyleGroup()
         //     ? fco.coloredText(propertyNode.name, color: Colors.purple)

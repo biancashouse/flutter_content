@@ -118,6 +118,13 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
       ),
     ];
   }
+
+  @override
+  String propertyLabel() {
+    var textStyleName = fco.findTextStyleName(textStyleProperties);
+    return textStyleName != null ? '$name: $textStyleName' : name;
+  }
+
 }
 
 class TextStylePNode /*Group*/ extends TextStyleWithoutColorPNode /*Group*/ {

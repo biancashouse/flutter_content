@@ -45,7 +45,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
           name: 'fyi'),
       TextStylePNode /*Group*/ (
         snode: this,
-        name: 'textStyle$textStyleName',
+        name: 'textStyle',
         textStyleProperties: tsPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {

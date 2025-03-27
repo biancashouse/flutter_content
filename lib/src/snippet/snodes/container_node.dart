@@ -70,9 +70,6 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var containerStyleName = fco.findContainerStyleName(csPropGroup);
-    containerStyleName =
-        containerStyleName != null ? ': $containerStyleName' : '';
 
     // String paddingLabel = padding == null
     //     ? 'padding'
@@ -90,7 +87,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
           name: 'fyi'),
       ContainerStylePNode /*Group*/ (
         snode: this,
-        name: 'container style$containerStyleName',
+        name: 'container style',
         containerStyleGroup: csPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {

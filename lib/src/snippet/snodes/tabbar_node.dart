@@ -113,7 +113,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
         ),
       TextStyleWithoutColorPNode /*Group*/ (
         snode: this,
-        name: 'textStyle$textStyleName',
+        name: 'labelStyle',
         textStyleProperties: labelTSPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {

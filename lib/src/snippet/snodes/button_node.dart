@@ -65,9 +65,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var buttonStyleName = fco.findButtonStyleName(bsPropGroup);
-    buttonStyleName = buttonStyleName != null ? ': $buttonStyleName' : '';
-    return [
+     return [
       PNode /*Group*/ (
         snode: this,
         name: 'goto Page...',
@@ -128,7 +126,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       //   ),
       ButtonStylePNode /*Group*/ (
         snode: this,
-        name: 'buttonStyle$buttonStyleName',
+        name: 'buttonStyle',
         buttonStyleGroup: bsPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {

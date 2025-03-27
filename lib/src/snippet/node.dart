@@ -6,7 +6,6 @@ abstract class Node extends Object {
   @JsonKey(includeFromJson: false, includeToJson: false)
   Node? _parent;
 
-
   Node? getParent() => _parent;
   void setParent(Node? parentNode) => _parent = parentNode;
 
@@ -252,17 +251,21 @@ class PNodeTreeController extends TreeController<PNode> {
 
   set expandedNodes(Set<PNode> newSet) => _expandedNodesCache = newSet;
 
-  @override
-  bool getExpansionState(PNode node) => _expandedNodesCache?.contains(node) ?? false;
-
-  @override
-  void setExpansionState(PNode node, bool expanded) => expanded ? _expandedNodes.add(node) : _expandedNodes.remove(node);
-
   PNodeTreeController({
     required super.roots,
     required super.childrenProvider,
     super.parentProvider,
   });
+
+  @override
+  bool getExpansionState(PNode node) => _expandedNodesCache?.contains(node) ?? false;
+
+  @override
+  void setExpansionState(PNode node, bool expanded) {
+    expanded
+      ? _expandedNodes.add(node)
+      : _expandedNodes.remove(node);
+  }
 
   List<PNode> getExpandedNodes(PNode startingNode) {
     List<PNode> expandedNodes = [];
@@ -308,4 +311,5 @@ class PNodeTreeController extends TreeController<PNode> {
     }
     return entry.node;
   }
+
 }

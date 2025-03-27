@@ -170,7 +170,7 @@ class EditablePageState extends State<EditablePage> {
             Expanded(child: msvt),
             if (showPropertiesTree())
               Container(
-                width: 320,
+                width: 330,
                 color: Colors.purpleAccent[100],
                 child: _propertiesTree(),
               )
@@ -408,7 +408,7 @@ class EditablePageState extends State<EditablePage> {
                 //   children: [nodeButtons(context, scName)],
                 // ),
                 // NODE PROPERTIES TREE
-                if ((selectedNode?.pTreeC(context).roots.isEmpty) ?? false)
+                if ((selectedNode?.pTreeC(context, {}).roots.isEmpty) ?? false)
                   Material(
                     // color: Colors.purpleAccent[50],
                     child: fco.coloredText(
@@ -418,7 +418,7 @@ class EditablePageState extends State<EditablePage> {
                 Material(
                   color: Colors.blue[50],
                   child: PropertiesTreeView(
-                      treeC: FlutterContentApp.selectedNode!.pTreeC(context),
+                      treeC: FlutterContentApp.selectedNode!.pTreeC(context,{}),
                       sNode: FlutterContentApp.selectedNode!),
                 ),
                 // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),

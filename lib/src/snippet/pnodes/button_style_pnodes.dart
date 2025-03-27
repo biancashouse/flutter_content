@@ -60,9 +60,9 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
       TextStyleWithoutColorPNode(
         name: 'textStyle',
         textStyleProperties: buttonStyleGroup.tsPropGroup,
-        onGroupChange: (newTSGroup, _) {
+        onGroupChange: (newTSGroup, refreshPTree) {
           buttonStyleGroup.tsPropGroup = newTSGroup.clone();
-          // onGroupChange.call(buttonStyleGroup);
+          onGroupChange.call(buttonStyleGroup, true);
         },
         snode: super.snode,
       ),
@@ -195,6 +195,12 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
         ],
       ),
     ];
+  }
+
+  @override
+  String propertyLabel() {
+    var buttonStyleName = fco.findButtonStyleName(buttonStyleGroup);
+    return buttonStyleName != null ? '$name: $buttonStyleName' : name;
   }
 }
 

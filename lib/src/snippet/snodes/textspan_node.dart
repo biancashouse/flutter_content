@@ -56,7 +56,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       ),
       TextStylePNode /*Group*/ (
         snode: this,
-        name: 'textStyle$textStyleName',
+        name: 'textStyle',
         textStyleProperties: tsPropGroup,
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {
