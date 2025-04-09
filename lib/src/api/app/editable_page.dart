@@ -547,7 +547,7 @@ class EditablePageState extends State<EditablePage> {
               originalS: '',
               onTextChangedF: (String s) async {
                 if (kDebugMode && s != " ") return;
-                if (fco.editorPasswords.indexOf(s) != -1) {
+                if (!kDebugMode && fco.editorPasswords.indexOf(s) == -1) {
                   return;
                 }
                 // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;

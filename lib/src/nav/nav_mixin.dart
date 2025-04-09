@@ -20,7 +20,7 @@ mixin NavMixin {
                   value: 'create-sandbox-page',
                   child: RichText(
                     text: TextSpan(
-                      text: 'create your own ',
+                      text: 'create your own ', style: TextStyle(color:Colors.grey),
                       children: [
                         TextSpan(text: 'editable', style: TextStyle(color: Colors.purpleAccent)),
                         TextSpan(text: ' page'),
@@ -38,6 +38,8 @@ mixin NavMixin {
                   color: pencilIconColor,
                   size: 24,
                 ),
+                dropdownColor: Colors.white,
+                // focusColor: ,
                 onChanged: (value) {
                   switch (value) {
                     case 'sign-in-as-editor':
