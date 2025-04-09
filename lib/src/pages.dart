@@ -55,7 +55,7 @@ class _PagesState extends State<Pages> {
     );
 
     return ValueListenableBuilder<bool>(
-      valueListenable: fco.canEditContent,
+      valueListenable: fco.authenticated,
       builder: (context, value, child) {
         bool showPencil = !value;
         return Stack(

@@ -56,7 +56,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   bool get isAPageSnippet => routePath != null;
 
   VersionId? currentVersionId() =>
-      fco.canEditContent.value ? editingVersionId : publishedVersionId;
+      fco.authenticated.isTrue ? editingVersionId : publishedVersionId;
 
   Future<SnippetRootNode?> currentVersionFromCacheOrFB() async {
     SnippetRootNode? rootNode;

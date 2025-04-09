@@ -224,6 +224,7 @@ class FireStoreModelRepository implements IModelRepository {
     fco.logger.d('***********   saveAppInfo   ****************');
     fco.appInfo.textStyles = fco.namedTextStyles;
     fco.appInfo.buttonStyles = fco.namedButtonStyles;
+    fco.appInfo.containerStyles = fco.namedContainerStyles;
     var map = fco.appInfoAsMap;
     await appDocRef.set(
       map,

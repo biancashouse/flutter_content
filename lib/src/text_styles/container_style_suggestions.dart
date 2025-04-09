@@ -30,20 +30,22 @@ class ContainerStyleNameSuggestions extends StatelessWidget {
         //   anchorState.dismissSuggestionsOverlay();
         // },
         // child:
-        Container(
+        Container(height: 400,
       decoration: BoxDecoration(
         color: Colors.pinkAccent,
         borderRadius: getBorderRadius(),
       ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: getBorderRadius(),
-        child: Column(
-          children: suggestions.where((suggestion) {
-            return suggestion.contains(searchString) || searchString.isEmpty;
-          }).map((match) {
-            return _suggestedContainerStyleNameWidget(match);
-          }).toList(),
+      child: SingleChildScrollView(
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: getBorderRadius(),
+          child: Column(
+            children: (suggestions..sort()).where((suggestion) {
+              return suggestion.contains(searchString) || searchString.isEmpty;
+            }).map((match) {
+              return _suggestedContainerStyleNameWidget(match);
+            }).toList(),
+          ),
         ),
       ),
       // ),

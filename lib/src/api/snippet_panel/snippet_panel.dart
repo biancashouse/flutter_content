@@ -194,13 +194,14 @@ class SnippetPanelState extends State<SnippetPanel>
                 // SnippetRootNode? snippetRoot = cache?[editingVersionId];
 
                 bool playing = widget.justPlaying;
+                bool canEdit = fco.authenticated.isTrue;
 
                 Widget snippetWidget = Stack(
                   children: [
                     snippet.toWidget(futureContext, null),
                     if (!widget.justPlaying &&
                         !isPublishedVersion &&
-                        !fco.canEditContent.value)
+                        !canEdit)
                       Align(
                         alignment: Alignment.topLeft,
                         child: Container(
@@ -208,7 +209,7 @@ class SnippetPanelState extends State<SnippetPanel>
                             height: 6,
                             width: double.infinity),
                       ),
-                    if (!playing && fco.canEditContent.value)
+                    if (!playing && canEdit)
                       Align(
                           alignment: Alignment.topRight,
                           child: Tooltip(
@@ -239,7 +240,7 @@ class SnippetPanelState extends State<SnippetPanel>
                   ],
                 );
 
-                return fco.canEditContent.value
+                return canEdit
                     ? Banner(
                         message:
                             isPublishedVersion ? 'published' : 'not published',

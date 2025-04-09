@@ -14,6 +14,7 @@ class AppInfoModel with AppInfoModelMappable {
   Map<TextStyleName, TextStyleProperties> textStyles;
   Map<ButtonStyleName, ButtonStyleProperties> buttonStyles;
   Map<ContainerStyleName, ContainerStyleProperties> containerStyles;
+  List<String> sandboxPageNames;
 
   AppInfoModel({
     this.clipboard,
@@ -22,6 +23,7 @@ class AppInfoModel with AppInfoModelMappable {
     this.textStyles = const {},
     this.buttonStyles = const {},
     this.containerStyles = const {},
+    this.sandboxPageNames = const [],
   });
 }
 

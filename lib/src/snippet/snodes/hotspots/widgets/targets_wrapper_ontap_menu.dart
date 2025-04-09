@@ -105,7 +105,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
   }
 
   Future<void> createTarget(TapDownDetails details, bool withHotspot) async {
-    if (!fco.canEditContent.value) return;
+    if (!fco.authenticated.isTrue) return;
     SnippetName? snippetName = parentNode.rootNodeOfSnippet()?.name;
     if (snippetName == null) return;
 

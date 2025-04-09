@@ -6,20 +6,49 @@ mixin NavMixin {
   Widget NavigationDD({Color pencilIconColor = Colors.white}) =>
       StatefulBuilder(builder: (context, StateSetter setState) {
         return ValueListenableBuilder<bool>(
-          valueListenable: fco.canEditContent,
+          valueListenable: fco.authenticated,
           builder: (context, value, child) {
-            bool showPencil = !value;
+            bool showPencil = !fco.authenticated.isTrue;
             if (showPencil) {
-              return IconButton(
-                key: fco.signinIconGK,
-                  tooltip: 'sign in as a Content Editor',
-                  onPressed: () {
-                    // ask user to sign in as editor
-                    // setState(() {
-                    EditablePage.of(context)?.editorPasswordDialog();
-                    // });
-                  },
-                  icon: Icon(Icons.edit, color: pencilIconColor));
+              final dropdownItems = <DropdownMenuItem<String>>[];
+              dropdownItems.add(DropdownMenuItem<String>(
+                value: 'sign-in-as-editor',
+                child: Text('sign in as a Content editor'),
+              ));
+              dropdownItems.add(
+                DropdownMenuItem<String>(
+                  value: 'create-sandbox-page',
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'create your own ',
+                      children: [
+                        TextSpan(text: 'editable', style: TextStyle(color: Colors.purpleAccent)),
+                        TextSpan(text: ' page'),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+              return DropdownButton<String>(
+                // key: fco.authIconGK,
+                items: dropdownItems,
+                underline: Offstage(),
+                icon: Icon(
+                  Icons.edit,
+                  color: pencilIconColor,
+                  size: 24,
+                ),
+                onChanged: (value) {
+                  switch (value) {
+                    case 'sign-in-as-editor':
+                      EditablePage.of(context)?.editorPasswordDialog();
+                      break;
+                    default:
+                      EditablePage.of(context)?.userSandboxPageNameDialog();
+                      break;
+                  }
+                },
+              );
             } else {
               var pages = fco.pageList;
               final dropdownItems = <DropdownMenuItem<String>>[];

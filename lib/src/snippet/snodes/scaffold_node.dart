@@ -76,7 +76,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
 
     try {
       return ValueListenableBuilder<bool>(
-        valueListenable: fco.canEditContent,
+        valueListenable: fco.authenticated,
         builder: (context, value, child) {
           bool showPencil = !value;
           return Stack(

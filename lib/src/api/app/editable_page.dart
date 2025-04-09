@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,6 +9,7 @@ import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_vi
 import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
 import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
+import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
 class EditablePage extends StatefulWidget {
@@ -508,8 +511,9 @@ class EditablePageState extends State<EditablePage> {
     // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 
+  static final String cid_EditorPassword = "editor-password";
   void editorPasswordDialog() {
-    fco.registerKeystrokeHandler('editor-password', (KeyEvent event) {
+    fco.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
       final key = event.logicalKey.keyLabel;
 
       // if (event is KeyDownEvent) {
@@ -521,7 +525,7 @@ class EditablePageState extends State<EditablePage> {
       // }
 
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss("editor-password");
+        fco.dismiss(cid_EditorPassword);
       }
 
       return false;
@@ -543,8 +547,11 @@ class EditablePageState extends State<EditablePage> {
               originalS: '',
               onTextChangedF: (String s) async {
                 if (kDebugMode && s != " ") return;
-                if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
-                fco.dismiss("editor-password");
+                if (fco.editorPasswords.indexOf(s) != -1) {
+                  return;
+                }
+                // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
+                fco.dismiss(cid_EditorPassword);
                 fco.setCanEditContent(true);
                 // await FC.loadLatestSnippetMap();
                 // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
@@ -559,7 +566,7 @@ class EditablePageState extends State<EditablePage> {
                     const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
               },
               onEscapedF: (_) {
-                fco.dismiss("editor-password");
+                fco.dismiss(cid_EditorPassword);
               },
               dontAutoFocus: false,
               isPassword: true,
@@ -576,28 +583,195 @@ class EditablePageState extends State<EditablePage> {
         ],
       ),
       calloutConfig: CalloutConfig(
-          cId: "editor-password",
-          initialTargetAlignment: Alignment.bottomLeft,
-          initialCalloutAlignment: Alignment.topRight,
-          finalSeparation: 200,
+          cId: cid_EditorPassword,
+          // initialTargetAlignment: Alignment.bottomLeft,
+          // initialCalloutAlignment: Alignment.topRight,
+          // finalSeparation: 200,
           barrier: CalloutBarrierConfig(
             opacity: .5,
             onTappedF: () async {
-              fco.dismiss("editor-password");
+              fco.dismiss(cid_EditorPassword);
             },
           ),
           initialCalloutW: 240,
           initialCalloutH: 150,
           borderRadius: 12,
-          arrowType: ArrowType.THIN_REVERSED,
+          // arrowType: ArrowType.THIN_REVERSED,
           fillColor: Colors.white,
           scrollControllerName: widget.routePath,
           onDismissedF: () {
-            fco.removeKeystrokeHandler('editor-password');
+            fco.removeKeystrokeHandler(cid_EditorPassword);
           }),
-      targetGkF: ()=> fco.signinIconGK,
+      // targetGkF: ()=> fco.authIconGK,
     );
   }
+
+  static final String cid_UserSandboxPageName = "user-sandbox-page-name";
+  void userSandboxPageNameDialog() {
+    fco.registerKeystrokeHandler(cid_UserSandboxPageName, (KeyEvent event) {
+      if (event.logicalKey == LogicalKeyboardKey.escape) {
+        fco.dismiss(cid_UserSandboxPageName);
+      }
+      return false;
+    });
+    fco.showOverlay(
+      calloutContent: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          fco.purpleText('Create your own editable Page', fontSize: 24, family: 'Merriweather'),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            width: 480,
+            height: 100,
+            child: StringEditor_T(
+              inputType: String,
+              prompt: () => 'Page name',
+              originalS: '',
+              onTextChangedF: (String s) async {
+              },
+              onEscapedF: (_) {
+                fco.dismiss(cid_UserSandboxPageName);
+              },
+              dontAutoFocus: false,
+              onEditingCompleteF: (s) async {
+                String pageName = s.replaceAll(' ', '-').toLowerCase();
+                pageName = pageName.startsWith('/') ? pageName : '/$pageName';
+                // add to appInfo
+                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+                  // jsArray issue
+                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
+                  newList.add(pageName);
+                  fco.appInfo.sandboxPageNames = newList;
+                  await fco.modelRepo.saveAppInfo();
+                }
+                if (context.mounted) {
+                  context.go(pageName);
+                }
+                return;
+                fco.dismiss(cid_UserSandboxPageName);
+                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+                  // jsArray issue
+                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
+                  newList.add(pageName);
+                  fco.appInfo.sandboxPageNames = newList;
+                  await fco.modelRepo.saveAppInfo();
+
+                  final rootNode = SnippetTemplateEnum.empty.clone()
+                    ..name = pageName;
+                  SnippetRootNode
+                      .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                    snippetName: pageName,
+                    snippetRootNode: rootNode,
+                  ).then((_) {
+                    fco.afterNextBuildDo(() {
+                      // SnippetInfoModel.snippetInfoCache;
+                      //fco.router.push(pageName);
+                      // router.go('/');
+                      // TODO - tell user to visit /#/ + pageName
+                    });
+                  });
+                } else {
+                  FlutterContentApp.capiBloc.add(
+                      const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                  context.replace(pageName);
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+      calloutConfig: CalloutConfig(
+          cId: cid_UserSandboxPageName,
+          // initialTargetAlignment: Alignment.bottomLeft,
+          // initialCalloutAlignment: Alignment.topRight,
+          // finalSeparation: 200,
+          barrier: CalloutBarrierConfig(
+            opacity: .5,
+            onTappedF: () async {
+              fco.dismiss(cid_UserSandboxPageName);
+            },
+          ),
+          initialCalloutW: 500,
+          initialCalloutH: 180,
+          borderRadius: 12,
+          // arrowType: ArrowType.THIN_REVERSED,
+          fillColor: Colors.white,
+          scrollControllerName: widget.routePath,
+          onDismissedF: () {
+            fco.removeKeystrokeHandler(cid_UserSandboxPageName);
+          }),
+      // targetGkF: ()=> fco.authIconGK,
+    );
+  }
+
+  // if not signed in, shows a pencil icon leading to a dropdown,
+  // otherwise, shows a list of routes user can navigate to
+  // Widget authDD({Color pencilIconColor = Colors.white}) =>
+  //     StatefulBuilder(builder: (context, StateSetter setState) {
+  //       return ValueListenableBuilder<bool>(
+  //         valueListenable: fco.authenticated,
+  //         builder: (context, value, child) {
+  //           if (!fco.authenticated.isTrue) {
+  //             final dropdownItems = <DropdownMenuItem<String>>[];
+  //             dropdownItems.add(DropdownMenuItem<String>(
+  //               value: 'sign-in as a Content Editor',
+  //               child: TextButton(
+  //                 onPressed: ()=>EditablePage.of(context)?.editorPasswordDialog(),
+  //                 child: Text('sign in as a Content editor',),
+  //             ));
+  //             dropdownItems.add(DropdownMenuItem<String>(
+  //               value: 'create a Sandbox page',
+  //               child: TextButton(
+  //                 onPressed: () {
+  //                 },
+  //                 child: Text('create our own (sandbox) page',),
+  //               ),
+  //             ));
+  //             return DropdownButton<String>(
+  //               items: dropdownItems,
+  //               underline: Offstage(),
+  //               icon: Icon(
+  //                 Icons.edit,
+  //                 color: Colors.black,
+  //                 size: 24,
+  //               ),
+  //               onChanged: (_) {},
+  //             );
+  //           } else {
+  //             var pages = fco.pageList;
+  //             final dropdownItems = <DropdownMenuItem<String>>[];
+  //             dropdownItems.add(DropdownMenuItem<String>(
+  //               value: 'sign-out',
+  //               child: _signOutBtn(),
+  //             ));
+  //             for (String pagePath in pages) {
+  //               // skip currentPath
+  //               final String currentPath =
+  //               GoRouterState.of(context).uri.toString();
+  //               if (pagePath != currentPath) {
+  //                 dropdownItems.add(DropdownMenuItem<String>(
+  //                   value: pagePath,
+  //                   child: _pageNavBtn(context, pagePath, setState),
+  //                 ));
+  //               }
+  //             }
+  //             final dd = DropdownButton<String>(
+  //               items: dropdownItems,
+  //               underline: Offstage(),
+  //               icon: Icon(
+  //                 Icons.more_vert,
+  //                 color: Colors.red,
+  //                 size: 24,
+  //               ),
+  //               onChanged: (_) {},
+  //             );
+  //             return dd;
+  //           }
+  //         },
+  //       );
+  //     });
 
   void revertToVersion(
       VersionId? versionId, SnippetInfoModel snippetInfo, CAPIState state) {

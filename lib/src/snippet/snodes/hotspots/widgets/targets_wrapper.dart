@@ -60,7 +60,7 @@ class TargetsWrapper extends StatefulWidget {
   static void configureTarget(
       TargetModel tc, Rect wrapperRect, ScrollControllerName? scName,
       {bool quickly = false}) {
-    if (!fco.canEditContent.value) return;
+    if (!fco.authenticated.isTrue) return;
 
     if (tc.targetsWrapperState() == null) return;
 
@@ -223,7 +223,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           if (mounted) {
             measureIWPosAndSize();
             // autoplay callouts when not in editing mode
-            if (!fco.canEditContent.value) {
+            if (!fco.authenticated.isTrue) {
               fco.afterNextBuildDo(() {
                 for (TargetModel tc in widget.parentNode.targets) {
                   if (!tc.hasAHotspot()) {
@@ -338,7 +338,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   child: GestureDetector(
                     onTapDown: (TapDownDetails details) async {
                       // ignore if not in editing mode or if currently showing config toolbar
-                      if (!fco.canEditContent.value ||
+                      if (!fco.authenticated.isTrue ||
                           fco.anyPresent([CalloutConfigToolbar.CID]) ||
                           FlutterContentApp.snippetBeingEdited != null) {
                         return;
@@ -412,7 +412,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 child: Visibility.maintain(
                   key: fco.setTargetGk(tc.uid,
                       GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
-                  visible: fco.canEditContent.value &&
+                  visible: fco.authenticated.isTrue &&
                       (playingTc == null || playingTc == tc),
                   child: TargetCover(
                     tc,
@@ -474,7 +474,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
     // return child;
     return IgnorePointer(
-      ignoring: false, //fco.canEditContent.value,
+      ignoring: false, //fco.canEditContent.isTrue,
       child: child,
     );
   }

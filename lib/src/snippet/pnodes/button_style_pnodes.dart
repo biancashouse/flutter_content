@@ -188,12 +188,13 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
             },
             calloutButtonSize: const Size(130, 20),
           ),
-          ButtonStyleSavePNode(
-            snode: super.snode,
-            name: 'save ButtonStyle',
-          ),
         ],
       ),
+      ButtonStyleSavePNode(
+        snode: super.snode,
+        name: 'save ButtonStyle',
+        onGroupChange: onGroupChange,
+      )
     ];
   }
 
@@ -247,9 +248,12 @@ class ButtonStyleSearchPNode extends PNode {
 }
 
 class ButtonStyleSavePNode extends PNode {
+  final ButtonStylePropertiesChangeCallback onGroupChange;
+
   ButtonStyleSavePNode /*Group*/ ({
     required super.name,
     required super.snode,
+    required this.onGroupChange,
   });
 
   @override
@@ -265,27 +269,20 @@ class ButtonStyleSavePNode extends PNode {
         focusNode: FocusNode(),
         onChangeF: (s) {},
         onEditingCompleteF: () async {
-          String bsName = teC.text;
-          fco.namedButtonStyles[bsName] =
-              snode.buttonStyleProperties()!.clone();
-          fco.appInfo.buttonStyles = fco.namedButtonStyles;
-          await fco.modelRepo.saveAppInfo();
-          fco.showToast(
-            calloutConfig: CalloutConfig(
-              cId: "saved-button-style",
-              gravity: Alignment.topCenter,
-              fillColor: Colors.yellow,
-              initialCalloutW: fco.scrW * .8,
-              initialCalloutH: 40,
-              scrollControllerName: null,
-            ),
-            calloutContent: Padding(
-              padding: const EdgeInsets.all(10),
-              child: fco.coloredText('Saved ButtonStyle as "$bsName".',
-                  color: Colors.blueAccent),
-            ),
-            removeAfterMs: 2000,
-          );
+          final bsName = teC.text;
+          if (bsName.isNotEmpty) {
+            ButtonStyleProperties? bsGroup = snode.buttonStyleProperties();
+            if (bsGroup != null) {
+              fco.namedButtonStyles[bsName] = bsGroup.clone();
+              await fco.modelRepo.saveAppInfo();
+              fco.showToastBlueOnYellow(
+                cId: 'saved-button-style',
+                msg: "Button Style '$bsName' saved",
+                removeAfterMs: 3500,
+              );
+              onGroupChange.call(bsGroup, false);
+            }
+          }
         },
         label: 'Save style as',
         tooltip: 'save button style as...',

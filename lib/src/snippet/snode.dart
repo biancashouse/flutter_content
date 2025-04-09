@@ -4,6 +4,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
+import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -232,6 +233,8 @@ abstract class SNode extends Node with SNodeMappable {
   void setTextStyleProperties(TextStyleProperties newProps) {}
   ButtonStyleProperties? buttonStyleProperties() => null;
   void setButtonStyleProperties(ButtonStyleProperties newProps) {}
+  ContainerStyleProperties? containerStyleProperties() => null;
+  void setContainerStyleProperties(ContainerStyleProperties newProps) {}
 
   // // selection always uses this gk
   // static GlobalKey get selectedWidgetGK {

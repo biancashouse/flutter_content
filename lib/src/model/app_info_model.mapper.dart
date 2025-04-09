@@ -49,6 +49,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static const Field<AppInfoModel, Map<String, ContainerStyleProperties>>
       _f$containerStyles =
       Field('containerStyles', _$containerStyles, opt: true, def: const {});
+  static List<String> _$sandboxPageNames(AppInfoModel v) => v.sandboxPageNames;
+  static const Field<AppInfoModel, List<String>> _f$sandboxPageNames =
+      Field('sandboxPageNames', _$sandboxPageNames, opt: true, def: const []);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -58,6 +61,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #textStyles: _f$textStyles,
     #buttonStyles: _f$buttonStyles,
     #containerStyles: _f$containerStyles,
+    #sandboxPageNames: _f$sandboxPageNames,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -67,7 +71,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         snippetNames: data.dec(_f$snippetNames),
         textStyles: data.dec(_f$textStyles),
         buttonStyles: data.dec(_f$buttonStyles),
-        containerStyles: data.dec(_f$containerStyles));
+        containerStyles: data.dec(_f$containerStyles),
+        sandboxPageNames: data.dec(_f$sandboxPageNames));
   }
 
   @override
@@ -142,13 +147,16 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       ContainerStyleProperties,
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
           ContainerStyleProperties>> get containerStyles;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get sandboxPageNames;
   $R call(
       {SNode? clipboard,
       bool? autoPublishDefault,
       List<String>? snippetNames,
       Map<String, TextStyleProperties>? textStyles,
       Map<String, ButtonStyleProperties>? buttonStyles,
-      Map<String, ContainerStyleProperties>? containerStyles});
+      Map<String, ContainerStyleProperties>? containerStyles,
+      List<String>? sandboxPageNames});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -198,20 +206,28 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       (v, t) => v.copyWith.$chain(t),
       (v) => call(containerStyles: v));
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get sandboxPageNames => ListCopyWith(
+          $value.sandboxPageNames,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(sandboxPageNames: v));
+  @override
   $R call(
           {Object? clipboard = $none,
           bool? autoPublishDefault,
           List<String>? snippetNames,
           Map<String, TextStyleProperties>? textStyles,
           Map<String, ButtonStyleProperties>? buttonStyles,
-          Map<String, ContainerStyleProperties>? containerStyles}) =>
+          Map<String, ContainerStyleProperties>? containerStyles,
+          List<String>? sandboxPageNames}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
         if (snippetNames != null) #snippetNames: snippetNames,
         if (textStyles != null) #textStyles: textStyles,
         if (buttonStyles != null) #buttonStyles: buttonStyles,
-        if (containerStyles != null) #containerStyles: containerStyles
+        if (containerStyles != null) #containerStyles: containerStyles,
+        if (sandboxPageNames != null) #sandboxPageNames: sandboxPageNames
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
@@ -221,7 +237,9 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       snippetNames: data.get(#snippetNames, or: $value.snippetNames),
       textStyles: data.get(#textStyles, or: $value.textStyles),
       buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles),
-      containerStyles: data.get(#containerStyles, or: $value.containerStyles));
+      containerStyles: data.get(#containerStyles, or: $value.containerStyles),
+      sandboxPageNames:
+          data.get(#sandboxPageNames, or: $value.sandboxPageNames));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

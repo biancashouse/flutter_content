@@ -130,7 +130,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                       return Stack(
                         children: [
                           snippetWidget,
-                          if (showTriangle && fco.canEditContent.value)
+                          if (showTriangle && fco.authenticated.isTrue)
                             Align(
                                 alignment: Alignment.topRight,
                                 child: Tooltip(
@@ -156,7 +156,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                         ],
                       );
                     });
-                return fco.canEditContent.value
+                return fco.authenticated.isTrue
                     ? Banner(
                         message:
                             isPublishedVersion ? 'published' : 'not published',

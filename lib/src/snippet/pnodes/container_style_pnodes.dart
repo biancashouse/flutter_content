@@ -167,6 +167,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
       ContainerStyleSavePNode(
         snode: super.snode,
         name: 'save Container style',
+        onGroupChange: onGroupChange,
       )
     ];
   }
@@ -223,9 +224,12 @@ class ContainerStyleSearchPNode extends PNode {
 }
 
 class ContainerStyleSavePNode extends PNode {
+  final ContainerStylePropertiesChangeCallback onGroupChange;
+
   ContainerStyleSavePNode /*Group*/ ({
     required super.name,
     required super.snode,
+    required this.onGroupChange,
   });
 
   @override
@@ -240,8 +244,22 @@ class ContainerStyleSavePNode extends PNode {
         teC: teC,
         focusNode: FocusNode(),
         onChangeF: (s) {},
-        onEditingCompleteF: () {
-          fco.dismissTopFeature();
+        onEditingCompleteF: () async {
+          final csName = teC.text;
+          if (csName.isNotEmpty) {
+            ContainerStyleProperties? csGroup =
+                snode.containerStyleProperties();
+            if (csGroup != null) {
+              fco.namedContainerStyles[csName] = csGroup.clone();
+              await fco.modelRepo.saveAppInfo();
+              fco.showToastBlueOnYellow(
+                cId: 'saved-container-style',
+                msg: "Container Style '$csName' saved",
+                removeAfterMs: 3500,
+              );
+              onGroupChange.call(csGroup, false);
+            }
+          }
         },
         label: 'Save style as',
         tooltip: 'save Container style as...',

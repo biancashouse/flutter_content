@@ -75,7 +75,7 @@ Future<void> showSnippetContentCallout({
       child: content());
 
   Widget possiblyEditableContent() =>
-      fco.canEditContent.value && !justPlaying ? editableContent() : content();
+      fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
 
   fco.showOverlay(
     // zoomer: zoomer,

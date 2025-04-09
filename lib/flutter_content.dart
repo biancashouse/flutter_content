@@ -11,6 +11,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/button_styles.dart';
 import 'package:flutter_content/container_styles.dart';
 import 'package:flutter_content/google_font_names.dart';
+import 'package:flutter_content/src/can-edit-content.dart';
 
 // import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart'
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
 import 'package:flutter_content/text_styles.dart';
+import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
@@ -274,7 +276,7 @@ class FlutterContentMixins
       // },
       errorBuilder: (context, state) {
         if (state.matchedLocation == '/pages') {
-          if (fco.canEditContent.value) {
+          if (fco.authenticated.isTrue) {
             return Pages();
           } else {
             return AlertDialog(
@@ -282,8 +284,9 @@ class FlutterContentMixins
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(40),
                 child: fco.coloredText(
-                    'Viewing the Page list:\nYou must be signed in as an editor !',
-                    color: Colors.red),
+                  'Viewing the Page list:\nYou must be signed in as an editor !',
+                  color: Colors.red,
+                ),
               ),
             );
           }
@@ -293,7 +296,7 @@ class FlutterContentMixins
             appInfo.snippetNames.contains(state.matchedLocation);
         if (dynamicPageExists) {
           EditablePage.removeAllNodeWidgetOverlays();
-          fco.dismiss('exit-editMode');
+          // fco.dismiss('exit-editMode');
           final snippetName = state.matchedLocation;
           final rootNode = SnippetTemplateEnum.empty.clone()
             ..name = snippetName;
@@ -313,66 +316,102 @@ class FlutterContentMixins
           return dynamicPage;
         }
         // page doesn't exist yet
-        return canEditContent.value
-            ? AlertDialog(
-                title: const Text('Page does not Exist !'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: const <Widget>[
-                      Text('Want to create it now ?'),
-                    ],
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Cancel'),
-                    onPressed: () {
-                      context.replace('/');
-                    },
-                  ),
-                  TextButton(
-                    child: Text('Yes, Create page ${state.matchedLocation}'),
-                    onPressed: () {
-                      final String destUrl = state.matchedLocation;
-                      EditablePage.removeAllNodeWidgetOverlays();
-                      fco.dismiss('exit-editMode');
-                      // bool userCanEdit = canEditContent.value;
-                      final snippetName = destUrl;
-                      final rootNode = SnippetTemplateEnum.empty.clone()
-                        ..name = snippetName;
-                      SnippetRootNode
-                          .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                        snippetName: snippetName,
-                        snippetRootNode: rootNode,
-                      ).then((_) {
-                        afterNextBuildDo(() {
-                          // SnippetInfoModel.snippetInfoCache;
-                          router.push(state.matchedLocation);
-                          // router.go('/');
-                        });
-                      });
-                    },
-                  ),
+        // editor can ask to create it
+        if (authenticated.isTrue) {
+          return AlertDialog(
+            title: Text('Page "${state.matchedLocation}" does not Exist !'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('Want to create it now ?'),
                 ],
-              )
-            : AlertDialog(
-                title: const Text('Page does not Exist !'),
-                content: SingleChildScrollView(
-                  child: ListBody(
-                    children: const <Widget>[
-                      Text('You can sign in as an editor to create it.'),
-                    ],
-                  ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Yes, Create page ${state.matchedLocation}'),
+                onPressed: () {
+                  final String destUrl = state.matchedLocation;
+                  EditablePage.removeAllNodeWidgetOverlays();
+                  // fco.dismiss('exit-editMode');
+                  // bool userCanEdit = canEditContent.isTrue;
+                  final snippetName = destUrl;
+                  final rootNode = SnippetTemplateEnum.empty.clone()
+                    ..name = snippetName;
+                  SnippetRootNode
+                      .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                    snippetName: snippetName,
+                    snippetRootNode: rootNode,
+                  ).then((_) {
+                    afterNextBuildDo(() {
+                      // SnippetInfoModel.snippetInfoCache;
+                      router.push(destUrl);
+                      // router.go('/');
+                    });
+                  });
+                },
+              ),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  context.go('/');
+                },
+              ),
+            ],
+          );
+        }
+
+        // a sandbox page has been created
+        if (fco.appInfo.sandboxPageNames.contains(state.matchedLocation)) {
+          final String destUrl = state.matchedLocation;
+          EditablePage.removeAllNodeWidgetOverlays();
+          // fco.dismiss('exit-editMode');
+          // bool userCanEdit = canEditContent.isTrue;
+          final snippetName = destUrl;
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            snippetRootNode: rootNode,
+          ).then((_) {
+            afterNextBuildDo(() {
+              // SnippetInfoModel.snippetInfoCache;
+              router.push(destUrl);
+              // router.go('/');
+            });
+          });
+        }
+
+        return AlertDialog(
+          title: const Text('Page does not Exist !'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text('You must be signed in as an editor to create this page.'),
+                    Gap(10),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go('/');
+                      },
+                      child: const Text('ok'),
+                    ),
+                  ],
                 ),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('ok'),
-                    onPressed: () {
-                      context.replace('/');
-                    },
-                  ),
-                ],
-              );
+              ],
+            ),
+          ),
+          // actions: <Widget>[
+          //   TextButton(
+          //     child: const Text('ok'),
+          //     onPressed: () {
+          //       context.go('/');
+          //     },
+          //   ),
+          // ],
+        );
       },
       observers: [
         GoRouterObserver(),
@@ -417,8 +456,8 @@ class FlutterContentMixins
         namedButtonStyles.addAll(_appInfo.buttonStyles);
         namedContainerStyles.addAll(cannedContainerStyles());
         namedContainerStyles.addAll(_appInfo.containerStyles);
-        if (cannedButtonStyles().length != _appInfo.buttonStyles.length
-        || cannedTextStyles().length != _appInfo.textStyles.length) {
+        if (cannedButtonStyles().length != _appInfo.buttonStyles.length ||
+            cannedTextStyles().length != _appInfo.textStyles.length) {
           await modelRepo.saveAppInfo();
         }
       } catch (e) {
@@ -448,7 +487,7 @@ class FlutterContentMixins
     // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
     bool b = localStorage.read("canEditContent") ?? false;
-    canEditContent = ValueNotifier<bool>(b);
+    authenticated = CanEditContentVN(b);
 
     // FutureBuilder requires this return
     CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
@@ -486,9 +525,9 @@ class FlutterContentMixins
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
-  late ValueNotifier<bool> canEditContent;
+  late CanEditContentVN authenticated;
 
-  GlobalKey signinIconGK = GlobalKey();
+  GlobalKey authIconGK = GlobalKey();
 
   final snippetTreeTC = TransformationController();
 
@@ -508,10 +547,14 @@ class FlutterContentMixins
 
     routes(routingConfigVN.value.routes);
 
-    return allRoutes.map((route) {
-      String path = (route as GoRoute).path;
-      return path.startsWith('/') ? path : '/$path';
-    }).toList();
+    return allRoutes
+        .map((route) {
+          String path = (route as GoRoute).path;
+          return path.startsWith('/') ? path : '/$path';
+        })
+        .toList()
+        .where((routePath) => !appInfo.sandboxPageNames.contains(routePath))
+        .toList();
   }
 
   void addSubRoute({
@@ -722,7 +765,7 @@ class FlutterContentMixins
       ));
 
   Future<void> setCanEditContent(bool b) async {
-    canEditContent.value = b;
+    authenticated.value = b;
     return await localStorage.write("canEditContent", b);
   }
 
@@ -756,7 +799,7 @@ class FlutterContentMixins
 
   // if a page has a scrollable, its offset can be stored in this map to avoid rebuild losing it
   // final Map<String, double> scrollControllerOffsets = {};
-  String? currentRoute;
+  // String? currentRoute;
 
   // every node's toWidget() creates a (resusable) GK
   // knowing a node's GK you can establish it ScrolController? or TabController?
@@ -921,8 +964,7 @@ class FlutterContentMixins
           namedCSProps.padding == props.padding &&
           namedCSProps.margin == props.margin &&
           namedCSProps.fillColorValues == props.fillColorValues &&
-          namedCSProps.gap == props.gap
-      ) {
+          namedCSProps.gap == props.gap) {
         return csName;
       }
     }

@@ -69,6 +69,13 @@ class ContainerNode extends SC with ContainerNodeMappable {
   });
 
   @override
+  ContainerStyleProperties? containerStyleProperties() => csPropGroup;
+
+  @override
+  void setContainerStyleProperties(ContainerStyleProperties newProps) =>
+      csPropGroup = newProps;
+
+  @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
 
     // String paddingLabel = padding == null

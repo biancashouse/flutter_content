@@ -42,7 +42,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
         FYIPNode(
             label: "about TabBar button text colour...",
             msg:
-            "TabBar's selected and unselected\ncolors define the text color",
+                "TabBar's selected and unselected\ncolors define the text color",
             snode: snode,
             name: 'fyi'),
       FontFamilyPNode(
@@ -115,6 +115,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
       TextStyleSavePNode(
         snode: super.snode,
         name: 'save TextStyle',
+        onGroupChange: onGroupChange,
       ),
     ];
   }
@@ -124,7 +125,6 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
     var textStyleName = fco.findTextStyleName(textStyleProperties);
     return textStyleName != null ? '$name: $textStyleName' : name;
   }
-
 }
 
 class TextStylePNode /*Group*/ extends TextStyleWithoutColorPNode /*Group*/ {
@@ -190,9 +190,12 @@ class TextStyleSearchPNode extends PNode {
 }
 
 class TextStyleSavePNode extends PNode {
+  final TextStylePropertiesChangeCallback onGroupChange;
+
   TextStyleSavePNode /*Group*/ ({
     required super.name,
     required super.snode,
+    required this.onGroupChange,
   });
 
   @override
@@ -207,10 +210,23 @@ class TextStyleSavePNode extends PNode {
         teC: teC,
         focusNode: FocusNode(),
         onChangeF: (s) {},
-        onEditingCompleteF: () {
+        onEditingCompleteF: () async {
           // StyleNameSearchAnchor.of(context)
           //     ?.dismissSuggestionsOverlay();
-          fco.dismissTopFeature();
+          final tsName = teC.text;
+          if (tsName.isNotEmpty) {
+            TextStyleProperties? tsGroup = snode.textStyleProperties();
+            if (tsGroup != null) {
+              fco.namedTextStyles[tsName] = tsGroup.clone();
+              await fco.modelRepo.saveAppInfo();
+              fco.showToastBlueOnYellow(
+                cId: 'saved-text-style',
+                msg: "Text Style '$tsName' saved",
+                removeAfterMs: 3500,
+              );
+              onGroupChange.call(tsGroup, false);
+            }
+          }
         },
         label: 'Save style as',
         tooltip: 'save text style as...',
