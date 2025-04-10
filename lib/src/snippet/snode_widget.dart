@@ -72,10 +72,7 @@ class SNodeWidget extends StatelessWidget {
                   onLongPress: () {
                     _longPressedNode(context, targetGK, entry.node);
                   },
-                  child: Image.asset(
-                    fco.asset('lib/assets/images/pub.dev.png'),
-                    width: 16,
-                  ),
+                  child: entry.node.widgetLogo(),
                 ),
               Gap(8),
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),

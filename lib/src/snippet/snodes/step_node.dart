@@ -66,7 +66,10 @@ class StepNode extends CL with StepNodeMappable {
   List<Type> wrapWithOnly() => [StepperNode];
 
   @override
-  List<Type> insertSiblingOnly() => [StepNode];
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
 
   @override
   String toString() => FLUTTER_TYPE;

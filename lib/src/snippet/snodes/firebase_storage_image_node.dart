@@ -192,5 +192,11 @@
 //   @override
 //   String toString() => FLUTTER_TYPE;
 //
+// @override
+// Widget? logoSrc() => Image.asset(
+//   fco.asset('lib/assets/images/pub.dev.png'),
+//   width: 16,
+// );
+//
 //   static const String FLUTTER_TYPE = "FS Image";
 // }

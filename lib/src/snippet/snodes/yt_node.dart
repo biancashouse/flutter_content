@@ -140,10 +140,10 @@ class YTNode extends CL with YTNodeMappable {
   // }
 
   @override
-  Widget? logoSrc() => const Row(children: [
-        Icon(Icons.link),
-        Gap(6),
-      ]);
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
 
   @override
   String toString() => FLUTTER_TYPE;

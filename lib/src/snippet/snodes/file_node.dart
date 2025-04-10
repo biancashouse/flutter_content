@@ -139,7 +139,10 @@ class FileNode extends CL with FileNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   @override
-  Widget? logoSrc() => null;
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
 
   static const String FLUTTER_TYPE = "File";
 }

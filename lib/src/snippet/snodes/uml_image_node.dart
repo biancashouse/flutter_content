@@ -171,6 +171,12 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   // }
 
   @override
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
+
+  @override
   List<Type> wrapWithRecommendations() => [CarouselNode];
 
   @override

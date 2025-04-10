@@ -116,7 +116,10 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   List<Type> wrapWithOnly() => [PollNode];
 
   @override
-  List<Type> insertSiblingOnly() => [PollOptionNode];
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
 
   @override
   String toString() => FLUTTER_TYPE;

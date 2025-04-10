@@ -173,6 +173,12 @@ class AlgCNode extends CL with AlgCNodeMappable {
   List<Type> wrapWithRecommendations() => [CarouselNode];
 
   @override
+  Widget? widgetLogo() => Image.asset(
+      fco.asset('lib/assets/images/pub.dev.png'),
+      width: 16,
+  );
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Algorithm";

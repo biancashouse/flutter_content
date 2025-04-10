@@ -129,7 +129,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   @override
-  Widget? logoSrc() => null;
+  bool get is3rdParty => true;
 
   @override
   bool canBeDeleted() => children.isEmpty;

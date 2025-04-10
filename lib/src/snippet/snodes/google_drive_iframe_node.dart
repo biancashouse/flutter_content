@@ -193,7 +193,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   @override
-  Widget? logoSrc() => Image.asset(
+  Widget? widgetLogo() => Image.asset(
         fco.asset('lib/assets/images/google-icons/google-drive-icon.webp'),
         width: 24,
       );

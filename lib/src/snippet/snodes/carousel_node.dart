@@ -182,6 +182,12 @@ class CarouselNode extends MC with CarouselNodeMappable {
   // List<Type> addChildOnly() => [AssetImageNode, FSImageNode];
 
   @override
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "Carousel";

@@ -163,6 +163,8 @@ enum NodeAction {
 abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
 
+  Widget? widgetLogo() => FlutterLogo(size: 20,);
+
   // GlobalKey? gk;
   PNodeTreeController? _pTreeC;
   ScrollController? _propertiesPaneSC;

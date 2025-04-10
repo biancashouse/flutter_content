@@ -87,12 +87,10 @@ class FlutterDocPNode extends PNode {
       width: 290,
       padding: const EdgeInsets.all(10.0),
       child: ElevatedButton.icon(
-        icon: FlutterLogo(
-          size: 20,
-        ),
+        icon: snode.widgetLogo(),
         iconAlignment: IconAlignment.start,
         style: ButtonStyle(
-          backgroundColor: WidgetStatePropertyAll(Colors.yellow),
+          backgroundColor: WidgetStatePropertyAll(Colors.white),
           foregroundColor: WidgetStatePropertyAll(Colors.black),
         ),
         onPressed: () async {
@@ -100,7 +98,12 @@ class FlutterDocPNode extends PNode {
             launchUrlString(webLink!);
           }
         },
-        label: Text(buttonLabel!),
+        label: Row(
+          children: [
+            Text("${buttonLabel??'?'} doc "),
+            Icon(Icons.open_in_new_rounded)
+          ],
+        ),
       ),
     );
   }

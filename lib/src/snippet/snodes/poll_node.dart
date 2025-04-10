@@ -165,6 +165,12 @@ class PollNode extends MC with PollNodeMappable {
   }
 
   @override
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
+
+  @override
   String toSource(BuildContext context) => '';
 
   @override
