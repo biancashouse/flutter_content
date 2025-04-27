@@ -9,6 +9,7 @@ class SNodeWidget extends StatelessWidget {
   final SnippetTreeController treeController;
   final TreeEntry<SNode> entry;
   final bool onClipboard;
+
   // final bool allowButtonCallouts;
   final ScrollControllerName? scName;
 
@@ -134,6 +135,9 @@ class SNodeWidget extends StatelessWidget {
         _tappedNode();
       },
       onLongPress: () {
+        _longPressedNode(context, targetGK, entry.node);
+      },
+      onSecondaryTap: () {
         _longPressedNode(context, targetGK, entry.node);
       },
       child: entry.node is DirectoryNode

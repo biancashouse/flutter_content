@@ -2,7 +2,9 @@
 
 import 'dart:async';
 
+import 'package:context_menus/context_menus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -243,10 +245,22 @@ class FlutterContentAppState extends State<FlutterContentApp>
       SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     }
 
+    if (kIsWeb) {
+      BrowserContextMenu.disableContextMenu();
+    }
+
     // see conditional imports for web or mobile
     registerWebViewImplementation();
 
     fInitApp = _initApp();
+  }
+
+  @override
+  void dispose() {
+    if (kIsWeb) {
+      BrowserContextMenu.enableContextMenu();
+    }
+    super.dispose();
   }
 
   // @override
@@ -313,16 +327,18 @@ class FlutterContentAppState extends State<FlutterContentApp>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
-            return BlocProvider<CAPIBloC>(
-              create: (BuildContext context) => snapshot.data!,
-              child: MaterialApp.router(
-                routerConfig: fco.router,
-                theme: widget.materialAppThemeF(),
-                darkTheme: ThemeData.dark(),
-                // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
-                debugShowCheckedModeBanner: false,
-                title: widget.title,
-                scrollBehavior: const ConstantScrollBehavior(),
+            return ContextMenuOverlay(
+              child: BlocProvider<CAPIBloC>(
+                create: (BuildContext context) => snapshot.data!,
+                child: MaterialApp.router(
+                  routerConfig: fco.router,
+                  theme: widget.materialAppThemeF(),
+                  darkTheme: ThemeData.dark(),
+                  // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
+                  debugShowCheckedModeBanner: false,
+                  title: widget.title,
+                  scrollBehavior: const ConstantScrollBehavior(),
+                ),
               ),
             );
           } else {
