@@ -11,6 +11,7 @@ import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/button_styles.dart';
 import 'package:flutter_content/container_styles.dart';
 import 'package:flutter_content/google_font_names.dart';
+import 'package:flutter_content/src/api/app/callout_content_editable_page.dart';
 import 'package:flutter_content/src/can-edit-content.dart';
 
 // import 'package:flutter_content/flutter_content.dart';
@@ -20,6 +21,8 @@ import 'package:flutter_content/src/route_observer.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/center_node.dart';
+import 'package:flutter_content/src/snippet/snodes/text_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
@@ -80,6 +83,8 @@ export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
 export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/editable_page.dart';
 export 'src/api/app/editable_page_route.dart';
+export 'src/api/app/callout_content_editable_page_route.dart';
+export 'src/api/app/callout_content_editable_page.dart';
 export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
@@ -275,7 +280,10 @@ class FlutterContentMixins
       //   router.go('/404', extra: state.uri.toString());
       // },
       errorBuilder: (context, state) {
-        if (state.matchedLocation == '/pages') {
+        String matchedLocation = state.matchedLocation;
+        var param = state.pathParameters;
+
+        if (matchedLocation == '/pages') {
           if (fco.authenticated.isTrue) {
             return Pages();
           } else {
@@ -291,13 +299,44 @@ class FlutterContentMixins
             );
           }
         }
-        // may have been created
-        bool dynamicPageExists =
-            appInfo.snippetNames.contains(state.matchedLocation);
+        // may have already been created (incl content callout snippets)
+
+        final snippetNames = appInfo.snippetNames;
+        bool dynamicPageExists = snippetNames.contains(matchedLocation);
+        // bool contains(list, key) {
+        //   for (String s in list) {
+        //     print('$s, $key');
+        //     if (s == key)
+        //       return true;
+        //   }
+        //   return false;
+        // }
+        // dynamicPageExists = contains(snippetNames,matchedLocation);
+        // may still exists if the matchedLocation is in the form: / + callout content id
+        if (!dynamicPageExists) {
+          // final possiblyACalloutContentId = matchedLocation.substring(1);
+          // final isCID = int.tryParse(possiblyACalloutContentId) != null
+          //     || possiblyACalloutContentId.startsWith('T-');
+          // if (isCID) {
+          //   final cid = possiblyACalloutContentId;
+          //   if (snippetNames.contains(cid)) {
+          //     return CalloutContentEditablePage(
+          //       key: GlobalKey(), // provides access to state later
+          //       cid: cid,
+          //       child: SnippetPanel.fromSnippet(
+          //         panelName: "callout-content-editor-panel",
+          //         snippetName: cid,
+          //         scName: cid,
+          //       ),
+          //     );
+          //   }
+          // }
+
+        }
         if (dynamicPageExists) {
           EditablePage.removeAllNodeWidgetOverlays();
           // fco.dismiss('exit-editMode');
-          final snippetName = state.matchedLocation;
+          final snippetName = matchedLocation;
           final rootNode = SnippetTemplateEnum.empty.clone()
             ..name = snippetName;
           SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
@@ -306,7 +345,7 @@ class FlutterContentMixins
           );
           final dynamicPage = EditablePage(
             key: GlobalKey(), // provides access to state later
-            routePath: state.matchedLocation,
+            routePath: matchedLocation,
             child: SnippetPanel.fromSnippet(
               panelName: "dynamic panel",
               snippetName: snippetName,
@@ -319,7 +358,7 @@ class FlutterContentMixins
         // editor can ask to create it
         if (authenticated.isTrue) {
           return AlertDialog(
-            title: Text('Page "${state.matchedLocation}" does not Exist !'),
+            title: Text('Page "${matchedLocation}" does not Exist !'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: const <Widget>[
@@ -329,9 +368,9 @@ class FlutterContentMixins
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('Yes, Create page ${state.matchedLocation}'),
+                child: Text('Yes, Create page ${matchedLocation}'),
                 onPressed: () {
-                  final String destUrl = state.matchedLocation;
+                  final String destUrl = matchedLocation;
                   EditablePage.removeAllNodeWidgetOverlays();
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
@@ -362,8 +401,8 @@ class FlutterContentMixins
         }
 
         // a sandbox page has been created
-        if (fco.appInfo.sandboxPageNames.contains(state.matchedLocation)) {
-          final String destUrl = state.matchedLocation;
+        if (fco.appInfo.sandboxPageNames.contains(matchedLocation)) {
+          final String destUrl = matchedLocation;
           EditablePage.removeAllNodeWidgetOverlays();
           // fco.dismiss('exit-editMode');
           // bool userCanEdit = canEditContent.isTrue;
@@ -470,7 +509,7 @@ class FlutterContentMixins
 
       // add more routes from the snippet names to below the "/" route
       // RouteBase home = routingConfig.routes.first;
-      for (String snippetName in _appInfo.snippetNames) {
+      for (String snippetName in appInfo.snippetNames) {
         if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
           addSubRoute(
               newPath: snippetName, template: SnippetTemplateEnum.empty);
@@ -581,6 +620,17 @@ class FlutterContentMixins
     }
   }
 
+  Future<void> ensureContentSnippetPresent(String contentCId) async =>
+      SnippetInfoModel.cachedSnippet(contentCId) ??
+          await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: contentCId,
+            snippetRootNode: SnippetRootNode(
+              name: contentCId,
+              child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties())),
+            ),
+            // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
+          );
+
   void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
 
   // void addVersionId(SnippetName snippetName, VersionId versionId) {
@@ -681,7 +731,7 @@ class FlutterContentMixins
       // update FB appInfo
       if (!appInfo.snippetNames.contains(snippetName)) {
         // jsArray issue
-        List<String> newList = appInfo.snippetNames.toList();
+        List<String> newList = appInfo.snippetNames;
         newList.add(snippetName);
         appInfo.snippetNames = newList;
         await modelRepo.saveAppInfo();
@@ -970,6 +1020,15 @@ class FlutterContentMixins
     }
     return null;
   }
+
+  // // Because snippetNames is a JSArray on web
+  // List<String> get snippetNameList {
+  //   List<String> list = [];
+  //   for (String s in appInfo.snippetNames) {
+  //     list.add(s);
+  //   }
+  //   return list;
+  // }
 
 //  Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
 //   Map<String, TargetGroupModel> imageTargetListMap = {};

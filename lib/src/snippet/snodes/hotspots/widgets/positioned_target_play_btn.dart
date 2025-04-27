@@ -223,7 +223,7 @@ class TargetPlayBtn extends StatelessWidget {
       //   fco.logger.i('doh!');
       // }
       //
-      await tc.ensureContentSnippetPresent();
+      await fco.ensureContentSnippetPresent(tc.contentCId);
       showSnippetContentCallout(
         tc: tc,
         justPlaying: true,

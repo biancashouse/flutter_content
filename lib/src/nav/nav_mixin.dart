@@ -20,9 +20,12 @@ mixin NavMixin {
                   value: 'create-sandbox-page',
                   child: RichText(
                     text: TextSpan(
-                      text: 'create your own ', style: TextStyle(color:Colors.grey),
+                      text: 'create your own ',
+                      style: TextStyle(color: Colors.grey),
                       children: [
-                        TextSpan(text: 'editable', style: TextStyle(color: Colors.purpleAccent)),
+                        TextSpan(
+                            text: 'editable',
+                            style: TextStyle(color: Colors.purpleAccent)),
                         TextSpan(text: ' page'),
                       ],
                     ),
@@ -97,43 +100,49 @@ mixin NavMixin {
 
   Widget _pageNavBtn(
           BuildContext context, String pagePath, StateSetter setState) =>
-      Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          TextButton(
-            onPressed: () {
-              context.replace(pagePath);
-            },
-            child: RichText(
-              text: TextSpan(
-                text: 'goto ',
-                style: TextStyle(color: Colors.grey),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: pagePath,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.blue)),
-                ],
+      GestureDetector(
+        onTap: () {
+          context.go(pagePath);
+        },
+        child: SizedBox(
+          width: 260,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    text: 'goto ',
+                    style: TextStyle(color: Colors.grey),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: pagePath,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.blue)),
+                    ],
+                  ),
+                ),
               ),
-            ),
+              // if (pagePath != '/') Spacer(),
+              if (pagePath != '/')
+                IconButton(
+                  onPressed: () async {
+                    fco.appInfo.snippetNames.remove(pagePath);
+                    fco.deleteSubRoute(path: pagePath);
+                    await fco.modelRepo.saveAppInfo();
+                    await fco.modelRepo.deleteSnippet(pagePath);
+                    SnippetInfoModel.removeFromCache(pagePath);
+                    context.pop();
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                )
+            ],
           ),
-          if (pagePath != '/')
-            IconButton(
-              onPressed: () async {
-                fco.appInfo.snippetNames.remove(pagePath);
-                fco.deleteSubRoute(path: pagePath);
-                await fco.modelRepo.saveAppInfo();
-                await fco.modelRepo.deleteSnippet(pagePath);
-                SnippetInfoModel.removeFromCache(pagePath);
-                context.pop();
-              },
-              icon: Icon(
-                Icons.delete,
-                color: Colors.red,
-              ),
-            )
-        ],
+        ),
       );
 
   Widget _pageNavBtnOLD(context, String pagePath) => Row(

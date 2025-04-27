@@ -104,7 +104,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
                   widget.treeC.toggleExpansion(propertyNode);
                   propertyNode.expanded = false;
                 } else {
-                  widget.treeC.expandCascading([propertyNode]);
+                  widget.treeC.expand(propertyNode);
                   propertyNode.expanded = true;
                 }
                 widget.treeC.rebuild();

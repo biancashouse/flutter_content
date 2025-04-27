@@ -5,7 +5,7 @@ maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
 repository: https://github.com/biancashouse/flutter-content
-#publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: ^3.5.4
@@ -90,8 +90,8 @@ dependencies:
 
   routing_config_provider:  ^1.0.0
 
-  flutter_callouts: ^5.0.0
-#    path: ../flutter_callouts
+  flutter_callouts: #^5.0.0
+    path: ../flutter_callouts
 
   dart_mappable: ^4.2.2
   built_collection: ^5.1.1

@@ -112,6 +112,12 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   bool canBeDeleted() => targets.isEmpty;
 
   @override
+  Widget? widgetLogo() => Image.asset(
+    fco.asset('lib/assets/images/pub.dev.png'),
+    width: 16,
+  );
+
+  @override
   String toString() => FLUTTER_TYPE;
 
   // @override

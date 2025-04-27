@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/app/callout_content_editable_page.dart';
+import 'package:go_router/go_router.dart';
 
 import 'tr_triangle_painter.dart';
 
@@ -18,9 +20,11 @@ class SnippetPanel extends StatefulWidget {
 
   // or by providing tree of nodes
   final SnippetRootNode? snippetRootNode;
-  final Map<String, void Function(BuildContext)>? handlers;
+  // final Map<String, void Function(BuildContext)>? handlers;
 
   final bool justPlaying;
+
+  final TargetModel? tc;  // for when called to create a hotspot callout
 
   // final bool allowButtonCallouts;
   // final bool justPlaying;
@@ -37,18 +41,19 @@ class SnippetPanel extends StatefulWidget {
   const SnippetPanel.fromNodes({
     this.panelName,
     required this.snippetRootNode,
-    this.handlers,
+    // this.handlers,
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
     required this.scName, // force dev to be scroll aware
     this.justPlaying = false,
+    this.tc,
     super.key,
   }) : snippetName = null;
 
   const SnippetPanel.fromSnippet({
     this.panelName,
     required this.snippetName,
-    this.handlers,
+    // this.handlers,
     // this.allowButtonCallouts = true,
     // this.justPlaying = true,
     // this.onPressed,
@@ -58,6 +63,7 @@ class SnippetPanel extends StatefulWidget {
     // this.iconSize,
     required this.scName, // force dev to be scroll aware
     this.justPlaying = false,
+    this.tc,
     super.key,
   }) : snippetRootNode = null;
 
@@ -100,10 +106,10 @@ class SnippetPanelState extends State<SnippetPanel>
   void initState() {
     super.initState();
 
-    widget.handlers?.forEach((key, value) {
-      fco.registerHandler(key, value);
-      fco.logger.i("registered handler '$key'");
-    });
+    // widget.handlers?.forEach((key, value) {
+    //   fco.registerHandler(key, value);
+    //   fco.logger.i("registered handler '$key'");
+    // });
 
     // removed snippet place naming functionality - use tab bar instead
     // if (widget.panelName != null &&
@@ -184,8 +190,7 @@ class SnippetPanelState extends State<SnippetPanel>
                 SnippetRootNode snippet = snapshot.data!;
 
                 // test whether snippet is in the cache
-                AppInfoModel appInfo = fco.appInfo;
-                bool namePresent = appInfo.snippetNames.contains(snippetName());
+                bool namePresent = fco.appInfo.snippetNames.contains(snippetName());
 
                 Color triangleColor = Colors.purpleAccent; // in edit mode
                 if (!isPublishedVersion) triangleColor = Colors.deepOrange;
@@ -195,6 +200,15 @@ class SnippetPanelState extends State<SnippetPanel>
 
                 bool playing = widget.justPlaying;
                 bool canEdit = fco.authenticated.isTrue;
+
+                final isCID = int.tryParse(snippetName()) != null
+                    || snippetName().startsWith('T-');
+
+                // is it part of a CalloutContentEditablePage rather than a normal EditablePage
+                var parent = CalloutContentEditablePage.of(context);
+                bool isOnANormalPage = parent == null;
+
+                final currentPage = fco.currentEditablePagePath;
 
                 Widget snippetWidget = Stack(
                   children: [
@@ -213,12 +227,28 @@ class SnippetPanelState extends State<SnippetPanel>
                       Align(
                           alignment: Alignment.topRight,
                           child: Tooltip(
-                            message: 'tap here to enter EDIT mode',
+                            message: isCID && isOnANormalPage
+                            ? 'tap here to edit Callout Content on another page...'
+                            : FlutterContentApp.snippetBeingEdited == null ? 'tap here to enter EDIT mode' : '',
                             child: GestureDetector(
                               onTap: () {
                                 if (FlutterContentApp.snippetBeingEdited !=
                                     null) {
                                   return;
+                                }
+
+                                fco.dismiss(CalloutConfigToolbar.CID);
+
+                                // TBD? trying new approach: goto page(content snippet)
+                                if (isCID && isOnANormalPage) {
+                                  fco.addSubRoute(
+                                      newPath: snippetName(),
+                                      template: SnippetTemplateEnum.empty);
+                                  // context.replace('/${snippetName()}/spank=abc');
+                                  final currentUrl = GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
+                                  context.go('/callout-content-editor', extra: (widget.tc, currentUrl));
+                                  return;
+                                  // TBD?
                                 }
 
                                 // var savedOffsets =

@@ -25,6 +25,7 @@ class AppInfoModel with AppInfoModelMappable {
     this.containerStyles = const {},
     this.sandboxPageNames = const [],
   });
+
 }
 
 /// we don't persist this linked list

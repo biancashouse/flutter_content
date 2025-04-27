@@ -27,8 +27,8 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   @MappableField(hook: ButtonStyleHook())
   ButtonStyleProperties bsPropGroup;
-  String?
-      onTapHandlerName; // client supplied onTap (list of handlers supplied to FlutterContentApp)
+  String? onTapHandlerName;
+  // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
   CalloutConfigProperties? calloutConfigGroup;
 

@@ -142,7 +142,7 @@ class TargetCover extends StatelessWidget {
 
     // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
-    tc.ensureContentSnippetPresent().then((_) {
+    fco.ensureContentSnippetPresent(tc.contentCId).then((_) {
       showSnippetContentCallout(
         tc: tc,
         justPlaying: true,

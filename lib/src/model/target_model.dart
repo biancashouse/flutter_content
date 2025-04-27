@@ -169,18 +169,19 @@ class TargetModel with TargetModelMappable {
 
   String get contentCId => '$uid';
 
-  String get contentSnippetName => 'T-$uid';
+  // rename T-* to _*
+  // String get contentSnippetName => '$uid';
 
-  Future<void> ensureContentSnippetPresent() async =>
-      SnippetInfoModel.cachedSnippet(contentSnippetName) ??
-      await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-        snippetName: contentSnippetName,
-        snippetRootNode: SnippetRootNode(
-          name: contentCId,
-          child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties())),
-        ),
-        // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
-      );
+  // Future<void> ensureContentSnippetPresent() async =>
+  //     SnippetInfoModel.cachedSnippet(contentSnippetName) ??
+  //     await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+  //       snippetName: contentSnippetName,
+  //       snippetRootNode: SnippetRootNode(
+  //         name: contentCId,
+  //         child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties())),
+  //       ),
+  //       // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
+  //     );
 
   Color calloutColor() => calloutFillColorValue == null
       ? Colors.white

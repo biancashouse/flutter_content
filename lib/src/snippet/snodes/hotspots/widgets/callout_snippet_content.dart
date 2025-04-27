@@ -60,9 +60,10 @@ Future<void> showSnippetContentCallout({
 
   Widget content() => SnippetPanel.fromSnippet(
         panelName: tc.contentCId, // never used
-        snippetName: tc.contentSnippetName,
+        snippetName: tc.contentCId,
         scName: scName,
         justPlaying: justPlaying,
+        tc:tc
       );
 
   Widget editableContent() => Container(
@@ -90,76 +91,121 @@ Future<void> showSnippetContentCallout({
       ),
     ),
     calloutConfig: CalloutConfig(
-      cId: tc.contentCId,
-      scrollControllerName: scName,
-      // scale: tc.transformScale,
-      // barrierOpacity: 0.1,
-      fillColor: tc.calloutColor(),
-      decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
-      borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
-      borderThickness: tc.calloutBorderThickness,
-      borderRadius: tc.calloutBorderRadius,
-      arrowColor: tc.calloutColor(),
-      arrowType: tc.getArrowType(),
-      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
-          ? 60
-          : null,
-      animate: tc.animateArrow,
-      initialCalloutPos: tc.getCalloutPos(),
-      // initialCalloutAlignment: Alignment.bottomCenter,
-      // initialTargetAlignment: Alignment.topCenter,
-      modal: false,
-      initialCalloutW: tc.calloutWidth,
-      initialCalloutH: tc.calloutHeight,
-      minHeight: minHeight + 4,
-      resizeableH: !justPlaying && tc.canResizeH,
-      resizeableV: !justPlaying && tc.canResizeV,
-      // containsTextField: true,
-      // alwaysReCalcSize: true,
-      followScroll: tc.followScroll,
-      onResizeF: (Size newSize) {
-        tc
-          ..calloutWidth = newSize.width
-          ..calloutHeight = newSize.height;
-        // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-      },
-      onDragEndedF: (Offset newPos) {
-        if (newPos.dy / fco.scrH != tc.calloutTopPc ||
-            newPos.dx / fco.scrW != tc.calloutLeftPc) {
-          tc.calloutTopPc = newPos.dy / fco.scrH;
-          tc.calloutLeftPc = newPos.dx / fco.scrW;
-          tc.changed_saveRootSnippet();
-          // FlutterContentApp.capiBloc.add(
-          //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
-          // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
-          // tc.setTextCalloutPos(newPos);
-        }
-      },
-      draggable: !justPlaying,
-      // frameTarget: true,
-      scaleTarget: tc.transformScale,
-      // separation: 100,
-      // barrierOpacity: .1,
-      // onBarrierTappedF: () async {
-      //   onBarrierTappedF?.call();
-      //   fco.removeOverlay(feature);
-      // },
-      notUsingHydratedStorage: true,
-      // showCloseButton: true,
-      // onTopRightButtonPressF: (){
-      //     onBarrierTappedF?.call();
-      //     fco.removeOverlay(feature);
-      // }
-      onDismissedF: () {
-        // FCO.parentTW(twName)?.zoomer?.resetTransform();
-        // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-      },
-      barrier: CalloutBarrierConfig(
-        color: Colors.grey,
-        opacity: .5,
-        excludeTargetFromBarrier: true,
-      )
-    ),
+        cId: tc.contentCId,
+        scrollControllerName: scName,
+        // scale: tc.transformScale,
+        // barrierOpacity: 0.1,
+        fillColor: tc.calloutColor(),
+        decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
+        borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
+        borderThickness: tc.calloutBorderThickness,
+        borderRadius: tc.calloutBorderRadius,
+        arrowColor: tc.calloutColor(),
+        arrowType: tc.getArrowType(),
+        fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
+            ? 60
+            : null,
+        animate: tc.animateArrow,
+        initialCalloutPos: tc.getCalloutPos(),
+        // initialCalloutAlignment: Alignment.bottomCenter,
+        // initialTargetAlignment: Alignment.topCenter,
+        modal: false,
+        initialCalloutW: tc.calloutWidth,
+        initialCalloutH: tc.calloutHeight,
+        minHeight: minHeight + 4,
+        resizeableH: !justPlaying && tc.canResizeH,
+        resizeableV: !justPlaying && tc.canResizeV,
+        // containsTextField: true,
+        // alwaysReCalcSize: true,
+        followScroll: tc.followScroll,
+        onResizeF: (Size newSize) {
+          tc
+            ..calloutWidth = newSize.width
+            ..calloutHeight = newSize.height;
+          // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+        },
+        onDragEndedF: (Offset newPos) {
+          if (newPos.dy / fco.scrH != tc.calloutTopPc ||
+              newPos.dx / fco.scrW != tc.calloutLeftPc) {
+            tc.calloutTopPc = newPos.dy / fco.scrH;
+            tc.calloutLeftPc = newPos.dx / fco.scrW;
+            tc.changed_saveRootSnippet();
+            // FlutterContentApp.capiBloc.add(
+            //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
+            // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
+            // tc.setTextCalloutPos(newPos);
+          }
+        },
+        draggable: !justPlaying,
+        // frameTarget: true,
+        scaleTarget: tc.transformScale,
+        // separation: 100,
+        // barrierOpacity: .1,
+        // onBarrierTappedF: () async {
+        //   onBarrierTappedF?.call();
+        //   fco.removeOverlay(feature);
+        // },
+        notUsingHydratedStorage: true,
+        // showCloseButton: true,
+        // onTopRightButtonPressF: (){
+        //     onBarrierTappedF?.call();
+        //     fco.removeOverlay(feature);
+        // }
+        onDismissedF: () {
+          // FCO.parentTW(twName)?.zoomer?.resetTransform();
+          // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+        },
+        barrier: CalloutBarrierConfig(
+          color: Colors.grey,
+          opacity: .5,
+          excludeTargetFromBarrier: true,
+          roundExclusion: true,
+          cutoutPadding: 20*tc.transformScale,
+          onTappedF: (){
+            fco.dismiss(CalloutConfigToolbar.CID);
+            if (tc.hasAHotspot()) {
+              tc.targetsWrapperState()?.refresh(() {
+                tc.targetsWrapperState()?.zoomer?.resetTransform(
+                    afterTransformF: () {
+                      // tc.changed_saveRootSnippet();
+                      SNode.showAllTargetBtns();
+                      SNode.showAllHotspotTargetCovers();
+                      // fco.currentPageState?.unhideFAB();
+                      removeSnippetContentCallout(tc);
+                      fco.afterNextBuildDo(() {
+                        // save hotspot's parent snippet
+                        var rootNode =
+                        tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                        if (rootNode != null) {
+                          fco.cacheAndSaveANewSnippetVersion(
+                            snippetName: rootNode.name,
+                            rootNode: rootNode,
+                          );
+                        }
+                      });
+                    });
+              });
+            } else {
+              tc.targetsWrapperState()?.refresh(() {
+                // tc.changed_saveRootSnippet();
+                SNode.showAllTargetBtns();
+                SNode.showAllHotspotTargetCovers();
+                removeSnippetContentCallout(tc);
+                fco.afterNextBuildDo(() {
+                  // save parent snippet
+                  var rootNode =
+                  tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                  if (rootNode != null) {
+                    fco.cacheAndSaveANewSnippetVersion(
+                      snippetName: rootNode.name,
+                      rootNode: rootNode,
+                    );
+                  }
+                });
+              });
+            }
+          }
+        )),
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
     removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
   );

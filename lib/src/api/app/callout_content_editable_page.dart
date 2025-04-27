@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,19 +7,15 @@ import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_vi
 import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
 import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
-class EditablePage extends StatefulWidget {
-  final RoutePath routePath;
-  final Widget child;
-  final bool provideNamedScrollController;
+class CalloutContentEditablePage extends StatefulWidget {
+  final (TargetModel,String) tcAndFrom;
 
-  const EditablePage({
-    required this.routePath,
-    required this.child,
-    this.provideNamedScrollController = false,
-    // this.dontShowLockIcon = false,
+  const CalloutContentEditablePage({
+    required this.tcAndFrom,
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
@@ -41,9 +35,10 @@ class EditablePage extends StatefulWidget {
   }
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) => context.mounted
-      ? context.findAncestorStateOfType<EditablePageState>()
-      : null;
+  static CalloutContentEditablePageState? of(BuildContext context) =>
+      context.mounted
+          ? context.findAncestorStateOfType<CalloutContentEditablePageState>()
+          : null;
 
   static String? scName(context) => of(context)?.namedSC?.name;
 
@@ -53,10 +48,12 @@ class EditablePage extends StatefulWidget {
   // }
 
   @override
-  State<EditablePage> createState() => EditablePageState();
+  State<CalloutContentEditablePage> createState() =>
+      CalloutContentEditablePageState();
 }
 
-class EditablePageState extends State<EditablePage> {
+class CalloutContentEditablePageState
+    extends State<CalloutContentEditablePage> {
   late MultiSplitViewController msvC;
   late NamedScrollController? namedSC;
 
@@ -65,6 +62,9 @@ class EditablePageState extends State<EditablePage> {
 
   SNode? get selectedNode => FlutterContentApp.selectedNode;
 
+  TargetModel get tc => widget.tcAndFrom.$1;
+  String get from => widget.tcAndFrom.$2;
+  
   bool isFABVisible = true; // Tracks FAB visibility
   Offset? fabPosition;
 
@@ -73,10 +73,10 @@ class EditablePageState extends State<EditablePage> {
     super.initState();
 
     msvC = MultiSplitViewController();
-    namedSC = NamedScrollController(widget.routePath, Axis.vertical);
+    namedSC = NamedScrollController(tc.contentCId, Axis.vertical);
 
     // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
-    fco.currentEditablePagePath = widget.routePath;
+    fco.currentEditablePagePath = tc.contentCId;
 
     fco.afterNextBuildDo(() {
       setState(() {
@@ -103,6 +103,53 @@ class EditablePageState extends State<EditablePage> {
     /// initialize the Callouts API with the root context
     fco.initWithContext(context);
     super.didChangeDependencies();
+  }
+
+  Widget snippet() => SnippetPanel.fromSnippet(
+        panelName: tc.contentCId, // never used
+        snippetName: tc.contentCId,
+        scName: null,
+      );
+
+  Widget _calloutContent() {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(onPressed: (){
+          context.go('$from');
+          }, icon: Icon(Icons.arrow_back)),
+       title: Text('Back to Hotspot Editor'),
+      ),
+      body: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Hero(
+              tag: 'callout-content',
+              child: Container(
+                width: tc.calloutWidth,
+                height: tc.calloutHeight,
+                decoration: tc.calloutDecorationShape.toDecoration(
+                  fillColorValues: UpTo6ColorValues(
+                    color1Value: tc.calloutColor().value
+                  ),
+                  borderRadius: tc.calloutBorderRadius,
+                  thickness: tc.calloutBorderThickness,
+                  starPoints: tc.starPoints,
+                ),
+
+                // decoration: ShapeDecoration(
+                //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
+                //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
+                // ),
+                //width: cc._calloutW,
+                //height: cc._calloutH,
+                child: snippet(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -159,7 +206,7 @@ class EditablePageState extends State<EditablePage> {
             fco.afterMsDelayDo(500, () {
               FlutterContentApp.snippetBeingEdited?.selectedNode
                   ?.showNodeWidgetOverlay(
-                      scName: widget.routePath, followScroll: true);
+                      scName: tc.contentCId, followScroll: true);
             });
           },
         ),
@@ -211,36 +258,7 @@ class EditablePageState extends State<EditablePage> {
             // exitEditMode();
             fco.inEditMode.value = false;
           },
-          child: Material(
-            child: Stack(
-              children: [
-                if (aSnippetIsBeingEdited) widget.child,
-                if (!aSnippetIsBeingEdited)
-                  Zoomer(
-                    key: zoomerGk,
-                    child: widget.child,
-                    // child: BlocBuilder<CAPIBloC, CAPIState>(
-                    //     builder: (blocContext, state) {
-                    //   return widget.child;
-                    // }),
-                  ),
-                // Builder(
-                //   builder: (context) {
-                //     Widget? cutout;
-                //     if (capiState.cutoutRect != null) {
-                //       cutout = CustomPaint(
-                //         foregroundPainter: CutoutPainter(
-                //           cutoutRect: capiState.cutoutRect!,
-                //         ),
-                //         size: Size.infinite,
-                //       );
-                //     }
-                //     return cutout ?? const Offstage();
-                //   },
-                // ),
-              ],
-            ),
-          ),
+          child: _calloutContent(),
           // ),
         ),
       ),
@@ -250,6 +268,64 @@ class EditablePageState extends State<EditablePage> {
         ? fco.androidAwareBuild(context, builtWidget)
         : builtWidget;
   }
+
+  // Widget _content(Widget child) => Container(
+  //   decoration: cc.decorationShape.toDecoration(
+  //     fillColorValues: ColorValues(color1Value: cc.fillColor?.value),
+  //     borderColorValues:
+  //     ColorValues(color1Value: cc.borderColor?.value),
+  //     borderRadius: cc.borderRadius,
+  //     thickness: cc.borderThickness,
+  //     starPoints: cc.starPoints,
+  //   ),
+  //
+  //   // decoration: ShapeDecoration(
+  //   //   shape: outlinedBorderGroup!.outlinedBorderType!.toFlutterWidget(nodeSide: outlinedBorderGroup?.side, nodeRadius: borderRadius),
+  //   //   color: fillColor1Value != null ? Color(fillColor1Value!) : null,
+  //   // ),
+  //   //width: cc._calloutW,
+  //   //height: cc._calloutH,
+  //   child: Material(
+  //     type: cc.elevation > 0
+  //         ? MaterialType.canvas
+  //         : MaterialType.transparency,
+  //     color: cc.fillColor,
+  //     elevation: cc.elevation,
+  //     shape: RoundedRectangleBorder(
+  //       // Optional: customize border shape
+  //       borderRadius: BorderRadius.circular(cc.borderRadius),
+  //     ),
+  //     // cc.elevation,
+  //     child: FocusableActionDetector(
+  //       focusNode: calloutConfig.focusNode,
+  //       autofocus: true,
+  //       child: Stack(
+  //         children: <Widget>[
+  //           Align(
+  //             alignment: Alignment.topLeft,
+  //             child: cc.showGotitButton
+  //                 ? Flex(
+  //               direction: cc.gotitAxis ?? Axis.horizontal,
+  //               mainAxisSize: MainAxisSize.max,
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: [
+  //                 Expanded(
+  //                   child: calloutContent(cc),
+  //                 ),
+  //                 if (cc.gotitAxis != null && !cc.showcpi)
+  //                   cc._gotitButton(),
+  //                 if (cc.showcpi) cc._cpi(),
+  //               ],
+  //             )
+  //                 : calloutContent(cc),
+  //           ),
+  //           if (cc.showCloseButton) cc._closeButton(),
+  //         ],
+  //       ),
+  //     ),
+  //   ),
+  // );
 
   Widget _snodeTree() {
     SNode? rootNode = snippetBeingEdited?.treeC.roots.first.rootNodeOfSnippet();
@@ -373,7 +449,7 @@ class EditablePageState extends State<EditablePage> {
               ),
               Expanded(
                 // child: Offstage()
-                child: SnippetTreePane(snippetInfo, widget.routePath),
+                child: SnippetTreePane(snippetInfo, tc.contentCId),
               ),
             ],
           ),
@@ -412,12 +488,11 @@ class EditablePageState extends State<EditablePage> {
                 //   children: [nodeButtons(context, scName)],
                 // ),
                 // NODE PROPERTIES TREE
-                  Material(
-                    color: Colors.blue[50],
-                    child: PropertiesTreeView(
-                        treeC: pTreeC,
-                        sNode: selectedNode!),
-                  ),
+                Material(
+                  color: Colors.blue[50],
+                  child:
+                      PropertiesTreeView(treeC: pTreeC, sNode: selectedNode!),
+                ),
                 if (pTreeC.roots.length < 2)
                   Material(
                     // color: Colors.purpleAccent[50],
@@ -496,7 +571,7 @@ class EditablePageState extends State<EditablePage> {
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
               whiteBarrier: overlayWithABarrier,
-              scName: widget.routePath,
+              scName: tc.contentCId,
             );
           }
         }
@@ -600,7 +675,7 @@ class EditablePageState extends State<EditablePage> {
           borderRadius: 12,
           // arrowType: ArrowType.THIN_REVERSED,
           fillColor: Colors.white,
-          scrollControllerName: widget.routePath,
+          scrollControllerName: tc.contentCId,
           onDismissedF: () {
             fco.removeKeystrokeHandler(cid_EditorPassword);
           }),
@@ -610,104 +685,104 @@ class EditablePageState extends State<EditablePage> {
 
   static final String cid_UserSandboxPageName = "user-sandbox-page-name";
 
-  void userSandboxPageNameDialog() {
-    fco.registerKeystrokeHandler(cid_UserSandboxPageName, (KeyEvent event) {
-      if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss(cid_UserSandboxPageName);
-      }
-      return false;
-    });
-    fco.showOverlay(
-      calloutContent: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          fco.purpleText('Create your own editable Page',
-              fontSize: 24, family: 'Merriweather'),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            width: 480,
-            height: 100,
-            child: StringEditor_T(
-              inputType: String,
-              prompt: () => 'Page name',
-              originalS: '',
-              onTextChangedF: (String s) async {},
-              onEscapedF: (_) {
-                fco.dismiss(cid_UserSandboxPageName);
-              },
-              dontAutoFocus: false,
-              onEditingCompleteF: (s) async {
-                String pageName = s.replaceAll(' ', '-').toLowerCase();
-                pageName = pageName.startsWith('/') ? pageName : '/$pageName';
-                // add to appInfo
-                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
-                  // jsArray issue
-                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
-                  newList.add(pageName);
-                  fco.appInfo.sandboxPageNames = newList;
-                  await fco.modelRepo.saveAppInfo();
-                }
-                if (context.mounted) {
-                  context.go(pageName);
-                }
-                return;
-                fco.dismiss(cid_UserSandboxPageName);
-                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
-                  // jsArray issue
-                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
-                  newList.add(pageName);
-                  fco.appInfo.sandboxPageNames = newList;
-                  await fco.modelRepo.saveAppInfo();
-
-                  final rootNode = SnippetTemplateEnum.empty.clone()
-                    ..name = pageName;
-                  SnippetRootNode
-                      .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                    snippetName: pageName,
-                    snippetRootNode: rootNode,
-                  ).then((_) {
-                    fco.afterNextBuildDo(() {
-                      // SnippetInfoModel.snippetInfoCache;
-                      //fco.router.push(pageName);
-                      // router.go('/');
-                      // TODO - tell user to visit /#/ + pageName
-                    });
-                  });
-                } else {
-                  FlutterContentApp.capiBloc.add(
-                      const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-                  context.replace(pageName);
-                }
-              },
-            ),
-          ),
-        ],
-      ),
-      calloutConfig: CalloutConfig(
-          cId: cid_UserSandboxPageName,
-          // initialTargetAlignment: Alignment.bottomLeft,
-          // initialCalloutAlignment: Alignment.topRight,
-          // finalSeparation: 200,
-          barrier: CalloutBarrierConfig(
-            opacity: .5,
-            onTappedF: () async {
-              fco.dismiss(cid_UserSandboxPageName);
-            },
-          ),
-          initialCalloutW: 500,
-          initialCalloutH: 180,
-          borderRadius: 12,
-          // arrowType: ArrowType.THIN_REVERSED,
-          fillColor: Colors.white,
-          scrollControllerName: widget.routePath,
-          onDismissedF: () {
-            fco.removeKeystrokeHandler(cid_UserSandboxPageName);
-          }),
-      // targetGkF: ()=> fco.authIconGK,
-    );
-  }
+  // void userSandboxPageNameDialog() {
+  //   fco.registerKeystrokeHandler(cid_UserSandboxPageName, (KeyEvent event) {
+  //     if (event.logicalKey == LogicalKeyboardKey.escape) {
+  //       fco.dismiss(cid_UserSandboxPageName);
+  //     }
+  //     return false;
+  //   });
+  //   fco.showOverlay(
+  //     calloutContent: Column(
+  //       mainAxisSize: MainAxisSize.max,
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         fco.purpleText('Create your own editable Page',
+  //             fontSize: 24, family: 'Merriweather'),
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(horizontal: 12),
+  //           width: 480,
+  //           height: 100,
+  //           child: StringEditor_T(
+  //             inputType: String,
+  //             prompt: () => 'Page name',
+  //             originalS: '',
+  //             onTextChangedF: (String s) async {},
+  //             onEscapedF: (_) {
+  //               fco.dismiss(cid_UserSandboxPageName);
+  //             },
+  //             dontAutoFocus: false,
+  //             onEditingCompleteF: (s) async {
+  //               String pageName = s.replaceAll(' ', '-').toLowerCase();
+  //               pageName = pageName.startsWith('/') ? pageName : '/$pageName';
+  //               // add to appInfo
+  //               if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+  //                 // jsArray issue
+  //                 List<String> newList = fco.appInfo.sandboxPageNames.toList();
+  //                 newList.add(pageName);
+  //                 fco.appInfo.sandboxPageNames = newList;
+  //                 await fco.modelRepo.saveAppInfo();
+  //               }
+  //               if (context.mounted) {
+  //                 context.go(pageName);
+  //               }
+  //               return;
+  //               fco.dismiss(cid_UserSandboxPageName);
+  //               if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+  //                 // jsArray issue
+  //                 List<String> newList = fco.appInfo.sandboxPageNames.toList();
+  //                 newList.add(pageName);
+  //                 fco.appInfo.sandboxPageNames = newList;
+  //                 await fco.modelRepo.saveAppInfo();
+  //
+  //                 final rootNode = SnippetTemplateEnum.empty.clone()
+  //                   ..name = pageName;
+  //                 SnippetRootNode
+  //                     .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+  //                   snippetName: pageName,
+  //                   snippetRootNode: rootNode,
+  //                 ).then((_) {
+  //                   fco.afterNextBuildDo(() {
+  //                     // SnippetInfoModel.snippetInfoCache;
+  //                     //fco.router.push(pageName);
+  //                     // router.go('/');
+  //                     // TODO - tell user to visit /#/ + pageName
+  //                   });
+  //                 });
+  //               } else {
+  //                 FlutterContentApp.capiBloc.add(
+  //                     const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+  //                 context.replace(pageName);
+  //               }
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //     calloutConfig: CalloutConfig(
+  //         cId: cid_UserSandboxPageName,
+  //         // initialTargetAlignment: Alignment.bottomLeft,
+  //         // initialCalloutAlignment: Alignment.topRight,
+  //         // finalSeparation: 200,
+  //         barrier: CalloutBarrierConfig(
+  //           opacity: .5,
+  //           onTappedF: () async {
+  //             fco.dismiss(cid_UserSandboxPageName);
+  //           },
+  //         ),
+  //         initialCalloutW: 500,
+  //         initialCalloutH: 180,
+  //         borderRadius: 12,
+  //         // arrowType: ArrowType.THIN_REVERSED,
+  //         fillColor: Colors.white,
+  //         scrollControllerName: tc.contentCId,
+  //         onDismissedF: () {
+  //           fco.removeKeystrokeHandler(cid_UserSandboxPageName);
+  //         }),
+  //     // targetGkF: ()=> fco.authIconGK,
+  //   );
+  // }
 
   // if not signed in, shows a pencil icon leading to a dropdown,
   // otherwise, shows a list of routes user can navigate to

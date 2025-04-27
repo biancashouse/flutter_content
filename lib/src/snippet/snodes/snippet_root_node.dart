@@ -134,7 +134,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                             Align(
                                 alignment: Alignment.topRight,
                                 child: Tooltip(
-                                  message: 'tap here to enter EDIT mode',
+                                  message: FlutterContentApp.snippetBeingEdited == null ? 'tap here to enter EDIT mode' : '',
                                   child: GestureDetector(
                                     onTap: () {
                                       fco.inEditMode.value = true;
@@ -206,10 +206,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     // fco.logger.d(
     //     "SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate");
 
-    AppInfoModel appInfo = fco.appInfo;
-
     // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
+    if (!fco.appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
       await fco.cacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,

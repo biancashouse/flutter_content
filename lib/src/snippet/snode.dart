@@ -181,6 +181,7 @@ abstract class SNode extends Node with SNodeMappable {
       roots: _properties ??= properties(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
     );
+    // prevExpansions =
     // _pTreeC!.expand(_pTreeC!.roots.first);
       //_pTreeC!.expandedNodes = prevExpansions;
       for (PropertyName pNodeName in prevExpansions.keys) {
@@ -188,6 +189,7 @@ abstract class SNode extends Node with SNodeMappable {
         // find pNode by its name
         PNode? pNode = fco.pNodes[pNodeName];
         bool? expanded = prevExpansions[pNodeName];
+        // override padding and margin s.t. they always get collapsed
         if (pNode != null && expanded != null) {
           _pTreeC!.setExpansionState(pNode, expanded);
         }
