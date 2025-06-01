@@ -114,7 +114,7 @@
 // //               activeTrackColor: Theme.of(context).colorScheme.background,
 // //               inactiveTrackColor: Theme.of(context).colorScheme.background,
 // //               thumbColor: Theme.of(context).colorScheme.background,
-// //               overlayColor: Theme.of(context).colorScheme.background.withOpacity(0.2),
+// //               overlayColor: Theme.of(context).colorScheme.background.withValues(alpha:0.2),
 // //               trackHeight: 2,
 // //             ),
 // //             child: Slider(

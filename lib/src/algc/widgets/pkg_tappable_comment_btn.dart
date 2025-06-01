@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/m/comment_m.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
@@ -94,14 +95,14 @@ class TappableCommentBtn extends StatelessWidget {
         (isBeginStep ? FlowchartM.BEGIN_STEP_ID : FlowchartM.END_STEP_ID);
     fco.showOverlay(
       onReadyF: onReadyF,
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: 'comment-snippet',
         initialCalloutW: comment.calloutWidth,
         initialCalloutH: comment.calloutHeight,
-        fillColor: Colors.purple,
+        fillColor: ColorModel.fromColor(Colors.purple),
         borderThickness: 5,
         borderRadius: 16,
-        borderColor: Colors.yellow,
+        borderColor: ColorModel.fromColor(Colors.yellow),
         elevation: 10,
         scrollControllerName: scName,
       ),

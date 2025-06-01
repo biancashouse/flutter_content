@@ -33,8 +33,8 @@ class PropertyButtonFSBrowser extends StatelessWidget {
               )),
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: Alignment.bottomCenter,
-      initialTargetAlignment: Alignment.topCenter,
+      initialCalloutAlignment: AlignmentEnum.bottomCenter,
+      initialTargetAlignment: AlignmentEnum.topCenter,
       calloutContents: (ctx) {
         // cId:
         // fco.afterNextBuildDo((){

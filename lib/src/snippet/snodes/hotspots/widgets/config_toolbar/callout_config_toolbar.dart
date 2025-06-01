@@ -69,24 +69,27 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                           //icon: Icons.zoom_in,
                           iconSize: 30,
                           color: Colors.white,
-                          onDragStartF: () => removeSnippetContentCallout(tc),
-                          onDragEndF: () {
-                            tc.changed_saveRootSnippet();
-                            SNode.showAllTargetBtns();
-                            SNode.showAllHotspotTargetCovers();
-                            // fco.dismiss(CalloutConfigToolbar.CID);
-                            showSnippetContentCallout(
-                              tc: tc,
-                              justPlaying: false,
-                              wrapperRect: widget.wrapperRect,
-                              scName: widget.scName,
-                            );
-                          },
+                          onDragStartF: () => _onDragStartF(tc),
+                          onDragEndF: () => _onDragEndF(tc),
+                          // onDragEndF: () {
+                          //   tc.changed_saveRootSnippet();
+                          //   SNode.showAllTargetBtns();
+                          //   SNode.showAllHotspotTargetCovers();
+                          //   // fco.dismiss(CalloutConfigToolbar.CID);
+                          //   showSnippetContentCallout(
+                          //     tc: tc,
+                          //     justPlaying: false,
+                          //     wrapperRect: widget.wrapperRect,
+                          //     scName: widget.scName,
+                          //   );
+                          // },
                           onChangeF: (value) {
-                            tc.transformScale = value;
                             TargetsWrapperState? state =
                                 tc.targetsWrapperState();
+                            // state?.zoomer?.resetTransform(afterTransformF: () {
+                            tc.transformScale = value;
                             state?.zoomer?.zoomImmediately(value, value);
+                            // });
                           },
                           min: 1.0,
                           max: 3.0),
@@ -109,23 +112,25 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                             : 30,
                         // icon: Icons.circle_rounded,
                         color: Colors.white70,
-                        onDragStartF: () {
-                          removeSnippetContentCallout(tc);
-                          tc
-                              .targetsWrapperState()
-                              ?.zoomer
-                              ?.resetTransform(afterTransformF: () {});
-                        },
-                        onDragEndF: () {
-                          tc.changed_saveRootSnippet();
-                          SNode.showAllTargetBtns();
-                          SNode.showAllHotspotTargetCovers();
-                          TargetsWrapper.configureTarget(
-                            tc,
-                            widget.wrapperRect,
-                            widget.scName,
-                          );
-                        },
+                        onDragStartF: () => _onDragStartF(tc),
+                        onDragEndF: () => _onDragEndF(tc),
+                        // onDragStartF: () {
+                        //   removeSnippetContentCallout(tc);
+                        //   tc
+                        //       .targetsWrapperState()
+                        //       ?.zoomer
+                        //       ?.resetTransform(afterTransformF: () {});
+                        // },
+                        // onDragEndF: () {
+                        //   tc.changed_saveRootSnippet();
+                        //   // SNode.showAllTargetBtns();
+                        //   // SNode.showAllHotspotTargetCovers();
+                        //   TargetsWrapper.configureTarget(
+                        //     tc,
+                        //     widget.wrapperRect,
+                        //     widget.scName,
+                        //   );
+                        // },
                         onChangeF: (value) {
                           // Cancel previous debounce timer, if any
                           tc.targetsWrapperState()?.refresh(
@@ -211,11 +216,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       MappableDecorationShapeEnum.of(newIndex) ??
                           MappableDecorationShapeEnum.rectangle;
                   if (tc.calloutDecorationShape == DecorationShapeEnum.star) {
-                    tc.calloutArrowTypeIndex = ArrowType.NONE.index;
+                    tc.calloutArrowTypeIndex = ArrowTypeEnum.NONE.index;
                   }
                   tc.calloutBorderColorValue = Colors.grey.value;
                   tc.calloutBorderThickness = 2;
-                  removeSnippetContentCallout(tc);
+                  removeSnippetContentCallout(tc, skipOnDismiss: true);
                   tc
                       .targetsWrapperState()
                       ?.zoomer
@@ -226,6 +231,11 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     justPlaying: false,
                     // widget.onParentBarrierTappedF,
                     scName: widget.scName,
+                  );
+                  TargetsWrapper.showConfigToolbar(
+                    tc,
+                    widget.wrapperRect,
+                    widget.scName,
                   );
                   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                   // fco.afterNextBuildDo(() {
@@ -281,18 +291,8 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     snippetName: rootNode.name, // tc.snippetName,
                     rootNode: rootNode,
                   );
-                  fco.dismiss(CalloutConfigToolbar.CID);
-                  removeSnippetContentCallout(tc);
-                  tc.targetsWrapperState()?.zoomer?.resetTransform(
-                      afterTransformF: () {
-                    fco.afterMsDelayDo(2000, () {
-                      tc.targetsWrapperState()?.refresh(() {
-                        SNode.showAllHotspotTargetCovers();
-                        SNode.showAllTargetBtns();
-                      });
-                    });
-                    tc.targetsWrapperState()?.refresh(() {});
-                  });
+                  _closeCalloutConfigToolbar(tc);
+                  //tc.targetsWrapperState()?.refresh(() {});
                 }),
             const VerticalDivider(color: Colors.white, width: 2),
             IconButton(
@@ -302,48 +302,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                 color: Colors.white,
               ),
               onPressed: () {
-                fco.dismiss(CalloutConfigToolbar.CID);
-                if (tc.hasAHotspot()) {
-                  tc.targetsWrapperState()?.refresh(() {
-                    tc.targetsWrapperState()?.zoomer?.resetTransform(
-                        afterTransformF: () {
-                      // tc.changed_saveRootSnippet();
-                      SNode.showAllTargetBtns();
-                      SNode.showAllHotspotTargetCovers();
-                      // fco.currentPageState?.unhideFAB();
-                      removeSnippetContentCallout(tc);
-                      fco.afterNextBuildDo(() {
-                        // save hotspot's parent snippet
-                        var rootNode =
-                            tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                        if (rootNode != null) {
-                          fco.cacheAndSaveANewSnippetVersion(
-                            snippetName: rootNode.name,
-                            rootNode: rootNode,
-                          );
-                        }
-                      });
-                    });
-                  });
-                } else {
-                  tc.targetsWrapperState()?.refresh(() {
-                    // tc.changed_saveRootSnippet();
-                    SNode.showAllTargetBtns();
-                    SNode.showAllHotspotTargetCovers();
-                    removeSnippetContentCallout(tc);
-                    fco.afterNextBuildDo(() {
-                      // save parent snippet
-                      var rootNode =
-                          tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                      if (rootNode != null) {
-                        fco.cacheAndSaveANewSnippetVersion(
-                          snippetName: rootNode.name,
-                          rootNode: rootNode,
-                        );
-                      }
-                    });
-                  });
-                }
+                _closeCalloutConfigToolbar(tc);
               },
             ),
             const VerticalDivider(color: Colors.white, width: 2),
@@ -356,7 +315,6 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         onPressed: () {
           fco.calloutConfigToolbarAtTopOfScreen =
               !fco.calloutConfigToolbarAtTopOfScreen;
-          fco.dismiss(CalloutConfigToolbar.CID);
           TargetsWrapper.showConfigToolbar(
             widget.tc,
             widget.wrapperRect,
@@ -371,6 +329,26 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
         ),
       );
 
+  // used by both slider
+  void _onDragStartF(TargetModel tc) {
+    removeSnippetContentCallout(tc, skipOnDismiss: true);
+    tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: () {});
+  }
+
+  // used by both slider
+  void _onDragEndF(TargetModel tc) {
+    tc.changed_saveRootSnippet();
+    TargetsWrapper.configureTarget(
+      tc,
+      widget.wrapperRect,
+      widget.scName,
+    );
+  }
+
+  void _closeCalloutConfigToolbar(TargetModel tc) {
+    // removing the content callout remove toolbar and resets
+    removeSnippetContentCallout(tc);
+  }
 // @override
 // void didChangeDependencies() {
 //   // FCO.instance.initWithContext(context);

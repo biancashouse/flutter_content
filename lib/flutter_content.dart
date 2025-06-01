@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/button_styles.dart';
@@ -13,9 +14,8 @@ import 'package:flutter_content/container_styles.dart';
 import 'package:flutter_content/google_font_names.dart';
 import 'package:flutter_content/src/api/app/callout_content_editable_page.dart';
 import 'package:flutter_content/src/can-edit-content.dart';
-
-// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
+import 'package:flutter_content/src/model/target_model.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
@@ -31,6 +31,8 @@ import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher_string.dart'
+    show canLaunchUrlString, launchUrlString;
 
 import 'src/api/app/dynamic_page_route.dart';
 import 'src/api/app/editable_page.dart';
@@ -50,13 +52,11 @@ import 'src/snippet/snode.dart';
 import 'src/snippet/snodes/snippet_root_node.dart';
 import 'src/typedefs.dart';
 
-export 'package:flutter_callouts/src/api/callouts/arrow_type.dart';
-
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
 export 'package:flutter_callouts/src/api/callouts/color_values.dart';
-export 'package:flutter_callouts/src/api/callouts/decoration_shape_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/model/color_model.dart';
 export 'package:flutter_callouts/src/api/callouts/dotted_decoration.dart';
 export 'package:flutter_callouts/src/api/callouts/globalkey_extn.dart';
 export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
@@ -80,11 +80,11 @@ export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
 export 'package:flutter_callouts/src/widget/error.dart';
 export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
 
+export 'src/api/app/callout_content_editable_page.dart';
+export 'src/api/app/callout_content_editable_page_route.dart';
 export 'src/api/app/dynamic_page_route.dart';
 export 'src/api/app/editable_page.dart';
 export 'src/api/app/editable_page_route.dart';
-export 'src/api/app/callout_content_editable_page_route.dart';
-export 'src/api/app/callout_content_editable_page.dart';
 export 'src/api/app/fc_app.dart';
 export 'src/api/app/zoomer.dart';
 export 'src/api/snippet_panel/snippet_panel.dart';
@@ -185,6 +185,10 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+export 'package:flutter_callouts/src/api/callouts/model/alignment_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/model/arrow_type_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/model/decoration_shape_enum.dart';
+export 'package:flutter_callouts/src/api/callouts/model/offset_model.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -225,7 +229,6 @@ class FlutterContentMixins
         CanvasMixin,
         RootContextMixin,
         MQMixin,
-        CanvasMixin,
         GotitsMixin,
         PasswordlessMixin,
         NavMixin {
@@ -235,7 +238,7 @@ class FlutterContentMixins
   }
 
   static final FlutterContentMixins _instance =
-      FlutterContentMixins._internal();
+  FlutterContentMixins._internal();
 
   // static FlutterContentMixins get instance => _instance;
 
@@ -253,9 +256,9 @@ class FlutterContentMixins
     required RoutingConfig routingConfig,
     required String initialRoutePath,
     bool skipAssetPkgName =
-        false, // would only use true when pkg dir is actually inside current project
+    false, // would only use true when pkg dir is actually inside current project
   }) async {
-    await fca.initLocalStorage();
+    await initLocalStorage();
 
     // fco.logger.d('init() ${stopwatch.elapsedMilliseconds}');
 
@@ -281,7 +284,7 @@ class FlutterContentMixins
       // },
       errorBuilder: (context, state) {
         String matchedLocation = state.matchedLocation;
-        var param = state.pathParameters;
+        // var param = state.pathParameters;
 
         if (matchedLocation == '/pages') {
           if (fco.authenticated.isTrue) {
@@ -331,7 +334,6 @@ class FlutterContentMixins
           //     );
           //   }
           // }
-
         }
         if (dynamicPageExists) {
           EditablePage.removeAllNodeWidgetOverlays();
@@ -429,7 +431,8 @@ class FlutterContentMixins
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text('You must be signed in as an editor to create this page.'),
+                    Text(
+                        'You must be signed in as an editor to create this page.'),
                     Gap(10),
                     ElevatedButton(
                       onPressed: () {
@@ -468,6 +471,16 @@ class FlutterContentMixins
     List<String> routePaths = [];
     // logi('starting parseRouteConfig');
     parseRouteConfig(routePaths, router.configuration.routes);
+
+    // hard-wired route
+    // router.configuration.routes.add(GoRoute(
+    //     path: '/callout-content-editor',
+    //     builder: (BuildContext context, GoRouterState state) =>
+    //         CalloutContentEditablePage(
+    //           tcAndFrom: state.extra as (TargetModel, String),
+    //           key: GlobalKey(),
+    //         )));
+
     // logi('finished parseRouteConfig');
 
     // logi('RoutingConfig Routes------------');
@@ -572,6 +585,8 @@ class FlutterContentMixins
 
   late GoRouter router;
 
+  late TapGestureRecognizer webLinkF;
+
   List<String> get pageList {
     List<RouteBase> allRoutes = [];
 
@@ -588,9 +603,9 @@ class FlutterContentMixins
 
     return allRoutes
         .map((route) {
-          String path = (route as GoRoute).path;
-          return path.startsWith('/') ? path : '/$path';
-        })
+      String path = (route as GoRoute).path;
+      return path.startsWith('/') ? path : '/$path';
+    })
         .toList()
         .where((routePath) => !appInfo.sandboxPageNames.contains(routePath))
         .toList();
@@ -622,11 +637,14 @@ class FlutterContentMixins
 
   Future<void> ensureContentSnippetPresent(String contentCId) async =>
       SnippetInfoModel.cachedSnippet(contentCId) ??
-          await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+          await SnippetRootNode
+              .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
             snippetName: contentCId,
             snippetRootNode: SnippetRootNode(
               name: contentCId,
-              child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties())),
+              child: CenterNode(
+                  child: TextNode(
+                      text: contentCId, tsPropGroup: TextStyleProperties())),
             ),
             // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
           );
@@ -711,7 +729,10 @@ class FlutterContentMixins
     logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
 
     // snippet has changed
-    VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
+    VersionId newVersionId = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
 
     // update or create SnippetInfo
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
@@ -763,7 +784,7 @@ class FlutterContentMixins
             FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
         if (origSnippetJson != null) {
           SnippetRootNode? origSnippet =
-              SnippetRootNodeMapper.fromJson(origSnippetJson);
+          SnippetRootNodeMapper.fromJson(origSnippetJson);
           snippetInfo.cachedVersions[currVersionId] = origSnippet;
           FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange =
               rootNode.toJson();
@@ -807,7 +828,9 @@ class FlutterContentMixins
   // bool skipEditModeEscape =
   //     false; // property editors can set this to prevent exit from EditMode
 
+  // set when user taps a snippet triangle
   final inEditMode = ValueNotifier<bool>(false);
+  SnippetName? inEditModeForSnippetName;
 
   void forceRefresh({bool onlyTargetsWrappers = false}) =>
       FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(
@@ -821,16 +844,18 @@ class FlutterContentMixins
 
   Offset calloutConfigToolbarPos() =>
       _calloutConfigToolbarPos ??
-      Offset(
-        scrW / 2 - 350,
-        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
-      );
+          Offset(
+            scrW / 2 - 350,
+            calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
+          );
 
   void setCalloutConfigToolbarPos(Offset newPos) =>
       _calloutConfigToolbarPos = newPos;
 
   Offset devToolsFABPos(context) =>
-      _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
+      _devToolsFABPos ?? Offset(40, MediaQuery
+          .sizeOf(context)
+          .height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
@@ -940,13 +965,13 @@ class FlutterContentMixins
     dismiss("floating-clipboard");
     fco.showOverlay(
         calloutContent: const ClipboardView(),
-        calloutConfig: CalloutConfig(
+        calloutConfig: CalloutConfigModel(
           cId: "floating-clipboard",
           initialCalloutW: 300,
           initialCalloutH: 180,
-          initialCalloutPos: Offset(scrW - 400, 0),
-          fillColor: Colors.transparent,
-          arrowType: ArrowType.NONE,
+          initialCalloutPos: OffsetModel(scrW - 400, 0),
+          fillColor: ColorModel.fromColor(Colors.transparent),
+          arrowType: ArrowTypeEnum.NONE,
           borderRadius: 16,
           scrollControllerName: scName,
         ));
@@ -956,7 +981,7 @@ class FlutterContentMixins
   TextStyleName? findTextStyleName(TextStyleProperties props) {
     for (TextStyleName tsName in _appInfo.textStyles.keys) {
       TextStyleProperties namedTSProps = appInfo.textStyles[tsName]!;
-      if (namedTSProps.colorValue == props.colorValue &&
+      if (namedTSProps.color == props.color &&
           namedTSProps.fontWeight == props.fontWeight &&
           namedTSProps.fontSize == props.fontSize &&
           namedTSProps.fontSizeName == props.fontSizeName &&
@@ -973,8 +998,8 @@ class FlutterContentMixins
   ButtonStyleName? findButtonStyleName(ButtonStyleProperties props) {
     for (ButtonStyleName bsName in _appInfo.buttonStyles.keys) {
       ButtonStyleProperties namedBSProps = _appInfo.buttonStyles[bsName]!;
-      if (namedBSProps.bgColorValue == props.bgColorValue &&
-          namedBSProps.fgColorValue == props.fgColorValue &&
+      if (namedBSProps.bgColor == props.bgColor &&
+          namedBSProps.fgColor == props.fgColor &&
           namedBSProps.tsPropGroup == props.tsPropGroup &&
           namedBSProps.elevation == props.elevation &&
           namedBSProps.padding == props.padding &&
@@ -986,7 +1011,7 @@ class FlutterContentMixins
           namedBSProps.minH == props.minW &&
           namedBSProps.maxH == props.maxW &&
           namedBSProps.radius == props.radius &&
-          namedBSProps.side?.colorValue == props.side?.colorValue &&
+          namedBSProps.side?.color == props.side?.color &&
           namedBSProps.side?.width == props.side?.width) {
         return bsName;
       }
@@ -997,38 +1022,115 @@ class FlutterContentMixins
   ContainerStyleName? findContainerStyleName(ContainerStyleProperties props) {
     for (ContainerStyleName csName in _appInfo.containerStyles.keys) {
       ContainerStyleProperties namedCSProps = _appInfo.containerStyles[csName]!;
-      if (namedCSProps.outlinedBorderGroup == props.outlinedBorderGroup &&
-          namedCSProps.badgeWidth == props.badgeWidth &&
-          namedCSProps.badgeText == props.badgeText &&
-          namedCSProps.badgeHeight == props.badgeHeight &&
-          namedCSProps.badgeCorner == props.badgeCorner &&
-          namedCSProps.dash == props.dash &&
-          namedCSProps.starPoints == props.starPoints &&
-          namedCSProps.borderRadius == props.borderRadius &&
-          namedCSProps.borderColorValues == props.borderColorValues &&
-          namedCSProps.borderThickness == props.borderThickness &&
-          namedCSProps.decoration == props.decoration &&
-          namedCSProps.height == props.height &&
-          namedCSProps.width == props.width &&
-          namedCSProps.alignment == props.alignment &&
-          namedCSProps.padding == props.padding &&
-          namedCSProps.margin == props.margin &&
-          namedCSProps.fillColorValues == props.fillColorValues &&
-          namedCSProps.gap == props.gap) {
+      if (namedCSProps == props) {
         return csName;
       }
+
+      if (namedCSProps.outlinedBorderGroup != props.outlinedBorderGroup) {
+        break;
+      }
+
+      if (namedCSProps.badgeWidth != props.badgeWidth) {
+        break;
+      }
+
+      if (namedCSProps.badgeText != props.badgeText) {
+        break;
+      }
+
+      if (namedCSProps.badgeHeight != props.badgeHeight) {
+        break;
+      }
+
+      if (namedCSProps.badgeCorner != props.badgeCorner) {
+        break;
+      }
+
+      if (namedCSProps.dash != props.dash) {
+        break;
+      }
+
+      if (namedCSProps.starPoints != props.starPoints) {
+        break;
+      }
+
+      if (namedCSProps.borderRadius != props.borderRadius) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color1 != props.borderColors?.color1) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color2 != props.borderColors?.color2) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color3 != props.borderColors?.color3) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color4 != props.borderColors?.color4) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color5 != props.borderColors?.color5) {
+        break;
+      }
+
+      if (namedCSProps.borderColors?.color6 != props.borderColors?.color6) {
+        break;
+      }
+
+      if (namedCSProps.borderThickness != props.borderThickness) {
+        break;
+      }
+
+      if (namedCSProps.decoration != props.decoration) {
+        break;
+      }
+
+      if (namedCSProps.height != props.height) {
+        break;
+      }
+
+      if (namedCSProps.width != props.width) {
+        break;
+      }
+
+      if (namedCSProps.alignment != props.alignment) {
+        break;
+      }
+
+      if (namedCSProps.padding != props.padding) {
+        break;
+      }
+
+      if (namedCSProps.margin != props.margin) {
+        break;
+      }
+
+      if (namedCSProps.fillColors != props.fillColors) {
+        break;
+      }
+
+      if (namedCSProps.gap != props.gap
+    ) {
+    return csName;
     }
-    return null;
+  }
+    return
+    null;
   }
 
-  // // Because snippetNames is a JSArray on web
-  // List<String> get snippetNameList {
-  //   List<String> list = [];
-  //   for (String s in appInfo.snippetNames) {
-  //     list.add(s);
-  //   }
-  //   return list;
-  // }
+// // Because snippetNames is a JSArray on web
+// List<String> get snippetNameList {
+//   List<String> list = [];
+//   for (String s in appInfo.snippetNames) {
+//     list.add(s);
+//   }
+//   return list;
+// }
 
 //  Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
 //   Map<String, TargetGroupModel> imageTargetListMap = {};
@@ -1087,10 +1189,10 @@ class FlutterContentMixins
 //       return h > 0 ? h : 500;
 //     }
 //
-//     return CalloutConfig(
+//     return CalloutConfigModel(
 //       cId: cId,
 //       // frameTarget: true,
-//       arrowType: ArrowType.NONE,
+//       arrowType: ArrowTypeEnum.NONE,
 //       barrier: CalloutBarrierConfig(
 //         opacity: .1,
 //         // closeOnTapped: false,
@@ -1110,7 +1212,7 @@ class FlutterContentMixins
 //       initialCalloutH: height(),
 // //calloutH ?? 500,
 // // barrierOpacity: .1,
-// // arrowType: ArrowType.POINTY,
+// // arrowType: ArrowTypeEnum.POINTY,
 // // color: Colors.purpleAccent.shade100,
 //       borderRadius: 16,
 // // initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
@@ -1225,3 +1327,33 @@ class FlutterContentMixins
 //     return snippetMap;
 //   }
 // }
+
+class WebLinkTapGestureRecognizer extends TapGestureRecognizer {
+  // one for each webLink
+  static final _recognizers = <String, WebLinkTapGestureRecognizer>{};
+
+  static WebLinkTapGestureRecognizer createWebLinkRecognizer(String webLink) {
+    WebLinkTapGestureRecognizer? recognizer = _recognizers[webLink];
+    if (recognizer == null) {
+      _recognizers[webLink] = recognizer = WebLinkTapGestureRecognizer(webLink);
+    }
+    return recognizer;
+  }
+
+  final String webLink;
+
+  WebLinkTapGestureRecognizer(this.webLink) {
+    onTap = () async {
+      if (await canLaunchUrlString(webLink)) {
+        launchUrlString(webLink);
+      }
+    };
+  }
+
+  static void destroyAll() {
+    for (final recognizer in _recognizers.values) {
+      recognizer.dispose();
+    }
+    _recognizers.clear();
+  }
+}

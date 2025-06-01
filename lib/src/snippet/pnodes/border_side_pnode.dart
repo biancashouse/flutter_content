@@ -30,10 +30,10 @@ class BorderSidePNode /*Group*/ extends PNode /*Group*/ {
       ColorPNode(
         snode: super.snode,
         name: 'color',
-        colorValue: borderSideGroup?.colorValue,
-        onColorIntChange: (newValue) {
+        color: borderSideGroup?.color,
+        onColorChange: (newValue) {
           borderSideGroup ??= BorderSideProperties();
-          borderSideGroup!.colorValue = newValue;
+          borderSideGroup!.color = newValue;
           onGroupChange.call(borderSideGroup!);
         },
       ),

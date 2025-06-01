@@ -12,12 +12,23 @@ class EdgeInsetsValue with EdgeInsetsValueMappable {
 
   EdgeInsetsValue({
     this.top = 0.0,
+
     this.left = 0.0,
     this.bottom = 0.0,
     this.right = 0.0,
   });
 
-  EdgeInsets toEdgeInsets() => EdgeInsets.only(
-    left:left, top:top, bottom:bottom, right:right
-  );
+  @override
+  operator ==(o) =>
+      o is EdgeInsetsValue &&
+      top == o.top &&
+      left == o.left &&
+      bottom == o.bottom &&
+      right == o.right;
+
+  @override
+  int get hashCode => Object.hash(top, left, bottom, right);
+
+  EdgeInsets toEdgeInsets() =>
+      EdgeInsets.only(left: left, top: top, bottom: bottom, right: right);
 }

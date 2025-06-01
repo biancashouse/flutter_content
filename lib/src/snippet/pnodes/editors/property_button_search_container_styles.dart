@@ -55,8 +55,8 @@ class PropertyButtonContainerStyleNameSearch extends StatelessWidget {
       calloutButtonSize: calloutButtonSize,
       calloutButtonColor: Colors.white,
       menuBgColor: Colors.white,
-      initialCalloutAlignment: Alignment.center,
-      initialTargetAlignment: Alignment.center,
+      initialCalloutAlignment: AlignmentEnum.center,
+      initialTargetAlignment: AlignmentEnum.center,
       calloutContents: (ctx) {
         ContainerStyleNameSearchAnchor anchor = fco.containerStyleNameAnchor ??
             ContainerStyleNameSearchAnchor(
@@ -71,7 +71,8 @@ class PropertyButtonContainerStyleNameSearch extends StatelessWidget {
               onSelectionF: (selectedSuggestion) {
                 ContainerStyleProperties csProps =
                         fco.namedContainerStyles[selectedSuggestion]
-                        ?.clone() ?? ContainerStyleProperties();
+                        ?.clone() ?? ContainerStyleProperties()
+                ;
                 // if (!tsProps.same(originalTextStyle)) {
                 //   fco.logger.d('PropertyButtonTextStyleNameSearch.onChange()');
                 onChangeF(csProps);

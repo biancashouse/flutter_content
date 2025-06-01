@@ -48,8 +48,8 @@ class PropertyButtonColor extends StatelessWidget {
       labelWidget: colorLabel,
       tooltip: tooltip,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: Alignment.bottomCenter,
-      initialTargetAlignment: Alignment.topCenter,
+      initialCalloutAlignment: AlignmentEnum.bottomCenter,
+      initialTargetAlignment: AlignmentEnum.topCenter,
       calloutContents: (ctx) {
         return Center(
           child: Column(

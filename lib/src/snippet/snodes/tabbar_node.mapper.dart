@@ -14,6 +14,7 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TabBarNodeMapper._());
       MCMapper.ensureInitialized().addSubMapper(_instance!);
+      ColorModelMapper.ensureInitialized();
       TextStylePropertiesMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
@@ -25,25 +26,23 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
 
   static String _$name(TabBarNode v) => v.name;
   static const Field<TabBarNode, String> _f$name = Field('name', _$name);
-  static int? _$bgColorValue(TabBarNode v) => v.bgColorValue;
-  static const Field<TabBarNode, int> _f$bgColorValue =
-      Field('bgColorValue', _$bgColorValue, opt: true);
+  static ColorModel? _$bgColor(TabBarNode v) => v.bgColor;
+  static const Field<TabBarNode, ColorModel> _f$bgColor =
+      Field('bgColor', _$bgColor, opt: true);
   static TextStyleProperties _$labelTSPropGroup(TabBarNode v) =>
       v.labelTSPropGroup;
   static const Field<TabBarNode, TextStyleProperties> _f$labelTSPropGroup =
       Field('labelTSPropGroup', _$labelTSPropGroup);
-  static int? _$selectedLabelColorValue(TabBarNode v) =>
-      v.selectedLabelColorValue;
-  static const Field<TabBarNode, int> _f$selectedLabelColorValue =
-      Field('selectedLabelColorValue', _$selectedLabelColorValue, opt: true);
-  static int? _$unselectedLabelColorValue(TabBarNode v) =>
-      v.unselectedLabelColorValue;
-  static const Field<TabBarNode, int> _f$unselectedLabelColorValue = Field(
-      'unselectedLabelColorValue', _$unselectedLabelColorValue,
-      opt: true);
-  static int? _$indicatorColorValue(TabBarNode v) => v.indicatorColorValue;
-  static const Field<TabBarNode, int> _f$indicatorColorValue =
-      Field('indicatorColorValue', _$indicatorColorValue, opt: true);
+  static ColorModel? _$selectedLabelColor(TabBarNode v) => v.selectedLabelColor;
+  static const Field<TabBarNode, ColorModel> _f$selectedLabelColor =
+      Field('selectedLabelColor', _$selectedLabelColor, opt: true);
+  static ColorModel? _$unselectedLabelColor(TabBarNode v) =>
+      v.unselectedLabelColor;
+  static const Field<TabBarNode, ColorModel> _f$unselectedLabelColor =
+      Field('unselectedLabelColor', _$unselectedLabelColor, opt: true);
+  static ColorModel? _$indicatorColor(TabBarNode v) => v.indicatorColor;
+  static const Field<TabBarNode, ColorModel> _f$indicatorColor =
+      Field('indicatorColor', _$indicatorColor, opt: true);
   static double? _$indicatorWeight(TabBarNode v) => v.indicatorWeight;
   static const Field<TabBarNode, double> _f$indicatorWeight =
       Field('indicatorWeight', _$indicatorWeight, opt: true, def: 2.0);
@@ -80,11 +79,11 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   @override
   final MappableFields<TabBarNode> fields = const {
     #name: _f$name,
-    #bgColorValue: _f$bgColorValue,
+    #bgColor: _f$bgColor,
     #labelTSPropGroup: _f$labelTSPropGroup,
-    #selectedLabelColorValue: _f$selectedLabelColorValue,
-    #unselectedLabelColorValue: _f$unselectedLabelColorValue,
-    #indicatorColorValue: _f$indicatorColorValue,
+    #selectedLabelColor: _f$selectedLabelColor,
+    #unselectedLabelColor: _f$unselectedLabelColor,
+    #indicatorColor: _f$indicatorColor,
     #indicatorWeight: _f$indicatorWeight,
     #selection: _f$selection,
     #children: _f$children,
@@ -107,11 +106,11 @@ class TabBarNodeMapper extends SubClassMapperBase<TabBarNode> {
   static TabBarNode _instantiate(DecodingData data) {
     return TabBarNode(
         name: data.dec(_f$name),
-        bgColorValue: data.dec(_f$bgColorValue),
+        bgColor: data.dec(_f$bgColor),
         labelTSPropGroup: data.dec(_f$labelTSPropGroup),
-        selectedLabelColorValue: data.dec(_f$selectedLabelColorValue),
-        unselectedLabelColorValue: data.dec(_f$unselectedLabelColorValue),
-        indicatorColorValue: data.dec(_f$indicatorColorValue),
+        selectedLabelColor: data.dec(_f$selectedLabelColor),
+        unselectedLabelColor: data.dec(_f$unselectedLabelColor),
+        indicatorColor: data.dec(_f$indicatorColor),
         indicatorWeight: data.dec(_f$indicatorWeight),
         selection: data.dec(_f$selection),
         children: data.dec(_f$children));
@@ -168,18 +167,22 @@ extension TabBarNodeValueCopy<$R, $Out>
 
 abstract class TabBarNodeCopyWith<$R, $In extends TabBarNode, $Out>
     implements MCCopyWith<$R, $In, $Out> {
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
       get labelTSPropGroup;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedLabelColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get unselectedLabelColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get indicatorColor;
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children;
   @override
   $R call(
       {String? name,
-      int? bgColorValue,
+      ColorModel? bgColor,
       TextStyleProperties? labelTSPropGroup,
-      int? selectedLabelColorValue,
-      int? unselectedLabelColorValue,
-      int? indicatorColorValue,
+      ColorModel? selectedLabelColor,
+      ColorModel? unselectedLabelColor,
+      ColorModel? indicatorColor,
       double? indicatorWeight,
       int? selection,
       List<SNode>? children});
@@ -195,9 +198,23 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TabBarNode> $mapper =
       TabBarNodeMapper.ensureInitialized();
   @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor =>
+      $value.bgColor?.copyWith.$chain((v) => call(bgColor: v));
+  @override
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
       get labelTSPropGroup => $value.labelTSPropGroup.copyWith
           .$chain((v) => call(labelTSPropGroup: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedLabelColor =>
+      $value.selectedLabelColor?.copyWith
+          .$chain((v) => call(selectedLabelColor: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get unselectedLabelColor =>
+      $value.unselectedLabelColor?.copyWith
+          .$chain((v) => call(unselectedLabelColor: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get indicatorColor =>
+      $value.indicatorColor?.copyWith.$chain((v) => call(indicatorColor: v));
   @override
   ListCopyWith<$R, SNode, SNodeCopyWith<$R, SNode, SNode>> get children =>
       ListCopyWith($value.children, (v, t) => v.copyWith.$chain(t),
@@ -205,24 +222,23 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {String? name,
-          Object? bgColorValue = $none,
+          Object? bgColor = $none,
           TextStyleProperties? labelTSPropGroup,
-          Object? selectedLabelColorValue = $none,
-          Object? unselectedLabelColorValue = $none,
-          Object? indicatorColorValue = $none,
+          Object? selectedLabelColor = $none,
+          Object? unselectedLabelColor = $none,
+          Object? indicatorColor = $none,
           Object? indicatorWeight = $none,
           Object? selection = $none,
           List<SNode>? children}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
-        if (bgColorValue != $none) #bgColorValue: bgColorValue,
+        if (bgColor != $none) #bgColor: bgColor,
         if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
-        if (selectedLabelColorValue != $none)
-          #selectedLabelColorValue: selectedLabelColorValue,
-        if (unselectedLabelColorValue != $none)
-          #unselectedLabelColorValue: unselectedLabelColorValue,
-        if (indicatorColorValue != $none)
-          #indicatorColorValue: indicatorColorValue,
+        if (selectedLabelColor != $none)
+          #selectedLabelColor: selectedLabelColor,
+        if (unselectedLabelColor != $none)
+          #unselectedLabelColor: unselectedLabelColor,
+        if (indicatorColor != $none) #indicatorColor: indicatorColor,
         if (indicatorWeight != $none) #indicatorWeight: indicatorWeight,
         if (selection != $none) #selection: selection,
         if (children != null) #children: children
@@ -230,15 +246,14 @@ class _TabBarNodeCopyWithImpl<$R, $Out>
   @override
   TabBarNode $make(CopyWithData data) => TabBarNode(
       name: data.get(#name, or: $value.name),
-      bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
+      bgColor: data.get(#bgColor, or: $value.bgColor),
       labelTSPropGroup:
           data.get(#labelTSPropGroup, or: $value.labelTSPropGroup),
-      selectedLabelColorValue: data.get(#selectedLabelColorValue,
-          or: $value.selectedLabelColorValue),
-      unselectedLabelColorValue: data.get(#unselectedLabelColorValue,
-          or: $value.unselectedLabelColorValue),
-      indicatorColorValue:
-          data.get(#indicatorColorValue, or: $value.indicatorColorValue),
+      selectedLabelColor:
+          data.get(#selectedLabelColor, or: $value.selectedLabelColor),
+      unselectedLabelColor:
+          data.get(#unselectedLabelColor, or: $value.unselectedLabelColor),
+      indicatorColor: data.get(#indicatorColor, or: $value.indicatorColor),
       indicatorWeight: data.get(#indicatorWeight, or: $value.indicatorWeight),
       selection: data.get(#selection, or: $value.selection),
       children: data.get(#children, or: $value.children));

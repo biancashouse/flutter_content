@@ -14,6 +14,7 @@ part 'textspan_node.mapper.dart';
 @MappableClass()
 class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   String? text;
+  String? webLink;
 
   // bool isRootTextSpan;
   @MappableField(hook: TextStyleHook())
@@ -22,6 +23,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
 
   TextSpanNode({
     this.text,
+    this.webLink,
     // this.isRootTextSpan = false,
     required this.tsPropGroup,
     this.children,
@@ -54,7 +56,20 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 300,
       ),
-      TextStylePNode /*Group*/ (
+      StringPNode(
+        snode: this,
+        name: 'webLink',
+        nameOnSeparateLine: true,
+        expands: true,
+        numLines: 3,
+        stringValue: webLink,
+        onStringChange: (newValue) {
+          refreshWithUpdate(context, () => webLink = newValue ?? '');
+        },
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 300,
+      ),
+      TextStylePNode /*Group*/(
         snode: this,
         name: 'textStyle',
         textStyleProperties: tsPropGroup,
@@ -90,9 +105,19 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
     // ts.merge(textStyleProperties?.toTextStyle(context));
     // }
     try {
+      TextStyle? ts = tsPropGroup.toTextStyle(context);
+      if (ts != null && webLink != null) {
+        ts = ts.copyWith(
+          decoration: TextDecoration.underline,
+          decorationColor: Colors.blue,
+          decorationStyle: TextDecorationStyle.solid,
+          decorationThickness: 1,
+        );
+      }
       return TextSpan(
         text: text ?? "",
-        style: tsPropGroup.toTextStyle(context),
+        recognizer: webLink != null ? WebLinkTapGestureRecognizer(webLink!) : null,
+        style: ts,
         children: children
             ?.map<InlineSpan>(
                 (inlinespanNode) => inlinespanNode.toInlineSpan(context))
@@ -265,11 +290,9 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   bool canBeDeleted() => children == null || children!.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action,
+      bool? skipHeading,
+      ScrollControllerName? scName,) {
     return [
       ...super.menuAnchorWidgets_Heading(action, scName),
       menuItemButton("TextSpan", TextSpanNode, action, scName),

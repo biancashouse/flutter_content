@@ -35,13 +35,13 @@
 //       (fco.scrH - calloutSize.height) / 2,
 //     );
 //     fco.showOverlay(
-//       calloutConfig: CalloutConfig(
+//       calloutConfig: CalloutConfigModel(
 //         cId: 'cropper',
 //         initialCalloutPos: calloutPos,
 //         barrier: CalloutBarrierConfig(
 //           opacity: .75,
 //         ),
-//         arrowType: ArrowType.NONE,
+//         arrowType: ArrowTypeEnum.NONE,
 //         // onBarrierTappedF: () => fco.logger.i('barrier tapped'),
 //         initialCalloutW: calloutSize.width,
 //         initialCalloutH: calloutSize.height,
@@ -243,7 +243,7 @@
 //         child: Stack(
 //           children: [
 //             Container(
-//                 color: Colors.white.withOpacity(.25),
+//                 color: Colors.white.withValues(alpha:.25),
 //                 child: GestureDetector(
 //                     child: Listener(
 //                   onPointerMove: (PointerMoveEvent event) {
@@ -266,19 +266,19 @@
 //                       : Offstage(),
 //                 ))),
 //             DraggableCorner2(
-//                 alignment: Alignment.topLeft,
+//                 alignment: AlignmentEnum.topLeft,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: Alignment.topRight,
+//                 alignment: AlignmentEnum.topRight,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: Alignment.bottomLeft,
+//                 alignment: AlignmentEnum.bottomLeft,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableCorner2(
-//                 alignment: Alignment.bottomRight,
+//                 alignment: AlignmentEnum.bottomRight,
 //                 thickness: EDGE_THICKNESS,
 //                 parent: this),
 //             DraggableEdge2(
@@ -556,7 +556,7 @@
 //       ..shader = gradient.createShader(
 //           Rect.fromLTWH(0, 0, calloutSize.width, calloutSize.height))
 //       // ..style = PaintingStyle.fill
-//       ..color = Colors.red.withOpacity(.25);
+//       ..color = Colors.red.withValues(alpha:.25);
 //     canvas.clipRect(Rect.fromLTWH(0, 0, calloutSize.width, calloutSize.height));
 //     canvas.translate(parent.panOffset.dx, parent.panOffset.dy);
 //     double zoom = parent.zoom;

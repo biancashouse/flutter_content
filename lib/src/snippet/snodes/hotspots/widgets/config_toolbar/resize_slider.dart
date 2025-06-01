@@ -52,14 +52,16 @@ class _ResizeSliderState extends State<ResizeSlider> {
               activeTrackColor: widget.color ?? Theme.of(context).colorScheme.surface,
               inactiveTrackColor: widget.color ?? Theme.of(context).colorScheme.surface,
               thumbColor: widget.color ?? Theme.of(context).colorScheme.surface,
-              overlayColor: widget.color ?? Theme.of(context).colorScheme.surface.withOpacity(0.2),
+              overlayColor: widget.color ?? Theme.of(context).colorScheme.surface.withValues(alpha:0.2),
               trackHeight: 2,
             ),
             child: Slider(
               value: _value,
               onChanged: (value) {
-                setState(() => _value = value);
-                widget.onChangeF(value);
+                setState(() {
+                  _value = value;
+                  widget.onChangeF(value);
+                });
               },
               onChangeStart: (_) {
                 fco.preventParentCalloutDrag(context);

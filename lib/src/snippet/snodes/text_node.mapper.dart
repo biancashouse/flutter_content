@@ -26,6 +26,9 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static String _$text(TextNode v) => v.text;
   static const Field<TextNode, String> _f$text =
       Field('text', _$text, opt: true, def: '');
+  static String? _$webLink(TextNode v) => v.webLink;
+  static const Field<TextNode, String> _f$webLink =
+      Field('webLink', _$webLink, opt: true);
   static TextStyleProperties _$tsPropGroup(TextNode v) => v.tsPropGroup;
   static const Field<TextNode, TextStyleProperties> _f$tsPropGroup =
       Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
@@ -47,6 +50,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   @override
   final MappableFields<TextNode> fields = const {
     #text: _f$text,
+    #webLink: _f$webLink,
     #tsPropGroup: _f$tsPropGroup,
     #textAlign: _f$textAlign,
     #uid: _f$uid,
@@ -64,6 +68,7 @@ class TextNodeMapper extends SubClassMapperBase<TextNode> {
   static TextNode _instantiate(DecodingData data) {
     return TextNode(
         text: data.dec(_f$text),
+        webLink: data.dec(_f$webLink),
         tsPropGroup: data.dec(_f$tsPropGroup),
         textAlign: data.dec(_f$textAlign));
   }
@@ -122,6 +127,7 @@ abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
   @override
   $R call(
       {String? text,
+      String? webLink,
       TextStyleProperties? tsPropGroup,
       TextAlignEnum? textAlign});
   TextNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -142,16 +148,19 @@ class _TextNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {String? text,
+          Object? webLink = $none,
           TextStyleProperties? tsPropGroup,
           Object? textAlign = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
+        if (webLink != $none) #webLink: webLink,
         if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
         if (textAlign != $none) #textAlign: textAlign
       }));
   @override
   TextNode $make(CopyWithData data) => TextNode(
       text: data.get(#text, or: $value.text),
+      webLink: data.get(#webLink, or: $value.webLink),
       tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
       textAlign: data.get(#textAlign, or: $value.textAlign));
 

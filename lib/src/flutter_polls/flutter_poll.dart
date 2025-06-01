@@ -321,10 +321,10 @@ class FlutterPollState extends State<FlutterPoll> {
   //           });
   //         },
   //       ),
-  //       calloutConfig: CalloutConfig(
+  //       calloutConfig: CalloutConfigModel(
   //         cId: "voter-ea",
-  //         initialTargetAlignment: Alignment.topLeft,
-  //         initialCalloutAlignment: Alignment.bottomRight,
+  //         initialTargetAlignment: AlignmentEnum.topLeft,
+  //         initialCalloutAlignment: AlignmentEnum.bottomRight,
   //         finalSeparation: 60,
   //         barrier: CalloutBarrierConfig(
   //           opacity: .5,

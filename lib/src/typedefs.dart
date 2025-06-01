@@ -3,12 +3,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_arrow_type.dart';
+import 'package:flutter_callouts/flutter_callouts.dart' show ArrowTypeEnum, AlignmentEnum, CalloutId, TargetId;
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+import 'package:flutter_content/src/snippet/snodes/snippet_root_node.dart';
 
 typedef VoterId = String;
 typedef PollOptionId = String;
@@ -79,7 +78,7 @@ typedef CalloutConfigChangedF = void Function(
 
 typedef MaterialAppHomeFunc = Widget Function();
 typedef MaterialAppThemeFunc = ThemeData Function();
-typedef CAPIBlocFunc = CAPIBloC Function();
+// typedef CAPIBlocFunc = CAPIBloC Function();
 
 typedef GksByFeature = Map<CalloutId, GlobalKey>;
 typedef GksByTargetId = Map<TargetId, GlobalKey>;
@@ -105,7 +104,9 @@ typedef ContainerStylePropertiesChangeCallback = void Function(ContainerStylePro
 //
 // typedef SetStateF = void Function(VoidCallback f);
 //
-// typedef ColorValue = int;
+
+//deprecated
+typedef ColorValue = int;
 
 // typedef PassBlocF = void Function(CAPIBloc);
 // typedef PassGlobalKeyF = void Function(GlobalKey);

@@ -39,7 +39,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     // menuItems.add(Container(
     //     width: double.infinity,
-    //     alignment: Alignment.topLeft,
+    //     alignment: AlignmentEnum.topLeft,
     //     child: Icon(Icons.north_west)));
 
     menuItems.add(

@@ -19,18 +19,18 @@
 //       left: _pos().dx,
 //       child: Draggable(
 //         feedback:Container(
-//           color: Colors.yellow.withOpacity(.1),
+//           color: Colors.yellow.withValues(alpha:.1),
 //           width: thickness,
 //           height: thickness,
 //         ),
 //         child: Container(
-//           color: Colors.orange.withOpacity(.4),
+//           color: Colors.orange.withValues(alpha:.4),
 //           width: thickness,
 //           height: thickness,
 //         ),
 //         onDragUpdate: (DragUpdateDetails dud) {
 //           Rect rect = parent.uncroppedRect;
-//           if (alignment == Alignment.topLeft) {
+//           if (alignment == AlignmentEnum.topLeft) {
 //             var deltaX = (rect.left + dud.delta.dx < thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left + deltaX,
@@ -45,7 +45,7 @@
 //               rect.width,
 //               rect.height - deltaY,
 //             );
-//           } else if (alignment == Alignment.topRight) {
+//           } else if (alignment == AlignmentEnum.topRight) {
 //             var deltaY = (rect.top + dud.delta.dy < thickness) ? 0 : dud.delta.dy;
 //             rect = Rect.fromLTWH(
 //               rect.left,
@@ -60,7 +60,7 @@
 //               rect.width + deltaX,
 //               rect.height,
 //             );
-//           } else if (alignment == Alignment.bottomLeft) {
+//           } else if (alignment == AlignmentEnum.bottomLeft) {
 //             var deltaX = (rect.left + dud.delta.dx < thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left + deltaX,
@@ -75,7 +75,7 @@
 //               rect.width,
 //               rect.height + deltaY,
 //             );
-//           } else if (alignment == Alignment.bottomRight) {
+//           } else if (alignment == AlignmentEnum.bottomRight) {
 //             var deltaX = (left + dud.delta.dx > parent.widget.calloutSize.width - thickness) ? 0 : dud.delta.dx;
 //             rect = Rect.fromLTWH(
 //               rect.left,
@@ -98,13 +98,13 @@
 //   }
 //
 //   Offset _pos() {
-//     if (alignment == Alignment.topLeft) {
+//     if (alignment == AlignmentEnum.topLeft) {
 //       return parent.uncroppedRect.topLeft.translate(-thickness, -thickness);
-//     } else if (alignment == Alignment.topRight) {
+//     } else if (alignment == AlignmentEnum.topRight) {
 //       return parent.uncroppedRect.topRight.translate(0, -thickness);
-//     } else if (alignment == Alignment.bottomLeft) {
+//     } else if (alignment == AlignmentEnum.bottomLeft) {
 //       return parent.uncroppedRect.bottomLeft.translate(-thickness, 0);
-//     } else if (alignment == Alignment.bottomRight) {
+//     } else if (alignment == AlignmentEnum.bottomRight) {
 //       return parent.uncroppedRect.bottomRight.translate(0, 0);
 //     } else {
 //       throw ('Corner _pos() unexpected alignment!');

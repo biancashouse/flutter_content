@@ -18,16 +18,16 @@ void showSaveAsCallout({
         // targetGKF: targetGKF,
         saveModelF: saveModelF,
       ),
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "input-snippet-name",
         initialCalloutW: 400,
         initialCalloutH: 159,
-        initialTargetAlignment: Alignment.bottomCenter,
-        initialCalloutAlignment: Alignment.topCenter,
-        arrowType: ArrowType.THIN,
-        arrowColor: Colors.blue[900],
+        initialTargetAlignment: AlignmentEnum.bottomCenter,
+        initialCalloutAlignment: AlignmentEnum.topCenter,
+        arrowType: ArrowTypeEnum.THIN,
+        arrowColor: ColorModel.fromColor(Colors.blue[900]!),
         finalSeparation: 60,
-        fillColor: Colors.purpleAccent,
+        fillColor: ColorModel.purpleAccent(),
         barrier: CalloutBarrierConfig(
           opacity: 0.25,
           onTappedF: () async {
@@ -61,7 +61,7 @@ class InputSnippetName extends StatefulWidget {
 class InputSnippetNameState extends State<InputSnippetName> {
   FocusNode? _focusNode;
   late TextEditingController _txtController;
-  Color buttonColor = Colors.grey.withOpacity(.5);
+  Color buttonColor = Colors.grey.withValues(alpha:.5);
 
   @override
   void initState() {

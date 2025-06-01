@@ -4,9 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
@@ -19,9 +17,9 @@ class ChipNode extends CL with ChipNodeMappable {
   String label;
   TextStyleProperties labelTSPropGroup;
   EdgeInsetsValue? labelPadding;
-  int? bgColorValue;
-  int? disabledColorValue;
-  int? selectedColorValue;
+  ColorModel? bgColor;
+  ColorModel? disabledColor;
+  ColorModel? selectedColor;
   bool enabled;
 
   // when populating a panel with a snippet
@@ -34,22 +32,22 @@ class ChipNode extends CL with ChipNodeMappable {
 
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
   String? onTapHandlerName;
-  CalloutConfigProperties? calloutConfigGroup;
+  CalloutConfigModel? calloutConfig;
 
   ChipNode({
     this.label = 'chip-name?',
     required this.labelTSPropGroup,
     this.labelPadding,
-    this.bgColorValue,
-    this.disabledColorValue,
-    this.selectedColorValue,
+    this.bgColor,
+    this.disabledColor,
+    this.selectedColor,
     this.enabled = false,
     this.destinationPanelOrPlaceholderName,
     this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
     this.template,
     this.onTapHandlerName,
-    this.calloutConfigGroup,
+    this.calloutConfig,
   });
 
   String? getTapHandlerName() => onTapHandlerName;
@@ -114,27 +112,27 @@ class ChipNode extends CL with ChipNodeMappable {
         snode: this,
         name: 'b/g color',
         tooltip: "The chip's b/g color.",
-        colorValue: bgColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context, () => bgColorValue = newValue),
+        color: bgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => bgColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
         name: 'disabled color',
         tooltip: "The color to use for an unselected chip.",
-        colorValue: disabledColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context, () => disabledColorValue = newValue),
+        color: disabledColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => disabledColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
         name: 'selected color',
         tooltip: 'The color for a selected chip.',
-        colorValue: selectedColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context, () => selectedColorValue = newValue),
+        color: selectedColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => selectedColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       BoolPNode(
@@ -236,7 +234,7 @@ class ChipNode extends CL with ChipNodeMappable {
     }
   }
 
-  CalloutId? get feature => calloutConfigGroup?.cid;
+  CalloutId? get feature => calloutConfig?.cId;
 
   void onPressed(
     BuildContext context,
@@ -253,23 +251,23 @@ class ChipNode extends CL with ChipNodeMappable {
         () => fco.showOverlay(
           targetGkF: () => fco.getCalloutGk(feature),
           calloutContent: SnippetPanel.fromSnippet(
-            panelName: calloutConfigGroup!.cid!,
+            panelName: calloutConfig!.cId,
             snippetName: BODY_PLACEHOLDER,
             // allowButtonCallouts: false,
             scName: scName,
           ),
-          calloutConfig: CalloutConfig(
+          calloutConfig: CalloutConfigModel(
             cId: feature!,
-            initialTargetAlignment: calloutConfigGroup!.targetAlignment != null
-                ? calloutConfigGroup!.targetAlignment!.flutterValue
-                : AlignmentEnum.bottomRight.flutterValue,
-            initialCalloutAlignment: calloutConfigGroup!.targetAlignment != null
-                ? calloutConfigGroup!.targetAlignment!.oppositeEnum.flutterValue
-                : AlignmentEnum.topLeft.flutterValue,
+            initialTargetAlignment: calloutConfig?.initialTargetAlignment != null
+                ? calloutConfig!.initialTargetAlignment
+                : AlignmentEnum.bottomRight,
+            initialCalloutAlignment: calloutConfig?.initialTargetAlignment != null
+                ? (calloutConfig!.initialTargetAlignment!.oppositeEnum)
+                : AlignmentEnum.topLeft,
             initialCalloutW: 200,
             initialCalloutH: 150,
             arrowType:
-                calloutConfigGroup!.arrowType?.flutterValue ?? ArrowType.POINTY,
+                calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
             finalSeparation: 100,
             barrier: CalloutBarrierConfig(
               opacity: 0.1,
@@ -277,9 +275,7 @@ class ChipNode extends CL with ChipNodeMappable {
                 fco.dismiss(feature!);
               },
             ),
-            fillColor: calloutConfigGroup?.colorValue != null
-                ? Color(calloutConfigGroup!.colorValue!)
-                : Colors.white,
+            fillColor: calloutConfig?.fillColor,
             scrollControllerName: scName,
           ),
         ),

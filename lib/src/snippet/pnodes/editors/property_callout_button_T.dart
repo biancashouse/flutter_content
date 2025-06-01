@@ -64,7 +64,7 @@ class PropertyButton<T> extends StatelessWidget {
                 originalText.isNotEmpty && maxLines < 2
                     ? '$label: $originalText'
                     : '$label...';
-            CalloutConfig teCC = CalloutConfig(
+            CalloutConfigModel teCC = CalloutConfigModel(
               cId: 'te',
               scrollControllerName: scName,
               containsTextField: true,
@@ -75,14 +75,14 @@ class PropertyButton<T> extends StatelessWidget {
                     fco.dismiss('te');
                   }),
               // arrowThickness: ArrowThickness.THIN,
-              fillColor: Colors.white,
+              fillColor: ColorModel.white(),
               // arrowColor: Colors.red,
-              arrowType: ArrowType.THIN,
+              arrowType: ArrowTypeEnum.THIN,
               finalSeparation: 90.0,
               toDelta: -20,
               animate: true,
-              initialCalloutAlignment: Alignment.centerRight,
-              initialTargetAlignment: Alignment.centerLeft,
+              initialCalloutAlignment: AlignmentEnum.centerRight,
+              initialTargetAlignment: AlignmentEnum.centerLeft,
               modal: false,
               initialCalloutW: calloutSize.width,
               initialCalloutH: calloutSize.height,
@@ -160,7 +160,7 @@ class PropertyButton<T> extends StatelessWidget {
             }
           },
           child: Container(
-            // alignment: T != String ? Alignment.center : Alignment.centerLeft,
+            // alignment: T != String ? Alignment.center : AlignmentEnum.centerLeft,
             alignment: Alignment.centerLeft,
             key: propertyBtnGK,
             // margin: const EdgeInsets.only(top: 8),
@@ -191,15 +191,15 @@ class PropertyButton<T> extends StatelessWidget {
     //           )),
     //     )
     //     .toList();
-    var matchesMenuCC = CalloutConfig(
+    var matchesMenuCC = CalloutConfigModel(
       cId: 'matches',
       scrollControllerName: scName,
       initialCalloutW: 240,
       initialCalloutH: 160,
-      arrowType: ArrowType.NONE,
-      fillColor: Colors.white,
-      initialTargetAlignment: Alignment.topRight,
-      initialCalloutAlignment: Alignment.topLeft,
+      arrowType: ArrowTypeEnum.NONE,
+      fillColor: ColorModel.white(),
+      initialTargetAlignment: AlignmentEnum.topRight,
+      initialCalloutAlignment: AlignmentEnum.topLeft,
       draggable: false,
       movedOrResizedNotifier: notifier,
     );

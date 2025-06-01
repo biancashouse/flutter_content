@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -132,7 +130,9 @@ class EditablePageState extends State<EditablePage> {
       }
       areas.add(Area(
         builder: (ctx, area) {
-          return _pageContentArea();
+          return fco.inEditMode.value
+              ? IgnorePointer(child: _pageContentArea())
+              : _pageContentArea();
         },
         flex: 2,
       ));
@@ -209,6 +209,7 @@ class EditablePageState extends State<EditablePage> {
         child: GestureDetector(
           onTap: () {
             // exitEditMode();
+            fco.inEditModeForSnippetName = null;
             fco.inEditMode.value = false;
           },
           child: Material(
@@ -358,6 +359,7 @@ class EditablePageState extends State<EditablePage> {
                             fco.unhide(CalloutConfigToolbar.CID);
                             fco.hideClipboard();
                             fco.inEditMode.value = false;
+                            fco.inEditModeForSnippetName = null;
                             FlutterContentApp.capiBloc
                                 .add(const CAPIEvent.popSnippetEditor());
                             // fco.afterNextBuildDo(() {
@@ -389,7 +391,7 @@ class EditablePageState extends State<EditablePage> {
     bool showingProperties = FlutterContentApp.aNodeIsSelected;
     ScrollController? propertiesPaneSC = selectedNode?.propertiesPaneSC();
     PNodeTreeController? pTreeC = selectedNode?.pTreeC(context, {});
-    pTreeC!.collapseAll();
+    // pTreeC!.collapseAll();
     return !showingProperties || propertiesPaneSC == null
         ? const Offstage()
         : Container(
@@ -412,12 +414,11 @@ class EditablePageState extends State<EditablePage> {
                 //   children: [nodeButtons(context, scName)],
                 // ),
                 // NODE PROPERTIES TREE
-                  Material(
-                    color: Colors.blue[50],
-                    child: PropertiesTreeView(
-                        treeC: pTreeC,
-                        sNode: selectedNode!),
-                  ),
+                Material(
+                  color: Colors.blue[50],
+                  child:
+                      PropertiesTreeView(treeC: pTreeC!, sNode: selectedNode!),
+                ),
                 if (pTreeC.roots.length < 2)
                   Material(
                     // color: Colors.purpleAccent[50],
@@ -584,10 +585,10 @@ class EditablePageState extends State<EditablePage> {
           ),
         ],
       ),
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
           cId: cid_EditorPassword,
-          // initialTargetAlignment: Alignment.bottomLeft,
-          // initialCalloutAlignment: Alignment.topRight,
+          // initialTargetAlignment: AlignmentEnum.bottomLeft,
+          // initialCalloutAlignment: AlignmentEnum.topRight,
           // finalSeparation: 200,
           barrier: CalloutBarrierConfig(
             opacity: .5,
@@ -598,8 +599,8 @@ class EditablePageState extends State<EditablePage> {
           initialCalloutW: 240,
           initialCalloutH: 150,
           borderRadius: 12,
-          // arrowType: ArrowType.THIN_REVERSED,
-          fillColor: Colors.white,
+          // arrowType: ArrowTypeEnum.THIN_REVERSED,
+          fillColor: ColorModel.fromColor(Colors.white),
           scrollControllerName: widget.routePath,
           onDismissedF: () {
             fco.removeKeystrokeHandler(cid_EditorPassword);
@@ -685,10 +686,10 @@ class EditablePageState extends State<EditablePage> {
           ),
         ],
       ),
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
           cId: cid_UserSandboxPageName,
-          // initialTargetAlignment: Alignment.bottomLeft,
-          // initialCalloutAlignment: Alignment.topRight,
+          // initialTargetAlignment: AlignmentEnum.bottomLeft,
+          // initialCalloutAlignment: AlignmentEnum.topRight,
           // finalSeparation: 200,
           barrier: CalloutBarrierConfig(
             opacity: .5,
@@ -699,8 +700,8 @@ class EditablePageState extends State<EditablePage> {
           initialCalloutW: 500,
           initialCalloutH: 180,
           borderRadius: 12,
-          // arrowType: ArrowType.THIN_REVERSED,
-          fillColor: Colors.white,
+          // arrowType: ArrowTypeEnum.THIN_REVERSED,
+          fillColor: ColorModel.white(),
           scrollControllerName: widget.routePath,
           onDismissedF: () {
             fco.removeKeystrokeHandler(cid_UserSandboxPageName);

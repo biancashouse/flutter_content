@@ -15,7 +15,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   @MappableField(hook: ContainerStyleHook())
   ContainerStyleProperties csPropGroup;
 
-  // UpTo6ColorValues? fillColorValues;
+  // UpTo6Colors? fillColorValues;
   // EdgeInsetsValue? margin;
   // EdgeInsetsValue? padding;
   // double? width;
@@ -23,7 +23,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   // AlignmentEnum? alignment;
   // MappableDecorationShapeEnum decoration;
   // double? borderThickness;
-  // UpTo6ColorValues? borderColorValues;
+  // UpTo6Colors? borderColorValues;
   // int? borderColor2Value;
   // int? borderColor3Value;
   // int? borderColor4Value;
@@ -77,7 +77,6 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-
     // String paddingLabel = padding == null
     //     ? 'padding'
     //     : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
@@ -99,9 +98,9 @@ class ContainerNode extends SC with ContainerNodeMappable {
         onGroupChange: (newValue, refreshPTree) {
           refreshWithUpdate(context, () {
             csPropGroup = newValue;
-            if (refreshPTree) {
-              forcePropertyTreeRefresh(context);
-            }
+            // if (refreshPTree) {
+            //   forcePropertyTreeRefresh(context);
+            // }
           });
         },
       ),
@@ -273,9 +272,9 @@ class ContainerNode extends SC with ContainerNodeMappable {
       return Container(
         key: gk,
         decoration: csPropGroup.decoration.toDecoration(
-          fillColorValues: csPropGroup.fillColorValues,
+          upTo6FillColors: csPropGroup.fillColors,
           radialGradient: csPropGroup.radialGradient,
-          borderColorValues: csPropGroup.borderColorValues,
+          upTo6BorderColors: csPropGroup.borderColors,
           borderRadius: csPropGroup.borderRadius,
           thickness: csPropGroup.borderThickness,
           starPoints: csPropGroup.starPoints,

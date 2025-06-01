@@ -18,21 +18,21 @@ part 'tabbar_node.mapper.dart';
 @MappableClass()
 class TabBarNode extends MC with TabBarNodeMappable {
   String name;
-  int? bgColorValue;
+  ColorModel? bgColor;
   TextStyleProperties labelTSPropGroup;
-  int? selectedLabelColorValue;
-  int? unselectedLabelColorValue;
-  int? indicatorColorValue;
+  ColorModel? selectedLabelColor;
+  ColorModel? unselectedLabelColor;
+  ColorModel? indicatorColor;
   double? indicatorWeight;
   int? selection;
 
   TabBarNode({
     required this.name,
-    this.bgColorValue,
+    this.bgColor,
     required this.labelTSPropGroup,
-    this.selectedLabelColorValue,
-    this.unselectedLabelColorValue,
-    this.indicatorColorValue,
+    this.selectedLabelColor,
+    this.unselectedLabelColor,
+    this.indicatorColor,
     this.indicatorWeight = 2.0,
     this.selection,
     required super.children,
@@ -88,25 +88,25 @@ class TabBarNode extends MC with TabBarNodeMappable {
             ColorPNode(
               snode: this,
               name: 'b/g Color',
-              colorValue: bgColorValue,
-              onColorIntChange: (newValue) =>
-                  refreshWithUpdate(context, () => bgColorValue = newValue),
+              color: bgColor,
+              onColorChange: (newValue) =>
+                  refreshWithUpdate(context, () => bgColor = newValue),
               calloutButtonSize: const Size(160, 20),
             ),
             ColorPNode(
               snode: this,
               name: 'selected label Color',
-              colorValue: selectedLabelColorValue,
-              onColorIntChange: (newValue) => refreshWithUpdate(
-                  context, () => selectedLabelColorValue = newValue),
+              color: selectedLabelColor,
+              onColorChange: (newValue) => refreshWithUpdate(
+                  context, () => selectedLabelColor = newValue),
               calloutButtonSize: const Size(160, 20),
             ),
             ColorPNode(
               snode: this,
               name: 'unselected label Color',
-              colorValue: unselectedLabelColorValue,
-              onColorIntChange: (newValue) => refreshWithUpdate(
-                  context, () => unselectedLabelColorValue = newValue),
+              color: unselectedLabelColor,
+              onColorChange: (newValue) => refreshWithUpdate(
+                  context, () => unselectedLabelColor = newValue),
               calloutButtonSize: const Size(180, 20),
             ),
           ],
@@ -216,16 +216,11 @@ class TabBarNode extends MC with TabBarNodeMappable {
         key: createNodeWidgetGK(),
         controller: tabC,
         tabs: tabs,
-        labelColor: selectedLabelColorValue != null
-            ? Color(selectedLabelColorValue!)
-            : null,
-        unselectedLabelColor: unselectedLabelColorValue != null
-            ? Color(unselectedLabelColorValue!)
-            : null,
+        labelColor: selectedLabelColor?.flutterValue,
+        unselectedLabelColor: unselectedLabelColor?.flutterValue,
         labelPadding: EdgeInsets.all(10),
         labelStyle: labelTSPropGroup.toTextStyle(context),
-        indicatorColor:
-            indicatorColorValue != null ? Color(indicatorColorValue!) : null,
+        indicatorColor: indicatorColor?.flutterValue,
         indicatorWeight: indicatorWeight = 2.0,
         indicator: BoxDecoration(
           border: Border.all(color: Colors.white, width: 2),
@@ -237,7 +232,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
         return PreferredSize(
           preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
           child: Container(
-            color: bgColorValue != null ? Color(bgColorValue!) : Colors.grey,
+            color: bgColor?.flutterValue ?? Colors.grey,
             child: tabBar,
           ),
         );

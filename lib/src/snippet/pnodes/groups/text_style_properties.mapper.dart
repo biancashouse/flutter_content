@@ -16,6 +16,7 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
       Material3TextSizeEnumMapper.ensureInitialized();
       FontStyleEnumMapper.ensureInitialized();
       FontWeightEnumMapper.ensureInitialized();
+      ColorModelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -45,9 +46,9 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
   static double? _$letterSpacing(TextStyleProperties v) => v.letterSpacing;
   static const Field<TextStyleProperties, double> _f$letterSpacing =
       Field('letterSpacing', _$letterSpacing, opt: true);
-  static int? _$colorValue(TextStyleProperties v) => v.colorValue;
-  static const Field<TextStyleProperties, int> _f$colorValue =
-      Field('colorValue', _$colorValue, opt: true);
+  static ColorModel? _$color(TextStyleProperties v) => v.color;
+  static const Field<TextStyleProperties, ColorModel> _f$color =
+      Field('color', _$color, opt: true);
   static String? _$lastHoveredSuggestion(TextStyleProperties v) =>
       v.lastHoveredSuggestion;
   static const Field<TextStyleProperties, String> _f$lastHoveredSuggestion =
@@ -67,7 +68,7 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
     #fontWeight: _f$fontWeight,
     #lineHeight: _f$lineHeight,
     #letterSpacing: _f$letterSpacing,
-    #colorValue: _f$colorValue,
+    #color: _f$color,
     #lastHoveredSuggestion: _f$lastHoveredSuggestion,
     #lastSearchString: _f$lastSearchString,
   };
@@ -81,7 +82,7 @@ class TextStylePropertiesMapper extends ClassMapperBase<TextStyleProperties> {
         fontWeight: data.dec(_f$fontWeight),
         lineHeight: data.dec(_f$lineHeight),
         letterSpacing: data.dec(_f$letterSpacing),
-        colorValue: data.dec(_f$colorValue));
+        color: data.dec(_f$color));
   }
 
   @override
@@ -139,6 +140,7 @@ extension TextStylePropertiesValueCopy<$R, $Out>
 
 abstract class TextStylePropertiesCopyWith<$R, $In extends TextStyleProperties,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get color;
   $R call(
       {String? fontFamily,
       double? fontSize,
@@ -147,7 +149,7 @@ abstract class TextStylePropertiesCopyWith<$R, $In extends TextStyleProperties,
       FontWeightEnum? fontWeight,
       double? lineHeight,
       double? letterSpacing,
-      int? colorValue});
+      ColorModel? color});
   TextStylePropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -161,6 +163,9 @@ class _TextStylePropertiesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<TextStyleProperties> $mapper =
       TextStylePropertiesMapper.ensureInitialized();
   @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get color =>
+      $value.color?.copyWith.$chain((v) => call(color: v));
+  @override
   $R call(
           {Object? fontFamily = $none,
           Object? fontSize = $none,
@@ -169,7 +174,7 @@ class _TextStylePropertiesCopyWithImpl<$R, $Out>
           Object? fontWeight = $none,
           Object? lineHeight = $none,
           Object? letterSpacing = $none,
-          Object? colorValue = $none}) =>
+          Object? color = $none}) =>
       $apply(FieldCopyWithData({
         if (fontFamily != $none) #fontFamily: fontFamily,
         if (fontSize != $none) #fontSize: fontSize,
@@ -178,7 +183,7 @@ class _TextStylePropertiesCopyWithImpl<$R, $Out>
         if (fontWeight != $none) #fontWeight: fontWeight,
         if (lineHeight != $none) #lineHeight: lineHeight,
         if (letterSpacing != $none) #letterSpacing: letterSpacing,
-        if (colorValue != $none) #colorValue: colorValue
+        if (color != $none) #color: color
       }));
   @override
   TextStyleProperties $make(CopyWithData data) => TextStyleProperties(
@@ -189,7 +194,7 @@ class _TextStylePropertiesCopyWithImpl<$R, $Out>
       fontWeight: data.get(#fontWeight, or: $value.fontWeight),
       lineHeight: data.get(#lineHeight, or: $value.lineHeight),
       letterSpacing: data.get(#letterSpacing, or: $value.letterSpacing),
-      colorValue: data.get(#colorValue, or: $value.colorValue));
+      color: data.get(#color, or: $value.color));
 
   @override
   TextStylePropertiesCopyWith<$R2, TextStyleProperties, $Out2>

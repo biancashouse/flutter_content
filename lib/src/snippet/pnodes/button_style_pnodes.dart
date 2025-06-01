@@ -39,18 +39,18 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
           ColorPNode(
             snode: super.snode,
             name: 'f/g color',
-            colorValue: buttonStyleGroup.fgColorValue,
-            onColorIntChange: (newValue) {
-              buttonStyleGroup.fgColorValue = newValue;
+            color: buttonStyleGroup.fgColor,
+            onColorChange: (newValue) {
+              buttonStyleGroup.fgColor = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
           ),
           ColorPNode(
             snode: super.snode,
             name: 'b/g color',
-            colorValue: buttonStyleGroup.bgColorValue,
-            onColorIntChange: (newValue) {
-              buttonStyleGroup.bgColorValue = newValue;
+            color: buttonStyleGroup.bgColor,
+            onColorChange: (newValue) {
+              buttonStyleGroup.bgColor = newValue;
               onGroupChange.call(buttonStyleGroup, true);
             },
           ),

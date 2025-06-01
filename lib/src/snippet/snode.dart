@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -199,6 +197,7 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   void forcePropertyTreeRefresh(context) {
+    return;
     // only related to group node, which are exandable
     Map<PropertyName, bool> prevExpansions = {};
     for (PNode pNode in _pTreeC?.expandedNodes??[]) {
@@ -263,7 +262,7 @@ abstract class SNode extends Node with SNodeMappable {
     Rect? borderRect = nodeWidgetGK?.globalPaintBounds(
         skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (borderRect != null) {
-      CalloutConfig cc = _cc(
+      CalloutConfigModel cc = _cc(
         cId: feature,
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
@@ -339,13 +338,13 @@ abstract class SNode extends Node with SNodeMappable {
   //   Rect? r = nodeWidgetGK?.globalPaintBounds(
   //       skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
   //   if (r != null) {
-  //     CalloutConfig cc = CalloutConfig(
+  //     CalloutConfig cc = CalloutConfigModel(
   //       cId: PINK_OVERLAY_NON_TAPPABLE,
   //       initialCalloutW: double.infinity,
   //       initialCalloutH: double.infinity,
   //       initialCalloutPos: Offset.zero,
   //       fillColor: Colors.transparent,
-  //       arrowType: ArrowType.NONE,
+  //       arrowType: ArrowTypeEnum.NONE,
   //       draggable: false,
   //       scrollControllerName: scName,
   //       skipOnScreenCheck: true,
@@ -384,7 +383,7 @@ abstract class SNode extends Node with SNodeMappable {
         );
     if (r != null) {
       Rect borderRect = r; //_borderRect(r);
-      CalloutConfig cc = _cc(
+      CalloutConfigModel cc = _cc(
         cId: PINK_OVERLAY_NON_TAPPABLE,
         borderRect: borderRect,
         whiteBarrier: whiteBarrier,
@@ -440,23 +439,23 @@ abstract class SNode extends Node with SNodeMappable {
   //   return Rect.fromLTRB(borderLeft, borderTop, borderRight, borderBottom);
   // }
 
-  CalloutConfig _cc({
+  CalloutConfigModel _cc({
     required String cId,
     required Rect borderRect,
     bool whiteBarrier = false,
     ScrollControllerName? scName,
     bool? followScroll,
   }) =>
-      CalloutConfig(
+      CalloutConfigModel(
         cId: cId,
         initialCalloutW: borderRect.width.abs(),
         // + BORDER,
         initialCalloutH: borderRect.height.abs(),
         // + BORDER,
-        initialCalloutPos: borderRect.topLeft,
+        initialCalloutPos: OffsetModel.fromOffset(borderRect.topLeft),
         //.translate(-BORDER, -BORDER),
-        fillColor: Colors.transparent,
-        arrowType: ArrowType.NONE,
+        fillColor: ColorModel.fromColor(Colors.transparent),
+        arrowType: ArrowTypeEnum.NONE,
         barrier: whiteBarrier
             ? CalloutBarrierConfig(
                 opacity: .5,
@@ -476,21 +475,21 @@ abstract class SNode extends Node with SNodeMappable {
         shape: BoxShape.rectangle,
         color: transparent
             ? Colors.transparent
-            : Colors.purpleAccent.withOpacity(.2),
+            : Colors.purpleAccent.withValues(alpha:.2),
         border: GradientBoxBorder(
           gradient: LinearGradient(colors: [
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.yellowAccent.withOpacity(.5),
-            Colors.grey.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
-            Colors.grey.withOpacity(.5),
-            Colors.yellowAccent.withOpacity(.5),
-            Colors.purpleAccent.withOpacity(.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.yellowAccent.withValues(alpha:.5),
+            Colors.grey.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
+            Colors.grey.withValues(alpha:.5),
+            Colors.yellowAccent.withValues(alpha:.5),
+            Colors.purpleAccent.withValues(alpha:.5),
           ]),
           width: BORDER,
         ),
@@ -1034,13 +1033,13 @@ abstract class SNode extends Node with SNodeMappable {
   //       // fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
   //       fco.showOverlay(
   //         ensureLowestOverlay: true,
-  //         calloutConfig: CalloutConfig(
+  //         calloutConfig: CalloutConfigModel(
   //           cId: SELECTED_NODE_BORDER_CALLOUT,
   //           initialCalloutPos: r.topLeft.translate(translate.dx, translate.dy),
   //           initialCalloutW: w,
   //           initialCalloutH: h,
   //           fillColor: Colors.transparent,
-  //           arrowType: ArrowType.NONE,
+  //           arrowType: ArrowTypeEnum.NONE,
   //           draggable: false,
   //           // transparentPointer: true,
   //           scrollControllerName: scName,
@@ -1052,7 +1051,7 @@ abstract class SNode extends Node with SNodeMappable {
   //             decoration: BoxDecoration(
   //               color: Colors.transparent,
   //               border: Border.all(
-  //                   color: Colors.purpleAccent.withOpacity(.5),
+  //                   color: Colors.purpleAccent.withValues(alpha:.5),
   //                   width: thickness),
   //             ),
   //           ),
@@ -1087,14 +1086,14 @@ abstract class SNode extends Node with SNodeMappable {
 //             fco.logger.i("Showing $SELECTED_NODE_BORDER_CALLOUT");
 //             fco.showOverlay(
 //               ensureLowestOverlay: true,
-//               calloutConfig: CalloutConfig(
+//               calloutConfig: CalloutConfigModel(
 //                 cId: SELECTED_NODE_BORDER_CALLOUT,
 //                 initialCalloutPos:
 //                     r.topLeft.translate(translate.dx, translate.dy),
 //                 initialCalloutW: w,
 //                 initialCalloutH: h,
 //                 fillColor: Colors.transparent,
-//                 arrowType: ArrowType.NONE,
+//                 arrowType: ArrowTypeEnum.NONE,
 //                 draggable: false,
 //                 transparentPointer: true,
 //               ),
@@ -1113,7 +1112,7 @@ abstract class SNode extends Node with SNodeMappable {
 //                   decoration: BoxDecoration(
 //                     color: Colors.transparent,
 //                     border: Border.all(
-//                         color: Colors.purpleAccent.withOpacity(.5),
+//                         color: Colors.purpleAccent.withValues(alpha:.5),
 //                         width: thickness),
 //                   ),
 //                 ),
@@ -1384,13 +1383,13 @@ abstract class SNode extends Node with SNodeMappable {
                 label: Text(title),
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(
-                      bgColor ?? Colors.white.withOpacity(.9)),
+                      bgColor ?? Colors.white.withValues(alpha:.9)),
                   //padding: WidgetStatePropertyAll(EdgeInsets.zero),
                 ),
               )
             : IconButton(
                 key: key,
-                // hoverColor: bgColor?.withOpacity(.5),
+                // hoverColor: bgColor?.withValues(alpha:.5),
                 padding: EdgeInsets.zero,
                 onPressed: () {
                   if (controller.isOpen) {
@@ -1405,7 +1404,7 @@ abstract class SNode extends Node with SNodeMappable {
                   size: 40,
                 ),
                 tooltip: title,
-                // style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.white.withOpacity(.9),
+                // style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(Colors.white.withValues(alpha:.9),
                 // ),
                 //   //padding: WidgetStatePropertyAll(EdgeInsets.zero),
                 // ),

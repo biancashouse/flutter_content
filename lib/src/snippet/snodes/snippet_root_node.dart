@@ -162,7 +162,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                             isPublishedVersion ? 'published' : 'not published',
                         location: BannerLocation.topEnd,
                         color: isPublishedVersion
-                            ? Colors.limeAccent.withOpacity(.5)
+                            ? Colors.limeAccent.withValues(alpha:.5)
                             : Colors.pink.shade100,
                         textStyle: TextStyle(color: Colors.black, fontSize: 10),
                         child: listenable)

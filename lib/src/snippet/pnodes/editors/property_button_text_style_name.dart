@@ -40,11 +40,11 @@
 //       color: Colors.white,
 //       fontSize: 14,
 //     );
-//     CalloutConfig config = CalloutConfig(
+//     CalloutConfig config = CalloutConfigModel(
 //       cId: 'named-text-style',
 //       initialCalloutW: calloutSize.width,
 //       initialCalloutH: calloutSize.height,
-//       arrowType: ArrowType.NONE,
+//       arrowType: ArrowTypeEnum.NONE,
 //       // arrowColor: Colors.blueAccent,
 //       fillColor: menuBgColor,
 //       //alwaysReCalcSize: true,

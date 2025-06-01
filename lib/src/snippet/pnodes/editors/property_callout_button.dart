@@ -4,14 +4,14 @@ import 'package:flutter_content/flutter_content.dart';
 
 class PropertyCalloutButton extends StatelessWidget {
   final CalloutId cId;
-  final Alignment alignment;
+  final AlignmentEnum alignment;
   final String? label;
   final String? tooltip;
   final Widget? labelWidget;
   final WidgetBuilder calloutContents;
   final Color menuBgColor;
-  final Alignment? initialTargetAlignment;
-  final Alignment? initialCalloutAlignment;
+  final AlignmentEnum? initialTargetAlignment;
+  final AlignmentEnum? initialCalloutAlignment;
   final bool? draggable;
   final Size calloutButtonSize;
   final Color calloutButtonColor;
@@ -22,7 +22,7 @@ class PropertyCalloutButton extends StatelessWidget {
 
   const PropertyCalloutButton({
     required this.cId,
-    this.alignment = Alignment.centerLeft,
+    this.alignment = AlignmentEnum.centerLeft,
     this.label,
     this.tooltip,
     this.labelWidget,
@@ -42,16 +42,16 @@ class PropertyCalloutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CalloutConfig config = CalloutConfig(
+    CalloutConfigModel config = CalloutConfigModel(
       cId: cId,
       initialCalloutW: calloutSize.width,
       initialCalloutH: calloutSize.height,
-      arrowType: ArrowType.NONE,
+      arrowType: ArrowTypeEnum.NONE,
       // arrowColor: Colors.blueAccent,
-      fillColor: menuBgColor,
+      fillColor: ColorModel.fromColor(menuBgColor),
       //alwaysReCalcSize: true,
-      initialTargetAlignment: initialTargetAlignment ?? Alignment.centerRight,
-      initialCalloutAlignment: initialCalloutAlignment ?? Alignment.centerLeft,
+      initialTargetAlignment: initialTargetAlignment ?? AlignmentEnum.centerRight,
+      initialCalloutAlignment: initialCalloutAlignment ?? AlignmentEnum.centerLeft,
       draggable: draggable ?? true,
       onDragStartedF: () {
         // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = true;
@@ -93,7 +93,7 @@ class PropertyCalloutButton extends StatelessWidget {
               height: calloutButtonSize.height,
               // padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               color: calloutButtonColor,
-              alignment: alignment,
+              alignment: alignment.flutterValue,
               child: labelWidget ?? (label != null ? fco.coloredText(label!, color: Colors.white, ) : const Offstage()),
             ),
           ),

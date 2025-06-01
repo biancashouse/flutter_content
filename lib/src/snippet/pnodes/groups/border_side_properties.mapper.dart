@@ -13,6 +13,7 @@ class BorderSidePropertiesMapper extends ClassMapperBase<BorderSideProperties> {
   static BorderSidePropertiesMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BorderSidePropertiesMapper._());
+      ColorModelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -23,19 +24,19 @@ class BorderSidePropertiesMapper extends ClassMapperBase<BorderSideProperties> {
   static double? _$width(BorderSideProperties v) => v.width;
   static const Field<BorderSideProperties, double> _f$width =
       Field('width', _$width, opt: true);
-  static int? _$colorValue(BorderSideProperties v) => v.colorValue;
-  static const Field<BorderSideProperties, int> _f$colorValue =
-      Field('colorValue', _$colorValue, opt: true);
+  static ColorModel? _$color(BorderSideProperties v) => v.color;
+  static const Field<BorderSideProperties, ColorModel> _f$color =
+      Field('color', _$color, opt: true);
 
   @override
   final MappableFields<BorderSideProperties> fields = const {
     #width: _f$width,
-    #colorValue: _f$colorValue,
+    #color: _f$color,
   };
 
   static BorderSideProperties _instantiate(DecodingData data) {
     return BorderSideProperties(
-        width: data.dec(_f$width), colorValue: data.dec(_f$colorValue));
+        width: data.dec(_f$width), color: data.dec(_f$color));
   }
 
   @override
@@ -95,7 +96,8 @@ abstract class BorderSidePropertiesCopyWith<
     $R,
     $In extends BorderSideProperties,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
-  $R call({double? width, int? colorValue});
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get color;
+  $R call({double? width, ColorModel? color});
   BorderSidePropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -109,15 +111,18 @@ class _BorderSidePropertiesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<BorderSideProperties> $mapper =
       BorderSidePropertiesMapper.ensureInitialized();
   @override
-  $R call({Object? width = $none, Object? colorValue = $none}) =>
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get color =>
+      $value.color?.copyWith.$chain((v) => call(color: v));
+  @override
+  $R call({Object? width = $none, Object? color = $none}) =>
       $apply(FieldCopyWithData({
         if (width != $none) #width: width,
-        if (colorValue != $none) #colorValue: colorValue
+        if (color != $none) #color: color
       }));
   @override
   BorderSideProperties $make(CopyWithData data) => BorderSideProperties(
       width: data.get(#width, or: $value.width),
-      colorValue: data.get(#colorValue, or: $value.colorValue));
+      color: data.get(#color, or: $value.color));
 
   @override
   BorderSidePropertiesCopyWith<$R2, BorderSideProperties, $Out2>

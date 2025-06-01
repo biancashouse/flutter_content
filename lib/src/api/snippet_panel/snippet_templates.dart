@@ -78,7 +78,7 @@ enum SnippetTemplateEnum {
           child: ScaffoldNode(
             appBar: AppBarNode(
               tabBarName: uniqueTabBarName,
-              bgColorValue: Colors.grey.value,
+              bgColor: ColorModel.grey(),
               title: GenericSingleChildNode(
                 propertyName: 'title',
                 child: TextNode(
@@ -113,7 +113,7 @@ enum SnippetTemplateEnum {
           name: SnippetTemplateEnum.scaffold_with_menubar.name,
           child: ScaffoldNode(
             appBar: AppBarNode(
-              bgColorValue: Colors.grey.value,
+              bgColor: ColorModel.grey(),
               title: GenericSingleChildNode(
                   propertyName: 'title',
                   child: TextNode(

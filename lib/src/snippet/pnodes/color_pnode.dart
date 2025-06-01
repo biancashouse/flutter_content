@@ -4,13 +4,13 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
 
 class ColorPNode extends PNode {
-  int? colorValue;
-  final ValueChanged<int?> onColorIntChange;
+  ColorModel? color;
+  final ValueChanged<ColorModel?> onColorChange;
   final Size calloutButtonSize;
 
   ColorPNode({
-    required this.colorValue,
-    required this.onColorIntChange,
+    required this.color,
+    required this.onColorChange,
     required super.snode,
     required super.name,
     super.tooltip,
@@ -19,7 +19,7 @@ class ColorPNode extends PNode {
 
   @override
   void revertToOriginalValue() {
-    onColorIntChange.call(colorValue = null);
+    onColorChange.call(color = null);
   }
 
   @override
@@ -29,10 +29,10 @@ class ColorPNode extends PNode {
       cId: name,
       label: name,
       tooltip: tooltip,
-      originalColor: colorValue != null ? Color(colorValue!) : null,
+      originalColor: color?.flutterValue,
       onChangeF: (Color? newColor) {
         if (newColor != null) {
-          onColorIntChange.call(colorValue = newColor.value);
+          onColorChange.call(color = ColorModel.fromColor(newColor));
         }
       },
       calloutButtonSize: calloutButtonSize,

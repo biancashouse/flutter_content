@@ -358,7 +358,7 @@
 //     ),
 //     initialCalloutPos: stylesCalloutInitialPos(),
 //     ignoreCalloutResult: true,
-//     arrowType: ArrowType.NONE,
+//     arrowType: ArrowTypeEnum.NONE,
 //   ).show(
 //     notUsingHydratedStorage: true,
 //   );

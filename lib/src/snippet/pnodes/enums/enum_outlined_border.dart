@@ -2,9 +2,13 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
+// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
+
+import '../../../../flutter_content.dart' show fco;
+import '../../snode.dart';
 
 part 'enum_outlined_border.mapper.dart';
 

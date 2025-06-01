@@ -2,9 +2,10 @@
 
 import 'dart:async';
 
-import 'package:context_menus/context_menus.dart';
+// import 'package:context_menus/context_menus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
+
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,13 +13,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
+
 // import 'package:logger/logger.dart';
 import 'package:routing_config_provider/routing_config_provider.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart'
     if (dart.library.html) 'register_web_webview.dart';
-
 
 /// this widget must enclose your MaterialApp, or CupertinoApp or WidgetsApp
 /// so that the CAPIBloc becomes available to overlays, which are placed into
@@ -129,18 +130,18 @@ class FlutterContentApp extends StatefulWidget {
   //           width: rect.width,
   //           height: rect.height,
   //           decoration: BoxDecoration(
-  //             color: Colors.purpleAccent.withOpacity(.2),
+  //             color: Colors.purpleAccent.withValues(alpha:.2),
   //             border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
   //           ),
   //         ),
   //       ),
-  //       calloutConfig: CalloutConfig(
+  //       calloutConfig: CalloutConfigModel(
   //         cId: '$panelName-pink-overlay',
   //         initialCalloutW: rect.width + 6,
   //         initialCalloutH: rect.height + 6,
   //         initialCalloutPos: rect.topLeft.translate(-3, -3),
   //         color: Colors.transparent,
-  //         arrowType: ArrowType.NONE,
+  //         arrowType: ArrowTypeEnum.NONE,
   //         draggable: false,
   //       ),
   //       targetGkF: () => CAPIState.snippetPanelGkMap[panelName],
@@ -148,13 +149,13 @@ class FlutterContentApp extends StatefulWidget {
   //     // calc optimal alignment of panel-name callout
   //     late Alignment al;
   //     if (max(rect.top, rect.bottom) > max(rect.left, rect.right)) {
-  //       al = rect.top > rect.bottom ? Alignment.topCenter : Alignment.bottomCenter;
-  //       if (rect.left > rect.right) al = Alignment.topLeft;
-  //       if (rect.left < rect.right) al = Alignment.topRight;
+  //       al = rect.top > rect.bottom ? AlignmentEnum.topCenter : AlignmentEnum.bottomCenter;
+  //       if (rect.left > rect.right) al = AlignmentEnum.topLeft;
+  //       if (rect.left < rect.right) al = AlignmentEnum.topRight;
   //     } else {
-  //       al = rect.left > rect.right ? Alignment.centerLeft : Alignment.centerRight;
-  //       if (rect.top > rect.bottom) al = Alignment.topLeft;
-  //       if (rect.top < rect.bottom) al = Alignment.topRight;
+  //       al = rect.left > rect.right ? AlignmentEnum.centerLeft : AlignmentEnum.centerRight;
+  //       if (rect.top > rect.bottom) al = AlignmentEnum.topLeft;
+  //       if (rect.top < rect.bottom) al = AlignmentEnum.topRight;
   //     }
   //     String? rootSnippetName = CAPIState.snippetPlacementMap[panelName];
   //     if (rootSnippetName != null) {
@@ -184,14 +185,14 @@ class FlutterContentApp extends StatefulWidget {
   //           },
   //           child: Center(child: FCO.coloredText('$panelName / $rootSnippetName', color: Colors.white)),
   //         ),
-  //         calloutConfig: CalloutConfig(
+  //         calloutConfig: CalloutConfigModel(
   //           cId: '$panelName-panel-name-callout',
   //           initialCalloutW: 300,
   //           initialCalloutH: 30,
   //           initialCalloutAlignment: al,
   //           initialTargetAlignment: -al,
   //           color: Colors.black,
-  //           arrowType: ArrowType.THIN,
+  //           arrowType: ArrowTypeEnum.THIN,
   //           finalSeparation: 40,
   //           draggable: true,
   //         ),
@@ -327,18 +328,16 @@ class FlutterContentAppState extends State<FlutterContentApp>
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
-            return ContextMenuOverlay(
-              child: BlocProvider<CAPIBloC>(
-                create: (BuildContext context) => snapshot.data!,
-                child: MaterialApp.router(
-                  routerConfig: fco.router,
-                  theme: widget.materialAppThemeF(),
-                  darkTheme: ThemeData.dark(),
-                  // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
-                  debugShowCheckedModeBanner: false,
-                  title: widget.title,
-                  scrollBehavior: const ConstantScrollBehavior(),
-                ),
+            return BlocProvider<CAPIBloC>(
+              create: (BuildContext context) => snapshot.data!,
+              child: MaterialApp.router(
+                routerConfig: fco.router,
+                theme: widget.materialAppThemeF(),
+                darkTheme: ThemeData.dark(),
+                // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
+                debugShowCheckedModeBanner: false,
+                title: widget.title,
+                scrollBehavior: const ConstantScrollBehavior(),
               ),
             );
           } else {

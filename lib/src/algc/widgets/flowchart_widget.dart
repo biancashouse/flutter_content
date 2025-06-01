@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
@@ -12,8 +11,10 @@ import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
 
 class FlowchartWidget extends StatelessWidget {
   final String jsonString;
+  final String fbUID;
+  final ScrollControllerName scName;
 
-  const FlowchartWidget(this.jsonString, {super.key});
+  const FlowchartWidget(this.jsonString, this.fbUID, this.scName, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class FlowchartWidget extends StatelessWidget {
       f.zeroNumStepComments();
       f.isACommentIconPresent = false;
 
-      return FlowchartWidgetStack(f);
+      return FlowchartWidgetStack(f, fbUID, scName);
     } catch (e) {
       fco.logger.e('', error:e);
       return Error("FlowchartWidget", color: Colors.red, size: 32, errorMsg: e.toString(), key:GlobalKey());
@@ -35,22 +36,25 @@ class FlowchartWidget extends StatelessWidget {
 
 class FlowchartWidgetStack extends StatelessWidget {
   final FlowchartM f;
+  final String fbUID;
+  final ScrollControllerName scName;
 
-  const FlowchartWidgetStack(this.f, {super.key});
+
+  const FlowchartWidgetStack(this.f, this.fbUID, this.scName, {super.key});
 
   @override
   Widget build(BuildContext context) {
     fco.logger.i('FlowchartWidgetStack build');
-    double w = FlowchartM.PAGE_VISIBLE_OVERFLOW + f.screenPaperW;
-    double h =
-        FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);
+    double w = FlowchartM.PAGE_VISIBLE_OVERFLOW + f.width;
+    double h = FlowchartM.PAGE_VISIBLE_OVERFLOW * 4 + f.height;
+        // FlowchartM.PAGE_VISIBLE_OVERFLOW * 2 + max(f.height, f.screenPaperH);
 
     return SizedBox(
       width: w,
-      height: h + 8,
+      height: h,
       child: Stack(
         children: <Widget>[
-          _positionedPageBgPaint(),
+          // _positionedPageBgPaint(),
           positionedFlowchartPaint(),
           positionedFlowchartBeginText(-1.0),
           // _positionedBeginStepMenuButton(-1.0),
@@ -81,7 +85,7 @@ class FlowchartWidgetStack extends StatelessWidget {
     double sumOfFuncStepHeights = f.sumOfHeightsOf(f.steps);
     FlowchartSkeletonPainter funcPainter = FlowchartSkeletonPainter(
       f,
-      skipDashedBorder: false,
+      skipDashedBorder: true,
       higlightBeginStep: false,
       higlightEndStep: false,
     );
@@ -207,7 +211,7 @@ class FlowchartWidgetStack extends StatelessWidget {
     //fco.logger.i('starting _positionedFlowchartSteps');
     // create the child step widgets
     List<PkgStepWidget> columnChildren =
-        f.stepsShowingChanges.map((step) => PkgStepWidget(f, step)).toList();
+        f.stepsShowingChanges.map((step) => PkgStepWidget(f, step, fbUID, scName)).toList();
 
     Widget rootSteps = Positioned(
       left: f.flowchartOffset.dx + f.stepListOffsetLeft(ROOT_STEPS),

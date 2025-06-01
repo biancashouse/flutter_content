@@ -70,7 +70,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
         backgroundColor: WidgetStateProperty.resolveWith<Color?>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.focused)) {
-              return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+              return Theme.of(context).colorScheme.primary.withValues(alpha:0.5);
             }
             return null; // Use the component's default.
           },

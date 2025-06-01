@@ -71,7 +71,7 @@ class TargetsWrapper extends StatefulWidget {
     if (targetRect == null) return;
 
     Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+        fco.calcTargetAlignmentWithinWrapper(wrapperRect:wrapperRect, targetRect:targetRect);
 
     if (tc.hasAHotspot()) {
       tc.targetsWrapperState()?.zoomer?.applyTransform(
@@ -99,7 +99,6 @@ class TargetsWrapper extends StatefulWidget {
         scName: scName,
       );
       // show config toolbar in a toast
-      tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
       showConfigToolbar(
         tc,
         wrapperRect,
@@ -115,22 +114,42 @@ class TargetsWrapper extends StatefulWidget {
   ) {
     fco.dismiss(CalloutConfigToolbar.CID);
     fco.showOverlay(
-      calloutConfig: CalloutConfig(
+      onReadyF: (){},
+      calloutConfig: CalloutConfigModel(
         cId: CalloutConfigToolbar.CID,
         scrollControllerName: scName,
-        fillColor: Colors.purpleAccent,
+        fillColor: ColorModel.purpleAccent(),
         initialCalloutW: 820,
         initialCalloutH: 80,
         decorationShape: DecorationShapeEnum.rounded_rectangle,
         borderRadius: 16,
         animate: false,
-        arrowType: ArrowType.NONE,
-        initialCalloutPos: fco.calloutConfigToolbarPos(),
+        arrowType: ArrowTypeEnum.NONE,
+        initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
         onDragEndedF: (newPos) {
           fco.setCalloutConfigToolbarPos(newPos);
         },
         dragHandleHeight: 30,
         followScroll: false,
+        onDismissedF: (){
+          tc.targetsWrapperState()?.refresh(() {
+            tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: () {
+              // fco.dismiss(CalloutConfigToolbar.CID);
+              SNode.showAllTargetBtns();
+              SNode.showAllHotspotTargetCovers();
+              fco.afterNextBuildDo(() {
+                // save hotspot's parent snippet
+                var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                if (rootNode != null) {
+                  fco.cacheAndSaveANewSnippetVersion(
+                    snippetName: rootNode.name,
+                    rootNode: rootNode,
+                  );
+                }
+              });
+            });
+          });
+        }
       ),
       calloutContent: CalloutConfigToolbar(
         tc: tc,
@@ -238,6 +257,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     );
   }
 
+  double scrollOffsetX() =>
+      NamedScrollController.hScrollOffset(widget.scName);
+
+  double scrollOffsetY() =>
+      NamedScrollController.vScrollOffset(widget.scName);
+
   void measureIWPosAndSize() {
     // fco.logger.i('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
@@ -323,8 +348,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       });
     }
 
-    //
-
     return SizedBox.fromSize(
         size: wrapperRect.size,
         child: Stack(
@@ -343,10 +366,10 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                           FlutterContentApp.snippetBeingEdited != null) {
                         return;
                       }
-                      CalloutConfig cc = CalloutConfig(
+                      CalloutConfigModel cc = CalloutConfigModel(
                           cId: 'create-target-menu',
-                          initialTargetAlignment: Alignment.topRight,
-                          initialCalloutAlignment: Alignment.bottomLeft,
+                          initialTargetAlignment: AlignmentEnum.topRight,
+                          initialCalloutAlignment: AlignmentEnum.bottomLeft,
                           initialCalloutW: TargetsWrapperOnTapMenu.menuWidth(),
                           initialCalloutH: TargetsWrapperOnTapMenu.menuHeight(),
                           // contentTranslateX: 1,
@@ -355,9 +378,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                             opacity: 0.1,
                           ),
                           // finalSeparation: 50,
-                          arrowColor: Colors.purpleAccent,
+                          arrowColor: ColorModel.purpleAccent(),
                           animate: true,
-                          fillColor: Colors.purpleAccent,
+                          fillColor: ColorModel.purpleAccent(),
                           scrollControllerName: null,
                           showCloseButton: true,
                           closeButtonPos: Offset(10,10),
@@ -407,8 +430,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             // TARGET COVERS
             for (TargetModel tc in widget.parentNode.targets)
               Positioned(
-                top: tc.targetStackPos().dy - tc.radius,
-                left: tc.targetStackPos().dx - tc.radius,
+                top: tc.targetStackPos().dy - tc.radius + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
+                left: tc.targetStackPos().dx - tc.radius + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
                 child: Visibility.maintain(
                   key: fco.setTargetGk(tc.uid,
                       GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
@@ -419,6 +442,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                     _targetIndex(tc),
                     wrapperRect: wrapperRect,
                     scName: widget.scName,
+                    playing: playingTc == tc,
                   ),
                 ),
               ),
@@ -450,6 +474,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   widget.parentNode.targets.length,
                   wrapperRect: wrapperRect,
                   scName: widget.scName,
+                  playing: false,
                 )
                     .animate(
                         onPlay: (controller) =>

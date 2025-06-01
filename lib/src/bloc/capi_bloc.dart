@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/model/model_repo.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_content/src/snippet/pnodes/groups/container_style_proper
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 
 class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   // late SnippetUndoRedoStack _ur;
@@ -101,10 +100,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     final stopwatch = Stopwatch()..start();
     fco.showToast(
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "reverting-model",
-        gravity: Alignment.topCenter,
-        fillColor: Colors.yellow,
+        gravity: AlignmentEnum.topCenter,
+        fillColor: ColorModel.yellow(),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -198,10 +197,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
     fco.showToast(
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "publishing-version",
-        gravity: Alignment.topCenter,
-        fillColor: Colors.yellow,
+        gravity: AlignmentEnum.topCenter,
+        fillColor: ColorModel.yellow(),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -732,13 +731,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       const (RichTextNode) => RichTextNode(
           text: TextSpanNode(
               text: 'rich',
-              tsPropGroup: TextStyleProperties(colorValue: Colors.blue.value),
+              tsPropGroup: TextStyleProperties(color: ColorModel.blue()),
               children: [
                 TextSpanNode(text: '-', tsPropGroup: TextStyleProperties()),
                 TextSpanNode(
                     text: '-text',
                     tsPropGroup:
-                        TextStyleProperties(colorValue: Colors.red.value)),
+                        TextStyleProperties(color: ColorModel.red())),
               ]),
         ),
       const (RowNode) =>
@@ -757,13 +756,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
                   CenterNode(
                       child: ContainerNode(
                           csPropGroup: ContainerStyleProperties(
-                              fillColorValues: UpTo6ColorValues(
-                                  color1Value: Colors.red.value)))),
+                              fillColors: UpTo6Colors(
+                                  color1: ColorModel.red())))),
                   CenterNode(
                       child: ContainerNode(
                           csPropGroup: ContainerStyleProperties(
-                              fillColorValues: UpTo6ColorValues(
-                                  color1Value: Colors.blue.value)))),
+                              fillColors: UpTo6Colors(
+                                  color1: ColorModel.blue())))),
                 ]),
       const (StackNode) =>
         StackNode(children: childNode != null ? [childNode] : []),
@@ -908,8 +907,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         w = ContainerNode(
             csPropGroup: ContainerStyleProperties(
               decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
-              borderColorValues:
-                  UpTo6ColorValues(color1Value: Colors.black.value),
+              borderColors:
+                  UpTo6Colors(color1: ColorModel.black()),
               borderThickness: 4,
             ),
             child: w)

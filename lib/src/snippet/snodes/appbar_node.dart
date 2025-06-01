@@ -13,8 +13,8 @@ part 'appbar_node.mapper.dart';
 @MappableClass()
 class AppBarNode extends SNode with AppBarNodeMappable {
   String? tabBarName;
-  int? bgColorValue;
-  int? fgColorValue;
+  ColorModel? bgColor;
+  ColorModel? fgColor;
   double? toolbarHeight;
   GenericSingleChildNode? leading;
   GenericSingleChildNode? title;
@@ -23,8 +23,8 @@ class AppBarNode extends SNode with AppBarNodeMappable {
 
   AppBarNode({
     this.tabBarName,
-    this.bgColorValue,
-    this.fgColorValue,
+    this.bgColor,
+    this.fgColor,
     this.toolbarHeight,
     this.leading,
     this.title,
@@ -68,18 +68,18 @@ class AppBarNode extends SNode with AppBarNodeMappable {
         snode: this,
         name: 'bg color',
         tooltip: "The fill color to use for an app bar's Material.",
-        colorValue: bgColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context,() => bgColorValue = newValue),
+        color: bgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context,() => bgColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
       ColorPNode(
         snode: this,
         name: 'fg color',
         tooltip: 'The default color for Text and Icons within the app bar.',
-        colorValue: fgColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context,() => fgColorValue = newValue),
+        color: fgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context,() => fgColor = newValue),
         calloutButtonSize: const Size(130, 20),
       ),
     ];
@@ -111,8 +111,8 @@ class AppBarNode extends SNode with AppBarNodeMappable {
           // centerTitle: true,
           toolbarHeight: toolbarHeight,
           actions: actionWidgets,
-          backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
-          foregroundColor: fgColorValue != null ? Color(fgColorValue!) : null,
+          backgroundColor: bgColor?.flutterValue,
+          foregroundColor: fgColor?.flutterValue,
           bottom: bottomWidget,
         );
         return appBar;

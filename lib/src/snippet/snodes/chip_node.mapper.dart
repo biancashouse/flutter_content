@@ -16,8 +16,9 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
       CLMapper.ensureInitialized().addSubMapper(_instance!);
       TextStylePropertiesMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
+      ColorModelMapper.ensureInitialized();
       SnippetTemplateEnumMapper.ensureInitialized();
-      CalloutConfigPropertiesMapper.ensureInitialized();
+      CalloutConfigModelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -35,15 +36,15 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   static EdgeInsetsValue? _$labelPadding(ChipNode v) => v.labelPadding;
   static const Field<ChipNode, EdgeInsetsValue> _f$labelPadding =
       Field('labelPadding', _$labelPadding, opt: true);
-  static int? _$bgColorValue(ChipNode v) => v.bgColorValue;
-  static const Field<ChipNode, int> _f$bgColorValue =
-      Field('bgColorValue', _$bgColorValue, opt: true);
-  static int? _$disabledColorValue(ChipNode v) => v.disabledColorValue;
-  static const Field<ChipNode, int> _f$disabledColorValue =
-      Field('disabledColorValue', _$disabledColorValue, opt: true);
-  static int? _$selectedColorValue(ChipNode v) => v.selectedColorValue;
-  static const Field<ChipNode, int> _f$selectedColorValue =
-      Field('selectedColorValue', _$selectedColorValue, opt: true);
+  static ColorModel? _$bgColor(ChipNode v) => v.bgColor;
+  static const Field<ChipNode, ColorModel> _f$bgColor =
+      Field('bgColor', _$bgColor, opt: true);
+  static ColorModel? _$disabledColor(ChipNode v) => v.disabledColor;
+  static const Field<ChipNode, ColorModel> _f$disabledColor =
+      Field('disabledColor', _$disabledColor, opt: true);
+  static ColorModel? _$selectedColor(ChipNode v) => v.selectedColor;
+  static const Field<ChipNode, ColorModel> _f$selectedColor =
+      Field('selectedColor', _$selectedColor, opt: true);
   static bool _$enabled(ChipNode v) => v.enabled;
   static const Field<ChipNode, bool> _f$enabled =
       Field('enabled', _$enabled, opt: true, def: false);
@@ -69,10 +70,9 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
   static String? _$onTapHandlerName(ChipNode v) => v.onTapHandlerName;
   static const Field<ChipNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigProperties? _$calloutConfigGroup(ChipNode v) =>
-      v.calloutConfigGroup;
-  static const Field<ChipNode, CalloutConfigProperties> _f$calloutConfigGroup =
-      Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
+  static CalloutConfigModel? _$calloutConfig(ChipNode v) => v.calloutConfig;
+  static const Field<ChipNode, CalloutConfigModel> _f$calloutConfig =
+      Field('calloutConfig', _$calloutConfig, opt: true);
   static String _$uid(ChipNode v) => v.uid;
   static const Field<ChipNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
@@ -90,16 +90,16 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #label: _f$label,
     #labelTSPropGroup: _f$labelTSPropGroup,
     #labelPadding: _f$labelPadding,
-    #bgColorValue: _f$bgColorValue,
-    #disabledColorValue: _f$disabledColorValue,
-    #selectedColorValue: _f$selectedColorValue,
+    #bgColor: _f$bgColor,
+    #disabledColor: _f$disabledColor,
+    #selectedColor: _f$selectedColor,
     #enabled: _f$enabled,
     #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
     #template: _f$template,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfigGroup: _f$calloutConfigGroup,
+    #calloutConfig: _f$calloutConfig,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
@@ -117,9 +117,9 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
         label: data.dec(_f$label),
         labelTSPropGroup: data.dec(_f$labelTSPropGroup),
         labelPadding: data.dec(_f$labelPadding),
-        bgColorValue: data.dec(_f$bgColorValue),
-        disabledColorValue: data.dec(_f$disabledColorValue),
-        selectedColorValue: data.dec(_f$selectedColorValue),
+        bgColor: data.dec(_f$bgColor),
+        disabledColor: data.dec(_f$disabledColor),
+        selectedColor: data.dec(_f$selectedColor),
         enabled: data.dec(_f$enabled),
         destinationPanelOrPlaceholderName:
             data.dec(_f$destinationPanelOrPlaceholderName),
@@ -128,7 +128,7 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
             data.dec(_f$destinationRoutePathSnippetName),
         template: data.dec(_f$template),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfigGroup: data.dec(_f$calloutConfigGroup));
+        calloutConfig: data.dec(_f$calloutConfig));
   }
 
   @override
@@ -184,23 +184,26 @@ abstract class ChipNodeCopyWith<$R, $In extends ChipNode, $Out>
       get labelTSPropGroup;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>?
       get labelPadding;
-  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
-      CalloutConfigProperties>? get calloutConfigGroup;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get disabledColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedColor;
+  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
+      get calloutConfig;
   @override
   $R call(
       {String? label,
       TextStyleProperties? labelTSPropGroup,
       EdgeInsetsValue? labelPadding,
-      int? bgColorValue,
-      int? disabledColorValue,
-      int? selectedColorValue,
+      ColorModel? bgColor,
+      ColorModel? disabledColor,
+      ColorModel? selectedColor,
       bool? enabled,
       String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
       String? destinationRoutePathSnippetName,
       SnippetTemplateEnum? template,
       String? onTapHandlerName,
-      CalloutConfigProperties? calloutConfigGroup});
+      CalloutConfigModel? calloutConfig});
   ChipNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -221,34 +224,40 @@ class _ChipNodeCopyWithImpl<$R, $Out>
       get labelPadding =>
           $value.labelPadding?.copyWith.$chain((v) => call(labelPadding: v));
   @override
-  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
-          CalloutConfigProperties>?
-      get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
-          .$chain((v) => call(calloutConfigGroup: v));
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor =>
+      $value.bgColor?.copyWith.$chain((v) => call(bgColor: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get disabledColor =>
+      $value.disabledColor?.copyWith.$chain((v) => call(disabledColor: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get selectedColor =>
+      $value.selectedColor?.copyWith.$chain((v) => call(selectedColor: v));
+  @override
+  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
+      get calloutConfig =>
+          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
   @override
   $R call(
           {String? label,
           TextStyleProperties? labelTSPropGroup,
           Object? labelPadding = $none,
-          Object? bgColorValue = $none,
-          Object? disabledColorValue = $none,
-          Object? selectedColorValue = $none,
+          Object? bgColor = $none,
+          Object? disabledColor = $none,
+          Object? selectedColor = $none,
           bool? enabled,
           Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
           Object? destinationRoutePathSnippetName = $none,
           Object? template = $none,
           Object? onTapHandlerName = $none,
-          Object? calloutConfigGroup = $none}) =>
+          Object? calloutConfig = $none}) =>
       $apply(FieldCopyWithData({
         if (label != null) #label: label,
         if (labelTSPropGroup != null) #labelTSPropGroup: labelTSPropGroup,
         if (labelPadding != $none) #labelPadding: labelPadding,
-        if (bgColorValue != $none) #bgColorValue: bgColorValue,
-        if (disabledColorValue != $none)
-          #disabledColorValue: disabledColorValue,
-        if (selectedColorValue != $none)
-          #selectedColorValue: selectedColorValue,
+        if (bgColor != $none) #bgColor: bgColor,
+        if (disabledColor != $none) #disabledColor: disabledColor,
+        if (selectedColor != $none) #selectedColor: selectedColor,
         if (enabled != null) #enabled: enabled,
         if (destinationPanelOrPlaceholderName != $none)
           #destinationPanelOrPlaceholderName: destinationPanelOrPlaceholderName,
@@ -258,7 +267,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
         if (template != $none) #template: template,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfigGroup != $none) #calloutConfigGroup: calloutConfigGroup
+        if (calloutConfig != $none) #calloutConfig: calloutConfig
       }));
   @override
   ChipNode $make(CopyWithData data) => ChipNode(
@@ -266,11 +275,9 @@ class _ChipNodeCopyWithImpl<$R, $Out>
       labelTSPropGroup:
           data.get(#labelTSPropGroup, or: $value.labelTSPropGroup),
       labelPadding: data.get(#labelPadding, or: $value.labelPadding),
-      bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
-      disabledColorValue:
-          data.get(#disabledColorValue, or: $value.disabledColorValue),
-      selectedColorValue:
-          data.get(#selectedColorValue, or: $value.selectedColorValue),
+      bgColor: data.get(#bgColor, or: $value.bgColor),
+      disabledColor: data.get(#disabledColor, or: $value.disabledColor),
+      selectedColor: data.get(#selectedColor, or: $value.selectedColor),
       enabled: data.get(#enabled, or: $value.enabled),
       destinationPanelOrPlaceholderName: data.get(
           #destinationPanelOrPlaceholderName,
@@ -283,8 +290,7 @@ class _ChipNodeCopyWithImpl<$R, $Out>
       template: data.get(#template, or: $value.template),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfigGroup:
-          data.get(#calloutConfigGroup, or: $value.calloutConfigGroup));
+      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig));
 
   @override
   ChipNodeCopyWith<$R2, ChipNode, $Out2> $chain<$R2, $Out2>(

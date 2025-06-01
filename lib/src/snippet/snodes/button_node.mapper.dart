@@ -22,7 +22,7 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       MenuItemButtonNodeMapper.ensureInitialized();
       SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigPropertiesMapper.ensureInitialized();
+      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -46,11 +46,9 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   static String? _$onTapHandlerName(ButtonNode v) => v.onTapHandlerName;
   static const Field<ButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigProperties? _$calloutConfigGroup(ButtonNode v) =>
-      v.calloutConfigGroup;
-  static const Field<ButtonNode, CalloutConfigProperties>
-      _f$calloutConfigGroup =
-      Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
+  static CalloutConfigModel? _$calloutConfig(ButtonNode v) => v.calloutConfig;
+  static const Field<ButtonNode, CalloutConfigModel> _f$calloutConfig =
+      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(ButtonNode v) => v.child;
   static const Field<ButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -72,7 +70,7 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
     #template: _f$template,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfigGroup: _f$calloutConfigGroup,
+    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -113,8 +111,8 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
     implements SCCopyWith<$R, $In, $Out> {
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
-  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
-      CalloutConfigProperties>? get calloutConfigGroup;
+  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
+      get calloutConfig;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
@@ -123,7 +121,7 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
       SnippetTemplateEnum? template,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigProperties? calloutConfigGroup,
+      CalloutConfigModel? calloutConfig,
       SNode? child});
   ButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

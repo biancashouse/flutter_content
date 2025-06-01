@@ -5,7 +5,6 @@ import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_search_container_styles.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/gradient_pnode.dart';
@@ -14,7 +13,7 @@ import 'package:flutter_content/src/snippet/pnodes/size_pnode.dart';
 import 'package:flutter_content/src/text_styles/style_name_editor.dart';
 
 class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
-  ContainerStyleProperties containerStyleGroup;
+  final ContainerStyleProperties containerStyleGroup;
   final ContainerStylePropertiesChangeCallback onGroupChange;
 
   ContainerStylePNode /*Group*/ ({
@@ -37,9 +36,32 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           name: 'Container style search',
           containerStyleProps: containerStyleGroup,
           onAnyContainerStylePropertyChangeF: (newProps) {
+            // containerStyleGroup.fillColors = newProps.fillColors;
+            // containerStyleGroup.borderColors = newProps.borderColors;
+            onGroupChange.call(newProps, true);
+            return;
             // textStyleProperties = newProps;
             // fco.forceRefresh();
-            onGroupChange.call(newProps, false);
+            containerStyleGroup
+              ..fillColors = newProps.fillColors
+              ..margin = newProps.margin
+              ..padding = newProps.padding
+              ..width = newProps.width
+              ..height = newProps.height
+              ..alignment = newProps.alignment
+              ..decoration = newProps.decoration
+              ..borderThickness = newProps.borderThickness
+              ..borderColors = newProps.borderColors
+              ..borderRadius = newProps.borderRadius
+              ..starPoints = newProps.starPoints
+              ..dash = newProps.dash
+              ..gap = newProps.gap
+              ..badgeCorner = newProps.badgeCorner
+              ..badgeHeight = newProps.badgeHeight
+              ..badgeText = newProps.badgeText
+              ..badgeWidth = newProps.badgeWidth
+              ..outlinedBorderGroup = newProps.outlinedBorderGroup;
+            onGroupChange.call(containerStyleGroup, true);
           }),
       if (containerStyleGroup.width != null ||
           containerStyleGroup.height != null)
@@ -101,12 +123,12 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           GradientPNode(
               snode: super.snode,
               name: 'fill color(s)',
-              colorValues: containerStyleGroup.fillColorValues,
+              colors: containerStyleGroup.fillColors,
               onColorChange: (newValues) {
-                containerStyleGroup.fillColorValues = newValues;
+                containerStyleGroup.fillColors = newValues;
                 onGroupChange.call(containerStyleGroup, true);
               }),
-          if (containerStyleGroup.fillColorValues?.isAGradient() ?? false)
+          if (containerStyleGroup.fillColors?.isAGradient() ?? false)
             BoolPNode(
                 snode: super.snode,
                 name: 'radial Gradient ?',
@@ -118,9 +140,9 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
           GradientPNode(
               snode: super.snode,
               name: 'border color(s)',
-              colorValues: containerStyleGroup.borderColorValues,
+              colors: containerStyleGroup.borderColors,
               onColorChange: (newValues) {
-                containerStyleGroup.borderColorValues = newValues;
+                containerStyleGroup.borderColors = newValues;
                 onGroupChange.call(containerStyleGroup, true);
               }),
           EnumPNode<MappableDecorationShapeEnum?>(
@@ -180,7 +202,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 }
 
 class ContainerStyleSearchPNode extends PNode {
-  ContainerStyleProperties containerStyleProps;
+  final ContainerStyleProperties containerStyleProps;
   final ValueChanged<ContainerStyleProperties>
       onAnyContainerStylePropertyChangeF;
   final Size calloutButtonSize;
@@ -197,7 +219,7 @@ class ContainerStyleSearchPNode extends PNode {
   @override
   void revertToOriginalValue() {
     onAnyContainerStylePropertyChangeF
-        .call(containerStyleProps = ContainerStyleProperties());
+        .call(ContainerStyleProperties());
   }
 
   @override
@@ -208,14 +230,14 @@ class ContainerStyleSearchPNode extends PNode {
       tooltip: tooltip,
       containerStyle: containerStyleProps,
       onHoveredF: (ContainerStyleProperties newProps) {
-        if (newProps != containerStyleProps) {
-          onAnyContainerStylePropertyChangeF
-              .call(containerStyleProps = newProps);
-        }
+        // if (newProps != containerStyleProps) {
+          onAnyContainerStylePropertyChangeF.call(newProps);
+          snode.forcePropertyTreeRefresh(context);
+        // }
       },
       onChangeF: (ContainerStyleProperties newProps) {
+        onAnyContainerStylePropertyChangeF.call(newProps);
         snode.forcePropertyTreeRefresh(context);
-        onAnyContainerStylePropertyChangeF.call(containerStyleProps = newProps);
       },
       calloutButtonSize: calloutButtonSize,
       scName: scName,

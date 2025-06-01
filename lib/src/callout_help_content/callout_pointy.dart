@@ -21,7 +21,7 @@
 //   final ScrollController? ancestorVScrollController,
 // ) =>
 //     WidgetToast(
-//       gravity: Alignment.bottomCenter,
+//       gravity: AlignmentEnum.bottomCenter,
 //       backgroundColor: Colors.purpleAccent,
 //       cId: CAPI.ARROW_TYPE_CALLOUT.feature(),
 //       contents: () => PointyTool(
@@ -77,8 +77,8 @@
 //                 child: Column(
 //                     mainAxisAlignment: MainAxisAlignment.center,
 //                     children: [
-//                       ArrowType.NONE,
-//                       ArrowType.POINTY,
+//                       ArrowTypeEnum.NONE,
+//                       ArrowTypeEnum.POINTY,
 //                     ]
 //                         .map((t) => Padding(
 //                               padding: const EdgeInsets.all(3.0),
@@ -107,11 +107,11 @@
 //                     Expanded(
 //                       child: Row(
 //                           children: [
-//                         ArrowType.VERY_THIN,
-//                         ArrowType.THIN,
-//                         ArrowType.MEDIUM,
-//                         ArrowType.LARGE,
-//                         ArrowType.HUGE,
+//                         ArrowTypeEnum.VERY_THIN,
+//                         ArrowTypeEnum.THIN,
+//                         ArrowTypeEnum.MEDIUM,
+//                         ArrowTypeEnum.LARGE,
+//                         ArrowTypeEnum.HUGE,
 //                       ]
 //                               .map((t) => Padding(
 //                                     padding: const EdgeInsets.all(3.0),
@@ -135,11 +135,11 @@
 //                     Expanded(
 //                       child: Row(
 //                           children: [
-//                         ArrowType.VERY_THIN_REVERSED,
-//                         ArrowType.THIN_REVERSED,
-//                         ArrowType.MEDIUM_REVERSED,
-//                         ArrowType.LARGE_REVERSED,
-//                         ArrowType.HUGE_REVERSED,
+//                         ArrowTypeEnum.VERY_THIN_REVERSED,
+//                         ArrowTypeEnum.THIN_REVERSED,
+//                         ArrowTypeEnum.MEDIUM_REVERSED,
+//                         ArrowTypeEnum.LARGE_REVERSED,
+//                         ArrowTypeEnum.HUGE_REVERSED,
 //                       ]
 //                               .map((t) => Padding(
 //                                     padding: const EdgeInsets.all(3.0),
@@ -165,7 +165,7 @@
 //               ),
 //               Expanded(
 //                 flex: 1,
-//                 child: widget.selectedTC.arrowType == ArrowType.NONE.index || widget.selectedTC.arrowType == ArrowType.POINTY.index
+//                 child: widget.selectedTC.arrowType == ArrowTypeEnum.NONE.index || widget.selectedTC.arrowType == ArrowTypeEnum.POINTY.index
 //                     ? Offstage()
 //                     : OutlinedButton(
 //                         style: OutlinedButton.styleFrom(backgroundColor: widget.selectedTC.animateArrow ? Colors.white : Colors.white60),
@@ -216,27 +216,27 @@
 //       color: isActive ? bgColor : Colors.white54,
 //       child: InkWell(
 //         onTap: onPressed,
-//         child: arrowType == ArrowType.NONE
+//         child: arrowType == ArrowTypeEnum.NONE
 //             ? Icon(Icons.rectangle_rounded, color: arrowColor)
-//             : arrowType == ArrowType.POINTY
+//             : arrowType == ArrowTypeEnum.POINTY
 //                 ? Icon(Icons.messenger, color: arrowColor)
-//                 : arrowType == ArrowType.VERY_THIN
+//                 : arrowType == ArrowTypeEnum.VERY_THIN
 //                     ? Icon(Icons.south_west, color: arrowColor, size: 15)
-//                     : arrowType == ArrowType.VERY_THIN_REVERSED
+//                     : arrowType == ArrowTypeEnum.VERY_THIN_REVERSED
 //                         ? Icon(Icons.north_east, color: arrowColor, size: 15)
-//                         : arrowType == ArrowType.THIN
+//                         : arrowType == ArrowTypeEnum.THIN
 //                             ? Icon(Icons.south_west, color: arrowColor, size: 20)
-//                             : arrowType == ArrowType.THIN_REVERSED
+//                             : arrowType == ArrowTypeEnum.THIN_REVERSED
 //                                 ? Icon(Icons.north_east, color: arrowColor, size: 20)
-//                                 : arrowType == ArrowType.MEDIUM
+//                                 : arrowType == ArrowTypeEnum.MEDIUM
 //                                     ? Icon(Icons.south_west, color: arrowColor, size: 25)
-//                                     : arrowType == ArrowType.MEDIUM_REVERSED
+//                                     : arrowType == ArrowTypeEnum.MEDIUM_REVERSED
 //                                         ? Icon(Icons.north_east, color: arrowColor, size: 25)
-//                                         : arrowType == ArrowType.LARGE
+//                                         : arrowType == ArrowTypeEnum.LARGE
 //                                             ? Icon(Icons.south_west, color: arrowColor, size: 35)
-//                                             : arrowType == ArrowType.LARGE_REVERSED
+//                                             : arrowType == ArrowTypeEnum.LARGE_REVERSED
 //                                                 ? Icon(Icons.north_east, color: arrowColor, size: 35)
-//                                                 : arrowType == ArrowType.HUGE
+//                                                 : arrowType == ArrowTypeEnum.HUGE
 //                                                     ? Icon(Icons.south_west, color: arrowColor, size: 40)
 //                                                     : Icon(Icons.north_east, color: arrowColor, size: 40),
 //       ),

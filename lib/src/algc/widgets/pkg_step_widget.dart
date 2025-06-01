@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
+import 'package:flutter_content/src/algc/widgets/flowchart_widget.dart';
 import 'package:flutter_content/src/algc/widgets/painters/step_painter.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
+import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 
 import 'step_text.dart';
 
 class PkgStepWidget extends StatelessWidget {
   final FlowchartM flowchart;
   final StepM step;
+  final String fbUID;
+  final ScrollControllerName scName;
 
-  const PkgStepWidget(this.flowchart, this.step, {super.key});
+  const PkgStepWidget(this.flowchart, this.step, this.fbUID, this.scName, {super.key});
 
   double get extraWidthForFunctionCall =>
       step.isFuncCallStep() ? step.PPP * 2 : 0.0;
@@ -19,59 +24,60 @@ class PkgStepWidget extends StatelessWidget {
   double get awaitOffset => (step.shape == AWAIT_FUNC_CALL ? step.MMM * 2 : 0);
 
   // needs theStep for calc pos of false and fail child lists
-  Positioned positionedColumnOfSteps(
-      BuildContext context, String theListType, StepM theStep) {
+  Positioned positionedColumnOfSteps(BuildContext context, String theListType,
+      StepM theStep) {
     FlowchartM parentFlowchart = theStep.parentFlowchart;
     var widestStepW =
-        parentFlowchart.widestStep(theStep.childStepList(theListType));
+    parentFlowchart.widestStep(theStep.childStepList(theListType));
     var columnChildren = createChildStepWidgetsOf(theListType, theStep);
 
     return Positioned(
       left: parentFlowchart.stepListOffsetLeft(theListType, theStep: step),
       top: parentFlowchart.stepListOffsetTop(theListType, theStep: theStep),
-      child: Stack(
-        children: [
-          SizedBox(
-            width: widestStepW,
-            height: parentFlowchart
-                .sumOfHeightsOf(theStep.childStepList(theListType)),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: columnChildren),
-          ),
-          if (theListType == TRUE_STEPS)
-            Positioned(
-                top: 10,
-                left: widestStepW - 20,
-                child: const Text(
-                  'T',
-                  style: TextStyle(color: Colors.grey),
-                )),
-          if (theListType == FALSE_STEPS)
-            Positioned(
-                top: 10,
-                left: widestStepW - 20,
-                child: const Text('F', style: TextStyle(color: Colors.grey))),
-          if (theListType == SUCCEED_STEPS)
-            Positioned(
-                top: 10,
-                left: widestStepW - 20,
-                child: const Icon(
-                  Icons.check,
-                  size: 16,
-                  color: Colors.grey,
-                )),
-          if (theListType == FAIL_STEPS)
-            Positioned(
-                top: 10,
-                left: widestStepW - 20,
-                child: const Icon(
-                  Icons.close,
-                  size: 16,
-                  color: Colors.grey,
-                )),
-        ],
+      child:
+      // Stack(
+      //   children: [
+      SizedBox(
+        width: widestStepW,
+        height:
+        parentFlowchart.sumOfHeightsOf(theStep.childStepList(theListType)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: columnChildren),
       ),
+      // if (theListType == TRUE_STEPS)
+      //   Positioned(
+      //       top: 10,
+      //       left: widestStepW - 20,
+      //       child: const Text(
+      //         'T',
+      //         style: TextStyle(color: Colors.grey),
+      //       )),
+      // if (theListType == FALSE_STEPS)
+      //   Positioned(
+      //       top: 10,
+      //       left: widestStepW - 20,
+      //       child: const Text('F', style: TextStyle(color: Colors.grey))),
+      // if (theListType == SUCCEED_STEPS)
+      //   Positioned(
+      //       top: 10,
+      //       left: widestStepW - 20,
+      //       child: const Icon(
+      //         Icons.check,
+      //         size: 16,
+      //         color: Colors.grey,
+      //       )),
+      // if (theListType == FAIL_STEPS)
+      //   Positioned(
+      //       top: 10,
+      //       left: widestStepW - 20,
+      //       child: const Icon(
+      //         Icons.close,
+      //         size: 16,
+      //         color: Colors.grey,
+      //       )),
+      // ],
+      // ),
     );
   }
 
@@ -99,98 +105,105 @@ class PkgStepWidget extends StatelessWidget {
       painter: StepPainter(step),
     ));
 
-    // txt display only - allow for padding in pos
-    if (step.shape != STEP_ADDER &&
-        step.shape != CASE_ADDER &&
-        step.shape != STEP_MOVER) {
-      final double padding = step.PPP;
+    final double padding = step.PPP;
 
-      double posTop = step.txtOffset.dy - step.PPP;
-      if (step.shape == AWAIT_FUNC_CALL) posTop += step.PPP / 2;
-      double posLeft = step.txtOffset.dx - padding;
+    double posTop = step.txtOffset.dy - step.PPP;
+    if (step.shape == AWAIT_FUNC_CALL) posTop += step.PPP / 2;
+    double posLeft = step.txtOffset.dx - padding;
 
-      double iconOffset = step.iconIndex > 0 ? ICON_IMAGE_SIZE : 0;
+    double iconOffset = step.iconIndex > 0 ? ICON_IMAGE_SIZE : 0;
 
+    widgets.add(
+      Positioned(
+        top: posTop - step.PPP / 2,
+        left: posLeft + iconOffset + (iconOffset > 0 ? step.PPP : 0),
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: step.PPP,
+            top: step.PPP,
+            bottom: step.PPP,
+            right: step.MMM,
+          ),
+          // only use a PMB when not showing movers or adders
+          child: StepText(step),
+        ),
+      ),
+    );
+
+    if (step.comment != null) {
+      double commentTop = step.txtOffset.dy - step.MMM + step.PPP / 2;
+      double extraWidthForFunctionCall =
+      step.isFuncCallStep() ? step.PPP * 2 : 0.0;
+      double commentLeft = step.MMM * 3 +
+          step.PPP * 2 +
+          (step.calculatedTxtSize.width + extraWidthForFunctionCall) +
+          20;
+      if (step.shape == AWAIT_FUNC_CALL || step.shape == FUNC_RETURN) {
+        commentLeft += step.MMM * 2;
+      }
+      flowchart.isACommentIconPresent = true;
+      if (step.iconIndex > 0) commentLeft += ICON_IMAGE_SIZE + 20;
       widgets.add(
         Positioned(
-          top: posTop - step.PPP / 2,
-          left: posLeft + iconOffset + (iconOffset > 0 ? step.PPP : 0),
-          child: Padding(
-            padding: EdgeInsets.only(
-              left: step.PPP,
-              top: step.PPP,
-              bottom: step.PPP,
-              right: step.MMM,
+          top: commentTop,
+          left: commentLeft,
+          child: Tooltip(
+            message: 'tap to scroll comment into view',
+            child: TappableCommentBtn(
+              flowchart: flowchart,
+              isBeginStep: false,
+              isEndStep: false,
+              step: step,
             ),
-            // only use a PMB when not showing movers or adders
-            child: StepText(step),
           ),
         ),
       );
-
-      if (step.comment != null) {
-        double commentTop = step.txtOffset.dy - step.MMM + step.PPP / 2;
-        double extraWidthForFunctionCall =
-            step.isFuncCallStep() ? step.PPP * 2 : 0.0;
-        double commentLeft = step.MMM * 3 +
-            step.PPP * 2 +
-            (step.calculatedTxtSize.width + extraWidthForFunctionCall) +
-            20;
-        if (step.shape == AWAIT_FUNC_CALL || step.shape == FUNC_RETURN) {
-          commentLeft += step.MMM * 2;
-        }
-        flowchart.isACommentIconPresent = true;
-        if (step.iconIndex > 0) commentLeft += ICON_IMAGE_SIZE + 20;
-        widgets.add(
-          Positioned(
-            top: commentTop,
-            left: commentLeft,
-            child: Tooltip(
-              message: 'tap to scroll comment into view',
-              child: TappableCommentBtn(
-                flowchart: flowchart,
-                isBeginStep: false,
-                isEndStep: false,
-                step: step,
-              ),
-            ),
-          ),
-        );
-      }
     }
 
     switch (step.shape) {
       case DECISION:
-        if (step.childStepListShowingChanges(TRUE_STEPS).isNotEmpty) {
+        if (step
+            .childStepListShowingChanges(TRUE_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, TRUE_STEPS, step));
         } else {
           widgets.add(positionedEmptySpace(TRUE_STEPS, step));
         }
-        if (step.childStepListShowingChanges(FALSE_STEPS).isNotEmpty) {
+        if (step
+            .childStepListShowingChanges(FALSE_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, FALSE_STEPS, step));
         } else {
           widgets.add(positionedEmptySpace(FALSE_STEPS, step));
         }
         break;
       case FUNC_CALL:
-        if (step.childStepListShowingChanges(FUNC_CALL_STEPS).isNotEmpty) {
+        if (step
+            .childStepListShowingChanges(FUNC_CALL_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, FUNC_CALL_STEPS, step));
         }
         break;
       case LOOP:
-        //fco.logger.i('loop with key: ${model.key} with ${loopStepListOf(model).length} children');
-        if (step.childStepListShowingChanges(LOOP_STEPS).isNotEmpty) {
+      //fco.logger.i('loop with key: ${model.key} with ${loopStepListOf(model).length} children');
+        if (step
+            .childStepListShowingChanges(LOOP_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, LOOP_STEPS, step));
         }
         break;
       case ASYNC_FUNC_CALL:
-        if (step.childStepListShowingChanges(SUCCEED_STEPS).isNotEmpty) {
+        if (step
+            .childStepListShowingChanges(SUCCEED_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, SUCCEED_STEPS, step));
         } else {
           widgets.add(positionedEmptySpace(TRUE_STEPS, step));
         }
 
-        if (step.childStepListShowingChanges(FAIL_STEPS).isNotEmpty) {
+        if (step
+            .childStepListShowingChanges(FAIL_STEPS)
+            .isNotEmpty) {
           widgets.add(positionedColumnOfSteps(context, FAIL_STEPS, step));
         } else {
           widgets.add(positionedEmptySpace(FAIL_STEPS, step));
@@ -198,7 +211,9 @@ class PkgStepWidget extends StatelessWidget {
         break;
       case SWITCH:
         for (var theKey in step.caseNames) {
-          if (step.childStepListShowingChanges(theKey).isNotEmpty) {
+          if (step
+              .childStepListShowingChanges(theKey)
+              .isNotEmpty) {
             widgets.add(positionedColumnOfSteps(context, theKey, step));
           }
         }
@@ -212,23 +227,59 @@ class PkgStepWidget extends StatelessWidget {
     return SizedBox(
       width: step.width(),
       height: step.height(),
-      child: Stack(
+      child: !step.isAFuncCall
+          ? Stack(
         children: widgets,
-      ),
+      )
+          : InkWell(
+        onTap: () async {
+          if (step.flowchartLinkRef != null) {
+            var jsonS = await AlgCNode.cloudRunFetchFlowchartJsonString(fbUID,
+              step.flowchartLinkRef!,
+            );
+            if (jsonS != null) {
+              fco.showOverlay(
+                calloutConfig: CalloutConfigModel(
+                  cId: flowchart.id,
+                  initialCalloutW: FlowchartM.PAGE_VISIBLE_OVERFLOW + flowchart.width,
+                  initialCalloutH: FlowchartM.PAGE_VISIBLE_OVERFLOW*4 + flowchart.height,
+                  fillColor: ColorModel.fromColor(flowchart.color),
+                  borderThickness: 5,
+                  borderRadius: 16,
+                  borderColor: ColorModel.fromColor(Colors.grey),
+                  elevation: 10,
+                  scrollControllerName: scName,
+                  barrier: CalloutBarrierConfig(
+                    opacity: .1,
+                    closeOnTapped: true
+                  ),
+                ),
+                calloutContent: FlowchartWidget(jsonS, fbUID, scName),
+              );
+            }
+          }
+        },
+        child: Stack(
+          children: widgets,
+        )
+        ,),
     );
   }
 
-  List<PkgStepWidget> createChildStepWidgetsOf(
-      final String theChildListType, final StepM theStep) {
+  List<PkgStepWidget> createChildStepWidgetsOf(final String theChildListType,
+      final StepM theStep) {
     List<StepM>? stepList =
-        theStep.childStepListShowingChanges(theChildListType);
+    theStep.childStepListShowingChanges(theChildListType);
     if (stepList.isEmpty) fco.logger.i('empty childList! *******');
     if (stepList.isNotEmpty) {
       List<PkgStepWidget> stepWidgets = stepList
-          .map((step) => PkgStepWidget(
-                step.parentFlowchart,
-                step,
-              ))
+          .map((step) =>
+          PkgStepWidget(
+            step.parentFlowchart,
+            step,
+            fbUID,
+            scName,
+          ))
           .toList();
 //    fco.logger.i(stepWidgets[0].runtimeType.toString());
       return stepWidgets;
@@ -241,8 +292,8 @@ class PkgStepWidget extends StatelessWidget {
       padding: EdgeInsets.all(bigger
           ? 10
           : index < 10
-              ? 6.0
-              : 4.0),
+          ? 6.0
+          : 4.0),
       decoration: const ShapeDecoration(
         color: Colors.black,
         shape: CircleBorder(

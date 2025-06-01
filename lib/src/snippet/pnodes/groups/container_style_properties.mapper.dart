@@ -15,7 +15,7 @@ class ContainerStylePropertiesMapper
     if (_instance == null) {
       MapperContainer.globals
           .use(_instance = ContainerStylePropertiesMapper._());
-      UpTo6ColorValuesMapper.ensureInitialized();
+      UpTo6ColorsMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       AlignmentEnumMapper.ensureInitialized();
       MappableDecorationShapeEnumMapper.ensureInitialized();
@@ -28,11 +28,14 @@ class ContainerStylePropertiesMapper
   @override
   final String id = 'ContainerStyleProperties';
 
-  static UpTo6ColorValues? _$fillColorValues(ContainerStyleProperties v) =>
+  static UpTo6Colors? _$fillColors(ContainerStyleProperties v) => v.fillColors;
+  static const Field<ContainerStyleProperties, UpTo6Colors> _f$fillColors =
+      Field('fillColors', _$fillColors, opt: true);
+  static UpTo6Colors? _$fillColorValues(ContainerStyleProperties v) =>
       v.fillColorValues;
-  static const Field<ContainerStyleProperties, UpTo6ColorValues>
-      _f$fillColorValues =
-      Field('fillColorValues', _$fillColorValues, opt: true);
+  static const Field<ContainerStyleProperties, UpTo6Colors> _f$fillColorValues =
+      Field('fillColorValues', _$fillColorValues,
+          opt: true, hook: UpTo6ColorsHook());
   static bool? _$radialGradient(ContainerStyleProperties v) => v.radialGradient;
   static const Field<ContainerStyleProperties, bool> _f$radialGradient =
       Field('radialGradient', _$radialGradient, opt: true);
@@ -60,11 +63,15 @@ class ContainerStylePropertiesMapper
       v.borderThickness;
   static const Field<ContainerStyleProperties, double> _f$borderThickness =
       Field('borderThickness', _$borderThickness, opt: true);
-  static UpTo6ColorValues? _$borderColorValues(ContainerStyleProperties v) =>
+  static UpTo6Colors? _$borderColors(ContainerStyleProperties v) =>
+      v.borderColors;
+  static const Field<ContainerStyleProperties, UpTo6Colors> _f$borderColors =
+      Field('borderColors', _$borderColors, opt: true);
+  static UpTo6Colors? _$borderColorValues(ContainerStyleProperties v) =>
       v.borderColorValues;
-  static const Field<ContainerStyleProperties, UpTo6ColorValues>
-      _f$borderColorValues =
-      Field('borderColorValues', _$borderColorValues, opt: true);
+  static const Field<ContainerStyleProperties, UpTo6Colors>
+      _f$borderColorValues = Field('borderColorValues', _$borderColorValues,
+          opt: true, hook: UpTo6ColorsHook());
   static double? _$borderRadius(ContainerStyleProperties v) => v.borderRadius;
   static const Field<ContainerStyleProperties, double> _f$borderRadius =
       Field('borderRadius', _$borderRadius, opt: true);
@@ -109,6 +116,7 @@ class ContainerStylePropertiesMapper
 
   @override
   final MappableFields<ContainerStyleProperties> fields = const {
+    #fillColors: _f$fillColors,
     #fillColorValues: _f$fillColorValues,
     #radialGradient: _f$radialGradient,
     #margin: _f$margin,
@@ -118,6 +126,7 @@ class ContainerStylePropertiesMapper
     #alignment: _f$alignment,
     #decoration: _f$decoration,
     #borderThickness: _f$borderThickness,
+    #borderColors: _f$borderColors,
     #borderColorValues: _f$borderColorValues,
     #borderRadius: _f$borderRadius,
     #starPoints: _f$starPoints,
@@ -134,6 +143,7 @@ class ContainerStylePropertiesMapper
 
   static ContainerStyleProperties _instantiate(DecodingData data) {
     return ContainerStyleProperties(
+        fillColors: data.dec(_f$fillColors),
         fillColorValues: data.dec(_f$fillColorValues),
         radialGradient: data.dec(_f$radialGradient),
         margin: data.dec(_f$margin),
@@ -143,6 +153,7 @@ class ContainerStylePropertiesMapper
         alignment: data.dec(_f$alignment),
         decoration: data.dec(_f$decoration),
         borderThickness: data.dec(_f$borderThickness),
+        borderColors: data.dec(_f$borderColors),
         borderColorValues: data.dec(_f$borderColorValues),
         borderRadius: data.dec(_f$borderRadius),
         starPoints: data.dec(_f$starPoints),
@@ -212,16 +223,17 @@ abstract class ContainerStylePropertiesCopyWith<
     $R,
     $In extends ContainerStyleProperties,
     $Out> implements ClassCopyWith<$R, $In, $Out> {
-  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
-      get fillColorValues;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColors;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColorValues;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get margin;
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding;
-  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
-      get borderColorValues;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColors;
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColorValues;
   OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
       OutlinedBorderProperties>? get outlinedBorderGroup;
   $R call(
-      {UpTo6ColorValues? fillColorValues,
+      {UpTo6Colors? fillColors,
+      UpTo6Colors? fillColorValues,
       bool? radialGradient,
       EdgeInsetsValue? margin,
       EdgeInsetsValue? padding,
@@ -230,7 +242,8 @@ abstract class ContainerStylePropertiesCopyWith<
       AlignmentEnum? alignment,
       MappableDecorationShapeEnum? decoration,
       double? borderThickness,
-      UpTo6ColorValues? borderColorValues,
+      UpTo6Colors? borderColors,
+      UpTo6Colors? borderColorValues,
       double? borderRadius,
       int? starPoints,
       int? dash,
@@ -254,9 +267,11 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ContainerStyleProperties> $mapper =
       ContainerStylePropertiesMapper.ensureInitialized();
   @override
-  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
-      get fillColorValues => $value.fillColorValues?.copyWith
-          .$chain((v) => call(fillColorValues: v));
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColors =>
+      $value.fillColors?.copyWith.$chain((v) => call(fillColors: v));
+  @override
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get fillColorValues =>
+      $value.fillColorValues?.copyWith.$chain((v) => call(fillColorValues: v));
   @override
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get margin =>
       $value.margin?.copyWith.$chain((v) => call(margin: v));
@@ -264,8 +279,11 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, EdgeInsetsValue>? get padding =>
       $value.padding?.copyWith.$chain((v) => call(padding: v));
   @override
-  UpTo6ColorValuesCopyWith<$R, UpTo6ColorValues, UpTo6ColorValues>?
-      get borderColorValues => $value.borderColorValues?.copyWith
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColors =>
+      $value.borderColors?.copyWith.$chain((v) => call(borderColors: v));
+  @override
+  UpTo6ColorsCopyWith<$R, UpTo6Colors, UpTo6Colors>? get borderColorValues =>
+      $value.borderColorValues?.copyWith
           .$chain((v) => call(borderColorValues: v));
   @override
   OutlinedBorderPropertiesCopyWith<$R, OutlinedBorderProperties,
@@ -274,7 +292,8 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
           .$chain((v) => call(outlinedBorderGroup: v));
   @override
   $R call(
-          {Object? fillColorValues = $none,
+          {Object? fillColors = $none,
+          Object? fillColorValues = $none,
           Object? radialGradient = $none,
           Object? margin = $none,
           Object? padding = $none,
@@ -283,6 +302,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
           Object? alignment = $none,
           MappableDecorationShapeEnum? decoration,
           Object? borderThickness = $none,
+          Object? borderColors = $none,
           Object? borderColorValues = $none,
           Object? borderRadius = $none,
           Object? starPoints = $none,
@@ -294,6 +314,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
           Object? badgeText = $none,
           Object? outlinedBorderGroup = $none}) =>
       $apply(FieldCopyWithData({
+        if (fillColors != $none) #fillColors: fillColors,
         if (fillColorValues != $none) #fillColorValues: fillColorValues,
         if (radialGradient != $none) #radialGradient: radialGradient,
         if (margin != $none) #margin: margin,
@@ -303,6 +324,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
         if (alignment != $none) #alignment: alignment,
         if (decoration != null) #decoration: decoration,
         if (borderThickness != $none) #borderThickness: borderThickness,
+        if (borderColors != $none) #borderColors: borderColors,
         if (borderColorValues != $none) #borderColorValues: borderColorValues,
         if (borderRadius != $none) #borderRadius: borderRadius,
         if (starPoints != $none) #starPoints: starPoints,
@@ -317,6 +339,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
       }));
   @override
   ContainerStyleProperties $make(CopyWithData data) => ContainerStyleProperties(
+      fillColors: data.get(#fillColors, or: $value.fillColors),
       fillColorValues: data.get(#fillColorValues, or: $value.fillColorValues),
       radialGradient: data.get(#radialGradient, or: $value.radialGradient),
       margin: data.get(#margin, or: $value.margin),
@@ -326,6 +349,7 @@ class _ContainerStylePropertiesCopyWithImpl<$R, $Out>
       alignment: data.get(#alignment, or: $value.alignment),
       decoration: data.get(#decoration, or: $value.decoration),
       borderThickness: data.get(#borderThickness, or: $value.borderThickness),
+      borderColors: data.get(#borderColors, or: $value.borderColors),
       borderColorValues:
           data.get(#borderColorValues, or: $value.borderColorValues),
       borderRadius: data.get(#borderRadius, or: $value.borderRadius),

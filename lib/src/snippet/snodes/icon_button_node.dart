@@ -31,7 +31,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfigGroup,
+    super.calloutConfig,
     super.child,
   });
 

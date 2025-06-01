@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'target_model.mapper.dart';
 
 /// TargetModel is used to model either:
 ///
-///   1. A Hotspot (has a target + play btn + callout)
+///   1. A Hotspot (has a hotspot target + play btn + callout config props)
 ///     or
-///   2. An Auto-played Callout (has a target + callout)
+///   2. An Auto-played Callout (has a hotspot target + callout config props)
+///     or
+///   3. A non-hotspot target + callout config props
 @MappableClass()
 class TargetModel with TargetModelMappable {
   TargetId uid;
@@ -27,7 +28,6 @@ class TargetModel with TargetModelMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   TargetsWrapperNode? parentTargetsWrapperNode;
 
-  // bool single;
   double? targetLocalPosLeftPc;
   double? targetLocalPosTopPc;
   double? radiusPc;
@@ -45,8 +45,11 @@ class TargetModel with TargetModelMappable {
   double calloutWidth;
   double calloutHeight;
   int calloutDurationMs;
+  // deprecated
   int? calloutFillColorValue;
+  ColorModel? calloutFillColor;
   int? calloutBorderColorValue;
+  ColorModel? calloutBorderColor;
   MappableDecorationShapeEnum calloutDecorationShape;
   double calloutBorderRadius;
   double calloutBorderThickness;
@@ -55,6 +58,7 @@ class TargetModel with TargetModelMappable {
   // String snippetName;
 
   int? calloutArrowTypeIndex;
+  ColorModel? calloutArrowColor;
   int? calloutArrowColorValue;
 
   bool animateArrow;
@@ -86,20 +90,35 @@ class TargetModel with TargetModelMappable {
     this.canResizeV = true,
     this.followScroll = true,
     this.calloutFillColorValue,
+    this.calloutFillColor,
     this.calloutBorderColorValue,
+    this.calloutBorderColor,
     this.calloutDecorationShape = MappableDecorationShapeEnum.rectangle,
     this.calloutBorderRadius = 30,
     this.calloutBorderThickness = 1,
     this.starPoints,
     // required this.snippetName,
-    this.calloutArrowTypeIndex = 4, //ArrowType.THIN.index,
+    this.calloutArrowTypeIndex = 4, //ArrowTypeEnum.THIN.index,
     this.calloutArrowColorValue,
+    this.calloutArrowColor,
     this.animateArrow = false,
     this.autoPlay = false,
   }) {
-    // textColorValue ??= Colors.blue[900]!.value;
-    calloutFillColorValue ??= Colors.grey.value;
-    // fontWeightIndex = FontWeight.normal.index;
+    if (calloutFillColor == null && calloutFillColorValue != null) {
+      calloutFillColor = ColorModel.fromColor(Color(calloutFillColorValue!));
+    } else {
+      calloutFillColor ??= ColorModel.grey();
+    }
+    if (calloutBorderColor == null && calloutBorderColorValue != null) {
+      calloutBorderColor = ColorModel.fromColor(Color(calloutBorderColorValue!));
+    } else {
+      calloutBorderColor ??= ColorModel.grey();
+    }
+    if (calloutArrowColor == null && calloutArrowColorValue != null) {
+      calloutArrowColor = ColorModel.fromColor(Color(calloutArrowColorValue!));
+    } else {
+      calloutArrowColor ??= ColorModel.grey();
+    }
   }
 
   // if target does not have a hotspot, callout will autoplay
@@ -141,7 +160,7 @@ class TargetModel with TargetModelMappable {
       false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
   double getScale({bool testing = false}) =>
-      playingOrSelected() || testing ? transformScale : 1.0;
+      playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
 
   // Offset getTranslate(CAPIState state, {bool testing = false}) {
   //   Size ivSize = TargetsWrapper.iwSize(wName);
@@ -155,8 +174,8 @@ class TargetModel with TargetModelMappable {
     return radiusPc != null ? radiusPc! * ivSize.width : 30.0;
   }
 
-  ArrowType getArrowType() {
-    return ArrowType.values[calloutArrowTypeIndex ?? ArrowType.POINTY.index];
+  ArrowTypeEnum getArrowType() {
+    return ArrowTypeEnum.values[calloutArrowTypeIndex ?? ArrowTypeEnum.POINTY.index];
   }
 
   // CAPIBloc get bloc => _bloc;
@@ -183,12 +202,15 @@ class TargetModel with TargetModelMappable {
   //       // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
   //     );
 
-  Color calloutColor() => calloutFillColorValue == null
-      ? Colors.white
-      : Color(calloutFillColorValue!);
+  // Color calloutColor() => calloutFillColorValue == null
+  //     ? Colors.white
+  //     : Color(calloutFillColorValue!);
 
-  void setCalloutColor(Color? newColor) =>
-      calloutFillColorValue = newColor?.value;
+  void setCalloutColor(ColorModel? newColor) =>
+      calloutFillColor = newColor ?? ColorModel.white();
+
+  void setCalloutStarPoints(int? newValue) =>
+      starPoints = newValue;
 
   Offset targetGlobalPos(
       {required Size wrapperSize, required Offset wrapperPos}) {
@@ -303,10 +325,10 @@ class TargetModel with TargetModelMappable {
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
       fco.showToast(
         removeAfterMs: 500,
-        calloutConfig: CalloutConfig(
+        calloutConfig: CalloutConfigModel(
           cId: "saving-model",
-          gravity: Alignment.topCenter,
-          fillColor: Colors.yellow,
+          gravity: AlignmentEnum.topCenter,
+          fillColor: ColorModel.yellow(),
           initialCalloutW: fco.scrW * .8,
           initialCalloutH: 40,
           scrollControllerName: null,

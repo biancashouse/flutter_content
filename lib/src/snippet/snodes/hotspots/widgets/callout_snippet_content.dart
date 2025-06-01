@@ -10,9 +10,9 @@ void hideSnippetCallout(TargetModel tc) => fco.hide(tc.contentCId);
 
 void unhideSnippetCallout(TargetModel tc) => fco.unhide(tc.contentCId);
 
-void removeSnippetContentCallout(TargetModel tc) {
+void removeSnippetContentCallout(TargetModel tc, {bool skipOnDismiss = false}) {
   // if (fco.anyPresent([tc.contentCId])) {
-  fco.dismiss(tc.contentCId);
+  fco.dismiss(tc.contentCId, skipOnDismiss: skipOnDismiss);
   // }
 }
 
@@ -59,12 +59,12 @@ Future<void> showSnippetContentCallout({
   // if (fco.targetSnippetBeingConfigured != null) {
 
   Widget content() => SnippetPanel.fromSnippet(
-        panelName: tc.contentCId, // never used
-        snippetName: tc.contentCId,
-        scName: scName,
-        justPlaying: justPlaying,
-        tc:tc
-      );
+      panelName: tc.contentCId,
+      // never used
+      snippetName: tc.contentCId,
+      scName: scName,
+      justPlaying: justPlaying,
+      tc: tc);
 
   Widget editableContent() => Container(
       // width: cc.calloutW,
@@ -90,25 +90,30 @@ Future<void> showSnippetContentCallout({
         },
       ),
     ),
-    calloutConfig: CalloutConfig(
+    calloutConfig: CalloutConfigModel(
         cId: tc.contentCId,
         scrollControllerName: scName,
-        // scale: tc.transformScale,
-        // barrierOpacity: 0.1,
-        fillColor: tc.calloutColor(),
+        finalSeparation: 50,
+        fillColor: tc.calloutFillColor,
         decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
-        borderColor: Color(tc.calloutBorderColorValue ?? Colors.grey.value),
+        starPoints: tc.starPoints,
+        borderColor: tc.calloutBorderColor ?? ColorModel.grey(),
         borderThickness: tc.calloutBorderThickness,
         borderRadius: tc.calloutBorderRadius,
-        arrowColor: tc.calloutColor(),
+        arrowColor: tc.calloutFillColor,
         arrowType: tc.getArrowType(),
         fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
             ? 60
             : null,
         animate: tc.animateArrow,
-        initialCalloutPos: tc.getCalloutPos(),
-        // initialCalloutAlignment: Alignment.bottomCenter,
-        // initialTargetAlignment: Alignment.topCenter,
+        // https://stackoverflow.com/questions/11671100/scale-path-from-center
+        initialCalloutPos: OffsetModel.fromOffset(
+          tc.getCalloutPos()
+              .translate(1-tc.getScale(), 1-tc.getScale())
+         // .translate(translateX, translateY),
+        ),
+        // initialCalloutAlignment: AlignmentEnum.bottomCenter,
+        // initialTargetAlignment: AlignmentEnum.topCenter,
         modal: false,
         initialCalloutW: tc.calloutWidth,
         initialCalloutH: tc.calloutHeight,
@@ -117,7 +122,7 @@ Future<void> showSnippetContentCallout({
         resizeableV: !justPlaying && tc.canResizeV,
         // containsTextField: true,
         // alwaysReCalcSize: true,
-        followScroll: tc.followScroll,
+        followScroll: false,//tc.followScroll,
         onResizeF: (Size newSize) {
           tc
             ..calloutWidth = newSize.width
@@ -154,58 +159,61 @@ Future<void> showSnippetContentCallout({
         onDismissedF: () {
           // FCO.parentTW(twName)?.zoomer?.resetTransform();
           // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+          fco.dismiss(CalloutConfigToolbar.CID);
         },
         barrier: CalloutBarrierConfig(
-          color: Colors.grey,
-          opacity: .5,
-          excludeTargetFromBarrier: true,
-          roundExclusion: true,
-          cutoutPadding: 20*tc.transformScale,
-          onTappedF: (){
-            fco.dismiss(CalloutConfigToolbar.CID);
-            if (tc.hasAHotspot()) {
-              tc.targetsWrapperState()?.refresh(() {
-                tc.targetsWrapperState()?.zoomer?.resetTransform(
-                    afterTransformF: () {
-                      // tc.changed_saveRootSnippet();
-                      SNode.showAllTargetBtns();
-                      SNode.showAllHotspotTargetCovers();
-                      // fco.currentPageState?.unhideFAB();
-                      removeSnippetContentCallout(tc);
-                      fco.afterNextBuildDo(() {
-                        // save hotspot's parent snippet
-                        var rootNode =
-                        tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                        if (rootNode != null) {
-                          fco.cacheAndSaveANewSnippetVersion(
-                            snippetName: rootNode.name,
-                            rootNode: rootNode,
-                          );
-                        }
-                      });
+            color: Colors.black,
+            opacity: .9,
+            excludeTargetFromBarrier: true,
+            roundExclusion: true,
+            cutoutPadding: 20 * tc.transformScale,
+            dismissible: false,
+            onTappedF: () {
+              // do not allow content callout to be dismissed
+              return;
+              fco.dismiss(CalloutConfigToolbar.CID);
+              if (tc.hasAHotspot()) {
+                tc.targetsWrapperState()?.refresh(() {
+                  tc.targetsWrapperState()?.zoomer?.resetTransform(
+                      afterTransformF: () {
+                    // tc.changed_saveRootSnippet();
+                    SNode.showAllTargetBtns();
+                    SNode.showAllHotspotTargetCovers();
+                    // fco.currentPageState?.unhideFAB();
+                    removeSnippetContentCallout(tc);
+                    fco.afterNextBuildDo(() {
+                      // save hotspot's parent snippet
+                      var rootNode =
+                          tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                      if (rootNode != null) {
+                        fco.cacheAndSaveANewSnippetVersion(
+                          snippetName: rootNode.name,
+                          rootNode: rootNode,
+                        );
+                      }
                     });
-              });
-            } else {
-              tc.targetsWrapperState()?.refresh(() {
-                // tc.changed_saveRootSnippet();
-                SNode.showAllTargetBtns();
-                SNode.showAllHotspotTargetCovers();
-                removeSnippetContentCallout(tc);
-                fco.afterNextBuildDo(() {
-                  // save parent snippet
-                  var rootNode =
-                  tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                  if (rootNode != null) {
-                    fco.cacheAndSaveANewSnippetVersion(
-                      snippetName: rootNode.name,
-                      rootNode: rootNode,
-                    );
-                  }
+                  });
                 });
-              });
-            }
-          }
-        )),
+              } else {
+                tc.targetsWrapperState()?.refresh(() {
+                  // tc.changed_saveRootSnippet();
+                  SNode.showAllTargetBtns();
+                  SNode.showAllHotspotTargetCovers();
+                  removeSnippetContentCallout(tc);
+                  fco.afterNextBuildDo(() {
+                    // save parent snippet
+                    var rootNode =
+                        tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                    if (rootNode != null) {
+                      fco.cacheAndSaveANewSnippetVersion(
+                        snippetName: rootNode.name,
+                        rootNode: rootNode,
+                      );
+                    }
+                  });
+                });
+              }
+            })),
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
     removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
   );
@@ -238,7 +246,7 @@ Future<void> showSnippetContentCallout({
 //       children: [
 //         Center(child: Text('abc')),
 //         Align(
-//           alignment: Alignment.topRight,
+//           alignment: AlignmentEnum.topRight,
 //           child: IconButton(icon: Icon(Icons.edit), iconSize: 40, onPressed: () {}),
 //         ),
 //       ],
@@ -249,8 +257,8 @@ Future<void> showSnippetContentCallout({
 //     arrowType: tc.getArrowType(),
 //     animate: tc.animateArrow,
 //     initialCalloutPos: tc.getTextCalloutPos(),
-//     // initialCalloutAlignment: Alignment.bottomCenter,
-//     // initialTargetAlignment: Alignment.topCenter,
+//     // initialCalloutAlignment: AlignmentEnum.bottomCenter,
+//     // initialTargetAlignment: AlignmentEnum.topCenter,
 //     modal: false,
 //     width: tc.calloutWidth,
 //     height: tc.calloutHeight,

@@ -21,8 +21,9 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
   @override
   final String id = 'AlgCNode';
 
-  static String? _$ea(AlgCNode v) => v.ea;
-  static const Field<AlgCNode, String> _f$ea = Field('ea', _$ea, opt: true);
+  static String? _$fbUid(AlgCNode v) => v.fbUid;
+  static const Field<AlgCNode, String> _f$fbUid =
+      Field('fbUid', _$fbUid, opt: true);
   static String? _$fId(AlgCNode v) => v.fId;
   static const Field<AlgCNode, String> _f$fId = Field('fId', _$fId, opt: true);
   static String? _$flowchartJsonString(AlgCNode v) => v.flowchartJsonString;
@@ -42,7 +43,7 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
   @override
   final MappableFields<AlgCNode> fields = const {
-    #ea: _f$ea,
+    #fbUid: _f$fbUid,
     #fId: _f$fId,
     #flowchartJsonString: _f$flowchartJsonString,
     #uid: _f$uid,
@@ -59,7 +60,7 @@ class AlgCNodeMapper extends SubClassMapperBase<AlgCNode> {
 
   static AlgCNode _instantiate(DecodingData data) {
     return AlgCNode(
-        ea: data.dec(_f$ea),
+        fbUid: data.dec(_f$fbUid),
         fId: data.dec(_f$fId),
         flowchartJsonString: data.dec(_f$flowchartJsonString));
   }
@@ -114,7 +115,7 @@ extension AlgCNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, AlgCNode, $Out> {
 abstract class AlgCNodeCopyWith<$R, $In extends AlgCNode, $Out>
     implements CLCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? ea, String? fId, String? flowchartJsonString});
+  $R call({String? fbUid, String? fId, String? flowchartJsonString});
   AlgCNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -128,18 +129,18 @@ class _AlgCNodeCopyWithImpl<$R, $Out>
       AlgCNodeMapper.ensureInitialized();
   @override
   $R call(
-          {Object? ea = $none,
+          {Object? fbUid = $none,
           Object? fId = $none,
           Object? flowchartJsonString = $none}) =>
       $apply(FieldCopyWithData({
-        if (ea != $none) #ea: ea,
+        if (fbUid != $none) #fbUid: fbUid,
         if (fId != $none) #fId: fId,
         if (flowchartJsonString != $none)
           #flowchartJsonString: flowchartJsonString
       }));
   @override
   AlgCNode $make(CopyWithData data) => AlgCNode(
-      ea: data.get(#ea, or: $value.ea),
+      fbUid: data.get(#fbUid, or: $value.fbUid),
       fId: data.get(#fId, or: $value.fId),
       flowchartJsonString:
           data.get(#flowchartJsonString, or: $value.flowchartJsonString));

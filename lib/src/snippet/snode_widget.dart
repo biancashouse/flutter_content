@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
+import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
 
 class SNodeWidget extends StatelessWidget {
@@ -169,7 +169,7 @@ class SNodeWidget extends StatelessWidget {
       return;
     }
 
-    double savedOffset = NamedScrollController.scrollOffset(scName);
+    // double savedOffset = NamedScrollController.scrollOffset(scName);
 
     if (!treeController.getExpansionState(entry.node)) {
       treeController.expand(entry.node);
@@ -215,16 +215,16 @@ class SNodeWidget extends StatelessWidget {
 
   void _longPressedNode(context, targetGK, SNode node) {
     fco.showOverlay(
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: 'node-actions',
         scrollControllerName: scName,
         initialCalloutW: 300,
         initialCalloutH: 200,
-        initialTargetAlignment: Alignment.centerRight,
-        initialCalloutAlignment: Alignment.centerLeft,
+        initialTargetAlignment: AlignmentEnum.centerRight,
+        initialCalloutAlignment: AlignmentEnum.centerLeft,
         finalSeparation: 100,
-        arrowType: ArrowType.THIN,
-        arrowColor: Colors.white,
+        arrowType: ArrowTypeEnum.THIN,
+        arrowColor: ColorModel.fromColor(Colors.white),
         animate: true,
         barrier: CalloutBarrierConfig(
           color: Colors.black,
@@ -377,7 +377,7 @@ class SNodeWidget extends StatelessWidget {
                     fco.hide("TreeNodeMenu");
                   },
                   icon: Icon(Icons.cut,
-                      color: Colors.orange.withOpacity(
+                      color: Colors.orange.withValues(alpha:
                           !FlutterContentApp.aNodeIsSelected ||
                                   node is SnippetRootNode ||
                                   gc is GenericSingleChildNode? &&
@@ -406,7 +406,7 @@ class SNodeWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.copy,
-                    color: Colors.green.withOpacity(
+                    color: Colors.green.withValues(alpha:
                         FlutterContentApp.aNodeIsSelected &&
                                 node is! SnippetRootNode
                             ? 1.0
@@ -449,7 +449,7 @@ class SNodeWidget extends StatelessWidget {
                     // fco.dismiss("TreeNodeMenu");
                   },
                   icon: Icon(Icons.delete,
-                      color: Colors.red.withOpacity(
+                      color: Colors.red.withValues(alpha:
                           !FlutterContentApp.aNodeIsSelected ||
                                   !node.canBeDeleted() ||
                                   (node is SnippetRootNode &&
@@ -509,7 +509,7 @@ class SNodeWidget extends StatelessWidget {
                 //     fco.dismiss("TreeNodeMenu");
                 //   },
                 //   icon: Icon(Icons.delete,
-                //       color: Colors.red.withOpacity(
+                //       color: Colors.red.withValues(alpha:
                 //           !snippetBloc.state.aNodeIsSelected ||
                 //                   selectedNode
                 //                       is SnippetRefNode ||

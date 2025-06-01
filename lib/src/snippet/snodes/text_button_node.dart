@@ -19,7 +19,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfigGroup,
+    super.calloutConfig,
     super.child,
   });
 

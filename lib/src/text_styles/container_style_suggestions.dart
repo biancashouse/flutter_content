@@ -68,9 +68,9 @@ class ContainerStyleNameSuggestions extends StatelessWidget {
           },
           child: Container(
             decoration: csProps.decoration.toDecoration(
-              fillColorValues: csProps.fillColorValues,
+              upTo6FillColors: csProps.fillColors,
               radialGradient: csProps.radialGradient,
-              borderColorValues: csProps.borderColorValues,
+              upTo6BorderColors: csProps.borderColors,
               borderRadius: csProps.borderRadius,
               thickness: csProps.borderThickness,
               starPoints: csProps.starPoints,

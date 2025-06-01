@@ -26,6 +26,9 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static String? _$text(TextSpanNode v) => v.text;
   static const Field<TextSpanNode, String> _f$text =
       Field('text', _$text, opt: true);
+  static String? _$webLink(TextSpanNode v) => v.webLink;
+  static const Field<TextSpanNode, String> _f$webLink =
+      Field('webLink', _$webLink, opt: true);
   static TextStyleProperties _$tsPropGroup(TextSpanNode v) => v.tsPropGroup;
   static const Field<TextSpanNode, TextStyleProperties> _f$tsPropGroup =
       Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
@@ -47,6 +50,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   @override
   final MappableFields<TextSpanNode> fields = const {
     #text: _f$text,
+    #webLink: _f$webLink,
     #tsPropGroup: _f$tsPropGroup,
     #children: _f$children,
     #uid: _f$uid,
@@ -65,6 +69,7 @@ class TextSpanNodeMapper extends SubClassMapperBase<TextSpanNode> {
   static TextSpanNode _instantiate(DecodingData data) {
     return TextSpanNode(
         text: data.dec(_f$text),
+        webLink: data.dec(_f$webLink),
         tsPropGroup: data.dec(_f$tsPropGroup),
         children: data.dec(_f$children));
   }
@@ -128,6 +133,7 @@ abstract class TextSpanNodeCopyWith<$R, $In extends TextSpanNode, $Out>
   @override
   $R call(
       {String? text,
+      String? webLink,
       TextStyleProperties? tsPropGroup,
       List<InlineSpanNode>? children});
   TextSpanNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -155,16 +161,19 @@ class _TextSpanNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? text = $none,
+          Object? webLink = $none,
           TextStyleProperties? tsPropGroup,
           Object? children = $none}) =>
       $apply(FieldCopyWithData({
         if (text != $none) #text: text,
+        if (webLink != $none) #webLink: webLink,
         if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
         if (children != $none) #children: children
       }));
   @override
   TextSpanNode $make(CopyWithData data) => TextSpanNode(
       text: data.get(#text, or: $value.text),
+      webLink: data.get(#webLink, or: $value.webLink),
       tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
       children: data.get(#children, or: $value.children));
 

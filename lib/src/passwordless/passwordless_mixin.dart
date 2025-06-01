@@ -17,14 +17,14 @@ mixin PasswordlessMixin {
       targetGkF: targetGkF,
       calloutContent: PasswordlessStepper(
           gcrServerUrl: gcrServerUrl, onSignedInF: onSignedInF),
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "passwordless-stepper",
         initialCalloutW: 600,
         initialCalloutH: 200,
-        initialTargetAlignment: Alignment.bottomCenter,
-        initialCalloutAlignment: Alignment.topCenter,
-        arrowType: ArrowType.THIN,
-        arrowColor: Colors.blue[900],
+        initialTargetAlignment: AlignmentEnum.bottomCenter,
+        initialCalloutAlignment: AlignmentEnum.topCenter,
+        arrowType: ArrowTypeEnum.THIN,
+        arrowColor: ColorModel.fromColor(Colors.blue[900]!),
         finalSeparation: 60,
         // fillColor: Colors.purpleAccent,
         barrier: CalloutBarrierConfig(
@@ -283,10 +283,10 @@ class Step1 extends StatelessWidget {
   void _showAlreadySignInToast() {
     fco.showToast(
       removeAfterMs: 5000,
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "already-signed-in",
-        gravity: Alignment.topCenter,
-        fillColor: Colors.yellow,
+        gravity: AlignmentEnum.topCenter,
+        fillColor: ColorModel.yellow(),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -353,10 +353,10 @@ class Step2 extends StatelessWidget {
   void _showConfirmedOKToast() {
     fco.showToast(
       removeAfterMs: 3000,
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "sign-in-confirmed",
-        gravity: Alignment.topCenter,
-        fillColor: Colors.yellow,
+        gravity: AlignmentEnum.topCenter,
+        fillColor: ColorModel.yellow(),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,
@@ -371,10 +371,10 @@ class Step2 extends StatelessWidget {
   void _showWaitingForYouToConfirmToast() {
     fco.showToast(
       removeAfterMs: 5000,
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: "waiting-for-confirmation-button",
-        gravity: Alignment.topCenter,
-        fillColor: Colors.yellow,
+        gravity: AlignmentEnum.topCenter,
+        fillColor: ColorModel.yellow(),
         initialCalloutW: fco.scrW * .8,
         initialCalloutH: 40,
         scrollControllerName: null,

@@ -14,6 +14,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScaffoldNodeMapper._());
       SNodeMapper.ensureInitialized().addSubMapper(_instance!);
+      ColorModelMapper.ensureInitialized();
       AppBarNodeMapper.ensureInitialized();
       GenericSingleChildNodeMapper.ensureInitialized();
     }
@@ -23,9 +24,9 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   @override
   final String id = 'ScaffoldNode';
 
-  static int? _$bgColorValue(ScaffoldNode v) => v.bgColorValue;
-  static const Field<ScaffoldNode, int> _f$bgColorValue =
-      Field('bgColorValue', _$bgColorValue, opt: true);
+  static ColorModel? _$bgColor(ScaffoldNode v) => v.bgColor;
+  static const Field<ScaffoldNode, ColorModel> _f$bgColor =
+      Field('bgColor', _$bgColor, opt: true);
   static AppBarNode? _$appBar(ScaffoldNode v) => v.appBar;
   static const Field<ScaffoldNode, AppBarNode> _f$appBar =
       Field('appBar', _$appBar, opt: true);
@@ -51,7 +52,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
 
   @override
   final MappableFields<ScaffoldNode> fields = const {
-    #bgColorValue: _f$bgColorValue,
+    #bgColor: _f$bgColor,
     #appBar: _f$appBar,
     #body: _f$body,
     #canShowEditorLoginBtn: _f$canShowEditorLoginBtn,
@@ -69,7 +70,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
 
   static ScaffoldNode _instantiate(DecodingData data) {
     return ScaffoldNode(
-        bgColorValue: data.dec(_f$bgColorValue),
+        bgColor: data.dec(_f$bgColor),
         appBar: data.dec(_f$appBar),
         body: data.dec(_f$body),
         canShowEditorLoginBtn: data.dec(_f$canShowEditorLoginBtn));
@@ -127,12 +128,13 @@ extension ScaffoldNodeValueCopy<$R, $Out>
 
 abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
     implements SNodeCopyWith<$R, $In, $Out> {
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
   AppBarNodeCopyWith<$R, AppBarNode, AppBarNode>? get appBar;
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode,
       GenericSingleChildNode>? get body;
   @override
   $R call(
-      {int? bgColorValue,
+      {ColorModel? bgColor,
       AppBarNode? appBar,
       GenericSingleChildNode? body,
       bool? canShowEditorLoginBtn});
@@ -148,6 +150,9 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ScaffoldNode> $mapper =
       ScaffoldNodeMapper.ensureInitialized();
   @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor =>
+      $value.bgColor?.copyWith.$chain((v) => call(bgColor: v));
+  @override
   AppBarNodeCopyWith<$R, AppBarNode, AppBarNode>? get appBar =>
       $value.appBar?.copyWith.$chain((v) => call(appBar: v));
   @override
@@ -156,12 +161,12 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
       get body => $value.body?.copyWith.$chain((v) => call(body: v));
   @override
   $R call(
-          {Object? bgColorValue = $none,
+          {Object? bgColor = $none,
           Object? appBar = $none,
           Object? body = $none,
           bool? canShowEditorLoginBtn}) =>
       $apply(FieldCopyWithData({
-        if (bgColorValue != $none) #bgColorValue: bgColorValue,
+        if (bgColor != $none) #bgColor: bgColor,
         if (appBar != $none) #appBar: appBar,
         if (body != $none) #body: body,
         if (canShowEditorLoginBtn != null)
@@ -169,7 +174,7 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
       }));
   @override
   ScaffoldNode $make(CopyWithData data) => ScaffoldNode(
-      bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
+      bgColor: data.get(#bgColor, or: $value.bgColor),
       appBar: data.get(#appBar, or: $value.appBar),
       body: data.get(#body, or: $value.body),
       canShowEditorLoginBtn:

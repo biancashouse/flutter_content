@@ -12,29 +12,29 @@ part 'algc_node.mapper.dart';
 
 @MappableClass()
 class AlgCNode extends CL with AlgCNodeMappable {
-  String? ea;
+  String? fbUid;
   String? fId;
   String? flowchartJsonString;
 
   AlgCNode({
-    this.ea,
+    this.fbUid,
     this.fId,
     this.flowchartJsonString,
   });
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-        PNode/*Group*/(
+        PNode /*Group*/ (
           snode: this,
-          name: 'by email + id',
+          name: 'by user id + flowchart id',
           children: [
             StringPNode(
               snode: this,
-              name: 'email address',
-              stringValue: ea,
+              name: 'firebase UID',
+              stringValue: fbUid,
               skipHelperText: true,
               onStringChange: (newValue) =>
-                  refreshWithUpdate(context,() => ea = newValue),
+                  refreshWithUpdate(context, () => fbUid = newValue),
               calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 1,
@@ -45,14 +45,14 @@ class AlgCNode extends CL with AlgCNodeMappable {
               stringValue: fId,
               skipHelperText: true,
               onStringChange: (newValue) =>
-                  refreshWithUpdate(context,() => fId = newValue),
+                  refreshWithUpdate(context, () => fId = newValue),
               calloutButtonSize: const Size(280, 70),
               calloutWidth: 400,
               numLines: 1,
             ),
           ],
         ),
-        PNode/*Group*/(
+        PNode /*Group*/ (
           snode: this,
           name: 'direct json entry',
           children: [
@@ -61,8 +61,8 @@ class AlgCNode extends CL with AlgCNodeMappable {
               name: 'json',
               stringValue: flowchartJsonString,
               skipHelperText: true,
-              onStringChange: (newValue) =>
-                  refreshWithUpdate(context,() => flowchartJsonString = newValue),
+              onStringChange: (newValue) => refreshWithUpdate(
+                  context, () => flowchartJsonString = newValue),
               calloutButtonSize: const Size(240, 70),
               calloutWidth: 400,
               numLines: 6,
@@ -72,9 +72,10 @@ class AlgCNode extends CL with AlgCNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     setParent(parentNode); // propagating parents down from root
-    //ScrollControllerName? scName = EditablePage.name(context);
+    ScrollControllerName? scName = EditablePage.scName(context);
     //possiblyHighlightSelectedNode(scName);
 
     if (flowchartJsonString?.isNotEmpty ?? false) {
@@ -83,6 +84,8 @@ class AlgCNode extends CL with AlgCNodeMappable {
         return FlowchartWidget(
           key: createNodeWidgetGK(),
           flowchartJsonString ?? '',
+          fbUid!,
+          scName??'',
         );
       } catch (e) {
         return Error(
@@ -94,20 +97,18 @@ class AlgCNode extends CL with AlgCNodeMappable {
       }
     } else {
       // try to fetch from algc firestore using ea and fid
-      String? vea = fco.localStorage.read('vea');
-      vea = 'DRmm8EQr9QS3NEBtQTuy95IVYw23';
-      if (vea.isEmpty) {
+      if (fbUid == null || fbUid!.isEmpty) {
         return Error(
             key: createNodeWidgetGK(),
             FLUTTER_TYPE,
             color: Colors.green,
             size: 16,
-            errorMsg: "vea.isEmpty!");
+            errorMsg: "must specify the firebase UID!");
       }
-      if ((vea.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
+      if ((fbUid!= null && fbUid!.isNotEmpty) && (fId?.isNotEmpty ?? false)) {
         try {
           return FutureBuilder<String?>(
-              future: _cloudRunFetchFlowchartJsonString(vea, fId!),
+              future: cloudRunFetchFlowchartJsonString(fbUid!, fId!),
               builder: (futureContext, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
                   return const Center(child: CircularProgressIndicator());
@@ -118,6 +119,8 @@ class AlgCNode extends CL with AlgCNodeMappable {
                   return FlowchartWidget(
                     key: createNodeWidgetGK(),
                     flowchartJsonString ?? '',
+                    fbUid!,
+                    scName??'',
                   );
                 } catch (e) {
                   return Error(
@@ -148,11 +151,11 @@ class AlgCNode extends CL with AlgCNodeMappable {
     }
   }
 
-  Future<String?> _cloudRunFetchFlowchartJsonString(
-    String vea,
+  static Future<String?> cloudRunFetchFlowchartJsonString(
+    String fbUID,
     String fid,
   ) async {
-    final bodyMap = {"user-id": vea, "fid": fid};
+    final bodyMap = {"user-id": fbUID, "fid": fid};
     final body = json.encode(bodyMap);
     final response = await http.Client().post(
       Uri.parse('${fco.gcrServerUrl}/algc/bytes'),
@@ -174,9 +177,9 @@ class AlgCNode extends CL with AlgCNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-      fco.asset('lib/assets/images/pub.dev.png'),
-      width: 16,
-  );
+        fco.asset('lib/assets/images/pub.dev.png'),
+        width: 16,
+      );
 
   @override
   String toString() => FLUTTER_TYPE;

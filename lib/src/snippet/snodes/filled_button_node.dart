@@ -19,7 +19,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfigGroup,
+    super.calloutConfig,
     super.child,
   });
 

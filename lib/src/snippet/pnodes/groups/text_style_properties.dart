@@ -1,10 +1,14 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart' show ColorModel, ColorModelCopyWith, ColorModelMapper;
+// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../../typedefs.dart';
+import '../enums/enum_material3_text_size.dart';
 
 part 'text_style_properties.mapper.dart';
 
@@ -17,7 +21,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
   FontWeightEnum? fontWeight;
   double? lineHeight;
   double? letterSpacing;
-  int? colorValue;
+  ColorModel? color;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   TextStyleName? lastHoveredSuggestion;
@@ -32,7 +36,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
     this.fontWeight,
     this.lineHeight,
     this.letterSpacing,
-    this.colorValue,
+    this.color,
   });
 
   TextStyle? toTextStyle(BuildContext context) {
@@ -59,7 +63,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
         fontWeight: fontWeight?.flutterValue,
         letterSpacing: letterSpacing,
         height: lineHeight,
-        color: colorValue != null ? Color(colorValue!) : null,
+        color: color?.flutterValue,
       ),
     );
 
@@ -74,7 +78,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
         fontWeight: fontWeight,
         lineHeight: lineHeight,
         letterSpacing: letterSpacing,
-        colorValue: colorValue,
+        color: color,
       );
 
   bool _allNull() =>
@@ -85,7 +89,7 @@ class TextStyleProperties with TextStylePropertiesMappable {
       fontSizeName == null &&
       lineHeight == null &&
       letterSpacing == null &&
-      colorValue == null;
+      color == null;
 
   bool same(TextStyleProperties other) =>
       fontFamily == other.fontFamily &&
@@ -95,5 +99,5 @@ class TextStyleProperties with TextStylePropertiesMappable {
           fontSizeName == other.fontSizeName &&
           lineHeight == other.lineHeight &&
           letterSpacing == other.letterSpacing &&
-          colorValue == other.colorValue;
+          color == other.color;
 }

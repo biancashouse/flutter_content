@@ -22,7 +22,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfigGroup,
+    super.calloutConfig,
     super.child,
   }) {
     assert((destinationRoutePathSnippetName != null) == (template != null),

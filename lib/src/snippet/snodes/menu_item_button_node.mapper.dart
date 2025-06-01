@@ -16,7 +16,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
       SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
-      CalloutConfigPropertiesMapper.ensureInitialized();
+      CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
     }
     return _instance!;
@@ -41,11 +41,10 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
   static String? _$onTapHandlerName(MenuItemButtonNode v) => v.onTapHandlerName;
   static const Field<MenuItemButtonNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
-  static CalloutConfigProperties? _$calloutConfigGroup(MenuItemButtonNode v) =>
-      v.calloutConfigGroup;
-  static const Field<MenuItemButtonNode, CalloutConfigProperties>
-      _f$calloutConfigGroup =
-      Field('calloutConfigGroup', _$calloutConfigGroup, opt: true);
+  static CalloutConfigModel? _$calloutConfig(MenuItemButtonNode v) =>
+      v.calloutConfig;
+  static const Field<MenuItemButtonNode, CalloutConfigModel> _f$calloutConfig =
+      Field('calloutConfig', _$calloutConfig, opt: true);
   static SNode? _$child(MenuItemButtonNode v) => v.child;
   static const Field<MenuItemButtonNode, SNode> _f$child =
       Field('child', _$child, opt: true);
@@ -67,7 +66,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
     #template: _f$template,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
-    #calloutConfigGroup: _f$calloutConfigGroup,
+    #calloutConfig: _f$calloutConfig,
     #child: _f$child,
     #uid: _f$uid,
     #isExpanded: _f$isExpanded,
@@ -88,7 +87,7 @@ class MenuItemButtonNodeMapper extends SubClassMapperBase<MenuItemButtonNode> {
         template: data.dec(_f$template),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
-        calloutConfigGroup: data.dec(_f$calloutConfigGroup),
+        calloutConfig: data.dec(_f$calloutConfig),
         child: data.dec(_f$child));
   }
 
@@ -151,8 +150,8 @@ abstract class MenuItemButtonNodeCopyWith<$R, $In extends MenuItemButtonNode,
   ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
       ButtonStyleProperties> get bsPropGroup;
   @override
-  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
-      CalloutConfigProperties>? get calloutConfigGroup;
+  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
+      get calloutConfig;
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child;
   @override
@@ -161,7 +160,7 @@ abstract class MenuItemButtonNodeCopyWith<$R, $In extends MenuItemButtonNode,
       SnippetTemplateEnum? template,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
-      CalloutConfigProperties? calloutConfigGroup,
+      CalloutConfigModel? calloutConfig,
       SNode? child});
   MenuItemButtonNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -181,10 +180,9 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
       get bsPropGroup =>
           $value.bsPropGroup.copyWith.$chain((v) => call(bsPropGroup: v));
   @override
-  CalloutConfigPropertiesCopyWith<$R, CalloutConfigProperties,
-          CalloutConfigProperties>?
-      get calloutConfigGroup => $value.calloutConfigGroup?.copyWith
-          .$chain((v) => call(calloutConfigGroup: v));
+  CalloutConfigModelCopyWith<$R, CalloutConfigModel, CalloutConfigModel>?
+      get calloutConfig =>
+          $value.calloutConfig?.copyWith.$chain((v) => call(calloutConfig: v));
   @override
   SNodeCopyWith<$R, SNode, SNode>? get child =>
       $value.child?.copyWith.$chain((v) => call(child: v));
@@ -194,7 +192,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
           Object? template = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
-          Object? calloutConfigGroup = $none,
+          Object? calloutConfig = $none,
           Object? child = $none}) =>
       $apply(FieldCopyWithData({
         if (destinationRoutePathSnippetName != $none)
@@ -202,8 +200,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
         if (template != $none) #template: template,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
-        if (calloutConfigGroup != $none)
-          #calloutConfigGroup: calloutConfigGroup,
+        if (calloutConfig != $none) #calloutConfig: calloutConfig,
         if (child != $none) #child: child
       }));
   @override
@@ -215,8 +212,7 @@ class _MenuItemButtonNodeCopyWithImpl<$R, $Out>
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
-      calloutConfigGroup:
-          data.get(#calloutConfigGroup, or: $value.calloutConfigGroup),
+      calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig),
       child: data.get(#child, or: $value.child));
 
   @override

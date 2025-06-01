@@ -23,8 +23,8 @@
 //       ancestorHScrollController: ancestorHScrollController,
 //       ancestorVScrollController: ancestorVScrollController,
 //     ),
-//     initialCalloutAlignment: Alignment.centerRight,
-//     initialTargetAlignment: Alignment.centerLeft,
+//     initialCalloutAlignment: AlignmentEnum.centerRight,
+//     initialTargetAlignment: AlignmentEnum.centerLeft,
 //     separation: 30,
 //     barrierOpacity: 0.1,
 //     arrowColor: Colors.purpleAccent,
@@ -35,7 +35,7 @@
 //     height: 80,
 //     draggable: true,
 //     color: Colors.purpleAccent,
-//     arrowType: ArrowType.POINTY,
+//     arrowType: ArrowTypeEnum.POINTY,
 //     roundedCorners: 16,
 //     showCloseButton: true,
 //     closeButtonColor: Colors.white,
@@ -121,7 +121,7 @@
 //       iconSize: 32,
 //       icon: Icon(
 //         icon,
-//         color: isHighlighted ? Colors.white : Colors.white.withOpacity(.5),
+//         color: isHighlighted ? Colors.white : Colors.white.withValues(alpha:.5),
 //       ),
 //       onPressed: onPressed,
 //     );

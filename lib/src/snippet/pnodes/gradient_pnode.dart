@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_color.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6color_values.dart';
+import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
 
 class GradientPNode extends PNode {
-  UpTo6ColorValues? colorValues;
-  final void Function(UpTo6ColorValues?) onColorChange;
+  UpTo6Colors? colors;
+  final void Function(UpTo6Colors?) onColorChange;
 
   GradientPNode({
-    required this.colorValues,
+    required this.colors,
     required this.onColorChange,
     required super.snode,
     required super.name,
@@ -16,7 +16,7 @@ class GradientPNode extends PNode {
 
   @override
   void revertToOriginalValue() {
-    onColorChange.call(colorValues = null);
+    onColorChange.call(colors = null);
   }
 
   @override
@@ -39,19 +39,19 @@ class GradientPNode extends PNode {
                           cId: '$name:1',
                           // key: GlobalKey(),
                           label: '',
-                          originalColor: colorValues?.color1Value != null
-                              ? Color(colorValues!.color1Value!)
+                          originalColor: colors?.color1 != null
+                              ? colors!.color1!.flutterValue
                               : null,
                           onChangeF: (Color? newColor) {
                             if (newColor != null) {
                               setState(() => onColorChange.call(
-                                colorValues = UpTo6ColorValues(
-                                  color1Value: newColor.value,
-                                  color2Value: colorValues?.color2Value,
-                                  color3Value: colorValues?.color3Value,
-                                  color4Value: colorValues?.color4Value,
-                                  color5Value: colorValues?.color5Value,
-                                  color6Value: colorValues?.color6Value,
+                                colors = UpTo6Colors(
+                                  color1: ColorModel.fromColor(newColor),
+                                  color2: colors?.color2,
+                                  color3: colors?.color3,
+                                  color4: colors?.color4,
+                                  color5: colors?.color5,
+                                  color6: colors?.color6,
                                 ),
                               ));
                             }
@@ -65,19 +65,19 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:2',
                         label: '',
-                        originalColor: colorValues?.color2Value != null
-                            ? Color(colorValues!.color2Value!)
+                        originalColor: colors?.color2 != null
+                            ? colors!.color2!.flutterValue
                             : null,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: newColor.value,
-                                color3Value: colorValues?.color3Value,
-                                color4Value: colorValues?.color4Value,
-                                color5Value: colorValues?.color5Value,
-                                color6Value: colorValues?.color6Value,
+                              colors = UpTo6Colors(
+                                color1: colors?.color1,
+                                color2: ColorModel.fromColor(newColor),
+                                color3: colors?.color3,
+                                color4: colors?.color4,
+                                color5: colors?.color5,
+                                color6: colors?.color6,
                               ),
                             ));
                           }
@@ -92,19 +92,19 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:3',
                         label: '',
-                        originalColor: colorValues?.color3Value != null
-                            ? Color(colorValues!.color3Value!)
+                        originalColor: colors?.color3 != null
+                            ? colors!.color3!.flutterValue
                             : null,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: colorValues?.color2Value,
-                                color3Value: newColor.value,
-                                color4Value: colorValues?.color4Value,
-                                color5Value: colorValues?.color5Value,
-                                color6Value: colorValues?.color6Value,
+                              colors = UpTo6Colors(
+                                color1: colors?.color1,
+                                color2: colors?.color2,
+                                color3: ColorModel.fromColor(newColor),
+                                color4: colors?.color4,
+                                color5: colors?.color5,
+                                color6: colors?.color6,
                               ),
                             ));
                           }
@@ -119,19 +119,19 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:4',
                         label: '',
-                        originalColor: colorValues?.color4Value != null
-                            ? Color(colorValues!.color4Value!)
+                        originalColor: colors?.color4 != null
+                            ? colors!.color4!.flutterValue
                             : null,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: colorValues?.color2Value,
-                                color3Value: colorValues?.color3Value,
-                                color4Value: newColor.value,
-                                color5Value: colorValues?.color5Value,
-                                color6Value: colorValues?.color6Value,
+                              colors = UpTo6Colors(
+                                color1: colors?.color1,
+                                color2: colors?.color2,
+                                color3: colors?.color3,
+                                color4: ColorModel.fromColor(newColor),
+                                color5: colors?.color5,
+                                color6: colors?.color6,
                               ),
                             ));
                           }
@@ -146,19 +146,19 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:5',
                         label: '',
-                        originalColor: colorValues?.color5Value != null
-                            ? Color(colorValues!.color5Value!)
+                        originalColor: colors?.color5 != null
+                            ? colors!.color5!.flutterValue
                             : null,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: colorValues?.color2Value,
-                                color3Value: colorValues?.color3Value,
-                                color4Value: colorValues?.color4Value,
-                                color5Value: newColor.value,
-                                color6Value: colorValues?.color6Value,
+                              colors = UpTo6Colors(
+                                color1: colors?.color1,
+                                color2: colors?.color2,
+                                color3: colors?.color3,
+                                color4: colors?.color4,
+                                color5: ColorModel.fromColor(newColor),
+                                color6: colors?.color6,
                               ),
                             ));
                           }
@@ -173,19 +173,19 @@ class GradientPNode extends PNode {
                       return PropertyButtonColor(
                         cId: '$name:6',
                         label: '',
-                        originalColor: colorValues?.color6Value != null
-                            ? Color(colorValues!.color6Value!)
+                        originalColor: colors?.color6 != null
+                            ? colors!.color6!.flutterValue
                             : null,
                         onChangeF: (Color? newColor) {
                           if (newColor != null) {
                             setState(() => onColorChange.call(
-                              colorValues = UpTo6ColorValues(
-                                color1Value: colorValues?.color1Value,
-                                color2Value: colorValues?.color2Value,
-                                color3Value: colorValues?.color3Value,
-                                color4Value: colorValues?.color4Value,
-                                color5Value: colorValues?.color5Value,
-                                color6Value: newColor.value,
+                              colors = UpTo6Colors(
+                                color1: colors?.color1,
+                                color2: colors?.color2,
+                                color3: colors?.color3,
+                                color4: colors?.color4,
+                                color5: colors?.color5,
+                                color6: ColorModel.fromColor(newColor),
                               ),
                             ));
                           }

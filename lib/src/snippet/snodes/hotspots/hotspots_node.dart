@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'hotspots_node.mapper.dart';
 
@@ -14,6 +15,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   double? height;
   double borderRadius;
   List<TargetModel> targets;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   List<TargetModel> playList;
 
   TargetsWrapperNode({

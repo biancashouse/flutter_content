@@ -25,7 +25,8 @@ class TargetColourTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void colorPicked(Color pickedColor) {
-      tc.setCalloutColor(pickedColor);
+      tc.setCalloutColor(ColorModel.fromColor(pickedColor));
+      tc.changed_saveRootSnippet();
       // STreeNode.hideAllTargetCovers();
       // STreeNode.showAllTargetCovers();
       // fco.refreshOverlay(tc.snippetName);
@@ -33,7 +34,7 @@ class TargetColourTool extends StatelessWidget {
       // fco.afterNextBuildDo(() {
       //   widget.onParentBarrierTappedF.call();
       //   fco.refreshOverlay(tc.snippetName, f: () {});
-      removeSnippetContentCallout(tc);
+      removeSnippetContentCallout(tc, skipOnDismiss: true);
       tc
           .targetsWrapperState()
           ?.zoomer
@@ -45,6 +46,11 @@ class TargetColourTool extends StatelessWidget {
           justPlaying: false,
           // widget.onParentBarrierTappedF,
           scName: scName,
+        );
+        TargetsWrapper.showConfigToolbar(
+          tc,
+          wrapperRect,
+          scName,
         );
       });
       fco.dismiss('color-picker');
@@ -81,7 +87,7 @@ class TargetColourTool extends StatelessWidget {
           ),
           ColorPicker(
             // Use the screenPickerColor as color.
-            color: tc.calloutColor(),
+            color: tc.calloutFillColor!.flutterValue,
             // Update the screenPickerColor using the callback.
             onColorChanged: (Color color) => colorPicked(color),
             // onCompleted: () => fco.dismiss(cId),
@@ -110,13 +116,13 @@ class TargetColourTool extends StatelessWidget {
 
     fco.showOverlay(
       targetGkF: () => targetGK,
-      calloutConfig: CalloutConfig(
+      calloutConfig: CalloutConfigModel(
         cId: 'color-picker',
         initialCalloutW: 320,
         initialCalloutH: 380,
-        fillColor: Colors.purpleAccent,
+        fillColor: ColorModel.purpleAccent(),
         borderRadius: 16,
-        arrowType: ArrowType.NONE,
+        arrowType: ArrowTypeEnum.NONE,
         barrier: CalloutBarrierConfig(
           opacity: 0.1,
         ),

@@ -15,6 +15,7 @@ class ButtonStylePropertiesMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ButtonStylePropertiesMapper._());
       TextStylePropertiesMapper.ensureInitialized();
+      ColorModelMapper.ensureInitialized();
       OutlinedBorderEnumMapper.ensureInitialized();
       BorderSidePropertiesMapper.ensureInitialized();
     }
@@ -29,12 +30,12 @@ class ButtonStylePropertiesMapper
   static const Field<ButtonStyleProperties, TextStyleProperties>
       _f$tsPropGroup =
       Field('tsPropGroup', _$tsPropGroup, hook: TextStyleHook());
-  static int? _$fgColorValue(ButtonStyleProperties v) => v.fgColorValue;
-  static const Field<ButtonStyleProperties, int> _f$fgColorValue =
-      Field('fgColorValue', _$fgColorValue, opt: true);
-  static int? _$bgColorValue(ButtonStyleProperties v) => v.bgColorValue;
-  static const Field<ButtonStyleProperties, int> _f$bgColorValue =
-      Field('bgColorValue', _$bgColorValue, opt: true);
+  static ColorModel? _$fgColor(ButtonStyleProperties v) => v.fgColor;
+  static const Field<ButtonStyleProperties, ColorModel> _f$fgColor =
+      Field('fgColor', _$fgColor, opt: true);
+  static ColorModel? _$bgColor(ButtonStyleProperties v) => v.bgColor;
+  static const Field<ButtonStyleProperties, ColorModel> _f$bgColor =
+      Field('bgColor', _$bgColor, opt: true);
   static double? _$elevation(ButtonStyleProperties v) => v.elevation;
   static const Field<ButtonStyleProperties, double> _f$elevation =
       Field('elevation', _$elevation, opt: true);
@@ -81,8 +82,8 @@ class ButtonStylePropertiesMapper
   @override
   final MappableFields<ButtonStyleProperties> fields = const {
     #tsPropGroup: _f$tsPropGroup,
-    #fgColorValue: _f$fgColorValue,
-    #bgColorValue: _f$bgColorValue,
+    #fgColor: _f$fgColor,
+    #bgColor: _f$bgColor,
     #elevation: _f$elevation,
     #padding: _f$padding,
     #shape: _f$shape,
@@ -101,8 +102,8 @@ class ButtonStylePropertiesMapper
   static ButtonStyleProperties _instantiate(DecodingData data) {
     return ButtonStyleProperties(
         tsPropGroup: data.dec(_f$tsPropGroup),
-        fgColorValue: data.dec(_f$fgColorValue),
-        bgColorValue: data.dec(_f$bgColorValue),
+        fgColor: data.dec(_f$fgColor),
+        bgColor: data.dec(_f$bgColor),
         elevation: data.dec(_f$elevation),
         padding: data.dec(_f$padding),
         shape: data.dec(_f$shape),
@@ -175,12 +176,14 @@ abstract class ButtonStylePropertiesCopyWith<
     $Out> implements ClassCopyWith<$R, $In, $Out> {
   TextStylePropertiesCopyWith<$R, TextStyleProperties, TextStyleProperties>
       get tsPropGroup;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get fgColor;
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor;
   BorderSidePropertiesCopyWith<$R, BorderSideProperties, BorderSideProperties>?
       get side;
   $R call(
       {TextStyleProperties? tsPropGroup,
-      int? fgColorValue,
-      int? bgColorValue,
+      ColorModel? fgColor,
+      ColorModel? bgColor,
       double? elevation,
       double? padding,
       OutlinedBorderEnum? shape,
@@ -209,13 +212,19 @@ class _ButtonStylePropertiesCopyWithImpl<$R, $Out>
       get tsPropGroup =>
           $value.tsPropGroup.copyWith.$chain((v) => call(tsPropGroup: v));
   @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get fgColor =>
+      $value.fgColor?.copyWith.$chain((v) => call(fgColor: v));
+  @override
+  ColorModelCopyWith<$R, ColorModel, ColorModel>? get bgColor =>
+      $value.bgColor?.copyWith.$chain((v) => call(bgColor: v));
+  @override
   BorderSidePropertiesCopyWith<$R, BorderSideProperties, BorderSideProperties>?
       get side => $value.side?.copyWith.$chain((v) => call(side: v));
   @override
   $R call(
           {TextStyleProperties? tsPropGroup,
-          Object? fgColorValue = $none,
-          Object? bgColorValue = $none,
+          Object? fgColor = $none,
+          Object? bgColor = $none,
           Object? elevation = $none,
           Object? padding = $none,
           Object? shape = $none,
@@ -229,8 +238,8 @@ class _ButtonStylePropertiesCopyWithImpl<$R, $Out>
           Object? fixedH = $none}) =>
       $apply(FieldCopyWithData({
         if (tsPropGroup != null) #tsPropGroup: tsPropGroup,
-        if (fgColorValue != $none) #fgColorValue: fgColorValue,
-        if (bgColorValue != $none) #bgColorValue: bgColorValue,
+        if (fgColor != $none) #fgColor: fgColor,
+        if (bgColor != $none) #bgColor: bgColor,
         if (elevation != $none) #elevation: elevation,
         if (padding != $none) #padding: padding,
         if (shape != $none) #shape: shape,
@@ -246,8 +255,8 @@ class _ButtonStylePropertiesCopyWithImpl<$R, $Out>
   @override
   ButtonStyleProperties $make(CopyWithData data) => ButtonStyleProperties(
       tsPropGroup: data.get(#tsPropGroup, or: $value.tsPropGroup),
-      fgColorValue: data.get(#fgColorValue, or: $value.fgColorValue),
-      bgColorValue: data.get(#bgColorValue, or: $value.bgColorValue),
+      fgColor: data.get(#fgColor, or: $value.fgColor),
+      bgColor: data.get(#bgColor, or: $value.bgColor),
       elevation: data.get(#elevation, or: $value.elevation),
       padding: data.get(#padding, or: $value.padding),
       shape: data.get(#shape, or: $value.shape),

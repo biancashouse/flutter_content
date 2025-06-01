@@ -139,9 +139,9 @@ class TextStylePNode /*Group*/ extends TextStyleWithoutColorPNode /*Group*/ {
         ColorPNode(
           snode: super.snode,
           name: 'color',
-          colorValue: textStyleProperties.colorValue,
-          onColorIntChange: (newValue) {
-            textStyleProperties.colorValue = newValue;
+          color: textStyleProperties.color,
+          onColorChange: (newValue) {
+            textStyleProperties.color = newValue;
             onGroupChange.call(textStyleProperties, true);
           },
         ));

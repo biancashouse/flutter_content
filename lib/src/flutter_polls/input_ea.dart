@@ -99,7 +99,7 @@
 //                     fontSize: 14,
 //                     color: fco.emailIsValid(_eaController.text)
 //                         ? Colors.green
-//                         : Colors.grey.withOpacity(.8)),
+//                         : Colors.grey.withValues(alpha:.8)),
 //               ),
 //               onPressed: () {
 //                 _verifyButtonPressed();
@@ -119,10 +119,10 @@
 //       widget.onValidEmailF(_eaController.text);
 //     } else {
 //       fco.showToast(
-//         calloutConfig: CalloutConfig(
+//         calloutConfig: CalloutConfigModel(
 //           cId: 'not-a-valid-ea',
 //           fillColor: Colors.red,
-//           gravity: Alignment.topCenter,
+//           gravity: AlignmentEnum.topCenter,
 //           initialCalloutW: 450,
 //           initialCalloutH: 50,
 //         ),

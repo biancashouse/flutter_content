@@ -44,8 +44,8 @@ class PropertyButtonEnum extends StatelessWidget {
               ? fco.coloredText('...', color: Colors.white)
               : mi,
       calloutButtonSize: calloutButtonSize,
-      initialCalloutAlignment: Alignment.bottomCenter,
-      initialTargetAlignment: Alignment.topCenter,
+      initialCalloutAlignment: AlignmentEnum.bottomCenter,
+      initialTargetAlignment: AlignmentEnum.topCenter,
       calloutContents: (ctx) => Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

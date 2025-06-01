@@ -26,7 +26,7 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var textStyleName = fco.findTextStyleName(textStyle);
+    // var textStyleName = fco.findTextStyleName(textStyle);
 
     // Widget labelWidget = textStyleName != null
     //     ? fco.coloredText('style name: $textStyleName', color: Colors.white)
@@ -53,8 +53,8 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
       calloutButtonSize: calloutButtonSize,
       calloutButtonColor: Colors.white,
       menuBgColor: Colors.white,
-      initialCalloutAlignment: Alignment.center,
-      initialTargetAlignment: Alignment.center,
+      initialCalloutAlignment: AlignmentEnum.center,
+      initialTargetAlignment: AlignmentEnum.center,
       calloutContents: (ctx) {
         TextStyleNameSearchAnchor anchor = fco.textStyleNameAnchor ??
             TextStyleNameSearchAnchor(

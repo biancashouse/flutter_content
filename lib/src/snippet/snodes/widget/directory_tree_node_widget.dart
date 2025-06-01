@@ -63,7 +63,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Icon(entry.node.isExpanded ? Icons.folder_open : Icons.folder, size: 28, color: (entry.node as DirectoryNode).children.isNotEmpty
-                ? Colors.amber : Colors.amber.withOpacity(.5)),
+                ? Colors.amber : Colors.amber.withValues(alpha:.5)),
                 TextButton(
                   onPressed: () {
                     if (snippet?.mounted ?? false) {

@@ -30,7 +30,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
   String? onTapHandlerName;
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
-  CalloutConfigProperties? calloutConfigGroup;
+  CalloutConfigModel? calloutConfig;
 
   ButtonNode({
     // this.destinationPanelOrPlaceholderName,
@@ -39,7 +39,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     this.template,
     required this.bsPropGroup,
     this.onTapHandlerName,
-    this.calloutConfigGroup,
+    this.calloutConfig,
     super.child,
   });
 
@@ -155,7 +155,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     ];
   }
 
-  CalloutId? get cid => calloutConfigGroup?.cid;
+  CalloutId? get cid => calloutConfig?.cId;
 
   void onPressed(
     BuildContext context,
@@ -172,26 +172,24 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
         () => fco.showOverlay(
             targetGkF: () => fco.getCalloutGk(cid),
             calloutContent: SnippetPanel.fromSnippet(
-              panelName: calloutConfigGroup!.cid!,
+              panelName: calloutConfig!.cId!,
               snippetName: BODY_PLACEHOLDER,
               // allowButtonCallouts: false,
               scName: scName,
             ),
-            calloutConfig: CalloutConfig(
+            calloutConfig: CalloutConfigModel(
                 cId: cid!,
-                initialTargetAlignment: calloutConfigGroup!.targetAlignment !=
-                        null
-                    ? calloutConfigGroup!.targetAlignment!.flutterValue
-                    : AlignmentEnum.bottomRight.flutterValue,
+                initialTargetAlignment: calloutConfig!.initialTargetAlignment ??
+                    AlignmentEnum.bottomRight,
                 initialCalloutAlignment:
-                    calloutConfigGroup!.targetAlignment != null
-                        ? calloutConfigGroup!
-                            .targetAlignment!.oppositeEnum.flutterValue
-                        : AlignmentEnum.topLeft.flutterValue,
+                    calloutConfig!.initialTargetAlignment != null
+                        ? calloutConfig!
+                            .initialTargetAlignment!.oppositeEnum
+                        : AlignmentEnum.topLeft,
                 initialCalloutW: 200,
                 initialCalloutH: 150,
-                arrowType: calloutConfigGroup!.arrowType?.flutterValue ??
-                    ArrowType.POINTY,
+                arrowType: calloutConfig?.arrowType ??
+                    ArrowTypeEnum.POINTY,
                 finalSeparation: 100,
                 barrier: CalloutBarrierConfig(
                   opacity: 0.1,
@@ -199,9 +197,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
                     fco.dismiss(cid!);
                   },
                 ),
-                fillColor: calloutConfigGroup?.colorValue != null
-                    ? Color(calloutConfigGroup!.colorValue!)
-                    : Colors.white,
+                fillColor: calloutConfig?.fillColor,
                 scrollControllerName: scName)),
       );
     } else if (destinationRoutePathSnippetName != null) {

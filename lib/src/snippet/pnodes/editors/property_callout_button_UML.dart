@@ -52,7 +52,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
           );
           return GestureDetector(
             onTap: () {
-              CalloutConfig teCC = CalloutConfig(
+              CalloutConfigModel teCC = CalloutConfigModel(
                 cId: 'uml-te',
                 scrollControllerName: widget.scName,
                 containsTextField: true,
@@ -61,8 +61,8 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
                     onTappedF: () {
                       fco.dismiss('uml-te');
                     }),
-                fillColor: Colors.white,
-                arrowType: ArrowType.NONE,
+                fillColor: ColorModel.white(),
+                arrowType: ArrowTypeEnum.NONE,
                 initialCalloutW: fco.scrW * .8,
                 initialCalloutH: fco.scrH * .8,
                 onDismissedF: () {},

@@ -1,11 +1,16 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_callouts/flutter_callouts.dart'
+    show ColorModel, ColorModelCopyWith, ColorModelMapper;
+
+// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/border_side_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../typedefs.dart';
 
 part 'button_style_properties.mapper.dart';
 
@@ -13,8 +18,8 @@ part 'button_style_properties.mapper.dart';
 class ButtonStyleProperties with ButtonStylePropertiesMappable {
   @MappableField(hook: TextStyleHook())
   TextStyleProperties tsPropGroup;
-  int? fgColorValue;
-  int? bgColorValue;
+  ColorModel? fgColor;
+  ColorModel? bgColor;
   double? elevation;
   double? padding;
 
@@ -36,8 +41,8 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
 
   ButtonStyleProperties({
     required this.tsPropGroup,
-    this.fgColorValue,
-    this.bgColorValue,
+    this.fgColor,
+    this.bgColor,
     this.elevation,
     this.padding,
     // this.textStyle,
@@ -52,7 +57,8 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
     this.fixedH,
   });
 
-  ButtonStyle? toButtonStyle(BuildContext context, {ButtonStyle? defaultButtonStyle}) {
+  ButtonStyle? toButtonStyle(BuildContext context,
+      {ButtonStyle? defaultButtonStyle}) {
     OutlinedBorder ob = shape != null
         ? shape!.toFlutterWidget(nodeSide: side!, nodeRadius: radius)
         : RoundedRectangleBorder(
@@ -63,26 +69,24 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
     TextStyle? ts = tsPropGroup.toTextStyle(context);
 
     ButtonStyle? buttonStyle =
-      // (defaultButtonStyle)
-      //   ?.merge(
-      ButtonStyle(
-        textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
-        backgroundColor: WidgetStatePropertyAll<Color?>(
-            bgColorValue != null ? Color(bgColorValue!) : null),
-        foregroundColor: WidgetStatePropertyAll<Color?>(
-            fgColorValue != null ? Color(fgColorValue!) : null),
-        padding:
-            WidgetStatePropertyAll<EdgeInsets?>(EdgeInsets.all(padding ?? 0.0)),
-        elevation: WidgetStatePropertyAll<double?>(elevation),
-        minimumSize: WidgetStatePropertyAll<Size?>(
-            minW != null && minH != null ? Size(minW!, minH!) : null),
-        maximumSize: WidgetStatePropertyAll<Size?>(
-            maxW != null && maxH != null ? Size(maxW!, maxH!) : null),
-        fixedSize: WidgetStatePropertyAll<Size?>(
-            fixedW != null && fixedH != null ? Size(fixedW!, fixedH!) : null),
-        shape: WidgetStatePropertyAll<OutlinedBorder>(ob),
-        side: WidgetStatePropertyAll<BorderSide?>(bs),
-        // textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
+        // (defaultButtonStyle)
+        //   ?.merge(
+        ButtonStyle(
+      textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
+      backgroundColor: WidgetStatePropertyAll<Color?>(bgColor?.flutterValue),
+      foregroundColor: WidgetStatePropertyAll<Color?>(fgColor?.flutterValue),
+      padding:
+          WidgetStatePropertyAll<EdgeInsets?>(EdgeInsets.all(padding ?? 0.0)),
+      elevation: WidgetStatePropertyAll<double?>(elevation),
+      minimumSize: WidgetStatePropertyAll<Size?>(
+          minW != null && minH != null ? Size(minW!, minH!) : null),
+      maximumSize: WidgetStatePropertyAll<Size?>(
+          maxW != null && maxH != null ? Size(maxW!, maxH!) : null),
+      fixedSize: WidgetStatePropertyAll<Size?>(
+          fixedW != null && fixedH != null ? Size(fixedW!, fixedH!) : null),
+      shape: WidgetStatePropertyAll<OutlinedBorder>(ob),
+      side: WidgetStatePropertyAll<BorderSide?>(bs),
+      // textStyle: WidgetStatePropertyAll<TextStyle?>(ts),
       // ),
     );
     return buttonStyle;
@@ -91,8 +95,8 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
   ButtonStyleProperties clone() => ButtonStyleProperties(
         tsPropGroup: tsPropGroup,
         elevation: elevation,
-        fgColorValue: fgColorValue,
-        bgColorValue: bgColorValue,
+        fgColor: fgColor,
+        bgColor: bgColor,
         padding: padding,
         radius: radius,
         fixedH: fixedH,
@@ -103,5 +107,42 @@ class ButtonStyleProperties with ButtonStylePropertiesMappable {
         maxW: maxW,
         shape: shape,
         side: side,
+      );
+
+  @override
+  operator ==(o) =>
+      o is ButtonStyleProperties &&
+      tsPropGroup == o.tsPropGroup &&
+      elevation == o.elevation &&
+      fgColor == o.fgColor &&
+      bgColor == o.bgColor &&
+      padding == o.padding &&
+      radius == o.radius &&
+      padding == o.padding &&
+      fixedH == o.fixedH &&
+      fixedW == o.fixedW &&
+      minH == o.minH &&
+      minW == o.minW &&
+      maxH == o.maxH &&
+      maxW == o.maxW &&
+      shape == o.shape &&
+      side == o.side;
+
+  @override
+  int get hashCode => Object.hash(
+        tsPropGroup,
+        elevation,
+        fgColor,
+        bgColor,
+        padding,
+        radius,
+        fixedH,
+        fixedW,
+        minH,
+        minW,
+        maxH,
+        maxW,
+        shape,
+        side,
       );
 }

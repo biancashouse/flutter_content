@@ -40,7 +40,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           wrapperRect,
           scName: scName,
         ),
-        calloutConfig: CalloutConfig(
+        calloutConfig: CalloutConfigModel(
           cId: "more-cc-settings",
           initialCalloutW: 200,
           initialCalloutH: 550,
@@ -61,9 +61,9 @@ class MoreCalloutConfigSettings extends StatefulWidget {
             //   // });
             // },
           ),
-          fillColor: Colors.purpleAccent,
+          fillColor: ColorModel.purpleAccent(),
           borderRadius: 16,
-          arrowType: ArrowType.NONE,
+          arrowType: ArrowTypeEnum.NONE,
           notUsingHydratedStorage: true,
           scrollControllerName: scName,
         ));
@@ -89,6 +89,12 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.circle
+            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rectangle_dotted
+            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rounded_rectangle_dotted
+            && tc.calloutDecorationShape != MappableDecorationShapeEnum.stadium
+            && tc.calloutDecorationShape != MappableDecorationShapeEnum.star
+        )
         Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,6 +106,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 originalValue: tc.calloutBorderRadius,
                 onChangedF: (newValue) {
                   tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
+                  tc.changed_saveRootSnippet();
                   _refreshContentCallout();
                 },
                 alignment: Alignment.center,
@@ -121,6 +128,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   originalValue: tc.calloutBorderThickness,
                   onChangedF: (newValue) {
                     tc.calloutBorderThickness = double.tryParse(newValue) ?? 0;
+                    tc.changed_saveRootSnippet();
                     _refreshContentCallout();
                   },
                   alignment: Alignment.center,
@@ -140,8 +148,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                   alignment: Alignment.center,
                   child: PropertyButtonNumber<int>(
                     originalValue: tc.starPoints ?? 7,
-                    onChangedF: (newValue) {
-                      tc.starPoints = int.tryParse(newValue) ?? 7;
+                    onChangedF: (String newValue) {
+                      tc.setCalloutStarPoints(int.tryParse(newValue));
+                      tc.changed_saveRootSnippet();
                       _refreshContentCallout();
                     },
                     alignment: Alignment.center,
@@ -161,6 +170,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 boolValue: tc.canResizeH,
                 onChanged: (newValue) {
                   tc.canResizeH = newValue;
+                  tc.changed_saveRootSnippet();
                   _refreshContentCallout();
                 },
               ),
@@ -175,6 +185,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               boolValue: tc.canResizeV,
               onChanged: (newValue) {
                 tc.canResizeV = newValue;
+                tc.changed_saveRootSnippet();
                 _refreshContentCallout();
               },
             ),
@@ -190,6 +201,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               boolValue: tc.followScroll,
               onChanged: (newValue) {
                 tc.followScroll = newValue;
+                tc.changed_saveRootSnippet();
                 _refreshContentCallout();
               },
             ),
@@ -201,7 +213,7 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
 
   void _refreshContentCallout() {
     fco.dismiss("more-cc-settings");
-    removeSnippetContentCallout(tc);
+    removeSnippetContentCallout(tc, skipOnDismiss: true);
     tc
         .targetsWrapperState()
         ?.zoomer
@@ -212,6 +224,11 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       justPlaying: false,
       // widget.onParentBarrierTappedF,
       scName: widget.scName,
+    );
+    TargetsWrapper.showConfigToolbar(
+      tc,
+      widget.wrapperRect,
+      widget.scName,
     );
   }
 }

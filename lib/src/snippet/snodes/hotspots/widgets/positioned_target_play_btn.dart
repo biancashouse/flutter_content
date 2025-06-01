@@ -42,15 +42,15 @@ class TargetPlayBtn extends StatelessWidget {
         ? GestureDetector(
             onTap: () {
               if (tc.targetsWrapperState() == null) return;
-              var list =
-                  tc.targetsWrapperState()?.widget.parentNode.playList.toList();
-              list?.add(tc);
+              tc.targetsWrapperState()!.widget.parentNode.playList.toList()
+                ..clear()
+                ..add(tc);
               playTarget(tc, wrapperRect, scName);
             },
             child: IntegerCircleAvatar(
               tc,
               num: index + 1,
-              bgColor: tc.calloutColor(),
+              bgColor: tc.calloutFillColor!.flutterValue,
               radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               fontSize: 14,
             ),
@@ -63,7 +63,7 @@ class TargetPlayBtn extends StatelessWidget {
                 : IntegerCircleAvatar(
                     tc,
                     num: index + 1,
-                    bgColor: tc.calloutColor(),
+                    bgColor: tc.calloutFillColor!.flutterValue,
                     radius:
                         FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                     fontSize: 14,
@@ -118,8 +118,7 @@ class TargetPlayBtn extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (tc.targetsWrapperState() == null ||
-                FlutterContentApp.snippetBeingEdited != null
-                ) {
+                    FlutterContentApp.snippetBeingEdited != null) {
                   return;
                 }
 
@@ -138,8 +137,9 @@ class TargetPlayBtn extends StatelessWidget {
               //   );
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
-              onDoubleTap: () async {
+              onDoubleTap: () {
                 if (FlutterContentApp.snippetBeingEdited != null) return;
+                tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
                 TargetsWrapper.configureTarget(
                   tc,
                   wrapperRect,
@@ -149,7 +149,7 @@ class TargetPlayBtn extends StatelessWidget {
               child: IntegerCircleAvatar(
                 tc,
                 num: index + 1,
-                bgColor: tc.calloutColor(),
+                bgColor: tc.calloutFillColor!.flutterValue,
                 radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                 fontSize: 14,
               ),
@@ -208,8 +208,8 @@ class TargetPlayBtn extends StatelessWidget {
     Rect? targetRect = coverGK.globalPaintBounds();
     if (targetRect == null) return;
 
-    Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
+        wrapperRect: wrapperRect, targetRect: targetRect);
 
     // IMPORTANT applyTransform will destroy this context, so make state available for afterwards
     var zoomer = tc.targetsWrapperState()!.zoomer;

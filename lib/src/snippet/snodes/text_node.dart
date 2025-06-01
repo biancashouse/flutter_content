@@ -9,6 +9,7 @@ import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
+import 'package:url_launcher/url_launcher_string.dart' show canLaunchUrlString, launchUrlString;
 
 import '../pnodes/groups/text_style_properties.dart';
 
@@ -26,6 +27,7 @@ part 'text_node.mapper.dart';
 @MappableClass()
 class TextNode extends CL with TextNodeMappable {
   String text;
+  String? webLink;
   @MappableField(hook: TextStyleHook())
   TextStyleProperties tsPropGroup;
 
@@ -34,6 +36,7 @@ class TextNode extends CL with TextNodeMappable {
 
   TextNode({
     this.text = '',
+    this.webLink,
     required this.tsPropGroup,
     this.textAlign,
   }) {
@@ -49,13 +52,11 @@ class TextNode extends CL with TextNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-
     // fco.logger.i('textStyleName is "$textStyleName"');
     return [
       FlutterDocPNode(
           buttonLabel: 'Text',
-          webLink:
-          'https://api.flutter.dev/flutter/widgets/Text-class.html',
+          webLink: 'https://api.flutter.dev/flutter/widgets/Text-class.html',
           snode: this,
           name: 'fyi'),
       StringPNode(
@@ -68,6 +69,19 @@ class TextNode extends CL with TextNodeMappable {
         stringValue: text,
         onStringChange: (newValue) {
           refreshWithUpdate(context, () => text = newValue ?? '');
+        },
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 300,
+      ),
+      StringPNode(
+        snode: this,
+        name: 'webLink',
+        nameOnSeparateLine: true,
+        expands: true,
+        numLines: 3,
+        stringValue: webLink,
+        onStringChange: (newValue) {
+          refreshWithUpdate(context, () => webLink = newValue ?? '');
         },
         calloutButtonSize: const Size(280, 70),
         calloutWidth: 300,
@@ -317,14 +331,25 @@ class TextNode extends CL with TextNodeMappable {
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
+    late Text t;
+    final ts = tsPropGroup.toTextStyle(context);
     try {
-      Text t = Text(
+      t = Text(
         key: createNodeWidgetGK(),
         text,
-        style: tsPropGroup.toTextStyle(context),
+        style: ts,
         textAlign: textAlign?.flutterValue,
       );
-      return t;
+      return webLink != null
+          ? InkWell(
+              onTap: () async {
+                if (await canLaunchUrlString(webLink!)) {
+                launchUrlString(webLink!);
+                }
+              },
+              child: t,
+            )
+          : t;
     } catch (e) {
       fco.logger.i('cannot render $FLUTTER_TYPE!');
       return Error(

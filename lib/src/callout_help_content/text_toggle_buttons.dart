@@ -39,15 +39,15 @@
 //         bool italic = selectedTC.italic;
 //         String textAlignment = selectedTC.textAlignment;
 //         List<Widget> btns = [
-//           Icon(key: _fontFamilyBtnGK, Icons.title, color: Colors.purpleAccent.withOpacity(.5)),
-//           if (!italic) Icon(Icons.format_italic, color: Colors.purpleAccent.withOpacity(.5)),
+//           Icon(key: _fontFamilyBtnGK, Icons.title, color: Colors.purpleAccent.withValues(alpha:.5)),
+//           if (!italic) Icon(Icons.format_italic, color: Colors.purpleAccent.withValues(alpha:.5)),
 //           if (italic) Icon(Icons.format_italic, color: Colors.purpleAccent),
 //           if (textAlignment == 'l') Icon(key: _fontAlignmentBtnGK, Icons.format_align_left, color: Colors.purpleAccent),
 //           if (textAlignment == 'r') Icon(key: _fontAlignmentBtnGK, Icons.format_align_right, color: Colors.purpleAccent),
 //           if (textAlignment == 'c') Icon(key: _fontAlignmentBtnGK, Icons.format_align_center, color: Colors.purpleAccent),
 //           if (textAlignment == 'j') Icon(key: _fontAlignmentBtnGK, Icons.format_align_justify, color: Colors.purpleAccent),
-//           Icon(key: _fontSizeBtnGK, Icons.format_size, color: Colors.purpleAccent.withOpacity(.5)),
-//           Icon(key: _textColorsBtnGK, Icons.color_lens, color: Colors.purpleAccent.withOpacity(.5)),
+//           Icon(key: _fontSizeBtnGK, Icons.format_size, color: Colors.purpleAccent.withValues(alpha:.5)),
+//           Icon(key: _textColorsBtnGK, Icons.color_lens, color: Colors.purpleAccent.withValues(alpha:.5)),
 //         ];
 //         return Container(
 //           decoration: BoxDecoration(

@@ -19,7 +19,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
     // super.destinationSnippetName,
     required super.bsPropGroup,
     super.onTapHandlerName,
-    super.calloutConfigGroup,
+    super.calloutConfig,
     super.child,
   });
 

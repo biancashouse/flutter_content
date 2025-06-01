@@ -11,7 +11,7 @@ part 'scaffold_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'sc')
 class ScaffoldNode extends SNode with ScaffoldNodeMappable {
-  int? bgColorValue;
+  ColorModel? bgColor;
   AppBarNode? appBar;
   GenericSingleChildNode? body;
   bool canShowEditorLoginBtn;
@@ -19,7 +19,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   // int numTabs;
 
   ScaffoldNode({
-    this.bgColorValue,
+    this.bgColor,
     this.appBar,
     required this.body,
     // this.numTabs = 0,
@@ -39,9 +39,9 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
       ColorPNode(
         snode: this,
         name: 'background color',
-        colorValue: bgColorValue,
-        onColorIntChange: (newValue) =>
-            refreshWithUpdate(context, () => bgColorValue = newValue),
+        color: bgColor,
+        onColorChange: (newValue) =>
+            refreshWithUpdate(context, () => bgColor = newValue),
         calloutButtonSize: const Size(200, 20),
       ),
       // IntPNode(
@@ -68,7 +68,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
     Widget scaffold = Scaffold(
       key: createNodeWidgetGK(),
-      backgroundColor: bgColorValue != null ? Color(bgColorValue!) : null,
+      backgroundColor: bgColor?.flutterValue,
       appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
       // guaranteed the widget is actually an AppBar
       body: bodyWidget(),

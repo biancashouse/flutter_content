@@ -4,6 +4,7 @@ import 'package:flutter_content/flutter_content.dart';
 // Btn has 2 uses: Tap to play, and DoubleTap to configure, plus it is draggable
 class TargetCover extends StatelessWidget {
   final TargetModel tc;
+  final bool playing;
   final int index;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
@@ -12,6 +13,7 @@ class TargetCover extends StatelessWidget {
   const TargetCover(
     this.tc,
     this.index, {
+    this.playing = false,
     required this.wrapperRect,
     this.scName,
     this.gk,
@@ -24,7 +26,7 @@ class TargetCover extends StatelessWidget {
     // if (tc != null) {
     // double radius = tc.radius;
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    return fco.authenticated.isTrue
+    return fco.authenticated.isTrue && !playing
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
             feedback:
@@ -33,7 +35,7 @@ class TargetCover extends StatelessWidget {
             child: _draggableTargetCover(tc),
           )
         : CircleAvatar(
-            backgroundColor: const Color.fromRGBO(255, 0, 0, .1),
+            backgroundColor: const Color.fromRGBO(0, 0, 0, .01),
             // backgroundColor: Colors.red,
             radius: tc.radius + 2,
           );
@@ -69,9 +71,9 @@ class TargetCover extends StatelessWidget {
             if (fco.anyPresent([tc.contentCId])) {
               fco.dismiss(tc.contentCId);
             } else {
-              final playList =
-                  tc.targetsWrapperState()!.widget.parentNode.playList.toList();
-              playList.add(tc);
+              tc.targetsWrapperState()!.widget.parentNode.playList.toList()
+                ..clear()
+                ..add(tc);
               playTarget(tc, wrapperRect, scName);
             }
           },
@@ -92,7 +94,7 @@ class TargetCover extends StatelessWidget {
                   width: 2 * radius,
                   height: 2 * radius,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(.25),
+                    color: Colors.white.withValues(alpha: .25),
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -109,7 +111,8 @@ class TargetCover extends StatelessWidget {
                 child: IntegerCircleAvatar(
                   tc,
                   num: index + 1,
-                  bgColor: tc.calloutColor().withOpacity(.5),
+                  bgColor:
+                      tc.calloutFillColor!.flutterValue.withValues(alpha: .5),
                   radius: radius,
                   fontSize: 16,
                 ),
@@ -137,8 +140,8 @@ class TargetCover extends StatelessWidget {
     Rect? targetRect = coverGK.globalPaintBounds();
     if (targetRect == null) return;
 
-    Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect, targetRect);
+    // Alignment? ta =
+    //     fco.calcTargetAlignmentWithinWrapper(wrapperRect: wrapperRect, targetRect: targetRect);
 
     // tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
 
