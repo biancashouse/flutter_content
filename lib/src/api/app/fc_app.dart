@@ -48,8 +48,8 @@ class FlutterContentApp extends StatefulWidget {
 
   static CAPIState get capiState => _singletonBloc!.state;
 
-  static SnippetBeingEdited? get snippetBeingEdited =>
-      capiState.snippetBeingEdited;
+  static SnippetBeingEdited? get snippetBeingEdited => capiState.snippetBeingEdited;
+  static bool get inSelectWidgetMode => capiState.inSelectWidgetMode;
 
   static SNode? get selectedNode => snippetBeingEdited?.selectedNode;
 

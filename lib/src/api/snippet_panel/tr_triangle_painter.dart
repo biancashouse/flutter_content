@@ -12,9 +12,9 @@ class TRTriangle extends CustomPainter {
       ..style = PaintingStyle.fill;
 
     Path path = Path();
-    path.lineTo(40,0);
-    path.lineTo(40,40);
-    path.lineTo(00,0);
+    path.lineTo(size.width,0);
+    path.lineTo(size.width,size.height);
+    path.lineTo(0,0);
     path.close();
 
     canvas.drawPath(path, paint);

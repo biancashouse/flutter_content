@@ -175,6 +175,13 @@ class CAPIEvent with _$CAPIEvent {
     required PanelName panelName,
   }) = SetPanelSnippet;
 
+  const factory CAPIEvent.enterSelectWidgetMode({
+    required SnippetName snippetName,
+  }) = EnterSelectWidgetMode;
+
+  const factory CAPIEvent.exitSelectWidgetMode(
+  ) = ExitSelectWidgetMode;
+
   const factory CAPIEvent.pushSnippetEditor({
     required SnippetRootNode rootNode,
     SNode? selectedNode,

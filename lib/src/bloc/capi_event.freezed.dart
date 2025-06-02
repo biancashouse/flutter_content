@@ -36,6 +36,8 @@ mixin _$CAPIEvent {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -94,6 +96,8 @@ mixin _$CAPIEvent {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -148,6 +152,8 @@ mixin _$CAPIEvent {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -200,6 +206,9 @@ mixin _$CAPIEvent {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -244,6 +253,8 @@ mixin _$CAPIEvent {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -286,6 +297,8 @@ mixin _$CAPIEvent {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -432,6 +445,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -493,6 +508,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -550,6 +567,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -608,6 +627,9 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -655,6 +677,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -700,6 +724,8 @@ class _$SelectPanelImpl with DiagnosticableTreeMixin implements SelectPanel {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -864,6 +890,8 @@ class _$OverrideTargetGKImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -925,6 +953,8 @@ class _$OverrideTargetGKImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -982,6 +1012,8 @@ class _$OverrideTargetGKImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -1040,6 +1072,9 @@ class _$OverrideTargetGKImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1087,6 +1122,8 @@ class _$OverrideTargetGKImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1132,6 +1169,8 @@ class _$OverrideTargetGKImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1281,6 +1320,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -1342,6 +1383,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -1399,6 +1442,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -1457,6 +1502,9 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1504,6 +1552,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1549,6 +1599,8 @@ class _$ForceRefreshImpl with DiagnosticableTreeMixin implements ForceRefresh {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1713,6 +1765,8 @@ class _$UpdateClipboardImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -1774,6 +1828,8 @@ class _$UpdateClipboardImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -1831,6 +1887,8 @@ class _$UpdateClipboardImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -1889,6 +1947,9 @@ class _$UpdateClipboardImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -1936,6 +1997,8 @@ class _$UpdateClipboardImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -1981,6 +2044,8 @@ class _$UpdateClipboardImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2142,6 +2207,8 @@ class _$PublishSnippetImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -2203,6 +2270,8 @@ class _$PublishSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -2260,6 +2329,8 @@ class _$PublishSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -2318,6 +2389,9 @@ class _$PublishSnippetImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -2365,6 +2439,8 @@ class _$PublishSnippetImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2410,6 +2486,8 @@ class _$PublishSnippetImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2568,6 +2646,8 @@ class _$RevertSnippetImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -2629,6 +2709,8 @@ class _$RevertSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -2686,6 +2768,8 @@ class _$RevertSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -2744,6 +2828,9 @@ class _$RevertSnippetImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -2791,6 +2878,8 @@ class _$RevertSnippetImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2836,6 +2925,8 @@ class _$RevertSnippetImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -2981,6 +3072,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -3042,6 +3135,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -3099,6 +3194,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -3157,6 +3254,9 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -3204,6 +3304,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3249,6 +3351,8 @@ class _$DeletePageImpl with DiagnosticableTreeMixin implements DeletePage {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3398,6 +3502,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -3459,6 +3565,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -3516,6 +3624,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -3574,6 +3684,9 @@ class _$ToggleAutoPublishingOfSnippetImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -3621,6 +3734,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3666,6 +3781,8 @@ class _$ToggleAutoPublishingOfSnippetImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -3813,6 +3930,8 @@ class _$AutoPublishDefaultImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -3874,6 +3993,8 @@ class _$AutoPublishDefaultImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -3931,6 +4052,8 @@ class _$AutoPublishDefaultImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -3989,6 +4112,9 @@ class _$AutoPublishDefaultImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -4036,6 +4162,8 @@ class _$AutoPublishDefaultImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4081,6 +4209,8 @@ class _$AutoPublishDefaultImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4223,6 +4353,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -4284,6 +4416,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -4341,6 +4475,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -4399,6 +4535,9 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -4446,6 +4585,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4491,6 +4632,8 @@ class _$HideIframesImpl with DiagnosticableTreeMixin implements HideIframes {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4648,6 +4791,8 @@ class _$SetPanelSnippetImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -4709,6 +4854,8 @@ class _$SetPanelSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -4766,6 +4913,8 @@ class _$SetPanelSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -4824,6 +4973,9 @@ class _$SetPanelSnippetImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -4871,6 +5023,8 @@ class _$SetPanelSnippetImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4916,6 +5070,8 @@ class _$SetPanelSnippetImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -4964,6 +5120,823 @@ abstract class SetPanelSnippet implements CAPIEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SetPanelSnippetImplCopyWith<_$SetPanelSnippetImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EnterSelectWidgetModeImplCopyWith<$Res> {
+  factory _$$EnterSelectWidgetModeImplCopyWith(
+          _$EnterSelectWidgetModeImpl value,
+          $Res Function(_$EnterSelectWidgetModeImpl) then) =
+      __$$EnterSelectWidgetModeImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String snippetName});
+}
+
+/// @nodoc
+class __$$EnterSelectWidgetModeImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$EnterSelectWidgetModeImpl>
+    implements _$$EnterSelectWidgetModeImplCopyWith<$Res> {
+  __$$EnterSelectWidgetModeImplCopyWithImpl(_$EnterSelectWidgetModeImpl _value,
+      $Res Function(_$EnterSelectWidgetModeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? snippetName = null,
+  }) {
+    return _then(_$EnterSelectWidgetModeImpl(
+      snippetName: null == snippetName
+          ? _value.snippetName
+          : snippetName // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$EnterSelectWidgetModeImpl
+    with DiagnosticableTreeMixin
+    implements EnterSelectWidgetMode {
+  const _$EnterSelectWidgetModeImpl({required this.snippetName});
+
+  @override
+  final String snippetName;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.enterSelectWidgetMode(snippetName: $snippetName)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CAPIEvent.enterSelectWidgetMode'))
+      ..add(DiagnosticsProperty('snippetName', snippetName));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnterSelectWidgetModeImpl &&
+            (identical(other.snippetName, snippetName) ||
+                other.snippetName == snippetName));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, snippetName);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EnterSelectWidgetModeImplCopyWith<_$EnterSelectWidgetModeImpl>
+      get copyWith => __$$EnterSelectWidgetModeImplCopyWithImpl<
+          _$EnterSelectWidgetModeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(
+            SNode? newContent, String? scName, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String pathName) deletePage,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
+    required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(SNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(SNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        addSiblingBefore,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(SNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(SNode node, String? scName, dynamic skipSave)
+        cutNode,
+    required TResult Function(String snippetName, SNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return enterSelectWidgetMode(snippetName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(SNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
+    TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(SNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(SNode node, String? scName, dynamic skipSave)? copyNode,
+    TResult? Function(SNode node, String? scName, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, SNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return enterSelectWidgetMode?.call(snippetName);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(SNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
+    TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(SNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(SNode node, String? scName, dynamic skipSave)? copyNode,
+    TResult Function(SNode node, String? scName, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, SNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (enterSelectWidgetMode != null) {
+      return enterSelectWidgetMode(snippetName);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return enterSelectWidgetMode(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return enterSelectWidgetMode?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (enterSelectWidgetMode != null) {
+      return enterSelectWidgetMode(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EnterSelectWidgetMode implements CAPIEvent {
+  const factory EnterSelectWidgetMode({required final String snippetName}) =
+      _$EnterSelectWidgetModeImpl;
+
+  String get snippetName;
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EnterSelectWidgetModeImplCopyWith<_$EnterSelectWidgetModeImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ExitSelectWidgetModeImplCopyWith<$Res> {
+  factory _$$ExitSelectWidgetModeImplCopyWith(_$ExitSelectWidgetModeImpl value,
+          $Res Function(_$ExitSelectWidgetModeImpl) then) =
+      __$$ExitSelectWidgetModeImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ExitSelectWidgetModeImplCopyWithImpl<$Res>
+    extends _$CAPIEventCopyWithImpl<$Res, _$ExitSelectWidgetModeImpl>
+    implements _$$ExitSelectWidgetModeImplCopyWith<$Res> {
+  __$$ExitSelectWidgetModeImplCopyWithImpl(_$ExitSelectWidgetModeImpl _value,
+      $Res Function(_$ExitSelectWidgetModeImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CAPIEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ExitSelectWidgetModeImpl
+    with DiagnosticableTreeMixin
+    implements ExitSelectWidgetMode {
+  const _$ExitSelectWidgetModeImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CAPIEvent.exitSelectWidgetMode()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+        .add(DiagnosticsProperty('type', 'CAPIEvent.exitSelectWidgetMode'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExitSelectWidgetModeImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String? panelName) selectPanel,
+    required TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)
+        overrideTargetGK,
+    required TResult Function(bool onlyTargetsWrappers) forceRefresh,
+    required TResult Function(
+            SNode? newContent, String? scName, dynamic skipSave)
+        updateClipboard,
+    required TResult Function(String snippetName, String versionId)
+        publishSnippet,
+    required TResult Function(String snippetName, String versionId)
+        revertSnippet,
+    required TResult Function(String pathName) deletePage,
+    required TResult Function(String snippetName) toggleAutoPublishingOfSnippet,
+    required TResult Function(bool b) autoPublishDefault,
+    required TResult Function(bool hide) hideIframes,
+    required TResult Function(String snippetName, String panelName)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
+    required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
+        pushSnippetEditor,
+    required TResult Function(bool save) popSnippetEditor,
+    required TResult Function() showDirectoryTree,
+    required TResult Function(bool save) removeDirectoryTree,
+    required TResult Function(SNode node) selectNode,
+    required TResult Function() clearNodeSelection,
+    required TResult Function(SNode node, String newSnippetName)
+        saveNodeAsSnippet,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        replaceSelectionWith,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        wrapSelectionWith,
+    required TResult Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
+        appendChild,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        addSiblingBefore,
+    required TResult Function(Type? type, String? snippetName, SNode? testNode)
+        addSiblingAfter,
+    required TResult Function(Type? widgetSpanChildType) pasteReplacement,
+    required TResult Function(
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)
+        pasteChild,
+    required TResult Function() pasteSiblingBefore,
+    required TResult Function() pasteSiblingAfter,
+    required TResult Function() deleteNodeTapped,
+    required TResult Function() completeDeletion,
+    required TResult Function(SnippetRootNode rootNode)
+        copySnippetJsonToClipboard,
+    required TResult Function(String? snippetJson) replaceSnippetFromJson,
+    required TResult Function(SNode node, String? scName, dynamic skipSave)
+        copyNode,
+    required TResult Function(SNode node, String? scName, dynamic skipSave)
+        cutNode,
+    required TResult Function(String snippetName, SNode? selectedNode)
+        selectedDirectoryOrNode,
+    required TResult Function(Uint8List? newBytes) imageChanged,
+    required TResult Function() forceSnippetRefresh,
+  }) {
+    return exitSelectWidgetMode();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String? panelName)? selectPanel,
+    TResult? Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult? Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult? Function(SNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
+    TResult? Function(String snippetName, String versionId)? publishSnippet,
+    TResult? Function(String snippetName, String versionId)? revertSnippet,
+    TResult? Function(String pathName)? deletePage,
+    TResult? Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult? Function(bool b)? autoPublishDefault,
+    TResult? Function(bool hide)? hideIframes,
+    TResult? Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
+    TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
+        pushSnippetEditor,
+    TResult? Function(bool save)? popSnippetEditor,
+    TResult? Function()? showDirectoryTree,
+    TResult? Function(bool save)? removeDirectoryTree,
+    TResult? Function(SNode node)? selectNode,
+    TResult? Function()? clearNodeSelection,
+    TResult? Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        replaceSelectionWith,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        wrapSelectionWith,
+    TResult? Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingBefore,
+    TResult? Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingAfter,
+    TResult? Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult? Function(
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult? Function()? pasteSiblingBefore,
+    TResult? Function()? pasteSiblingAfter,
+    TResult? Function()? deleteNodeTapped,
+    TResult? Function()? completeDeletion,
+    TResult? Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult? Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult? Function(SNode node, String? scName, dynamic skipSave)? copyNode,
+    TResult? Function(SNode node, String? scName, dynamic skipSave)? cutNode,
+    TResult? Function(String snippetName, SNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult? Function(Uint8List? newBytes)? imageChanged,
+    TResult? Function()? forceSnippetRefresh,
+  }) {
+    return exitSelectWidgetMode?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String? panelName)? selectPanel,
+    TResult Function(
+            String wName, int index, GlobalKey<State<StatefulWidget>> gk)?
+        overrideTargetGK,
+    TResult Function(bool onlyTargetsWrappers)? forceRefresh,
+    TResult Function(SNode? newContent, String? scName, dynamic skipSave)?
+        updateClipboard,
+    TResult Function(String snippetName, String versionId)? publishSnippet,
+    TResult Function(String snippetName, String versionId)? revertSnippet,
+    TResult Function(String pathName)? deletePage,
+    TResult Function(String snippetName)? toggleAutoPublishingOfSnippet,
+    TResult Function(bool b)? autoPublishDefault,
+    TResult Function(bool hide)? hideIframes,
+    TResult Function(String snippetName, String panelName)?
+        setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
+    TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
+        pushSnippetEditor,
+    TResult Function(bool save)? popSnippetEditor,
+    TResult Function()? showDirectoryTree,
+    TResult Function(bool save)? removeDirectoryTree,
+    TResult Function(SNode node)? selectNode,
+    TResult Function()? clearNodeSelection,
+    TResult Function(SNode node, String newSnippetName)? saveNodeAsSnippet,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        replaceSelectionWith,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        wrapSelectionWith,
+    TResult Function(Type? type, SNode? testNode, String? snippetName,
+            Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        appendChild,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingBefore,
+    TResult Function(Type? type, String? snippetName, SNode? testNode)?
+        addSiblingAfter,
+    TResult Function(Type? widgetSpanChildType)? pasteReplacement,
+    TResult Function(Type? widgetSpanChildType, SNode? testWidgetSpanChildNode)?
+        pasteChild,
+    TResult Function()? pasteSiblingBefore,
+    TResult Function()? pasteSiblingAfter,
+    TResult Function()? deleteNodeTapped,
+    TResult Function()? completeDeletion,
+    TResult Function(SnippetRootNode rootNode)? copySnippetJsonToClipboard,
+    TResult Function(String? snippetJson)? replaceSnippetFromJson,
+    TResult Function(SNode node, String? scName, dynamic skipSave)? copyNode,
+    TResult Function(SNode node, String? scName, dynamic skipSave)? cutNode,
+    TResult Function(String snippetName, SNode? selectedNode)?
+        selectedDirectoryOrNode,
+    TResult Function(Uint8List? newBytes)? imageChanged,
+    TResult Function()? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (exitSelectWidgetMode != null) {
+      return exitSelectWidgetMode();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(SelectPanel value) selectPanel,
+    required TResult Function(OverrideTargetGK value) overrideTargetGK,
+    required TResult Function(ForceRefresh value) forceRefresh,
+    required TResult Function(UpdateClipboard value) updateClipboard,
+    required TResult Function(PublishSnippet value) publishSnippet,
+    required TResult Function(RevertSnippet value) revertSnippet,
+    required TResult Function(DeletePage value) deletePage,
+    required TResult Function(ToggleAutoPublishingOfSnippet value)
+        toggleAutoPublishingOfSnippet,
+    required TResult Function(AutoPublishDefault value) autoPublishDefault,
+    required TResult Function(HideIframes value) hideIframes,
+    required TResult Function(SetPanelSnippet value)
+        setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
+    required TResult Function(PushSnippetEditor value) pushSnippetEditor,
+    required TResult Function(PopSnippetEditor value) popSnippetEditor,
+    required TResult Function(ShowDirectoryTree value) showDirectoryTree,
+    required TResult Function(RemoveDirectoryTree value) removeDirectoryTree,
+    required TResult Function(SelectNode value) selectNode,
+    required TResult Function(ClearNodeSelection value) clearNodeSelection,
+    required TResult Function(SaveNodeAsSnippet value) saveNodeAsSnippet,
+    required TResult Function(ReplaceSelectionWith value) replaceSelectionWith,
+    required TResult Function(WrapSelectionWith value) wrapSelectionWith,
+    required TResult Function(AppendChild value) appendChild,
+    required TResult Function(AddSiblingBefore value) addSiblingBefore,
+    required TResult Function(AddSiblingAfter value) addSiblingAfter,
+    required TResult Function(PasteReplacement value) pasteReplacement,
+    required TResult Function(PasteChild value) pasteChild,
+    required TResult Function(PasteSiblingBefore value) pasteSiblingBefore,
+    required TResult Function(PasteSiblingAfter value) pasteSiblingAfter,
+    required TResult Function(DeleteNodeTapped value) deleteNodeTapped,
+    required TResult Function(CompleteDeletion value) completeDeletion,
+    required TResult Function(CopySnippetJsonToClipboard value)
+        copySnippetJsonToClipboard,
+    required TResult Function(ReplaceSnippetFromJson value)
+        replaceSnippetFromJson,
+    required TResult Function(CopyNode value) copyNode,
+    required TResult Function(CutNode value) cutNode,
+    required TResult Function(SelectedDirectoryOrNode value)
+        selectedDirectoryOrNode,
+    required TResult Function(ImageChanged value) imageChanged,
+    required TResult Function(ForceSnippetRefresh value) forceSnippetRefresh,
+  }) {
+    return exitSelectWidgetMode(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(SelectPanel value)? selectPanel,
+    TResult? Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult? Function(ForceRefresh value)? forceRefresh,
+    TResult? Function(UpdateClipboard value)? updateClipboard,
+    TResult? Function(PublishSnippet value)? publishSnippet,
+    TResult? Function(RevertSnippet value)? revertSnippet,
+    TResult? Function(DeletePage value)? deletePage,
+    TResult? Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult? Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult? Function(HideIframes value)? hideIframes,
+    TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
+    TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult? Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult? Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult? Function(SelectNode value)? selectNode,
+    TResult? Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult? Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult? Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult? Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult? Function(AppendChild value)? appendChild,
+    TResult? Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult? Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult? Function(PasteReplacement value)? pasteReplacement,
+    TResult? Function(PasteChild value)? pasteChild,
+    TResult? Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult? Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult? Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult? Function(CompleteDeletion value)? completeDeletion,
+    TResult? Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult? Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult? Function(CopyNode value)? copyNode,
+    TResult? Function(CutNode value)? cutNode,
+    TResult? Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult? Function(ImageChanged value)? imageChanged,
+    TResult? Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+  }) {
+    return exitSelectWidgetMode?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(SelectPanel value)? selectPanel,
+    TResult Function(OverrideTargetGK value)? overrideTargetGK,
+    TResult Function(ForceRefresh value)? forceRefresh,
+    TResult Function(UpdateClipboard value)? updateClipboard,
+    TResult Function(PublishSnippet value)? publishSnippet,
+    TResult Function(RevertSnippet value)? revertSnippet,
+    TResult Function(DeletePage value)? deletePage,
+    TResult Function(ToggleAutoPublishingOfSnippet value)?
+        toggleAutoPublishingOfSnippet,
+    TResult Function(AutoPublishDefault value)? autoPublishDefault,
+    TResult Function(HideIframes value)? hideIframes,
+    TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
+    TResult Function(PushSnippetEditor value)? pushSnippetEditor,
+    TResult Function(PopSnippetEditor value)? popSnippetEditor,
+    TResult Function(ShowDirectoryTree value)? showDirectoryTree,
+    TResult Function(RemoveDirectoryTree value)? removeDirectoryTree,
+    TResult Function(SelectNode value)? selectNode,
+    TResult Function(ClearNodeSelection value)? clearNodeSelection,
+    TResult Function(SaveNodeAsSnippet value)? saveNodeAsSnippet,
+    TResult Function(ReplaceSelectionWith value)? replaceSelectionWith,
+    TResult Function(WrapSelectionWith value)? wrapSelectionWith,
+    TResult Function(AppendChild value)? appendChild,
+    TResult Function(AddSiblingBefore value)? addSiblingBefore,
+    TResult Function(AddSiblingAfter value)? addSiblingAfter,
+    TResult Function(PasteReplacement value)? pasteReplacement,
+    TResult Function(PasteChild value)? pasteChild,
+    TResult Function(PasteSiblingBefore value)? pasteSiblingBefore,
+    TResult Function(PasteSiblingAfter value)? pasteSiblingAfter,
+    TResult Function(DeleteNodeTapped value)? deleteNodeTapped,
+    TResult Function(CompleteDeletion value)? completeDeletion,
+    TResult Function(CopySnippetJsonToClipboard value)?
+        copySnippetJsonToClipboard,
+    TResult Function(ReplaceSnippetFromJson value)? replaceSnippetFromJson,
+    TResult Function(CopyNode value)? copyNode,
+    TResult Function(CutNode value)? cutNode,
+    TResult Function(SelectedDirectoryOrNode value)? selectedDirectoryOrNode,
+    TResult Function(ImageChanged value)? imageChanged,
+    TResult Function(ForceSnippetRefresh value)? forceSnippetRefresh,
+    required TResult orElse(),
+  }) {
+    if (exitSelectWidgetMode != null) {
+      return exitSelectWidgetMode(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ExitSelectWidgetMode implements CAPIEvent {
+  const factory ExitSelectWidgetMode() = _$ExitSelectWidgetModeImpl;
 }
 
 /// @nodoc
@@ -5074,6 +6047,8 @@ class _$PushSnippetEditorImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -5135,6 +6110,8 @@ class _$PushSnippetEditorImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -5192,6 +6169,8 @@ class _$PushSnippetEditorImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -5250,6 +6229,9 @@ class _$PushSnippetEditorImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -5297,6 +6279,8 @@ class _$PushSnippetEditorImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5342,6 +6326,8 @@ class _$PushSnippetEditorImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5490,6 +6476,8 @@ class _$PopSnippetEditorImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -5551,6 +6539,8 @@ class _$PopSnippetEditorImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -5608,6 +6598,8 @@ class _$PopSnippetEditorImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -5666,6 +6658,9 @@ class _$PopSnippetEditorImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -5713,6 +6708,8 @@ class _$PopSnippetEditorImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5758,6 +6755,8 @@ class _$PopSnippetEditorImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -5872,6 +6871,8 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -5933,6 +6934,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -5990,6 +6993,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6048,6 +7053,9 @@ class _$ShowDirectoryTreeImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6095,6 +7103,8 @@ class _$ShowDirectoryTreeImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6140,6 +7150,8 @@ class _$ShowDirectoryTreeImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6277,6 +7289,8 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -6338,6 +7352,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -6395,6 +7411,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6453,6 +7471,9 @@ class _$RemoveDirectoryTreeImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6500,6 +7521,8 @@ class _$RemoveDirectoryTreeImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6545,6 +7568,8 @@ class _$RemoveDirectoryTreeImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6687,6 +7712,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -6748,6 +7775,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -6805,6 +7834,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -6863,6 +7894,9 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -6910,6 +7944,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -6955,6 +7991,8 @@ class _$SelectNodeImpl with DiagnosticableTreeMixin implements SelectNode {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7069,6 +8107,8 @@ class _$ClearNodeSelectionImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -7130,6 +8170,8 @@ class _$ClearNodeSelectionImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -7187,6 +8229,8 @@ class _$ClearNodeSelectionImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -7245,6 +8289,9 @@ class _$ClearNodeSelectionImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -7292,6 +8339,8 @@ class _$ClearNodeSelectionImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7337,6 +8386,8 @@ class _$ClearNodeSelectionImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7484,6 +8535,8 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -7545,6 +8598,8 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -7602,6 +8657,8 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -7660,6 +8717,9 @@ class _$SaveNodeAsSnippetImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -7707,6 +8767,8 @@ class _$SaveNodeAsSnippetImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7752,6 +8814,8 @@ class _$SaveNodeAsSnippetImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -7922,6 +8986,8 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -7983,6 +9049,8 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8040,6 +9108,8 @@ class _$ReplaceSelectionWithImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -8098,6 +9168,9 @@ class _$ReplaceSelectionWithImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -8145,6 +9218,8 @@ class _$ReplaceSelectionWithImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8190,6 +9265,8 @@ class _$ReplaceSelectionWithImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8360,6 +9437,8 @@ class _$WrapSelectionWithImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -8421,6 +9500,8 @@ class _$WrapSelectionWithImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8478,6 +9559,8 @@ class _$WrapSelectionWithImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -8536,6 +9619,9 @@ class _$WrapSelectionWithImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -8583,6 +9669,8 @@ class _$WrapSelectionWithImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8628,6 +9716,8 @@ class _$WrapSelectionWithImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -8828,6 +9918,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -8890,6 +9982,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -8948,6 +10042,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -9007,6 +10103,9 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9054,6 +10153,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9099,6 +10200,8 @@ class _$AppendChildImpl with DiagnosticableTreeMixin implements AppendChild {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9273,6 +10376,8 @@ class _$AddSiblingBeforeImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -9334,6 +10439,8 @@ class _$AddSiblingBeforeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -9391,6 +10498,8 @@ class _$AddSiblingBeforeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -9449,6 +10558,9 @@ class _$AddSiblingBeforeImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9496,6 +10608,8 @@ class _$AddSiblingBeforeImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9541,6 +10655,8 @@ class _$AddSiblingBeforeImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9711,6 +10827,8 @@ class _$AddSiblingAfterImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -9772,6 +10890,8 @@ class _$AddSiblingAfterImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -9829,6 +10949,8 @@ class _$AddSiblingAfterImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -9887,6 +11009,9 @@ class _$AddSiblingAfterImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -9934,6 +11059,8 @@ class _$AddSiblingAfterImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -9979,6 +11106,8 @@ class _$AddSiblingAfterImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10130,6 +11259,8 @@ class _$PasteReplacementImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -10191,6 +11322,8 @@ class _$PasteReplacementImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -10248,6 +11381,8 @@ class _$PasteReplacementImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -10306,6 +11441,9 @@ class _$PasteReplacementImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -10353,6 +11491,8 @@ class _$PasteReplacementImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10398,6 +11538,8 @@ class _$PasteReplacementImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10557,6 +11699,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -10618,6 +11762,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -10675,6 +11821,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -10733,6 +11881,9 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -10780,6 +11931,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10825,6 +11978,8 @@ class _$PasteChildImpl with DiagnosticableTreeMixin implements PasteChild {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -10943,6 +12098,8 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -11004,6 +12161,8 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11061,6 +12220,8 @@ class _$PasteSiblingBeforeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -11119,6 +12280,9 @@ class _$PasteSiblingBeforeImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -11166,6 +12330,8 @@ class _$PasteSiblingBeforeImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11211,6 +12377,8 @@ class _$PasteSiblingBeforeImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11317,6 +12485,8 @@ class _$PasteSiblingAfterImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -11378,6 +12548,8 @@ class _$PasteSiblingAfterImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11435,6 +12607,8 @@ class _$PasteSiblingAfterImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -11493,6 +12667,9 @@ class _$PasteSiblingAfterImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -11540,6 +12717,8 @@ class _$PasteSiblingAfterImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11585,6 +12764,8 @@ class _$PasteSiblingAfterImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11691,6 +12872,8 @@ class _$DeleteNodeTappedImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -11752,6 +12935,8 @@ class _$DeleteNodeTappedImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -11809,6 +12994,8 @@ class _$DeleteNodeTappedImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -11867,6 +13054,9 @@ class _$DeleteNodeTappedImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -11914,6 +13104,8 @@ class _$DeleteNodeTappedImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -11959,6 +13151,8 @@ class _$DeleteNodeTappedImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12065,6 +13259,8 @@ class _$CompleteDeletionImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -12126,6 +13322,8 @@ class _$CompleteDeletionImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -12183,6 +13381,8 @@ class _$CompleteDeletionImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -12241,6 +13441,9 @@ class _$CompleteDeletionImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -12288,6 +13491,8 @@ class _$CompleteDeletionImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12333,6 +13538,8 @@ class _$CompleteDeletionImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12472,6 +13679,8 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -12533,6 +13742,8 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -12590,6 +13801,8 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -12648,6 +13861,9 @@ class _$CopySnippetJsonToClipboardImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -12695,6 +13911,8 @@ class _$CopySnippetJsonToClipboardImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12740,6 +13958,8 @@ class _$CopySnippetJsonToClipboardImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -12889,6 +14109,8 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -12950,6 +14172,8 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -13007,6 +14231,8 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -13065,6 +14291,9 @@ class _$ReplaceSnippetFromJsonImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -13112,6 +14341,8 @@ class _$ReplaceSnippetFromJsonImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13157,6 +14388,8 @@ class _$ReplaceSnippetFromJsonImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13317,6 +14550,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -13378,6 +14613,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -13435,6 +14672,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -13493,6 +14732,9 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -13540,6 +14782,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13585,6 +14829,8 @@ class _$CopyNodeImpl with DiagnosticableTreeMixin implements CopyNode {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -13749,6 +14995,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -13810,6 +15058,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -13867,6 +15117,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -13925,6 +15177,9 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -13972,6 +15227,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14017,6 +15274,8 @@ class _$CutNodeImpl with DiagnosticableTreeMixin implements CutNode {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14180,6 +15439,8 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -14241,6 +15502,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -14298,6 +15561,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -14356,6 +15621,9 @@ class _$SelectedDirectoryOrNodeImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -14403,6 +15671,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14448,6 +15718,8 @@ class _$SelectedDirectoryOrNodeImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14593,6 +15865,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -14654,6 +15928,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -14711,6 +15987,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -14769,6 +16047,9 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -14816,6 +16097,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14861,6 +16144,8 @@ class _$ImageChangedImpl with DiagnosticableTreeMixin implements ImageChanged {
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -14977,6 +16262,8 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(bool hide) hideIframes,
     required TResult Function(String snippetName, String panelName)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(String snippetName) enterSelectWidgetMode,
+    required TResult Function() exitSelectWidgetMode,
     required TResult Function(SnippetRootNode rootNode, SNode? selectedNode)
         pushSnippetEditor,
     required TResult Function(bool save) popSnippetEditor,
@@ -15038,6 +16325,8 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(bool hide)? hideIframes,
     TResult? Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult? Function(String snippetName)? enterSelectWidgetMode,
+    TResult? Function()? exitSelectWidgetMode,
     TResult? Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult? Function(bool save)? popSnippetEditor,
@@ -15095,6 +16384,8 @@ class _$ForceSnippetRefreshImpl
     TResult Function(bool hide)? hideIframes,
     TResult Function(String snippetName, String panelName)?
         setPanelOrPlaceholderSnippet,
+    TResult Function(String snippetName)? enterSelectWidgetMode,
+    TResult Function()? exitSelectWidgetMode,
     TResult Function(SnippetRootNode rootNode, SNode? selectedNode)?
         pushSnippetEditor,
     TResult Function(bool save)? popSnippetEditor,
@@ -15153,6 +16444,9 @@ class _$ForceSnippetRefreshImpl
     required TResult Function(HideIframes value) hideIframes,
     required TResult Function(SetPanelSnippet value)
         setPanelOrPlaceholderSnippet,
+    required TResult Function(EnterSelectWidgetMode value)
+        enterSelectWidgetMode,
+    required TResult Function(ExitSelectWidgetMode value) exitSelectWidgetMode,
     required TResult Function(PushSnippetEditor value) pushSnippetEditor,
     required TResult Function(PopSnippetEditor value) popSnippetEditor,
     required TResult Function(ShowDirectoryTree value) showDirectoryTree,
@@ -15200,6 +16494,8 @@ class _$ForceSnippetRefreshImpl
     TResult? Function(AutoPublishDefault value)? autoPublishDefault,
     TResult? Function(HideIframes value)? hideIframes,
     TResult? Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult? Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult? Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult? Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult? Function(PopSnippetEditor value)? popSnippetEditor,
     TResult? Function(ShowDirectoryTree value)? showDirectoryTree,
@@ -15245,6 +16541,8 @@ class _$ForceSnippetRefreshImpl
     TResult Function(AutoPublishDefault value)? autoPublishDefault,
     TResult Function(HideIframes value)? hideIframes,
     TResult Function(SetPanelSnippet value)? setPanelOrPlaceholderSnippet,
+    TResult Function(EnterSelectWidgetMode value)? enterSelectWidgetMode,
+    TResult Function(ExitSelectWidgetMode value)? exitSelectWidgetMode,
     TResult Function(PushSnippetEditor value)? pushSnippetEditor,
     TResult Function(PopSnippetEditor value)? popSnippetEditor,
     TResult Function(ShowDirectoryTree value)? showDirectoryTree,

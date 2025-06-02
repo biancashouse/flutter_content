@@ -829,8 +829,7 @@ class FlutterContentMixins
   //     false; // property editors can set this to prevent exit from EditMode
 
   // set when user taps a snippet triangle
-  final inEditMode = ValueNotifier<bool>(false);
-  SnippetName? inEditModeForSnippetName;
+  // final inEditMode = ValueNotifier<bool>(false);
 
   void forceRefresh({bool onlyTargetsWrappers = false}) =>
       FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(

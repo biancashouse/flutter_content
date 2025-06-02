@@ -55,6 +55,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
     on<ToggleAutoPublishingOfSnippet>(
         (event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
+    on<EnterSelectWidgetMode>((event, emit) => _enterSelectWidgetMode(event, emit));
+    on<ExitSelectWidgetMode>((event, emit) => _exitSelectWidgetMode(event, emit));
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
     on<PopSnippetEditor>((event, emit) => _popSnippetEditor(event, emit));
     // removed snippet place naming functionality - use tab bar instead
@@ -294,12 +296,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
     SnippetTreeController newTreeC() => SnippetTreeController(
-          roots: [event.rootNode],
-          childrenProvider: Node.snippetTreeChildrenProvider,
-          parentProvider: Node.snippetTreeParentProvider,
-        );
+      roots: [event.rootNode],
+      childrenProvider: Node.snippetTreeChildrenProvider,
+      parentProvider: Node.snippetTreeParentProvider,
+    );
 
-    SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
+      SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
       jsonBeforeAnyChange: event.rootNode.toJson(),
       treeC: newTreeC()..expandAll(),
       selectedNode: event.selectedNode,
@@ -328,6 +330,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       snippetBeingEdited: null,
       hideIframes: false,
       hideSnippetPencilIcons: false,
+      snippetNameShowingPinkOverlaysFor: null,
+    ));
+  }
+
+  void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) {
+    emit(state.copyWith(
+      snippetNameShowingPinkOverlaysFor: event.snippetName,
+    ));
+  }
+
+  void _exitSelectWidgetMode(event, emit) {
+    fco.dismissAll();
+    emit(state.copyWith(
+      snippetNameShowingPinkOverlaysFor: null,
     ));
   }
 

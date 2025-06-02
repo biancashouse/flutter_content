@@ -130,7 +130,7 @@ class EditablePageState extends State<EditablePage> {
       }
       areas.add(Area(
         builder: (ctx, area) {
-          return fco.inEditMode.value
+          return FlutterContentApp.capiState.inSelectWidgetMode
               ? IgnorePointer(child: _pageContentArea())
               : _pageContentArea();
         },
@@ -209,8 +209,7 @@ class EditablePageState extends State<EditablePage> {
         child: GestureDetector(
           onTap: () {
             // exitEditMode();
-            fco.inEditModeForSnippetName = null;
-            fco.inEditMode.value = false;
+            FlutterContentApp.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
           },
           child: Material(
             child: Stack(
@@ -358,8 +357,7 @@ class EditablePageState extends State<EditablePage> {
                             // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
                             fco.unhide(CalloutConfigToolbar.CID);
                             fco.hideClipboard();
-                            fco.inEditMode.value = false;
-                            fco.inEditModeForSnippetName = null;
+                            // fco.inEditMode.value = false;
                             FlutterContentApp.capiBloc
                                 .add(const CAPIEvent.popSnippetEditor());
                             // fco.afterNextBuildDo(() {

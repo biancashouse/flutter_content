@@ -50,7 +50,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
           name: 'tags',
           stringValue: tags.toString(),
           onStringChange: (newValue) {
-            refreshWithUpdate(context,() => tags = newValue ?? '');
+            refreshWithUpdate(context, () => tags = newValue ?? '');
           },
           calloutButtonSize: const Size(280, 70),
           calloutWidth: 280,
@@ -94,7 +94,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode,
+      {bool showTriangle = false}) {
     try {
       // fco.logger.i("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
@@ -113,7 +114,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               // fco.logger.i("FutureBuilder<void> Ensuring $name present");
               try {
                 // in case did a revert, ignore snapshot data and use the AppInfo instead
-                SnippetRootNode? snippet = snapshot.data; //fco.currentSnippetVersion(name);
+                SnippetRootNode? snippet =
+                    snapshot.data; //fco.currentSnippetVersion(name);
                 // SnippetRootNode? snippetRoot = cache?[editingVersionId];
                 Widget snippetWidget = snippet == null
                     ? Error(
@@ -124,48 +126,47 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                         errorMsg: "null snippet!")
                     : snippet.child?.toWidget(futureContext, this) ??
                         const Placeholder();
-                Widget listenable = ValueListenableBuilder<bool>(
-                    valueListenable: fco.inEditMode,
-                    builder: (context, value, child) {
-                      return Stack(
-                        children: [
-                          snippetWidget,
-                          if (showTriangle && fco.authenticated.isTrue)
-                            Align(
-                                alignment: Alignment.topRight,
-                                child: Tooltip(
-                                  message: FlutterContentApp.snippetBeingEdited == null ? 'tap here to enter EDIT mode' : '',
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      fco.inEditMode.value = true;
-                                      showSnippetNodeWidgetOverlays(context);
-                                    },
-                                    child: fco.inEditMode.value
-                                        ? fco.blink(CustomPaint(
-                                            size: const Size(40, 40),
-                                            painter:
-                                                TRTriangle(Colors.purpleAccent),
-                                          ))
-                                        : CustomPaint(
-                                            size: const Size(40, 40),
-                                            painter:
-                                                TRTriangle(Colors.purpleAccent),
-                                          ),
-                                  ),
-                                )),
-                        ],
-                      );
-                    });
+                Widget snippetWidgetStack = Stack(
+                  children: [
+                    snippetWidget,
+                    if (showTriangle && fco.authenticated.isTrue)
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: SizedBox(width: 40, height: 40,
+                            child: Tooltip(
+                              message:'tap here to enter Select Widget Mode',
+                              child: InkWell(
+                                onTap: () {
+                                  FlutterContentApp.capiBloc.add(
+                                      CAPIEvent.enterSelectWidgetMode(
+                                          snippetName: name));
+                                },
+                                child: CustomPaint(
+                                  size: const Size(40, 40),
+                                  painter: TRTriangle(Colors.purpleAccent),
+                                  child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      alignment: Alignment.topRight,
+                                      child: Icon(Icons.select_all,
+                                          size: 20, color: Colors.white)),
+                                ),
+                              ),
+                            ),
+                          )),
+                  ],
+                );
+
                 return fco.authenticated.isTrue
                     ? Banner(
                         message:
                             isPublishedVersion ? 'published' : 'not published',
                         location: BannerLocation.topEnd,
                         color: isPublishedVersion
-                            ? Colors.limeAccent.withValues(alpha:.5)
+                            ? Colors.limeAccent.withValues(alpha: .5)
                             : Colors.pink.shade100,
                         textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                        child: listenable)
+                        child: snippetWidgetStack)
                     //TODO warn user if in debug mode and snippet version does not match editing version
                     : !isPublishedVersion && kDebugMode
                         ? Container(
@@ -199,7 +200,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   // if root already exists, return it.
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
-  static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
+  static Future<SnippetRootNode?>
+      loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
     SnippetRootNode? snippetRootNode,
     required SnippetName snippetName,
   }) async {
@@ -207,7 +209,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     //     "SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate");
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!fco.appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
+    if (!fco.appInfo.snippetNames.contains(snippetName) &&
+        snippetRootNode != null) {
       await fco.cacheAndSaveANewSnippetVersion(
         snippetName: snippetName,
         rootNode: snippetRootNode,
@@ -221,7 +224,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     // if (fco.snippetsBeingReadFromFB.contains(snippetName)) return;
 
     SnippetRootNode? rootNode;
-    SnippetInfoModel? snippetInfo = await fco.modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
+    SnippetInfoModel? snippetInfo = await fco.modelRepo
+        .getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     if (snippetInfo != null) {
       // may already be in snippet cache
       rootNode = await snippetInfo.currentVersionFromCacheOrFB();
@@ -337,9 +341,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
   @override
   Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+        fco.asset('lib/assets/images/pub.dev.png'),
+        width: 16,
+      );
 
   static const String FLUTTER_TYPE = "Snippet";
 }

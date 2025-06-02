@@ -60,6 +60,8 @@ mixin _$CAPIState {
       throw _privateConstructorUsedError; //==========================================================================================
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
+  String? get snippetNameShowingPinkOverlaysFor =>
+      throw _privateConstructorUsedError;
   SnippetBeingEdited? get snippetBeingEdited =>
       throw _privateConstructorUsedError; // VersionId? snippetBeingEditedVersionId,
   bool get ONLY_TESTING => throw _privateConstructorUsedError;
@@ -92,6 +94,7 @@ abstract class $CAPIStateCopyWith<$Res> {
       int force,
       bool onlyTargetsWrappers,
       String? routeName,
+      String? snippetNameShowingPinkOverlaysFor,
       SnippetBeingEdited? snippetBeingEdited,
       bool ONLY_TESTING});
 }
@@ -126,6 +129,7 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? force = null,
     Object? onlyTargetsWrappers = null,
     Object? routeName = freezed,
+    Object? snippetNameShowingPinkOverlaysFor = freezed,
     Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
@@ -190,6 +194,11 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
           ? _value.routeName
           : routeName // ignore: cast_nullable_to_non_nullable
               as String?,
+      snippetNameShowingPinkOverlaysFor: freezed ==
+              snippetNameShowingPinkOverlaysFor
+          ? _value.snippetNameShowingPinkOverlaysFor
+          : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
+              as String?,
       snippetBeingEdited: freezed == snippetBeingEdited
           ? _value.snippetBeingEdited
           : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
@@ -226,6 +235,7 @@ abstract class _$$CAPIStateImplCopyWith<$Res>
       int force,
       bool onlyTargetsWrappers,
       String? routeName,
+      String? snippetNameShowingPinkOverlaysFor,
       SnippetBeingEdited? snippetBeingEdited,
       bool ONLY_TESTING});
 }
@@ -258,6 +268,7 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? force = null,
     Object? onlyTargetsWrappers = null,
     Object? routeName = freezed,
+    Object? snippetNameShowingPinkOverlaysFor = freezed,
     Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
@@ -322,6 +333,11 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
           ? _value.routeName
           : routeName // ignore: cast_nullable_to_non_nullable
               as String?,
+      snippetNameShowingPinkOverlaysFor: freezed ==
+              snippetNameShowingPinkOverlaysFor
+          ? _value.snippetNameShowingPinkOverlaysFor
+          : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
+              as String?,
       snippetBeingEdited: freezed == snippetBeingEdited
           ? _value.snippetBeingEdited
           : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
@@ -353,6 +369,7 @@ class _$CAPIStateImpl extends _CAPIState {
       this.force = 0,
       this.onlyTargetsWrappers = false,
       this.routeName,
+      this.snippetNameShowingPinkOverlaysFor,
       this.snippetBeingEdited,
       this.ONLY_TESTING = true})
       : super._();
@@ -429,6 +446,8 @@ class _$CAPIStateImpl extends _CAPIState {
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
   @override
+  final String? snippetNameShowingPinkOverlaysFor;
+  @override
   final SnippetBeingEdited? snippetBeingEdited;
 // VersionId? snippetBeingEditedVersionId,
   @override
@@ -437,7 +456,7 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   String toString() {
-    return 'CAPIState(hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
+    return 'CAPIState(hideIframes: $hideIframes, hideSnippetPencilIcons: $hideSnippetPencilIcons, snippetTreeCalloutW: $snippetTreeCalloutW, snippetTreeCalloutH: $snippetTreeCalloutH, directoryTreeCalloutInitialPos: $directoryTreeCalloutInitialPos, directoryTreeCalloutW: $directoryTreeCalloutW, directoryTreeCalloutH: $directoryTreeCalloutH, newestTarget: $newestTarget, selectedTarget: $selectedTarget, selectedPanel: $selectedPanel, trainerIsSignedn: $trainerIsSignedn, showClipboardContent: $showClipboardContent, force: $force, onlyTargetsWrappers: $onlyTargetsWrappers, routeName: $routeName, snippetNameShowingPinkOverlaysFor: $snippetNameShowingPinkOverlaysFor, snippetBeingEdited: $snippetBeingEdited, ONLY_TESTING: $ONLY_TESTING)';
   }
 
   @override
@@ -476,6 +495,10 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.onlyTargetsWrappers == onlyTargetsWrappers) &&
             (identical(other.routeName, routeName) ||
                 other.routeName == routeName) &&
+            (identical(other.snippetNameShowingPinkOverlaysFor,
+                    snippetNameShowingPinkOverlaysFor) ||
+                other.snippetNameShowingPinkOverlaysFor ==
+                    snippetNameShowingPinkOverlaysFor) &&
             (identical(other.snippetBeingEdited, snippetBeingEdited) ||
                 other.snippetBeingEdited == snippetBeingEdited) &&
             (identical(other.ONLY_TESTING, ONLY_TESTING) ||
@@ -500,6 +523,7 @@ class _$CAPIStateImpl extends _CAPIState {
       force,
       onlyTargetsWrappers,
       routeName,
+      snippetNameShowingPinkOverlaysFor,
       snippetBeingEdited,
       ONLY_TESTING);
 
@@ -529,6 +553,7 @@ abstract class _CAPIState extends CAPIState {
       final int force,
       final bool onlyTargetsWrappers,
       final String? routeName,
+      final String? snippetNameShowingPinkOverlaysFor,
       final SnippetBeingEdited? snippetBeingEdited,
       final bool ONLY_TESTING}) = _$CAPIStateImpl;
   _CAPIState._() : super._();
@@ -588,6 +613,8 @@ abstract class _CAPIState extends CAPIState {
       get routeName; //==========================================================================================
 //====  SNIPPET EDITING  ===================================================================
 //==========================================================================================
+  @override
+  String? get snippetNameShowingPinkOverlaysFor;
   @override
   SnippetBeingEdited?
       get snippetBeingEdited; // VersionId? snippetBeingEditedVersionId,

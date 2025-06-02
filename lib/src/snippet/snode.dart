@@ -530,7 +530,7 @@ abstract class SNode extends Node with SNodeMappable {
     // fco.logger.i('after pushSnippetBloc');
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
     fco.afterNextBuildDo(() {
-      fco.inEditMode.value = true;
+      // fco.inEditMode.value = true;
       // var nodeGK = startingAtNode.nodeWidgetGK;
 
       // var tappedNodeName = nodeGK;

@@ -117,6 +117,9 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
             ),
           ],
         ),
+        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.rectangle_dotted
+            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rounded_rectangle_dotted
+        )
         Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,

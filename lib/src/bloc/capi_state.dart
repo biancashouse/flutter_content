@@ -62,6 +62,7 @@ class CAPIState with _$CAPIState {
     //==========================================================================================
     //====  SNIPPET EDITING  ===================================================================
     //==========================================================================================
+    SnippetName? snippetNameShowingPinkOverlaysFor,
     SnippetBeingEdited? snippetBeingEdited,
     // VersionId? snippetBeingEditedVersionId,
 
@@ -71,6 +72,8 @@ class CAPIState with _$CAPIState {
   // bool aTargetIsSelected() => selectedTarget != null;
 
   // TargetGroupModel? imageConfig(String tgName) => targetGroupMap[tgName];
+
+  bool get inSelectWidgetMode => snippetNameShowingPinkOverlaysFor != null;
 
   TargetModel? getNewestTarget() => newestTarget;
 
