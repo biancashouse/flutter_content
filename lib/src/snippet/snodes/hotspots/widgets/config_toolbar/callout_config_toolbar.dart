@@ -13,12 +13,14 @@ import 'pointy_callout.dart';
 import 'resize_slider.dart';
 
 class CalloutConfigToolbar extends StatefulWidget {
+  final CalloutConfigModel cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onCloseF;
   final ScrollControllerName? scName;
 
   const CalloutConfigToolbar({
+    required this.cc,
     required this.tc,
     required this.wrapperRect,
     required this.onCloseF,
@@ -33,11 +35,55 @@ class CalloutConfigToolbar extends StatefulWidget {
 
   static double CALLOUT_CONFIG_TOOLBAR_H(TargetModel tc) => 60.0;
 
+  static void closeThenReopenContentCallout(
+    CalloutConfigModel cc,
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollControllerName? scName,
+  ) async {
+    removeSnippetContentCallout(tc, skipOnDismiss: true);
+
+    // tc
+    //     .targetsWrapperState()
+    //     ?.zoomer
+    //     ?.zoomImmediately(tc.transformScale, tc.transformScale);
+    final tr = cc.tR();
+    final cutoutPadding = (cc.barrier?.cutoutPadding ?? 0.0);
+    final Rect targetRect = Rect.fromLTWH(
+      tr.left - cutoutPadding,
+      tr.top - cutoutPadding,
+      cc.scaleTarget * (tr.width + cutoutPadding * 2),
+      cc.scaleTarget * (tr.height + cutoutPadding * 2),
+    );
+
+    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
+        wrapperRect: wrapperRect, targetRect: targetRect);
+
+    tc
+        .targetsWrapperState()
+        ?.zoomer
+        ?.zoomImmediately(tc.transformScale, tc.transformScale);
+
+    showSnippetContentCallout(
+      tc: tc,
+      justPlaying: false,
+      wrapperRect: wrapperRect,
+      scName: scName,
+    );
+
+    fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
+    TargetsWrapper.showConfigToolbar(
+      tc,
+      wrapperRect,
+      scName,
+    );
+  }
+
   @override
-  State<CalloutConfigToolbar> createState() => _CalloutConfigToolbarState();
+  State<CalloutConfigToolbar> createState() => CalloutConfigToolbarState();
 }
 
-class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
+class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // BuildContext? updatedContext;
   final dbT = DebounceTimer(delayMs: 100);
 
@@ -163,6 +209,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 TargetColourTool.show(
+                  widget.cc,
                   tc,
                   widget.wrapperRect,
                   onBarrierTappedF: widget.onCloseF,
@@ -196,6 +243,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 PointyTool.show(
+                  widget.cc,
                   tc, widget.wrapperRect,
                   // onBarrierTappedF: onParentBarrierTappedF,
                   scName: widget.scName,
@@ -215,24 +263,14 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   tc.calloutDecorationShape =
                       MappableDecorationShapeEnum.of(newIndex) ??
                           MappableDecorationShapeEnum.rectangle;
-                  if (tc.calloutDecorationShape == DecorationShapeEnum.star) {
+                  if (tc.calloutDecorationShape ==
+                      MappableDecorationShapeEnum.star) {
                     tc.calloutArrowTypeIndex = ArrowTypeEnum.NONE.index;
                   }
-                  tc.calloutBorderColorValue = Colors.grey.value;
+                  tc.calloutBorderColor = ColorModel.grey();
                   tc.calloutBorderThickness = 2;
-                  removeSnippetContentCallout(tc, skipOnDismiss: true);
-                  tc
-                      .targetsWrapperState()
-                      ?.zoomer
-                      ?.zoomImmediately(tc.transformScale, tc.transformScale);
-                  showSnippetContentCallout(
-                    tc: tc,
-                    wrapperRect: widget.wrapperRect,
-                    justPlaying: false,
-                    // widget.onParentBarrierTappedF,
-                    scName: widget.scName,
-                  );
-                  TargetsWrapper.showConfigToolbar(
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    widget.cc,
                     tc,
                     widget.wrapperRect,
                     widget.scName,
@@ -263,6 +301,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
               ),
               onPressed: () {
                 MoreCalloutConfigSettings.show(
+                  widget.cc,
                   widget.tc,
                   widget.wrapperRect,
                   scName: widget.scName,
@@ -313,6 +352,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
 
   Widget toolbarVFlipIcon() => IconButton(
         onPressed: () {
+          fco.dismiss(CalloutConfigToolbar.CID, skipOnDismiss: true);
           fco.calloutConfigToolbarAtTopOfScreen =
               !fco.calloutConfigToolbarAtTopOfScreen;
           TargetsWrapper.showConfigToolbar(
@@ -332,13 +372,17 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // used by both slider
   void _onDragStartF(TargetModel tc) {
     removeSnippetContentCallout(tc, skipOnDismiss: true);
-    tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: () {});
+    // tc
+    //     .targetsWrapperState()
+    //     ?.zoomer
+    //     ?.resetTransform(afterTransformF: () {}, quickly: true);
   }
 
   // used by both slider
   void _onDragEndF(TargetModel tc) {
     tc.changed_saveRootSnippet();
-    TargetsWrapper.configureTarget(
+    CalloutConfigToolbar.closeThenReopenContentCallout(
+      widget.cc,
       tc,
       widget.wrapperRect,
       widget.scName,
@@ -349,6 +393,7 @@ class _CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
     // removing the content callout remove toolbar and resets
     removeSnippetContentCallout(tc);
   }
+
 // @override
 // void didChangeDependencies() {
 //   // FCO.instance.initWithContext(context);

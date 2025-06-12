@@ -97,7 +97,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
       //possiblyHighlightSelectedNode(scName);
 
       // sometimes the image hasn't been loaded yet
-      if (_mustReloadedAfter100Ms) {
+      if (false && _mustReloadedAfter100Ms) {
         fco.afterMsDelayDo(100, () {
           fco.forceRefresh();
           _mustReloadedAfter100Ms = false;

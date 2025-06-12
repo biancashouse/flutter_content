@@ -163,7 +163,7 @@ class SnippetPanelState extends State<SnippetPanel>
         buildWhen: (previous, current) {
           // fco.logger.i(
           //     'BlocBuilder - current.onlyTargetsWrappers: ${current.onlyTargetsWrappers}');
-          return !current.onlyTargetsWrappers;
+          return !current.onlyTargetsWrappers && current.snippetNameShowingPinkOverlaysFor == null;
         },
         builder: (blocContext, state) {
           // fco.logger.d('\nSnippetPanel builder:\n');

@@ -58,20 +58,29 @@ class TargetsWrapper extends StatefulWidget {
 // }
 
   static void configureTarget(
-      TargetModel tc, Rect wrapperRect, ScrollControllerName? scName,
-      {bool quickly = false}) {
+    TargetModel tc,
+    Rect wrapperRect,
+    ScrollControllerName? scName, {
+    bool quickly = false,
+  }) {
     if (!fco.authenticated.isTrue) return;
 
     if (tc.targetsWrapperState() == null) return;
 
-    fco.dismissAll();
+    // fco.dismissAll();
 
     var coverGK = fco.getTargetGk(tc.uid);
     Rect? targetRect = coverGK!.globalPaintBounds();
+
     if (targetRect == null) return;
 
-    Alignment? ta =
-        fco.calcTargetAlignmentWithinWrapper(wrapperRect:wrapperRect, targetRect:targetRect);
+    // targetRect = targetRect.translate(
+    //   sw,
+    //   sh,
+    // );
+
+    Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
+        wrapperRect: wrapperRect, targetRect: targetRect);
 
     if (tc.hasAHotspot()) {
       tc.targetsWrapperState()?.zoomer?.applyTransform(
@@ -82,14 +91,11 @@ class TargetsWrapper extends StatefulWidget {
           wrapperRect: wrapperRect,
           scName: scName,
         );
-        // show config toolbar in a toast
-        tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
         showConfigToolbar(
           tc,
           wrapperRect,
           scName,
         );
-        // fco.currentPageState?.hideFAB();
       }, quickly: quickly);
     } else {
       showSnippetContentCallout(
@@ -98,7 +104,6 @@ class TargetsWrapper extends StatefulWidget {
         wrapperRect: wrapperRect,
         scName: scName,
       );
-      // show config toolbar in a toast
       showConfigToolbar(
         tc,
         wrapperRect,
@@ -112,51 +117,56 @@ class TargetsWrapper extends StatefulWidget {
     Rect wrapperRect,
     final ScrollControllerName? scName,
   ) {
-    fco.dismiss(CalloutConfigToolbar.CID);
-    fco.showOverlay(
-      onReadyF: (){},
-      calloutConfig: CalloutConfigModel(
-        cId: CalloutConfigToolbar.CID,
-        scrollControllerName: scName,
-        fillColor: ColorModel.purpleAccent(),
-        initialCalloutW: 820,
-        initialCalloutH: 80,
-        decorationShape: DecorationShapeEnum.rounded_rectangle,
-        borderRadius: 16,
-        animate: false,
-        arrowType: ArrowTypeEnum.NONE,
-        initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
-        onDragEndedF: (newPos) {
-          fco.setCalloutConfigToolbarPos(newPos);
-        },
-        dragHandleHeight: 30,
-        followScroll: false,
-        onDismissedF: (){
-          tc.targetsWrapperState()?.refresh(() {
-            tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: () {
-              // fco.dismiss(CalloutConfigToolbar.CID);
-              SNode.showAllTargetBtns();
-              SNode.showAllHotspotTargetCovers();
-              fco.afterNextBuildDo(() {
-                // save hotspot's parent snippet
-                var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                if (rootNode != null) {
-                  fco.cacheAndSaveANewSnippetVersion(
-                    snippetName: rootNode.name,
-                    rootNode: rootNode,
-                  );
-                }
-              });
-            });
+    final cc = CalloutConfigModel(
+      cId: CalloutConfigToolbar.CID,
+      scrollControllerName: scName,
+      fillColor: ColorModel.purpleAccent(),
+      initialCalloutW: 820,
+      initialCalloutH: 80,
+      decorationShape: DecorationShapeEnum.rounded_rectangle,
+      borderRadius: 16,
+      animate: false,
+      arrowType: ArrowTypeEnum.NONE,
+      initialCalloutPos: OffsetModel.fromOffset(fco.calloutConfigToolbarPos()),
+      onDragEndedF: (newPos) {
+        fco.setCalloutConfigToolbarPos(newPos);
+      },
+      dragHandleHeight: 30,
+      followScroll: false,
+      onDismissedF: () {
+        void reset() {
+          // fco.dismiss(CalloutConfigToolbar.CID);
+          SNode.showAllTargetBtns();
+          SNode.showAllHotspotTargetCovers();
+          fco.afterNextBuildDo(() {
+            // save hotspot's parent snippet
+            var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+            if (rootNode != null) {
+              fco.cacheAndSaveANewSnippetVersion(
+                snippetName: rootNode.name,
+                rootNode: rootNode,
+              );
+            }
           });
         }
-      ),
+
+        tc.targetsWrapperState()?.refresh(() {
+          tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: reset);
+        });
+      },
+    );
+
+    fco.showOverlay(
+      onReadyF: () {},
+      calloutConfig: cc,
       calloutContent: CalloutConfigToolbar(
+        cc: cc,
         tc: tc,
         wrapperRect: wrapperRect,
         onCloseF: () {
-          tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
-          removeSnippetContentCallout(tc);
+          tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {
+            removeSnippetContentCallout(tc);
+          });
           // fco.dismiss(CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR);
         },
       ),
@@ -184,8 +194,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   // Timer? _sizeChangedTimer;
   TargetModel? _playingOrEditingTc; // gets set / reset by btn widgets
-  void setPlayingOrEditingTc(newtC) => setState(() {
+  void setPlayingOrEditingTc(newtC, VoidCallback f) => setState(() {
         _playingOrEditingTc = newtC;
+        f.call();
       });
 
   get playingTc => _playingOrEditingTc;
@@ -257,22 +268,26 @@ class TargetsWrapperState extends State<TargetsWrapper> {
     );
   }
 
-  double scrollOffsetX() =>
-      NamedScrollController.hScrollOffset(widget.scName);
-
-  double scrollOffsetY() =>
-      NamedScrollController.vScrollOffset(widget.scName);
+  // double scrollOffsetX() =>
+  //     NamedScrollController.hScrollOffset(widget.scName);
+  //
+  // double scrollOffsetY() =>
+  //     NamedScrollController.vScrollOffset(widget.scName);
 
   void measureIWPosAndSize() {
     // fco.logger.i('measureIWPosAndSize');
     var newPosAndSize = (widget.key as GlobalKey).globalPosAndSize();
 
+    // final sw = NamedScrollController.hScrollOffset(widget.scName);
+    // final sh = NamedScrollController.vScrollOffset(widget.scName);
     Offset? globalPos;
     try {
-      globalPos = newPosAndSize.$1?.translate(
-        NamedScrollController.hScrollOffset(widget.scName),
-        NamedScrollController.vScrollOffset(widget.scName),
-      );
+      globalPos = newPosAndSize.$1
+          // ?.translate(
+          // sw,
+          // sh,
+          // )
+          ;
       if (globalPos != null) {
         // fco.logger.i('globalPos != null');
         // fco.logger.i('TargetGroupWrapper.iwPosMap[${widget.name}] = ${globalPos.toString()}');
@@ -309,6 +324,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       return _childBuild();
     }
 
+    String? editablePageName = EditablePage.scName(context);
+    double hScrollOffset =
+        NamedScrollController.hScrollOffset(editablePageName);
+    double vScrollOffset =
+        NamedScrollController.vScrollOffset(editablePageName);
+
     // when dragging a btn or cover ends
     void droppedBtnOrCover(DragTargetDetails<(TargetId, bool)> details) {
       // ignore drags when toolbar showing
@@ -318,9 +339,6 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       }
 
       // get current scrollOffset
-      String? editablePageName = EditablePage.scName(context);
-      double hOffset = NamedScrollController.hScrollOffset(editablePageName);
-      double vOffset = NamedScrollController.vScrollOffset(editablePageName);
       refresh(() {
         var data = details.data;
         TargetId uid = data.$1;
@@ -332,7 +350,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                 FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               )
-              .translate(hOffset, vOffset));
+              .translate(hScrollOffset, vScrollOffset));
           foundTc.changed_saveRootSnippet();
         } else if (foundTc != null) {
           foundTc.setTargetStackPosPc(details.offset
@@ -340,7 +358,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 foundTc.radius,
                 foundTc.radius,
               )
-              .translate(hOffset, vOffset));
+              .translate(hScrollOffset, vScrollOffset));
           foundTc.changed_saveRootSnippet();
         }
         // FlutterContentApp.capiBloc
@@ -383,7 +401,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                           fillColor: ColorModel.purpleAccent(),
                           scrollControllerName: null,
                           showCloseButton: true,
-                          closeButtonPos: Offset(10,10),
+                          closeButtonPos: Offset(10, 10),
                           closeButtonColor: Colors.white,
                           borderRadius: 16,
                           onDismissedF: () {
@@ -430,8 +448,12 @@ class TargetsWrapperState extends State<TargetsWrapper> {
             // TARGET COVERS
             for (TargetModel tc in widget.parentNode.targets)
               Positioned(
-                top: tc.targetStackPos().dy - tc.radius + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
-                left: tc.targetStackPos().dx - tc.radius + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
+                top: tc.targetStackPos().dy - tc.radius,
+                // + vScrollOffset,
+                // + (_playingOrEditingTc !=null ? scrollOffsetY()/tc.getScale() : 0.00),
+                left: tc.targetStackPos().dx - tc.radius,
+                // + hScrollOffset,
+                // + (_playingOrEditingTc != null ? scrollOffsetX()/tc.getScale() : 0.00),
                 child: Visibility.maintain(
                   key: fco.setTargetGk(tc.uid,
                       GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),

@@ -6,7 +6,7 @@ import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
 
-void hideSnippetCallout(TargetModel tc) => fco.hide(tc.contentCId);
+void hideSnippetContentCallout(TargetModel tc) => fco.hide(tc.contentCId);
 
 void unhideSnippetCallout(TargetModel tc) => fco.unhide(tc.contentCId);
 
@@ -41,7 +41,7 @@ Future<void> showSnippetContentCallout({
   double minHeight = 0;
   // int maxLines = 5;
   // TargetModel? tc; // = tc; //FCO.capiBloc.state.tcByNameOrUid(tc);
-  GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
+  // GlobalKey? targetGK() => fco.getTargetGk(tc.uid)!;
   // GlobalKey? gk = CAPIState.gk(tc!.uid);
   // GlobalKey? gk = tc.single ? CAPIState.gk(tc.wName.hashCode) : CAPIState.gk(tc.uid);
 
@@ -58,29 +58,31 @@ Future<void> showSnippetContentCallout({
   //  by now should definitely have created the target's snippet
   // if (fco.targetSnippetBeingConfigured != null) {
 
-  Widget content() => SnippetPanel.fromSnippet(
-      panelName: tc.contentCId,
-      // never used
-      snippetName: tc.contentCId,
-      scName: scName,
-      justPlaying: justPlaying,
-      tc: tc);
+  Widget content() =>
+      SnippetPanel.fromSnippet(
+          panelName: tc.contentCId,
+          // never used
+          snippetName: tc.contentCId,
+          scName: scName,
+          justPlaying: justPlaying,
+          tc: tc);
 
-  Widget editableContent() => Container(
-      // width: cc.calloutW,
-      // height: cc.calloutH,
-      decoration: BoxDecoration(
-        border: Border.all(
-            width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
-      ),
-      child: content());
+  Widget editableContent() =>
+      Container(
+        // width: cc.calloutW,
+        // height: cc.calloutH,
+          decoration: BoxDecoration(
+            border: Border.all(
+                width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
+          ),
+          child: content());
 
   Widget possiblyEditableContent() =>
       fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
 
   fco.showOverlay(
     // zoomer: zoomer,
-    targetGkF: targetGK,
+    targetGkF: ()=>fco.getTargetGk(tc.uid)!,
     calloutContent: PointerInterceptor(
       child: BlocBuilder<CAPIBloC, CAPIState>(
         builder: (context, state) {
@@ -91,129 +93,135 @@ Future<void> showSnippetContentCallout({
       ),
     ),
     calloutConfig: CalloutConfigModel(
-        cId: tc.contentCId,
-        scrollControllerName: scName,
-        finalSeparation: 50,
-        fillColor: tc.calloutFillColor,
-        decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
-        starPoints: tc.starPoints,
-        borderColor: tc.calloutBorderColor ?? ColorModel.grey(),
-        borderThickness: tc.calloutBorderThickness,
-        borderRadius: tc.calloutBorderRadius,
-        arrowColor: tc.calloutFillColor,
-        arrowType: tc.getArrowType(),
-        fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
-            ? 60
-            : null,
-        animate: tc.animateArrow,
-        // https://stackoverflow.com/questions/11671100/scale-path-from-center
-        initialCalloutPos: OffsetModel.fromOffset(
+      cId: tc.contentCId,
+      scrollControllerName: scName,
+      // finalSeparation: 50,
+      fillColor: tc.calloutFillColor,
+      decorationShape: tc.calloutDecorationShape.toDecorationShapeEnum(),
+      starPoints: tc.starPoints,
+      borderColor: tc.calloutBorderColor ?? ColorModel.grey(),
+      borderThickness: tc.calloutBorderThickness,
+      borderRadius: tc.calloutBorderRadius,
+      arrowColor: tc.calloutFillColor,
+      arrowType: tc.hasAHotspot() ? tc.getArrowType() : ArrowTypeEnum.NONE,
+      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
+          ? 60
+          : null,
+      animate: tc.animateArrow,
+      // https://stackoverflow.com/questions/11671100/scale-path-from-center
+      initialCalloutPos: OffsetModel.fromOffset(
           tc.getCalloutPos()
-              .translate(1-tc.getScale(), 1-tc.getScale())
-         // .translate(translateX, translateY),
-        ),
-        // initialCalloutAlignment: AlignmentEnum.bottomCenter,
-        // initialTargetAlignment: AlignmentEnum.topCenter,
-        modal: false,
-        initialCalloutW: tc.calloutWidth,
-        initialCalloutH: tc.calloutHeight,
-        minHeight: minHeight + 4,
-        resizeableH: !justPlaying && tc.canResizeH,
-        resizeableV: !justPlaying && tc.canResizeV,
-        // containsTextField: true,
-        // alwaysReCalcSize: true,
-        followScroll: false,//tc.followScroll,
-        onResizeF: (Size newSize) {
-          tc
-            ..calloutWidth = newSize.width
-            ..calloutHeight = newSize.height;
-          // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
-        },
-        onDragEndedF: (Offset newPos) {
-          if (newPos.dy / fco.scrH != tc.calloutTopPc ||
-              newPos.dx / fco.scrW != tc.calloutLeftPc) {
-            tc.calloutTopPc = newPos.dy / fco.scrH;
-            tc.calloutLeftPc = newPos.dx / fco.scrW;
-            tc.changed_saveRootSnippet();
-            // FlutterContentApp.capiBloc.add(
-            //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
-            // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
-            // tc.setTextCalloutPos(newPos);
-          }
-        },
-        draggable: !justPlaying,
-        // frameTarget: true,
-        scaleTarget: tc.transformScale,
-        // separation: 100,
-        // barrierOpacity: .1,
-        // onBarrierTappedF: () async {
-        //   onBarrierTappedF?.call();
-        //   fco.removeOverlay(feature);
-        // },
-        notUsingHydratedStorage: true,
-        // showCloseButton: true,
-        // onTopRightButtonPressF: (){
-        //     onBarrierTappedF?.call();
-        //     fco.removeOverlay(feature);
-        // }
-        onDismissedF: () {
-          // FCO.parentTW(twName)?.zoomer?.resetTransform();
-          // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-          fco.dismiss(CalloutConfigToolbar.CID);
-        },
-        barrier: CalloutBarrierConfig(
-            color: Colors.black,
-            opacity: .9,
-            excludeTargetFromBarrier: true,
-            roundExclusion: true,
-            cutoutPadding: 20 * tc.transformScale,
-            dismissible: false,
-            onTappedF: () {
-              // do not allow content callout to be dismissed
-              return;
-              fco.dismiss(CalloutConfigToolbar.CID);
-              if (tc.hasAHotspot()) {
-                tc.targetsWrapperState()?.refresh(() {
-                  tc.targetsWrapperState()?.zoomer?.resetTransform(
-                      afterTransformF: () {
-                    // tc.changed_saveRootSnippet();
-                    SNode.showAllTargetBtns();
-                    SNode.showAllHotspotTargetCovers();
-                    // fco.currentPageState?.unhideFAB();
-                    removeSnippetContentCallout(tc);
-                    fco.afterNextBuildDo(() {
-                      // save hotspot's parent snippet
-                      var rootNode =
-                          tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                      if (rootNode != null) {
-                        fco.cacheAndSaveANewSnippetVersion(
-                          snippetName: rootNode.name,
-                          rootNode: rootNode,
-                        );
-                      }
-                    });
-                  });
-                });
-              } else {
-                tc.targetsWrapperState()?.refresh(() {
-                  // tc.changed_saveRootSnippet();
-                  SNode.showAllTargetBtns();
-                  SNode.showAllHotspotTargetCovers();
-                  removeSnippetContentCallout(tc);
-                  fco.afterNextBuildDo(() {
-                    // save parent snippet
-                    var rootNode =
+              .translate(1 - tc.getScale(), 1 - tc.getScale())
+        // .translate(translateX, translateY),
+      ),
+      // initialCalloutAlignment: AlignmentEnum.bottomCenter,
+      // initialTargetAlignment: AlignmentEnum.topCenter,
+      modal: false,
+      initialCalloutW: tc.calloutWidth,
+      initialCalloutH: tc.calloutHeight,
+      minHeight: minHeight + 4,
+      resizeableH: !justPlaying && tc.canResizeH,
+      resizeableV: !justPlaying && tc.canResizeV,
+      // containsTextField: true,
+      // alwaysReCalcSize: true,
+      followScroll: tc.followScroll,
+      onResizeF: (Size newSize) {
+        tc
+          ..calloutWidth = newSize.width
+          ..calloutHeight = newSize.height;
+        // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+      },
+      onDragEndedF: (Offset newPos) {
+        if (newPos.dy / fco.scrH != tc.calloutTopPc ||
+            newPos.dx / fco.scrW != tc.calloutLeftPc) {
+          tc.calloutTopPc = newPos.dy / fco.scrH;
+          tc.calloutLeftPc = newPos.dx / fco.scrW;
+          tc.changed_saveRootSnippet();
+          // FlutterContentApp.capiBloc.add(
+          //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
+          // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
+          // tc.setTextCalloutPos(newPos);
+        }
+      },
+      draggable: !justPlaying,
+      scaleTarget: tc.transformScale,
+      // separation: 100,
+      // barrierOpacity: .1,
+      // onBarrierTappedF: () async {
+      //   onBarrierTappedF?.call();
+      //   fco.removeOverlay(feature);
+      // },
+      notUsingHydratedStorage: true,
+      // showCloseButton: true,
+      // onTopRightButtonPressF: (){
+      //     onBarrierTappedF?.call();
+      //     fco.removeOverlay(feature);
+      // }
+      onDismissedF: () {
+        // FCO.parentTW(twName)?.zoomer?.resetTransform();
+        // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+        fco.dismiss(CalloutConfigToolbar.CID);
+      },
+      barrier: tc.hasAHotspot()
+        ? CalloutBarrierConfig(
+          color: Colors.black,
+          opacity: .9,
+          excludeTargetFromBarrier: true,
+          roundExclusion: true,
+          cutoutPadding: 30,
+          dismissible: false,
+          onTappedF: () {
+            // do not allow content callout to be dismissed
+            return;
+            fco.dismiss(CalloutConfigToolbar.CID);
+            if (tc.hasAHotspot()) {
+              tc.targetsWrapperState()?.refresh(() {
+                tc
+                    .targetsWrapperState()
+                    ?.zoomer
+                    ?.resetTransform(
+                    afterTransformF: () {
+                      // tc.changed_saveRootSnippet();
+                      SNode.showAllTargetBtns();
+                      SNode.showAllHotspotTargetCovers();
+                      // fco.currentPageState?.unhideFAB();
+                      removeSnippetContentCallout(tc);
+                      fco.afterNextBuildDo(() {
+                        // save hotspot's parent snippet
+                        var rootNode =
                         tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                    if (rootNode != null) {
-                      fco.cacheAndSaveANewSnippetVersion(
-                        snippetName: rootNode.name,
-                        rootNode: rootNode,
-                      );
-                    }
-                  });
+                        if (rootNode != null) {
+                          fco.cacheAndSaveANewSnippetVersion(
+                            snippetName: rootNode.name,
+                            rootNode: rootNode,
+                          );
+                        }
+                      });
+                    });
+              });
+            } else {
+              tc.targetsWrapperState()?.refresh(() {
+                // tc.changed_saveRootSnippet();
+                SNode.showAllTargetBtns();
+                SNode.showAllHotspotTargetCovers();
+                removeSnippetContentCallout(tc);
+                fco.afterNextBuildDo(() {
+                  // save parent snippet
+                  var rootNode =
+                  tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                  if (rootNode != null) {
+                    fco.cacheAndSaveANewSnippetVersion(
+                      snippetName: rootNode.name,
+                      rootNode: rootNode,
+                    );
+                  }
                 });
-              }
-            })),
+              });
+            }
+          })
+      : null,
+      frameTarget: false,
+    ),
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,
     removeAfterMs: justPlaying ? tc.calloutDurationMs : null,
   );

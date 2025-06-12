@@ -46,9 +46,9 @@ class TargetModel with TargetModelMappable {
   double calloutHeight;
   int calloutDurationMs;
   // deprecated
-  int? calloutFillColorValue;
+  final int? calloutFillColorValue;
   ColorModel? calloutFillColor;
-  int? calloutBorderColorValue;
+  final int? calloutBorderColorValue;
   ColorModel? calloutBorderColor;
   MappableDecorationShapeEnum calloutDecorationShape;
   double calloutBorderRadius;
@@ -59,7 +59,7 @@ class TargetModel with TargetModelMappable {
 
   int? calloutArrowTypeIndex;
   ColorModel? calloutArrowColor;
-  int? calloutArrowColorValue;
+  final int? calloutArrowColorValue;
 
   bool animateArrow;
 

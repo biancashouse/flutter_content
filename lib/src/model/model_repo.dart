@@ -43,6 +43,10 @@ abstract class IModelRepository {
     final List<VersionId> tbd,
   );
 
+  Future<void> purgePreviousSnippetVersions(
+      final String snippetName,
+      );
+
   Future<void> saveVote({
     required String pollName,
     required VoterId voterId,

@@ -139,12 +139,13 @@ class TargetPlayBtn extends StatelessWidget {
               // },
               onDoubleTap: () {
                 if (FlutterContentApp.snippetBeingEdited != null) return;
-                tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
-                TargetsWrapper.configureTarget(
-                  tc,
-                  wrapperRect,
-                  scName,
-                );
+                tc.targetsWrapperState()!.setPlayingOrEditingTc(
+                    tc,
+                    () => TargetsWrapper.configureTarget(
+                          tc,
+                          wrapperRect,
+                          scName,
+                        ));
               },
               child: IntegerCircleAvatar(
                 tc,
@@ -215,24 +216,20 @@ class TargetPlayBtn extends StatelessWidget {
     var zoomer = tc.targetsWrapperState()!.zoomer;
     // var savedKey = tc.targetsWrapperGK;
 
-    tc.targetsWrapperState()!.setPlayingOrEditingTc(tc);
-
-    zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
-        afterTransformF: () async {
-      // if (savedKey != tc.targetsWrapperGK) {
-      //   fco.logger.i('doh!');
-      // }
-      //
-      await fco.ensureContentSnippetPresent(tc.contentCId);
-      showSnippetContentCallout(
-        tc: tc,
-        justPlaying: true,
-        wrapperRect: wrapperRect,
-        scName: scName,
-      );
-      fco.afterMsDelayDo(tc.calloutDurationMs, () {
-        tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
-          tc.targetsWrapperState()!.setPlayingOrEditingTc(null);
+    tc.targetsWrapperState()!.setPlayingOrEditingTc(tc, () {
+      zoomer?.applyTransform(tc.transformScale, tc.transformScale, ta,
+          afterTransformF: () async {
+        await fco.ensureContentSnippetPresent(tc.contentCId);
+        showSnippetContentCallout(
+          tc: tc,
+          justPlaying: true,
+          wrapperRect: wrapperRect,
+          scName: scName,
+        );
+        fco.afterMsDelayDo(tc.calloutDurationMs, () {
+          tc.targetsWrapperState()!.zoomer?.resetTransform(afterTransformF: () {
+            tc.targetsWrapperState()!.setPlayingOrEditingTc(null, () {});
+          });
         });
       });
     });

@@ -312,6 +312,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     emit(state.copyWith(
       // hideAllTargetGroupPlayBtns: true,
       // hideTargetsExcept: null,
+      snippetNameShowingPinkOverlaysFor: null,
       snippetBeingEdited: snippetBeingEdited,
       hideSnippetPencilIcons: true,
       onlyTargetsWrappers: true,

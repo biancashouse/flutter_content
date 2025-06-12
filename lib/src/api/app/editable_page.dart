@@ -106,12 +106,13 @@ class EditablePageState extends State<EditablePage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
-        // buildWhen: (previous, current) {
-        //   bool  nodeChanged = current.snippetBeingEdited != previous.snippetBeingEdited;
-        //   bool selectionChanged = current.snippetBeingEdited?.selectedNode !=
-        //       previous.snippetBeingEdited?.selectedNode;
-        //   return true || nodeChanged || selectionChanged;
-        // },
+        buildWhen: (previous, current) {
+          // bool  nodeChanged = current.snippetBeingEdited != previous.snippetBeingEdited;
+          // bool selectionChanged = current.snippetBeingEdited?.selectedNode !=
+          //     previous.snippetBeingEdited?.selectedNode;
+          // return true || nodeChanged || selectionChanged;
+          return !current.onlyTargetsWrappers && current.snippetNameShowingPinkOverlaysFor == null;
+        },
         builder: (context, state) {
       // fco.logger.i('editable page build() -----------------------------------');
       bool showNodeTree() => snippetBeingEdited != null;

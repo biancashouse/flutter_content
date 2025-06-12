@@ -5,7 +5,6 @@ import 'dart:async';
 // import 'package:context_menus/context_menus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,9 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
-
-// import 'package:logger/logger.dart';
-import 'package:routing_config_provider/routing_config_provider.dart';
 
 // conditional import for webview ------------------
 import 'register_ios_or_android_webview.dart'
@@ -28,10 +24,8 @@ class FlutterContentApp extends StatefulWidget {
   final String appName;
   final List<String> editorPasswords;
   final String title;
-
   // final SnippetName pageSnippetName;
-  final RoutingConfig webRoutingConfig;
-  final RoutingConfig mobileRoutingConfig;
+  final RoutingConfig routingConfig;
   final String initialRoutePath;
   final MaterialAppThemeFunc materialAppThemeF;
   final FirebaseOptions? fbOptions;
@@ -71,8 +65,7 @@ class FlutterContentApp extends StatefulWidget {
     this.title = '',
     // required this.pageSnippetName,
     // this.localTestingFilePaths = false,
-    required this.webRoutingConfig,
-    required this.mobileRoutingConfig,
+    required this.routingConfig,
     required this.materialAppThemeF,
     required this.initialRoutePath,
     this.fbOptions,
@@ -83,125 +76,6 @@ class FlutterContentApp extends StatefulWidget {
     // @visibleForTesting this.testWidget,
     this.onReadyF,
   });
-
-  // static void removeAllPinkSnippetOverlays() {
-  //   return;
-  // for (String panelName in CAPIState.snippetPanelGkMap.keys) {
-  //   fco.dismiss('$panelName-pink-overlay');
-  //   fco.dismiss('$panelName-panel-name-callout');
-  // }
-  // }
-
-  // static void showAllPinkSnippetOverlays() {
-  //   return;
-  // for (String panelName in CAPIState.snippetPanelGkMap.keys) {
-  //   Rect? rect = CAPIState.snippetPanelGkMap[panelName]?.globalPaintBounds(
-  //       // skipWidthConstraintWarning: skipWidthConstraintWarning,
-  //       // skipHeightConstraintWarning: skipHeightConstraintWarning,
-  //       ); //Measuring.findGlobalRect(_offstageGK!);
-  //   if (rect != null) {
-  //     fco.logger.i('$panelName ${rect.toString()}');
-  //     // overlay rect with a transparent pink rect, and a 3px surround
-  //     fco.showOverlay(
-  //       ensureLowestOverlay: true,
-  //       calloutContentF: (context) => InkWell(
-  //         onTap: () {
-  //           String? snippetName = CAPIState.snippetPlacementMap[panelName];
-  //           if (snippetName != null) {
-  //             // edit the snippet
-  //             hideAllSingleTargetBtns();
-  //             // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //             // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-  //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
-  //             FCO.capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
-  //             fco.afterNextBuildDo(() {
-  //               SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
-  //               if (snippetBeingEdited != null) {
-  //                 showSnippetTreeCallout(
-  //                   snippetBloc: snippetBeingEdited,
-  //                   targetGKF: () => CAPIState.snippetPanelGkMap[panelName],
-  //                   onChangedF: () {},
-  //                 );
-  //               }
-  //             });
-  //           }
-  //         },
-  //         child: Container(
-  //           width: rect.width,
-  //           height: rect.height,
-  //           decoration: BoxDecoration(
-  //             color: Colors.purpleAccent.withValues(alpha:.2),
-  //             border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
-  //           ),
-  //         ),
-  //       ),
-  //       calloutConfig: CalloutConfigModel(
-  //         cId: '$panelName-pink-overlay',
-  //         initialCalloutW: rect.width + 6,
-  //         initialCalloutH: rect.height + 6,
-  //         initialCalloutPos: rect.topLeft.translate(-3, -3),
-  //         color: Colors.transparent,
-  //         arrowType: ArrowTypeEnum.NONE,
-  //         draggable: false,
-  //       ),
-  //       targetGkF: () => CAPIState.snippetPanelGkMap[panelName],
-  //     );
-  //     // calc optimal alignment of panel-name callout
-  //     late Alignment al;
-  //     if (max(rect.top, rect.bottom) > max(rect.left, rect.right)) {
-  //       al = rect.top > rect.bottom ? AlignmentEnum.topCenter : AlignmentEnum.bottomCenter;
-  //       if (rect.left > rect.right) al = AlignmentEnum.topLeft;
-  //       if (rect.left < rect.right) al = AlignmentEnum.topRight;
-  //     } else {
-  //       al = rect.left > rect.right ? AlignmentEnum.centerLeft : AlignmentEnum.centerRight;
-  //       if (rect.top > rect.bottom) al = AlignmentEnum.topLeft;
-  //       if (rect.top < rect.bottom) al = AlignmentEnum.topRight;
-  //     }
-  //     String? rootSnippetName = CAPIState.snippetPlacementMap[panelName];
-  //     if (rootSnippetName != null) {
-  //       fco.showOverlay(
-  //         ensureLowestOverlay: true,
-  //         calloutContentF: (context) => InkWell(
-  //           onTap: () {
-  //             // edit the snippet
-  //             hideAllSingleTargetBtns();
-  //             // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
-  //             // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
-  //             MaterialAppWrapper.removeAllPinkSnippetOverlays();
-  //             String? snippetName = CAPIState.snippetPlacementMap[panelName];
-  //             if (snippetName != null) {
-  //               FCO.capiBloc.add(CAPIEvent.pushSnippetBloc(snippetName: snippetName));
-  //               fco.afterNextBuildDo(() {
-  //                 SnippetBloC? snippetBeingEdited = CAPIBloC.snippetBeingEdited;
-  //                 if (snippetBeingEdited != null) {
-  //                   showSnippetTreeCallout(
-  //                     snippetBloc: snippetBeingEdited,
-  //                     targetGKF: () => CAPIState.snippetPanelGkMap[panelName],
-  //                     onChangedF: () {},
-  //                   );
-  //                 }
-  //               });
-  //             }
-  //           },
-  //           child: Center(child: FCO.coloredText('$panelName / $rootSnippetName', color: Colors.white)),
-  //         ),
-  //         calloutConfig: CalloutConfigModel(
-  //           cId: '$panelName-panel-name-callout',
-  //           initialCalloutW: 300,
-  //           initialCalloutH: 30,
-  //           initialCalloutAlignment: al,
-  //           initialTargetAlignment: -al,
-  //           color: Colors.black,
-  //           arrowType: ArrowTypeEnum.THIN,
-  //           finalSeparation: 40,
-  //           draggable: true,
-  //         ),
-  //         targetGkF: () => CAPIState.snippetPanelGkMap[panelName],
-  //       );
-  //     }
-  //   }
-  // }
-  // }
 
   static FlutterContentAppState? of(BuildContext context) =>
       context.findAncestorStateOfType<FlutterContentAppState>();
@@ -264,23 +138,6 @@ class FlutterContentAppState extends State<FlutterContentApp>
     super.dispose();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   fco.logger.i("didChangeDependencies");
-  //   // FCO.refreshMQ(context);
-  //   if (FCO.showingNodeOBoundaryOverlays??false) {
-  //     FlutterContentAppState.removeAllNodeWidgetOverlays();
-  //     FlutterContentAppState.exitEditMode();
-  //     fco.afterMsDelayDo(1000, () {
-  //               FC.forceRefresh();
-
-  //       FlutterContentApp.snippetBeingEdited?.add(const SnippetEvent.forceSnippetRefresh());
-  //       // FlutterContentAppState.showAllNodeWidgetOverlays(context);
-  //     });
-  //   }
-  //   super.didChangeDependencies();
-  // }
-
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC> _initApp() async {
     // fco.logger.d("_initApp() before init()");
@@ -291,10 +148,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
       fbOptions: widget.fbOptions,
       useEmulator: widget.useEmulator,
       useFBStorage: widget.useFBStorage,
-      routingConfig: RoutingConfigProvider().getWebOrMobileRoutingConfig(
-        widget.webRoutingConfig,
-        widget.mobileRoutingConfig,
-      ),
+      routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
     );
     // fco.logger.d("_initApp() after");

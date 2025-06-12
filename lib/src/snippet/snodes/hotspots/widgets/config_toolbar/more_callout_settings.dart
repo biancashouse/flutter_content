@@ -6,11 +6,13 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_numbe
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 
 class MoreCalloutConfigSettings extends StatefulWidget {
+  final CalloutConfigModel cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
 
   const MoreCalloutConfigSettings(
+    this.cc,
     this.tc,
     this.wrapperRect, {
     this.scName,
@@ -22,10 +24,11 @@ class MoreCalloutConfigSettings extends StatefulWidget {
       _MoreCalloutConfigSettingsState();
 
   static show(
-    final TargetModel tc,
-    final Rect wrapperRect, {
+    CalloutConfigModel cc,
+    TargetModel tc,
+    Rect wrapperRect, {
     ScrollControllerName? scName,
-    required final bool justPlaying,
+    required bool justPlaying,
   }) {
     GlobalKey? targetGK =
         // tc.single
@@ -36,6 +39,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
     fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: MoreCalloutConfigSettings(
+          cc,
           tc,
           wrapperRect,
           scName: scName,
@@ -89,58 +93,73 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.circle
-            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rectangle_dotted
-            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rounded_rectangle_dotted
-            && tc.calloutDecorationShape != MappableDecorationShapeEnum.stadium
-            && tc.calloutDecorationShape != MappableDecorationShapeEnum.star
-        )
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('borderRadius: '),
-            Align(
-              alignment: Alignment.center,
-              child: PropertyButtonNumber<double>(
-                originalValue: tc.calloutBorderRadius,
-                onChangedF: (newValue) {
-                  tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
-                  tc.changed_saveRootSnippet();
-                  _refreshContentCallout();
-                },
-                alignment: Alignment.center,
-                label: '${tc.calloutBorderRadius}',
-                buttonSize: const Size(40, 30),
-                editorSize: const Size(60, 60),
-              ),
-            ),
-          ],
-        ),
-        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.rectangle_dotted
-            && tc.calloutDecorationShape != MappableDecorationShapeEnum.rounded_rectangle_dotted
-        )
-        Row(
+        if (tc.calloutDecorationShape != MappableDecorationShapeEnum.circle &&
+            tc.calloutDecorationShape !=
+                MappableDecorationShapeEnum.rectangle_dotted &&
+            tc.calloutDecorationShape !=
+                MappableDecorationShapeEnum.rounded_rectangle_dotted &&
+            tc.calloutDecorationShape != MappableDecorationShapeEnum.stadium &&
+            tc.calloutDecorationShape != MappableDecorationShapeEnum.star)
+          Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('borderWidth: '),
+              const Text('borderRadius: '),
               Align(
                 alignment: Alignment.center,
                 child: PropertyButtonNumber<double>(
-                  originalValue: tc.calloutBorderThickness,
+                  originalValue: tc.calloutBorderRadius,
                   onChangedF: (newValue) {
-                    tc.calloutBorderThickness = double.tryParse(newValue) ?? 0;
+                    tc.calloutBorderRadius = double.tryParse(newValue) ?? 0;
                     tc.changed_saveRootSnippet();
-                    _refreshContentCallout();
+                    fco.dismiss("more-cc-settings");
+                    CalloutConfigToolbar.closeThenReopenContentCallout(
+                      widget.cc,
+                      tc,
+                      widget.wrapperRect,
+                      widget.scName,
+                    );
                   },
                   alignment: Alignment.center,
-                  label: '${tc.calloutBorderThickness}',
+                  label: '${tc.calloutBorderRadius}',
                   buttonSize: const Size(40, 30),
                   editorSize: const Size(60, 60),
                 ),
               ),
-            ]),
+            ],
+          ),
+        if (tc.calloutDecorationShape !=
+                MappableDecorationShapeEnum.rectangle_dotted &&
+            tc.calloutDecorationShape !=
+                MappableDecorationShapeEnum.rounded_rectangle_dotted)
+          Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('borderWidth: '),
+                Align(
+                  alignment: Alignment.center,
+                  child: PropertyButtonNumber<double>(
+                    originalValue: tc.calloutBorderThickness,
+                    onChangedF: (newValue) {
+                      tc.calloutBorderThickness =
+                          double.tryParse(newValue) ?? 0;
+                      tc.changed_saveRootSnippet();
+                      fco.dismiss("more-cc-settings");
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        widget.cc,
+                        tc,
+                        widget.wrapperRect,
+                        widget.scName,
+                      );
+                    },
+                    alignment: Alignment.center,
+                    label: '${tc.calloutBorderThickness}',
+                    buttonSize: const Size(40, 30),
+                    editorSize: const Size(60, 60),
+                  ),
+                ),
+              ]),
         if (tc.calloutDecorationShape == MappableDecorationShapeEnum.star)
           Row(
               mainAxisSize: MainAxisSize.max,
@@ -154,7 +173,13 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                     onChangedF: (String newValue) {
                       tc.setCalloutStarPoints(int.tryParse(newValue));
                       tc.changed_saveRootSnippet();
-                      _refreshContentCallout();
+                      fco.dismiss("more-cc-settings");
+                      CalloutConfigToolbar.closeThenReopenContentCallout(
+                        widget.cc,
+                        tc,
+                        widget.wrapperRect,
+                        widget.scName,
+                      );
                     },
                     alignment: Alignment.center,
                     label: '${tc.starPoints ?? 7}',
@@ -174,7 +199,13 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
                 onChanged: (newValue) {
                   tc.canResizeH = newValue;
                   tc.changed_saveRootSnippet();
-                  _refreshContentCallout();
+                  fco.dismiss("more-cc-settings");
+                  CalloutConfigToolbar.closeThenReopenContentCallout(
+                    widget.cc,
+                    tc,
+                    widget.wrapperRect,
+                    widget.scName,
+                  );
                 },
               ),
             ]),
@@ -189,7 +220,13 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               onChanged: (newValue) {
                 tc.canResizeV = newValue;
                 tc.changed_saveRootSnippet();
-                _refreshContentCallout();
+                fco.dismiss("more-cc-settings");
+                CalloutConfigToolbar.closeThenReopenContentCallout(
+                  widget.cc,
+                  tc,
+                  widget.wrapperRect,
+                  widget.scName,
+                );
               },
             ),
           ],
@@ -205,33 +242,18 @@ class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
               onChanged: (newValue) {
                 tc.followScroll = newValue;
                 tc.changed_saveRootSnippet();
-                _refreshContentCallout();
+                fco.dismiss("more-cc-settings");
+                CalloutConfigToolbar.closeThenReopenContentCallout(
+                  widget.cc,
+                  tc,
+                  widget.wrapperRect,
+                  widget.scName,
+                );
               },
             ),
           ],
         ),
       ],
     ));
-  }
-
-  void _refreshContentCallout() {
-    fco.dismiss("more-cc-settings");
-    removeSnippetContentCallout(tc, skipOnDismiss: true);
-    tc
-        .targetsWrapperState()
-        ?.zoomer
-        ?.zoomImmediately(tc.transformScale, tc.transformScale);
-    showSnippetContentCallout(
-      tc: tc,
-      wrapperRect: widget.wrapperRect,
-      justPlaying: false,
-      // widget.onParentBarrierTappedF,
-      scName: widget.scName,
-    );
-    TargetsWrapper.showConfigToolbar(
-      tc,
-      widget.wrapperRect,
-      widget.scName,
-    );
   }
 }

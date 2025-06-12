@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class PointyTool extends StatefulWidget {
+  final CalloutConfigModel cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final ScrollControllerName? scName;
   final bool justPlaying;
 
   const PointyTool(
+    this.cc,
     this.tc, {
     required this.wrapperRect,
     this.scName,
@@ -19,9 +21,13 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(final TargetModel tc,
-      final Rect wrapperRect,
-      {final ScrollControllerName? scName, required final bool justPlaying}) {
+  static show(
+    CalloutConfigModel cc,
+    TargetModel tc,
+    Rect wrapperRect, {
+    ScrollControllerName? scName,
+    required bool justPlaying,
+  }) {
     GlobalKey? targetGK =
         // tc.single
         //     ? FCO.getSingleTargetGk(tc.wName)
@@ -31,6 +37,7 @@ class PointyTool extends StatefulWidget {
     fco.showOverlay(
         targetGkF: () => targetGK,
         calloutContent: PointyTool(
+          cc,
           tc,
           wrapperRect: wrapperRect,
           scName: scName,
@@ -80,24 +87,12 @@ class _PointyToolState extends State<PointyTool> {
     // fco.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   fco.refreshOverlay(tc.snippetName, f: () {});
-    removeSnippetContentCallout(tc, skipOnDismiss: true);
-    tc
-        .targetsWrapperState()
-        ?.zoomer
-        ?.zoomImmediately(tc.transformScale, tc.transformScale);
-    showSnippetContentCallout(
-      tc: tc,
-      justPlaying: false,
-      // widget.onParentBarrierTappedF,
-      wrapperRect: widget.wrapperRect,
-      scName: widget.scName,
-    );
-    TargetsWrapper.showConfigToolbar(
+    CalloutConfigToolbar.closeThenReopenContentCallout(
+      widget.cc,
       tc,
       widget.wrapperRect,
       widget.scName,
     );
-
   }
 
   @override

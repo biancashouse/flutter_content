@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class TargetColourTool extends StatelessWidget {
+  final CalloutConfigModel cc;
   final TargetModel tc;
   final Rect wrapperRect;
   final VoidCallback onParentBarrierTappedF;
@@ -11,6 +12,7 @@ class TargetColourTool extends StatelessWidget {
   final bool justPlaying;
 
   const TargetColourTool(
+    this.cc,
     this.tc,
     this.wrapperRect,
     this.onParentBarrierTappedF, {
@@ -34,26 +36,13 @@ class TargetColourTool extends StatelessWidget {
       // fco.afterNextBuildDo(() {
       //   widget.onParentBarrierTappedF.call();
       //   fco.refreshOverlay(tc.snippetName, f: () {});
-      removeSnippetContentCallout(tc, skipOnDismiss: true);
-      tc
-          .targetsWrapperState()
-          ?.zoomer
-          ?.zoomImmediately(tc.transformScale, tc.transformScale);
-      tc.targetsWrapperState()?.refresh(() {
-        showSnippetContentCallout(
-          tc: tc,
-          wrapperRect: wrapperRect,
-          justPlaying: false,
-          // widget.onParentBarrierTappedF,
-          scName: scName,
-        );
-        TargetsWrapper.showConfigToolbar(
-          tc,
-          wrapperRect,
-          scName,
-        );
-      });
       fco.dismiss('color-picker');
+      CalloutConfigToolbar.closeThenReopenContentCallout(
+        cc,
+        tc,
+        wrapperRect,
+        scName,
+      );
     }
 
     return Center(
@@ -102,11 +91,12 @@ class TargetColourTool extends StatelessWidget {
   }
 
   static show(
-    final TargetModel tc,
-    final Rect wrapperRect, {
+    CalloutConfigModel cc,
+    TargetModel tc,
+    Rect wrapperRect, {
     required VoidCallback onBarrierTappedF,
-    final ScrollControllerName? scName,
-    required final bool justPlaying,
+    ScrollControllerName? scName,
+    required bool justPlaying,
   }) {
     GlobalKey? targetGK =
         // tc.single
@@ -130,6 +120,7 @@ class TargetColourTool extends StatelessWidget {
         scrollControllerName: scName,
       ),
       calloutContent: TargetColourTool(
+        cc,
         tc,
         wrapperRect,
         onBarrierTappedF,

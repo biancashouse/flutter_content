@@ -79,11 +79,13 @@ class TargetCover extends StatelessWidget {
           },
           onDoubleTap: () async {
             if (FlutterContentApp.snippetBeingEdited != null) return;
-            TargetsWrapper.configureTarget(
+            tc.targetsWrapperState()!.setPlayingOrEditingTc(
+            tc,
+              ()=>TargetsWrapper.configureTarget(
               tc,
               wrapperRect,
               scName,
-            );
+            ),);
           },
           child: Stack(
             key: gk,
