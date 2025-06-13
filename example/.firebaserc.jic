@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "flutter-content-demo"
+  },
+  "targets": {
+    "flutter-content-demo": {
+      "hosting": {
+        "staging-deploy": [
+          "flutter-content-example"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
