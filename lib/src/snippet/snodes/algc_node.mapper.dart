@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'algc_node.dart';
@@ -89,7 +89,8 @@ mixin AlgCNodeMappable {
   }
 
   AlgCNodeCopyWith<AlgCNode, AlgCNode, AlgCNode> get copyWith =>
-      _AlgCNodeCopyWithImpl(this as AlgCNode, $identity, $identity);
+      _AlgCNodeCopyWithImpl<AlgCNode, AlgCNode>(
+          this as AlgCNode, $identity, $identity);
   @override
   String toString() {
     return AlgCNodeMapper.ensureInitialized().stringifyValue(this as AlgCNode);
@@ -109,7 +110,7 @@ mixin AlgCNodeMappable {
 
 extension AlgCNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, AlgCNode, $Out> {
   AlgCNodeCopyWith<$R, AlgCNode, $Out> get $asAlgCNode =>
-      $base.as((v, t, t2) => _AlgCNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _AlgCNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class AlgCNodeCopyWith<$R, $In extends AlgCNode, $Out>
@@ -148,5 +149,5 @@ class _AlgCNodeCopyWithImpl<$R, $Out>
   @override
   AlgCNodeCopyWith<$R2, AlgCNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _AlgCNodeCopyWithImpl($value, $cast, t);
+      _AlgCNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

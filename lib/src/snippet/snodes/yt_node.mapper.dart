@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'yt_node.dart';
@@ -98,7 +98,7 @@ mixin YTNodeMappable {
   }
 
   YTNodeCopyWith<YTNode, YTNode, YTNode> get copyWith =>
-      _YTNodeCopyWithImpl(this as YTNode, $identity, $identity);
+      _YTNodeCopyWithImpl<YTNode, YTNode>(this as YTNode, $identity, $identity);
   @override
   String toString() {
     return YTNodeMapper.ensureInitialized().stringifyValue(this as YTNode);
@@ -117,7 +117,7 @@ mixin YTNodeMappable {
 
 extension YTNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, YTNode, $Out> {
   YTNodeCopyWith<$R, YTNode, $Out> get $asYTNode =>
-      $base.as((v, t, t2) => _YTNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _YTNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class YTNodeCopyWith<$R, $In extends YTNode, $Out>
@@ -162,5 +162,5 @@ class _YTNodeCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, YTNode, $Out>
 
   @override
   YTNodeCopyWith<$R2, YTNode, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _YTNodeCopyWithImpl($value, $cast, t);
+      _YTNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

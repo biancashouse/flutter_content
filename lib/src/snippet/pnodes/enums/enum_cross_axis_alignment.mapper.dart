@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_cross_axis_alignment.dart';
@@ -25,13 +25,13 @@ class CrossAxisAlignmentEnumMapper extends EnumMapper<CrossAxisAlignmentEnum> {
   @override
   CrossAxisAlignmentEnum decode(dynamic value) {
     switch (value) {
-      case 'start':
+      case r'start':
         return CrossAxisAlignmentEnum.start;
-      case 'end':
+      case r'end':
         return CrossAxisAlignmentEnum.end;
-      case 'center':
+      case r'center':
         return CrossAxisAlignmentEnum.center;
-      case 'stretch':
+      case r'stretch':
         return CrossAxisAlignmentEnum.stretch;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -42,13 +42,13 @@ class CrossAxisAlignmentEnumMapper extends EnumMapper<CrossAxisAlignmentEnum> {
   dynamic encode(CrossAxisAlignmentEnum self) {
     switch (self) {
       case CrossAxisAlignmentEnum.start:
-        return 'start';
+        return r'start';
       case CrossAxisAlignmentEnum.end:
-        return 'end';
+        return r'end';
       case CrossAxisAlignmentEnum.center:
-        return 'center';
+        return r'center';
       case CrossAxisAlignmentEnum.stretch:
-        return 'stretch';
+        return r'stretch';
     }
   }
 }

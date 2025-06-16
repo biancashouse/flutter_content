@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_stack_fit.dart';
@@ -25,11 +25,11 @@ class StackFitEnumMapper extends EnumMapper<StackFitEnum> {
   @override
   StackFitEnum decode(dynamic value) {
     switch (value) {
-      case 'loose':
+      case r'loose':
         return StackFitEnum.loose;
-      case 'expand':
+      case r'expand':
         return StackFitEnum.expand;
-      case 'passthrough':
+      case r'passthrough':
         return StackFitEnum.passthrough;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -40,11 +40,11 @@ class StackFitEnumMapper extends EnumMapper<StackFitEnum> {
   dynamic encode(StackFitEnum self) {
     switch (self) {
       case StackFitEnum.loose:
-        return 'loose';
+        return r'loose';
       case StackFitEnum.expand:
-        return 'expand';
+        return r'expand';
       case StackFitEnum.passthrough:
-        return 'passthrough';
+        return r'passthrough';
     }
   }
 }

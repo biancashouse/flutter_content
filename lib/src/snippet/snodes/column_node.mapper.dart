@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'column_node.dart';
@@ -101,7 +101,8 @@ mixin ColumnNodeMappable {
   }
 
   ColumnNodeCopyWith<ColumnNode, ColumnNode, ColumnNode> get copyWith =>
-      _ColumnNodeCopyWithImpl(this as ColumnNode, $identity, $identity);
+      _ColumnNodeCopyWithImpl<ColumnNode, ColumnNode>(
+          this as ColumnNode, $identity, $identity);
   @override
   String toString() {
     return ColumnNodeMapper.ensureInitialized()
@@ -123,7 +124,7 @@ mixin ColumnNodeMappable {
 extension ColumnNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ColumnNode, $Out> {
   ColumnNodeCopyWith<$R, ColumnNode, $Out> get $asColumnNode =>
-      $base.as((v, t, t2) => _ColumnNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ColumnNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ColumnNodeCopyWith<$R, $In extends ColumnNode, $Out>
@@ -176,5 +177,5 @@ class _ColumnNodeCopyWithImpl<$R, $Out>
   @override
   ColumnNodeCopyWith<$R2, ColumnNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ColumnNodeCopyWithImpl($value, $cast, t);
+      _ColumnNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

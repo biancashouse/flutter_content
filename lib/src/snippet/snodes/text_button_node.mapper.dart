@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'text_button_node.dart';
@@ -114,8 +114,9 @@ mixin TextButtonNodeMappable {
   }
 
   TextButtonNodeCopyWith<TextButtonNode, TextButtonNode, TextButtonNode>
-      get copyWith => _TextButtonNodeCopyWithImpl(
-          this as TextButtonNode, $identity, $identity);
+      get copyWith =>
+          _TextButtonNodeCopyWithImpl<TextButtonNode, TextButtonNode>(
+              this as TextButtonNode, $identity, $identity);
   @override
   String toString() {
     return TextButtonNodeMapper.ensureInitialized()
@@ -138,7 +139,7 @@ mixin TextButtonNodeMappable {
 extension TextButtonNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TextButtonNode, $Out> {
   TextButtonNodeCopyWith<$R, TextButtonNode, $Out> get $asTextButtonNode =>
-      $base.as((v, t, t2) => _TextButtonNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TextButtonNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TextButtonNodeCopyWith<$R, $In extends TextButtonNode, $Out>
@@ -215,5 +216,5 @@ class _TextButtonNodeCopyWithImpl<$R, $Out>
   @override
   TextButtonNodeCopyWith<$R2, TextButtonNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TextButtonNodeCopyWithImpl($value, $cast, t);
+      _TextButtonNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

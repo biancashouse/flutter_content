@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'align_node.dart';
@@ -86,7 +86,8 @@ mixin AlignNodeMappable {
   }
 
   AlignNodeCopyWith<AlignNode, AlignNode, AlignNode> get copyWith =>
-      _AlignNodeCopyWithImpl(this as AlignNode, $identity, $identity);
+      _AlignNodeCopyWithImpl<AlignNode, AlignNode>(
+          this as AlignNode, $identity, $identity);
   @override
   String toString() {
     return AlignNodeMapper.ensureInitialized()
@@ -107,7 +108,7 @@ mixin AlignNodeMappable {
 
 extension AlignNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, AlignNode, $Out> {
   AlignNodeCopyWith<$R, AlignNode, $Out> get $asAlignNode =>
-      $base.as((v, t, t2) => _AlignNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _AlignNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class AlignNodeCopyWith<$R, $In extends AlignNode, $Out>
@@ -144,5 +145,5 @@ class _AlignNodeCopyWithImpl<$R, $Out>
   @override
   AlignNodeCopyWith<$R2, AlignNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _AlignNodeCopyWithImpl($value, $cast, t);
+      _AlignNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

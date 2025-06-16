@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'uml_image_node.dart';
@@ -104,7 +104,8 @@ mixin UMLImageNodeMappable {
   }
 
   UMLImageNodeCopyWith<UMLImageNode, UMLImageNode, UMLImageNode> get copyWith =>
-      _UMLImageNodeCopyWithImpl(this as UMLImageNode, $identity, $identity);
+      _UMLImageNodeCopyWithImpl<UMLImageNode, UMLImageNode>(
+          this as UMLImageNode, $identity, $identity);
   @override
   String toString() {
     return UMLImageNodeMapper.ensureInitialized()
@@ -127,7 +128,7 @@ mixin UMLImageNodeMappable {
 extension UMLImageNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, UMLImageNode, $Out> {
   UMLImageNodeCopyWith<$R, UMLImageNode, $Out> get $asUMLImageNode =>
-      $base.as((v, t, t2) => _UMLImageNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _UMLImageNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class UMLImageNodeCopyWith<$R, $In extends UMLImageNode, $Out>
@@ -175,5 +176,5 @@ class _UMLImageNodeCopyWithImpl<$R, $Out>
   @override
   UMLImageNodeCopyWith<$R2, UMLImageNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _UMLImageNodeCopyWithImpl($value, $cast, t);
+      _UMLImageNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

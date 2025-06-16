@@ -494,18 +494,14 @@ class FlutterContentMixins
       AppInfoModel? fbAppInfo = await modelRepo.getAppInfo();
       _appInfo = fbAppInfo ?? AppInfoModel();
 
-      // text and button styles get saved in the AppInfo
+      // text, button, and container styles get saved in the AppInfo. Combine with the canned (source-coded) ones
       try {
         namedTextStyles.addAll(cannedTextStyles());
-        namedTextStyles.addAll(_appInfo.textStyles);
+        namedTextStyles.addAll(_appInfo.userTextStyles);
         namedButtonStyles.addAll(cannedButtonStyles());
-        namedButtonStyles.addAll(_appInfo.buttonStyles);
+        namedButtonStyles.addAll(_appInfo.userButtonStyles);
         namedContainerStyles.addAll(cannedContainerStyles());
-        namedContainerStyles.addAll(_appInfo.containerStyles);
-        if (cannedButtonStyles().length != _appInfo.buttonStyles.length ||
-            cannedTextStyles().length != _appInfo.textStyles.length) {
-          await modelRepo.saveAppInfo();
-        }
+        namedContainerStyles.addAll(_appInfo.userContainerStyles);
       } catch (e) {
         logger.e(e);
       }
@@ -968,8 +964,8 @@ class FlutterContentMixins
 
   /// inspect the named text styles for a match, and return the name of that matching style
   TextStyleName? findTextStyleName(TextStyleProperties props) {
-    for (TextStyleName tsName in _appInfo.textStyles.keys) {
-      TextStyleProperties namedTSProps = appInfo.textStyles[tsName]!;
+    for (TextStyleName tsName in _appInfo.userTextStyles.keys) {
+      TextStyleProperties namedTSProps = appInfo.userTextStyles[tsName]!;
       if (namedTSProps.color == props.color &&
           namedTSProps.fontWeight == props.fontWeight &&
           namedTSProps.fontSize == props.fontSize &&
@@ -985,8 +981,8 @@ class FlutterContentMixins
   }
 
   ButtonStyleName? findButtonStyleName(ButtonStyleProperties props) {
-    for (ButtonStyleName bsName in _appInfo.buttonStyles.keys) {
-      ButtonStyleProperties namedBSProps = _appInfo.buttonStyles[bsName]!;
+    for (ButtonStyleName bsName in _appInfo.userButtonStyles.keys) {
+      ButtonStyleProperties namedBSProps = _appInfo.userButtonStyles[bsName]!;
       if (namedBSProps.bgColor == props.bgColor &&
           namedBSProps.fgColor == props.fgColor &&
           namedBSProps.tsPropGroup == props.tsPropGroup &&
@@ -1009,8 +1005,8 @@ class FlutterContentMixins
   }
 
   ContainerStyleName? findContainerStyleName(ContainerStyleProperties props) {
-    for (ContainerStyleName csName in _appInfo.containerStyles.keys) {
-      ContainerStyleProperties namedCSProps = _appInfo.containerStyles[csName]!;
+    for (ContainerStyleName csName in _appInfo.userContainerStyles.keys) {
+      ContainerStyleProperties namedCSProps = _appInfo.userContainerStyles[csName]!;
       if (namedCSProps == props) {
         return csName;
       }

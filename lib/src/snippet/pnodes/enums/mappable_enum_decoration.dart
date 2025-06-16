@@ -74,32 +74,32 @@ enum MappableDecorationShapeEnum {
     Color? fillColor;
     List<Color> fillColors = [];
     if (upTo6FillColors?.color1Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color1Value!));
+      fillColors.add(Color(upTo6FillColors!.color1Value!.toInt()));
     } else if (upTo6FillColors?.color1 != null) {
       fillColors.add(upTo6FillColors!.color1!.flutterValue);
     }
     if (upTo6FillColors?.color2Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color2Value!));
+      fillColors.add(Color(upTo6FillColors!.color2Value!.toInt()));
     } else if (upTo6FillColors?.color2 != null) {
       fillColors.add(upTo6FillColors!.color2!.flutterValue);
     }
     if (upTo6FillColors?.color3Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color3Value!));
+      fillColors.add(Color(upTo6FillColors!.color3Value!.toInt()));
     } else if (upTo6FillColors?.color3 != null) {
       fillColors.add(upTo6FillColors!.color3!.flutterValue);
     }
     if (upTo6FillColors?.color4Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color4Value!));
+      fillColors.add(Color(upTo6FillColors!.color4Value!.toInt()));
     } else if (upTo6FillColors?.color4 != null) {
       fillColors.add(upTo6FillColors!.color4!.flutterValue);
     }
     if (upTo6FillColors?.color5Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color5Value!));
+      fillColors.add(Color(upTo6FillColors!.color5Value!.toInt()));
     } else if (upTo6FillColors?.color5 != null) {
       fillColors.add(upTo6FillColors!.color5!.flutterValue);
     }
     if (upTo6FillColors?.color6Value != null) {
-      fillColors.add(Color(upTo6FillColors!.color6Value!));
+      fillColors.add(Color(upTo6FillColors!.color6Value!.toInt()));
     } else if (upTo6FillColors?.color6 != null) {
       fillColors.add(upTo6FillColors!.color6!.flutterValue);
     }
@@ -115,29 +115,29 @@ enum MappableDecorationShapeEnum {
 
     List<Color> borderColors = [];
     if (upTo6BorderColors?.color1Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color1Value!));
+      borderColors.add(Color(upTo6BorderColors!.color1Value!.toInt()));
     } else if (upTo6BorderColors?.color1 != null) {
       borderColors.add(upTo6BorderColors!.color1!.flutterValue);
     }
     if (upTo6BorderColors?.color2Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color2Value!));
+      borderColors.add(Color(upTo6BorderColors!.color2Value!.toInt()));
     } else if (upTo6BorderColors?.color2 != null) {
       borderColors.add(upTo6BorderColors!.color2!.flutterValue);
     }
     if (upTo6BorderColors?.color3Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color3Value!));
+      borderColors.add(Color(upTo6BorderColors!.color3Value!.toInt()));
     } else if (upTo6BorderColors?.color3 != null) {
       borderColors.add(upTo6BorderColors!.color3!.flutterValue);   }
     if (upTo6BorderColors?.color4Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color4Value!));
+      borderColors.add(Color(upTo6BorderColors!.color4Value!.toInt()));
     } else if (upTo6BorderColors?.color4 != null) {
       borderColors.add(upTo6BorderColors!.color4!.flutterValue);    }
     if (upTo6BorderColors?.color5Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color5Value!));
+      borderColors.add(Color(upTo6BorderColors!.color5Value!.toInt()));
     } else if (upTo6BorderColors?.color5 != null) {
       borderColors.add(upTo6BorderColors!.color5!.flutterValue);    }
     if (upTo6BorderColors?.color6Value != null) {
-      borderColors.add(Color(upTo6BorderColors!.color6Value!));
+      borderColors.add(Color(upTo6BorderColors!.color6Value!.toInt()));
     } else if (upTo6BorderColors?.color6 != null) {
       borderColors.add(upTo6BorderColors!.color6!.flutterValue);   }
     BoxBorder? border;

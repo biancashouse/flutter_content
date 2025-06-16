@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'center_node.dart';
@@ -80,7 +80,8 @@ mixin CenterNodeMappable {
   }
 
   CenterNodeCopyWith<CenterNode, CenterNode, CenterNode> get copyWith =>
-      _CenterNodeCopyWithImpl(this as CenterNode, $identity, $identity);
+      _CenterNodeCopyWithImpl<CenterNode, CenterNode>(
+          this as CenterNode, $identity, $identity);
   @override
   String toString() {
     return CenterNodeMapper.ensureInitialized()
@@ -102,7 +103,7 @@ mixin CenterNodeMappable {
 extension CenterNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CenterNode, $Out> {
   CenterNodeCopyWith<$R, CenterNode, $Out> get $asCenterNode =>
-      $base.as((v, t, t2) => _CenterNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CenterNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CenterNodeCopyWith<$R, $In extends CenterNode, $Out>
@@ -135,5 +136,5 @@ class _CenterNodeCopyWithImpl<$R, $Out>
   @override
   CenterNodeCopyWith<$R2, CenterNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CenterNodeCopyWithImpl($value, $cast, t);
+      _CenterNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

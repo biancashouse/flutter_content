@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'text_node.dart';
@@ -97,7 +97,8 @@ mixin TextNodeMappable {
   }
 
   TextNodeCopyWith<TextNode, TextNode, TextNode> get copyWith =>
-      _TextNodeCopyWithImpl(this as TextNode, $identity, $identity);
+      _TextNodeCopyWithImpl<TextNode, TextNode>(
+          this as TextNode, $identity, $identity);
   @override
   String toString() {
     return TextNodeMapper.ensureInitialized().stringifyValue(this as TextNode);
@@ -117,7 +118,7 @@ mixin TextNodeMappable {
 
 extension TextNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, TextNode, $Out> {
   TextNodeCopyWith<$R, TextNode, $Out> get $asTextNode =>
-      $base.as((v, t, t2) => _TextNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TextNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TextNodeCopyWith<$R, $In extends TextNode, $Out>
@@ -167,5 +168,5 @@ class _TextNodeCopyWithImpl<$R, $Out>
   @override
   TextNodeCopyWith<$R2, TextNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TextNodeCopyWithImpl($value, $cast, t);
+      _TextNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

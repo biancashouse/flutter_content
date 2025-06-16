@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_material3_text_size.dart';
@@ -25,35 +25,35 @@ class Material3TextSizeEnumMapper extends EnumMapper<Material3TextSizeEnum> {
   @override
   Material3TextSizeEnum decode(dynamic value) {
     switch (value) {
-      case 'displayL':
+      case r'displayL':
         return Material3TextSizeEnum.displayL;
-      case 'displayM':
+      case r'displayM':
         return Material3TextSizeEnum.displayM;
-      case 'displayS':
+      case r'displayS':
         return Material3TextSizeEnum.displayS;
-      case 'headlineL':
+      case r'headlineL':
         return Material3TextSizeEnum.headlineL;
-      case 'headlineM':
+      case r'headlineM':
         return Material3TextSizeEnum.headlineM;
-      case 'headlineS':
+      case r'headlineS':
         return Material3TextSizeEnum.headlineS;
-      case 'titleL':
+      case r'titleL':
         return Material3TextSizeEnum.titleL;
-      case 'titleM':
+      case r'titleM':
         return Material3TextSizeEnum.titleM;
-      case 'titleS':
+      case r'titleS':
         return Material3TextSizeEnum.titleS;
-      case 'bodyL':
+      case r'bodyL':
         return Material3TextSizeEnum.bodyL;
-      case 'bodyM':
+      case r'bodyM':
         return Material3TextSizeEnum.bodyM;
-      case 'bodyS':
+      case r'bodyS':
         return Material3TextSizeEnum.bodyS;
-      case 'labelL':
+      case r'labelL':
         return Material3TextSizeEnum.labelL;
-      case 'labelM':
+      case r'labelM':
         return Material3TextSizeEnum.labelM;
-      case 'labelS':
+      case r'labelS':
         return Material3TextSizeEnum.labelS;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -64,35 +64,35 @@ class Material3TextSizeEnumMapper extends EnumMapper<Material3TextSizeEnum> {
   dynamic encode(Material3TextSizeEnum self) {
     switch (self) {
       case Material3TextSizeEnum.displayL:
-        return 'displayL';
+        return r'displayL';
       case Material3TextSizeEnum.displayM:
-        return 'displayM';
+        return r'displayM';
       case Material3TextSizeEnum.displayS:
-        return 'displayS';
+        return r'displayS';
       case Material3TextSizeEnum.headlineL:
-        return 'headlineL';
+        return r'headlineL';
       case Material3TextSizeEnum.headlineM:
-        return 'headlineM';
+        return r'headlineM';
       case Material3TextSizeEnum.headlineS:
-        return 'headlineS';
+        return r'headlineS';
       case Material3TextSizeEnum.titleL:
-        return 'titleL';
+        return r'titleL';
       case Material3TextSizeEnum.titleM:
-        return 'titleM';
+        return r'titleM';
       case Material3TextSizeEnum.titleS:
-        return 'titleS';
+        return r'titleS';
       case Material3TextSizeEnum.bodyL:
-        return 'bodyL';
+        return r'bodyL';
       case Material3TextSizeEnum.bodyM:
-        return 'bodyM';
+        return r'bodyM';
       case Material3TextSizeEnum.bodyS:
-        return 'bodyS';
+        return r'bodyS';
       case Material3TextSizeEnum.labelL:
-        return 'labelL';
+        return r'labelL';
       case Material3TextSizeEnum.labelM:
-        return 'labelM';
+        return r'labelM';
       case Material3TextSizeEnum.labelS:
-        return 'labelS';
+        return r'labelS';
     }
   }
 }

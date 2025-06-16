@@ -1,8 +1,8 @@
-name: example
+name: admin
 description: "Example website project to demo the flutter_content pkg."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.9.0
+version: 0.0.1
 
 environment:
   sdk: ^3.7.2
@@ -15,8 +15,8 @@ dependencies:
 #    sdk: flutter
 
   logger: ^2.5.0
-  firebase_core: ^3.3.0
-  cloud_firestore: ^5.2.1
+  firebase_core: ^3.14.0
+  cloud_firestore: ^5.6.9
 
   flutter_content:  #any
     path: ../../flutter_content

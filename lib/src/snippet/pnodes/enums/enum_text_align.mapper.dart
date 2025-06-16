@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_text_align.dart';
@@ -25,17 +25,17 @@ class TextAlignEnumMapper extends EnumMapper<TextAlignEnum> {
   @override
   TextAlignEnum decode(dynamic value) {
     switch (value) {
-      case 'left':
+      case r'left':
         return TextAlignEnum.left;
-      case 'right':
+      case r'right':
         return TextAlignEnum.right;
-      case 'center':
+      case r'center':
         return TextAlignEnum.center;
-      case 'justify':
+      case r'justify':
         return TextAlignEnum.justify;
-      case 'start':
+      case r'start':
         return TextAlignEnum.start;
-      case 'end':
+      case r'end':
         return TextAlignEnum.end;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -46,17 +46,17 @@ class TextAlignEnumMapper extends EnumMapper<TextAlignEnum> {
   dynamic encode(TextAlignEnum self) {
     switch (self) {
       case TextAlignEnum.left:
-        return 'left';
+        return r'left';
       case TextAlignEnum.right:
-        return 'right';
+        return r'right';
       case TextAlignEnum.center:
-        return 'center';
+        return r'center';
       case TextAlignEnum.justify:
-        return 'justify';
+        return r'justify';
       case TextAlignEnum.start:
-        return 'start';
+        return r'start';
       case TextAlignEnum.end:
-        return 'end';
+        return r'end';
     }
   }
 }

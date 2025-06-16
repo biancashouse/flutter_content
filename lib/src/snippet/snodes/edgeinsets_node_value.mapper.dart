@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'edgeinsets_node_value.dart';
@@ -73,8 +73,9 @@ mixin EdgeInsetsValueMappable {
   }
 
   EdgeInsetsValueCopyWith<EdgeInsetsValue, EdgeInsetsValue, EdgeInsetsValue>
-      get copyWith => _EdgeInsetsValueCopyWithImpl(
-          this as EdgeInsetsValue, $identity, $identity);
+      get copyWith =>
+          _EdgeInsetsValueCopyWithImpl<EdgeInsetsValue, EdgeInsetsValue>(
+              this as EdgeInsetsValue, $identity, $identity);
   @override
   String toString() {
     return EdgeInsetsValueMapper.ensureInitialized()
@@ -97,7 +98,7 @@ mixin EdgeInsetsValueMappable {
 extension EdgeInsetsValueValueCopy<$R, $Out>
     on ObjectCopyWith<$R, EdgeInsetsValue, $Out> {
   EdgeInsetsValueCopyWith<$R, EdgeInsetsValue, $Out> get $asEdgeInsetsValue =>
-      $base.as((v, t, t2) => _EdgeInsetsValueCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _EdgeInsetsValueCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class EdgeInsetsValueCopyWith<$R, $In extends EdgeInsetsValue, $Out>
@@ -133,5 +134,5 @@ class _EdgeInsetsValueCopyWithImpl<$R, $Out>
   @override
   EdgeInsetsValueCopyWith<$R2, EdgeInsetsValue, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _EdgeInsetsValueCopyWithImpl($value, $cast, t);
+      _EdgeInsetsValueCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

@@ -6,7 +6,7 @@
     "flutter-content-demo": {
       "hosting": {
         "staging-deploy": [
-          "flutter-content-example"
+          "flutter-content-demo"
         ]
       }
     }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_outlined_border.dart';
@@ -25,19 +25,19 @@ class OutlinedBorderEnumMapper extends EnumMapper<OutlinedBorderEnum> {
   @override
   OutlinedBorderEnum decode(dynamic value) {
     switch (value) {
-      case 'beveledRectangleBorder':
+      case r'beveledRectangleBorder':
         return OutlinedBorderEnum.beveledRectangleBorder;
-      case 'circleBorder':
+      case r'circleBorder':
         return OutlinedBorderEnum.circleBorder;
-      case 'continuousRectangleBorder':
+      case r'continuousRectangleBorder':
         return OutlinedBorderEnum.continuousRectangleBorder;
-      case 'linearBorder':
+      case r'linearBorder':
         return OutlinedBorderEnum.linearBorder;
-      case 'roundedRectangleBorder':
+      case r'roundedRectangleBorder':
         return OutlinedBorderEnum.roundedRectangleBorder;
-      case 'stadiumBorder':
+      case r'stadiumBorder':
         return OutlinedBorderEnum.stadiumBorder;
-      case 'starBorder':
+      case r'starBorder':
         return OutlinedBorderEnum.starBorder;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -48,19 +48,19 @@ class OutlinedBorderEnumMapper extends EnumMapper<OutlinedBorderEnum> {
   dynamic encode(OutlinedBorderEnum self) {
     switch (self) {
       case OutlinedBorderEnum.beveledRectangleBorder:
-        return 'beveledRectangleBorder';
+        return r'beveledRectangleBorder';
       case OutlinedBorderEnum.circleBorder:
-        return 'circleBorder';
+        return r'circleBorder';
       case OutlinedBorderEnum.continuousRectangleBorder:
-        return 'continuousRectangleBorder';
+        return r'continuousRectangleBorder';
       case OutlinedBorderEnum.linearBorder:
-        return 'linearBorder';
+        return r'linearBorder';
       case OutlinedBorderEnum.roundedRectangleBorder:
-        return 'roundedRectangleBorder';
+        return r'roundedRectangleBorder';
       case OutlinedBorderEnum.stadiumBorder:
-        return 'stadiumBorder';
+        return r'stadiumBorder';
       case OutlinedBorderEnum.starBorder:
-        return 'starBorder';
+        return r'starBorder';
     }
   }
 }

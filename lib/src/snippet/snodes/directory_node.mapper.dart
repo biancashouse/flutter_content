@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'directory_node.dart';
@@ -85,7 +85,7 @@ mixin DirectoryNodeMappable {
   }
 
   DirectoryNodeCopyWith<DirectoryNode, DirectoryNode, DirectoryNode>
-      get copyWith => _DirectoryNodeCopyWithImpl(
+      get copyWith => _DirectoryNodeCopyWithImpl<DirectoryNode, DirectoryNode>(
           this as DirectoryNode, $identity, $identity);
   @override
   String toString() {
@@ -109,7 +109,7 @@ mixin DirectoryNodeMappable {
 extension DirectoryNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DirectoryNode, $Out> {
   DirectoryNodeCopyWith<$R, DirectoryNode, $Out> get $asDirectoryNode =>
-      $base.as((v, t, t2) => _DirectoryNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _DirectoryNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DirectoryNodeCopyWith<$R, $In extends DirectoryNode, $Out>
@@ -147,5 +147,5 @@ class _DirectoryNodeCopyWithImpl<$R, $Out>
   @override
   DirectoryNodeCopyWith<$R2, DirectoryNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _DirectoryNodeCopyWithImpl($value, $cast, t);
+      _DirectoryNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

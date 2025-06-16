@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'expanded_node.dart';
@@ -84,7 +84,8 @@ mixin ExpandedNodeMappable {
   }
 
   ExpandedNodeCopyWith<ExpandedNode, ExpandedNode, ExpandedNode> get copyWith =>
-      _ExpandedNodeCopyWithImpl(this as ExpandedNode, $identity, $identity);
+      _ExpandedNodeCopyWithImpl<ExpandedNode, ExpandedNode>(
+          this as ExpandedNode, $identity, $identity);
   @override
   String toString() {
     return ExpandedNodeMapper.ensureInitialized()
@@ -107,7 +108,7 @@ mixin ExpandedNodeMappable {
 extension ExpandedNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ExpandedNode, $Out> {
   ExpandedNodeCopyWith<$R, ExpandedNode, $Out> get $asExpandedNode =>
-      $base.as((v, t, t2) => _ExpandedNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ExpandedNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ExpandedNodeCopyWith<$R, $In extends ExpandedNode, $Out>
@@ -141,5 +142,5 @@ class _ExpandedNodeCopyWithImpl<$R, $Out>
   @override
   ExpandedNodeCopyWith<$R2, ExpandedNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ExpandedNodeCopyWithImpl($value, $cast, t);
+      _ExpandedNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

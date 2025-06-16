@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'upto6colors.dart';
@@ -39,23 +39,23 @@ class UpTo6ColorsMapper extends ClassMapperBase<UpTo6Colors> {
   static ColorModel? _$color6(UpTo6Colors v) => v.color6;
   static const Field<UpTo6Colors, ColorModel> _f$color6 =
       Field('color6', _$color6, opt: true);
-  static int? _$color1Value(UpTo6Colors v) => v.color1Value;
-  static const Field<UpTo6Colors, int> _f$color1Value =
+  static double? _$color1Value(UpTo6Colors v) => v.color1Value;
+  static const Field<UpTo6Colors, double> _f$color1Value =
       Field('color1Value', _$color1Value, opt: true);
-  static int? _$color2Value(UpTo6Colors v) => v.color2Value;
-  static const Field<UpTo6Colors, int> _f$color2Value =
+  static double? _$color2Value(UpTo6Colors v) => v.color2Value;
+  static const Field<UpTo6Colors, double> _f$color2Value =
       Field('color2Value', _$color2Value, opt: true);
-  static int? _$color3Value(UpTo6Colors v) => v.color3Value;
-  static const Field<UpTo6Colors, int> _f$color3Value =
+  static double? _$color3Value(UpTo6Colors v) => v.color3Value;
+  static const Field<UpTo6Colors, double> _f$color3Value =
       Field('color3Value', _$color3Value, opt: true);
-  static int? _$color4Value(UpTo6Colors v) => v.color4Value;
-  static const Field<UpTo6Colors, int> _f$color4Value =
+  static double? _$color4Value(UpTo6Colors v) => v.color4Value;
+  static const Field<UpTo6Colors, double> _f$color4Value =
       Field('color4Value', _$color4Value, opt: true);
-  static int? _$color5Value(UpTo6Colors v) => v.color5Value;
-  static const Field<UpTo6Colors, int> _f$color5Value =
+  static double? _$color5Value(UpTo6Colors v) => v.color5Value;
+  static const Field<UpTo6Colors, double> _f$color5Value =
       Field('color5Value', _$color5Value, opt: true);
-  static int? _$color6Value(UpTo6Colors v) => v.color6Value;
-  static const Field<UpTo6Colors, int> _f$color6Value =
+  static double? _$color6Value(UpTo6Colors v) => v.color6Value;
+  static const Field<UpTo6Colors, double> _f$color6Value =
       Field('color6Value', _$color6Value, opt: true);
 
   @override
@@ -114,7 +114,8 @@ mixin UpTo6ColorsMappable {
   }
 
   UpTo6ColorsCopyWith<UpTo6Colors, UpTo6Colors, UpTo6Colors> get copyWith =>
-      _UpTo6ColorsCopyWithImpl(this as UpTo6Colors, $identity, $identity);
+      _UpTo6ColorsCopyWithImpl<UpTo6Colors, UpTo6Colors>(
+          this as UpTo6Colors, $identity, $identity);
   @override
   String toString() {
     return UpTo6ColorsMapper.ensureInitialized()
@@ -136,7 +137,7 @@ mixin UpTo6ColorsMappable {
 extension UpTo6ColorsValueCopy<$R, $Out>
     on ObjectCopyWith<$R, UpTo6Colors, $Out> {
   UpTo6ColorsCopyWith<$R, UpTo6Colors, $Out> get $asUpTo6Colors =>
-      $base.as((v, t, t2) => _UpTo6ColorsCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _UpTo6ColorsCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class UpTo6ColorsCopyWith<$R, $In extends UpTo6Colors, $Out>
@@ -154,12 +155,12 @@ abstract class UpTo6ColorsCopyWith<$R, $In extends UpTo6Colors, $Out>
       ColorModel? color4,
       ColorModel? color5,
       ColorModel? color6,
-      int? color1Value,
-      int? color2Value,
-      int? color3Value,
-      int? color4Value,
-      int? color5Value,
-      int? color6Value});
+      double? color1Value,
+      double? color2Value,
+      double? color3Value,
+      double? color4Value,
+      double? color5Value,
+      double? color6Value});
   UpTo6ColorsCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -235,5 +236,5 @@ class _UpTo6ColorsCopyWithImpl<$R, $Out>
   @override
   UpTo6ColorsCopyWith<$R2, UpTo6Colors, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _UpTo6ColorsCopyWithImpl($value, $cast, t);
+      _UpTo6ColorsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

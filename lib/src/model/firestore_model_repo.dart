@@ -86,13 +86,6 @@ class FireStoreModelRepository implements IModelRepository {
       alreadyRequestedSnippetInfoNames.add(snippetName);
     }
 
-    // // may be already in cache
-    // SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
-    // if (snippetInfo != null) {
-    //   // if (FCO.currentSnippet(snippetName) != null) {
-    //   return snippetInfo;
-    // }
-
     if (fco.snippetsBeingReadFromFB.contains(snippetName)) {
       // fco.logger.i(
       //     '--- STILL LOADING SNIPPET INFO ($snippetName) FROM FB ----------');
@@ -232,9 +225,9 @@ class FireStoreModelRepository implements IModelRepository {
   @override
   Future<void> saveAppInfo() async {
     fco.logger.d('***********   saveAppInfo   ****************');
-    fco.appInfo.textStyles = fco.namedTextStyles;
-    fco.appInfo.buttonStyles = fco.namedButtonStyles;
-    fco.appInfo.containerStyles = fco.namedContainerStyles;
+    fco.appInfo.userTextStyles = fco.namedTextStyles;
+    fco.appInfo.userButtonStyles = fco.namedButtonStyles;
+    fco.appInfo.userContainerStyles = fco.namedContainerStyles;
     var map = fco.appInfoAsMap;
     await appDocRef.set(map);
   }

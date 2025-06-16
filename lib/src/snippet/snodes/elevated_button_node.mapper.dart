@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'elevated_button_node.dart';
@@ -116,8 +116,8 @@ mixin ElevatedButtonNodeMappable {
 
   ElevatedButtonNodeCopyWith<ElevatedButtonNode, ElevatedButtonNode,
           ElevatedButtonNode>
-      get copyWith => _ElevatedButtonNodeCopyWithImpl(
-          this as ElevatedButtonNode, $identity, $identity);
+      get copyWith => _ElevatedButtonNodeCopyWithImpl<ElevatedButtonNode,
+          ElevatedButtonNode>(this as ElevatedButtonNode, $identity, $identity);
   @override
   String toString() {
     return ElevatedButtonNodeMapper.ensureInitialized()
@@ -140,8 +140,8 @@ mixin ElevatedButtonNodeMappable {
 extension ElevatedButtonNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ElevatedButtonNode, $Out> {
   ElevatedButtonNodeCopyWith<$R, ElevatedButtonNode, $Out>
-      get $asElevatedButtonNode =>
-          $base.as((v, t, t2) => _ElevatedButtonNodeCopyWithImpl(v, t, t2));
+      get $asElevatedButtonNode => $base.as(
+          (v, t, t2) => _ElevatedButtonNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ElevatedButtonNodeCopyWith<$R, $In extends ElevatedButtonNode,
@@ -218,5 +218,5 @@ class _ElevatedButtonNodeCopyWithImpl<$R, $Out>
   @override
   ElevatedButtonNodeCopyWith<$R2, ElevatedButtonNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ElevatedButtonNodeCopyWithImpl($value, $cast, t);
+      _ElevatedButtonNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

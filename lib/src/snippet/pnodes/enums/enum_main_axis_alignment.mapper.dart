@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_main_axis_alignment.dart';
@@ -25,17 +25,17 @@ class MainAxisAlignmentEnumMapper extends EnumMapper<MainAxisAlignmentEnum> {
   @override
   MainAxisAlignmentEnum decode(dynamic value) {
     switch (value) {
-      case 'start':
+      case r'start':
         return MainAxisAlignmentEnum.start;
-      case 'end':
+      case r'end':
         return MainAxisAlignmentEnum.end;
-      case 'center':
+      case r'center':
         return MainAxisAlignmentEnum.center;
-      case 'space_between':
+      case r'space_between':
         return MainAxisAlignmentEnum.space_between;
-      case 'space_around':
+      case r'space_around':
         return MainAxisAlignmentEnum.space_around;
-      case 'space_evenly':
+      case r'space_evenly':
         return MainAxisAlignmentEnum.space_evenly;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -46,17 +46,17 @@ class MainAxisAlignmentEnumMapper extends EnumMapper<MainAxisAlignmentEnum> {
   dynamic encode(MainAxisAlignmentEnum self) {
     switch (self) {
       case MainAxisAlignmentEnum.start:
-        return 'start';
+        return r'start';
       case MainAxisAlignmentEnum.end:
-        return 'end';
+        return r'end';
       case MainAxisAlignmentEnum.center:
-        return 'center';
+        return r'center';
       case MainAxisAlignmentEnum.space_between:
-        return 'space_between';
+        return r'space_between';
       case MainAxisAlignmentEnum.space_around:
-        return 'space_around';
+        return r'space_around';
       case MainAxisAlignmentEnum.space_evenly:
-        return 'space_evenly';
+        return r'space_evenly';
     }
   }
 }

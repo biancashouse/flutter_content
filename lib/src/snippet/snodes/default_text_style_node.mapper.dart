@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'default_text_style_node.dart';
@@ -96,9 +96,9 @@ mixin DefaultTextStyleNodeMappable {
   }
 
   DefaultTextStyleNodeCopyWith<DefaultTextStyleNode, DefaultTextStyleNode,
-          DefaultTextStyleNode>
-      get copyWith => _DefaultTextStyleNodeCopyWithImpl(
-          this as DefaultTextStyleNode, $identity, $identity);
+      DefaultTextStyleNode> get copyWith => _DefaultTextStyleNodeCopyWithImpl<
+          DefaultTextStyleNode, DefaultTextStyleNode>(
+      this as DefaultTextStyleNode, $identity, $identity);
   @override
   String toString() {
     return DefaultTextStyleNodeMapper.ensureInitialized()
@@ -121,8 +121,8 @@ mixin DefaultTextStyleNodeMappable {
 extension DefaultTextStyleNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, DefaultTextStyleNode, $Out> {
   DefaultTextStyleNodeCopyWith<$R, DefaultTextStyleNode, $Out>
-      get $asDefaultTextStyleNode =>
-          $base.as((v, t, t2) => _DefaultTextStyleNodeCopyWithImpl(v, t, t2));
+      get $asDefaultTextStyleNode => $base.as(
+          (v, t, t2) => _DefaultTextStyleNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class DefaultTextStyleNodeCopyWith<
@@ -176,5 +176,5 @@ class _DefaultTextStyleNodeCopyWithImpl<$R, $Out>
   @override
   DefaultTextStyleNodeCopyWith<$R2, DefaultTextStyleNode, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _DefaultTextStyleNodeCopyWithImpl($value, $cast, t);
+          _DefaultTextStyleNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'mappable_enum_decoration.dart';
@@ -27,21 +27,21 @@ class MappableDecorationShapeEnumMapper
   @override
   MappableDecorationShapeEnum decode(dynamic value) {
     switch (value) {
-      case 'rectangle':
+      case r'rectangle':
         return MappableDecorationShapeEnum.rectangle;
-      case 'rounded_rectangle':
+      case r'rounded_rectangle':
         return MappableDecorationShapeEnum.rounded_rectangle;
-      case 'rectangle_dotted':
+      case r'rectangle_dotted':
         return MappableDecorationShapeEnum.rectangle_dotted;
-      case 'rounded_rectangle_dotted':
+      case r'rounded_rectangle_dotted':
         return MappableDecorationShapeEnum.rounded_rectangle_dotted;
-      case 'circle':
+      case r'circle':
         return MappableDecorationShapeEnum.circle;
-      case 'bevelled':
+      case r'bevelled':
         return MappableDecorationShapeEnum.bevelled;
-      case 'stadium':
+      case r'stadium':
         return MappableDecorationShapeEnum.stadium;
-      case 'star':
+      case r'star':
         return MappableDecorationShapeEnum.star;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -52,21 +52,21 @@ class MappableDecorationShapeEnumMapper
   dynamic encode(MappableDecorationShapeEnum self) {
     switch (self) {
       case MappableDecorationShapeEnum.rectangle:
-        return 'rectangle';
+        return r'rectangle';
       case MappableDecorationShapeEnum.rounded_rectangle:
-        return 'rounded_rectangle';
+        return r'rounded_rectangle';
       case MappableDecorationShapeEnum.rectangle_dotted:
-        return 'rectangle_dotted';
+        return r'rectangle_dotted';
       case MappableDecorationShapeEnum.rounded_rectangle_dotted:
-        return 'rounded_rectangle_dotted';
+        return r'rounded_rectangle_dotted';
       case MappableDecorationShapeEnum.circle:
-        return 'circle';
+        return r'circle';
       case MappableDecorationShapeEnum.bevelled:
-        return 'bevelled';
+        return r'bevelled';
       case MappableDecorationShapeEnum.stadium:
-        return 'stadium';
+        return r'stadium';
       case MappableDecorationShapeEnum.star:
-        return 'star';
+        return r'star';
     }
   }
 }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'generic_multi_child_node.dart';
@@ -88,9 +88,9 @@ mixin GenericMultiChildNodeMappable {
   }
 
   GenericMultiChildNodeCopyWith<GenericMultiChildNode, GenericMultiChildNode,
-          GenericMultiChildNode>
-      get copyWith => _GenericMultiChildNodeCopyWithImpl(
-          this as GenericMultiChildNode, $identity, $identity);
+      GenericMultiChildNode> get copyWith => _GenericMultiChildNodeCopyWithImpl<
+          GenericMultiChildNode, GenericMultiChildNode>(
+      this as GenericMultiChildNode, $identity, $identity);
   @override
   String toString() {
     return GenericMultiChildNodeMapper.ensureInitialized()
@@ -113,8 +113,8 @@ mixin GenericMultiChildNodeMappable {
 extension GenericMultiChildNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GenericMultiChildNode, $Out> {
   GenericMultiChildNodeCopyWith<$R, GenericMultiChildNode, $Out>
-      get $asGenericMultiChildNode =>
-          $base.as((v, t, t2) => _GenericMultiChildNodeCopyWithImpl(v, t, t2));
+      get $asGenericMultiChildNode => $base.as(
+          (v, t, t2) => _GenericMultiChildNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GenericMultiChildNodeCopyWith<
@@ -155,5 +155,5 @@ class _GenericMultiChildNodeCopyWithImpl<$R, $Out>
   @override
   GenericMultiChildNodeCopyWith<$R2, GenericMultiChildNode, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GenericMultiChildNodeCopyWithImpl($value, $cast, t);
+          _GenericMultiChildNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

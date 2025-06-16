@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_corner.dart';
@@ -25,13 +25,13 @@ class BadgePositionEnumMapper extends EnumMapper<BadgePositionEnum> {
   @override
   BadgePositionEnum decode(dynamic value) {
     switch (value) {
-      case 'topLeft':
+      case r'topLeft':
         return BadgePositionEnum.topLeft;
-      case 'topRight':
+      case r'topRight':
         return BadgePositionEnum.topRight;
-      case 'bottomLeft':
+      case r'bottomLeft':
         return BadgePositionEnum.bottomLeft;
-      case 'bottomRight':
+      case r'bottomRight':
         return BadgePositionEnum.bottomRight;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -42,13 +42,13 @@ class BadgePositionEnumMapper extends EnumMapper<BadgePositionEnum> {
   dynamic encode(BadgePositionEnum self) {
     switch (self) {
       case BadgePositionEnum.topLeft:
-        return 'topLeft';
+        return r'topLeft';
       case BadgePositionEnum.topRight:
-        return 'topRight';
+        return r'topRight';
       case BadgePositionEnum.bottomLeft:
-        return 'bottomLeft';
+        return r'bottomLeft';
       case BadgePositionEnum.bottomRight:
-        return 'bottomRight';
+        return r'bottomRight';
     }
   }
 }

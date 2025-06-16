@@ -12,7 +12,8 @@ part of 'poll_event.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$PollEvent {
@@ -22,37 +23,31 @@ mixin _$PollEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String voterId, PollNode poll, String optionId)
-        userVoted,
-  }) =>
-      throw _privateConstructorUsedError;
+    userVoted,
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String voterId, PollNode poll, String optionId)?
-        userVoted,
-  }) =>
-      throw _privateConstructorUsedError;
+    userVoted,
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String voterId, PollNode poll, String optionId)? userVoted,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserVoted value) userVoted,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(UserVoted value)? userVoted,
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserVoted value)? userVoted,
     required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  }) => throw _privateConstructorUsedError;
 
   /// Create a copy of PollEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -88,20 +83,26 @@ class _$PollEventCopyWithImpl<$Res, $Val extends PollEvent>
     Object? poll = null,
     Object? optionId = null,
   }) {
-    return _then(_value.copyWith(
-      voterId: null == voterId
-          ? _value.voterId
-          : voterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      poll: null == poll
-          ? _value.poll
-          : poll // ignore: cast_nullable_to_non_nullable
-              as PollNode,
-      optionId: null == optionId
-          ? _value.optionId
-          : optionId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            voterId:
+                null == voterId
+                    ? _value.voterId
+                    : voterId // ignore: cast_nullable_to_non_nullable
+                        as String,
+            poll:
+                null == poll
+                    ? _value.poll
+                    : poll // ignore: cast_nullable_to_non_nullable
+                        as PollNode,
+            optionId:
+                null == optionId
+                    ? _value.optionId
+                    : optionId // ignore: cast_nullable_to_non_nullable
+                        as String,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -109,8 +110,9 @@ class _$PollEventCopyWithImpl<$Res, $Val extends PollEvent>
 abstract class _$$UserVotedImplCopyWith<$Res>
     implements $PollEventCopyWith<$Res> {
   factory _$$UserVotedImplCopyWith(
-          _$UserVotedImpl value, $Res Function(_$UserVotedImpl) then) =
-      __$$UserVotedImplCopyWithImpl<$Res>;
+    _$UserVotedImpl value,
+    $Res Function(_$UserVotedImpl) then,
+  ) = __$$UserVotedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String voterId, PollNode poll, String optionId});
@@ -121,8 +123,9 @@ class __$$UserVotedImplCopyWithImpl<$Res>
     extends _$PollEventCopyWithImpl<$Res, _$UserVotedImpl>
     implements _$$UserVotedImplCopyWith<$Res> {
   __$$UserVotedImplCopyWithImpl(
-      _$UserVotedImpl _value, $Res Function(_$UserVotedImpl) _then)
-      : super(_value, _then);
+    _$UserVotedImpl _value,
+    $Res Function(_$UserVotedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of PollEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -133,28 +136,36 @@ class __$$UserVotedImplCopyWithImpl<$Res>
     Object? poll = null,
     Object? optionId = null,
   }) {
-    return _then(_$UserVotedImpl(
-      voterId: null == voterId
-          ? _value.voterId
-          : voterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      poll: null == poll
-          ? _value.poll
-          : poll // ignore: cast_nullable_to_non_nullable
-              as PollNode,
-      optionId: null == optionId
-          ? _value.optionId
-          : optionId // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
+    return _then(
+      _$UserVotedImpl(
+        voterId:
+            null == voterId
+                ? _value.voterId
+                : voterId // ignore: cast_nullable_to_non_nullable
+                    as String,
+        poll:
+            null == poll
+                ? _value.poll
+                : poll // ignore: cast_nullable_to_non_nullable
+                    as PollNode,
+        optionId:
+            null == optionId
+                ? _value.optionId
+                : optionId // ignore: cast_nullable_to_non_nullable
+                    as String,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
-  const _$UserVotedImpl(
-      {required this.voterId, required this.poll, required this.optionId});
+  const _$UserVotedImpl({
+    required this.voterId,
+    required this.poll,
+    required this.optionId,
+  });
 
   @override
   final String voterId;
@@ -204,7 +215,7 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String voterId, PollNode poll, String optionId)
-        userVoted,
+    userVoted,
   }) {
     return userVoted(voterId, poll, optionId);
   }
@@ -213,7 +224,7 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(String voterId, PollNode poll, String optionId)?
-        userVoted,
+    userVoted,
   }) {
     return userVoted?.call(voterId, poll, optionId);
   }
@@ -260,10 +271,11 @@ class _$UserVotedImpl with DiagnosticableTreeMixin implements UserVoted {
 }
 
 abstract class UserVoted implements PollEvent {
-  const factory UserVoted(
-      {required final String voterId,
-      required final PollNode poll,
-      required final String optionId}) = _$UserVotedImpl;
+  const factory UserVoted({
+    required final String voterId,
+    required final PollNode poll,
+    required final String optionId,
+  }) = _$UserVotedImpl;
 
   @override
   String get voterId;

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'app_info_model.dart';
@@ -34,18 +34,18 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static const Field<AppInfoModel, List<String>> _f$snippetNames =
       Field('snippetNames', _$snippetNames, opt: true, def: const []);
   static Map<String, TextStyleProperties> _$textStyles(AppInfoModel v) =>
-      v.textStyles;
+      v.userTextStyles;
   static const Field<AppInfoModel, Map<String, TextStyleProperties>>
       _f$textStyles =
       Field('textStyles', _$textStyles, opt: true, def: const {});
   static Map<String, ButtonStyleProperties> _$buttonStyles(AppInfoModel v) =>
-      v.buttonStyles;
+      v.userButtonStyles;
   static const Field<AppInfoModel, Map<String, ButtonStyleProperties>>
       _f$buttonStyles =
       Field('buttonStyles', _$buttonStyles, opt: true, def: const {});
   static Map<String, ContainerStyleProperties> _$containerStyles(
           AppInfoModel v) =>
-      v.containerStyles;
+      v.userContainerStyles;
   static const Field<AppInfoModel, Map<String, ContainerStyleProperties>>
       _f$containerStyles =
       Field('containerStyles', _$containerStyles, opt: true, def: const {});
@@ -69,9 +69,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         clipboard: data.dec(_f$clipboard),
         autoPublishDefault: data.dec(_f$autoPublishDefault),
         snippetNames: data.dec(_f$snippetNames),
-        textStyles: data.dec(_f$textStyles),
-        buttonStyles: data.dec(_f$buttonStyles),
-        containerStyles: data.dec(_f$containerStyles),
+        userTextStyles: data.dec(_f$textStyles),
+        userButtonStyles: data.dec(_f$buttonStyles),
+        userContainerStyles: data.dec(_f$containerStyles),
         sandboxPageNames: data.dec(_f$sandboxPageNames));
   }
 
@@ -99,7 +99,8 @@ mixin AppInfoModelMappable {
   }
 
   AppInfoModelCopyWith<AppInfoModel, AppInfoModel, AppInfoModel> get copyWith =>
-      _AppInfoModelCopyWithImpl(this as AppInfoModel, $identity, $identity);
+      _AppInfoModelCopyWithImpl<AppInfoModel, AppInfoModel>(
+          this as AppInfoModel, $identity, $identity);
   @override
   String toString() {
     return AppInfoModelMapper.ensureInitialized()
@@ -122,7 +123,7 @@ mixin AppInfoModelMappable {
 extension AppInfoModelValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AppInfoModel, $Out> {
   AppInfoModelCopyWith<$R, AppInfoModel, $Out> get $asAppInfoModel =>
-      $base.as((v, t, t2) => _AppInfoModelCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _AppInfoModelCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
@@ -183,7 +184,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       String,
       TextStyleProperties,
       TextStylePropertiesCopyWith<$R, TextStyleProperties,
-          TextStyleProperties>> get textStyles => MapCopyWith($value.textStyles,
+          TextStyleProperties>> get textStyles => MapCopyWith($value.userTextStyles,
       (v, t) => v.copyWith.$chain(t), (v) => call(textStyles: v));
   @override
   MapCopyWith<
@@ -192,7 +193,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       ButtonStyleProperties,
       ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
           ButtonStyleProperties>> get buttonStyles => MapCopyWith(
-      $value.buttonStyles,
+      $value.userButtonStyles,
       (v, t) => v.copyWith.$chain(t),
       (v) => call(buttonStyles: v));
   @override
@@ -202,7 +203,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       ContainerStyleProperties,
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
           ContainerStyleProperties>> get containerStyles => MapCopyWith(
-      $value.containerStyles,
+      $value.userContainerStyles,
       (v, t) => v.copyWith.$chain(t),
       (v) => call(containerStyles: v));
   @override
@@ -235,14 +236,14 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       autoPublishDefault:
           data.get(#autoPublishDefault, or: $value.autoPublishDefault),
       snippetNames: data.get(#snippetNames, or: $value.snippetNames),
-      textStyles: data.get(#textStyles, or: $value.textStyles),
-      buttonStyles: data.get(#buttonStyles, or: $value.buttonStyles),
-      containerStyles: data.get(#containerStyles, or: $value.containerStyles),
+      userTextStyles: data.get(#textStyles, or: $value.userTextStyles),
+      userButtonStyles: data.get(#buttonStyles, or: $value.userButtonStyles),
+      userContainerStyles: data.get(#containerStyles, or: $value.userContainerStyles),
       sandboxPageNames:
           data.get(#sandboxPageNames, or: $value.sandboxPageNames));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _AppInfoModelCopyWithImpl($value, $cast, t);
+      _AppInfoModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

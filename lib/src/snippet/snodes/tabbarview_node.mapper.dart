@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'tabbarview_node.dart';
@@ -85,8 +85,9 @@ mixin TabBarViewNodeMappable {
   }
 
   TabBarViewNodeCopyWith<TabBarViewNode, TabBarViewNode, TabBarViewNode>
-      get copyWith => _TabBarViewNodeCopyWithImpl(
-          this as TabBarViewNode, $identity, $identity);
+      get copyWith =>
+          _TabBarViewNodeCopyWithImpl<TabBarViewNode, TabBarViewNode>(
+              this as TabBarViewNode, $identity, $identity);
   @override
   String toString() {
     return TabBarViewNodeMapper.ensureInitialized()
@@ -109,7 +110,7 @@ mixin TabBarViewNodeMappable {
 extension TabBarViewNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TabBarViewNode, $Out> {
   TabBarViewNodeCopyWith<$R, TabBarViewNode, $Out> get $asTabBarViewNode =>
-      $base.as((v, t, t2) => _TabBarViewNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TabBarViewNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TabBarViewNodeCopyWith<$R, $In extends TabBarViewNode, $Out>
@@ -148,5 +149,5 @@ class _TabBarViewNodeCopyWithImpl<$R, $Out>
   @override
   TabBarViewNodeCopyWith<$R2, TabBarViewNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TabBarViewNodeCopyWithImpl($value, $cast, t);
+      _TabBarViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

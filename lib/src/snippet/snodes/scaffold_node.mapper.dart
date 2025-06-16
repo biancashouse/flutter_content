@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'scaffold_node.dart';
@@ -100,7 +100,8 @@ mixin ScaffoldNodeMappable {
   }
 
   ScaffoldNodeCopyWith<ScaffoldNode, ScaffoldNode, ScaffoldNode> get copyWith =>
-      _ScaffoldNodeCopyWithImpl(this as ScaffoldNode, $identity, $identity);
+      _ScaffoldNodeCopyWithImpl<ScaffoldNode, ScaffoldNode>(
+          this as ScaffoldNode, $identity, $identity);
   @override
   String toString() {
     return ScaffoldNodeMapper.ensureInitialized()
@@ -123,7 +124,7 @@ mixin ScaffoldNodeMappable {
 extension ScaffoldNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ScaffoldNode, $Out> {
   ScaffoldNodeCopyWith<$R, ScaffoldNode, $Out> get $asScaffoldNode =>
-      $base.as((v, t, t2) => _ScaffoldNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ScaffoldNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ScaffoldNodeCopyWith<$R, $In extends ScaffoldNode, $Out>
@@ -183,5 +184,5 @@ class _ScaffoldNodeCopyWithImpl<$R, $Out>
   @override
   ScaffoldNodeCopyWith<$R2, ScaffoldNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ScaffoldNodeCopyWithImpl($value, $cast, t);
+      _ScaffoldNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

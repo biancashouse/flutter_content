@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'outlined_button_node.dart';
@@ -116,8 +116,8 @@ mixin OutlinedButtonNodeMappable {
 
   OutlinedButtonNodeCopyWith<OutlinedButtonNode, OutlinedButtonNode,
           OutlinedButtonNode>
-      get copyWith => _OutlinedButtonNodeCopyWithImpl(
-          this as OutlinedButtonNode, $identity, $identity);
+      get copyWith => _OutlinedButtonNodeCopyWithImpl<OutlinedButtonNode,
+          OutlinedButtonNode>(this as OutlinedButtonNode, $identity, $identity);
   @override
   String toString() {
     return OutlinedButtonNodeMapper.ensureInitialized()
@@ -140,8 +140,8 @@ mixin OutlinedButtonNodeMappable {
 extension OutlinedButtonNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, OutlinedButtonNode, $Out> {
   OutlinedButtonNodeCopyWith<$R, OutlinedButtonNode, $Out>
-      get $asOutlinedButtonNode =>
-          $base.as((v, t, t2) => _OutlinedButtonNodeCopyWithImpl(v, t, t2));
+      get $asOutlinedButtonNode => $base.as(
+          (v, t, t2) => _OutlinedButtonNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class OutlinedButtonNodeCopyWith<$R, $In extends OutlinedButtonNode,
@@ -218,5 +218,5 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
   @override
   OutlinedButtonNodeCopyWith<$R2, OutlinedButtonNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _OutlinedButtonNodeCopyWithImpl($value, $cast, t);
+      _OutlinedButtonNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

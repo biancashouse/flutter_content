@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'step_node.dart';
@@ -91,7 +91,8 @@ mixin StepNodeMappable {
   }
 
   StepNodeCopyWith<StepNode, StepNode, StepNode> get copyWith =>
-      _StepNodeCopyWithImpl(this as StepNode, $identity, $identity);
+      _StepNodeCopyWithImpl<StepNode, StepNode>(
+          this as StepNode, $identity, $identity);
   @override
   String toString() {
     return StepNodeMapper.ensureInitialized().stringifyValue(this as StepNode);
@@ -111,7 +112,7 @@ mixin StepNodeMappable {
 
 extension StepNodeValueCopy<$R, $Out> on ObjectCopyWith<$R, StepNode, $Out> {
   StepNodeCopyWith<$R, StepNode, $Out> get $asStepNode =>
-      $base.as((v, t, t2) => _StepNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _StepNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class StepNodeCopyWith<$R, $In extends StepNode, $Out>
@@ -170,5 +171,5 @@ class _StepNodeCopyWithImpl<$R, $Out>
   @override
   StepNodeCopyWith<$R2, StepNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _StepNodeCopyWithImpl($value, $cast, t);
+      _StepNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

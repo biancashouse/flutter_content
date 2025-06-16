@@ -22,20 +22,19 @@ ChangeType _$stValueOf(String name) {
     case 'trashedStep':
       return _$trashedStep;
     default:
-      throw new ArgumentError(name);
+      throw ArgumentError(name);
   }
 }
 
-final BuiltSet<ChangeType> _$stValues =
-    new BuiltSet<ChangeType>(const <ChangeType>[
+final BuiltSet<ChangeType> _$stValues = BuiltSet<ChangeType>(const <ChangeType>[
   _$txtOrComment,
   _$newStep,
   _$movedStep,
   _$trashedStep,
 ]);
 
-Serializer<StepBV> _$stepBVSerializer = new _$StepBVSerializer();
-Serializer<ChangeType> _$changeTypeSerializer = new _$ChangeTypeSerializer();
+Serializer<StepBV> _$stepBVSerializer = _$StepBVSerializer();
+Serializer<ChangeType> _$changeTypeSerializer = _$ChangeTypeSerializer();
 
 class _$StepBVSerializer implements StructuredSerializer<StepBV> {
   @override
@@ -44,8 +43,11 @@ class _$StepBVSerializer implements StructuredSerializer<StepBV> {
   final String wireName = 'StepBV';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, StepBV object,
-      {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(
+    Serializers serializers,
+    StepBV object, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
     final result = <Object?>[];
     Object? value;
     value = object.id;
@@ -58,8 +60,9 @@ class _$StepBVSerializer implements StructuredSerializer<StepBV> {
     if (value != null) {
       result
         ..add('txt')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.iconIndex;
     if (value != null) {
@@ -71,36 +74,44 @@ class _$StepBVSerializer implements StructuredSerializer<StepBV> {
     if (value != null) {
       result
         ..add('txtW')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(double)),
+        );
     }
     value = object.txtH;
     if (value != null) {
       result
         ..add('txtH')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(double)),
+        );
     }
     value = object.comment;
     if (value != null) {
       result
         ..add('comment')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CommentBV)));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(CommentBV),
+          ),
+        );
     }
     value = object.shape;
     if (value != null) {
       result
         ..add('shape')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.flowchartLinkRef;
     if (value != null) {
       result
         ..add('flowchartLinkRef')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.flowchartLinkVersion;
     if (value != null) {
@@ -112,49 +123,72 @@ class _$StepBVSerializer implements StructuredSerializer<StepBV> {
     if (value != null) {
       result
         ..add('parentListType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.childStepLists;
     if (value != null) {
       result
         ..add('childStepLists')
-        ..add(serializers.serialize(value,
+        ..add(
+          serializers.serialize(
+            value,
             specifiedType: const FullType(BuiltMap, const [
               const FullType(String),
-              const FullType(BuiltList, const [const FullType(StepBV)])
-            ])));
+              const FullType(BuiltList, const [const FullType(StepBV)]),
+            ]),
+          ),
+        );
     }
     value = object.caseNameWidths;
     if (value != null) {
       result
         ..add('caseNameWidths')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltMap,
-                const [const FullType(String), const FullType(double)])));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(BuiltMap, const [
+              const FullType(String),
+              const FullType(double),
+            ]),
+          ),
+        );
     }
     value = object.dummyList;
     if (value != null) {
       result
         ..add('dummyList')
-        ..add(serializers.serialize(value,
-            specifiedType:
-                const FullType(BuiltList, const [const FullType(StepBV)])));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(BuiltList, const [
+              const FullType(StepBV),
+            ]),
+          ),
+        );
     }
     value = object.changeType;
     if (value != null) {
       result
         ..add('changeType')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(ChangeType)));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(ChangeType),
+          ),
+        );
     }
     return result;
   }
 
   @override
-  StepBV deserialize(Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new StepBVBuilder();
+  StepBV deserialize(
+    Serializers serializers,
+    Iterable<Object?> serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
+    final result = StepBVBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -163,66 +197,117 @@ class _$StepBVSerializer implements StructuredSerializer<StepBV> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.id =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'txt':
-          result.txt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.txt =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'iconIndex':
-          result.iconIndex = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.iconIndex =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'txtW':
-          result.txtW = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.txtW =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(double),
+                  )
+                  as double?;
           break;
         case 'txtH':
-          result.txtH = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.txtH =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(double),
+                  )
+                  as double?;
           break;
         case 'comment':
-          result.comment.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CommentBV))! as CommentBV);
+          result.comment.replace(
+            serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(CommentBV),
+                )!
+                as CommentBV,
+          );
           break;
         case 'shape':
-          result.shape = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.shape =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'flowchartLinkRef':
-          result.flowchartLinkRef = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.flowchartLinkRef =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'flowchartLinkVersion':
-          result.flowchartLinkVersion = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.flowchartLinkVersion =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'parentListType':
-          result.parentListType = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.parentListType =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'childStepLists':
-          result.childStepLists.replace(serializers.deserialize(value,
+          result.childStepLists.replace(
+            serializers.deserialize(
+              value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
-                const FullType(BuiltList, const [const FullType(StepBV)])
-              ]))!);
+                const FullType(BuiltList, const [const FullType(StepBV)]),
+              ]),
+            )!,
+          );
           break;
         case 'caseNameWidths':
-          result.caseNameWidths.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap,
-                  const [const FullType(String), const FullType(double)]))!);
+          result.caseNameWidths.replace(
+            serializers.deserialize(
+              value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(double),
+              ]),
+            )!,
+          );
           break;
         case 'dummyList':
-          result.dummyList.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(StepBV)]))!
-              as BuiltList<Object?>);
+          result.dummyList.replace(
+            serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(BuiltList, const [
+                    const FullType(StepBV),
+                  ]),
+                )!
+                as BuiltList<Object?>,
+          );
           break;
         case 'changeType':
-          result.changeType = serializers.deserialize(value,
-              specifiedType: const FullType(ChangeType)) as ChangeType?;
+          result.changeType =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(ChangeType),
+                  )
+                  as ChangeType?;
           break;
       }
     }
@@ -238,14 +323,18 @@ class _$ChangeTypeSerializer implements PrimitiveSerializer<ChangeType> {
   final String wireName = 'ChangeType';
 
   @override
-  Object serialize(Serializers serializers, ChangeType object,
-          {FullType specifiedType = FullType.unspecified}) =>
-      object.name;
+  Object serialize(
+    Serializers serializers,
+    ChangeType object, {
+    FullType specifiedType = FullType.unspecified,
+  }) => object.name;
 
   @override
-  ChangeType deserialize(Serializers serializers, Object serialized,
-          {FullType specifiedType = FullType.unspecified}) =>
-      ChangeType.valueOf(serialized as String);
+  ChangeType deserialize(
+    Serializers serializers,
+    Object serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) => ChangeType.valueOf(serialized as String);
 }
 
 class _$StepBV extends StepBV {
@@ -279,31 +368,30 @@ class _$StepBV extends StepBV {
   final ChangeType? changeType;
 
   factory _$StepBV([void Function(StepBVBuilder)? updates]) =>
-      (new StepBVBuilder()..update(updates))._build();
+      (StepBVBuilder()..update(updates))._build();
 
-  _$StepBV._(
-      {this.id,
-      this.txt,
-      this.iconIndex,
-      this.txtW,
-      this.txtH,
-      this.comment,
-      this.shape,
-      this.flowchartLinkRef,
-      this.flowchartLinkVersion,
-      this.parentListType,
-      this.childStepLists,
-      this.caseNameWidths,
-      this.dummyList,
-      this.changeType})
-      : super._();
-
+  _$StepBV._({
+    this.id,
+    this.txt,
+    this.iconIndex,
+    this.txtW,
+    this.txtH,
+    this.comment,
+    this.shape,
+    this.flowchartLinkRef,
+    this.flowchartLinkVersion,
+    this.parentListType,
+    this.childStepLists,
+    this.caseNameWidths,
+    this.dummyList,
+    this.changeType,
+  }) : super._();
   @override
   StepBV rebuild(void Function(StepBVBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  StepBVBuilder toBuilder() => new StepBVBuilder()..replace(this);
+  StepBVBuilder toBuilder() => StepBVBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -391,7 +479,7 @@ class StepBVBuilder implements Builder<StepBV, StepBVBuilder> {
   set txtH(double? txtH) => _$this._txtH = txtH;
 
   CommentBVBuilder? _comment;
-  CommentBVBuilder get comment => _$this._comment ??= new CommentBVBuilder();
+  CommentBVBuilder get comment => _$this._comment ??= CommentBVBuilder();
   set comment(CommentBVBuilder? comment) => _$this._comment = comment;
 
   String? _shape;
@@ -415,19 +503,19 @@ class StepBVBuilder implements Builder<StepBV, StepBVBuilder> {
 
   MapBuilder<String, BuiltList<StepBV>>? _childStepLists;
   MapBuilder<String, BuiltList<StepBV>> get childStepLists =>
-      _$this._childStepLists ??= new MapBuilder<String, BuiltList<StepBV>>();
+      _$this._childStepLists ??= MapBuilder<String, BuiltList<StepBV>>();
   set childStepLists(MapBuilder<String, BuiltList<StepBV>>? childStepLists) =>
       _$this._childStepLists = childStepLists;
 
   MapBuilder<String, double>? _caseNameWidths;
   MapBuilder<String, double> get caseNameWidths =>
-      _$this._caseNameWidths ??= new MapBuilder<String, double>();
+      _$this._caseNameWidths ??= MapBuilder<String, double>();
   set caseNameWidths(MapBuilder<String, double>? caseNameWidths) =>
       _$this._caseNameWidths = caseNameWidths;
 
   ListBuilder<StepBV>? _dummyList;
   ListBuilder<StepBV> get dummyList =>
-      _$this._dummyList ??= new ListBuilder<StepBV>();
+      _$this._dummyList ??= ListBuilder<StepBV>();
   set dummyList(ListBuilder<StepBV>? dummyList) =>
       _$this._dummyList = dummyList;
 
@@ -461,7 +549,6 @@ class StepBVBuilder implements Builder<StepBV, StepBVBuilder> {
 
   @override
   void replace(StepBV other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$StepBV;
   }
 
@@ -476,22 +563,24 @@ class StepBVBuilder implements Builder<StepBV, StepBVBuilder> {
   _$StepBV _build() {
     _$StepBV _$result;
     try {
-      _$result = _$v ??
-          new _$StepBV._(
-              id: id,
-              txt: txt,
-              iconIndex: iconIndex,
-              txtW: txtW,
-              txtH: txtH,
-              comment: _comment?.build(),
-              shape: shape,
-              flowchartLinkRef: flowchartLinkRef,
-              flowchartLinkVersion: flowchartLinkVersion,
-              parentListType: parentListType,
-              childStepLists: _childStepLists?.build(),
-              caseNameWidths: _caseNameWidths?.build(),
-              dummyList: _dummyList?.build(),
-              changeType: changeType);
+      _$result =
+          _$v ??
+          _$StepBV._(
+            id: id,
+            txt: txt,
+            iconIndex: iconIndex,
+            txtW: txtW,
+            txtH: txtH,
+            comment: _comment?.build(),
+            shape: shape,
+            flowchartLinkRef: flowchartLinkRef,
+            flowchartLinkVersion: flowchartLinkVersion,
+            parentListType: parentListType,
+            childStepLists: _childStepLists?.build(),
+            caseNameWidths: _caseNameWidths?.build(),
+            dummyList: _dummyList?.build(),
+            changeType: changeType,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -505,8 +594,11 @@ class StepBVBuilder implements Builder<StepBV, StepBVBuilder> {
         _$failedField = 'dummyList';
         _dummyList?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'StepBV', _$failedField, e.toString());
+        throw BuiltValueNestedFieldError(
+          r'StepBV',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'snippet_info_model.dart';
@@ -88,8 +88,9 @@ mixin SnippetInfoModelMappable {
   }
 
   SnippetInfoModelCopyWith<SnippetInfoModel, SnippetInfoModel, SnippetInfoModel>
-      get copyWith => _SnippetInfoModelCopyWithImpl(
-          this as SnippetInfoModel, $identity, $identity);
+      get copyWith =>
+          _SnippetInfoModelCopyWithImpl<SnippetInfoModel, SnippetInfoModel>(
+              this as SnippetInfoModel, $identity, $identity);
   @override
   String toString() {
     return SnippetInfoModelMapper.ensureInitialized()
@@ -112,8 +113,8 @@ mixin SnippetInfoModelMappable {
 extension SnippetInfoModelValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SnippetInfoModel, $Out> {
   SnippetInfoModelCopyWith<$R, SnippetInfoModel, $Out>
-      get $asSnippetInfoModel =>
-          $base.as((v, t, t2) => _SnippetInfoModelCopyWithImpl(v, t, t2));
+      get $asSnippetInfoModel => $base
+          .as((v, t, t2) => _SnippetInfoModelCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SnippetInfoModelCopyWith<$R, $In extends SnippetInfoModel, $Out>
@@ -163,5 +164,5 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
   @override
   SnippetInfoModelCopyWith<$R2, SnippetInfoModel, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SnippetInfoModelCopyWithImpl($value, $cast, t);
+      _SnippetInfoModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

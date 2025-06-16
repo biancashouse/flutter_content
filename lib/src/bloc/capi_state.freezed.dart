@@ -12,15 +12,16 @@ part of 'capi_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$CAPIState {
-// required bool useFirebase,
-// @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-// String?
-// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
-// required ModelUR modelUR,
+  // required bool useFirebase,
+  // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
+  // String?
+  // initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+  // required ModelUR modelUR,
   bool get hideIframes => throw _privateConstructorUsedError;
   bool get hideSnippetPencilIcons =>
       throw _privateConstructorUsedError; // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
@@ -31,35 +32,35 @@ mixin _$CAPIState {
   double? get directoryTreeCalloutW => throw _privateConstructorUsedError;
   double? get directoryTreeCalloutH =>
       throw _privateConstructorUsedError; // @Default(600) double? snippetPropertiesCalloutW,
-// @Default(600) double? snippetPropertiesCalloutH,
-// @Default({}) Map<String, TargetGroupModel> targetGroupMap,
-// @Default([]) List<TargetModel> playList,
-// current selection
-// List<TargetModel> targetCovers
-// TargetModel? hideTargetCoversExcept,
-// TargetModel? hideTargetBtnsExcept,
-// @Default(false) bool hideAllTargetCovers,
-// @Default(false) bool hideAllTargetBtns,
-//
+  // @Default(600) double? snippetPropertiesCalloutH,
+  // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
+  // @Default([]) List<TargetModel> playList,
+  // current selection
+  // List<TargetModel> targetCovers
+  // TargetModel? hideTargetCoversExcept,
+  // TargetModel? hideTargetBtnsExcept,
+  // @Default(false) bool hideAllTargetCovers,
+  // @Default(false) bool hideAllTargetBtns,
+  //
   TargetModel? get newestTarget => throw _privateConstructorUsedError;
   TargetModel? get selectedTarget => throw _privateConstructorUsedError; //
   String? get selectedPanel => throw _privateConstructorUsedError; //
-// content
+  // content
   bool get trainerIsSignedn =>
       throw _privateConstructorUsedError; // String? jsonRootDirectoryNode,
-// EncodedJson? jsonClipboardForMove,
+  // EncodedJson? jsonClipboardForMove,
   bool get showClipboardContent => throw _privateConstructorUsedError;
   int get force =>
       throw _privateConstructorUsedError; // hacky way to force a transition
   bool get onlyTargetsWrappers =>
       throw _privateConstructorUsedError; // hacky way to force a transition
-//==========================================================================================
-//====  PAGE ROUTE NAME  ===================================================================
-//==========================================================================================
+  //==========================================================================================
+  //====  PAGE ROUTE NAME  ===================================================================
+  //==========================================================================================
   String? get routeName =>
       throw _privateConstructorUsedError; //==========================================================================================
-//====  SNIPPET EDITING  ===================================================================
-//==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
   String? get snippetNameShowingPinkOverlaysFor =>
       throw _privateConstructorUsedError;
   SnippetBeingEdited? get snippetBeingEdited =>
@@ -78,25 +79,26 @@ abstract class $CAPIStateCopyWith<$Res> {
   factory $CAPIStateCopyWith(CAPIState value, $Res Function(CAPIState) then) =
       _$CAPIStateCopyWithImpl<$Res, CAPIState>;
   @useResult
-  $Res call(
-      {bool hideIframes,
-      bool hideSnippetPencilIcons,
-      double? snippetTreeCalloutW,
-      double? snippetTreeCalloutH,
-      Offset? directoryTreeCalloutInitialPos,
-      double? directoryTreeCalloutW,
-      double? directoryTreeCalloutH,
-      TargetModel? newestTarget,
-      TargetModel? selectedTarget,
-      String? selectedPanel,
-      bool trainerIsSignedn,
-      bool showClipboardContent,
-      int force,
-      bool onlyTargetsWrappers,
-      String? routeName,
-      String? snippetNameShowingPinkOverlaysFor,
-      SnippetBeingEdited? snippetBeingEdited,
-      bool ONLY_TESTING});
+  $Res call({
+    bool hideIframes,
+    bool hideSnippetPencilIcons,
+    double? snippetTreeCalloutW,
+    double? snippetTreeCalloutH,
+    Offset? directoryTreeCalloutInitialPos,
+    double? directoryTreeCalloutW,
+    double? directoryTreeCalloutH,
+    TargetModel? newestTarget,
+    TargetModel? selectedTarget,
+    String? selectedPanel,
+    bool trainerIsSignedn,
+    bool showClipboardContent,
+    int force,
+    bool onlyTargetsWrappers,
+    String? routeName,
+    String? snippetNameShowingPinkOverlaysFor,
+    SnippetBeingEdited? snippetBeingEdited,
+    bool ONLY_TESTING,
+  });
 }
 
 /// @nodoc
@@ -133,81 +135,101 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
     Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
-    return _then(_value.copyWith(
-      hideIframes: null == hideIframes
-          ? _value.hideIframes
-          : hideIframes // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hideSnippetPencilIcons: null == hideSnippetPencilIcons
-          ? _value.hideSnippetPencilIcons
-          : hideSnippetPencilIcons // ignore: cast_nullable_to_non_nullable
-              as bool,
-      snippetTreeCalloutW: freezed == snippetTreeCalloutW
-          ? _value.snippetTreeCalloutW
-          : snippetTreeCalloutW // ignore: cast_nullable_to_non_nullable
-              as double?,
-      snippetTreeCalloutH: freezed == snippetTreeCalloutH
-          ? _value.snippetTreeCalloutH
-          : snippetTreeCalloutH // ignore: cast_nullable_to_non_nullable
-              as double?,
-      directoryTreeCalloutInitialPos: freezed == directoryTreeCalloutInitialPos
-          ? _value.directoryTreeCalloutInitialPos
-          : directoryTreeCalloutInitialPos // ignore: cast_nullable_to_non_nullable
-              as Offset?,
-      directoryTreeCalloutW: freezed == directoryTreeCalloutW
-          ? _value.directoryTreeCalloutW
-          : directoryTreeCalloutW // ignore: cast_nullable_to_non_nullable
-              as double?,
-      directoryTreeCalloutH: freezed == directoryTreeCalloutH
-          ? _value.directoryTreeCalloutH
-          : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
-              as double?,
-      newestTarget: freezed == newestTarget
-          ? _value.newestTarget
-          : newestTarget // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      selectedTarget: freezed == selectedTarget
-          ? _value.selectedTarget
-          : selectedTarget // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      selectedPanel: freezed == selectedPanel
-          ? _value.selectedPanel
-          : selectedPanel // ignore: cast_nullable_to_non_nullable
-              as String?,
-      trainerIsSignedn: null == trainerIsSignedn
-          ? _value.trainerIsSignedn
-          : trainerIsSignedn // ignore: cast_nullable_to_non_nullable
-              as bool,
-      showClipboardContent: null == showClipboardContent
-          ? _value.showClipboardContent
-          : showClipboardContent // ignore: cast_nullable_to_non_nullable
-              as bool,
-      force: null == force
-          ? _value.force
-          : force // ignore: cast_nullable_to_non_nullable
-              as int,
-      onlyTargetsWrappers: null == onlyTargetsWrappers
-          ? _value.onlyTargetsWrappers
-          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
-              as bool,
-      routeName: freezed == routeName
-          ? _value.routeName
-          : routeName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      snippetNameShowingPinkOverlaysFor: freezed ==
-              snippetNameShowingPinkOverlaysFor
-          ? _value.snippetNameShowingPinkOverlaysFor
-          : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      snippetBeingEdited: freezed == snippetBeingEdited
-          ? _value.snippetBeingEdited
-          : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
-              as SnippetBeingEdited?,
-      ONLY_TESTING: null == ONLY_TESTING
-          ? _value.ONLY_TESTING
-          : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            hideIframes:
+                null == hideIframes
+                    ? _value.hideIframes
+                    : hideIframes // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            hideSnippetPencilIcons:
+                null == hideSnippetPencilIcons
+                    ? _value.hideSnippetPencilIcons
+                    : hideSnippetPencilIcons // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            snippetTreeCalloutW:
+                freezed == snippetTreeCalloutW
+                    ? _value.snippetTreeCalloutW
+                    : snippetTreeCalloutW // ignore: cast_nullable_to_non_nullable
+                        as double?,
+            snippetTreeCalloutH:
+                freezed == snippetTreeCalloutH
+                    ? _value.snippetTreeCalloutH
+                    : snippetTreeCalloutH // ignore: cast_nullable_to_non_nullable
+                        as double?,
+            directoryTreeCalloutInitialPos:
+                freezed == directoryTreeCalloutInitialPos
+                    ? _value.directoryTreeCalloutInitialPos
+                    : directoryTreeCalloutInitialPos // ignore: cast_nullable_to_non_nullable
+                        as Offset?,
+            directoryTreeCalloutW:
+                freezed == directoryTreeCalloutW
+                    ? _value.directoryTreeCalloutW
+                    : directoryTreeCalloutW // ignore: cast_nullable_to_non_nullable
+                        as double?,
+            directoryTreeCalloutH:
+                freezed == directoryTreeCalloutH
+                    ? _value.directoryTreeCalloutH
+                    : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
+                        as double?,
+            newestTarget:
+                freezed == newestTarget
+                    ? _value.newestTarget
+                    : newestTarget // ignore: cast_nullable_to_non_nullable
+                        as TargetModel?,
+            selectedTarget:
+                freezed == selectedTarget
+                    ? _value.selectedTarget
+                    : selectedTarget // ignore: cast_nullable_to_non_nullable
+                        as TargetModel?,
+            selectedPanel:
+                freezed == selectedPanel
+                    ? _value.selectedPanel
+                    : selectedPanel // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            trainerIsSignedn:
+                null == trainerIsSignedn
+                    ? _value.trainerIsSignedn
+                    : trainerIsSignedn // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            showClipboardContent:
+                null == showClipboardContent
+                    ? _value.showClipboardContent
+                    : showClipboardContent // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            force:
+                null == force
+                    ? _value.force
+                    : force // ignore: cast_nullable_to_non_nullable
+                        as int,
+            onlyTargetsWrappers:
+                null == onlyTargetsWrappers
+                    ? _value.onlyTargetsWrappers
+                    : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
+                        as bool,
+            routeName:
+                freezed == routeName
+                    ? _value.routeName
+                    : routeName // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            snippetNameShowingPinkOverlaysFor:
+                freezed == snippetNameShowingPinkOverlaysFor
+                    ? _value.snippetNameShowingPinkOverlaysFor
+                    : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
+                        as String?,
+            snippetBeingEdited:
+                freezed == snippetBeingEdited
+                    ? _value.snippetBeingEdited
+                    : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
+                        as SnippetBeingEdited?,
+            ONLY_TESTING:
+                null == ONLY_TESTING
+                    ? _value.ONLY_TESTING
+                    : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
+                        as bool,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -215,29 +237,31 @@ class _$CAPIStateCopyWithImpl<$Res, $Val extends CAPIState>
 abstract class _$$CAPIStateImplCopyWith<$Res>
     implements $CAPIStateCopyWith<$Res> {
   factory _$$CAPIStateImplCopyWith(
-          _$CAPIStateImpl value, $Res Function(_$CAPIStateImpl) then) =
-      __$$CAPIStateImplCopyWithImpl<$Res>;
+    _$CAPIStateImpl value,
+    $Res Function(_$CAPIStateImpl) then,
+  ) = __$$CAPIStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {bool hideIframes,
-      bool hideSnippetPencilIcons,
-      double? snippetTreeCalloutW,
-      double? snippetTreeCalloutH,
-      Offset? directoryTreeCalloutInitialPos,
-      double? directoryTreeCalloutW,
-      double? directoryTreeCalloutH,
-      TargetModel? newestTarget,
-      TargetModel? selectedTarget,
-      String? selectedPanel,
-      bool trainerIsSignedn,
-      bool showClipboardContent,
-      int force,
-      bool onlyTargetsWrappers,
-      String? routeName,
-      String? snippetNameShowingPinkOverlaysFor,
-      SnippetBeingEdited? snippetBeingEdited,
-      bool ONLY_TESTING});
+  $Res call({
+    bool hideIframes,
+    bool hideSnippetPencilIcons,
+    double? snippetTreeCalloutW,
+    double? snippetTreeCalloutH,
+    Offset? directoryTreeCalloutInitialPos,
+    double? directoryTreeCalloutW,
+    double? directoryTreeCalloutH,
+    TargetModel? newestTarget,
+    TargetModel? selectedTarget,
+    String? selectedPanel,
+    bool trainerIsSignedn,
+    bool showClipboardContent,
+    int force,
+    bool onlyTargetsWrappers,
+    String? routeName,
+    String? snippetNameShowingPinkOverlaysFor,
+    SnippetBeingEdited? snippetBeingEdited,
+    bool ONLY_TESTING,
+  });
 }
 
 /// @nodoc
@@ -245,8 +269,9 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     extends _$CAPIStateCopyWithImpl<$Res, _$CAPIStateImpl>
     implements _$$CAPIStateImplCopyWith<$Res> {
   __$$CAPIStateImplCopyWithImpl(
-      _$CAPIStateImpl _value, $Res Function(_$CAPIStateImpl) _then)
-      : super(_value, _then);
+    _$CAPIStateImpl _value,
+    $Res Function(_$CAPIStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CAPIState
   /// with the given fields replaced by the non-null parameter values.
@@ -272,120 +297,139 @@ class __$$CAPIStateImplCopyWithImpl<$Res>
     Object? snippetBeingEdited = freezed,
     Object? ONLY_TESTING = null,
   }) {
-    return _then(_$CAPIStateImpl(
-      hideIframes: null == hideIframes
-          ? _value.hideIframes
-          : hideIframes // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hideSnippetPencilIcons: null == hideSnippetPencilIcons
-          ? _value.hideSnippetPencilIcons
-          : hideSnippetPencilIcons // ignore: cast_nullable_to_non_nullable
-              as bool,
-      snippetTreeCalloutW: freezed == snippetTreeCalloutW
-          ? _value.snippetTreeCalloutW
-          : snippetTreeCalloutW // ignore: cast_nullable_to_non_nullable
-              as double?,
-      snippetTreeCalloutH: freezed == snippetTreeCalloutH
-          ? _value.snippetTreeCalloutH
-          : snippetTreeCalloutH // ignore: cast_nullable_to_non_nullable
-              as double?,
-      directoryTreeCalloutInitialPos: freezed == directoryTreeCalloutInitialPos
-          ? _value.directoryTreeCalloutInitialPos
-          : directoryTreeCalloutInitialPos // ignore: cast_nullable_to_non_nullable
-              as Offset?,
-      directoryTreeCalloutW: freezed == directoryTreeCalloutW
-          ? _value.directoryTreeCalloutW
-          : directoryTreeCalloutW // ignore: cast_nullable_to_non_nullable
-              as double?,
-      directoryTreeCalloutH: freezed == directoryTreeCalloutH
-          ? _value.directoryTreeCalloutH
-          : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
-              as double?,
-      newestTarget: freezed == newestTarget
-          ? _value.newestTarget
-          : newestTarget // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      selectedTarget: freezed == selectedTarget
-          ? _value.selectedTarget
-          : selectedTarget // ignore: cast_nullable_to_non_nullable
-              as TargetModel?,
-      selectedPanel: freezed == selectedPanel
-          ? _value.selectedPanel
-          : selectedPanel // ignore: cast_nullable_to_non_nullable
-              as String?,
-      trainerIsSignedn: null == trainerIsSignedn
-          ? _value.trainerIsSignedn
-          : trainerIsSignedn // ignore: cast_nullable_to_non_nullable
-              as bool,
-      showClipboardContent: null == showClipboardContent
-          ? _value.showClipboardContent
-          : showClipboardContent // ignore: cast_nullable_to_non_nullable
-              as bool,
-      force: null == force
-          ? _value.force
-          : force // ignore: cast_nullable_to_non_nullable
-              as int,
-      onlyTargetsWrappers: null == onlyTargetsWrappers
-          ? _value.onlyTargetsWrappers
-          : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
-              as bool,
-      routeName: freezed == routeName
-          ? _value.routeName
-          : routeName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      snippetNameShowingPinkOverlaysFor: freezed ==
-              snippetNameShowingPinkOverlaysFor
-          ? _value.snippetNameShowingPinkOverlaysFor
-          : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
-              as String?,
-      snippetBeingEdited: freezed == snippetBeingEdited
-          ? _value.snippetBeingEdited
-          : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
-              as SnippetBeingEdited?,
-      ONLY_TESTING: null == ONLY_TESTING
-          ? _value.ONLY_TESTING
-          : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
+    return _then(
+      _$CAPIStateImpl(
+        hideIframes:
+            null == hideIframes
+                ? _value.hideIframes
+                : hideIframes // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        hideSnippetPencilIcons:
+            null == hideSnippetPencilIcons
+                ? _value.hideSnippetPencilIcons
+                : hideSnippetPencilIcons // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        snippetTreeCalloutW:
+            freezed == snippetTreeCalloutW
+                ? _value.snippetTreeCalloutW
+                : snippetTreeCalloutW // ignore: cast_nullable_to_non_nullable
+                    as double?,
+        snippetTreeCalloutH:
+            freezed == snippetTreeCalloutH
+                ? _value.snippetTreeCalloutH
+                : snippetTreeCalloutH // ignore: cast_nullable_to_non_nullable
+                    as double?,
+        directoryTreeCalloutInitialPos:
+            freezed == directoryTreeCalloutInitialPos
+                ? _value.directoryTreeCalloutInitialPos
+                : directoryTreeCalloutInitialPos // ignore: cast_nullable_to_non_nullable
+                    as Offset?,
+        directoryTreeCalloutW:
+            freezed == directoryTreeCalloutW
+                ? _value.directoryTreeCalloutW
+                : directoryTreeCalloutW // ignore: cast_nullable_to_non_nullable
+                    as double?,
+        directoryTreeCalloutH:
+            freezed == directoryTreeCalloutH
+                ? _value.directoryTreeCalloutH
+                : directoryTreeCalloutH // ignore: cast_nullable_to_non_nullable
+                    as double?,
+        newestTarget:
+            freezed == newestTarget
+                ? _value.newestTarget
+                : newestTarget // ignore: cast_nullable_to_non_nullable
+                    as TargetModel?,
+        selectedTarget:
+            freezed == selectedTarget
+                ? _value.selectedTarget
+                : selectedTarget // ignore: cast_nullable_to_non_nullable
+                    as TargetModel?,
+        selectedPanel:
+            freezed == selectedPanel
+                ? _value.selectedPanel
+                : selectedPanel // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        trainerIsSignedn:
+            null == trainerIsSignedn
+                ? _value.trainerIsSignedn
+                : trainerIsSignedn // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        showClipboardContent:
+            null == showClipboardContent
+                ? _value.showClipboardContent
+                : showClipboardContent // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        force:
+            null == force
+                ? _value.force
+                : force // ignore: cast_nullable_to_non_nullable
+                    as int,
+        onlyTargetsWrappers:
+            null == onlyTargetsWrappers
+                ? _value.onlyTargetsWrappers
+                : onlyTargetsWrappers // ignore: cast_nullable_to_non_nullable
+                    as bool,
+        routeName:
+            freezed == routeName
+                ? _value.routeName
+                : routeName // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        snippetNameShowingPinkOverlaysFor:
+            freezed == snippetNameShowingPinkOverlaysFor
+                ? _value.snippetNameShowingPinkOverlaysFor
+                : snippetNameShowingPinkOverlaysFor // ignore: cast_nullable_to_non_nullable
+                    as String?,
+        snippetBeingEdited:
+            freezed == snippetBeingEdited
+                ? _value.snippetBeingEdited
+                : snippetBeingEdited // ignore: cast_nullable_to_non_nullable
+                    as SnippetBeingEdited?,
+        ONLY_TESTING:
+            null == ONLY_TESTING
+                ? _value.ONLY_TESTING
+                : ONLY_TESTING // ignore: cast_nullable_to_non_nullable
+                    as bool,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$CAPIStateImpl extends _CAPIState {
-  _$CAPIStateImpl(
-      {this.hideIframes = false,
-      this.hideSnippetPencilIcons = false,
-      this.snippetTreeCalloutW = 400,
-      this.snippetTreeCalloutH = 600,
-      this.directoryTreeCalloutInitialPos = Offset.zero,
-      this.directoryTreeCalloutW = 400,
-      this.directoryTreeCalloutH = 600,
-      this.newestTarget,
-      this.selectedTarget,
-      this.selectedPanel,
-      this.trainerIsSignedn = false,
-      this.showClipboardContent = true,
-      this.force = 0,
-      this.onlyTargetsWrappers = false,
-      this.routeName,
-      this.snippetNameShowingPinkOverlaysFor,
-      this.snippetBeingEdited,
-      this.ONLY_TESTING = true})
-      : super._();
+  _$CAPIStateImpl({
+    this.hideIframes = false,
+    this.hideSnippetPencilIcons = false,
+    this.snippetTreeCalloutW = 400,
+    this.snippetTreeCalloutH = 600,
+    this.directoryTreeCalloutInitialPos = Offset.zero,
+    this.directoryTreeCalloutW = 400,
+    this.directoryTreeCalloutH = 600,
+    this.newestTarget,
+    this.selectedTarget,
+    this.selectedPanel,
+    this.trainerIsSignedn = false,
+    this.showClipboardContent = true,
+    this.force = 0,
+    this.onlyTargetsWrappers = false,
+    this.routeName,
+    this.snippetNameShowingPinkOverlaysFor,
+    this.snippetBeingEdited,
+    this.ONLY_TESTING = true,
+  }) : super._();
 
-// required bool useFirebase,
-// @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-// String?
-// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
-// required ModelUR modelUR,
+  // required bool useFirebase,
+  // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
+  // String?
+  // initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+  // required ModelUR modelUR,
   @override
   @JsonKey()
   final bool hideIframes;
   @override
   @JsonKey()
   final bool hideSnippetPencilIcons;
-// @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
+  // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
   @override
   @JsonKey()
   final double? snippetTreeCalloutW;
@@ -401,55 +445,55 @@ class _$CAPIStateImpl extends _CAPIState {
   @override
   @JsonKey()
   final double? directoryTreeCalloutH;
-// @Default(600) double? snippetPropertiesCalloutW,
-// @Default(600) double? snippetPropertiesCalloutH,
-// @Default({}) Map<String, TargetGroupModel> targetGroupMap,
-// @Default([]) List<TargetModel> playList,
-// current selection
-// List<TargetModel> targetCovers
-// TargetModel? hideTargetCoversExcept,
-// TargetModel? hideTargetBtnsExcept,
-// @Default(false) bool hideAllTargetCovers,
-// @Default(false) bool hideAllTargetBtns,
-//
+  // @Default(600) double? snippetPropertiesCalloutW,
+  // @Default(600) double? snippetPropertiesCalloutH,
+  // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
+  // @Default([]) List<TargetModel> playList,
+  // current selection
+  // List<TargetModel> targetCovers
+  // TargetModel? hideTargetCoversExcept,
+  // TargetModel? hideTargetBtnsExcept,
+  // @Default(false) bool hideAllTargetCovers,
+  // @Default(false) bool hideAllTargetBtns,
+  //
   @override
   final TargetModel? newestTarget;
   @override
   final TargetModel? selectedTarget;
-//
+  //
   @override
   final String? selectedPanel;
-//
-// content
+  //
+  // content
   @override
   @JsonKey()
   final bool trainerIsSignedn;
-// String? jsonRootDirectoryNode,
-// EncodedJson? jsonClipboardForMove,
+  // String? jsonRootDirectoryNode,
+  // EncodedJson? jsonClipboardForMove,
   @override
   @JsonKey()
   final bool showClipboardContent;
   @override
   @JsonKey()
   final int force;
-// hacky way to force a transition
+  // hacky way to force a transition
   @override
   @JsonKey()
   final bool onlyTargetsWrappers;
-// hacky way to force a transition
-//==========================================================================================
-//====  PAGE ROUTE NAME  ===================================================================
-//==========================================================================================
+  // hacky way to force a transition
+  //==========================================================================================
+  //====  PAGE ROUTE NAME  ===================================================================
+  //==========================================================================================
   @override
   final String? routeName;
-//==========================================================================================
-//====  SNIPPET EDITING  ===================================================================
-//==========================================================================================
+  //==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
   @override
   final String? snippetNameShowingPinkOverlaysFor;
   @override
   final SnippetBeingEdited? snippetBeingEdited;
-// VersionId? snippetBeingEditedVersionId,
+  // VersionId? snippetBeingEditedVersionId,
   @override
   @JsonKey()
   final bool ONLY_TESTING;
@@ -472,8 +516,10 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.snippetTreeCalloutW == snippetTreeCalloutW) &&
             (identical(other.snippetTreeCalloutH, snippetTreeCalloutH) ||
                 other.snippetTreeCalloutH == snippetTreeCalloutH) &&
-            (identical(other.directoryTreeCalloutInitialPos,
-                    directoryTreeCalloutInitialPos) ||
+            (identical(
+                  other.directoryTreeCalloutInitialPos,
+                  directoryTreeCalloutInitialPos,
+                ) ||
                 other.directoryTreeCalloutInitialPos ==
                     directoryTreeCalloutInitialPos) &&
             (identical(other.directoryTreeCalloutW, directoryTreeCalloutW) ||
@@ -495,8 +541,10 @@ class _$CAPIStateImpl extends _CAPIState {
                 other.onlyTargetsWrappers == onlyTargetsWrappers) &&
             (identical(other.routeName, routeName) ||
                 other.routeName == routeName) &&
-            (identical(other.snippetNameShowingPinkOverlaysFor,
-                    snippetNameShowingPinkOverlaysFor) ||
+            (identical(
+                  other.snippetNameShowingPinkOverlaysFor,
+                  snippetNameShowingPinkOverlaysFor,
+                ) ||
                 other.snippetNameShowingPinkOverlaysFor ==
                     snippetNameShowingPinkOverlaysFor) &&
             (identical(other.snippetBeingEdited, snippetBeingEdited) ||
@@ -507,25 +555,26 @@ class _$CAPIStateImpl extends _CAPIState {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      hideIframes,
-      hideSnippetPencilIcons,
-      snippetTreeCalloutW,
-      snippetTreeCalloutH,
-      directoryTreeCalloutInitialPos,
-      directoryTreeCalloutW,
-      directoryTreeCalloutH,
-      newestTarget,
-      selectedTarget,
-      selectedPanel,
-      trainerIsSignedn,
-      showClipboardContent,
-      force,
-      onlyTargetsWrappers,
-      routeName,
-      snippetNameShowingPinkOverlaysFor,
-      snippetBeingEdited,
-      ONLY_TESTING);
+    runtimeType,
+    hideIframes,
+    hideSnippetPencilIcons,
+    snippetTreeCalloutW,
+    snippetTreeCalloutH,
+    directoryTreeCalloutInitialPos,
+    directoryTreeCalloutW,
+    directoryTreeCalloutH,
+    newestTarget,
+    selectedTarget,
+    selectedPanel,
+    trainerIsSignedn,
+    showClipboardContent,
+    force,
+    onlyTargetsWrappers,
+    routeName,
+    snippetNameShowingPinkOverlaysFor,
+    snippetBeingEdited,
+    ONLY_TESTING,
+  );
 
   /// Create a copy of CAPIState
   /// with the given fields replaced by the non-null parameter values.
@@ -537,37 +586,37 @@ class _$CAPIStateImpl extends _CAPIState {
 }
 
 abstract class _CAPIState extends CAPIState {
-  factory _CAPIState(
-      {final bool hideIframes,
-      final bool hideSnippetPencilIcons,
-      final double? snippetTreeCalloutW,
-      final double? snippetTreeCalloutH,
-      final Offset? directoryTreeCalloutInitialPos,
-      final double? directoryTreeCalloutW,
-      final double? directoryTreeCalloutH,
-      final TargetModel? newestTarget,
-      final TargetModel? selectedTarget,
-      final String? selectedPanel,
-      final bool trainerIsSignedn,
-      final bool showClipboardContent,
-      final int force,
-      final bool onlyTargetsWrappers,
-      final String? routeName,
-      final String? snippetNameShowingPinkOverlaysFor,
-      final SnippetBeingEdited? snippetBeingEdited,
-      final bool ONLY_TESTING}) = _$CAPIStateImpl;
+  factory _CAPIState({
+    final bool hideIframes,
+    final bool hideSnippetPencilIcons,
+    final double? snippetTreeCalloutW,
+    final double? snippetTreeCalloutH,
+    final Offset? directoryTreeCalloutInitialPos,
+    final double? directoryTreeCalloutW,
+    final double? directoryTreeCalloutH,
+    final TargetModel? newestTarget,
+    final TargetModel? selectedTarget,
+    final String? selectedPanel,
+    final bool trainerIsSignedn,
+    final bool showClipboardContent,
+    final int force,
+    final bool onlyTargetsWrappers,
+    final String? routeName,
+    final String? snippetNameShowingPinkOverlaysFor,
+    final SnippetBeingEdited? snippetBeingEdited,
+    final bool ONLY_TESTING,
+  }) = _$CAPIStateImpl;
   _CAPIState._() : super._();
 
-// required bool useFirebase,
-// @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
-// String?
-// initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
-// required ModelUR modelUR,
+  // required bool useFirebase,
+  // @Default(false) bool localTestingFilePaths, // because filepaths and fonts accedd differently in own package
+  // String?
+  // initialValueJsonAssetPath, // both come from MaterialAppWrapper widget constructor
+  // required ModelUR modelUR,
   @override
   bool get hideIframes;
   @override
-  bool
-      get hideSnippetPencilIcons; // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
+  bool get hideSnippetPencilIcons; // @Default(Offset.zero) Offset? snippetTreeCalloutInitialPos,
   @override
   double? get snippetTreeCalloutW;
   @override
@@ -577,47 +626,44 @@ abstract class _CAPIState extends CAPIState {
   @override
   double? get directoryTreeCalloutW;
   @override
-  double?
-      get directoryTreeCalloutH; // @Default(600) double? snippetPropertiesCalloutW,
-// @Default(600) double? snippetPropertiesCalloutH,
-// @Default({}) Map<String, TargetGroupModel> targetGroupMap,
-// @Default([]) List<TargetModel> playList,
-// current selection
-// List<TargetModel> targetCovers
-// TargetModel? hideTargetCoversExcept,
-// TargetModel? hideTargetBtnsExcept,
-// @Default(false) bool hideAllTargetCovers,
-// @Default(false) bool hideAllTargetBtns,
-//
+  double? get directoryTreeCalloutH; // @Default(600) double? snippetPropertiesCalloutW,
+  // @Default(600) double? snippetPropertiesCalloutH,
+  // @Default({}) Map<String, TargetGroupModel> targetGroupMap,
+  // @Default([]) List<TargetModel> playList,
+  // current selection
+  // List<TargetModel> targetCovers
+  // TargetModel? hideTargetCoversExcept,
+  // TargetModel? hideTargetBtnsExcept,
+  // @Default(false) bool hideAllTargetCovers,
+  // @Default(false) bool hideAllTargetBtns,
+  //
   @override
   TargetModel? get newestTarget;
   @override
   TargetModel? get selectedTarget; //
   @override
   String? get selectedPanel; //
-// content
+  // content
   @override
   bool get trainerIsSignedn; // String? jsonRootDirectoryNode,
-// EncodedJson? jsonClipboardForMove,
+  // EncodedJson? jsonClipboardForMove,
   @override
   bool get showClipboardContent;
   @override
   int get force; // hacky way to force a transition
   @override
   bool get onlyTargetsWrappers; // hacky way to force a transition
-//==========================================================================================
-//====  PAGE ROUTE NAME  ===================================================================
-//==========================================================================================
+  //==========================================================================================
+  //====  PAGE ROUTE NAME  ===================================================================
+  //==========================================================================================
   @override
-  String?
-      get routeName; //==========================================================================================
-//====  SNIPPET EDITING  ===================================================================
-//==========================================================================================
+  String? get routeName; //==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
   @override
   String? get snippetNameShowingPinkOverlaysFor;
   @override
-  SnippetBeingEdited?
-      get snippetBeingEdited; // VersionId? snippetBeingEditedVersionId,
+  SnippetBeingEdited? get snippetBeingEdited; // VersionId? snippetBeingEditedVersionId,
   @override
   bool get ONLY_TESTING;
 

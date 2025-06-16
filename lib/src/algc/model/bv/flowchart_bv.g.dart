@@ -6,7 +6,7 @@ part of 'flowchart_bv.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<FlowchartBV> _$flowchartBVSerializer = new _$FlowchartBVSerializer();
+Serializer<FlowchartBV> _$flowchartBVSerializer = _$FlowchartBVSerializer();
 
 class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
   @override
@@ -15,16 +15,20 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
   final String wireName = 'FlowchartBV';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, FlowchartBV object,
-      {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(
+    Serializers serializers,
+    FlowchartBV object, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
     final result = <Object?>[];
     Object? value;
     value = object.id;
     if (value != null) {
       result
         ..add('id')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.createdMs;
     if (value != null) {
@@ -36,8 +40,9 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
     if (value != null) {
       result
         ..add('ownerEa')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.lastModifiedMs;
     if (value != null) {
@@ -50,21 +55,24 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
       result
         ..add('deleted')
         ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+          serializers.serialize(value, specifiedType: const FullType(bool)),
+        );
     }
     value = object.title;
     if (value != null) {
       result
         ..add('title')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.descr;
     if (value != null) {
       result
         ..add('descr')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.imageSize;
     if (value != null) {
@@ -76,68 +84,94 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
     if (value != null) {
       result
         ..add('version')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.pageSize;
     if (value != null) {
       result
         ..add('pageSize')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.beginTxt;
     if (value != null) {
       result
         ..add('beginTxt')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.flowchartComment;
     if (value != null) {
       result
         ..add('flowchartComment')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CommentBV)));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(CommentBV),
+          ),
+        );
     }
     value = object.beginComment;
     if (value != null) {
       result
         ..add('beginComment')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CommentBV)));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(CommentBV),
+          ),
+        );
     }
     value = object.stepsMap;
     if (value != null) {
       result
         ..add('stepsMap')
-        ..add(serializers.serialize(value,
+        ..add(
+          serializers.serialize(
+            value,
             specifiedType: const FullType(BuiltMap, const [
               const FullType(String),
-              const FullType(BuiltList, const [const FullType(StepBV)])
-            ])));
+              const FullType(BuiltList, const [const FullType(StepBV)]),
+            ]),
+          ),
+        );
     }
     value = object.previousVersionMap;
     if (value != null) {
       result
         ..add('previousVersionMap')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(BuiltMap,
-                const [const FullType(String), const FullType(String)])));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(BuiltMap, const [
+              const FullType(String),
+              const FullType(String),
+            ]),
+          ),
+        );
     }
     value = object.endTxt;
     if (value != null) {
       result
         ..add('endTxt')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.endComment;
     if (value != null) {
       result
         ..add('endComment')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(CommentBV)));
+        ..add(
+          serializers.serialize(
+            value,
+            specifiedType: const FullType(CommentBV),
+          ),
+        );
     }
     value = object.colorValue;
     if (value != null) {
@@ -150,15 +184,19 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
       result
         ..add('showColouredTrueAndFalse')
         ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+          serializers.serialize(value, specifiedType: const FullType(bool)),
+        );
     }
     return result;
   }
 
   @override
-  FlowchartBV deserialize(Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new FlowchartBVBuilder();
+  FlowchartBV deserialize(
+    Serializers serializers,
+    Iterable<Object?> serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
+    final result = FlowchartBVBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -167,84 +205,153 @@ class _$FlowchartBVSerializer implements StructuredSerializer<FlowchartBV> {
       final Object? value = iterator.current;
       switch (key) {
         case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.id =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'createdMs':
-          result.createdMs = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.createdMs =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'ownerEa':
-          result.ownerEa = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.ownerEa =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'lastModifiedMs':
-          result.lastModifiedMs = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.lastModifiedMs =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'deleted':
-          result.deleted = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.deleted =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool?;
           break;
         case 'title':
-          result.title = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.title =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'descr':
-          result.descr = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.descr =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'imageSize':
-          result.imageSize = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.imageSize =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'version':
-          result.version = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.version =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'pageSize':
-          result.pageSize = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.pageSize =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'beginTxt':
-          result.beginTxt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.beginTxt =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'flowchartComment':
-          result.flowchartComment.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CommentBV))! as CommentBV);
+          result.flowchartComment.replace(
+            serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(CommentBV),
+                )!
+                as CommentBV,
+          );
           break;
         case 'beginComment':
-          result.beginComment.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CommentBV))! as CommentBV);
+          result.beginComment.replace(
+            serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(CommentBV),
+                )!
+                as CommentBV,
+          );
           break;
         case 'stepsMap':
-          result.stepsMap.replace(serializers.deserialize(value,
+          result.stepsMap.replace(
+            serializers.deserialize(
+              value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
-                const FullType(BuiltList, const [const FullType(StepBV)])
-              ]))!);
+                const FullType(BuiltList, const [const FullType(StepBV)]),
+              ]),
+            )!,
+          );
           break;
         case 'previousVersionMap':
-          result.previousVersionMap.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap,
-                  const [const FullType(String), const FullType(String)]))!);
+          result.previousVersionMap.replace(
+            serializers.deserialize(
+              value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(String),
+              ]),
+            )!,
+          );
           break;
         case 'endTxt':
-          result.endTxt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.endTxt =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'endComment':
-          result.endComment.replace(serializers.deserialize(value,
-              specifiedType: const FullType(CommentBV))! as CommentBV);
+          result.endComment.replace(
+            serializers.deserialize(
+                  value,
+                  specifiedType: const FullType(CommentBV),
+                )!
+                as CommentBV,
+          );
           break;
         case 'colorValue':
-          result.colorValue = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.colorValue =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
         case 'showColouredTrueAndFalse':
-          result.showColouredTrueAndFalse = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+          result.showColouredTrueAndFalse =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(bool),
+                  )
+                  as bool?;
           break;
       }
     }
@@ -294,36 +401,35 @@ class _$FlowchartBV extends FlowchartBV {
   final bool? showColouredTrueAndFalse;
 
   factory _$FlowchartBV([void Function(FlowchartBVBuilder)? updates]) =>
-      (new FlowchartBVBuilder()..update(updates))._build();
+      (FlowchartBVBuilder()..update(updates))._build();
 
-  _$FlowchartBV._(
-      {this.id,
-      this.createdMs,
-      this.ownerEa,
-      this.lastModifiedMs,
-      this.deleted,
-      this.title,
-      this.descr,
-      this.imageSize,
-      this.version,
-      this.pageSize,
-      this.beginTxt,
-      this.flowchartComment,
-      this.beginComment,
-      this.stepsMap,
-      this.previousVersionMap,
-      this.endTxt,
-      this.endComment,
-      this.colorValue,
-      this.showColouredTrueAndFalse})
-      : super._();
-
+  _$FlowchartBV._({
+    this.id,
+    this.createdMs,
+    this.ownerEa,
+    this.lastModifiedMs,
+    this.deleted,
+    this.title,
+    this.descr,
+    this.imageSize,
+    this.version,
+    this.pageSize,
+    this.beginTxt,
+    this.flowchartComment,
+    this.beginComment,
+    this.stepsMap,
+    this.previousVersionMap,
+    this.endTxt,
+    this.endComment,
+    this.colorValue,
+    this.showColouredTrueAndFalse,
+  }) : super._();
   @override
   FlowchartBV rebuild(void Function(FlowchartBVBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  FlowchartBVBuilder toBuilder() => new FlowchartBVBuilder()..replace(this);
+  FlowchartBVBuilder toBuilder() => FlowchartBVBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -452,25 +558,25 @@ class FlowchartBVBuilder implements Builder<FlowchartBV, FlowchartBVBuilder> {
 
   CommentBVBuilder? _flowchartComment;
   CommentBVBuilder get flowchartComment =>
-      _$this._flowchartComment ??= new CommentBVBuilder();
+      _$this._flowchartComment ??= CommentBVBuilder();
   set flowchartComment(CommentBVBuilder? flowchartComment) =>
       _$this._flowchartComment = flowchartComment;
 
   CommentBVBuilder? _beginComment;
   CommentBVBuilder get beginComment =>
-      _$this._beginComment ??= new CommentBVBuilder();
+      _$this._beginComment ??= CommentBVBuilder();
   set beginComment(CommentBVBuilder? beginComment) =>
       _$this._beginComment = beginComment;
 
   MapBuilder<String, BuiltList<StepBV>>? _stepsMap;
   MapBuilder<String, BuiltList<StepBV>> get stepsMap =>
-      _$this._stepsMap ??= new MapBuilder<String, BuiltList<StepBV>>();
+      _$this._stepsMap ??= MapBuilder<String, BuiltList<StepBV>>();
   set stepsMap(MapBuilder<String, BuiltList<StepBV>>? stepsMap) =>
       _$this._stepsMap = stepsMap;
 
   MapBuilder<String, String>? _previousVersionMap;
   MapBuilder<String, String> get previousVersionMap =>
-      _$this._previousVersionMap ??= new MapBuilder<String, String>();
+      _$this._previousVersionMap ??= MapBuilder<String, String>();
   set previousVersionMap(MapBuilder<String, String>? previousVersionMap) =>
       _$this._previousVersionMap = previousVersionMap;
 
@@ -479,8 +585,7 @@ class FlowchartBVBuilder implements Builder<FlowchartBV, FlowchartBVBuilder> {
   set endTxt(String? endTxt) => _$this._endTxt = endTxt;
 
   CommentBVBuilder? _endComment;
-  CommentBVBuilder get endComment =>
-      _$this._endComment ??= new CommentBVBuilder();
+  CommentBVBuilder get endComment => _$this._endComment ??= CommentBVBuilder();
   set endComment(CommentBVBuilder? endComment) =>
       _$this._endComment = endComment;
 
@@ -524,7 +629,6 @@ class FlowchartBVBuilder implements Builder<FlowchartBV, FlowchartBVBuilder> {
 
   @override
   void replace(FlowchartBV other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$FlowchartBV;
   }
 
@@ -539,27 +643,29 @@ class FlowchartBVBuilder implements Builder<FlowchartBV, FlowchartBVBuilder> {
   _$FlowchartBV _build() {
     _$FlowchartBV _$result;
     try {
-      _$result = _$v ??
-          new _$FlowchartBV._(
-              id: id,
-              createdMs: createdMs,
-              ownerEa: ownerEa,
-              lastModifiedMs: lastModifiedMs,
-              deleted: deleted,
-              title: title,
-              descr: descr,
-              imageSize: imageSize,
-              version: version,
-              pageSize: pageSize,
-              beginTxt: beginTxt,
-              flowchartComment: _flowchartComment?.build(),
-              beginComment: _beginComment?.build(),
-              stepsMap: _stepsMap?.build(),
-              previousVersionMap: _previousVersionMap?.build(),
-              endTxt: endTxt,
-              endComment: _endComment?.build(),
-              colorValue: colorValue,
-              showColouredTrueAndFalse: showColouredTrueAndFalse);
+      _$result =
+          _$v ??
+          _$FlowchartBV._(
+            id: id,
+            createdMs: createdMs,
+            ownerEa: ownerEa,
+            lastModifiedMs: lastModifiedMs,
+            deleted: deleted,
+            title: title,
+            descr: descr,
+            imageSize: imageSize,
+            version: version,
+            pageSize: pageSize,
+            beginTxt: beginTxt,
+            flowchartComment: _flowchartComment?.build(),
+            beginComment: _beginComment?.build(),
+            stepsMap: _stepsMap?.build(),
+            previousVersionMap: _previousVersionMap?.build(),
+            endTxt: endTxt,
+            endComment: _endComment?.build(),
+            colorValue: colorValue,
+            showColouredTrueAndFalse: showColouredTrueAndFalse,
+          );
     } catch (_) {
       late String _$failedField;
       try {
@@ -575,8 +681,11 @@ class FlowchartBVBuilder implements Builder<FlowchartBV, FlowchartBVBuilder> {
         _$failedField = 'endComment';
         _endComment?.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            r'FlowchartBV', _$failedField, e.toString());
+        throw BuiltValueNestedFieldError(
+          r'FlowchartBV',
+          _$failedField,
+          e.toString(),
+        );
       }
       rethrow;
     }

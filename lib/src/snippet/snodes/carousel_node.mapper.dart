@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'carousel_node.dart';
@@ -112,7 +112,8 @@ mixin CarouselNodeMappable {
   }
 
   CarouselNodeCopyWith<CarouselNode, CarouselNode, CarouselNode> get copyWith =>
-      _CarouselNodeCopyWithImpl(this as CarouselNode, $identity, $identity);
+      _CarouselNodeCopyWithImpl<CarouselNode, CarouselNode>(
+          this as CarouselNode, $identity, $identity);
   @override
   String toString() {
     return CarouselNodeMapper.ensureInitialized()
@@ -135,7 +136,7 @@ mixin CarouselNodeMappable {
 extension CarouselNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, CarouselNode, $Out> {
   CarouselNodeCopyWith<$R, CarouselNode, $Out> get $asCarouselNode =>
-      $base.as((v, t, t2) => _CarouselNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _CarouselNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class CarouselNodeCopyWith<$R, $In extends CarouselNode, $Out>
@@ -200,5 +201,5 @@ class _CarouselNodeCopyWithImpl<$R, $Out>
   @override
   CarouselNodeCopyWith<$R2, CarouselNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _CarouselNodeCopyWithImpl($value, $cast, t);
+      _CarouselNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

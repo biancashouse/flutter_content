@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'sizedbox_node.dart';
@@ -91,7 +91,8 @@ mixin SizedBoxNodeMappable {
   }
 
   SizedBoxNodeCopyWith<SizedBoxNode, SizedBoxNode, SizedBoxNode> get copyWith =>
-      _SizedBoxNodeCopyWithImpl(this as SizedBoxNode, $identity, $identity);
+      _SizedBoxNodeCopyWithImpl<SizedBoxNode, SizedBoxNode>(
+          this as SizedBoxNode, $identity, $identity);
   @override
   String toString() {
     return SizedBoxNodeMapper.ensureInitialized()
@@ -114,7 +115,7 @@ mixin SizedBoxNodeMappable {
 extension SizedBoxNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SizedBoxNode, $Out> {
   SizedBoxNodeCopyWith<$R, SizedBoxNode, $Out> get $asSizedBoxNode =>
-      $base.as((v, t, t2) => _SizedBoxNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _SizedBoxNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SizedBoxNodeCopyWith<$R, $In extends SizedBoxNode, $Out>
@@ -156,5 +157,5 @@ class _SizedBoxNodeCopyWithImpl<$R, $Out>
   @override
   SizedBoxNodeCopyWith<$R2, SizedBoxNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SizedBoxNodeCopyWithImpl($value, $cast, t);
+      _SizedBoxNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

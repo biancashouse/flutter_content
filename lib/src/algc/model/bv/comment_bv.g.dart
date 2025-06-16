@@ -6,7 +6,7 @@ part of 'comment_bv.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<CommentBV> _$commentBVSerializer = new _$CommentBVSerializer();
+Serializer<CommentBV> _$commentBVSerializer = _$CommentBVSerializer();
 
 class _$CommentBVSerializer implements StructuredSerializer<CommentBV> {
   @override
@@ -15,44 +15,52 @@ class _$CommentBVSerializer implements StructuredSerializer<CommentBV> {
   final String wireName = 'CommentBV';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, CommentBV object,
-      {FullType specifiedType = FullType.unspecified}) {
+  Iterable<Object?> serialize(
+    Serializers serializers,
+    CommentBV object, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
     final result = <Object?>[];
     Object? value;
     value = object.calloutWidth;
     if (value != null) {
       result
         ..add('calloutWidth')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(double)),
+        );
     }
     value = object.calloutHeight;
     if (value != null) {
       result
         ..add('calloutHeight')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(double)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(double)),
+        );
     }
     value = object.snippetEncodedJson;
     if (value != null) {
       result
         ..add('snippetEncodedJson')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.topTxt;
     if (value != null) {
       result
         ..add('topTxt')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.bottomTxt;
     if (value != null) {
       result
         ..add('bottomTxt')
-        ..add(serializers.serialize(value,
-            specifiedType: const FullType(String)));
+        ..add(
+          serializers.serialize(value, specifiedType: const FullType(String)),
+        );
     }
     value = object.imageSize;
     if (value != null) {
@@ -64,9 +72,12 @@ class _$CommentBVSerializer implements StructuredSerializer<CommentBV> {
   }
 
   @override
-  CommentBV deserialize(Serializers serializers, Iterable<Object?> serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new CommentBVBuilder();
+  CommentBV deserialize(
+    Serializers serializers,
+    Iterable<Object?> serialized, {
+    FullType specifiedType = FullType.unspecified,
+  }) {
+    final result = CommentBVBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -75,28 +86,49 @@ class _$CommentBVSerializer implements StructuredSerializer<CommentBV> {
       final Object? value = iterator.current;
       switch (key) {
         case 'calloutWidth':
-          result.calloutWidth = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.calloutWidth =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(double),
+                  )
+                  as double?;
           break;
         case 'calloutHeight':
-          result.calloutHeight = serializers.deserialize(value,
-              specifiedType: const FullType(double)) as double?;
+          result.calloutHeight =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(double),
+                  )
+                  as double?;
           break;
         case 'snippetEncodedJson':
-          result.snippetEncodedJson = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.snippetEncodedJson =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'topTxt':
-          result.topTxt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.topTxt =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'bottomTxt':
-          result.bottomTxt = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String?;
+          result.bottomTxt =
+              serializers.deserialize(
+                    value,
+                    specifiedType: const FullType(String),
+                  )
+                  as String?;
           break;
         case 'imageSize':
-          result.imageSize = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
+          result.imageSize =
+              serializers.deserialize(value, specifiedType: const FullType(int))
+                  as int?;
           break;
       }
     }
@@ -120,23 +152,22 @@ class _$CommentBV extends CommentBV {
   final int? imageSize;
 
   factory _$CommentBV([void Function(CommentBVBuilder)? updates]) =>
-      (new CommentBVBuilder()..update(updates))._build();
+      (CommentBVBuilder()..update(updates))._build();
 
-  _$CommentBV._(
-      {this.calloutWidth,
-      this.calloutHeight,
-      this.snippetEncodedJson,
-      this.topTxt,
-      this.bottomTxt,
-      this.imageSize})
-      : super._();
-
+  _$CommentBV._({
+    this.calloutWidth,
+    this.calloutHeight,
+    this.snippetEncodedJson,
+    this.topTxt,
+    this.bottomTxt,
+    this.imageSize,
+  }) : super._();
   @override
   CommentBV rebuild(void Function(CommentBVBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  CommentBVBuilder toBuilder() => new CommentBVBuilder()..replace(this);
+  CommentBVBuilder toBuilder() => CommentBVBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
@@ -223,7 +254,6 @@ class CommentBVBuilder implements Builder<CommentBV, CommentBVBuilder> {
 
   @override
   void replace(CommentBV other) {
-    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$CommentBV;
   }
 
@@ -236,14 +266,16 @@ class CommentBVBuilder implements Builder<CommentBV, CommentBVBuilder> {
   CommentBV build() => _build();
 
   _$CommentBV _build() {
-    final _$result = _$v ??
-        new _$CommentBV._(
-            calloutWidth: calloutWidth,
-            calloutHeight: calloutHeight,
-            snippetEncodedJson: snippetEncodedJson,
-            topTxt: topTxt,
-            bottomTxt: bottomTxt,
-            imageSize: imageSize);
+    final _$result =
+        _$v ??
+        _$CommentBV._(
+          calloutWidth: calloutWidth,
+          calloutHeight: calloutHeight,
+          snippetEncodedJson: snippetEncodedJson,
+          topTxt: topTxt,
+          bottomTxt: bottomTxt,
+          imageSize: imageSize,
+        );
     replace(_$result);
     return _$result;
   }

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'target_group_model.dart';
@@ -58,8 +58,9 @@ mixin TargetGroupModelMappable {
   }
 
   TargetGroupModelCopyWith<TargetGroupModel, TargetGroupModel, TargetGroupModel>
-      get copyWith => _TargetGroupModelCopyWithImpl(
-          this as TargetGroupModel, $identity, $identity);
+      get copyWith =>
+          _TargetGroupModelCopyWithImpl<TargetGroupModel, TargetGroupModel>(
+              this as TargetGroupModel, $identity, $identity);
   @override
   String toString() {
     return TargetGroupModelMapper.ensureInitialized()
@@ -82,8 +83,8 @@ mixin TargetGroupModelMappable {
 extension TargetGroupModelValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TargetGroupModel, $Out> {
   TargetGroupModelCopyWith<$R, TargetGroupModel, $Out>
-      get $asTargetGroupModel =>
-          $base.as((v, t, t2) => _TargetGroupModelCopyWithImpl(v, t, t2));
+      get $asTargetGroupModel => $base
+          .as((v, t, t2) => _TargetGroupModelCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TargetGroupModelCopyWith<$R, $In extends TargetGroupModel, $Out>
@@ -118,5 +119,5 @@ class _TargetGroupModelCopyWithImpl<$R, $Out>
   @override
   TargetGroupModelCopyWith<$R2, TargetGroupModel, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TargetGroupModelCopyWithImpl($value, $cast, t);
+      _TargetGroupModelCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

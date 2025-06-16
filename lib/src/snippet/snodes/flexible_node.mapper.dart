@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'flexible_node.dart';
@@ -92,7 +92,8 @@ mixin FlexibleNodeMappable {
   }
 
   FlexibleNodeCopyWith<FlexibleNode, FlexibleNode, FlexibleNode> get copyWith =>
-      _FlexibleNodeCopyWithImpl(this as FlexibleNode, $identity, $identity);
+      _FlexibleNodeCopyWithImpl<FlexibleNode, FlexibleNode>(
+          this as FlexibleNode, $identity, $identity);
   @override
   String toString() {
     return FlexibleNodeMapper.ensureInitialized()
@@ -115,7 +116,7 @@ mixin FlexibleNodeMappable {
 extension FlexibleNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FlexibleNode, $Out> {
   FlexibleNodeCopyWith<$R, FlexibleNode, $Out> get $asFlexibleNode =>
-      $base.as((v, t, t2) => _FlexibleNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _FlexibleNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FlexibleNodeCopyWith<$R, $In extends FlexibleNode, $Out>
@@ -154,5 +155,5 @@ class _FlexibleNodeCopyWithImpl<$R, $Out>
   @override
   FlexibleNodeCopyWith<$R2, FlexibleNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _FlexibleNodeCopyWithImpl($value, $cast, t);
+      _FlexibleNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

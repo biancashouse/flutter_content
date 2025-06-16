@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:example/bh-apps.firebase_options.dart';
+import 'package:admin/bh-apps.firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:logger/logger.dart';

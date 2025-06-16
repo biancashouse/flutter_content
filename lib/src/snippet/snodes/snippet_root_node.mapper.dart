@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'snippet_root_node.dart';
@@ -92,8 +92,9 @@ mixin SnippetRootNodeMappable {
   }
 
   SnippetRootNodeCopyWith<SnippetRootNode, SnippetRootNode, SnippetRootNode>
-      get copyWith => _SnippetRootNodeCopyWithImpl(
-          this as SnippetRootNode, $identity, $identity);
+      get copyWith =>
+          _SnippetRootNodeCopyWithImpl<SnippetRootNode, SnippetRootNode>(
+              this as SnippetRootNode, $identity, $identity);
   @override
   String toString() {
     return SnippetRootNodeMapper.ensureInitialized()
@@ -116,7 +117,7 @@ mixin SnippetRootNodeMappable {
 extension SnippetRootNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SnippetRootNode, $Out> {
   SnippetRootNodeCopyWith<$R, SnippetRootNode, $Out> get $asSnippetRootNode =>
-      $base.as((v, t, t2) => _SnippetRootNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _SnippetRootNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SnippetRootNodeCopyWith<$R, $In extends SnippetRootNode, $Out>
@@ -156,5 +157,5 @@ class _SnippetRootNodeCopyWithImpl<$R, $Out>
   @override
   SnippetRootNodeCopyWith<$R2, SnippetRootNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _SnippetRootNodeCopyWithImpl($value, $cast, t);
+      _SnippetRootNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

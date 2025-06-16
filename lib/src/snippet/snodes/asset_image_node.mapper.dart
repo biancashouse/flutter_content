@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'asset_image_node.dart';
@@ -107,8 +107,9 @@ mixin AssetImageNodeMappable {
   }
 
   AssetImageNodeCopyWith<AssetImageNode, AssetImageNode, AssetImageNode>
-      get copyWith => _AssetImageNodeCopyWithImpl(
-          this as AssetImageNode, $identity, $identity);
+      get copyWith =>
+          _AssetImageNodeCopyWithImpl<AssetImageNode, AssetImageNode>(
+              this as AssetImageNode, $identity, $identity);
   @override
   String toString() {
     return AssetImageNodeMapper.ensureInitialized()
@@ -131,7 +132,7 @@ mixin AssetImageNodeMappable {
 extension AssetImageNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, AssetImageNode, $Out> {
   AssetImageNodeCopyWith<$R, AssetImageNode, $Out> get $asAssetImageNode =>
-      $base.as((v, t, t2) => _AssetImageNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _AssetImageNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class AssetImageNodeCopyWith<$R, $In extends AssetImageNode, $Out>
@@ -184,5 +185,5 @@ class _AssetImageNodeCopyWithImpl<$R, $Out>
   @override
   AssetImageNodeCopyWith<$R2, AssetImageNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _AssetImageNodeCopyWithImpl($value, $cast, t);
+      _AssetImageNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

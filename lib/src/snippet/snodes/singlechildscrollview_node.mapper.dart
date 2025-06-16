@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'singlechildscrollview_node.dart';
@@ -92,7 +92,8 @@ mixin SingleChildScrollViewNodeMappable {
 
   SingleChildScrollViewNodeCopyWith<SingleChildScrollViewNode,
           SingleChildScrollViewNode, SingleChildScrollViewNode>
-      get copyWith => _SingleChildScrollViewNodeCopyWithImpl(
+      get copyWith => _SingleChildScrollViewNodeCopyWithImpl<
+              SingleChildScrollViewNode, SingleChildScrollViewNode>(
           this as SingleChildScrollViewNode, $identity, $identity);
   @override
   String toString() {
@@ -116,8 +117,8 @@ mixin SingleChildScrollViewNodeMappable {
 extension SingleChildScrollViewNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SingleChildScrollViewNode, $Out> {
   SingleChildScrollViewNodeCopyWith<$R, SingleChildScrollViewNode, $Out>
-      get $asSingleChildScrollViewNode => $base
-          .as((v, t, t2) => _SingleChildScrollViewNodeCopyWithImpl(v, t, t2));
+      get $asSingleChildScrollViewNode => $base.as((v, t, t2) =>
+          _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SingleChildScrollViewNodeCopyWith<
@@ -163,5 +164,5 @@ class _SingleChildScrollViewNodeCopyWithImpl<$R, $Out>
   @override
   SingleChildScrollViewNodeCopyWith<$R2, SingleChildScrollViewNode, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _SingleChildScrollViewNodeCopyWithImpl($value, $cast, t);
+          _SingleChildScrollViewNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

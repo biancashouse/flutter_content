@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_axis.dart';
@@ -25,9 +25,9 @@ class AxisEnumMapper extends EnumMapper<AxisEnum> {
   @override
   AxisEnum decode(dynamic value) {
     switch (value) {
-      case 'horizontal':
+      case r'horizontal':
         return AxisEnum.horizontal;
-      case 'vertical':
+      case r'vertical':
         return AxisEnum.vertical;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -38,9 +38,9 @@ class AxisEnumMapper extends EnumMapper<AxisEnum> {
   dynamic encode(AxisEnum self) {
     switch (self) {
       case AxisEnum.horizontal:
-        return 'horizontal';
+        return r'horizontal';
       case AxisEnum.vertical:
-        return 'vertical';
+        return r'vertical';
     }
   }
 }

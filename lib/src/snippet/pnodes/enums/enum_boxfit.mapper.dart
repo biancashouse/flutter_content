@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_boxfit.dart';
@@ -25,19 +25,19 @@ class BoxFitEnumMapper extends EnumMapper<BoxFitEnum> {
   @override
   BoxFitEnum decode(dynamic value) {
     switch (value) {
-      case 'fill':
+      case r'fill':
         return BoxFitEnum.fill;
-      case 'contain':
+      case r'contain':
         return BoxFitEnum.contain;
-      case 'cover':
+      case r'cover':
         return BoxFitEnum.cover;
-      case 'fitWidth':
+      case r'fitWidth':
         return BoxFitEnum.fitWidth;
-      case 'fitHeight':
+      case r'fitHeight':
         return BoxFitEnum.fitHeight;
-      case 'none':
+      case r'none':
         return BoxFitEnum.none;
-      case 'scaleDown':
+      case r'scaleDown':
         return BoxFitEnum.scaleDown;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -48,19 +48,19 @@ class BoxFitEnumMapper extends EnumMapper<BoxFitEnum> {
   dynamic encode(BoxFitEnum self) {
     switch (self) {
       case BoxFitEnum.fill:
-        return 'fill';
+        return r'fill';
       case BoxFitEnum.contain:
-        return 'contain';
+        return r'contain';
       case BoxFitEnum.cover:
-        return 'cover';
+        return r'cover';
       case BoxFitEnum.fitWidth:
-        return 'fitWidth';
+        return r'fitWidth';
       case BoxFitEnum.fitHeight:
-        return 'fitHeight';
+        return r'fitHeight';
       case BoxFitEnum.none:
-        return 'none';
+        return r'none';
       case BoxFitEnum.scaleDown:
-        return 'scaleDown';
+        return r'scaleDown';
     }
   }
 }

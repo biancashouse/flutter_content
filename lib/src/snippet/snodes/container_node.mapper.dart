@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'container_node.dart';
@@ -87,7 +87,7 @@ mixin ContainerNodeMappable {
   }
 
   ContainerNodeCopyWith<ContainerNode, ContainerNode, ContainerNode>
-      get copyWith => _ContainerNodeCopyWithImpl(
+      get copyWith => _ContainerNodeCopyWithImpl<ContainerNode, ContainerNode>(
           this as ContainerNode, $identity, $identity);
   @override
   String toString() {
@@ -111,7 +111,7 @@ mixin ContainerNodeMappable {
 extension ContainerNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ContainerNode, $Out> {
   ContainerNodeCopyWith<$R, ContainerNode, $Out> get $asContainerNode =>
-      $base.as((v, t, t2) => _ContainerNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ContainerNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ContainerNodeCopyWith<$R, $In extends ContainerNode, $Out>
@@ -155,5 +155,5 @@ class _ContainerNodeCopyWithImpl<$R, $Out>
   @override
   ContainerNodeCopyWith<$R2, ContainerNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ContainerNodeCopyWithImpl($value, $cast, t);
+      _ContainerNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

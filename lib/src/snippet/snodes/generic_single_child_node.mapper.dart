@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'generic_single_child_node.dart';
@@ -88,7 +88,8 @@ mixin GenericSingleChildNodeMappable {
 
   GenericSingleChildNodeCopyWith<GenericSingleChildNode, GenericSingleChildNode,
           GenericSingleChildNode>
-      get copyWith => _GenericSingleChildNodeCopyWithImpl(
+      get copyWith => _GenericSingleChildNodeCopyWithImpl<
+              GenericSingleChildNode, GenericSingleChildNode>(
           this as GenericSingleChildNode, $identity, $identity);
   @override
   String toString() {
@@ -112,8 +113,8 @@ mixin GenericSingleChildNodeMappable {
 extension GenericSingleChildNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GenericSingleChildNode, $Out> {
   GenericSingleChildNodeCopyWith<$R, GenericSingleChildNode, $Out>
-      get $asGenericSingleChildNode =>
-          $base.as((v, t, t2) => _GenericSingleChildNodeCopyWithImpl(v, t, t2));
+      get $asGenericSingleChildNode => $base.as((v, t, t2) =>
+          _GenericSingleChildNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GenericSingleChildNodeCopyWith<
@@ -154,5 +155,5 @@ class _GenericSingleChildNodeCopyWithImpl<$R, $Out>
   @override
   GenericSingleChildNodeCopyWith<$R2, GenericSingleChildNode, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _GenericSingleChildNodeCopyWithImpl($value, $cast, t);
+          _GenericSingleChildNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

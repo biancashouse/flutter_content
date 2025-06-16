@@ -12,7 +12,8 @@ part of 'poll_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$PollState {
@@ -36,13 +37,14 @@ abstract class $PollStateCopyWith<$Res> {
   factory $PollStateCopyWith(PollState value, $Res Function(PollState) then) =
       _$PollStateCopyWithImpl<$Res, PollState>;
   @useResult
-  $Res call(
-      {String pollName,
-      int? startDate,
-      int? endDate,
-      Map<String, int> optionVoteCounts,
-      ({String? optionId, int? when})? userVote,
-      dynamic locked});
+  $Res call({
+    String pollName,
+    int? startDate,
+    int? endDate,
+    Map<String, int> optionVoteCounts,
+    ({String? optionId, int? when})? userVote,
+    dynamic locked,
+  });
 }
 
 /// @nodoc
@@ -67,32 +69,41 @@ class _$PollStateCopyWithImpl<$Res, $Val extends PollState>
     Object? userVote = freezed,
     Object? locked = freezed,
   }) {
-    return _then(_value.copyWith(
-      pollName: null == pollName
-          ? _value.pollName
-          : pollName // ignore: cast_nullable_to_non_nullable
-              as String,
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as int?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as int?,
-      optionVoteCounts: null == optionVoteCounts
-          ? _value.optionVoteCounts
-          : optionVoteCounts // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
-      userVote: freezed == userVote
-          ? _value.userVote
-          : userVote // ignore: cast_nullable_to_non_nullable
-              as ({String? optionId, int? when})?,
-      locked: freezed == locked
-          ? _value.locked
-          : locked // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            pollName:
+                null == pollName
+                    ? _value.pollName
+                    : pollName // ignore: cast_nullable_to_non_nullable
+                        as String,
+            startDate:
+                freezed == startDate
+                    ? _value.startDate
+                    : startDate // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            endDate:
+                freezed == endDate
+                    ? _value.endDate
+                    : endDate // ignore: cast_nullable_to_non_nullable
+                        as int?,
+            optionVoteCounts:
+                null == optionVoteCounts
+                    ? _value.optionVoteCounts
+                    : optionVoteCounts // ignore: cast_nullable_to_non_nullable
+                        as Map<String, int>,
+            userVote:
+                freezed == userVote
+                    ? _value.userVote
+                    : userVote // ignore: cast_nullable_to_non_nullable
+                        as ({String? optionId, int? when})?,
+            locked:
+                freezed == locked
+                    ? _value.locked
+                    : locked // ignore: cast_nullable_to_non_nullable
+                        as dynamic,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -100,17 +111,19 @@ class _$PollStateCopyWithImpl<$Res, $Val extends PollState>
 abstract class _$$PollStateImplCopyWith<$Res>
     implements $PollStateCopyWith<$Res> {
   factory _$$PollStateImplCopyWith(
-          _$PollStateImpl value, $Res Function(_$PollStateImpl) then) =
-      __$$PollStateImplCopyWithImpl<$Res>;
+    _$PollStateImpl value,
+    $Res Function(_$PollStateImpl) then,
+  ) = __$$PollStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String pollName,
-      int? startDate,
-      int? endDate,
-      Map<String, int> optionVoteCounts,
-      ({String? optionId, int? when})? userVote,
-      dynamic locked});
+  $Res call({
+    String pollName,
+    int? startDate,
+    int? endDate,
+    Map<String, int> optionVoteCounts,
+    ({String? optionId, int? when})? userVote,
+    dynamic locked,
+  });
 }
 
 /// @nodoc
@@ -118,8 +131,9 @@ class __$$PollStateImplCopyWithImpl<$Res>
     extends _$PollStateCopyWithImpl<$Res, _$PollStateImpl>
     implements _$$PollStateImplCopyWith<$Res> {
   __$$PollStateImplCopyWithImpl(
-      _$PollStateImpl _value, $Res Function(_$PollStateImpl) _then)
-      : super(_value, _then);
+    _$PollStateImpl _value,
+    $Res Function(_$PollStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of PollState
   /// with the given fields replaced by the non-null parameter values.
@@ -133,44 +147,51 @@ class __$$PollStateImplCopyWithImpl<$Res>
     Object? userVote = freezed,
     Object? locked = freezed,
   }) {
-    return _then(_$PollStateImpl(
-      pollName: null == pollName
-          ? _value.pollName
-          : pollName // ignore: cast_nullable_to_non_nullable
-              as String,
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as int?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as int?,
-      optionVoteCounts: null == optionVoteCounts
-          ? _value._optionVoteCounts
-          : optionVoteCounts // ignore: cast_nullable_to_non_nullable
-              as Map<String, int>,
-      userVote: freezed == userVote
-          ? _value.userVote
-          : userVote // ignore: cast_nullable_to_non_nullable
-              as ({String? optionId, int? when})?,
-      locked: freezed == locked ? _value.locked! : locked,
-    ));
+    return _then(
+      _$PollStateImpl(
+        pollName:
+            null == pollName
+                ? _value.pollName
+                : pollName // ignore: cast_nullable_to_non_nullable
+                    as String,
+        startDate:
+            freezed == startDate
+                ? _value.startDate
+                : startDate // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        endDate:
+            freezed == endDate
+                ? _value.endDate
+                : endDate // ignore: cast_nullable_to_non_nullable
+                    as int?,
+        optionVoteCounts:
+            null == optionVoteCounts
+                ? _value._optionVoteCounts
+                : optionVoteCounts // ignore: cast_nullable_to_non_nullable
+                    as Map<String, int>,
+        userVote:
+            freezed == userVote
+                ? _value.userVote
+                : userVote // ignore: cast_nullable_to_non_nullable
+                    as ({String? optionId, int? when})?,
+        locked: freezed == locked ? _value.locked! : locked,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$PollStateImpl extends _PollState {
-  _$PollStateImpl(
-      {required this.pollName,
-      this.startDate,
-      this.endDate,
-      required final Map<String, int> optionVoteCounts,
-      this.userVote,
-      this.locked = false})
-      : _optionVoteCounts = optionVoteCounts,
-        super._();
+  _$PollStateImpl({
+    required this.pollName,
+    this.startDate,
+    this.endDate,
+    required final Map<String, int> optionVoteCounts,
+    this.userVote,
+    this.locked = false,
+  }) : _optionVoteCounts = optionVoteCounts,
+       super._();
 
   @override
   final String pollName;
@@ -207,8 +228,10 @@ class _$PollStateImpl extends _PollState {
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
-            const DeepCollectionEquality()
-                .equals(other._optionVoteCounts, _optionVoteCounts) &&
+            const DeepCollectionEquality().equals(
+              other._optionVoteCounts,
+              _optionVoteCounts,
+            ) &&
             (identical(other.userVote, userVote) ||
                 other.userVote == userVote) &&
             const DeepCollectionEquality().equals(other.locked, locked));
@@ -216,13 +239,14 @@ class _$PollStateImpl extends _PollState {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      pollName,
-      startDate,
-      endDate,
-      const DeepCollectionEquality().hash(_optionVoteCounts),
-      userVote,
-      const DeepCollectionEquality().hash(locked));
+    runtimeType,
+    pollName,
+    startDate,
+    endDate,
+    const DeepCollectionEquality().hash(_optionVoteCounts),
+    userVote,
+    const DeepCollectionEquality().hash(locked),
+  );
 
   /// Create a copy of PollState
   /// with the given fields replaced by the non-null parameter values.
@@ -234,13 +258,14 @@ class _$PollStateImpl extends _PollState {
 }
 
 abstract class _PollState extends PollState {
-  factory _PollState(
-      {required final String pollName,
-      final int? startDate,
-      final int? endDate,
-      required final Map<String, int> optionVoteCounts,
-      final ({String? optionId, int? when})? userVote,
-      final dynamic locked}) = _$PollStateImpl;
+  factory _PollState({
+    required final String pollName,
+    final int? startDate,
+    final int? endDate,
+    required final Map<String, int> optionVoteCounts,
+    final ({String? optionId, int? when})? userVote,
+    final dynamic locked,
+  }) = _$PollStateImpl;
   _PollState._() : super._();
 
   @override

@@ -15,12 +15,12 @@ class UpTo6Colors with UpTo6ColorsMappable {
   ColorModel? color6;
 
   // deprecated
-  int? color1Value;
-  int? color2Value;
-  int? color3Value;
-  int? color4Value;
-  int? color5Value;
-  int? color6Value;
+  double? color1Value;
+  double? color2Value;
+  double? color3Value;
+  double? color4Value;
+  double? color5Value;
+  double? color6Value;
 
   UpTo6Colors({
     this.color1,
@@ -39,22 +39,22 @@ class UpTo6Colors with UpTo6ColorsMappable {
     this.color6Value,
   }) {
     if (color1Value != null) {
-      color1 = ColorModel.fromColor(Color(color1Value!));
+      color1 = ColorModel.fromColor(Color(color1Value!.toInt()));
     }
     if (color2Value != null) {
-      color2 = ColorModel.fromColor(Color(color2Value!));
+      color2 = ColorModel.fromColor(Color(color2Value!.toInt()));
     }
     if (color3Value != null) {
-      color3 = ColorModel.fromColor(Color(color3Value!));
+      color3 = ColorModel.fromColor(Color(color3Value!.toInt()));
     }
     if (color4Value != null) {
-      color4 = ColorModel.fromColor(Color(color4Value!));
+      color4 = ColorModel.fromColor(Color(color4Value!.toInt()));
     }
     if (color5Value != null) {
-      color5 = ColorModel.fromColor(Color(color5Value!));
+      color5 = ColorModel.fromColor(Color(color5Value!.toInt()));
     }
     if (color6Value != null) {
-      color6 = ColorModel.fromColor(Color(color6Value!));
+      color6 = ColorModel.fromColor(Color(color6Value!.toInt()));
     }
   }
 

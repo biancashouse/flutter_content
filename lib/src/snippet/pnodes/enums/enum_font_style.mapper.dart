@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_font_style.dart';
@@ -25,9 +25,9 @@ class FontStyleEnumMapper extends EnumMapper<FontStyleEnum> {
   @override
   FontStyleEnum decode(dynamic value) {
     switch (value) {
-      case 'normal':
+      case r'normal':
         return FontStyleEnum.normal;
-      case 'italic':
+      case r'italic':
         return FontStyleEnum.italic;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -38,9 +38,9 @@ class FontStyleEnumMapper extends EnumMapper<FontStyleEnum> {
   dynamic encode(FontStyleEnum self) {
     switch (self) {
       case FontStyleEnum.normal:
-        return 'normal';
+        return r'normal';
       case FontStyleEnum.italic:
-        return 'italic';
+        return r'italic';
     }
   }
 }

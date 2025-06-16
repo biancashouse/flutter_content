@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'enum_text_overflow.dart';
@@ -25,13 +25,13 @@ class TextOverflowEnumMapper extends EnumMapper<TextOverflowEnum> {
   @override
   TextOverflowEnum decode(dynamic value) {
     switch (value) {
-      case 'clip':
+      case r'clip':
         return TextOverflowEnum.clip;
-      case 'fade':
+      case r'fade':
         return TextOverflowEnum.fade;
-      case 'ellipsis':
+      case r'ellipsis':
         return TextOverflowEnum.ellipsis;
-      case 'visible':
+      case r'visible':
         return TextOverflowEnum.visible;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -42,13 +42,13 @@ class TextOverflowEnumMapper extends EnumMapper<TextOverflowEnum> {
   dynamic encode(TextOverflowEnum self) {
     switch (self) {
       case TextOverflowEnum.clip:
-        return 'clip';
+        return r'clip';
       case TextOverflowEnum.fade:
-        return 'fade';
+        return r'fade';
       case TextOverflowEnum.ellipsis:
-        return 'ellipsis';
+        return r'ellipsis';
       case TextOverflowEnum.visible:
-        return 'visible';
+        return r'visible';
     }
   }
 }

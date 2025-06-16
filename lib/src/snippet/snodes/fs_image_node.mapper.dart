@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'fs_image_node.dart';
@@ -107,7 +107,8 @@ mixin FSImageNodeMappable {
   }
 
   FSImageNodeCopyWith<FSImageNode, FSImageNode, FSImageNode> get copyWith =>
-      _FSImageNodeCopyWithImpl(this as FSImageNode, $identity, $identity);
+      _FSImageNodeCopyWithImpl<FSImageNode, FSImageNode>(
+          this as FSImageNode, $identity, $identity);
   @override
   String toString() {
     return FSImageNodeMapper.ensureInitialized()
@@ -129,7 +130,7 @@ mixin FSImageNodeMappable {
 extension FSImageNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, FSImageNode, $Out> {
   FSImageNodeCopyWith<$R, FSImageNode, $Out> get $asFSImageNode =>
-      $base.as((v, t, t2) => _FSImageNodeCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _FSImageNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class FSImageNodeCopyWith<$R, $In extends FSImageNode, $Out>
@@ -181,5 +182,5 @@ class _FSImageNodeCopyWithImpl<$R, $Out>
   @override
   FSImageNodeCopyWith<$R2, FSImageNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _FSImageNodeCopyWithImpl($value, $cast, t);
+      _FSImageNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

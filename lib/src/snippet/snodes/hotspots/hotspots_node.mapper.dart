@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, unnecessary_cast
+// ignore_for_file: unused_element, unnecessary_cast, override_on_non_overriding_member
 // ignore_for_file: strict_raw_type, inference_failure_on_untyped_parameter
 
 part of 'hotspots_node.dart';
@@ -113,8 +113,8 @@ mixin TargetsWrapperNodeMappable {
 
   TargetsWrapperNodeCopyWith<TargetsWrapperNode, TargetsWrapperNode,
           TargetsWrapperNode>
-      get copyWith => _TargetsWrapperNodeCopyWithImpl(
-          this as TargetsWrapperNode, $identity, $identity);
+      get copyWith => _TargetsWrapperNodeCopyWithImpl<TargetsWrapperNode,
+          TargetsWrapperNode>(this as TargetsWrapperNode, $identity, $identity);
   @override
   String toString() {
     return TargetsWrapperNodeMapper.ensureInitialized()
@@ -137,8 +137,8 @@ mixin TargetsWrapperNodeMappable {
 extension TargetsWrapperNodeValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TargetsWrapperNode, $Out> {
   TargetsWrapperNodeCopyWith<$R, TargetsWrapperNode, $Out>
-      get $asTargetsWrapperNode =>
-          $base.as((v, t, t2) => _TargetsWrapperNodeCopyWithImpl(v, t, t2));
+      get $asTargetsWrapperNode => $base.as(
+          (v, t, t2) => _TargetsWrapperNodeCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TargetsWrapperNodeCopyWith<$R, $In extends TargetsWrapperNode,
@@ -214,5 +214,5 @@ class _TargetsWrapperNodeCopyWithImpl<$R, $Out>
   @override
   TargetsWrapperNodeCopyWith<$R2, TargetsWrapperNode, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TargetsWrapperNodeCopyWithImpl($value, $cast, t);
+      _TargetsWrapperNodeCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
