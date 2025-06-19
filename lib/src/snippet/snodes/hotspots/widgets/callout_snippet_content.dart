@@ -29,9 +29,8 @@ Future<void> showSnippetContentCallout({
 }) async {
   // possibly transform before showing callout
 
-  Rect? targetRect = fco
-      .getTargetGk(tc.uid)!
-      .globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
+  Rect? targetRect =
+      fco.getTargetGk(tc.uid)!.globalPaintBounds(); //Measuring.findGlobalRect(GetIt.I.get<GKMap>(instanceName: getIt_multiTargets)[tc.uid]!);
 
   if (targetRect == null) return;
 
@@ -58,31 +57,27 @@ Future<void> showSnippetContentCallout({
   //  by now should definitely have created the target's snippet
   // if (fco.targetSnippetBeingConfigured != null) {
 
-  Widget content() =>
-      SnippetPanel.fromSnippet(
-          panelName: tc.contentCId,
-          // never used
-          snippetName: tc.contentCId,
-          scName: scName,
-          justPlaying: justPlaying,
-          tc: tc);
+  Widget content() => SnippetPanel.fromSnippet(
+    panelName: tc.contentCId,
+    // never used
+    snippetName: tc.contentCId,
+    scName: scName,
+    justPlaying: justPlaying,
+    tc: tc,
+  );
 
-  Widget editableContent() =>
-      Container(
-        // width: cc.calloutW,
-        // height: cc.calloutH,
-          decoration: BoxDecoration(
-            border: Border.all(
-                width: 2, color: Colors.purpleAccent, style: BorderStyle.solid),
-          ),
-          child: content());
+  Widget editableContent() => Container(
+    // width: cc.calloutW,
+    // height: cc.calloutH,
+    decoration: BoxDecoration(border: Border.all(width: 2, color: Colors.purpleAccent, style: BorderStyle.solid)),
+    child: content(),
+  );
 
-  Widget possiblyEditableContent() =>
-      fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
+  Widget possiblyEditableContent() => fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
 
   fco.showOverlay(
     // zoomer: zoomer,
-    targetGkF: ()=>fco.getTargetGk(tc.uid)!,
+    targetGkF: () => fco.getTargetGk(tc.uid)!,
     calloutContent: PointerInterceptor(
       child: BlocBuilder<CAPIBloC, CAPIState>(
         builder: (context, state) {
@@ -104,14 +99,11 @@ Future<void> showSnippetContentCallout({
       borderRadius: tc.calloutBorderRadius,
       arrowColor: tc.calloutFillColor,
       arrowType: tc.hasAHotspot() ? tc.getArrowType() : ArrowTypeEnum.NONE,
-      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star
-          ? 60
-          : null,
+      fromDelta: tc.calloutDecorationShape == MappableDecorationShapeEnum.star ? 60 : null,
       animate: tc.animateArrow,
       // https://stackoverflow.com/questions/11671100/scale-path-from-center
       initialCalloutPos: OffsetModel.fromOffset(
-          tc.getCalloutPos()
-              .translate(1 - tc.getScale(), 1 - tc.getScale())
+        tc.getCalloutPos().translate(1 - tc.getScale(), 1 - tc.getScale()),
         // .translate(translateX, translateY),
       ),
       // initialCalloutAlignment: AlignmentEnum.bottomCenter,
@@ -132,8 +124,7 @@ Future<void> showSnippetContentCallout({
         // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
       },
       onDragEndedF: (Offset newPos) {
-        if (newPos.dy / fco.scrH != tc.calloutTopPc ||
-            newPos.dx / fco.scrW != tc.calloutLeftPc) {
+        if (newPos.dy / fco.scrH != tc.calloutTopPc || newPos.dx / fco.scrW != tc.calloutLeftPc) {
           tc.calloutTopPc = newPos.dy / fco.scrH;
           tc.calloutLeftPc = newPos.dx / fco.scrW;
           tc.changed_saveRootSnippet();
@@ -162,64 +153,66 @@ Future<void> showSnippetContentCallout({
         // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
         fco.dismiss(CalloutConfigToolbar.CID);
       },
-      barrier: tc.hasAHotspot()
-        ? CalloutBarrierConfig(
-          color: Colors.black,
-          opacity: .9,
-          excludeTargetFromBarrier: true,
-          roundExclusion: true,
-          cutoutPadding: 30,
-          dismissible: false,
-          onTappedF: () {
-            // do not allow content callout to be dismissed
-            return;
-            fco.dismiss(CalloutConfigToolbar.CID);
-            if (tc.hasAHotspot()) {
-              tc.targetsWrapperState()?.refresh(() {
-                tc
-                    .targetsWrapperState()
-                    ?.zoomer
-                    ?.resetTransform(
-                    afterTransformF: () {
-                      // tc.changed_saveRootSnippet();
-                      SNode.showAllTargetBtns();
-                      SNode.showAllHotspotTargetCovers();
-                      // fco.currentPageState?.unhideFAB();
-                      removeSnippetContentCallout(tc);
-                      fco.afterNextBuildDo(() {
-                        // save hotspot's parent snippet
-                        var rootNode =
-                        tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                        if (rootNode != null) {
-                          fco.cacheAndSaveANewSnippetVersion(
-                            snippetName: rootNode.name,
-                            rootNode: rootNode,
-                          );
-                        }
-                      });
-                    });
-              });
-            } else {
-              tc.targetsWrapperState()?.refresh(() {
-                // tc.changed_saveRootSnippet();
-                SNode.showAllTargetBtns();
-                SNode.showAllHotspotTargetCovers();
-                removeSnippetContentCallout(tc);
-                fco.afterNextBuildDo(() {
-                  // save parent snippet
-                  var rootNode =
-                  tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-                  if (rootNode != null) {
-                    fco.cacheAndSaveANewSnippetVersion(
-                      snippetName: rootNode.name,
-                      rootNode: rootNode,
-                    );
-                  }
-                });
-              });
-            }
-          })
-      : null,
+      barrier:
+          tc.hasAHotspot()
+              ? CalloutBarrierConfig(
+                color: Colors.black,
+                opacity: .9,
+                excludeTargetFromBarrier: true,
+                roundExclusion: true,
+                cutoutPadding: 30,
+                dismissible: false,
+                // onTappedF: () {
+                //   // do not allow content callout to be dismissed
+                //   return;
+                //   fco.dismiss(CalloutConfigToolbar.CID);
+                //   if (tc.hasAHotspot()) {
+                //     tc.targetsWrapperState()?.refresh(() {
+                //       tc
+                //           .targetsWrapperState()
+                //           ?.zoomer
+                //           ?.resetTransform(
+                //           afterTransformF: () {
+                //             // tc.changed_saveRootSnippet();
+                //             SNode.showAllTargetBtns();
+                //             SNode.showAllHotspotTargetCovers();
+                //             // fco.currentPageState?.unhideFAB();
+                //             removeSnippetContentCallout(tc);
+                //             fco.afterNextBuildDo(() {
+                //               // save hotspot's parent snippet
+                //               var rootNode =
+                //               tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                //               if (rootNode != null) {
+                //                 fco.cacheAndSaveANewSnippetVersion(
+                //                   snippetName: rootNode.name,
+                //                   rootNode: rootNode,
+                //                 );
+                //               }
+                //             });
+                //           });
+                //     });
+                //   } else {
+                //     tc.targetsWrapperState()?.refresh(() {
+                //       // tc.changed_saveRootSnippet();
+                //       SNode.showAllTargetBtns();
+                //       SNode.showAllHotspotTargetCovers();
+                //       removeSnippetContentCallout(tc);
+                //       fco.afterNextBuildDo(() {
+                //         // save parent snippet
+                //         var rootNode =
+                //         tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                //         if (rootNode != null) {
+                //           fco.cacheAndSaveANewSnippetVersion(
+                //             snippetName: rootNode.name,
+                //             rootNode: rootNode,
+                //           );
+                //         }
+                //       });
+                //     });
+                //   }
+                // }
+              )
+              : null,
       frameTarget: false,
     ),
     // configurableTarget: (kDebugMode && !justPlaying) ? tc : null,

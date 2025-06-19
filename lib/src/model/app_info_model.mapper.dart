@@ -33,22 +33,24 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
   static List<String> _$snippetNames(AppInfoModel v) => v.snippetNames;
   static const Field<AppInfoModel, List<String>> _f$snippetNames =
       Field('snippetNames', _$snippetNames, opt: true, def: const []);
-  static Map<String, TextStyleProperties> _$textStyles(AppInfoModel v) =>
+  static Map<String, TextStyleProperties> _$userTextStyles(AppInfoModel v) =>
       v.userTextStyles;
   static const Field<AppInfoModel, Map<String, TextStyleProperties>>
-      _f$textStyles =
-      Field('textStyles', _$textStyles, opt: true, def: const {});
-  static Map<String, ButtonStyleProperties> _$buttonStyles(AppInfoModel v) =>
+      _f$userTextStyles =
+      Field('userTextStyles', _$userTextStyles, opt: true, def: const {});
+  static Map<String, ButtonStyleProperties> _$userButtonStyles(
+          AppInfoModel v) =>
       v.userButtonStyles;
   static const Field<AppInfoModel, Map<String, ButtonStyleProperties>>
-      _f$buttonStyles =
-      Field('buttonStyles', _$buttonStyles, opt: true, def: const {});
-  static Map<String, ContainerStyleProperties> _$containerStyles(
+      _f$userButtonStyles =
+      Field('userButtonStyles', _$userButtonStyles, opt: true, def: const {});
+  static Map<String, ContainerStyleProperties> _$userContainerStyles(
           AppInfoModel v) =>
       v.userContainerStyles;
   static const Field<AppInfoModel, Map<String, ContainerStyleProperties>>
-      _f$containerStyles =
-      Field('containerStyles', _$containerStyles, opt: true, def: const {});
+      _f$userContainerStyles = Field(
+          'userContainerStyles', _$userContainerStyles,
+          opt: true, def: const {});
   static List<String> _$sandboxPageNames(AppInfoModel v) => v.sandboxPageNames;
   static const Field<AppInfoModel, List<String>> _f$sandboxPageNames =
       Field('sandboxPageNames', _$sandboxPageNames, opt: true, def: const []);
@@ -58,9 +60,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #clipboard: _f$clipboard,
     #autoPublishDefault: _f$autoPublishDefault,
     #snippetNames: _f$snippetNames,
-    #textStyles: _f$textStyles,
-    #buttonStyles: _f$buttonStyles,
-    #containerStyles: _f$containerStyles,
+    #userTextStyles: _f$userTextStyles,
+    #userButtonStyles: _f$userButtonStyles,
+    #userContainerStyles: _f$userContainerStyles,
     #sandboxPageNames: _f$sandboxPageNames,
   };
 
@@ -69,9 +71,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         clipboard: data.dec(_f$clipboard),
         autoPublishDefault: data.dec(_f$autoPublishDefault),
         snippetNames: data.dec(_f$snippetNames),
-        userTextStyles: data.dec(_f$textStyles),
-        userButtonStyles: data.dec(_f$buttonStyles),
-        userContainerStyles: data.dec(_f$containerStyles),
+        userTextStyles: data.dec(_f$userTextStyles),
+        userButtonStyles: data.dec(_f$userButtonStyles),
+        userContainerStyles: data.dec(_f$userContainerStyles),
         sandboxPageNames: data.dec(_f$sandboxPageNames));
   }
 
@@ -135,28 +137,28 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       String,
       TextStyleProperties,
       TextStylePropertiesCopyWith<$R, TextStyleProperties,
-          TextStyleProperties>> get textStyles;
+          TextStyleProperties>> get userTextStyles;
   MapCopyWith<
       $R,
       String,
       ButtonStyleProperties,
       ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-          ButtonStyleProperties>> get buttonStyles;
+          ButtonStyleProperties>> get userButtonStyles;
   MapCopyWith<
       $R,
       String,
       ContainerStyleProperties,
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
-          ContainerStyleProperties>> get containerStyles;
+          ContainerStyleProperties>> get userContainerStyles;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
       get sandboxPageNames;
   $R call(
       {SNode? clipboard,
       bool? autoPublishDefault,
       List<String>? snippetNames,
-      Map<String, TextStyleProperties>? textStyles,
-      Map<String, ButtonStyleProperties>? buttonStyles,
-      Map<String, ContainerStyleProperties>? containerStyles,
+      Map<String, TextStyleProperties>? userTextStyles,
+      Map<String, ButtonStyleProperties>? userButtonStyles,
+      Map<String, ContainerStyleProperties>? userContainerStyles,
       List<String>? sandboxPageNames});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -184,28 +186,30 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       String,
       TextStyleProperties,
       TextStylePropertiesCopyWith<$R, TextStyleProperties,
-          TextStyleProperties>> get textStyles => MapCopyWith($value.userTextStyles,
-      (v, t) => v.copyWith.$chain(t), (v) => call(textStyles: v));
+          TextStyleProperties>> get userTextStyles => MapCopyWith(
+      $value.userTextStyles,
+      (v, t) => v.copyWith.$chain(t),
+      (v) => call(userTextStyles: v));
   @override
   MapCopyWith<
       $R,
       String,
       ButtonStyleProperties,
       ButtonStylePropertiesCopyWith<$R, ButtonStyleProperties,
-          ButtonStyleProperties>> get buttonStyles => MapCopyWith(
+          ButtonStyleProperties>> get userButtonStyles => MapCopyWith(
       $value.userButtonStyles,
       (v, t) => v.copyWith.$chain(t),
-      (v) => call(buttonStyles: v));
+      (v) => call(userButtonStyles: v));
   @override
   MapCopyWith<
       $R,
       String,
       ContainerStyleProperties,
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
-          ContainerStyleProperties>> get containerStyles => MapCopyWith(
+          ContainerStyleProperties>> get userContainerStyles => MapCopyWith(
       $value.userContainerStyles,
       (v, t) => v.copyWith.$chain(t),
-      (v) => call(containerStyles: v));
+      (v) => call(userContainerStyles: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
       get sandboxPageNames => ListCopyWith(
@@ -217,17 +221,18 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           {Object? clipboard = $none,
           bool? autoPublishDefault,
           List<String>? snippetNames,
-          Map<String, TextStyleProperties>? textStyles,
-          Map<String, ButtonStyleProperties>? buttonStyles,
-          Map<String, ContainerStyleProperties>? containerStyles,
+          Map<String, TextStyleProperties>? userTextStyles,
+          Map<String, ButtonStyleProperties>? userButtonStyles,
+          Map<String, ContainerStyleProperties>? userContainerStyles,
           List<String>? sandboxPageNames}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
         if (snippetNames != null) #snippetNames: snippetNames,
-        if (textStyles != null) #textStyles: textStyles,
-        if (buttonStyles != null) #buttonStyles: buttonStyles,
-        if (containerStyles != null) #containerStyles: containerStyles,
+        if (userTextStyles != null) #userTextStyles: userTextStyles,
+        if (userButtonStyles != null) #userButtonStyles: userButtonStyles,
+        if (userContainerStyles != null)
+          #userContainerStyles: userContainerStyles,
         if (sandboxPageNames != null) #sandboxPageNames: sandboxPageNames
       }));
   @override
@@ -236,9 +241,11 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       autoPublishDefault:
           data.get(#autoPublishDefault, or: $value.autoPublishDefault),
       snippetNames: data.get(#snippetNames, or: $value.snippetNames),
-      userTextStyles: data.get(#textStyles, or: $value.userTextStyles),
-      userButtonStyles: data.get(#buttonStyles, or: $value.userButtonStyles),
-      userContainerStyles: data.get(#containerStyles, or: $value.userContainerStyles),
+      userTextStyles: data.get(#userTextStyles, or: $value.userTextStyles),
+      userButtonStyles:
+          data.get(#userButtonStyles, or: $value.userButtonStyles),
+      userContainerStyles:
+          data.get(#userContainerStyles, or: $value.userContainerStyles),
       sandboxPageNames:
           data.get(#sandboxPageNames, or: $value.sandboxPageNames));
 

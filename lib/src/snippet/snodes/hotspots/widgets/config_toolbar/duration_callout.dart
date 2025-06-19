@@ -31,6 +31,9 @@ Future<void> showTargetDurationCallout(
             initialValue: tc.calloutDurationMs.toString(),
             onClosedF: (s) {
               tc.calloutDurationMs = int.tryParse(s)??0;
+              SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+              if (rootNode == null) return;
+              fco.saveNewVersion(snippet: rootNode);
               fco.dismiss("duration");
             },
           ),

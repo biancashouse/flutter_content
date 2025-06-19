@@ -338,8 +338,7 @@ class TargetModel with TargetModelMappable {
             child:
                 fco.coloredText('saving changes...', color: Colors.blueAccent)),
       );
-      await fco.cacheAndSaveANewSnippetVersion(
-          snippetName: rootNode.name, rootNode: rootNode);
+      fco.saveNewVersion(snippet: rootNode);
       fco.dismiss("saving-model");
     }
 

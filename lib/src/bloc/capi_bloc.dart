@@ -97,7 +97,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _revertSnippet(RevertSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     final stopwatch = Stopwatch()..start();
@@ -117,7 +117,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               color: Colors.blueAccent)),
     );
 
-    await modelRepo.updateSnippetProps(
+    await modelRepo.updateSnippetInfo(
       snippetName: event.snippetName,
       editingVersionId: event.versionId,
       publishingVersionId:
@@ -184,7 +184,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _toggleAutoPublishingOfSnippet(
       ToggleAutoPublishingOfSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     bool autoPublish =
@@ -213,7 +213,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
               color: Colors.blueAccent)),
     );
 
-    await modelRepo.updateSnippetProps(
+    await modelRepo.updateSnippetInfo(
       snippetName: event.snippetName,
       publishingVersionId: event.versionId,
     );
@@ -263,11 +263,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     fco.logger.i('_replaceSnippetFromJson: snippet name is "${rootNode.name}"');
     // save the clipboard snippet snippet
-    await fco.cacheAndSaveANewSnippetVersion(
-      snippetName: snippetName,
-      rootNode: rootNode,
-      publish: true,
-    );
+    await fco.saveNewVersion(snippet: rootNode);
+    // await fco.cacheAndSaveANewSnippetVersion(
+    //   snippetName: snippetName,
+    //   rootNode: rootNode,
+    //   publish: true,
+    // );
   }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
@@ -1366,13 +1367,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //_cutIncludingAnyChildren(event.node);
 
     // create new snippet
-    SnippetRootNode newRootNode =
-        SnippetRootNode(name: event.newSnippetName, child: event.node);
+    SnippetRootNode newRootNode = SnippetRootNode(name: event.newSnippetName, child: event.node);
     // VersionId initialVersionId = DateTime.now().millisecondsSinceEpoch.toString();
-    await fco.cacheAndSaveANewSnippetVersion(
-      snippetName: event.newSnippetName,
-      rootNode: newRootNode,
-    );
+    await fco.saveNewVersion(snippet: newRootNode);
+    // await fco.cacheAndSaveANewSnippetVersion(
+    //   snippetName: event.newSnippetName,
+    //   rootNode: newRootNode,
+    // );
     // FCO.addToSnippetCache(
     //   snippetName: event.newSnippetName,
     //   rootNode: rootNode,

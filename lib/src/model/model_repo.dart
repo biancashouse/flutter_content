@@ -23,7 +23,7 @@ abstract class IModelRepository {
 
   Future<void> saveAppInfo();
 
-  Future<void> updateSnippetProps({
+  Future<void> updateSnippetInfo({
     required SnippetName snippetName,
     VersionId? editingVersionId,
     VersionId? publishingVersionId,

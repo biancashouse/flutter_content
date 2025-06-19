@@ -269,6 +269,9 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                   }
                   tc.calloutBorderColor = ColorModel.grey();
                   tc.calloutBorderThickness = 2;
+                  SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+                  if (rootNode == null) return;
+                  fco.saveNewVersion(snippet: rootNode);
                   CalloutConfigToolbar.closeThenReopenContentCallout(
                     widget.cc,
                     tc,
@@ -326,10 +329,11 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                       .parentNode
                       .targets
                       .remove(tc);
-                  fco.cacheAndSaveANewSnippetVersion(
-                    snippetName: rootNode.name, // tc.snippetName,
-                    rootNode: rootNode,
-                  );
+                  fco.saveNewVersion(snippet: rootNode);
+                  // fco.cacheAndSaveANewSnippetVersion(
+                  //   snippetName: rootNode.name, // tc.snippetName,
+                  //   rootNode: rootNode,
+                  // );
                   _closeCalloutConfigToolbar(tc);
                   //tc.targetsWrapperState()?.refresh(() {});
                 }),

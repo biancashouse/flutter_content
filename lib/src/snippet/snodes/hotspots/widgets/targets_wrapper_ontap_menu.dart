@@ -135,10 +135,12 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
     FlutterContentApp.capiBloc
         .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
-    fco.cacheAndSaveANewSnippetVersion(
-      snippetName: snippetName,
-      rootNode: parentNode.rootNodeOfSnippet()!,
-    );
+    fco.saveNewVersion(snippet: parentNode.rootNodeOfSnippet()!);
+
+    // fco.cacheAndSaveANewSnippetVersion(
+    //   snippetName: snippetName,
+    //   rootNode: parentNode.rootNodeOfSnippet()!,
+    // );
 
     if (!withHotspot) {
       fco.afterMsDelayDo(1500, () {

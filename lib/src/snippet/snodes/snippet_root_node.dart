@@ -102,9 +102,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
       // SnippetInfoModel.debug();
       return FutureBuilder<SnippetRootNode?>(
-        future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: name),
+        future: SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: name),
         builder: (futureContext, snapshot) {
-          var snippetInfo = SnippetInfoModel.cachedSnippet(name);
+          var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
           bool isPublishedVersion = snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
           if (snapshot.connectionState == ConnectionState.done) {
             // fco.logger.i("FutureBuilder<void> Ensuring $name present");
@@ -185,7 +185,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
     // if not yet in AppInfo, must be a BRAND NEW snippet
     if (!fco.appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
-      await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippetRootNode, publish: true);
+      await fco.saveNewVersion(snippet: snippetRootNode);
+      // await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippetRootNode);
       return snippetRootNode;
     }
 
@@ -204,8 +205,6 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   }
 
   static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFB({required SnippetName snippetName}) async {
-    fco.logger.d("SnippetRootNode.loadSnippetFromCacheOrFromFB");
-
     SnippetInfoModel? snippetInfo = await fco.modelRepo.getSnippetInfoFromCacheOrFB(snippetName: snippetName);
     return snippetInfo != null
         // may already be in snippet cache, or will be loaded from FB

@@ -35,10 +35,9 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
   static String? _$routePath(SnippetInfoModel v) => v.routePath;
   static const Field<SnippetInfoModel, String> _f$routePath =
       Field('routePath', _$routePath, opt: true);
-  static List<String> _$cachedVersionIds(SnippetInfoModel v) =>
-      v.cachedVersionIds;
-  static const Field<SnippetInfoModel, List<String>> _f$cachedVersionIds =
-      Field('cachedVersionIds', _$cachedVersionIds, mode: FieldMode.member);
+  static List<String>? _$versionIds(SnippetInfoModel v) => v.versionIds;
+  static const Field<SnippetInfoModel, List<String>> _f$versionIds =
+      Field('versionIds', _$versionIds, opt: true, def: const []);
   static Map<String, SnippetRootNode?> _$cachedVersions(SnippetInfoModel v) =>
       v.cachedVersions;
   static const Field<SnippetInfoModel, Map<String, SnippetRootNode?>>
@@ -52,7 +51,7 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
     #publishedVersionId: _f$publishedVersionId,
     #autoPublish: _f$autoPublish,
     #routePath: _f$routePath,
-    #cachedVersionIds: _f$cachedVersionIds,
+    #versionIds: _f$versionIds,
     #cachedVersions: _f$cachedVersions,
   };
 
@@ -61,7 +60,8 @@ class SnippetInfoModelMapper extends ClassMapperBase<SnippetInfoModel> {
         editingVersionId: data.dec(_f$editingVersionId),
         publishedVersionId: data.dec(_f$publishedVersionId),
         autoPublish: data.dec(_f$autoPublish),
-        routePath: data.dec(_f$routePath));
+        routePath: data.dec(_f$routePath),
+        versionIds: data.dec(_f$versionIds));
   }
 
   @override
@@ -119,12 +119,14 @@ extension SnippetInfoModelValueCopy<$R, $Out>
 
 abstract class SnippetInfoModelCopyWith<$R, $In extends SnippetInfoModel, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get versionIds;
   $R call(
       {String? name,
       String? editingVersionId,
       String? publishedVersionId,
       bool? autoPublish,
-      String? routePath});
+      String? routePath,
+      List<String>? versionIds});
   SnippetInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -138,18 +140,28 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SnippetInfoModel> $mapper =
       SnippetInfoModelMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>?
+      get versionIds => $value.versionIds != null
+          ? ListCopyWith(
+              $value.versionIds!,
+              (v, t) => ObjectCopyWith(v, $identity, t),
+              (v) => call(versionIds: v))
+          : null;
+  @override
   $R call(
           {String? name,
           String? editingVersionId,
           String? publishedVersionId,
           Object? autoPublish = $none,
-          Object? routePath = $none}) =>
+          Object? routePath = $none,
+          Object? versionIds = $none}) =>
       $apply(FieldCopyWithData({
         if (name != null) #name: name,
         if (editingVersionId != null) #editingVersionId: editingVersionId,
         if (publishedVersionId != null) #publishedVersionId: publishedVersionId,
         if (autoPublish != $none) #autoPublish: autoPublish,
-        if (routePath != $none) #routePath: routePath
+        if (routePath != $none) #routePath: routePath,
+        if (versionIds != $none) #versionIds: versionIds
       }));
   @override
   SnippetInfoModel $make(CopyWithData data) =>
@@ -159,7 +171,8 @@ class _SnippetInfoModelCopyWithImpl<$R, $Out>
           publishedVersionId:
               data.get(#publishedVersionId, or: $value.publishedVersionId),
           autoPublish: data.get(#autoPublish, or: $value.autoPublish),
-          routePath: data.get(#routePath, or: $value.routePath));
+          routePath: data.get(#routePath, or: $value.routePath),
+          versionIds: data.get(#versionIds, or: $value.versionIds));
 
   @override
   SnippetInfoModelCopyWith<$R2, SnippetInfoModel, $Out2> $chain<$R2, $Out2>(

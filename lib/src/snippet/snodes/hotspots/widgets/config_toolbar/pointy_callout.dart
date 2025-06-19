@@ -87,6 +87,9 @@ class _PointyToolState extends State<PointyTool> {
     // fco.afterNextBuildDo(() {
     //   widget.onParentBarrierTappedF.call();
     //   fco.refreshOverlay(tc.snippetName, f: () {});
+    SnippetRootNode? rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+    if (rootNode == null) return;
+    fco.saveNewVersion(snippet: rootNode);
     CalloutConfigToolbar.closeThenReopenContentCallout(
       widget.cc,
       tc,

@@ -68,6 +68,7 @@ class EditablePageState extends State<EditablePage> {
 
   @override
   void initState() {
+    print("EditablePage initState (${widget.routePath})");
     super.initState();
 
     msvC = MultiSplitViewController();
@@ -76,11 +77,11 @@ class EditablePageState extends State<EditablePage> {
     // fco.pageGKs[widget.routePath] = widget.key as GlobalKey;
     fco.currentEditablePagePath = widget.routePath;
 
-    fco.afterNextBuildDo(() {
-      setState(() {
-        fabPosition = Offset(fco.scrW - 90, 10); // Initial position of the FAB
-      });
-    });
+    // fco.afterNextBuildDo(() {
+    //   setState(() {
+    //     fabPosition = Offset(fco.scrW - 90, 10); // Initial position of the FAB
+    //   });
+    // });
   }
 
   // ScrollControllerName? scName(ctx) => EditablePage.name(ctx);
@@ -257,11 +258,11 @@ class EditablePageState extends State<EditablePage> {
     if (rootNode is SnippetRootNode) {
       SnippetName snippetName = rootNode.name;
       SnippetInfoModel? snippetInfo =
-          SnippetInfoModel.cachedSnippet(snippetName);
+          SnippetInfoModel.cachedSnippetInfo(snippetName);
       if (snippetInfo != null) {
-        String title =
-            FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
-                'snippet name?';
+        // String title =
+        //     FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
+        //         'snippet name?';
         //snippetBeingEdited?.treeC.rebuild();
         return GestureDetector(
           onTap: () {
@@ -516,7 +517,7 @@ class EditablePageState extends State<EditablePage> {
 
   void editorPasswordDialog() {
     fco.registerKeystrokeHandler(cid_EditorPassword, (KeyEvent event) {
-      final key = event.logicalKey.keyLabel;
+      // final key = event.logicalKey.keyLabel;
 
       // if (event is KeyDownEvent) {
       //   print("Key down: $key");
@@ -648,38 +649,44 @@ class EditablePageState extends State<EditablePage> {
                   newList.add(pageName);
                   fco.appInfo.sandboxPageNames = newList;
                   await fco.modelRepo.saveAppInfo();
-                }
-                if (context.mounted) {
-                  context.go(pageName);
-                }
-                return;
-                fco.dismiss(cid_UserSandboxPageName);
-                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
-                  // jsArray issue
-                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
-                  newList.add(pageName);
-                  fco.appInfo.sandboxPageNames = newList;
-                  await fco.modelRepo.saveAppInfo();
-
-                  final rootNode = SnippetTemplateEnum.empty.clone()
-                    ..name = pageName;
-                  SnippetRootNode
-                      .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                    snippetName: pageName,
-                    snippetRootNode: rootNode,
-                  ).then((_) {
-                    fco.afterNextBuildDo(() {
-                      // SnippetInfoModel.snippetInfoCache;
-                      //fco.router.push(pageName);
-                      // router.go('/');
-                      // TODO - tell user to visit /#/ + pageName
-                    });
+                  fco.afterNextBuildDo((){
+                    if (context.mounted) {
+                      context.go(pageName);
+                    }
                   });
                 } else {
-                  FlutterContentApp.capiBloc.add(
-                      const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-                  context.replace(pageName);
+                  if (context.mounted) {
+                    context.go(pageName);
+                  }
                 }
+                return;
+                // fco.dismiss(cid_UserSandboxPageName);
+                // if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+                //   // jsArray issue
+                //   List<String> newList = fco.appInfo.sandboxPageNames.toList();
+                //   newList.add(pageName);
+                //   fco.appInfo.sandboxPageNames = newList;
+                //   await fco.modelRepo.saveAppInfo();
+                //
+                //   final rootNode = SnippetTemplateEnum.empty.clone()
+                //     ..name = pageName;
+                //   SnippetRootNode
+                //       .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                //     snippetName: pageName,
+                //     snippetRootNode: rootNode,
+                //   ).then((_) {
+                //     fco.afterNextBuildDo(() {
+                //       // SnippetInfoModel.snippetInfoCache;
+                //       //fco.router.push(pageName);
+                //       // router.go('/');
+                //       // TODO - tell user to visit /#/ + pageName
+                //     });
+                //   });
+                // } else {
+                //   FlutterContentApp.capiBloc.add(
+                //       const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                //   context.replace(pageName);
+                // }
               },
             ),
           ),

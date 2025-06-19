@@ -29,8 +29,7 @@ import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher_string.dart'
-    show canLaunchUrlString, launchUrlString;
+import 'package:url_launcher/url_launcher_string.dart' show canLaunchUrlString, launchUrlString;
 
 import 'src/api/app/dynamic_page_route.dart';
 import 'src/api/app/editable_page.dart';
@@ -237,8 +236,7 @@ class FlutterContentMixins
     // logi('FlutterContentMixins._internal() private constructor');
   }
 
-  static final FlutterContentMixins _instance =
-      FlutterContentMixins._internal();
+  static final FlutterContentMixins _instance = FlutterContentMixins._internal();
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> init({
@@ -253,8 +251,7 @@ class FlutterContentMixins
     Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     required RoutingConfig routingConfig,
     required String initialRoutePath,
-    bool skipAssetPkgName =
-        false, // would only use true when pkg dir is actually inside current project
+    bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
   }) async {
     await initLocalStorage();
 
@@ -292,10 +289,7 @@ class FlutterContentMixins
               title: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(40),
-                child: fco.coloredText(
-                  'Viewing the Page list:\nYou must be signed in as an editor !',
-                  color: Colors.red,
-                ),
+                child: fco.coloredText('Viewing the Page list:\nYou must be signed in as an editor !', color: Colors.red),
               ),
             );
           }
@@ -337,20 +331,12 @@ class FlutterContentMixins
           EditablePage.removeAllNodeWidgetOverlays();
           // fco.dismiss('exit-editMode');
           final snippetName = matchedLocation;
-          final rootNode =
-              SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-            snippetName: snippetName,
-            snippetRootNode: rootNode,
-          );
+          final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode);
           final dynamicPage = EditablePage(
             key: GlobalKey(), // provides access to state later
             routePath: matchedLocation,
-            child: SnippetPanel.fromSnippet(
-              panelName: "dynamic panel",
-              snippetName: snippetName,
-              scName: null,
-            ),
+            child: SnippetPanel.fromSnippet(panelName: "dynamic panel", snippetName: snippetName, scName: null, key: ValueKey<String>(snippetName)),
           );
           return dynamicPage;
         }
@@ -359,11 +345,7 @@ class FlutterContentMixins
         if (authenticated.isTrue) {
           return AlertDialog(
             title: Text('Page "${matchedLocation}" does not Exist !'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[Text('Want to create it now ?')],
-              ),
-            ),
+            content: SingleChildScrollView(child: ListBody(children: const <Widget>[Text('Want to create it now ?')])),
             actions: <Widget>[
               TextButton(
                 child: Text('Yes, Create page ${matchedLocation}'),
@@ -373,12 +355,8 @@ class FlutterContentMixins
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = destUrl;
-                  final rootNode =
-                      SnippetTemplateEnum.empty.clone()..name = snippetName;
-                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                    snippetName: snippetName,
-                    snippetRootNode: rootNode,
-                  ).then((_) {
+                  final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
+                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode).then((_) {
                     afterNextBuildDo(() {
                       // SnippetInfoModel.snippetInfoCache;
                       router.push(destUrl);
@@ -404,12 +382,8 @@ class FlutterContentMixins
           // fco.dismiss('exit-editMode');
           // bool userCanEdit = canEditContent.isTrue;
           final snippetName = destUrl;
-          final rootNode =
-              SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-            snippetName: snippetName,
-            snippetRootNode: rootNode,
-          ).then((_) {
+          final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode).then((_) {
             afterNextBuildDo(() {
               // SnippetInfoModel.snippetInfoCache;
               router.push(destUrl);
@@ -426,9 +400,7 @@ class FlutterContentMixins
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text(
-                      'You must be signed in as an editor to create this page.',
-                    ),
+                    Text('You must be signed in as an editor to create this page.'),
                     Gap(10),
                     ElevatedButton(
                       onPressed: () {
@@ -485,8 +457,7 @@ class FlutterContentMixins
       // fco.logger.i('init 1. ${fco.stopwatch.elapsedMilliseconds}');
 
       modelRepo = FireStoreModelRepository(fbOptions);
-      await (modelRepo as FireStoreModelRepository)
-          .possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
+      await (modelRepo as FireStoreModelRepository).possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
 
       // fco.logger.i('init 2. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -514,10 +485,7 @@ class FlutterContentMixins
       // RouteBase home = routingConfig.routes.first;
       for (String snippetName in appInfo.snippetNames) {
         if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
-          addSubRoute(
-            newPath: snippetName,
-            template: SnippetTemplateEnum.empty,
-          );
+          addSubRoute(newPath: snippetName, template: SnippetTemplateEnum.empty);
         }
       }
 
@@ -605,10 +573,7 @@ class FlutterContentMixins
         .toList();
   }
 
-  void addSubRoute({
-    required String newPath,
-    required SnippetTemplateEnum template,
-  }) {
+  void addSubRoute({required String newPath, required SnippetTemplateEnum template}) {
     List<RouteBase> subRoutes = routingConfigVN.value.routes;
     if (!newPath.endsWith(' missing')) {
       subRoutes.add(DynamicPageRoute(path: newPath, template: template));
@@ -625,18 +590,10 @@ class FlutterContentMixins
   }
 
   Future<void> ensureContentSnippetPresent(String contentCId) async =>
-      SnippetInfoModel.cachedSnippet(contentCId) ??
+      SnippetInfoModel.cachedSnippetInfo(contentCId) ??
       await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
         snippetName: contentCId,
-        snippetRootNode: SnippetRootNode(
-          name: contentCId,
-          child: CenterNode(
-            child: TextNode(
-              text: contentCId,
-              tsPropGroup: TextStyleProperties(),
-            ),
-          ),
-        ),
+        snippetRootNode: SnippetRootNode(name: contentCId, child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()))),
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
 
@@ -659,7 +616,7 @@ class FlutterContentMixins
 
   void setClipboard(SNode? newClipboard) => _appInfo.clipboard = newClipboard;
 
-  List<SnippetName> snippetsBeingReadFromFB = [];
+  // List<SnippetName> snippetsBeingReadFromFB = [];
 
   // Map<SnippetName, List<VersionId>> versionIdCache = {};
 
@@ -670,53 +627,51 @@ class FlutterContentMixins
   // versionIdCache[snippetName]?.map((e) => e.versionId).toList() ??[];
   // Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
-  void saveNewVersion({required SnippetRootNode? snippet}) {
+  Future<void> saveNewVersion({required SnippetRootNode? snippet}) async {
     if (snippet?.name == null) return;
 
-    String? snippetName =
-        snippet!.name.startsWith('/')
-            ? snippet.name.substring(1)
-            : snippet.name;
+    String? snippetName = snippet!.name.startsWith('/') ? snippet.name.substring(1) : snippet.name;
 
-    // remove all subsequent versions following the current version
-    // before saving new version
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    // only does following i.i. a new snippet
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo != null) {
+      // remove all subsequent versions following the current version
+      // before saving new version
       VersionId? currVerId = snippetInfo.currentVersionId();
       if (currVerId != null) {
         List<VersionId> newIdCache = [];
         List<VersionId> tbd = [];
-        for (VersionId v in snippetInfo.cachedVersionIds) {
-          if (int.parse(v) > int.parse(currVerId)) {
-            tbd.add(v);
-          } else {
-            newIdCache.add(v);
+        for (VersionId v in snippetInfo.versionIds ?? []) {
+          try {
+            if (int.parse(v.isEmpty ? "0" : v) > int.parse(currVerId)) {
+              tbd.add(v);
+            } else {
+              newIdCache.add(v);
+            }
+          } catch (e) {
+            fco.logger.e('$e');
           }
         }
         // delete from FB and also from cache
         for (VersionId vId in tbd) {
-          snippetInfo.cachedVersionIds.remove(vId);
+          snippetInfo.versionIds?.remove(vId);
           snippetInfo.cachedVersions.remove(vId);
         }
         fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
-        SnippetInfoModel.debug();
-
-        // write new version to FB
-        fco.cacheAndSaveANewSnippetVersion(
-          snippetName: snippetName,
-          rootNode: snippet,
-        );
+        // SnippetInfoModel.debug();
       }
-      //
     }
+
+    // write new version to FB
+    await fco._cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippet);
   }
 
   // create new snippet version in cache, then write through to FB
-  Future<void> cacheAndSaveANewSnippetVersion({
+  Future<void> _cacheAndSaveANewSnippetVersion({
     required SnippetName snippetName,
     String? pagePath,
     required SnippetRootNode rootNode,
-    bool? publish,
+    // bool? publish,
   }) async {
     logger.i('cacheAndSaveANewSnippetVersion($snippetName)');
 
@@ -724,7 +679,7 @@ class FlutterContentMixins
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
     // update or create SnippetInfo
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
 
     VersionId? currVersionId = snippetInfo?.currentVersionId();
 
@@ -736,6 +691,7 @@ class FlutterContentMixins
         publishedVersionId: newVersionId,
         routePath: pagePath,
         autoPublish: appInfo.autoPublishDefault,
+        versionIds: [],
       );
       SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
       // update FB appInfo
@@ -753,39 +709,29 @@ class FlutterContentMixins
       }
     }
 
-    snippetInfo.cachedVersionIds.add(newVersionId);
+    snippetInfo.versionIds!.add(newVersionId);
     snippetInfo.cachedVersions[newVersionId] = rootNode;
 
     // try to write new version to FB
-    bool fbSuccess = await modelRepo.saveSnippetVersion(
-      snippetName: snippetName,
-      newVersionId: newVersionId,
-      newVersion: rootNode,
-    );
+    bool fbSuccess = await modelRepo.saveSnippetVersion(snippetName: snippetName, newVersionId: newVersionId, newVersion: rootNode);
 
     if (!fbSuccess) {
-      logger.i(
-        'cacheAndSaveANewSnippetVersion($snippetName) -  not fbSucess !',
-      );
+      logger.i('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !');
     } else {
       // reset current version to before change
       if (currVersionId != null) {
-        String? origSnippetJson =
-            FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
+        String? origSnippetJson = FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
         if (origSnippetJson != null) {
-          SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(
-            origSnippetJson,
-          );
+          SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(origSnippetJson);
           snippetInfo.cachedVersions[currVersionId] = origSnippet;
-          FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange =
-              rootNode.toJson();
+          FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
         }
       }
     }
   }
 
   bool isEditingVersionPublished(SnippetName name) {
-    var snippetInfo = SnippetInfoModel.cachedSnippet(name);
+    var snippetInfo = SnippetInfoModel.cachedSnippetInfo(name);
     return snippetInfo?.publishedVersionId == snippetInfo?.editingVersionId;
   }
 
@@ -822,37 +768,27 @@ class FlutterContentMixins
   // set when user taps a snippet triangle
   // final inEditMode = ValueNotifier<bool>(false);
 
-  void forceRefresh({bool onlyTargetsWrappers = false}) => FlutterContentApp
-      .capiBloc
-      .add(CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers));
+  void forceRefresh({bool onlyTargetsWrappers = false}) =>
+      FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers));
 
   Future<void> setCanEditContent(bool b) async {
     authenticated.value = b;
     return await localStorage.write("canEditContent", b);
   }
 
-  Offset calloutConfigToolbarPos() =>
-      _calloutConfigToolbarPos ??
-      Offset(
-        scrW / 2 - 350,
-        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
-      );
+  Offset calloutConfigToolbarPos() => _calloutConfigToolbarPos ?? Offset(scrW / 2 - 350, calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90);
 
-  void setCalloutConfigToolbarPos(Offset newPos) =>
-      _calloutConfigToolbarPos = newPos;
+  void setCalloutConfigToolbarPos(Offset newPos) => _calloutConfigToolbarPos = newPos;
 
-  Offset devToolsFABPos(context) =>
-      _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
+  Offset devToolsFABPos(context) => _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
   bool? showingNodeBoundaryOverlays;
 
-  registerHandler(HandlerName name, void Function(BuildContext) f) =>
-      _handlers[name] = f;
+  registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
 
-  void Function(BuildContext)? namedHandler(HandlerName name) =>
-      _handlers[name];
+  void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
   String? currentEditablePagePath; // gets set by EditablePage initState()
 

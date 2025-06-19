@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:example/bh-apps.firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:logger/logger.dart';
 import 'pages/routes_config.dart';
+import 'bh-apps.firebase_options.dart';
 
 // original main
 // void main() {
@@ -68,7 +68,7 @@ Future<void> main({bool useEmulator = false}) async {
       appName: 'flutter-content-demo',
       editorPasswords: ['pigsinspace'],
       // use web, mobile or desktop routingConfig defined in your routes_config.dart
-      routingConfig: desktopRoutingConfig,
+      routingConfig: webRoutingConfig,
       initialRoutePath: '/',
       materialAppThemeF: () => ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

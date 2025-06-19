@@ -506,7 +506,7 @@ abstract class SNode extends Node with SNodeMappable {
     // }
     // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
     SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
@@ -969,7 +969,7 @@ abstract class SNode extends Node with SNodeMappable {
     List<TargetModel> foundTargets = [];
     for (SnippetName snippetName in SnippetInfoModel.cachedSnippetNames()) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippet(
+      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
         snippetName,
       );
       if (snippetInfo == null) return foundTargets;
@@ -1990,7 +1990,7 @@ abstract class SNode extends Node with SNodeMappable {
         MenuItemButton(
           onPressed: () async {
             // make sure snippet actually present
-            await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            await SnippetRootNode.loadSnippetFromCacheOrFromFB(
               snippetName: snippetName,
             );
             if (action == NodeAction.replaceWith) {

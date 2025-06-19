@@ -134,24 +134,26 @@ class TargetsWrapper extends StatefulWidget {
       dragHandleHeight: 30,
       followScroll: false,
       onDismissedF: () {
-        void reset() {
+        void resetZoom() {
           // fco.dismiss(CalloutConfigToolbar.CID);
           SNode.showAllTargetBtns();
           SNode.showAllHotspotTargetCovers();
-          fco.afterNextBuildDo(() {
-            // save hotspot's parent snippet
-            var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
-            if (rootNode != null) {
-              fco.cacheAndSaveANewSnippetVersion(
-                snippetName: rootNode.name,
-                rootNode: rootNode,
-              );
-            }
-          });
+          //TODO save a new version ? not necessary ?
+          // fco.afterNextBuildDo(() {
+          //   // save hotspot's parent snippet
+          //   var rootNode = tc.parentTargetsWrapperNode?.rootNodeOfSnippet();
+          //   if (rootNode != null) {
+          //     fco.saveNewVersion(snippet: rootNode);
+          //     // fco.cacheAndSaveANewSnippetVersion(
+          //     //   snippetName: rootNode.name,
+          //     //   rootNode: rootNode,
+          //     // );
+          //   }
+          // });
         }
 
         tc.targetsWrapperState()?.refresh(() {
-          tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: reset);
+          tc.targetsWrapperState()?.zoomer?.resetTransform(afterTransformF: resetZoom);
         });
       },
     );
