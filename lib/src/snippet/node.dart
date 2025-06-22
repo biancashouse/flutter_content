@@ -229,7 +229,7 @@ class SnippetTreeController extends TreeController<SNode> {
     return result;
   }
 
-  SnippetTreeController clone() {
+  SnippetTreeController cloneTreeC() {
     SNode rootNode = roots.first;
     String jsonS = rootNode.toJson();
     SNode clonedRootNode = SNodeMapper.fromJson(jsonS);

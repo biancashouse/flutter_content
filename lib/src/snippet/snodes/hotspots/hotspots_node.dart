@@ -78,7 +78,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
     return eps != null

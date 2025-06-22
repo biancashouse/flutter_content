@@ -33,7 +33,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);

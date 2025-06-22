@@ -61,7 +61,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
       setParent(parentNode); // propagating parents down from root

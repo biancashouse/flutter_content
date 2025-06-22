@@ -37,7 +37,7 @@ class ElevatedButtonNode extends ButtonNode with ElevatedButtonNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());

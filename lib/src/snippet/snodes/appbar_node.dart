@@ -87,7 +87,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
 
   @override
   // no tabbar nor menubar
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
 

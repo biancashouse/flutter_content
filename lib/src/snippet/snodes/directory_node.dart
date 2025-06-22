@@ -34,7 +34,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   String toSource(BuildContext context) => "";
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       SnippetPanelState? ss = SnippetPanel.of(context);
       if (!(ss?.mounted ?? false)) {

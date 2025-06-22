@@ -97,7 +97,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       List<Widget> images = super.children.isEmpty

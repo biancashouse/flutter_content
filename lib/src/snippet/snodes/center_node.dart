@@ -35,7 +35,7 @@ class CenterNode extends SC with CenterNodeMappable {
   // }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     // try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);

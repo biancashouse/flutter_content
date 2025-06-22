@@ -37,7 +37,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());

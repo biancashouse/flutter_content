@@ -4,6 +4,7 @@
 
 class FlutterContentMixins {
     appName
+    AppInfoModel  appInfo,
     editorPassword
     title
     webRoutingConfig
@@ -32,8 +33,9 @@ class SnippetInfoModel {
     Map<VersionId, SnippetRootNode?> cachedVersions = {};
 }
 
-FlutterContentMixins [SnippetName] o-r--> AppInfoModel
-FlutterContentMixins [SnippetName] o-r--> SnippetInfoModel
+
+FlutterContentMixins o--> AppInfoModel : appInfo
+FlutterContentMixins [Snippet\nName] o-r-> SnippetInfoModel : snippetInfoCache
 
 
 @enduml

@@ -648,7 +648,7 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   void refreshWithUpdate(
-    context,
+    BuildContext context,
     VoidCallback assignF, {
     bool alsoRefreshPropertiesView = false,
   }) {
@@ -992,9 +992,8 @@ abstract class SNode extends Node with SNodeMappable {
 
   Widget toWidget(
     BuildContext context,
-    SNode? parentNode, {
-    bool showTriangle = false,
-  }) => const Placeholder();
+    SNode? parentNode,
+  ) => const Placeholder();
 
   Widget possiblyCheckHeightConstraint(SNode? parentNode, Widget actualWidget) {
     /*

@@ -58,7 +58,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     //Icon(Icons.info, size: 28, color: Colors.red);
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);

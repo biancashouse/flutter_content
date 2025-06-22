@@ -628,7 +628,9 @@ class FlutterContentMixins
   // Map<SnippetName, Map<VersionId, SnippetRootNode>> versionCache = {};
 
   Future<void> saveNewVersion({required SnippetRootNode? snippet}) async {
-    if (snippet?.name == null) return;
+    if (snippet?.name == null) {
+      return;
+    }
 
     String? snippetName = snippet!.name.startsWith('/') ? snippet.name.substring(1) : snippet.name;
 
@@ -652,13 +654,15 @@ class FlutterContentMixins
             fco.logger.e('$e');
           }
         }
-        // delete from FB and also from cache
-        for (VersionId vId in tbd) {
-          snippetInfo.versionIds?.remove(vId);
-          snippetInfo.cachedVersions.remove(vId);
+        if (tbd.isNotEmpty) {
+          // delete from FB and also from cache
+          for (VersionId vId in tbd) {
+            snippetInfo.versionIds?.remove(vId);
+            snippetInfo.cachedVersions.remove(vId);
+          }
+          fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
+          // SnippetInfoModel.debug();
         }
-        fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
-        // SnippetInfoModel.debug();
       }
     }
 

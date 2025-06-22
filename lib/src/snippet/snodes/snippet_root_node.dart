@@ -94,7 +94,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       // fco.logger.i("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
@@ -119,31 +119,10 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               Widget snippetWidgetStack = Stack(
                 children: [
                   snippetWidget,
-                  if (showTriangle && fco.authenticated.isTrue)
+                  if (fco.authenticated.isTrue)
                     Align(
                       alignment: Alignment.topRight,
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: Tooltip(
-                          message: 'tap here to enter Select Widget Mode',
-                          child: InkWell(
-                            onTap: () {
-                              FlutterContentApp.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: name));
-                            },
-                            child: CustomPaint(
-                              size: const Size(40, 40),
-                              painter: TRTriangle(Colors.purpleAccent),
-                              child: Container(
-                                width: 40,
-                                height: 40,
-                                alignment: Alignment.topRight,
-                                child: Icon(Icons.select_all, size: 20, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: SizedBox(width: 40, height: 40, child: CustomPaint(size: const Size(40, 40), painter: TRTriangle(Colors.black))),
                     ),
                 ],
               );

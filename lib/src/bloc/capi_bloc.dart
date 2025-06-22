@@ -875,7 +875,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _wrapWith(WrapSelectionWith event, emit) {
     // state.snippetBeingEdited?.newVersion();
 
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
+    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) {return;}
 
     SNode wChild = state.snippetBeingEdited!.selectedNode!;
     SNode? parent = wChild.getParent() as SNode?;
@@ -949,12 +949,15 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
       // update treeC if rootNode changed (that's the Snippet's child)
       SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-      // if (true || w.getParent() is SnippetRootNode) {
-      //   possiblyNewTreeC = SnippetTreeController(
-      //     roots: [w],
-      //     childrenProvider: Node.snippetTreeChildrenProvider,
-      //   );
-      // }
+
+      // child of snippet root
+      if (parent is SnippetRootNode) {
+        possiblyNewTreeC = SnippetTreeController(
+          roots: [parent],
+          childrenProvider: Node.snippetTreeChildrenProvider,
+          parentProvider: Node.snippetTreeParentProvider,
+        );
+      }
 
       possiblyNewTreeC.expand(w);
       possiblyNewTreeC.rebuild();
@@ -1042,15 +1045,32 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // update treeC if rootNode changed (that's the Snippet's child)
     SnippetTreeController possiblyNewTreeC = state.snippetBeingEdited!.treeC;
-    // if (false && r.getParent() is SnippetRootNode) {
-    //   possiblyNewTreeC = SnippetTreeController(
-    //     roots: [r],
-    //     childrenProvider: Node.snippetTreeChildrenProvider,
-    //     parentProvider: Node.snippetTreeParentProvider,
-    //   );
-    // }
+
+    // child of snippet root
+    if (parent is SnippetRootNode) {
+      possiblyNewTreeC = SnippetTreeController(
+        roots: [parent],
+        childrenProvider: Node.snippetTreeChildrenProvider,
+        parentProvider: Node.snippetTreeParentProvider,
+      );
+      // if snippet is inside another snippet, then must update it's cached snippet entry
+      if (parent.getParent() != null) {
+        SnippetRootNode? parentSnippetRootNode = (parent.getParent() as SNode).rootNodeOfSnippet();
+        if (parentSnippetRootNode != null) {
+          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(parentSnippetRootNode.name);
+          if (snippetInfo != null) {
+            VersionId? currVersionId = snippetInfo.currentVersionId();
+            // SnippetRootNode? currVer = snippetInfo.cachedVersions[currVersionId];
+            if (currVersionId != null) {
+              snippetInfo.cachedVersions.remove(currVersionId);
+            }
+          }
+        }
+      }
+    }
+
     possiblyNewTreeC.roots.first.validateTree();
-    possiblyNewTreeC.expand(r);
+    possiblyNewTreeC.expandCascading([parent!]);
     possiblyNewTreeC.rebuild();
 
     state.snippetBeingEdited!

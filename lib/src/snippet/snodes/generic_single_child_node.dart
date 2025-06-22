@@ -17,7 +17,7 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) => fco.coloredText(
+  Widget toWidget(BuildContext context, SNode? parentNode) => fco.coloredText(
       'GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !',
       fontSize: 36);
 

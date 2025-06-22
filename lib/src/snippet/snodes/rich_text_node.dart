@@ -78,7 +78,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context)) as TextSpan;
       setParent(parentNode);

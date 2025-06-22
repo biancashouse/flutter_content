@@ -88,7 +88,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode, {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.scName(context);
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
