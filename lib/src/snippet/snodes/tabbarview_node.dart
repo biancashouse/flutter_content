@@ -40,7 +40,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -52,7 +52,8 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       }
       int numTabNodes = tabBarNode.tabC?.length ?? 0;
       List<Widget> childWidgets = children
-          .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
+          // .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
+          .map((node) => node.toWidget(context, this))
           .toList();
       try {
         if (numTabNodes != children.length) {
@@ -92,23 +93,31 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
   static const String FLUTTER_TYPE = "TabBarView";
 }
 
-class TabBarViewPage extends StatefulWidget {
-  final Widget child;
-
-  const TabBarViewPage({required this.child, super.key});
-
-  @override
-  State<TabBarViewPage> createState() => _TabBarViewPageState();
-}
-
-class _TabBarViewPageState extends State<TabBarViewPage>
-    with AutomaticKeepAliveClientMixin<TabBarViewPage> {
-  @override
-  bool get wantKeepAlive => false;
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
-  }
-}
+// class TabBarViewParent extends StatefulWidget {
+//   final TabBarView child;
+//
+//   const TabBarViewParent({required this.child, super.key});
+//
+//   static TabBarViewParentState? of(BuildContext? context) {
+//     if (context == null) return null;
+//
+//     if (!context.mounted) {
+//       fco.logger.i('context not mounted!');
+//     }
+//    return context.findAncestorStateOfType<TabBarViewParentState>();
+//   }
+//   @override
+//   State<TabBarViewParent> createState() => TabBarViewParentState();
+// }
+//
+// class TabBarViewParentState extends State<TabBarViewParent>
+//     with AutomaticKeepAliveClientMixin<TabBarViewParent> {
+//   @override
+//   bool get wantKeepAlive => false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     super.build(context);
+//     return widget.child;
+//   }
+// }

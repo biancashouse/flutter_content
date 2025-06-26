@@ -332,7 +332,7 @@ class FlutterContentMixins
           // fco.dismiss('exit-editMode');
           final snippetName = matchedLocation;
           final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode);
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode);
           final dynamicPage = EditablePage(
             key: GlobalKey(), // provides access to state later
             routePath: matchedLocation,
@@ -356,7 +356,7 @@ class FlutterContentMixins
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = destUrl;
                   final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode).then((_) {
+                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((_) {
                     afterNextBuildDo(() {
                       // SnippetInfoModel.snippetInfoCache;
                       router.push(destUrl);
@@ -383,7 +383,7 @@ class FlutterContentMixins
           // bool userCanEdit = canEditContent.isTrue;
           final snippetName = destUrl;
           final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, snippetRootNode: rootNode).then((_) {
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((_) {
             afterNextBuildDo(() {
               // SnippetInfoModel.snippetInfoCache;
               router.push(destUrl);
@@ -593,7 +593,7 @@ class FlutterContentMixins
       SnippetInfoModel.cachedSnippetInfo(contentCId) ??
       await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
         snippetName: contentCId,
-        snippetRootNode: SnippetRootNode(name: contentCId, child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()))),
+        templateSnippetRootNode: SnippetRootNode(name: contentCId, child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()))),
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
 

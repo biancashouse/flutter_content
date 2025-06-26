@@ -30,18 +30,12 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
-      FlutterDocPNode(
-          buttonLabel: 'Scaffold',
-          webLink:
-              'https://api.flutter.dev/flutter/material/Scaffold-class.html',
-          snode: this,
-          name: 'fyi'),
+      FlutterDocPNode(buttonLabel: 'Scaffold', webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html', snode: this, name: 'fyi'),
       ColorPNode(
         snode: this,
         name: 'background color',
         color: bgColor,
-        onColorChange: (newValue) =>
-            refreshWithUpdate(context, () => bgColor = newValue),
+        onColorChange: (newValue) => refreshWithUpdate(context, () => bgColor = newValue),
         calloutButtonSize: const Size(200, 20),
       ),
       // IntPNode(
@@ -55,15 +49,13 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+  Widget toWidget(BuildContext context, SNode? parentNode) {
     // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
 
-    Widget? bodyWidget() =>
-        body?.toWidgetProperty(context, this) ?? const Placeholder();
+    Widget? bodyWidget() => body?.toWidgetProperty(context, this) ?? const Placeholder();
 
     // bool usingTabs = appBar?.bottom?.child is TabBarNode;
     Widget scaffold = Scaffold(
@@ -84,26 +76,22 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
               scaffold,
               if (showPencil && canShowEditorLoginBtn)
                 Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        // ask user to sign in as editor
-                        EditablePage.of(context)?.editorPasswordDialog();
-                      },
-                      icon: const Icon(Icons.edit, color: Colors.white),
-                    )),
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      // ask user to sign in as editor
+                      EditablePage.of(context)?.editorPasswordDialog();
+                    },
+                    icon: const Icon(Icons.edit, color: Colors.white),
+                  ),
+                ),
             ],
           );
         },
         child: scaffold,
       );
     } catch (e) {
-      return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+      return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }
   }
 
@@ -111,11 +99,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   bool canBeDeleted() => appBar == null && body == null;
 
   @override
-  List<Widget> menuAnchorWidgets_Append(
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading, ScrollControllerName? scName) {
     return [
       ...super.menuAnchorWidgets_Heading(action, scName),
       menuItemButton("AppBar", AppBarNode, action, scName),

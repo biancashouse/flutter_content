@@ -149,10 +149,7 @@ enum NodeAction {
   final String displayName;
 }
 
-@MappableClass(
-  discriminatorKey: 'snode',
-  includeSubClasses: [ScaffoldNode, AppBarNode, CL, SC, MC, InlineSpanNode],
-)
+@MappableClass(discriminatorKey: 'snode', includeSubClasses: [ScaffoldNode, AppBarNode, CL, SC, MC, InlineSpanNode])
 abstract class SNode extends Node with SNodeMappable {
   String uid = UniqueKey().toString();
 
@@ -169,10 +166,7 @@ abstract class SNode extends Node with SNodeMappable {
   // @JsonKey(includeFromJson: false, includeToJson: false)
   // Rect? measuredRect;
 
-  PNodeTreeController pTreeC(
-    BuildContext context,
-    Map<PropertyName, bool> prevExpansions,
-  ) {
+  PNodeTreeController pTreeC(BuildContext context, Map<PropertyName, bool> prevExpansions) {
     _pTreeC ??= PNodeTreeController(
       roots: _properties ??= properties(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
@@ -210,8 +204,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   double propertiesPaneScrollPos() => propertiesPaneSC().offset;
 
-  ScrollController propertiesPaneSC() =>
-      _propertiesPaneSC ??= ScrollController();
+  ScrollController propertiesPaneSC() => _propertiesPaneSC ??= ScrollController();
 
   // FCO get fc => FCO;
 
@@ -225,10 +218,14 @@ abstract class SNode extends Node with SNodeMappable {
   @JsonKey(includeFromJson: false, includeToJson: false)
   GlobalKey? _nodeWidgetGK; // gets used in toWidget()
 
-  SnippetRootNode? rootNodeOfSnippet() =>
-      this is SnippetRootNode
-          ? this as SnippetRootNode
-          : findNearestAncestor<SnippetRootNode>();
+  SnippetRootNode? rootNodeOfSnippet() {
+    final result = this is SnippetRootNode ? this as SnippetRootNode : findNearestAncestor<SnippetRootNode>();
+    if (result?.isValid() ?? false) {
+      return result;
+    } else {
+      return null;
+    }
+  }
 
   List<PNode> properties(BuildContext context, SNode? parentSNode);
 
@@ -256,23 +253,14 @@ abstract class SNode extends Node with SNodeMappable {
 
   static double BORDER = 4;
 
-  void showTappableNodeWidgetOverlay({
-    bool whiteBarrier = false,
-    ScrollControllerName? scName,
-  }) {
+  void showTappableNodeWidgetOverlay({bool whiteBarrier = false, ScrollControllerName? scName}) {
     // Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
     Rect? borderRect = _borderRect();
 
     if (borderRect != null) {
       String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
 
-      CalloutConfigModel cc = _cc(
-        cId: feature,
-        borderRect: borderRect,
-        whiteBarrier: whiteBarrier,
-        scName: scName,
-        followScroll: true,
-      );
+      CalloutConfigModel cc = _cc(cId: feature, borderRect: borderRect, whiteBarrier: whiteBarrier, scName: scName, followScroll: true);
       fco.showOverlay(
         ensureLowestOverlay: false,
         calloutContent: PointerInterceptor(
@@ -281,11 +269,7 @@ abstract class SNode extends Node with SNodeMappable {
             message: 'tap to edit this ${toString()} node',
             child: InkWell(
               onTap: () => _tappedToEditSnipperNode(scName),
-              child: Container(
-                width: borderRect.width.abs(),
-                height: borderRect.height.abs(),
-                decoration: _decoration(transparent: true),
-              ),
+              child: Container(width: borderRect.width.abs(), height: borderRect.height.abs(), decoration: _decoration(transparent: true)),
             ),
           ),
         ),
@@ -297,10 +281,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   void _tappedToEditSnipperNode(ScrollControllerName? scName) {
     // fco.logger.i("${toString()} tapped");
-    SnippetRootNode? rootNode =
-        (this is SnippetRootNode)
-            ? this as SnippetRootNode
-            : rootNodeOfSnippet();
+    SnippetRootNode? rootNode = (this is SnippetRootNode) ? this as SnippetRootNode : rootNodeOfSnippet();
     SnippetName? snippetName = rootNode?.name;
     if (snippetName == null) return;
     // maybe a page snippet, so check name in appInfo: maybe prefix with /
@@ -383,13 +364,7 @@ abstract class SNode extends Node with SNodeMappable {
       );
       fco.showOverlay(
         ensureLowestOverlay: true,
-        calloutContent: PointerInterceptor(
-          child: Container(
-            width: cc.calloutW,
-            height: cc.calloutH,
-            decoration: _decoration(transparent: false),
-          ),
-        ),
+        calloutContent: PointerInterceptor(child: Container(width: cc.calloutW, height: cc.calloutH, decoration: _decoration(transparent: false))),
         calloutConfig: cc,
         // targetGkF: () => nodeWidgetGK,
       );
@@ -403,15 +378,9 @@ abstract class SNode extends Node with SNodeMappable {
   Rect? _borderRect() {
     var gkState = nodeWidgetGK?.currentState;
     var gkCtx = nodeWidgetGK?.currentContext;
-    Rect? r = nodeWidgetGK?.globalPaintBounds(
-      skipWidthConstraintWarning: true,
-      skipHeightConstraintWarning: true,
-    );
+    Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     // in case widget doesn't have a key (e.g. inlinespans)
-    r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(
-      skipWidthConstraintWarning: true,
-      skipHeightConstraintWarning: true,
-    );
+    r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     if (r != null) {
       Rect borderRect;
       // ensure has a width and height
@@ -461,10 +430,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   Decoration _decoration({bool transparent = true}) => BoxDecoration(
     shape: BoxShape.rectangle,
-    color:
-        transparent
-            ? Colors.transparent
-            : Colors.purpleAccent.withValues(alpha: .2),
+    color: transparent ? Colors.transparent : Colors.purpleAccent.withValues(alpha: .2),
     border: GradientBoxBorder(
       gradient: LinearGradient(
         colors: [
@@ -511,12 +477,20 @@ abstract class SNode extends Node with SNodeMappable {
 
     SnippetRootNode? rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     if (rootNode == null) return;
-    FlutterContentApp.capiBloc.add(
-      CAPIEvent.pushSnippetEditor(
-        rootNode: rootNode,
-        selectedNode: selectedNode,
-      ),
-    );
+
+    // before starting the editing, check whether the context is null, which could mean this snippet is in a Tab and tab ay not be currently selected
+    if (rootNode.child?.nodeWidgetGK?.currentContext == null) {
+      fco.showToast(
+        cId: 'nodes-widget-not-visible',
+        msg: "This node is not visible right now",
+        bgColor: Colors.white,
+        textColor: Colors.red,
+        removeAfterMs: 5000,
+      );
+      return;
+    }
+
+    FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode));
     // fco.afterNextBuildDo(() {
     // });
     // return;
@@ -606,20 +580,14 @@ abstract class SNode extends Node with SNodeMappable {
         //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         // ));
 
-        FlutterContentApp.capiBloc.add(
-          CAPIEvent.selectNode(node: selectedNode),
-        );
+        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: selectedNode));
 
         fco.afterNextBuildDo(() {
           EditablePage.removeAllNodeWidgetOverlays();
-          bool snippetBeingEdited =
-              FlutterContentApp.snippetBeingEdited != null;
+          bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
           // fco.logger.d('snippetBeingEdited: $snippetBeingEdited');
           fco.afterMsDelayDo(500, () {
-            selectedNode.showNodeWidgetOverlay(
-              scName: scName,
-              followScroll: false,
-            );
+            selectedNode.showNodeWidgetOverlay(scName: scName, followScroll: false);
           });
           // create selected node's properties tree
         });
@@ -647,20 +615,24 @@ abstract class SNode extends Node with SNodeMappable {
     });
   }
 
-  void refreshWithUpdate(
-    BuildContext context,
-    VoidCallback assignF, {
-    bool alsoRefreshPropertiesView = false,
-  }) {
+  void refreshWithUpdate(BuildContext context, VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
     // FlutterContentApp.capiState.snippetBeingEdited?.newVersion();
 
     assignF.call();
     // if (alsoRefreshPropertiesView) {
     //   forcePropertyTreeRefresh(context);
     // }
+    final rootNodeBefore = rootNodeOfSnippet();
     fco.forceRefresh();
+    final rootNodeAfter = rootNodeOfSnippet();
+    bool same = rootNodeAfter == rootNodeBefore;
     fco.afterNextBuildDo(() {
-      fco.saveNewVersion(snippet: rootNodeOfSnippet());
+      if (!this.isValid()) {
+        print('oooooops not valid in tree');
+      }
+      final rootNode = rootNodeOfSnippet();
+      assert(rootNode!.isValid());
+      fco.saveNewVersion(snippet: rootNode);
       FlutterContentApp.selectedNode?.showNodeWidgetOverlay(followScroll: true);
     });
   }
@@ -779,8 +751,7 @@ abstract class SNode extends Node with SNodeMappable {
   bool hasChildren() =>
       (this is SC && (this as SC).child != null) ||
       (this is MC && (this as MC).children.isNotEmpty) ||
-      (this is TextSpanNode &&
-          ((this as TextSpanNode).children?.length ?? 0) > 0);
+      (this is TextSpanNode && ((this as TextSpanNode).children?.length ?? 0) > 0);
 
   // List<String> sensibleParents() => const [];
 
@@ -807,26 +778,62 @@ abstract class SNode extends Node with SNodeMappable {
   //   return sC;
   // }
 
+  bool isValid() {
+    if (!parentIsValid()) return false;
+    if (!childrenAreValid()) return false;
+    return true;
+  }
+
+  bool parentIsValid() {
+    // this must be a child of it's parent
+    final parent = getParent();
+    if (parent == null && this is SnippetRootNode) return true; // must be a snippetRootNode; ignore
+    if (parent is SC && parent.child == this) return true;
+    if (parent is MC && parent.children.contains(this)) return true;
+    if (parent is TextSpanNode && (parent.children != null || parent.children!.contains(this))) return true;
+    return false;
+  }
+
+  bool childrenAreValid() {
+    if (this.hasChildren()) {
+      if (this is SC) {
+        final scn = this as SC;
+        if (scn.child?.getParent() != scn) return false;
+        return scn.child?.childrenAreValid() ?? true;
+      } else if (this is MC) {
+        final mcn = this as MC;
+        // check that its children all point back
+        for (final child in mcn.children ?? []) {
+          if (child.getParent() != mcn) return false;
+          return child.childrenAreValid();
+        }
+      }
+    } else if (this is TextSpanNode) {
+      // otherwise must be a TextSpanNode
+      final tsn = this as TextSpanNode;
+      // check that its children all point back
+      for (final child in tsn.children ?? []) {
+        if (child.getParent() != tsn) return false;
+        return child.childrenAreValid();
+      }
+    }
+
+    return true;
+  }
+
   void validateTree() {
     _setParents(null);
     //ensure no tabs have empty text
-    if (this is TextNode &&
-        (this as TextNode).text.isEmpty &&
-        getParent() is TabBarNode) {
+    if (this is TextNode && (this as TextNode).text.isEmpty && getParent() is TabBarNode) {
       (this as TextNode).text = 'new tab';
     }
     // ensure No. tabs matches No. tab views
     TabBarNode? tabBar = findDescendant(TabBarNode) as TabBarNode?;
-    TabBarViewNode? tabBarView =
-        findDescendant(TabBarViewNode) as TabBarViewNode?;
+    TabBarViewNode? tabBarView = findDescendant(TabBarViewNode) as TabBarViewNode?;
     if ((tabBar?.children.length ?? 0) > (tabBarView?.children.length ?? 0)) {
       tabBarView?.children.add(PlaceholderNode()..setParent(tabBarView));
-    } else if ((tabBar?.children.length ?? 0) <
-        (tabBarView?.children.length ?? 0)) {
-      tabBar?.children.add(
-        TextNode(text: ' fixed tab', tsPropGroup: TextStyleProperties())
-          ..setParent(tabBar),
-      );
+    } else if ((tabBar?.children.length ?? 0) < (tabBarView?.children.length ?? 0)) {
+      tabBar?.children.add(TextNode(text: ' fixed tab', tsPropGroup: TextStyleProperties())..setParent(tabBar));
     }
     // bool doubleCheck = anyMissingParents();
     // fco.logger.i("missing parents: $doubleCheck");
@@ -846,8 +853,7 @@ abstract class SNode extends Node with SNodeMappable {
   bool anyMissingParents() {
     var children = Node.snippetTreeChildrenProvider(this);
     for (SNode child in children) {
-      bool foundAMissingParent =
-          child.getParent() != this || child.anyMissingParents();
+      bool foundAMissingParent = child.getParent() != this || child.anyMissingParents();
       if (foundAMissingParent) {
         return true;
       }
@@ -858,15 +864,13 @@ abstract class SNode extends Node with SNodeMappable {
   bool isAScaffoldTabWidget() {
     return getParent() is TabBarNode &&
         getParent()?.getParent() is GenericSingleChildNode &&
-        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
-            'bottom';
+        (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'bottom';
   }
 
   bool isAScaffoldTabViewWidget() =>
       getParent() is TabBarViewNode &&
       getParent()?.getParent() is GenericSingleChildNode &&
-      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName ==
-          'body';
+      (getParent()?.getParent() as GenericSingleChildNode?)?.propertyName == 'body';
 
   bool isAStepNodeTitleOrContentPropertyWidget() {
     var node = getParent()?.getParent();
@@ -969,17 +973,11 @@ abstract class SNode extends Node with SNodeMappable {
     List<TargetModel> foundTargets = [];
     for (SnippetName snippetName in SnippetInfoModel.cachedSnippetNames()) {
       // get published or editing version
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
-        snippetName,
-      );
+      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
       if (snippetInfo == null) return foundTargets;
       VersionId? versionId = snippetInfo.currentVersionId();
       if (versionId == null) return foundTargets;
-      List<SNode> tws =
-          snippetInfo.currentVersionFromCache()?.findDescendantsOfType(
-            TargetsWrapperNode,
-          ) ??
-          [];
+      List<SNode> tws = snippetInfo.currentVersionFromCache()?.findDescendantsOfType(TargetsWrapperNode) ?? [];
       for (SNode tw in tws) {
         foundTargets.addAll((tw as TargetsWrapperNode).targets);
       }
@@ -990,10 +988,7 @@ abstract class SNode extends Node with SNodeMappable {
   // check nodes are identical
   bool isSame(SNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget toWidget(
-    BuildContext context,
-    SNode? parentNode,
-  ) => const Placeholder();
+  Widget toWidget(BuildContext context, SNode? parentNode) => const Placeholder();
 
   Widget possiblyCheckHeightConstraint(SNode? parentNode, Widget actualWidget) {
     /*
@@ -1006,21 +1001,14 @@ abstract class SNode extends Node with SNodeMappable {
       return LayoutBuilder(
         builder: (context, constraints) {
           return constraints.maxHeight == double.infinity
-              ? Row(
-                children: [
-                  const Icon(Icons.error, color: Colors.red),
-                  const Gap(10),
-                  Text('${toString()} has infinite maxHeight constraint!'),
-                ],
-              )
+              ? Row(children: [const Icon(Icons.error, color: Colors.red), const Gap(10), Text('${toString()} has infinite maxHeight constraint!')])
               : actualWidget;
         },
       );
     }
   }
 
-  static void unhighlightSelectedNode() =>
-      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+  static void unhighlightSelectedNode() => fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
 
   // Future<void> possiblyHighlightSelectedNode(ScrollControllerName? scName) async {
   //   return;
@@ -1348,14 +1336,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   bool canRemove() => true;
 
-  Widget insertItemMenuAnchor({
-    required NodeAction action,
-    String? label,
-    Color? bgColor,
-    String? tooltip,
-    ScrollControllerName? scName,
-    key,
-  }) {
+  Widget insertItemMenuAnchor({required NodeAction action, String? label, Color? bgColor, String? tooltip, ScrollControllerName? scName, key}) {
     var title =
         action == NodeAction.replaceWith
             ? 'replace with...'
@@ -1370,11 +1351,7 @@ abstract class SNode extends Node with SNodeMappable {
     List<Widget> menuChildren = menuAnchorWidgets(action, scName);
     return MenuAnchor(
       menuChildren: menuChildren,
-      builder: (
-        BuildContext context,
-        MenuController controller,
-        Widget? child,
-      ) {
+      builder: (BuildContext context, MenuController controller, Widget? child) {
         return label != null
             ? TextButton.icon(
               key: key,
@@ -1385,15 +1362,11 @@ abstract class SNode extends Node with SNodeMappable {
                   controller.open();
                 }
               },
-              icon:
-                  action == NodeAction.replaceWith
-                      ? const Icon(Icons.refresh)
-                      : const Icon(Icons.add),
+              icon: action == NodeAction.replaceWith ? const Icon(Icons.refresh) : const Icon(Icons.add),
               label: Text(title),
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(
-                  bgColor ?? Colors.white.withValues(alpha: .9),
-                ),
+                backgroundColor: WidgetStatePropertyAll(bgColor ?? Colors.white.withValues(alpha: .9)),
+                foregroundColor: WidgetStatePropertyAll(Colors.white),
                 //padding: WidgetStatePropertyAll(EdgeInsets.zero),
               ),
             )
@@ -1422,10 +1395,7 @@ abstract class SNode extends Node with SNodeMappable {
     );
   }
 
-  List<Widget> menuAnchorWidgets(
-    NodeAction action,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets(NodeAction action, ScrollControllerName? scName) {
     List<Widget> mis = [];
     if (action == NodeAction.wrapWith) {
       mis.addAll(menuAnchorWidgets_WrapWith(action, false, scName));
@@ -1433,8 +1403,7 @@ abstract class SNode extends Node with SNodeMappable {
     if (action == NodeAction.addChild) {
       mis.addAll(menuAnchorWidgets_Append(action, false, scName));
     }
-    if (action == NodeAction.addSiblingBefore ||
-        action == NodeAction.addSiblingAfter) {
+    if (action == NodeAction.addSiblingBefore || action == NodeAction.addSiblingAfter) {
       mis.addAll(menuAnchorWidgets_InsertSibling(action, false, scName));
     }
     if (action == NodeAction.replaceWith) {
@@ -1466,11 +1435,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   // List<Type> insertSiblingRecommendations() => [];
 
-  List<Widget> menuAnchorWidgets_WrapWith(
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_WrapWith(NodeAction action, bool? skipHeading, ScrollControllerName? scName) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action, scName),
       SubmenuButton(
@@ -1480,12 +1445,7 @@ abstract class SNode extends Node with SNodeMappable {
           menuItemButton("Container", ContainerNode, action, scName),
           menuItemButton("Padding", PaddingNode, action, scName),
           menuItemButton("SizedBox", SizedBoxNode, action, scName),
-          menuItemButton(
-            "SingleChildScrollView",
-            SingleChildScrollViewNode,
-            action,
-            scName,
-          ),
+          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action, scName),
           const Divider(),
           menuItemButton("Column", ColumnNode, action, scName),
           menuItemButton("Row", RowNode, action, scName),
@@ -1506,11 +1466,7 @@ abstract class SNode extends Node with SNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_Append(
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_Append(NodeAction action, bool? skipHeading, ScrollControllerName? scName) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action, scName),
       SubmenuButton(
@@ -1523,12 +1479,7 @@ abstract class SNode extends Node with SNodeMappable {
           // _addChildmenuItemButton("IntrinsicWidth", IntrinsicWidthNode, action, scName),
           menuItemButton("Padding", PaddingNode, action, scName),
           menuItemButton("SizedBox", SizedBoxNode, action, scName),
-          menuItemButton(
-            "SingleChildScrollView",
-            SingleChildScrollViewNode,
-            action,
-            scName,
-          ),
+          menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action, scName),
           const Divider(),
           menuItemButton("Column", ColumnNode, action, scName),
           menuItemButton("Row", RowNode, action, scName),
@@ -1541,12 +1492,7 @@ abstract class SNode extends Node with SNodeMappable {
       ),
       SubmenuButton(
         menuChildren: [
-          menuItemButton(
-            "DefaultTextStyle",
-            DefaultTextStyleNode,
-            action,
-            scName,
-          ),
+          menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action, scName),
           menuItemButton("Text", TextNode, action, scName),
           menuItemButton("RichText", RichTextNode, action, scName),
           menuItemButton("TextSpan", TextSpanNode, action, scName),
@@ -1558,43 +1504,20 @@ abstract class SNode extends Node with SNodeMappable {
         menuChildren: [
           SubmenuButton(
             menuChildren: [
-              menuItemButton(
-                "MenuItemButton",
-                MenuItemButtonNode,
-                action,
-                scName,
-              ),
-              menuItemButton(
-                "SubmenuButton",
-                SubmenuButtonNode,
-                action,
-                scName,
-              ),
+              menuItemButton("MenuItemButton", MenuItemButtonNode, action, scName),
+              menuItemButton("SubmenuButton", SubmenuButtonNode, action, scName),
               menuItemButton("MenuBar", MenuBarNode, action, scName),
             ],
             child: fco.coloredText("menu", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
-            menuChildren: [
-              menuItemButton("TabBar", TabBarNode, action, scName),
-              menuItemButton("TabBarView", TabBarViewNode, action, scName),
-            ],
+            menuChildren: [menuItemButton("TabBar", TabBarNode, action, scName), menuItemButton("TabBarView", TabBarViewNode, action, scName)],
             child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
           ),
           SubmenuButton(
             menuChildren: [
-              menuItemButton(
-                "ElevatedButton",
-                ElevatedButtonNode,
-                action,
-                scName,
-              ),
-              menuItemButton(
-                "OutlinedButton",
-                OutlinedButtonNode,
-                action,
-                scName,
-              ),
+              menuItemButton("ElevatedButton", ElevatedButtonNode, action, scName),
+              menuItemButton("OutlinedButton", OutlinedButtonNode, action, scName),
               menuItemButton("TextButton", TextButtonNode, action, scName),
               menuItemButton("FilledButton", FilledButtonNode, action, scName),
               menuItemButton("IconButton", IconButtonNode, action, scName),
@@ -1619,12 +1542,7 @@ abstract class SNode extends Node with SNodeMappable {
       SubmenuButton(
         menuChildren: [
           menuItemButton("ifrane", IFrameNode, action, scName),
-          menuItemButton(
-            "Google Drive iframe",
-            GoogleDriveIFrameNode,
-            action,
-            scName,
-          ),
+          menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action, scName),
           menuItemButton("File", FileNode, action, scName),
           menuItemButton("Directory", DirectoryNode, action, scName),
         ],
@@ -1642,25 +1560,17 @@ abstract class SNode extends Node with SNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_InsertSibling(
-    NodeAction action,
-    bool? skipHeading,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_InsertSibling(NodeAction action, bool? skipHeading, ScrollControllerName? scName) {
     return [
       if (!(skipHeading ?? false)) ...menuAnchorWidgets_Heading(action, scName),
       if (getParent() is FlexNode) ...[
         menuItemButton("Expanded", ExpandedNode, action, scName),
         menuItemButton("Flexible", FlexibleNode, action, scName),
       ],
-      if (getParent() is StepperNode)
-        menuItemButton("Step", StepNode, action, scName),
-      if (getParent() is PollNode)
-        menuItemButton("PollOption", PollOptionNode, action, scName),
-      if (getParent() is StackNode)
-        menuItemButton("Positioned", PositionedNode, action, scName),
-      if (getParent() is StackNode)
-        menuItemButton("Align", AlignNode, action, scName),
+      if (getParent() is StepperNode) menuItemButton("Step", StepNode, action, scName),
+      if (getParent() is PollNode) menuItemButton("PollOption", PollOptionNode, action, scName),
+      if (getParent() is StackNode) menuItemButton("Positioned", PositionedNode, action, scName),
+      if (getParent() is StackNode) menuItemButton("Align", AlignNode, action, scName),
       if (getParent() is DirectoryNode) ...[
         menuItemButton("Directory", DirectoryNode, action, scName),
         menuItemButton("File", FileNode, action, scName),
@@ -1669,9 +1579,7 @@ abstract class SNode extends Node with SNodeMappable {
         menuItemButton("SubMenuButton", SubmenuButtonNode, action, scName),
         menuItemButton("MenuItemButton", MenuItemButtonNode, action, scName),
       ],
-      if (getParent() is SubmenuButtonNode) ...[
-        menuItemButton("MenuItemButton", MenuItemButtonNode, action, scName),
-      ],
+      if (getParent() is SubmenuButtonNode) ...[menuItemButton("MenuItemButton", MenuItemButtonNode, action, scName)],
       if (getParent() is CarouselNode) ...[
         menuItemButton("AssetImage", AssetImageNode, action, scName),
         menuItemButton("Algorithm", AlgCNode, action, scName),
@@ -1682,16 +1590,11 @@ abstract class SNode extends Node with SNodeMappable {
         menuItemButton("TextSpanN", TextSpanNode, action, scName),
         menuItemButton("WidgetSpan", WidgetSpanNode, action, scName),
       ],
-      if (getParent() is! PollNode)
-        ...menuAnchorWidgets_Append(action, true, scName),
+      if (getParent() is! PollNode) ...menuAnchorWidgets_Append(action, true, scName),
     ];
   }
 
-  List<Widget> menuAnchorWidgets_ReplaceWith(
-    NodeAction action,
-    ScrollControllerName? scName,
-    bool? skipHeading,
-  ) {
+  List<Widget> menuAnchorWidgets_ReplaceWith(NodeAction action, ScrollControllerName? scName, bool? skipHeading) {
     bool skipTheRest = false;
     List<Type> replaceTypes = replaceWithOnly();
     if (replaceWithOnly().isEmpty) {
@@ -1701,16 +1604,10 @@ abstract class SNode extends Node with SNodeMappable {
     }
     return [
       // menu heading
-      Container(
-        margin: const EdgeInsets.all(10),
-        width: 200,
-        height: 40,
-        child: Center(child: fco.purpleText(action.displayName)),
-      ),
+      Container(margin: const EdgeInsets.all(10), width: 200, height: 40, child: Center(child: fco.purpleText(action.displayName))),
       pasteMI(action) ?? const Offstage(),
 
-      for (Type type in replaceTypes)
-        menuItemButton(type.toString(), type, action, scName),
+      for (Type type in replaceTypes) menuItemButton(type.toString(), type, action, scName),
       if (!skipTheRest) ...[
         SubmenuButton(
           menuChildren: [
@@ -1719,12 +1616,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton("Container", ContainerNode, action, scName),
             menuItemButton("Padding", PaddingNode, action, scName),
             menuItemButton("SizedBox", SizedBoxNode, action, scName),
-            menuItemButton(
-              "SingleChildScrollView",
-              SingleChildScrollViewNode,
-              action,
-              scName,
-            ),
+            menuItemButton("SingleChildScrollView", SingleChildScrollViewNode, action, scName),
             const Divider(),
             menuItemButton("Column", ColumnNode, action, scName),
             menuItemButton("Row", RowNode, action, scName),
@@ -1740,12 +1632,7 @@ abstract class SNode extends Node with SNodeMappable {
         ),
         SubmenuButton(
           menuChildren: [
-            menuItemButton(
-              "DefaultTextStyle",
-              DefaultTextStyleNode,
-              action,
-              scName,
-            ),
+            menuItemButton("DefaultTextStyle", DefaultTextStyleNode, action, scName),
             menuItemButton("Text", TextNode, action, scName),
             menuItemButton("RichText", RichTextNode, action, scName),
             menuItemButton("TextSpan", TextSpanNode, action, scName),
@@ -1757,50 +1644,22 @@ abstract class SNode extends Node with SNodeMappable {
           menuChildren: [
             SubmenuButton(
               menuChildren: [
-                menuItemButton(
-                  "MenuItemButton",
-                  MenuItemButtonNode,
-                  action,
-                  scName,
-                ),
-                menuItemButton(
-                  "SubmenuButton",
-                  SubmenuButtonNode,
-                  action,
-                  scName,
-                ),
+                menuItemButton("MenuItemButton", MenuItemButtonNode, action, scName),
+                menuItemButton("SubmenuButton", SubmenuButtonNode, action, scName),
                 menuItemButton("MenuBar", MenuBarNode, action, scName),
               ],
               child: fco.coloredText("menu", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
-              menuChildren: [
-                menuItemButton("TabBar", TabBarNode, action, scName),
-                menuItemButton("TabBarView", TabBarViewNode, action, scName),
-              ],
+              menuChildren: [menuItemButton("TabBar", TabBarNode, action, scName), menuItemButton("TabBarView", TabBarViewNode, action, scName)],
               child: fco.coloredText("tab bar", fontWeight: FontWeight.normal),
             ),
             SubmenuButton(
               menuChildren: [
-                menuItemButton(
-                  "ElevatedButton",
-                  ElevatedButtonNode,
-                  action,
-                  scName,
-                ),
-                menuItemButton(
-                  "OutlinedButton",
-                  OutlinedButtonNode,
-                  action,
-                  scName,
-                ),
+                menuItemButton("ElevatedButton", ElevatedButtonNode, action, scName),
+                menuItemButton("OutlinedButton", OutlinedButtonNode, action, scName),
                 menuItemButton("TextButton", TextButtonNode, action, scName),
-                menuItemButton(
-                  "FilledButton",
-                  FilledButtonNode,
-                  action,
-                  scName,
-                ),
+                menuItemButton("FilledButton", FilledButtonNode, action, scName),
                 menuItemButton("IconButton", IconButtonNode, action, scName),
               ],
               child: fco.coloredText("button", fontWeight: FontWeight.normal),
@@ -1814,12 +1673,7 @@ abstract class SNode extends Node with SNodeMappable {
             menuItemButton("Asset Image", AssetImageNode, action, scName),
             menuItemButton("Algorithm", AlgCNode, action, scName),
             menuItemButton("UML", UMLImageNode, action, scName),
-            menuItemButton(
-              "Firebase Storage Image",
-              FSImageNode,
-              action,
-              scName,
-            ),
+            menuItemButton("Firebase Storage Image", FSImageNode, action, scName),
             menuItemButton("Carousel", CarouselNode, action, scName),
             menuItemButton("Aspect Ratio", AspectRatioNode, action, scName),
           ],
@@ -1828,12 +1682,7 @@ abstract class SNode extends Node with SNodeMappable {
         SubmenuButton(
           menuChildren: [
             menuItemButton("ifrane", IFrameNode, action, scName),
-            menuItemButton(
-              "Google Drive iframe",
-              GoogleDriveIFrameNode,
-              action,
-              scName,
-            ),
+            menuItemButton("Google Drive iframe", GoogleDriveIFrameNode, action, scName),
             menuItemButton("File", FileNode, action, scName),
             menuItemButton("Directory", DirectoryNode, action, scName),
           ],
@@ -1854,34 +1703,19 @@ abstract class SNode extends Node with SNodeMappable {
     ];
   }
 
-  List<Widget> menuAnchorWidgets_Heading(
-    NodeAction action,
-    ScrollControllerName? scName,
-  ) {
+  List<Widget> menuAnchorWidgets_Heading(NodeAction action, ScrollControllerName? scName) {
     return [
-      Container(
-        margin: const EdgeInsets.all(10),
-        width: 200,
-        height: 40,
-        child: Center(child: fco.purpleText(action.displayName)),
-      ),
+      Container(margin: const EdgeInsets.all(10), width: 200, height: 40, child: Center(child: fco.purpleText(action.displayName))),
       pasteMI(action) ?? const Offstage(),
     ];
   }
 
-  MenuItemButton menuItemButton(
-    final String label,
-    Type childType,
-    NodeAction action,
-    ScrollControllerName? scName,
-  ) => MenuItemButton(
+  MenuItemButton menuItemButton(final String label, Type childType, NodeAction action, ScrollControllerName? scName) => MenuItemButton(
     onPressed: () {
       if (action == NodeAction.wrapWith) {
         var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
         // bool navUp = this == treeC?.roots.firstOrNull;
-        FlutterContentApp.capiBloc.add(
-          CAPIEvent.wrapSelectionWith(type: childType),
-        );
+        FlutterContentApp.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
         // in case need to show more of the tree (higher up)
         // fco.afterNextBuildDo(() {
         //   if (navUp) {
@@ -1891,9 +1725,7 @@ abstract class SNode extends Node with SNodeMappable {
         //   EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         // });
       } else if (action == NodeAction.replaceWith) {
-        FlutterContentApp.capiBloc.add(
-          CAPIEvent.replaceSelectionWith(type: childType),
-        );
+        FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
@@ -1905,17 +1737,13 @@ abstract class SNode extends Node with SNodeMappable {
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         });
       } else if (action == NodeAction.addSiblingBefore) {
-        FlutterContentApp.capiBloc.add(
-          CAPIEvent.addSiblingBefore(type: childType),
-        );
+        FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         });
       } else if (action == NodeAction.addSiblingAfter) {
-        FlutterContentApp.capiBloc.add(
-          CAPIEvent.addSiblingAfter(type: childType),
-        );
+        FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
@@ -1932,25 +1760,19 @@ abstract class SNode extends Node with SNodeMappable {
           // CAPIBloC bloc = FlutterContentApp.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              FlutterContentApp.capiBloc.add(
-                const CAPIEvent.pasteReplacement(),
-              );
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteReplacement());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingBefore:
-              FlutterContentApp.capiBloc.add(
-                const CAPIEvent.pasteSiblingBefore(),
-              );
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingAfter:
-              FlutterContentApp.capiBloc.add(
-                const CAPIEvent.pasteSiblingAfter(),
-              );
+              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
@@ -1975,62 +1797,36 @@ abstract class SNode extends Node with SNodeMappable {
     return null;
   }
 
-  SubmenuButton addSnippetsSubmenu(
-    NodeAction action,
-    ScrollControllerName? scName,
-  ) {
+  SubmenuButton addSnippetsSubmenu(NodeAction action, ScrollControllerName? scName) {
     List<MenuItemButton> snippetMIs = [];
     // var snippetInfoCache = fco.snippetInfoCache;
-    List<SnippetName>? snippetNames =
-        fco.appInfo.snippetNames; //snippetInfoCache.keys.toList();
+    List<SnippetName>? snippetNames = fco.appInfo.snippetNames; //snippetInfoCache.keys.toList();
     snippetNames.sort();
     for (String snippetName in snippetNames) {
       snippetMIs.add(
         MenuItemButton(
           onPressed: () async {
             // make sure snippet actually present
-            await SnippetRootNode.loadSnippetFromCacheOrFromFB(
-              snippetName: snippetName,
-            );
+            await SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: snippetName);
             if (action == NodeAction.replaceWith) {
-              FlutterContentApp.capiBloc.add(
-                CAPIEvent.replaceSelectionWith(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
-              );
+              FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingBefore) {
-              FlutterContentApp.capiBloc.add(
-                CAPIEvent.addSiblingBefore(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
-              );
+              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: SnippetRootNode, snippetName: snippetName));
               // removeNodePropertiesCallout();
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingAfter) {
-              FlutterContentApp.capiBloc.add(
-                CAPIEvent.addSiblingAfter(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
-              );
+              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
-              FlutterContentApp.capiBloc.add(
-                CAPIEvent.appendChild(
-                  type: SnippetRootNode,
-                  snippetName: snippetName,
-                ),
-              );
+              FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
@@ -2041,10 +1837,7 @@ abstract class SNode extends Node with SNodeMappable {
         ),
       );
     }
-    return SubmenuButton(
-      menuChildren: snippetMIs,
-      child: const Text('snippet'),
-    );
+    return SubmenuButton(menuChildren: snippetMIs, child: const Text('snippet'));
   }
 
   SNode clone() {

@@ -81,7 +81,7 @@ class YTNode extends CL with YTNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);

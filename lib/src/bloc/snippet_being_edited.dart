@@ -5,6 +5,7 @@ class SnippetBeingEdited {
   // SnippetRootNode rootNode;
   SnippetTreeController treeC;
   SNode? selectedNode;
+
   // GlobalKey? selectedTreeNodeGK;
   bool showTree;
   bool showProperties;
@@ -25,11 +26,16 @@ class SnippetBeingEdited {
   }
 
   SnippetRootNode getRootNode() {
+    final root;
     try {
-      return treeC.roots.first.rootNodeOfSnippet()!;
+      root = treeC.roots.first.rootNodeOfSnippet();
+      if (root == null) {
+        print('oh my');
+      }
     } catch (e) {
       rethrow;
     }
+    return root;
   }
 
   void setRootNode(SnippetRootNode newRootNode) {
@@ -38,8 +44,8 @@ class SnippetBeingEdited {
 
   bool get aNodeIsSelected => selectedNode != null;
 
-// SnippetRootNode newVersion() {
-//   SnippetRootNode clonedSnippet = getRootNode().clone(cloneName: getRootNode().name);  // same name
-//   return clonedSnippet;
-// }
+  // SnippetRootNode newVersion() {
+  //   SnippetRootNode clonedSnippet = getRootNode().clone(cloneName: getRootNode().name);  // same name
+  //   return clonedSnippet;
+  // }
 }

@@ -66,7 +66,7 @@ class AlignNode extends SC with AlignNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);

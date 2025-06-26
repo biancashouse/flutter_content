@@ -140,7 +140,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     }
     return await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
       snippetName: snippetName(),
-      snippetRootNode: widget.snippetRootNode,
+      templateSnippetRootNode: widget.snippetRootNode,
     );
   }
 
@@ -207,7 +207,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             Color triangleColor = Colors.purpleAccent; // in edit mode
             if (!isPublishedVersion) triangleColor = Colors.deepOrange;
 
-            snippet.validateTree();
+            // snippet.validateTree();
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
 
             bool playing = widget.justPlaying;

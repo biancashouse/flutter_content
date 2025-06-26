@@ -36,7 +36,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);

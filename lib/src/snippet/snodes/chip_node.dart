@@ -202,7 +202,7 @@ class ChipNode extends CL with ChipNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     ScrollControllerName? scName = EditablePage.scName(context);
     try {
       // possible handler

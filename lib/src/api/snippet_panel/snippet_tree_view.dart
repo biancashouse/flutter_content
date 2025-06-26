@@ -53,7 +53,7 @@ class SnippetTreeView extends StatelessWidget {
     );
   }
 
-  TreeIndentation _treeIndentation(entry, treeC) => TreeIndentation(
+  TreeIndentation _treeIndentation(TreeEntry<SNode> entry, SnippetTreeController treeC) => TreeIndentation(
     guide: IndentGuide.connectingLines(
       color: FlutterContentApp.aNodeIsSelected &&
           entry.node == FlutterContentApp.selectedNode

@@ -116,6 +116,10 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                   snippet == null
                       ? Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: "null snippet!")
                       : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+              snippet?.validateTree();
+              if (!(snippet?.isValid()??false)) {
+                return const Offstage();
+              }
               Widget snippetWidgetStack = Stack(
                 children: [
                   snippetWidget,
@@ -156,17 +160,17 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   // If not, and a template name supplied, create a named copy of that template.
   // If not, just create a snippet that comprises a PlaceholderNode.
   static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFBOrCreateFromTemplate({
-    SnippetRootNode? snippetRootNode,
+    SnippetRootNode? templateSnippetRootNode,
     required SnippetName snippetName,
   }) async {
     // fco.logger.d(
     //     "SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate");
 
-    // if not yet in AppInfo, must be a BRAND NEW snippet
-    if (!fco.appInfo.snippetNames.contains(snippetName) && snippetRootNode != null) {
-      await fco.saveNewVersion(snippet: snippetRootNode);
+    // if not yet in AppInfo, must be a BRAND NEW snippet, so just return it as the template
+    if (!fco.appInfo.snippetNames.contains(snippetName) && templateSnippetRootNode != null) {
+      await fco.saveNewVersion(snippet: templateSnippetRootNode);
       // await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippetRootNode);
-      return snippetRootNode;
+      return templateSnippetRootNode;
     }
 
     // snippet was definitely previously created (because snippetName present in appInfo)
@@ -180,7 +184,11 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
       rootNode = await snippetInfo.currentVersionFromCacheOrFB();
     }
     // snippetInfo = SnippetInfoModel.cachedSnippet(snippetName);
-    return rootNode;
+    if (rootNode?.isValid() ?? false) {
+      return rootNode;
+    } else {
+      return null;
+    }
   }
 
   static Future<SnippetRootNode?> loadSnippetFromCacheOrFromFB({required SnippetName snippetName}) async {

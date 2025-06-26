@@ -65,12 +65,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     VersionId? versionId = currentVersionId();
     if (versionId != null) {
       // pull version from cachedVersions[] or from FB
-      rootNode = cachedVersions[versionId];
-      if (rootNode == null) {
-        return await fco.modelRepo.loadVersionFromFBIntoCache(snippetInfo: this, versionId: versionId);
-      }
+      rootNode = cachedVersions[versionId] ??= await fco.modelRepo.loadVersionFromFBIntoCache(snippetInfo: this, versionId: versionId);
     }
-    return rootNode;
+    return rootNode?..validateTree();
   }
 
   SnippetRootNode? currentVersionFromCache() => cachedVersions[currentVersionId()];

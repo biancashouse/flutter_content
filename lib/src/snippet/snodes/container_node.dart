@@ -88,10 +88,10 @@ class ContainerNode extends SC with ContainerNodeMappable {
       FlutterDocPNode(
           buttonLabel: 'Container',
           webLink:
-              'https://api.flutter.dev/flutter/widgets/Container-class.html',
+          'https://api.flutter.dev/flutter/widgets/Container-class.html',
           snode: this,
           name: 'fyi'),
-      ContainerStylePNode /*Group*/ (
+      ContainerStylePNode /*Group*/(
         snode: this,
         name: 'container style',
         containerStyleGroup: csPropGroup,
@@ -256,7 +256,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);

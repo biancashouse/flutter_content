@@ -45,6 +45,7 @@ class TargetModel with TargetModelMappable {
   double calloutWidth;
   double calloutHeight;
   int calloutDurationMs;
+
   // deprecated
   final int? calloutFillColorValue;
   ColorModel? calloutFillColor;
@@ -159,8 +160,7 @@ class TargetModel with TargetModelMappable {
       targetsWrapperState()?.widget.parentNode.playList.isNotEmpty ??
       false; // || (_bloc.state.aTargetIsSelected() && _bloc.state.selectedTarget!.uid == uid);
 
-  double getScale({bool testing = false}) =>
-      playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
+  double getScale({bool testing = false}) => playingOrSelected() || testing ? max(transformScale, 0.01) : 1.0;
 
   // Offset getTranslate(CAPIState state, {bool testing = false}) {
   //   Size ivSize = TargetsWrapper.iwSize(wName);
@@ -206,14 +206,11 @@ class TargetModel with TargetModelMappable {
   //     ? Colors.white
   //     : Color(calloutFillColorValue!);
 
-  void setCalloutColor(ColorModel? newColor) =>
-      calloutFillColor = newColor ?? ColorModel.white();
+  void setCalloutColor(ColorModel? newColor) => calloutFillColor = newColor ?? ColorModel.white();
 
-  void setCalloutStarPoints(int? newValue) =>
-      starPoints = newValue;
+  void setCalloutStarPoints(int? newValue) => starPoints = newValue;
 
-  Offset targetGlobalPos(
-      {required Size wrapperSize, required Offset wrapperPos}) {
+  Offset targetGlobalPos({required Size wrapperSize, required Offset wrapperPos}) {
     // iv rect should always be measured
     Offset ivTopLeft = wrapperPos;
     Size ivSize = wrapperSize;
@@ -222,10 +219,8 @@ class TargetModel with TargetModelMappable {
     double scale = getScale();
     // Offset translate = getTranslate(state);
 
-    double globalPosX = ivTopLeft.dx + /* translate.dx + */
-        ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
-    double globalPosY = ivTopLeft.dy + /* translate.dy + */
-        ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
+    double globalPosX = ivTopLeft.dx + /* translate.dx + */ ((targetLocalPosLeftPc ?? 0.0) * ivSize.width * scale);
+    double globalPosY = ivTopLeft.dy + /* translate.dy + */ ((targetLocalPosTopPc ?? 0.0) * ivSize.height * scale);
 
     // in prod, target callout will be much smaller
     // if (bloc.state.isPlaying(name)) {
@@ -291,10 +286,7 @@ class TargetModel with TargetModelMappable {
     // fco.logger.i("${btnLocalLeftPc}, ${btnLocalTopPc}");
   }
 
-  Offset getCalloutPos() => Offset(
-        fco.scrW * (calloutLeftPc ?? .5),
-        fco.scrH * (calloutTopPc ?? .5),
-      );
+  Offset getCalloutPos() => Offset(fco.scrW * (calloutLeftPc ?? .5), fco.scrH * (calloutTopPc ?? .5));
 
   // setTextCalloutPos(Offset newGlobalPos) {
   //   calloutTopPc = newGlobalPos.dy / FCO.scrH;
@@ -324,19 +316,12 @@ class TargetModel with TargetModelMappable {
       fco.dismissAll(onlyToasts: true);
       // HydratedBloc.storage.write('flutter-content', rootNode.toJson());
       fco.showToast(
-        removeAfterMs: 500,
-        calloutConfig: CalloutConfigModel(
-          cId: "saving-model",
-          gravity: AlignmentEnum.topCenter,
-          fillColor: ColorModel.yellow(),
-          initialCalloutW: fco.scrW * .8,
-          initialCalloutH: 40,
-          scrollControllerName: null,
-        ),
-        calloutContent: Padding(
-            padding: const EdgeInsets.all(10),
-            child:
-                fco.coloredText('saving changes...', color: Colors.blueAccent)),
+        removeAfterMs: 1000,
+        msg: 'saving changes...',
+        cId: "saving-model",
+        gravity: AlignmentEnum.topCenter,
+        bgColor: Colors.yellow,
+        textColor: Colors.black,
       );
       fco.saveNewVersion(snippet: rootNode);
       fco.dismiss("saving-model");
@@ -362,16 +347,16 @@ class TargetModel with TargetModelMappable {
     return uid;
   }
 
-// TargetModel clone() {
-//   var cloneJson = toJson();
-//   TargetModel clonedTC = TargetModel.fromJson(cloneJson);
-//   // clonedTC._bloc = this._bloc;
-//   // clonedTC._gk = this._gk;
-//   // clonedTC._textFocusNode = this._textFocusNode;
-//   // clonedTC._imageUrlFocusNode = this._imageUrlFocusNode;
-//   // clonedTC._transientMatrix = this._transientMatrix;
-//   // clonedTC._rect = this._rect;
-//   clonedTC.visible = visible;
-//   return clonedTC;
-// }
+  // TargetModel clone() {
+  //   var cloneJson = toJson();
+  //   TargetModel clonedTC = TargetModel.fromJson(cloneJson);
+  //   // clonedTC._bloc = this._bloc;
+  //   // clonedTC._gk = this._gk;
+  //   // clonedTC._textFocusNode = this._textFocusNode;
+  //   // clonedTC._imageUrlFocusNode = this._imageUrlFocusNode;
+  //   // clonedTC._transientMatrix = this._transientMatrix;
+  //   // clonedTC._rect = this._rect;
+  //   clonedTC.visible = visible;
+  //   return clonedTC;
+  // }
 }

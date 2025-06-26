@@ -281,7 +281,7 @@ class Step1 extends StatelessWidget {
   }
 
   void _showAlreadySignInToast() {
-    fco.showToast(
+    fco.showToastOverlay(
       removeAfterMs: 5000,
       calloutConfig: CalloutConfigModel(
         cId: "already-signed-in",
@@ -351,7 +351,7 @@ class Step2 extends StatelessWidget {
   }
 
   void _showConfirmedOKToast() {
-    fco.showToast(
+    fco.showToastOverlay(
       removeAfterMs: 3000,
       calloutConfig: CalloutConfigModel(
         cId: "sign-in-confirmed",
@@ -369,7 +369,7 @@ class Step2 extends StatelessWidget {
   }
 
   void _showWaitingForYouToConfirmToast() {
-    fco.showToast(
+    fco.showToastOverlay(
       removeAfterMs: 5000,
       calloutConfig: CalloutConfigModel(
         cId: "waiting-for-confirmation-button",

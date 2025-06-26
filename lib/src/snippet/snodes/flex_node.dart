@@ -71,7 +71,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);

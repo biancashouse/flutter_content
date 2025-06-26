@@ -101,7 +101,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (snippetInfo == null) return;
 
     final stopwatch = Stopwatch()..start();
-    fco.showToast(
+    fco.showToastOverlay(
       calloutConfig: CalloutConfigModel(
         cId: "reverting-model",
         gravity: AlignmentEnum.topCenter,
@@ -198,7 +198,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
     final stopwatch = Stopwatch()..start();
-    fco.showToast(
+    fco.showToastOverlay(
       calloutConfig: CalloutConfigModel(
         cId: "publishing-version",
         gravity: AlignmentEnum.topCenter,
@@ -1147,6 +1147,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       selectedNode.appBar = newNode;
     }
     // newNode.setParent(selectedNode);
+
+    state.snippetBeingEdited!
+      .treeC.roots.first.validateTree();
+
     state.snippetBeingEdited!
       ..treeC.expand(newNode)
       ..treeC.rebuild()

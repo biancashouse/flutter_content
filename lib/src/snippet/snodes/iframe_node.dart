@@ -123,7 +123,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);

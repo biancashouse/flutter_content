@@ -79,7 +79,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     try {
       setParent(parentNode);
       // ScrollControllerName? scName = EditablePage.name(context);

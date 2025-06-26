@@ -73,7 +73,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode,
-      {bool showTriangle = false}) {
+      ) {
     setParent(parentNode); // propagating parents down from root
     ScrollControllerName? scName = EditablePage.scName(context);
     //possiblyHighlightSelectedNode(scName);
