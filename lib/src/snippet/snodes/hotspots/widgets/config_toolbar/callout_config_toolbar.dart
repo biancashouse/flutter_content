@@ -47,17 +47,9 @@ class CalloutConfigToolbar extends StatefulWidget {
     //     .targetsWrapperState()
     //     ?.zoomer
     //     ?.zoomImmediately(tc.transformScale, tc.transformScale);
-    final tr = cc.tR();
-    final cutoutPadding = (cc.barrier?.cutoutPadding ?? 0.0);
-    final Rect targetRect = Rect.fromLTWH(
-      tr.left - cutoutPadding,
-      tr.top - cutoutPadding,
-      cc.scaleTarget * (tr.width + cutoutPadding * 2),
-      cc.scaleTarget * (tr.height + cutoutPadding * 2),
-    );
 
     Alignment? ta = fco.calcTargetAlignmentWithinWrapper(
-        wrapperRect: wrapperRect, targetRect: targetRect);
+        wrapperRect: wrapperRect, targetRect: cc.tR());
 
     tc
         .targetsWrapperState()
