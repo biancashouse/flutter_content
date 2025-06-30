@@ -13,12 +13,12 @@ import 'package:multi_split_view/multi_split_view.dart';
 class EditablePage extends StatefulWidget {
   final RoutePath routePath;
   final Widget child;
-  final bool provideNamedScrollController;
+  // final bool provideNamedScrollController;
 
   const EditablePage({
     required this.routePath,
     required this.child,
-    this.provideNamedScrollController = false,
+    // this.provideNamedScrollController = false,
     // this.dontShowLockIcon = false,
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
@@ -43,7 +43,8 @@ class EditablePage extends StatefulWidget {
       ? context.findAncestorStateOfType<EditablePageState>()
       : null;
 
-  static String? scName(context) => of(context)?.namedSC?.name;
+  static NamedScrollController? maybeScrollController(context) => of(context)?.namedSC;
+  static String? maybeScrollControllerName(context) => of(context)?.namedSC?.name;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);

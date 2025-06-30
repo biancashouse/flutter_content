@@ -19,10 +19,6 @@ class Page_Home extends StatefulWidget {
 }
 
 class _Page_HomeState extends State<Page_Home> {
-  // late NamedScrollController namedSC;
-  int _counter = 0;
-
-  // ScrollController? sC(context) => EditablePage.of(context)?.sC;
 
   @override
   void initState() {
@@ -60,17 +56,6 @@ class _Page_HomeState extends State<Page_Home> {
     super.initState();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
 
@@ -104,43 +89,48 @@ class _Page_HomeState extends State<Page_Home> {
       scName: null, //sC.name, because no scrolling used
     );
 
-    final scaffold = Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 4,
-              child: sp,
-            ),
-          ],
+    int _counter = 0;
+
+    final scaffold = StatefulBuilder(
+      builder: (BuildContext context, st) =>
+      Scaffold(
+        appBar: AppBar(
+          title: Text(title),
         ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Flexible(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'You have pushed the button this many times:',
+                    ),
+                    Text(
+                      '$_counter',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                  ],
+                ),
+              ),
+              Flexible(
+                flex: 4,
+                child: sp,
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: ()=>st((){-_counter++;}),
+          // tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        // tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
 
     return ValueListenableBuilder<bool>(

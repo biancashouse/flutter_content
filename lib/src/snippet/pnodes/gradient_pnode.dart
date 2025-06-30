@@ -21,7 +21,7 @@ class GradientPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return Tooltip(
       message: name,
       child: SizedBox(

@@ -75,7 +75,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
   Widget toWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     //possiblyHighlightSelectedNode(scName);
 
     if (flowchartJsonString?.isNotEmpty ?? false) {

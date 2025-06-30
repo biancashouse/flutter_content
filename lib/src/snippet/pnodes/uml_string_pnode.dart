@@ -30,7 +30,7 @@ class UMLStringPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return PropertyButtonUML(
       originalUMLRecord: umlRecord,
       label: super.name,

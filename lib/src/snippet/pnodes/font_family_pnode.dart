@@ -20,7 +20,7 @@ class FontFamilyPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return PropertyButtonFontFamily(
       label: "fontFamily",
       originalFontFamily: fontFamily,

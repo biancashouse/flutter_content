@@ -89,7 +89,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
         child: TargetsWrapper(
           parentNode: this,
           key: createNodeWidgetGK(),
-          scName: EditablePage.scName(context),
+          scName: EditablePage.maybeScrollControllerName(context),
           child: super.child?.toWidget(context, this) ?? const Placeholder(),
         ),
       ),

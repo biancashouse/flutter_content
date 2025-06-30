@@ -260,7 +260,7 @@ abstract class SNode extends Node with SNodeMappable {
     if (borderRect != null) {
       String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
 
-      CalloutConfigModel cc = _cc(cId: feature, borderRect: borderRect, whiteBarrier: whiteBarrier, scName: scName, followScroll: true);
+      CalloutConfigModel cc = _cc(cId: feature, borderRect: borderRect, whiteBarrier: whiteBarrier, scName: scName, followScroll: false);
       fco.showOverlay(
         ensureLowestOverlay: false,
         calloutContent: PointerInterceptor(
@@ -268,8 +268,19 @@ abstract class SNode extends Node with SNodeMappable {
           child: Tooltip(
             message: 'tap to edit this ${toString()} node',
             child: InkWell(
-              onTap: () => _tappedToEditSnipperNode(scName),
-              child: Container(width: borderRect.width.abs(), height: borderRect.height.abs(), decoration: _decoration(transparent: true)),
+              onTap: () => _tappedToEditSnippetNode(scName),
+              child: Container(
+                width: borderRect.width.abs(),
+                height: borderRect.height.abs(),
+                decoration: DottedDecoration(
+                  shape: Shape.box,
+                  dash: const <int>[6, 6],
+                  borderColor: Colors.black,
+                  strokeWidth: 3,
+                  fillColor: Colors.transparent,
+                  // fillGradient: fillGradient,
+                ),
+              ),
             ),
           ),
         ),
@@ -279,7 +290,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  void _tappedToEditSnipperNode(ScrollControllerName? scName) {
+  void _tappedToEditSnippetNode(ScrollControllerName? scName) {
     // fco.logger.i("${toString()} tapped");
     SnippetRootNode? rootNode = (this is SnippetRootNode) ? this as SnippetRootNode : rootNodeOfSnippet();
     SnippetName? snippetName = rootNode?.name;
@@ -376,8 +387,8 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   Rect? _borderRect() {
-    var gkState = nodeWidgetGK?.currentState;
-    var gkCtx = nodeWidgetGK?.currentContext;
+    // var gkState = nodeWidgetGK?.currentState;
+    // var gkCtx = nodeWidgetGK?.currentContext;
     Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
     // in case widget doesn't have a key (e.g. inlinespans)
     r ??= (getParent() as SNode?)?.nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
@@ -584,7 +595,7 @@ abstract class SNode extends Node with SNodeMappable {
 
         fco.afterNextBuildDo(() {
           EditablePage.removeAllNodeWidgetOverlays();
-          bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+          // bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
           // fco.logger.d('snippetBeingEdited: $snippetBeingEdited');
           fco.afterMsDelayDo(500, () {
             selectedNode.showNodeWidgetOverlay(scName: scName, followScroll: false);
@@ -803,7 +814,7 @@ abstract class SNode extends Node with SNodeMappable {
       } else if (this is MC) {
         final mcn = this as MC;
         // check that its children all point back
-        for (final child in mcn.children ?? []) {
+        for (final child in mcn.children) {
           if (child.getParent() != mcn) return false;
           return child.childrenAreValid();
         }
@@ -1713,7 +1724,7 @@ abstract class SNode extends Node with SNodeMappable {
   MenuItemButton menuItemButton(final String label, Type childType, NodeAction action, ScrollControllerName? scName) => MenuItemButton(
     onPressed: () {
       if (action == NodeAction.wrapWith) {
-        var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
+        // var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
         // bool navUp = this == treeC?.roots.firstOrNull;
         FlutterContentApp.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
         // in case need to show more of the tree (higher up)

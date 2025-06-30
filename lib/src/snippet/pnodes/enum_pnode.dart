@@ -35,7 +35,7 @@ class EnumPNode<T> extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     // just show name for null property value
     // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
@@ -134,7 +134,7 @@ class EnumPNode<T> extends PNode {
     }
     // CrossAxisAlignment -------------
     if (_sameType<T, CrossAxisAlignmentEnum?>()) {
-      ScrollControllerName? scName = EditablePage.scName(context);
+      ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
       return CrossAxisAlignmentEnum.propertyNodeContents(
         snode: snode,
         label: name,

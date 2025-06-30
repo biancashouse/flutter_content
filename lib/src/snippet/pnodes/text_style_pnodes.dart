@@ -169,7 +169,7 @@ class TextStyleSearchPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return PropertyButtonTextStyleNameSearch(
       cId: name,
       tooltip: tooltip,

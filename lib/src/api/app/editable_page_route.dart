@@ -5,14 +5,14 @@ import 'package:go_router/go_router.dart';
 // same as GoRoute, with onExit to dismiss any callouts
 class EditablePageRoute extends GoRoute {
   final Widget child;
-  final bool provideNamedScrollController;
+  // final bool provideNamedScrollController;
 
   static final Map<String, EditablePage> pages = {};
 
   EditablePageRoute({
     required super.path, // path is also the snippet name
     required this.child,
-    this.provideNamedScrollController = false,
+    // this.provideNamedScrollController = false,
     super.routes,
   }) : super(
          onExit: (BuildContext context, GoRouterState state) async {
@@ -34,7 +34,7 @@ class EditablePageRoute extends GoRoute {
                        : pages[state.path!] = EditablePage(
                      key: ValueKey<String>(path), // provides access to state later
                      routePath: state.path!,
-                     provideNamedScrollController: provideNamedScrollController,
+                     // provideNamedScrollController: provideNamedScrollController,
                      child: child,
                    );
                  }

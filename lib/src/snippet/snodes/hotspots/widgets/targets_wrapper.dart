@@ -326,7 +326,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
       return _childBuild();
     }
 
-    String? editablePageName = EditablePage.scName(context);
+    String? editablePageName = EditablePage.maybeScrollControllerName(context);
     double hScrollOffset =
         NamedScrollController.hScrollOffset(editablePageName);
     double vScrollOffset =

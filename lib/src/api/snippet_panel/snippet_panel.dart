@@ -87,7 +87,6 @@ class SnippetPanel extends StatefulWidget {
 
 class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
   Map<String, TabBarNode> tabBars = {};
-
   late Future<SnippetRootNode?> fEnsureSnippetInCache;
 
   // will be snippetName or rootNode name
@@ -128,6 +127,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   //   }
   //   super.dispose();
   // }
+
+  bool get pageIsEditable => EditablePage.of(context) != null;
 
   Future<SnippetRootNode?> _ensureSnippetInCache() async {
     // may already be in memory
@@ -206,6 +207,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
             Color triangleColor = Colors.purpleAccent; // in edit mode
             if (!isPublishedVersion) triangleColor = Colors.deepOrange;
+            if (!pageIsEditable) triangleColor = Colors.black;
 
             // snippet.validateTree();
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
@@ -214,7 +216,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             bool canEdit = fco.authenticated.isTrue;
 
             // cId as a number means it's a hotspot content callout
-            final isCID = int.tryParse(snippetName()) != null || snippetName().startsWith('T-');
+            final isCID = int.tryParse(snippetName()) != null || /*legacy*/ snippetName().startsWith('T-');
 
             // is it part of a CalloutContentEditablePage rather than a normal EditablePage
             // var parent = CalloutContentEditablePage.of(context);
@@ -236,14 +238,16 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                     alignment: Alignment.topRight,
                     child: Tooltip(
                       message:
-                          isCID // && isOnANormalPage
+                          !pageIsEditable
+                              ? 'this page is not editable'
+                              : isCID
                               ? 'tap here to enter Select Widget Mode'
                               : FlutterContentApp.snippetBeingEdited == null
                               ? 'tap here to enter Select Widget Mode'
                               : '',
                       child: InkWell(
                         onTap: () {
-                          if (FlutterContentApp.snippetBeingEdited != null) {
+                          if (!pageIsEditable || FlutterContentApp.snippetBeingEdited != null) {
                             return;
                           }
 
@@ -275,7 +279,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                             width: 40,
                             height: 40,
                             alignment: Alignment.topRight,
-                            child: Icon(Icons.select_all, size: 20, color: Colors.white),
+                            child: pageIsEditable ? Icon(Icons.select_all, size: 20, color: Colors.white) : const Offstage(),
                           ),
                         ),
                       ),

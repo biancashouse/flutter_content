@@ -15,13 +15,16 @@ final webRoutingConfig = RoutingConfig(
         EditablePageRoute(
           path: Page_BH.pagePath,
           child: const Page_BH(),
-          provideNamedScrollController: true,
+          // provideNamedScrollController: true,
         ),
         GoRoute(
-          name: 'row-of-2-panels',
-          path: 'row-of-2-panels',
-          builder: (BuildContext context, GoRouterState state) =>
-          const Page_RowOf2Panels(),
+            name: 'row-of-2-panels',
+            path: 'row-of-2-panels',
+            builder: (BuildContext context, GoRouterState state) => const Page_RowOf2Panels(),
+        ),
+        EditablePageRoute(
+            path: 'row-of-2-panels2',
+            child: const Page_RowOf2Panels(),
         ),
         // GoRoute(
         //   path: '/callout-content-editor',
@@ -44,8 +47,6 @@ final webRoutingConfig = RoutingConfig(
   ],
 );
 
-const mobileRoutingConfig = RoutingConfig(
-  routes: <RouteBase>[],
-);
+const mobileRoutingConfig = RoutingConfig(routes: <RouteBase>[]);
 
 final desktopRoutingConfig = webRoutingConfig;

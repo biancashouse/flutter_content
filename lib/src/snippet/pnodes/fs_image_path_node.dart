@@ -24,7 +24,7 @@ class FSImagePathPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return PropertyButtonFSBrowser(
       label: name,
       tooltip: tooltip,

@@ -224,7 +224,7 @@ class ContainerStyleSearchPNode extends PNode {
 
   @override
   Widget toPropertyNodeContents(BuildContext context) {
-    ScrollControllerName? scName = EditablePage.scName(context);
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     return PropertyButtonContainerStyleNameSearch(
       cId: name,
       tooltip: tooltip,
