@@ -211,7 +211,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
 
   ZoomerState? get zoomer {
     if (context.mounted) {
-      return Zoomer.of(context)!;
+      return Zoomer.of(context);
     } else {
       fco.logger.i('zoomer context NOT MOUNTED!');
     }

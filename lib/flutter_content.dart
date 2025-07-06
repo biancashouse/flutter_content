@@ -29,8 +29,8 @@ import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher_string.dart' show canLaunchUrlString, launchUrlString;
-
+// import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'src/api/app/dynamic_page_route.dart';
 import 'src/api/app/editable_page.dart';
 import 'src/api/app/fc_app.dart';
@@ -66,6 +66,18 @@ export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
 export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
 
 // re-export
+export 'package:url_launcher/url_launcher.dart';
+export 'package:url_launcher/url_launcher_string.dart';
+export 'package:file_picker/src/file_picker.dart';
+export 'package:file_picker/src/file_picker_result.dart';
+export 'package:file_picker/src/platform_file.dart';
+export 'package:gap/src/widgets/gap.dart';
+export 'package:logger/src/logger.dart';
+export 'package:logger/src/log_filter.dart';
+export 'package:logger/src/log_event.dart';
+export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:logger/src/printers/pretty_printer.dart';
+export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter_callouts/src/debouncer/debouncer.dart';
 export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
 export 'package:flutter_callouts/src/feature_discovery/featured_widget.dart';
@@ -73,14 +85,14 @@ export 'package:flutter_callouts/src/feature_discovery/flat_icon_button_with_cal
 export 'package:flutter_callouts/src/gotits_mixin.dart';
 export 'package:flutter_callouts/src/measuring/measure_sizebox.dart';
 export 'package:flutter_callouts/src/system_mixin.dart';
-export 'package:flutter_callouts/src/text_editing/string_editor.dart';
-export 'package:flutter_callouts/src/text_editing/textfield_callout.dart';
 export 'package:flutter_callouts/src/typedefs.dart';
 export 'package:flutter_callouts/src/widget/blink.dart';
 export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
 export 'package:flutter_callouts/src/widget/error.dart';
 export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
 
+export 'src/snippet/pnodes/editors/string_or_number_editor.dart';
+export 'src/snippet/pnodes/editors/text_editor_with_autocomplete.dart';
 export 'src/api/app/callout_content_editable_page.dart';
 export 'src/api/app/callout_content_editable_page_route.dart';
 export 'src/api/app/dynamic_page_route.dart';
@@ -226,7 +238,6 @@ class FlutterContentMixins
         LocalStorageMixin,
         WidgetHelperMixin,
         CanvasMixin,
-        RootContextMixin,
         MQMixin,
         GotitsMixin,
         PasswordlessMixin,

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:admin/bh-apps.firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:logger/logger.dart';
 
 import 'admin.dart';
 
@@ -45,15 +44,15 @@ Future<void> main({bool useEmulator = false}) async {
 
     disableOverflowErrors();
 
-    // override the logger instance create by flutter_callouts pkg
-    final logger = Logger(
-      filter: MyFilter(),
-      printer: PrettyPrinter(
-        colors: true,
-        printEmojis: false,
-        methodCount: 0,
-      ),
-    );
+    // // override the logger instance create by flutter_callouts pkg
+    // final logger = Logger(
+    //   filter: MyFilter(),
+    //   printer: PrettyPrinter(
+    //     colors: true,
+    //     printEmojis: false,
+    //     methodCount: 0,
+    //   ),
+    // );
 
     // exercising the logger
     // try {

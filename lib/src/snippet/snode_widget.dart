@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:gap/gap.dart';
+
+import 'fancy_tree/tree_controller.dart';
 
 class SNodeWidget extends StatelessWidget {
   final String snippetName;
@@ -94,7 +95,8 @@ class SNodeWidget extends StatelessWidget {
 
   Widget _name(context) {
     final isRootNode = entry.node is SnippetRootNode;
-    return Tooltip(message: isRootNode && entry.node.getParent() != null ? 'double tap to edit this snippet' : '',
+    return Tooltip(
+      message: isRootNode && entry.node.getParent() != null ? 'double tap to edit this snippet' : '',
       child: InkWell(
         // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
         // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
@@ -169,6 +171,9 @@ class SNodeWidget extends StatelessWidget {
         fco.unhide("floating-clipboard");
       }
 
+      // Rect? borderRect = entry.node.calcBborderRect();
+      fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+
       FlutterContentApp.capiBloc.add(
         CAPIEvent.selectNode(
           node: entry.node,
@@ -178,45 +183,28 @@ class SNodeWidget extends StatelessWidget {
         ),
       );
 
-      fco.afterMsDelayDo(100, () {
-        EditablePage.removeAllNodeWidgetOverlays();
-        fco.afterMsDelayDo(500, () {
-          entry.node.showNodeWidgetOverlay(scName: scName, followScroll: false);
-          // entry.node.showNodeWidgetCutoutOverlay(scName: scName);
-        });
-        //NamedScrollController.restoreOffsetTo(scName, savedOffset);
-      });
+      // if (borderRect != null) {
+      //   fco.afterNextBuildDo(() {
+      //     entry.node.showNodeWidgetOverlay(borderRect, scName: scName, followScroll: false);
+      //     // fco.bringToTop(PINK_OVERLAY_NON_TAPPABLE);
+      //   });
+      // } else {
+      //   print('borderRect?');
+      // }
     }
   }
 
   void _longPressedNode(BuildContext context, TapUpDetails details, SNode node) {
-
-    // double savedOffset = NamedScrollController.scrollOffset(scName);
-    //
-    // bool thisWasAlreadySelected =
-    //     (entry.node == FlutterContentApp.selectedNode);
-
     // clear sel
-    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected) {
-      fco.hide("floating-clipboard");
-      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-      FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection());
-      fco.afterNextBuildDo(() {
-        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
-      });
-    } else {
-      FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: entry.node));
-    }
-    fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(100, () {
-        EditablePage.removeAllNodeWidgetOverlays();
-        fco.afterMsDelayDo(500, () {
-          entry.node.showNodeWidgetOverlay(scName: scName, followScroll: false);
+    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+    fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+    fco.hide("floating-clipboard");
 
-          _showNodeWidgetMenu(context, details, node);
-        });
-        //NamedScrollController.restoreOffsetTo(scName, savedOffset);
-      });
+    FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: node));
+    fco.afterNextBuildDo(() {
+      // fco.afterMsDelayDo(100, () {
+        _showNodeWidgetMenu(context, details, node);
+      // });
     });
   }
 
@@ -245,6 +233,7 @@ class SNodeWidget extends StatelessWidget {
       calloutContent: nodeButtons(context, scName, node),
     );
   }
+
   // _longPressedOrDoubleTapped(snippetBloc) {
   //   if (onClipboard || entry.node is GenericSingleChildNode) return;
   //   bool thisWasAlreadySelected = (entry.node == snippetBloc.state.selectedNode);

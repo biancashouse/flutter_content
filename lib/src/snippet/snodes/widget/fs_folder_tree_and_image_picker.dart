@@ -2,10 +2,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_ui_storage/firebase_ui_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../fancy_tree/tree_controller.dart';
 
 FirebaseStorage? _fbStorage;
 FirebaseUIStorageConfiguration? _config;

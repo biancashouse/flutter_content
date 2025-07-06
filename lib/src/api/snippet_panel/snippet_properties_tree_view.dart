@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/pnode_widget.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 class PropertiesTreeView extends StatelessWidget {
   final PNodeTreeController treeC;

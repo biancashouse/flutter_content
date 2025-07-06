@@ -35,6 +35,7 @@ class FlutterContentApp extends StatefulWidget {
   final Map<String, void Function(BuildContext)> namedVoidCallbacks = {};
   final bool hideStatusBar;
   final VoidCallback? onReadyF;
+  final VoidCallback? alsoInitF;
 
   // --- globally available -----------------------------------------------------
   static CAPIBloC? _singletonBloc;
@@ -83,6 +84,7 @@ class FlutterContentApp extends StatefulWidget {
     // @visibleForTesting this.testModelRepo,
     // @visibleForTesting this.testWidget,
     this.onReadyF,
+    this.alsoInitF,
   });
 
   static FlutterContentAppState? of(BuildContext context) => context.findAncestorStateOfType<FlutterContentAppState>();
@@ -176,6 +178,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
     //     fco.forceRefresh();
     //   });
     // });
+
+    widget.alsoInitF?.call();
 
     return FlutterContentApp._singletonBloc = capiBloc;
   }

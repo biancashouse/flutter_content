@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/clipboard_node_widget.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 
 const double CLIPBOARD_TAB_W = 200;
 const double CLIPBOARD_TAB_H = 200;

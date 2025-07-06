@@ -43,6 +43,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     // fco.logger.i('SnippetRootNode created with uid: $uid');
   }
 
+  static bool isHotspotCalloutContent(String sname) => int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');
+
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
     StringPNode(

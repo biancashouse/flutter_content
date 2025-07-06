@@ -2,9 +2,11 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_indentation.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_view.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/directory_tree_node_widget.dart';
-import 'package:flutter_fancy_tree_view/flutter_fancy_tree_view.dart';
 
 part 'directory_node.mapper.dart';
 

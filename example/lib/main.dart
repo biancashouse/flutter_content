@@ -1,10 +1,7 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:logger/logger.dart';
 import 'pages/routes_config.dart';
 import 'bh-apps.firebase_options.dart';
 
@@ -28,13 +25,13 @@ void disableOverflowErrors() {
   };
 }
 
-class MyFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) {
-    String? eventMsg = event.message as String?;
-    return true;//eventMsg?.contains('SnippetRootNode') ?? false;
-  }
-}
+// class MyFilter extends LogFilter {
+//   @override
+//   bool shouldLog(LogEvent event) {
+//     String? eventMsg = event.message as String?;
+//     return true;//eventMsg?.contains('SnippetRootNode') ?? false;
+//   }
+// }
 
 // main when using the flutter_content package
 Future<void> main({bool useEmulator = false}) async {
@@ -47,15 +44,15 @@ Future<void> main({bool useEmulator = false}) async {
 
     disableOverflowErrors();
 
-    // override the logger instance create by flutter_callouts pkg
-    final logger = Logger(
-      filter: MyFilter(),
-      printer: PrettyPrinter(
-        colors: true,
-        printEmojis: false,
-        methodCount: 0,
-      ),
-    );
+    // // override the logger instance create by flutter_callouts pkg
+    // final logger = Logger(
+    //   filter: MyFilter(),
+    //   printer: PrettyPrinter(
+    //     colors: true,
+    //     printEmojis: false,
+    //     methodCount: 0,
+    //   ),
+    // );
 
     // exercising the logger
     // try {
@@ -83,7 +80,7 @@ Future<void> main({bool useEmulator = false}) async {
       },
     ));
   }, (error, stack) {
-    fco.logger.e(error.toString());
+    fco.logger.e(error.toString(), stackTrace: stack);
     // if (!kIsWeb)
     // FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
   });

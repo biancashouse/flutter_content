@@ -75,8 +75,9 @@ Future<void> showSnippetContentCallout({
 
   Widget possiblyEditableContent() => fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
 
+  final snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+
   fco.showOverlay(
-    // zoomer: zoomer,
     targetGkF: () => fco.getTargetGk(tc.uid)!,
     calloutContent: PointerInterceptor(
       child: BlocBuilder<CAPIBloC, CAPIState>(
@@ -154,7 +155,7 @@ Future<void> showSnippetContentCallout({
         fco.dismiss(CalloutConfigToolbar.CID);
       },
       barrier:
-          tc.hasAHotspot()
+          tc.hasAHotspot() && !snippetBeingEdited
               ? CalloutBarrierConfig(
                 color: Colors.black,
                 opacity: .9,

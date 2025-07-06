@@ -253,9 +253,10 @@ abstract class SNode extends Node with SNodeMappable {
 
   static double BORDER = 4;
 
-  void showTappableNodeWidgetOverlay({bool whiteBarrier = false, ScrollControllerName? scName}) {
+  //maybe a hotspot, so will have a tc
+  void showTappableNodeWidgetOverlay({bool whiteBarrier = false, ScrollControllerName? scName, TargetModel? tc}) {
     // Rect borderRect = measuredRect!; //_borderRect(measuredRect!);
-    Rect? borderRect = _borderRect();
+    Rect? borderRect = calcBborderRect();
 
     if (borderRect != null) {
       String feature = '${nodeWidgetGK.hashCode}-pink-overlay';
@@ -287,6 +288,8 @@ abstract class SNode extends Node with SNodeMappable {
         calloutConfig: cc,
         targetGkF: () => nodeWidgetGK,
       );
+    } else {
+      print('borderRect?');
     }
   }
 
@@ -306,6 +309,17 @@ abstract class SNode extends Node with SNodeMappable {
     // FCO.capiBloc.add(const CAPIEvent.hideAllTargetGroupBtns());
     // FCO.capiBloc.add(const CAPIEvent.hideTargetGroupsExcept());
     EditablePage.removeAllNodeWidgetOverlays();
+
+    // remove the barrier if about to edit a content callout
+    if (snippetName != null && SnippetRootNode.isHotspotCalloutContent(snippetName)) {
+      final cc = fco.findOE(snippetName!)?.calloutConfig;
+      cc?.rebuild(() {
+        cc
+          ..barrier = null
+          ..arrowType = ArrowTypeEnum.NONE;
+      });
+    }
+
     // actually push node parent, then select node - more user-friendly
     // tapped a real widget with GlobalKey of nodeWidgetGK
     // var tappedNodeName = nodeTypeName;
@@ -319,74 +333,36 @@ abstract class SNode extends Node with SNodeMappable {
     pushThenShowNamedSnippetWithNodeSelected(snippetName, this, scName: scName);
   }
 
-  // void _tappedToExitEditMode() {
-  //   fco.inEditMode.value = false;
-  //   EditablePage.removeAllNodeWidgetOverlays();
-  // }
-
-  // void showNodeWidgetCutoutOverlay({
-  //   ScrollControllerName? scName,
-  // }) {
-  //   fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-  //   Rect? r = nodeWidgetGK?.globalPaintBounds(
-  //       skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
-  //   if (r != null) {
-  //     CalloutConfig cc = CalloutConfigModel(
-  //       cId: PINK_OVERLAY_NON_TAPPABLE,
-  //       initialCalloutW: double.infinity,
-  //       initialCalloutH: double.infinity,
-  //       initialCalloutPos: Offset.zero,
-  //       fillColor: Colors.transparent,
-  //       arrowType: ArrowTypeEnum.NONE,
-  //       draggable: false,
-  //       scrollControllerName: scName,
-  //       skipOnScreenCheck: true,
-  //     );
-  //     fco.showOverlay(
-  //       ensureLowestOverlay: true,
-  //       calloutContent: CustomPaint(
-  //         foregroundPainter: CutoutPainter(
-  //           cutoutRect: r,
-  //         ),
-  //         size: Size.infinite,
-  //       ),
-  //       calloutConfig: cc,
-  //       targetGkF: () => nodeWidgetGK,
-  //     );
-  //   }
-  // }
-
-  void showNodeWidgetOverlay({
+  void showNodeWidgetOverlay(
+    Rect borderRect, {
     bool whiteBarrier = false,
     // bool skipMeasure = false,
     ScrollControllerName? scName,
     required bool followScroll,
   }) {
-    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-
-    Rect? borderRect = _borderRect();
-    if (borderRect != null) {
-      CalloutConfigModel cc = _cc(
-        cId: PINK_OVERLAY_NON_TAPPABLE,
-        borderRect: borderRect,
-        whiteBarrier: whiteBarrier,
-        scName: scName,
-        followScroll: true,
-      );
-      fco.showOverlay(
-        ensureLowestOverlay: true,
-        calloutContent: PointerInterceptor(child: Container(width: cc.calloutW, height: cc.calloutH, decoration: _decoration(transparent: false))),
-        calloutConfig: cc,
-        // targetGkF: () => nodeWidgetGK,
-      );
-    }
-
-    // fco.afterMsDelayDo(1000, () {
-    //   cc.followScroll = true;
-    // });
+    CalloutConfigModel cc = _cc(
+      cId: PINK_OVERLAY_NON_TAPPABLE,
+      borderRect: borderRect,
+      whiteBarrier: whiteBarrier,
+      scName: scName,
+      followScroll: true,
+    );
+    fco.showOverlay(
+      // ensureLowestOverlay: true,
+      calloutContent: PointerInterceptor(child: Container(width: cc.calloutW, height: cc.calloutH, decoration: DottedDecoration(
+        shape: Shape.box,
+        dash: const <int>[6, 6],
+        borderColor: Colors.black,
+        strokeWidth: 3,
+        fillColor: Colors.transparent,
+        // fillGradient: fillGradient,
+      ))),
+      calloutConfig: cc,
+      // targetGkF: () => nodeWidgetGK,
+    );
   }
 
-  Rect? _borderRect() {
+  Rect? calcBborderRect() {
     // var gkState = nodeWidgetGK?.currentState;
     // var gkCtx = nodeWidgetGK?.currentContext;
     Rect? r = nodeWidgetGK?.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
@@ -439,29 +415,29 @@ abstract class SNode extends Node with SNodeMappable {
     followScroll: followScroll ?? true,
   );
 
-  Decoration _decoration({bool transparent = true}) => BoxDecoration(
-    shape: BoxShape.rectangle,
-    color: transparent ? Colors.transparent : Colors.purpleAccent.withValues(alpha: .2),
-    border: GradientBoxBorder(
-      gradient: LinearGradient(
-        colors: [
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.yellowAccent.withValues(alpha: .5),
-          Colors.grey.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-          Colors.grey.withValues(alpha: .5),
-          Colors.yellowAccent.withValues(alpha: .5),
-          Colors.purpleAccent.withValues(alpha: .5),
-        ],
-      ),
-      width: BORDER,
-    ),
-  );
+  // Decoration _decoration({bool transparent = true}) => BoxDecoration(
+  //   shape: BoxShape.rectangle,
+  //   color: transparent ? Colors.transparent : Colors.purpleAccent.withValues(alpha: .2),
+  //   border: GradientBoxBorder(
+  //     gradient: LinearGradient(
+  //       colors: [
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.yellowAccent.withValues(alpha: .5),
+  //         Colors.grey.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //         Colors.grey.withValues(alpha: .5),
+  //         Colors.yellowAccent.withValues(alpha: .5),
+  //         Colors.purpleAccent.withValues(alpha: .5),
+  //       ],
+  //     ),
+  //     width: BORDER,
+  //   ),
+  // );
 
   // node is where the snippet tree starts (not necc the snippet's root node)
   // selection is poss a current (lower) selection in the tree
@@ -471,17 +447,6 @@ abstract class SNode extends Node with SNodeMappable {
     TargetModel? targetBeingConfigured,
     ScrollControllerName? scName,
   }) async {
-    // fco.logger.d(
-    //     "pushThenShowNamedSnippetWithNodeSelected($snippetName, ${selectedNode.toString()})");
-    // SNode? highestNode;
-    // if (startingAtNode is SnippetRootNode) {
-    //   highestNode = startingAtNode.child; //JIC
-    // } else if (startingAtNode is ScaffoldNode) {
-    //   highestNode = startingAtNode;
-    // } else {
-    //   highestNode = (startingAtNode.getParent() ?? startingAtNode) as SNode;
-    // }
-    // var b = startingAtNode.nodeWidgetGK?.currentContext?.mounted;
 
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
@@ -525,103 +490,6 @@ abstract class SNode extends Node with SNodeMappable {
           fco.showFloatingClipboard(scName: scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
-
-        //         fco.showSnippetTreeAndPropertiesCallout(
-        //           targetGKF: () => startingAtNode.nodeWidgetGK,
-        //           onDismissedF: () {
-        // // CAPIState.snippetStateMap[snippetBloc.snippetName] = snippetBloc.state;
-        //             STreeNode.unhighlightSelectedNode();
-        //             // fco.printFeatures();
-        //             var pinkOverlayFeature = PINK_OVERLAY_NON_TAPPABLE;
-        //             // var currPageState = fco.currentPageState;
-        //
-        //             // currPageState?.unhideFAB();
-        //             fco.dismiss(pinkOverlayFeature);
-        //             // unhide if present
-        //             fco.unhide(CalloutConfigToolbar.CID);
-        //             // fco.printFeatures();
-        //             // FCO.capiBloc.add(const CAPIEvent.popSnippetBloc());
-        //             // fco.dismiss(TREENODE_MENU_CALLOUT);
-        //             fco.hideClipboard();
-        //             fco.logger.d(
-        //                 "onDismissedF - $snippetName, ${selectedNode.toString()})");
-        //             fco.inEditMode.value = false;
-        //             FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
-        //             fco.afterNextBuildDo(() {
-        //               NamedScrollController.restoreOffset(scName);
-        //             });
-        //             // skip if no change
-        //             // String? jsonBeforePush =
-        //             //     FlutterContentApp.snippetBeingEdited?.jsonBeforePush;
-        //             // String? currentJsonS =
-        //             //     FlutterContentApp.snippetBeingEdited?.rootNode.toJson();
-        //             // if (jsonBeforePush == currentJsonS) return;
-        //             // if (FlutterContentApp.snippetBeingEdited?.rootNode != null) {
-        //             //   fco.cacheAndSaveANewSnippetVersion(
-        //             //     snippetName: snippetName,
-        //             //     rootNode: FlutterContentApp.snippetBeingEdited!.rootNode,
-        //             //   );
-        //             // }
-        //             // fco.afterNextBuildDo(() {
-        //             // });
-        //             // FCO.capiBloc.add(
-        //             //       CAPIEvent.saveSnippet(
-        //             //         snippetRootNode: FCO.snippetBeingEdited!.rootNode,
-        //             //         newVersionId: newVersionId,
-        //             //       ),
-        //             //     );
-        //             //  fco.afterMsDelayDo(2000, (){
-        //             //   bool toolbarPresent = fco.anyPresent([CalloutConfigToolbar.CID]);
-        //             //   if (toolbarPresent) {
-        //             //     hideAllTargetBtns();
-        //             //     hideAllTargetCovers();
-        //             //   }
-        //             // });
-        //           },
-        //           startingAtNode: startingAtNode,
-        //           selectedNode: selectedNode,
-        //           targetBeingConfigured: targetBeingConfigured,
-        //           scName: scName,
-        //         );
-
-        // FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
-        //   node: selectedNode,
-        //   // imageTC: tc,
-        //   // selectedWidgetGK: GlobalKey(debugLabel: 'selectedWidgetGK'),
-        //   // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-        // ));
-
-        FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: selectedNode));
-
-        fco.afterNextBuildDo(() {
-          EditablePage.removeAllNodeWidgetOverlays();
-          // bool snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
-          // fco.logger.d('snippetBeingEdited: $snippetBeingEdited');
-          fco.afterMsDelayDo(500, () {
-            selectedNode.showNodeWidgetOverlay(scName: scName, followScroll: false);
-          });
-          // create selected node's properties tree
-        });
-
-        // set the properties tree
-        // final List<PTreeNode> propertyNodes = sel.properties(context);
-        // // get a new treeController only when snippet selected
-        // sel.pTreeC ??= PTreeNodeTreeController(
-        //   roots: propertyNodes,
-        //   childrenProvider: Node.propertyTreeChildrenProvider,
-        // );
-        // //showTreeNodeMenu(context, () => STreeNode.selectionGK);
-        // // snippetBloc.state.treeC.expand(snippetBloc.state.treeC.roots.first);
-        // sel.propertiesPaneSC ??= ScrollController()
-        //   ..addListener(() {
-        //     sel.propertiesPaneScrollPos = sel.propertiesPaneSC?.offset ?? 0.0;
-        //   });
-
-        // select node
-        // TODO move to callout .onReady
-        //capiBloc.add(const CAPIEvent.forceRefresh());
-        // var nodeCtx = node.nodeWidgetGK?.currentContext;
-        // Scrollable.ensureVisible(context);
       }
     });
   }
@@ -644,7 +512,12 @@ abstract class SNode extends Node with SNodeMappable {
       final rootNode = rootNodeOfSnippet();
       assert(rootNode!.isValid());
       fco.saveNewVersion(snippet: rootNode);
-      FlutterContentApp.selectedNode?.showNodeWidgetOverlay(followScroll: true);
+      Rect? borderRect = FlutterContentApp.selectedNode?.calcBborderRect();
+      if (borderRect != null) {
+        FlutterContentApp.selectedNode?.showNodeWidgetOverlay(borderRect, followScroll: true);
+      } else {
+        print('borderRect?');
+      }
     });
   }
 

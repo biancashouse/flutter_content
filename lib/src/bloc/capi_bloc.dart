@@ -42,19 +42,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     Offset? snippetTreeCalloutInitialPos,
     double? snippetTreeCalloutW,
     double? snippetTreeCalloutH,
-  }) : super(CAPIState(
-          snippetBeingEdited: mockSnippetBeingEdited, // testing usage only
-          snippetTreeCalloutW: snippetTreeCalloutW,
-          snippetTreeCalloutH: snippetTreeCalloutH,
-        )) {
+  }) : super(
+         CAPIState(
+           snippetBeingEdited: mockSnippetBeingEdited, // testing usage only
+           snippetTreeCalloutW: snippetTreeCalloutW,
+           snippetTreeCalloutH: snippetTreeCalloutH,
+         ),
+       ) {
     // _ur = SnippetUndoRedoStack(this);
 
     on<ForceRefresh>((event, emit) => _forceRefresh(event, emit));
     on<SelectPanel>((event, emit) => _selectPanel(event, emit));
     on<PublishSnippet>((event, emit) => _publishSnippet(event, emit));
     on<RevertSnippet>((event, emit) => _revertSnippet(event, emit));
-    on<ToggleAutoPublishingOfSnippet>(
-        (event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
+    on<ToggleAutoPublishingOfSnippet>((event, emit) => _toggleAutoPublishingOfSnippet(event, emit));
     on<EnterSelectWidgetMode>((event, emit) => _enterSelectWidgetMode(event, emit));
     on<ExitSelectWidgetMode>((event, emit) => _exitSelectWidgetMode(event, emit));
     on<PushSnippetEditor>((event, emit) => _pushSnippetEditor(event, emit));
@@ -83,14 +84,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<PasteSiblingAfter>((event, emit) => _pasteSiblingAfter(event, emit));
     on<DeleteNodeTapped>((event, emit) => _deleteNodeTapped(event, emit));
     on<CompleteDeletion>((event, emit) => _completeDeletion(event, emit));
-    on<SelectedDirectoryOrNode>(
-        (event, emit) => _selectedDirectoryOrNode(event, emit));
+    on<SelectedDirectoryOrNode>((event, emit) => _selectedDirectoryOrNode(event, emit));
     on<CutNode>((event, emit) => _cutNode(event, emit));
     on<CopyNode>((event, emit) => _copyNode(event, emit));
-    on<CopySnippetJsonToClipboard>(
-        (event, emit) => _copySnippetJsonToClipboard(event, emit));
-    on<ReplaceSnippetFromJson>(
-        (event, emit) => _replaceSnippetFromJson(event, emit));
+    on<CopySnippetJsonToClipboard>((event, emit) => _copySnippetJsonToClipboard(event, emit));
+    on<ReplaceSnippetFromJson>((event, emit) => _replaceSnippetFromJson(event, emit));
     // on<CreateUndo>((event, emit) => _createUndo(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
@@ -111,24 +109,19 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         scrollControllerName: null,
       ),
       calloutContent: Padding(
-          padding: const EdgeInsets.all(10),
-          child: fco.coloredText(
-              'snippet reverted to version ${event.versionId}.',
-              color: Colors.blueAccent)),
+        padding: const EdgeInsets.all(10),
+        child: fco.coloredText('snippet reverted to version ${event.versionId}.', color: Colors.blueAccent),
+      ),
     );
 
     await modelRepo.updateSnippetInfo(
       snippetName: event.snippetName,
       editingVersionId: event.versionId,
-      publishingVersionId:
-          snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault
-              ? event.versionId
-              : snippetInfo.publishedVersionId,
+      publishingVersionId: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault ? event.versionId : snippetInfo.publishedVersionId,
     );
 
     if (stopwatch.elapsedMilliseconds < 2000) {
-      Future.delayed(
-          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds), () {
+      Future.delayed(Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds), () {
         fco.dismiss('reverting-model');
       });
     }
@@ -136,10 +129,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // fco.dismissAll(onlyToasts: true);
 
     // ensure reverted snippet in memory
-    SnippetRootNode? revertedRootNode =
-        await SnippetRootNode.loadSnippetFromCacheOrFromFB(
-      snippetName: event.snippetName,
-    );
+    SnippetRootNode? revertedRootNode = await SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: event.snippetName);
 
     // // reset snippetBeingEdited
     // SnippetInfoModel? snippetInfo = SnippetInfoModel.snippetInfoCache[event.snippetName];
@@ -171,29 +161,21 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // fco.logger.d('');
     // fco.logger.d('');
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   Future<void> _deletePage(DeletePage event, emit) async {
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
-  Future<void> _toggleAutoPublishingOfSnippet(
-      ToggleAutoPublishingOfSnippet event, emit) async {
+  Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
     if (snippetInfo == null) return;
 
-    bool autoPublish =
-        snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
+    bool autoPublish = snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
     snippetInfo.autoPublish = !autoPublish;
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   Future<void> _publishSnippet(PublishSnippet event, emit) async {
@@ -207,20 +189,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         initialCalloutH: 40,
         scrollControllerName: null,
       ),
-      calloutContent: Padding(
-          padding: const EdgeInsets.all(10),
-          child: fco.coloredText('publishing version...',
-              color: Colors.blueAccent)),
+      calloutContent: Padding(padding: const EdgeInsets.all(10), child: fco.coloredText('publishing version...', color: Colors.blueAccent)),
     );
 
-    await modelRepo.updateSnippetInfo(
-      snippetName: event.snippetName,
-      publishingVersionId: event.versionId,
-    );
+    await modelRepo.updateSnippetInfo(snippetName: event.snippetName, publishingVersionId: event.versionId);
 
     if (stopwatch.elapsedMilliseconds < 2000) {
-      await Future.delayed(
-          Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
+      await Future.delayed(Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));
     }
 
     fco.dismissAll(onlyToasts: true);
@@ -232,18 +207,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   void _forceRefresh(ForceRefresh event, emit) {
-    fco.logger.i(
-        "forceRefresh --------------------------------------------------------");
-    emit(state.copyWith(
-      force: state.force + 1,
-      onlyTargetsWrappers: event.onlyTargetsWrappers,
-    ));
+    fco.logger.i("forceRefresh --------------------------------------------------------");
+    emit(state.copyWith(force: state.force + 1, onlyTargetsWrappers: event.onlyTargetsWrappers));
     // if ForceRefresh was set, emit again to reset it in the bloc state
     if (event.onlyTargetsWrappers) {
-      emit(state.copyWith(
-        force: state.force,
-        onlyTargetsWrappers: false,
-      ));
+      emit(state.copyWith(force: state.force, onlyTargetsWrappers: false));
     }
   }
 
@@ -273,9 +241,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
     fco.setClipboard(event.newContent);
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
     // possibly hide or show clipbaord tab
@@ -289,10 +255,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _selectPanel(SelectPanel event, emit) {
     // null clears selection
-    emit(state.copyWith(
-      selectedPanel: event.panelName,
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(selectedPanel: event.panelName, force: state.force + 1));
   }
 
   void _pushSnippetEditor(PushSnippetEditor event, emit) {
@@ -302,25 +265,25 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       parentProvider: Node.snippetTreeParentProvider,
     );
 
-      SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
+    SnippetBeingEdited snippetBeingEdited = SnippetBeingEdited(
       jsonBeforeAnyChange: event.rootNode.toJson(),
       treeC: newTreeC()..expandAll(),
       selectedNode: event.selectedNode,
+      showProperties: true,
+      nodeBeingDeleted: null,
     )..setRootNode(event.rootNode);
 
-    // _ur.clear();
-
-    emit(state.copyWith(
-      // hideAllTargetGroupPlayBtns: true,
-      // hideTargetsExcept: null,
-      snippetNameShowingPinkOverlaysFor: null,
-      snippetBeingEdited: snippetBeingEdited,
-      hideSnippetPencilIcons: true,
-      onlyTargetsWrappers: true,
-    ));
-    emit(state.copyWith(
-      onlyTargetsWrappers: false,
-    ));
+    emit(
+      state.copyWith(
+        // hideAllTargetGroupPlayBtns: true,
+        // hideTargetsExcept: null,
+        snippetNameShowingPinkOverlaysFor: null,
+        snippetBeingEdited: snippetBeingEdited,
+        hideSnippetPencilIcons: true,
+        onlyTargetsWrappers: true,
+      ),
+    );
+    emit(state.copyWith(onlyTargetsWrappers: false));
   }
 
   Future<void> _popSnippetEditor(PopSnippetEditor event, emit) async {
@@ -328,25 +291,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (event.save) {
       //TODO save snippet
     }
-    emit(state.copyWith(
-      snippetBeingEdited: null,
-      hideIframes: false,
-      hideSnippetPencilIcons: false,
-      snippetNameShowingPinkOverlaysFor: null,
-    ));
+    fco.dismiss(CalloutConfigToolbar.CID);
+    // fco.dismissAll();
+    emit(state.copyWith(snippetBeingEdited: null, hideIframes: false, hideSnippetPencilIcons: false, snippetNameShowingPinkOverlaysFor: null));
   }
 
   void _enterSelectWidgetMode(EnterSelectWidgetMode event, emit) {
-    emit(state.copyWith(
-      snippetNameShowingPinkOverlaysFor: event.snippetName,
-    ));
+    emit(state.copyWith(snippetNameShowingPinkOverlaysFor: event.snippetName));
   }
 
   void _exitSelectWidgetMode(event, emit) {
     fco.dismissAll();
-    emit(state.copyWith(
-      snippetNameShowingPinkOverlaysFor: null,
-    ));
+    emit(state.copyWith(snippetNameShowingPinkOverlaysFor: null));
   }
 
   // void _setPanelOrPlaceholderSnippet(SetPanelSnippet event, emit) {
@@ -356,14 +312,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   ));
   // }
 
-//==========================================================================================
-//====  SNIPPET EDITING  ===================================================================
-//==========================================================================================
+  //==========================================================================================
+  //====  SNIPPET EDITING  ===================================================================
+  //==========================================================================================
   void _forceSnippetRefresh(event, emit) {
     fco.logger.i("forceSnippetRefresh");
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _selectNode(SelectNode event, emit) {
@@ -389,9 +343,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.nodeBeingDeleted = null;
     state.snippetBeingEdited!.treeC.rebuild();
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _clearNodeSelection(event, emit) {
@@ -402,9 +354,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     // if (event.scName != null) {
     // double savedOffset = NamedScrollController.scrollOffset(event.scName);
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
 
     // fco.afterMsDelayDo(1300, () {
     //   restore scroll offset
@@ -419,11 +369,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   Future<void> _deleteNodeTapped(DeleteNodeTapped event, emit) async {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    state.snippetBeingEdited!.nodeBeingDeleted =
-        state.snippetBeingEdited!.selectedNode;
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    state.snippetBeingEdited!.nodeBeingDeleted = state.snippetBeingEdited!.selectedNode;
+    emit(state.copyWith(force: state.force + 1));
   }
 
   Future<void> _completeDeletion(CompleteDeletion event, emit) async {
@@ -451,10 +398,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
-    emit(state.copyWith(
-      snippetBeingEdited: state.snippetBeingEdited,
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(snippetBeingEdited: state.snippetBeingEdited, force: state.force + 1));
   }
 
   // Future<void> _showCutout(ShowCutout event, emit) async {
@@ -482,8 +426,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (sel.isAScaffoldTabWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
+      ScaffoldNode? scaffold = selParent.getParent()?.getParent()?.getParent() as ScaffoldNode?;
       if (scaffold?.body?.child is TabBarViewNode?) {
         (scaffold!.body?.child as TabBarViewNode).children.removeAt(index);
       }
@@ -492,8 +435,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     } else if (sel.isAScaffoldTabViewWidget() && !sel.hasChildren()) {
       int index = (selParent as TabBarViewNode).children.indexOf(sel);
       selParent.children.remove(sel);
-      ScaffoldNode? scaffold =
-          selParent.getParent()?.getParent() as ScaffoldNode?;
+      ScaffoldNode? scaffold = selParent.getParent()?.getParent() as ScaffoldNode?;
       if (scaffold?.appBar is AppBarNode) {
         AppBarNode appbar = scaffold?.appBar as AppBarNode;
         SNode? bottomChild = appbar.bottom?.child;
@@ -514,9 +456,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     } else if (selParent is SnippetRootNode && sel is SC && sel.child == null) {
       SNode ph = PlaceholderNode()..setParent(selParent);
       newSel = selParent.child = ph;
-    } else if (selParent is SnippetRootNode &&
-        sel is MC &&
-        sel.children.isEmpty) {
+    } else if (selParent is SnippetRootNode && sel is MC && sel.children.isEmpty) {
       SNode ph = PlaceholderNode()..setParent(selParent);
       newSel = selParent.child = ph;
     } else if (selParent is SC && (sel is CL || sel is SnippetRootNode)) {
@@ -542,44 +482,27 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       int index = selParent.children.indexOf(sel);
       selParent.children[index] = sel.children.first..setParent(selParent);
       newSel = selParent;
-    } else if (selParent is MC &&
-        ((sel is SC && sel.child == null) ||
-            (sel is MC && sel.children.isEmpty))) {
+    } else if (selParent is MC && ((sel is SC && sel.child == null) || (sel is MC && sel.children.isEmpty))) {
       selParent.children.remove(sel);
       newSel = selParent;
-    } else if (selParent is RichTextNode &&
-        sel is TextSpanNode &&
-        sel.children?.length == 1) {
+    } else if (selParent is RichTextNode && sel is TextSpanNode && sel.children?.length == 1) {
       selParent.text = sel.children!.first..setParent(selParent);
       newSel = selParent;
-    } else if (selParent is RichTextNode &&
-        (sel is WidgetSpanNode ||
-            sel is TextSpanNode && sel.children?.length != 1)) {
-      selParent.text =
-          TextSpanNode(text: 'xxx', tsPropGroup: TextStyleProperties())
-            ..setParent(selParent);
+    } else if (selParent is RichTextNode && (sel is WidgetSpanNode || sel is TextSpanNode && sel.children?.length != 1)) {
+      selParent.text = TextSpanNode(text: 'xxx', tsPropGroup: TextStyleProperties())..setParent(selParent);
       newSel = selParent;
     } else if (selParent is TextSpanNode) {
       selParent.children!.remove(sel);
       newSel = selParent;
-    } else if (selParent is GenericSingleChildNode &&
-        selParent.propertyName == 'title') {
-      selParent.child = TextNode(
-          text: 'must have a title widget!', tsPropGroup: TextStyleProperties())
-        ..setParent(selParent);
+    } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'title') {
+      selParent.child = TextNode(text: 'must have a title widget!', tsPropGroup: TextStyleProperties())..setParent(selParent);
       newSel = selParent;
-    } else if (selParent is GenericSingleChildNode &&
-        selParent.propertyName == 'content') {
-      selParent.child = TextNode(
-          text: 'must have a content widget!',
-          tsPropGroup: TextStyleProperties())
-        ..setParent(selParent);
+    } else if (selParent is GenericSingleChildNode && selParent.propertyName == 'content') {
+      selParent.child = TextNode(text: 'must have a content widget!', tsPropGroup: TextStyleProperties())..setParent(selParent);
       newSel = selParent;
     }
 
-    if (newSel is SnippetRootNode &&
-        newSel.getParent() == null &&
-        newSel.child != null) {
+    if (newSel is SnippetRootNode && newSel.getParent() == null && newSel.child != null) {
       newSel = newSel.child!;
     }
     return newSel;
@@ -592,11 +515,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     _cutIncludingAnyChildren(event.node);
     state.snippetBeingEdited!.treeC.rebuild();
     // bool well = state.rootNode.anyMissingParents();
-    add(CAPIEvent.updateClipboard(
-      newContent: event.node,
-      scName: event.scName,
-      skipSave: event.skipSave,
-    ));
+    add(CAPIEvent.updateClipboard(newContent: event.node, scName: event.scName, skipSave: event.skipSave));
   }
 
   _cutIncludingAnyChildren(SNode node) {
@@ -619,26 +538,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     var copiedNode = event.node.clone();
     fco.setClipboard(copiedNode);
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
     fco.hideClipboard();
     fco.showFloatingClipboard(scName: event.scName);
   }
 
-  SNode _typeAsATreeNode(
-    Type t,
-    SNode? childNode,
-    String notFoundMsg, {
-    SnippetName? snippetName,
-  }) {
+  SNode _typeAsATreeNode(Type t, SNode? childNode, String notFoundMsg, {SnippetName? snippetName}) {
     // in case tabbar specified
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
     return switch (t) {
-      const (AlignNode) =>
-        AlignNode(child: childNode, alignment: AlignmentEnum.topLeft),
+      const (AlignNode) => AlignNode(child: childNode, alignment: AlignmentEnum.topLeft),
       const (AspectRatioNode) => AspectRatioNode(child: childNode),
       const (AssetImageNode) => AssetImageNode(),
       const (AlgCNode) => AlgCNode(),
@@ -663,35 +574,24 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       //         propertyName: 'bottom', child: MenuBarNode(children: [])),
       //   ),
       const (AppBarNode) => AppBarNode(
-          title: GenericSingleChildNode(
-            propertyName: 'title',
-            child: TextNode(
-                text: 'appbar title', tsPropGroup: TextStyleProperties()),
-          ),
-        ),
+        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'appbar title', tsPropGroup: TextStyleProperties())),
+      ),
       const (UMLImageNode) => UMLImageNode(),
       const (FSImageNode) => FSImageNode(),
       // const (FirebaseStorageImageNode) => FirebaseStorageImageNode(),
-      const (CarouselNode) =>
-        CarouselNode(children: childNode != null ? [childNode] : []),
+      const (CarouselNode) => CarouselNode(children: childNode != null ? [childNode] : []),
       const (CenterNode) => CenterNode(child: childNode),
       const (ChipNode) => ChipNode(labelTSPropGroup: TextStyleProperties()),
-      const (ColumnNode) => ColumnNode(
-          mainAxisSize: MainAxisSizeEnum.max,
-          children: childNode != null ? [childNode] : []),
+      const (ColumnNode) => ColumnNode(mainAxisSize: MainAxisSizeEnum.max, children: childNode != null ? [childNode] : []),
       const (ContainerNode) =>
         state.snippetBeingEdited!.selectedNode?.getParent() is ContainerNode
-            ? ContainerNode(
-                csPropGroup:
-                    ContainerStyleProperties(alignment: AlignmentEnum.center),
-                child: childNode)
-            : ContainerNode(
-                csPropGroup: ContainerStyleProperties(), child: childNode),
+            ? ContainerNode(csPropGroup: ContainerStyleProperties(alignment: AlignmentEnum.center), child: childNode)
+            : ContainerNode(csPropGroup: ContainerStyleProperties(), child: childNode),
       // const (ContentSnippetRootNode) => ContentSnippetRootNode(name: 'content', child: childNode),
       const (DefaultTextStyleNode) => DefaultTextStyleNode(
-          child: childNode,
-          tsPropGroup:
-              TextStyleProperties(fontSizeName: Material3TextSizeEnum.bodyM)),
+        child: childNode,
+        tsPropGroup: TextStyleProperties(fontSizeName: Material3TextSizeEnum.bodyM),
+      ),
       // const (FSBucketNode) => FSBucketNode(
       //     name: 'bucket name missing ?',
       //     root: GenericSingleChildNode(
@@ -701,172 +601,104 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       // const (FSDirectoryNode) => FSDirectoryNode(children: []),
       const (ExpandedNode) => ExpandedNode(child: childNode),
       const (ElevatedButtonNode) => ElevatedButtonNode(
-          child: TextNode(
-            text: 'some-text',
-            tsPropGroup: TextStyleProperties(),
-          ),
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
       const (FileNode) => FileNode(name: '', src: ''),
       // const (FSFileNode) => FSFileNode(name: ''),
       const (FilledButtonNode) => FilledButtonNode(
-          child:
-              TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
       const (FlexibleNode) => FlexibleNode(child: childNode),
       const (GapNode) => GapNode(gap: 0),
       const (GoogleDriveIFrameNode) => GoogleDriveIFrameNode(),
-      const (IconButtonNode) => IconButtonNode(
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+      const (IconButtonNode) => IconButtonNode(bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
       const (IFrameNode) => IFrameNode(),
       const (MarkdownNode) => MarkdownNode(),
       const (MenuBarNode) => MenuBarNode(children: []),
       const (MenuItemButtonNode) => MenuItemButtonNode(
-          child:
-              TextNode(text: 'item-text', tsPropGroup: TextStyleProperties()),
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
-      const (OutlinedButtonNode) => OutlinedButtonNode(
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
-      const (PaddingNode) =>
-        PaddingNode(padding: EdgeInsetsValue(), child: childNode),
+        child: TextNode(text: 'item-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
+      const (OutlinedButtonNode) => OutlinedButtonNode(bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
+      const (PaddingNode) => PaddingNode(padding: EdgeInsetsValue(), child: childNode),
       const (PlaceholderNode) => PlaceholderNode(),
       const (PollNode) => PollNode(
-          name: 'sample-poll',
-          title: 'Sample Poll',
+        name: 'sample-poll',
+        title: 'Sample Poll',
+        children: [PollOptionNode(text: 'option 1 text?'), PollOptionNode(text: 'option 2 text?'), PollOptionNode(text: 'option 3 text?')],
+      ),
+      const (PollOptionNode) => PollOptionNode(text: 'new option text?'),
+      const (PositionedNode) => PositionedNode(top: 0, left: 0, child: childNode),
+      const (RichTextNode) => RichTextNode(
+        text: TextSpanNode(
+          text: 'rich',
+          tsPropGroup: TextStyleProperties(color: ColorModel.blue()),
           children: [
-            PollOptionNode(text: 'option 1 text?'),
-            PollOptionNode(text: 'option 2 text?'),
-            PollOptionNode(text: 'option 3 text?'),
+            TextSpanNode(text: '-', tsPropGroup: TextStyleProperties()),
+            TextSpanNode(text: '-text', tsPropGroup: TextStyleProperties(color: ColorModel.red())),
           ],
         ),
-      const (PollOptionNode) => PollOptionNode(text: 'new option text?'),
-      const (PositionedNode) =>
-        PositionedNode(top: 0, left: 0, child: childNode),
-      const (RichTextNode) => RichTextNode(
-          text: TextSpanNode(
-              text: 'rich',
-              tsPropGroup: TextStyleProperties(color: ColorModel.blue()),
-              children: [
-                TextSpanNode(text: '-', tsPropGroup: TextStyleProperties()),
-                TextSpanNode(
-                    text: '-text',
-                    tsPropGroup:
-                        TextStyleProperties(color: ColorModel.red())),
-              ]),
-        ),
-      const (RowNode) =>
-        RowNode(children: childNode != null ? [childNode] : []),
-      const (ScaffoldNode) => ScaffoldNode(
-          body: GenericSingleChildNode(propertyName: 'body', child: childNode),
-        ),
-      const (SingleChildScrollViewNode) =>
-        SingleChildScrollViewNode(child: childNode),
+      ),
+      const (RowNode) => RowNode(children: childNode != null ? [childNode] : []),
+      const (ScaffoldNode) => ScaffoldNode(body: GenericSingleChildNode(propertyName: 'body', child: childNode)),
+      const (SingleChildScrollViewNode) => SingleChildScrollViewNode(child: childNode),
       const (SizedBoxNode) => SizedBoxNode(child: childNode),
       const (SnippetRootNode) => SnippetRootNode(name: snippetName!),
       const (SplitViewNode) => SplitViewNode(
-          children: childNode != null
-              ? [childNode]
-              : [
-                  CenterNode(
-                      child: ContainerNode(
-                          csPropGroup: ContainerStyleProperties(
-                              fillColors: UpTo6Colors(
-                                  color1: ColorModel.red())))),
-                  CenterNode(
-                      child: ContainerNode(
-                          csPropGroup: ContainerStyleProperties(
-                              fillColors: UpTo6Colors(
-                                  color1: ColorModel.blue())))),
-                ]),
-      const (StackNode) =>
-        StackNode(children: childNode != null ? [childNode] : []),
+        children:
+            childNode != null
+                ? [childNode]
+                : [
+                  CenterNode(child: ContainerNode(csPropGroup: ContainerStyleProperties(fillColors: UpTo6Colors(color1: ColorModel.red())))),
+                  CenterNode(child: ContainerNode(csPropGroup: ContainerStyleProperties(fillColors: UpTo6Colors(color1: ColorModel.blue())))),
+                ],
+      ),
+      const (StackNode) => StackNode(children: childNode != null ? [childNode] : []),
       const (StepNode) => StepNode(
-          title: GenericSingleChildNode(
-              propertyName: 'title',
-              child: TextNode(
-                  text: 'step title', tsPropGroup: TextStyleProperties())),
-          subtitle: GenericSingleChildNode(
-              propertyName: 'subtitle',
-              child: TextNode(
-                  text: 'subtitle', tsPropGroup: TextStyleProperties())),
-          content: GenericSingleChildNode(
-              propertyName: 'content',
-              child: TextNode(
-                  text: 'content', tsPropGroup: TextStyleProperties())),
-        ),
-      const (StepperNode) => StepperNode(children: [
+        title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'step title', tsPropGroup: TextStyleProperties())),
+        subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties())),
+        content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'content', tsPropGroup: TextStyleProperties())),
+      ),
+      const (StepperNode) => StepperNode(
+        children: [
           StepNode(
-            title: GenericSingleChildNode(
-                propertyName: 'title',
-                child: TextNode(
-                    text: 'step 1 title', tsPropGroup: TextStyleProperties())),
-            subtitle: GenericSingleChildNode(
-                propertyName: 'subtitle',
-                child: TextNode(
-                    text: 'subtitle', tsPropGroup: TextStyleProperties())),
-            content: GenericSingleChildNode(
-                propertyName: 'content',
-                child: TextNode(
-                    text: 'my content 1', tsPropGroup: TextStyleProperties())),
+            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'step 1 title', tsPropGroup: TextStyleProperties())),
+            subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties())),
+            content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'my content 1', tsPropGroup: TextStyleProperties())),
           ),
           StepNode(
-            title: GenericSingleChildNode(
-                propertyName: 'title',
-                child: TextNode(
-                    text: 'step 2 title', tsPropGroup: TextStyleProperties())),
-            subtitle: GenericSingleChildNode(
-                propertyName: 'subtitle',
-                child: TextNode(
-                    text: 'subtitle', tsPropGroup: TextStyleProperties())),
-            content: GenericSingleChildNode(
-                propertyName: 'content',
-                child: TextNode(
-                    text: 'my content 2', tsPropGroup: TextStyleProperties())),
+            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'step 2 title', tsPropGroup: TextStyleProperties())),
+            subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties())),
+            content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'my content 2', tsPropGroup: TextStyleProperties())),
           ),
           StepNode(
-            title: GenericSingleChildNode(
-                propertyName: 'title',
-                child: TextNode(
-                    text: 'step 3 title', tsPropGroup: TextStyleProperties())),
-            subtitle: GenericSingleChildNode(
-                propertyName: 'subtitle',
-                child: TextNode(
-                    text: 'subtitle', tsPropGroup: TextStyleProperties())),
-            content: GenericSingleChildNode(
-                propertyName: 'content',
-                child: TextNode(
-                    text: 'my content 3', tsPropGroup: TextStyleProperties())),
+            title: GenericSingleChildNode(propertyName: 'title', child: TextNode(text: 'step 3 title', tsPropGroup: TextStyleProperties())),
+            subtitle: GenericSingleChildNode(propertyName: 'subtitle', child: TextNode(text: 'subtitle', tsPropGroup: TextStyleProperties())),
+            content: GenericSingleChildNode(propertyName: 'content', child: TextNode(text: 'my content 3', tsPropGroup: TextStyleProperties())),
           ),
-        ]),
-      const (SubmenuButtonNode) =>
-        SubmenuButtonNode(menuChildren: childNode != null ? [childNode] : []),
+        ],
+      ),
+      const (SubmenuButtonNode) => SubmenuButtonNode(menuChildren: childNode != null ? [childNode] : []),
       // const (SubtitleSnippetRootNode) => SubtitleSnippetRootNode(name: 'subtitle', child: childNode),
       // const (TargetButtonNode) =>
       //   TargetButtonNode(name: 'no name!', child: childNode),
       const (TargetsWrapperNode) => TargetsWrapperNode(child: childNode),
       const (TabBarNode) => TabBarNode(
-          name: uniqueTabBarName,
-          labelTSPropGroup: TextStyleProperties(),
-          children: childNode != null ? [childNode] : []),
-      const (TabBarViewNode) => TabBarViewNode(
-          tabBarName: uniqueTabBarName,
-          children: childNode != null ? [childNode] : []),
+        name: uniqueTabBarName,
+        labelTSPropGroup: TextStyleProperties(),
+        children: childNode != null ? [childNode] : [],
+      ),
+      const (TabBarViewNode) => TabBarViewNode(tabBarName: uniqueTabBarName, children: childNode != null ? [childNode] : []),
       const (TextButtonNode) => TextButtonNode(
-          child:
-              TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
-          bsPropGroup:
-              ButtonStyleProperties(tsPropGroup: TextStyleProperties())),
-      const (TextNode) =>
-        TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
-      const (TextSpanNode) =>
-        TextSpanNode(children: [], tsPropGroup: TextStyleProperties()),
+        child: TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+        bsPropGroup: ButtonStyleProperties(tsPropGroup: TextStyleProperties()),
+      ),
+      const (TextNode) => TextNode(text: 'some-text', tsPropGroup: TextStyleProperties()),
+      const (TextSpanNode) => TextSpanNode(children: [], tsPropGroup: TextStyleProperties()),
       const (WidgetSpanNode) => WidgetSpanNode(child: childNode),
-      const (WrapNode) =>
-        WrapNode(children: childNode != null ? [childNode] : []),
+      const (WrapNode) => WrapNode(children: childNode != null ? [childNode] : []),
       const (YTNode) => YTNode(),
       _ => throw (Exception(notFoundMsg)),
     };
@@ -875,18 +707,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _wrapWith(WrapSelectionWith event, emit) {
     // state.snippetBeingEdited?.newVersion();
 
-    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) {return;}
+    if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) {
+      return;
+    }
 
     SNode wChild = state.snippetBeingEdited!.selectedNode!;
     SNode? parent = wChild.getParent() as SNode?;
-    SNode w = event.type != null
-        ? _typeAsATreeNode(
-            event.type!,
-            wChild,
-            "_wrapWith() missing ${event.type.toString()}",
-            snippetName: event.snippetName,
-          )
-        : event.testNode!;
+    SNode w =
+        event.type != null
+            ? _typeAsATreeNode(event.type!, wChild, "_wrapWith() missing ${event.type.toString()}", snippetName: event.snippetName)
+            : event.testNode!;
 
     if (w is CL || w is WidgetSpanNode) return;
     if (wChild is InlineSpanNode && w is! InlineSpanNode) return;
@@ -897,14 +727,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (wChild is ExpandedNode && w is! FlexNode) return;
     if (wChild is FlexibleNode && w is! FlexNode) return;
     if (wChild is PositionedNode && w is! StackNode) return;
-    if (wChild is InlineSpanNode &&
-        parent is RichTextNode &&
-        w is RichTextNode) {
+    if (wChild is InlineSpanNode && parent is RichTextNode && w is RichTextNode) {
       return;
     }
-    if (wChild is InlineSpanNode &&
-        parent is! RichTextNode &&
-        w is! InlineSpanNode) {
+    if (wChild is InlineSpanNode && parent is! RichTextNode && w is! InlineSpanNode) {
       return;
     }
 
@@ -923,14 +749,13 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
         // wrap poll in a border
         final Node? pollParent = w.getParent();
         w = ContainerNode(
-            csPropGroup: ContainerStyleProperties(
-              decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
-              borderColors:
-                  UpTo6Colors(color1: ColorModel.black()),
-              borderThickness: 4,
-            ),
-            child: w)
-          ..setParent((pollParent));
+          csPropGroup: ContainerStyleProperties(
+            decoration: MappableDecorationShapeEnum.rounded_rectangle_dotted,
+            borderColors: UpTo6Colors(color1: ColorModel.black()),
+            borderThickness: 4,
+          ),
+          child: w,
+        )..setParent((pollParent));
         w.child!.setParent(w);
       } else if (w is StepperNode) {
         w.children = [wChild as StepNode];
@@ -967,9 +792,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
       fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
-      emit(state.copyWith(
-        force: state.force + 1,
-      ));
+      emit(state.copyWith(force: state.force + 1));
     } catch (e) {
       fco.logger.i("\n ***  _wrapWith() - failed!  ***");
       rethrow;
@@ -982,14 +805,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
     if (event.type == selectedNode.runtimeType) return;
 
-    SNode newNode = event.type != null
-        ? _typeAsATreeNode(
-            event.type!,
-            null,
-            "_replaceWith() missing ${event.type.toString()}",
-            snippetName: event.snippetName,
-          )
-        : event.testNode!;
+    SNode newNode =
+        event.type != null
+            ? _typeAsATreeNode(event.type!, null, "_replaceWith() missing ${event.type.toString()}", snippetName: event.snippetName)
+            : event.testNode!;
     _replaceWithNewNodeOrClipboard(selectedNode, emit, newNode);
   }
 
@@ -1079,23 +898,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _addChild(AppendChild event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
 
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode newNode = event.type != null
-        ? _typeAsATreeNode(
-            event.type!,
-            null,
-            "_addChild() missing ${event.type.toString()}",
-            snippetName: event.snippetName,
-          )
-        : event.testNode!;
+    SNode newNode =
+        event.type != null
+            ? _typeAsATreeNode(event.type!, null, "_addChild() missing ${event.type.toString()}", snippetName: event.snippetName)
+            : event.testNode!;
     _addOrPasteChild(selectedNode, emit, newNode);
   }
 
@@ -1116,8 +929,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     //   }
     // } else
     if (selectedNode is TabBarNode) {
-      TabBarViewNode? tabBarViewNode = state.snippetBeingEdited!.treeC
-          .findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
+      TabBarViewNode? tabBarViewNode = state.snippetBeingEdited!.treeC.findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
       SNode newTabView = PlaceholderNode();
       tabBarViewNode?.children.add(newTabView);
       newTabView.setParent(tabBarViewNode);
@@ -1126,10 +938,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     } else if (selectedNode is TabBarViewNode) {
       // ScaffoldNode? scaffoldNode = state.treeC
       //     .findNodeTypeInTree(rootNode, ScaffoldNode) as ScaffoldNode?;
-      TabBarNode? tabBarNode = state.snippetBeingEdited!.treeC
-          .findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
-      SNode newTab =
-          TextNode(text: 'new tab', tsPropGroup: TextStyleProperties());
+      TabBarNode? tabBarNode = state.snippetBeingEdited!.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
+      SNode newTab = TextNode(text: 'new tab', tsPropGroup: TextStyleProperties());
       tabBarNode?.children.add(newTab);
       newTab.setParent(tabBarNode);
       selectedNode.children.add(newNode);
@@ -1148,8 +958,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     }
     // newNode.setParent(selectedNode);
 
-    state.snippetBeingEdited!
-      .treeC.roots.first.validateTree();
+    state.snippetBeingEdited!.treeC.roots.first.validateTree();
 
     state.snippetBeingEdited!
       ..treeC.expand(newNode)
@@ -1158,9 +967,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _pasteReplacement(PasteReplacement event, emit) {
@@ -1206,26 +1013,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _addSiblingBefore(AddSiblingBefore event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode newNode = event.type != null
-        ? _typeAsATreeNode(
-            event.type!,
-            null,
-            "_addSiblingBefore() missing ${event.type.toString()}",
-            snippetName: event.snippetName,
-          )
-        : event.testNode!;
+    SNode newNode =
+        event.type != null
+            ? _typeAsATreeNode(event.type!, null, "_addSiblingBefore() missing ${event.type.toString()}", snippetName: event.snippetName)
+            : event.testNode!;
     //_createSnippetUndo();
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .indexOf(selectedNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
       _addSiblingAt(newNode, emit, i);
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
-      int i =
-          (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-              .children!
-              .indexOf(selectedNode as InlineSpanNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
       _addSiblingAt(newNode, emit, i);
     }
   }
@@ -1237,16 +1035,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       SNode clipboardNode = fco.clipboard!;
       //_createSnippetUndo();
       if (state.snippetBeingEdited?.selectedNode?.getParent() is MC) {
-        int i = (state.snippetBeingEdited?.selectedNode?.getParent() as MC)
-            .children
-            .indexOf(selectedNode);
+        int i = (state.snippetBeingEdited?.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
         _pasteSiblingAt(clipboardNode, emit, i);
       }
       if (state.snippetBeingEdited?.selectedNode?.getParent() is TextSpanNode) {
-        int i = (state.snippetBeingEdited?.selectedNode?.getParent()
-                as TextSpanNode)
-            .children!
-            .indexOf(selectedNode as InlineSpanNode);
+        int i = (state.snippetBeingEdited?.selectedNode?.getParent() as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
         _pasteSiblingAt(clipboardNode, emit, i);
       }
     }
@@ -1255,26 +1048,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _addSiblingAfter(AddSiblingAfter event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode newNode = event.type != null
-        ? _typeAsATreeNode(
-            event.type!,
-            null,
-            "_addSiblingAfter() missing ${event.type.toString()}",
-            snippetName: event.snippetName,
-          )
-        : event.testNode!;
+    SNode newNode =
+        event.type != null
+            ? _typeAsATreeNode(event.type!, null, "_addSiblingAfter() missing ${event.type.toString()}", snippetName: event.snippetName)
+            : event.testNode!;
     //_createSnippetUndo();
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .indexOf(selectedNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
       _addSiblingAt(newNode, emit, i + 1);
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
-      int i =
-          (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-              .children!
-              .indexOf(selectedNode as InlineSpanNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
       _addSiblingAt(newNode, emit, i + 1);
     }
   }
@@ -1285,16 +1069,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SNode clipboardNode = fco.clipboard!;
     //_createSnippetUndo();
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .indexOf(selectedNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
-      int i =
-          (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-              .children!
-              .indexOf(selectedNode as InlineSpanNode);
+      int i = (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode).children!.indexOf(selectedNode as InlineSpanNode);
       _pasteSiblingAt(clipboardNode, emit, i + 1);
     }
   }
@@ -1302,31 +1081,20 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _addSiblingAt(SNode newNode, emit, int i) {
     // state.snippetBeingEdited?.newVersion();
 
-    SNode? parent =
-        state.snippetBeingEdited!.selectedNode?.getParent() as SNode?;
+    SNode? parent = state.snippetBeingEdited!.selectedNode?.getParent() as SNode?;
     if (parent is TabBarNode) {
-      TabBarViewNode? tabBarViewNode = state.snippetBeingEdited!.treeC
-          .findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
-      tabBarViewNode?.children
-          .insert(i, PlaceholderNode()..setParent(tabBarViewNode));
+      TabBarViewNode? tabBarViewNode = state.snippetBeingEdited!.treeC.findNodeTypeInTree(rootNode, TabBarViewNode) as TabBarViewNode?;
+      tabBarViewNode?.children.insert(i, PlaceholderNode()..setParent(tabBarViewNode));
       parent.children.insert(i, newNode..setParent(parent));
     } else if (parent is TabBarViewNode) {
-      TabBarNode? tabBarNode = state.snippetBeingEdited!.treeC
-          .findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
-      tabBarNode?.children.insert(
-          i,
-          TextNode(text: 'new tab', tsPropGroup: TextStyleProperties())
-            ..setParent(tabBarNode));
+      TabBarNode? tabBarNode = state.snippetBeingEdited!.treeC.findNodeTypeInTree(rootNode, TabBarNode) as TabBarNode?;
+      tabBarNode?.children.insert(i, TextNode(text: 'new tab', tsPropGroup: TextStyleProperties())..setParent(tabBarNode));
       parent.children.insert(i, newNode..setParent(parent));
     } else if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .insert(i, newNode);
+      (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.insert(i, newNode);
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-          .children
-          ?.insert(i, newNode as InlineSpanNode);
+      (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode).children?.insert(i, newNode as InlineSpanNode);
     }
 
     newNode.setParent(parent);
@@ -1335,9 +1103,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     fco.saveNewVersion(snippet: state.snippetBeingEdited!.getRootNode());
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   void _pasteSiblingAt(SNode clipboardNode, emit, int i) {
@@ -1347,15 +1113,11 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SNode newNode = clipboardNode;
 
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .insert(i, newNode);
+      (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.insert(i, newNode);
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
     }
     if (state.snippetBeingEdited!.selectedNode?.getParent() is TextSpanNode) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode)
-          .children
-          ?.insert(i, newNode as InlineSpanNode);
+      (state.snippetBeingEdited!.selectedNode?.getParent() as TextSpanNode).children?.insert(i, newNode as InlineSpanNode);
       newNode.setParent(state.snippetBeingEdited!.selectedNode?.getParent());
     }
 
@@ -1366,23 +1128,17 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     if (newNode is RichTextNode) {
       state.snippetBeingEdited!.treeC.expand(newNode);
       state.snippetBeingEdited!.selectedNode = textSpanNode;
-      emit(state.copyWith(
-        force: state.force + 1,
-      ));
+      emit(state.copyWith(force: state.force + 1));
     } else {
       state.snippetBeingEdited!.treeC.expand(newNode);
       state.snippetBeingEdited!.selectedNode = newNode;
-      emit(state.copyWith(
-        force: state.force + 1,
-      ));
+      emit(state.copyWith(force: state.force + 1));
     }
   }
 
   void _selectedDirectoryOrNode(SelectedDirectoryOrNode event, emit) {
     state.snippetBeingEdited!.selectedNode = event.selectedNode;
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
   }
 
   Future<void> _saveNodeAsSnippet(SaveNodeAsSnippet event, emit) async {
@@ -1417,18 +1173,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     SnippetRootNode refNode = SnippetRootNode(name: event.newSnippetName);
     // attach to parent
     if (state.snippetBeingEdited!.selectedNode?.getParent() is SC) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as SC).child =
-          refNode;
+      (state.snippetBeingEdited!.selectedNode?.getParent() as SC).child = refNode;
     } else if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
-      int index = (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children
-          .indexOf(event.node);
-      (state.snippetBeingEdited!.selectedNode?.getParent() as MC)
-          .children[index] = refNode;
-    } else if (state.snippetBeingEdited!.selectedNode?.getParent()
-        is WidgetSpanNode) {
-      (state.snippetBeingEdited!.selectedNode?.getParent() as WidgetSpanNode)
-          .child = refNode;
+      int index = (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.indexOf(event.node);
+      (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children[index] = refNode;
+    } else if (state.snippetBeingEdited!.selectedNode?.getParent() is WidgetSpanNode) {
+      (state.snippetBeingEdited!.selectedNode?.getParent() as WidgetSpanNode).child = refNode;
     }
     state.snippetBeingEdited!.treeC.expand(newRootNode);
     state.snippetBeingEdited!.treeC.rebuild();
@@ -1436,9 +1186,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     // var appInfo = FCO.appInfoAsMap;
 
-    emit(state.copyWith(
-      force: state.force + 1,
-    ));
+    emit(state.copyWith(force: state.force + 1));
     // }
   }
 
@@ -1482,11 +1230,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   }
   // }
 
-  bool get deleteInProgress =>
-      state.snippetBeingEdited?.nodeBeingDeleted != null;
+  bool get deleteInProgress => state.snippetBeingEdited?.nodeBeingDeleted != null;
 
-  bool get aNodeIsSelected =>
-      state.snippetBeingEdited?.aNodeIsSelected ?? false;
+  bool get aNodeIsSelected => state.snippetBeingEdited?.aNodeIsSelected ?? false;
 
   SnippetRootNode? get rootNode => state.snippetBeingEdited?.getRootNode();
 

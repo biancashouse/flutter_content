@@ -98,7 +98,7 @@ class PropertyButton<T> extends StatelessWidget {
               draggable: false,
               notUsingHydratedStorage: true,
             );
-            Widget teContent = StringEditor_T(
+            Widget teContent = StringOrNumberEditor(
               inputType: T,
               // key: calloutChildGK,
               prompt: () => label ?? '',

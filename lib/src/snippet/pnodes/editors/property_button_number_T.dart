@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:flutter_callouts/flutter_callouts.dart' show StringOrNumberEditor;
 import 'package:flutter_content/flutter_content.dart';
 
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -43,7 +44,7 @@ class PropertyButtonNumber<T> extends HookWidget {
           ), // Adjust radius as needed
           color: Colors.white, // Set your desired background color
         ),
-        child: StringEditor_T(
+        child: StringOrNumberEditor(
           inputType: T,
           originalS: originalValue.toString(),
           onTextChangedF: (String value) {},

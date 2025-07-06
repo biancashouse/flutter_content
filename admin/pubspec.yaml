@@ -5,18 +5,11 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.0.1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.8.1
 
 dependencies:
   flutter:
     sdk: flutter
-
-#  flutter_web_plugins:
-#    sdk: flutter
-
-  logger: ^2.5.0
-  firebase_core: ^3.14.0
-  cloud_firestore: ^5.6.9
 
   flutter_content:  #any
     path: ../../flutter_content

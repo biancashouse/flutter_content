@@ -637,7 +637,7 @@
 //             padding: const EdgeInsets.symmetric(horizontal: 12),
 //             width: 240,
 //             height: 100,
-//             child: StringEditor_T(
+//             child: StringOrNumberEditor(
 //               inputType: String,
 //               prompt: () => 'password',
 //               originalS: '',
@@ -723,7 +723,7 @@
 //   //           padding: const EdgeInsets.symmetric(horizontal: 12),
 //   //           width: 480,
 //   //           height: 100,
-//   //           child: StringEditor_T(
+//   //           child: StringOrNumberEditor(
 //   //             inputType: String,
 //   //             prompt: () => 'Page name',
 //   //             originalS: '',
