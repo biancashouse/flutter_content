@@ -46,7 +46,7 @@ class ZoomerState extends State<Zoomer>
   // double _scaleY = 1;
 
   // called when refreshing from slider change (zero duration etc)
-  zoomImmediately(final double scaleX, final double scaleY,
+  void zoomImmediately(final double scaleX, final double scaleY,
       {final Alignment? alignment}) {
     if (!mounted || _aController == null) return;
     _matrix4Animation = Matrix4Tween(

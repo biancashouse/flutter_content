@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:gap/gap.dart';
 
 part 'file_node.mapper.dart';
 
@@ -22,16 +21,16 @@ Widget driveFileIcon(String src) {
   return const Icon(Icons.question_mark, color: Colors.red);
 }
 
-get googleDocsIconSrc =>
+String get googleDocsIconSrc =>
     fco.asset('lib/assets/images/google-icons/docs.png');
 
-get googleSheetsIconSrc =>
+String get googleSheetsIconSrc =>
     fco.asset('lib/assets/images/google-icons/sheets.png');
 
-get googleSlidesIconSrc =>
+String get googleSlidesIconSrc =>
     fco.asset('lib/assets/images/google-icons/slides.png');
 
-get googleFormsIconSrc =>
+String get googleFormsIconSrc =>
     fco.asset('lib/assets/images/google-icons/forms.png');
 
 @MappableClass()

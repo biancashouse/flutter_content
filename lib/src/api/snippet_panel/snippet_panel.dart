@@ -311,7 +311,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     );
   }
 
-  void _tappedTraingle(isCID) {
+  void _tappedTraingle(bool isCID) {
     if ((!pageIsEditable && !isCID) || FlutterContentApp.snippetBeingEdited != null) {
       return;
     }

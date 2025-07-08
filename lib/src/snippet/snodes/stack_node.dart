@@ -4,7 +4,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_clip.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stack_fit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';

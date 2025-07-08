@@ -23,7 +23,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
   State<MoreCalloutConfigSettings> createState() =>
       _MoreCalloutConfigSettingsState();
 
-  static show(
+  static void show(
     CalloutConfigModel cc,
     TargetModel tc,
     Rect wrapperRect, {

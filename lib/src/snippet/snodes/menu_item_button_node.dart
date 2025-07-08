@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 
 part 'menu_item_button_node.mapper.dart';

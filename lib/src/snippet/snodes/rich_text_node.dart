@@ -165,7 +165,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
 
   TextAlignEnum? getTextAlign() => textAlign;
 
-  setTextAlign(TextAlignEnum newTA) => textAlign = newTA;
+  TextAlignEnum setTextAlign(TextAlignEnum newTA) => textAlign = newTA;
 
   // @override
   // List<Widget> childCandidates(final BuildContext context, final STreeNode? parentNode, AddAction action, ValueChanged<Type> onPressed) {

@@ -201,7 +201,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         f.call();
       });
 
-  get playingTc => _playingOrEditingTc;
+  TargetModel? get playingTc => _playingOrEditingTc;
 
   double? scrollOffset;
 

@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
-import 'package:flutter_content/src/snippet/pnodes/enums/enum_alignment.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_boxfit.dart';
 import 'package:flutter_content/src/snippet/pnodes/fs_image_path_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

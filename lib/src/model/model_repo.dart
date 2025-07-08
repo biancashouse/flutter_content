@@ -70,7 +70,7 @@ abstract class IModelRepository {
 
   // Future<void> createAndPopulateRootFSStorageNode();
 
-  Future<FSFolderNode> createAndPopulateFolderNode(
+  Future<FSFolderNode> createAndPopulateFolderTree(
       {required Reference ref, FSFolderNode? parentNode});
 
   Future<bool> tokenConfirmed(String token);

@@ -8,8 +8,6 @@ import 'package:flutter_content/src/snippet/pnodes/groups/container_style_proper
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:gap/gap.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'snodes/fs_image_node.dart';
@@ -176,7 +174,7 @@ abstract class SNode extends Node with SNodeMappable {
     //_pTreeC!.expandedNodes = prevExpansions;
     if (false) {
       for (PropertyName pNodeName in prevExpansions.keys) {
-        fco.logger.i('restoring ${pNodeName} ${prevExpansions[pNodeName]}');
+        fco.logger.i('restoring $pNodeName ${prevExpansions[pNodeName]}');
         // find pNode by its name
         PNode? pNode = fco.pNodes[pNodeName];
         bool? expanded = prevExpansions[pNodeName];
@@ -311,8 +309,8 @@ abstract class SNode extends Node with SNodeMappable {
     EditablePage.removeAllNodeWidgetOverlays();
 
     // remove the barrier if about to edit a content callout
-    if (snippetName != null && SnippetRootNode.isHotspotCalloutContent(snippetName)) {
-      final cc = fco.findOE(snippetName!)?.calloutConfig;
+    if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
+      final cc = fco.findOE(snippetName)?.calloutConfig;
       cc?.rebuild(() {
         cc
           ..barrier = null
@@ -506,7 +504,7 @@ abstract class SNode extends Node with SNodeMappable {
     final rootNodeAfter = rootNodeOfSnippet();
     bool same = rootNodeAfter == rootNodeBefore;
     fco.afterNextBuildDo(() {
-      if (!this.isValid()) {
+      if (!isValid()) {
         print('oooooops not valid in tree');
       }
       final rootNode = rootNodeOfSnippet();
@@ -679,7 +677,7 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   bool childrenAreValid() {
-    if (this.hasChildren()) {
+    if (hasChildren()) {
       if (this is SC) {
         final scn = this as SC;
         if (scn.child?.getParent() != scn) return false;

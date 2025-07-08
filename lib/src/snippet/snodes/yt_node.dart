@@ -7,7 +7,6 @@ import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/int_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/iframe/iframe.dart';
-import 'package:gap/gap.dart';
 
 // import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 

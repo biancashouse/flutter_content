@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
-import 'package:flutter_content/src/model/model_repo.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
@@ -518,7 +517,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     add(CAPIEvent.updateClipboard(newContent: event.node, scName: event.scName, skipSave: event.skipSave));
   }
 
-  _cutIncludingAnyChildren(SNode node) {
+  void _cutIncludingAnyChildren(SNode node) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     if (node != state.snippetBeingEdited!.getRootNode()) {
       // was: if (state.selectedNode?.parent != null) {

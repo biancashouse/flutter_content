@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/m/flowchart_m.dart';
 import 'package:flutter_content/src/algc/model/m/step_m.dart';
-import 'package:flutter_content/src/algc/widgets/painters/flowchart_bg_painter.dart';
+// import 'package:flutter_content/src/algc/widgets/painters/flowchart_bg_painter.dart';
 import 'package:flutter_content/src/algc/widgets/painters/screen_flowchart_painter.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_step_widget.dart';
 import 'package:flutter_content/src/algc/widgets/pkg_tappable_comment_btn.dart';
@@ -73,13 +73,13 @@ class FlowchartWidgetStack extends StatelessWidget {
     );
   }
 
-  Widget _positionedPageBgPaint() {
-    return Positioned(
-      top: 10.0,
-      left: 10.0,
-      child: CustomPaint(foregroundPainter: FlowchartBgPainter(f)),
-    );
-  }
+  // Widget _positionedPageBgPaint() {
+  //   return Positioned(
+  //     top: 10.0,
+  //     left: 10.0,
+  //     child: CustomPaint(foregroundPainter: FlowchartBgPainter(f)),
+  //   );
+  // }
 
   Widget positionedFlowchartPaint() {
     double sumOfFuncStepHeights = f.sumOfHeightsOf(f.steps);

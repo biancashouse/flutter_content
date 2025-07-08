@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_content/flutter_content.dart';
 
 class PollOptionCounts {

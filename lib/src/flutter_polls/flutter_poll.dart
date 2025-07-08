@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/bloc/poll_bloc.dart';
 import 'package:flutter_content/src/bloc/poll_state.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:timeago/timeago.dart' as timeago;
 // import 'package:hydrated_bloc/hydrated_bloc.dart';

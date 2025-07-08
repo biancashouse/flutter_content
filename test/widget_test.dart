@@ -7,15 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_content/src/snippet/snodes/upto6colors.dart'
-    show UpTo6Colors;
 
 // (Optional) If your main app is in lib/main.dart, you might import it
 // import 'package:your_app_name/main.dart';
 
 // Define a simple widget for testing purposes
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

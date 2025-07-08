@@ -69,7 +69,7 @@ void drawRect(FlowchartM theFlowchart, Rect theRect,
 }
 
 // incl M and P around txt
-drawTxtBox(
+void drawTxtBox(
   StepM model, {
   required Canvas theCanvas,
   bool isSelected = false,
@@ -258,7 +258,7 @@ Color _lineColor(StepM model) {
   return Colors.grey;
 }
 
-drawAwaitTxtBox(StepM model, double radius, {required Canvas theCanvas}) {
+void drawAwaitTxtBox(StepM model, double radius, {required Canvas theCanvas}) {
   Rect rect = Rect.fromPoints(
       Offset(model.MMM * 2, model.MMM),
       //bit wider for pdf
@@ -300,7 +300,7 @@ drawAwaitTxtBox(StepM model, double radius, {required Canvas theCanvas}) {
       theBgColor: model.shapeFillColor);
 }
 
-possiblyDrawTopStepConnector(StepM model,
+void possiblyDrawTopStepConnector(StepM model,
     {required Canvas theCanvas, double canvasX = 0.0, double canvasY = 0.0}) {
   //fco.logger.i('possiblyDrawTopStepConnector - ${_step.stepType} - isFirstStep: ${_step.isFirstStep()} - parentListType: ${_step.parentListType}');
   if (model.isFirstStep() && model.parentListType != ROOT_STEPS) return;
@@ -310,7 +310,7 @@ possiblyDrawTopStepConnector(StepM model,
       theCanvas: theCanvas, color: _lineColor(model));
 }
 
-possiblyDrawLeftStepConnector(StepM model,
+void possiblyDrawLeftStepConnector(StepM model,
     {required Canvas theCanvas,
     Paint? thePaint,
     double canvasX = 0.0,
@@ -328,7 +328,7 @@ possiblyDrawLeftStepConnector(StepM model,
   }
 }
 
-drawRightStepConnector(StepM model, {required Canvas theCanvas}) {
+void drawRightStepConnector(StepM model, {required Canvas theCanvas}) {
   double y = (model.MMM + model.PPP + model.TTT + model.PPP + model.MMM) / 2;
   // colour if parent is a decision or an async func call
   drawLine(
@@ -336,7 +336,7 @@ drawRightStepConnector(StepM model, {required Canvas theCanvas}) {
       theCanvas: theCanvas, color: _lineColor(model));
 }
 
-possiblyDrawChildlessStepBottomConnector(StepM model,
+void possiblyDrawChildlessStepBottomConnector(StepM model,
     {required Canvas theCanvas}) {
   if (model.parentListType == ROOT_STEPS ||
       (!model.isLastStep() && model.numSiblings() > 0)) {
@@ -347,7 +347,7 @@ possiblyDrawChildlessStepBottomConnector(StepM model,
   }
 }
 
-possiblyDrawLoopOrAsyncActionOrDecisionBottomStepConnector(StepM model,
+void possiblyDrawLoopOrAsyncActionOrDecisionBottomStepConnector(StepM model,
     {required Canvas theCanvas, double canvasX = 0.0, double canvasY = 0.0}) {
   double y = (model.MMM + model.PPP + model.TTT + model.PPP + model.MMM) / 2;
   //if ((_step.numSiblings() > 0 || _step.parentListType == FUNC_STEPS))
@@ -374,7 +374,7 @@ double drawDiamondConnector(StepM model, {required Canvas theCanvas}) {
   return y + model.MMM;
 }
 
-drawElseConector(double from, double to, StepM model,
+void drawElseConector(double from, double to, StepM model,
     {required Canvas theCanvas}) {
   Color color = Colors.grey;
   if (/*App.repo.currentUser.showColouredShapes && */ (model.shape ==
@@ -486,7 +486,7 @@ double drawCasePolygon(
 //  theG.restoreContext();
 //}
 
-drawCircle(double x, double y, double r,
+void drawCircle(double x, double y, double r,
     {StepM? model,
     required Canvas theCanvas,
     Color? fillColor,
@@ -505,7 +505,7 @@ drawCircle(double x, double y, double r,
           : fco.linePaint(model?.shapeLineColor ?? Colors.grey));
 }
 
-drawSausage(FlowchartM? theFlowchart, Offset theCentreLeft,
+void drawSausage(FlowchartM? theFlowchart, Offset theCentreLeft,
     Offset theCentreRight, double r,
     {required Canvas theCanvas, Paint? thePaint}) {
   Path path = Path();
@@ -534,42 +534,42 @@ drawSausage(FlowchartM? theFlowchart, Offset theCentreLeft,
   }
 }
 
-drawArc0To15(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc0To15(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r),
       3 * pi / 2, pi / 2, false, fco.linePaint(color));
 }
 
-drawArc15To30(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc15To30(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), 0.0,
       pi / 2, false, fco.linePaint(color));
 }
 
-drawArc30To45(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc30To45(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), pi / 2,
       pi / 2, false, fco.linePaint(color));
 }
 
-drawArc45To00(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc45To00(FlowchartM? theFlowchart, double x, double y, double r,
     {required Canvas theCanvas, Color color = Colors.grey}) {
   theCanvas.drawArc(Rect.fromCircle(center: Offset(x, y), radius: r), pi,
       pi / 2, false, fco.linePaint(color));
 }
 
-drawArc30To00(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc30To00(FlowchartM? theFlowchart, double x, double y, double r,
     {Path? thePath, required Canvas theCanvas, Color color = Colors.grey}) {
   thePath!.addArc(Rect.fromCircle(center: Offset(x, y), radius: r), pi / 2, pi);
 }
 
-drawArc0To30(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc0To30(FlowchartM? theFlowchart, double x, double y, double r,
     {Path? thePath, required Canvas theCanvas, Color color = Colors.grey}) {
   thePath!
       .addArc(Rect.fromCircle(center: Offset(x, y), radius: r), 3 * pi / 2, pi);
 }
 
-drawArc15To45(FlowchartM? theFlowchart, double x, double y, double r,
+void drawArc15To45(FlowchartM? theFlowchart, double x, double y, double r,
     {Paint? theLinePaint,
     required Canvas theCanvas,
     Color color = Colors.grey}) {

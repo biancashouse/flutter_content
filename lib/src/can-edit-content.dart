@@ -9,7 +9,7 @@ class CanEditContentVN extends ValueNotifier<bool> {
   bool get isTrue {
     var list = fco.appInfo.sandboxPageNames;
     String? currentPagePath = fco.currentEditablePagePath;
-    bool isGuestPage = currentPagePath != null && fco.appInfo.sandboxPageNames.contains(currentPagePath);
+    bool isGuestPage = fco.appInfo.sandboxPageNames.contains(currentPagePath);
     return super.value || isGuestPage;
   }
 }

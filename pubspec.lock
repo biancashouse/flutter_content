@@ -394,7 +394,7 @@ packages:
     source: hosted
     version: "10.2.0"
   file_selector:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_selector
       sha256: "5019692b593455127794d5718304ff1ae15447dea286cdda9f0db2a796a1b828"
@@ -434,7 +434,7 @@ packages:
     source: hosted
     version: "0.9.4+3"
   file_selector_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_selector_platform_interface
       sha256: a3994c26f10378a039faa11de174d7b78eb8f79e4dd0af2a451410c1a5c3f66b
@@ -530,7 +530,7 @@ packages:
     source: hosted
     version: "3.10.16"
   firebase_ui_localizations:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_ui_localizations
       sha256: "81cf9180e2e116e76cf00a16ab62e798ff075f6d8c1092c401844885d7225c18"
@@ -538,7 +538,7 @@ packages:
     source: hosted
     version: "1.14.0"
   firebase_ui_shared:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_ui_shared
       sha256: f1d07c130a39104d32fba1dab274b7bcb13be2bf4e652624a4ccabb58f9781f1
@@ -609,10 +609,11 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      path: "../flutter_callouts"
-      relative: true
-    source: path
-    version: "6.0.1"
+      name: flutter_callouts
+      sha256: "0f366815c698f7b0c6af90532402e3ea7993280db76429932e1e909df0a305c0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.1.2"
   flutter_hooks:
     dependency: "direct main"
     description:
@@ -765,7 +766,7 @@ packages:
     source: hosted
     version: "3.0.0"
   google_sign_in_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: google_sign_in_web
       sha256: "09ac306b2787b48f19c857b9f93375b654f774643c75bd6a1a078c85f4f7b468"
@@ -1602,7 +1603,7 @@ packages:
     source: hosted
     version: "4.13.0"
   webview_flutter_android:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_android
       sha256: f6e6afef6e234801da77170f7a1847ded8450778caf2fe13979d140484be3678

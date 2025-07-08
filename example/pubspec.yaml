@@ -14,6 +14,8 @@ dependencies:
   flutter_content:  #any
     path: ../../flutter_content
 
+  firebase_core: any
+  go_router: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -28,6 +30,8 @@ flutter:
   assets:
     - assets/images/
 
+false_secrets:
+  - /lib/bh-apps.firebase_options.dart
 
 
 

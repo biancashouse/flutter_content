@@ -4,13 +4,11 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/callout_config_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 import 'package:go_router/go_router.dart';
 
-import '../pnodes/enums/enum_alignment.dart';
 
 part 'button_node.mapper.dart';
 
@@ -172,7 +170,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
         () => fco.showOverlay(
             targetGkF: () => fco.getCalloutGk(cid),
             calloutContent: SnippetPanel.fromSnippet(
-              panelName: calloutConfig!.cId!,
+              panelName: calloutConfig!.cId,
               snippetName: BODY_PLACEHOLDER,
               // allowButtonCallouts: false,
               scName: scName,

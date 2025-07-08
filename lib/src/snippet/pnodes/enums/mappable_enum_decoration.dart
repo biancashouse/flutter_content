@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/property_button_enum.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
-import 'package:gap/gap.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 
 part 'mappable_enum_decoration.mapper.dart';

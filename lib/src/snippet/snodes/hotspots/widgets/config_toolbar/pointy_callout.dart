@@ -21,7 +21,7 @@ class PointyTool extends StatefulWidget {
   @override
   State<PointyTool> createState() => _PointyToolState();
 
-  static show(
+  static void show(
     CalloutConfigModel cc,
     TargetModel tc,
     Rect wrapperRect, {

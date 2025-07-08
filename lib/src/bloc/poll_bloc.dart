@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/model/model_repo.dart';
 // import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 import 'poll_event.dart';
@@ -28,7 +27,7 @@ class PollBloC extends Bloc<PollEvent, PollState> {
     // on<VoterIdCreated>((event, emit) => _voterIdCreated(event, emit));
   }
 
-  _userVoted(UserVoted event, emit) async {
+  Future<void> _userVoted(UserVoted event, emit) async {
     event.poll.locked = true;
     Map<PollOptionId, int> newMap = Map<PollOptionId, int>.of(state.optionVoteCounts);
     newMap[event.optionId] = state.optionVoteCount(event.optionId) + 1;

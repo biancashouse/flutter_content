@@ -89,7 +89,7 @@ class _Page_HomeState extends State<Page_Home> {
       scName: null, //sC.name, because no scrolling used
     );
 
-    int _counter = 0;
+    int counter = 0;
 
     final scaffold = StatefulBuilder(
       builder: (BuildContext context, st) =>
@@ -112,7 +112,7 @@ class _Page_HomeState extends State<Page_Home> {
                       'You have pushed the button this many times:',
                     ),
                     Text(
-                      '$_counter',
+                      '$counter',
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ],
@@ -126,7 +126,7 @@ class _Page_HomeState extends State<Page_Home> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: ()=>st((){-_counter++;}),
+          onPressed: ()=>st((){-counter++;}),
           // tooltip: 'Increment',
           child: const Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.

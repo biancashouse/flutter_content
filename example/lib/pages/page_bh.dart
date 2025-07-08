@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:gap/gap.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 bool biancaTouched = false;
 
@@ -251,7 +249,7 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
     scName: namedSC(context)?.name,
   );
 
-  _findOutMoreAboutAlgCLink() => Align(
+  Align _findOutMoreAboutAlgCLink() => Align(
     alignment: Alignment.centerRight,
     child: InkWell(
       child: const Text(

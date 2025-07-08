@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
-import 'package:gap/gap.dart';
 
 import 'fancy_tree/tree_controller.dart';
 
@@ -14,7 +13,7 @@ class SNodeWidget extends StatelessWidget {
   // final bool allowButtonCallouts;
   final ScrollControllerName? scName;
 
-  const SNodeWidget({
+  const SNodeWidget({super.key, 
     required this.snippetName,
     required this.treeController,
     required this.entry,

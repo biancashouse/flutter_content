@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:gap/gap.dart';
 
 part 'gap_node.mapper.dart';
 

@@ -5,7 +5,6 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/algc/model/bv/flowchart_bv.dart';
@@ -1284,15 +1283,13 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
         }
         if (s.flowchartLinkRef == null) {
           for (var childListType in s.childStepLists.keys) {
-            List<StepM>? childList = s.childStepLists[childListType];
-            if (childList != null) {
-              if (s.id != exception.id) {
-                s.childStepLists[childListType] = _addMoversExceptFor(
-                    childList, childListType, s,
-                    exception: exception);
-              }
+            List<StepM> childList = s.childStepLists[childListType] ?? [];
+            if (s.id != exception.id) {
+              s.childStepLists[childListType] = _addMoversExceptFor(
+                  childList, childListType, s,
+                  exception: exception);
             }
-          }
+                    }
         }
         newList.add(s);
       }
@@ -1339,36 +1336,34 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
     // now surround each child in the same way
     if (below.flowchartLinkRef == null) {
       for (var childListType in below.childStepLists.keys) {
-        List<StepM>? childList = below.childStepLists[childListType];
+        List<StepM> childList = below.childStepLists[childListType] ?? [];
         List<StepM> newList = [];
-        if (childList != null) {
-          if (childList.isEmpty) {
+        if (childList.isEmpty) {
+          newList.add(
+              createInserterOrMoverStep(childListType, below, STEP_MOVER));
+        } else {
+          for (var s in childList) {
+            // surround s with mover (before and after)
+            bool prevStepIsSelected =
+                s.prevStepIsSelected(childList, stepBeingMoved);
+            if (!prevStepIsSelected && stepBeingMoved.id != s.id) {
+              newList.add(createInserterOrMoverStep(
+                  childListType, below, STEP_MOVER));
+            }
+            newList.add(s);
+          }
+          // append an inserter after the steps
+          StepM lastStep = childList.last;
+          bool prevStepIsSelected =
+              lastStep.prevStepIsSelected(childList, stepBeingMoved);
+          if (!prevStepIsSelected &&
+              stepBeingMoved.id != lastStep.id &&
+              lastStep.shape != FUNC_RETURN) {
             newList.add(
                 createInserterOrMoverStep(childListType, below, STEP_MOVER));
-          } else {
-            for (var s in childList) {
-              // surround s with mover (before and after)
-              bool prevStepIsSelected =
-                  s.prevStepIsSelected(childList, stepBeingMoved);
-              if (!prevStepIsSelected && stepBeingMoved.id != s.id) {
-                newList.add(createInserterOrMoverStep(
-                    childListType, below, STEP_MOVER));
-              }
-              newList.add(s);
-            }
-            // append an inserter after the steps
-            StepM lastStep = childList.last;
-            bool prevStepIsSelected =
-                lastStep.prevStepIsSelected(childList, stepBeingMoved);
-            if (!prevStepIsSelected &&
-                stepBeingMoved.id != lastStep.id &&
-                lastStep.shape != FUNC_RETURN) {
-              newList.add(
-                  createInserterOrMoverStep(childListType, below, STEP_MOVER));
-            }
           }
         }
-        below.childStepLists[childListType] = newList;
+              below.childStepLists[childListType] = newList;
       }
     }
   }
@@ -1430,27 +1425,25 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
       // now surround each child in the same way
       if (!around.isFuncCallStep() || around.flowchartLinkRef == null) {
         for (var childListType in around.childStepLists.keys) {
-          List<StepM>? childList = around.childStepLists[childListType];
+          List<StepM> childList = around.childStepLists[childListType] ?? [];
           List<StepM> newList = [];
-          if (childList != null) {
-            if (childList.isEmpty) {
-              newList.add(
-                  createInserterOrMoverStep(childListType, around, STEP_ADDER));
-            } else if (childList.isNotEmpty) {
-              for (var s in childList) {
-                newList.add(createInserterOrMoverStep(
-                    childListType, around, STEP_ADDER));
-                newList.add(s);
-              }
-              // append an inserter after the steps
-              StepM lastStep = childList.last;
-              if (lastStep.shape != FUNC_RETURN) {
-                newList.add(createInserterOrMoverStep(
-                    childListType, around, STEP_ADDER));
-              }
+          if (childList.isEmpty) {
+            newList.add(
+                createInserterOrMoverStep(childListType, around, STEP_ADDER));
+          } else if (childList.isNotEmpty) {
+            for (var s in childList) {
+              newList.add(createInserterOrMoverStep(
+                  childListType, around, STEP_ADDER));
+              newList.add(s);
+            }
+            // append an inserter after the steps
+            StepM lastStep = childList.last;
+            if (lastStep.shape != FUNC_RETURN) {
+              newList.add(createInserterOrMoverStep(
+                  childListType, around, STEP_ADDER));
             }
           }
-          around.childStepLists[childListType] = newList;
+                  around.childStepLists[childListType] = newList;
         }
       }
     } else {
@@ -1468,27 +1461,25 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
     // now surround each child in the same way
     if (!around.isFuncCallStep() || around.flowchartLinkRef == null) {
       for (var childListType in around.childStepLists.keys) {
-        List<StepM>? childList = around.childStepLists[childListType];
+        List<StepM> childList = around.childStepLists[childListType] ?? [];
         List<StepM> newList = [];
-        if (childList != null) {
-          if (childList.isEmpty) {
+        if (childList.isEmpty) {
+          newList.add(
+              createInserterOrMoverStep(childListType, around, STEP_ADDER));
+        } else if (childList.isNotEmpty) {
+          for (var s in childList) {
             newList.add(
                 createInserterOrMoverStep(childListType, around, STEP_ADDER));
-          } else if (childList.isNotEmpty) {
-            for (var s in childList) {
-              newList.add(
-                  createInserterOrMoverStep(childListType, around, STEP_ADDER));
-              newList.add(s);
-            }
-            // append an inserter after the steps
-            StepM lastStep = childList.last;
-            if (lastStep.shape != FUNC_RETURN) {
-              newList.add(
-                  createInserterOrMoverStep(childListType, around, STEP_ADDER));
-            }
+            newList.add(s);
+          }
+          // append an inserter after the steps
+          StepM lastStep = childList.last;
+          if (lastStep.shape != FUNC_RETURN) {
+            newList.add(
+                createInserterOrMoverStep(childListType, around, STEP_ADDER));
           }
         }
-        around.childStepLists[childListType] = newList;
+              around.childStepLists[childListType] = newList;
       }
     }
   }
@@ -1541,12 +1532,10 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
             }
           }
           for (var childListType in s.childStepLists.keys) {
-            List<StepM>? childList = s.childStepLists[childListType];
-            if (childList != null) {
-              s.childStepLists[childListType] =
-                  _addInsertersOrMovers(childList, childListType, s, shape);
-            }
-          }
+            List<StepM> childList = s.childStepLists[childListType] ?? [];
+            s.childStepLists[childListType] =
+                _addInsertersOrMovers(childList, childListType, s, shape);
+                    }
           newList.add(s);
         }
 // append an inserter after the steps
@@ -1602,8 +1591,8 @@ class FlowchartM with StringEncoderDecoder, HasImageInFBStorage {
 
       for (var s in listWithoutAdders) {
         for (var listType in s.childStepLists.keys) {
-          List<StepM>? childList = s.childStepLists[listType];
-          if (childList != null && childList.isNotEmpty) {
+          List<StepM> childList = s.childStepLists[listType] ?? [];
+          if (childList.isNotEmpty) {
             s.childStepLists[listType] = removeInsertersAndMovers_(childList,
                 theExceptionId: theExceptionId, omitTrashed: omitTrashed);
           }

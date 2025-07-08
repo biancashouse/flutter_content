@@ -6,7 +6,6 @@ import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:gap/gap.dart';
 
 part 'appbar_node.mapper.dart';
 

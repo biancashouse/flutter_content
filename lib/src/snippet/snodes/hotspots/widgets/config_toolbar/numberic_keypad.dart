@@ -63,7 +63,7 @@ class _NumericKeyboardState extends State<NumericKeypad> {
     );
   }
 
-  _onKeyboardTap(String value) {
+  void _onKeyboardTap(String value) {
     setState(() {
       text = text + value;
     });

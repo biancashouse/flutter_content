@@ -5,10 +5,9 @@ import 'package:flutter_content/src/firebase_storage/has_image.dart';
 
 mixin FirebaseStorageMixin {
   Future<void> createImagesInFBStorage(HasImageInFBStorage imageOwner) async {
-    // if localStore contains aan image with this key
+    // if localStore contains an image with this key
     String? storageKey = imageOwner.storageKey;
     if (storageKey == null) return;
-
     Uint8List? bytes = await imageOwner.getImage(storageKey, localOnly: true);
     if (bytes != null) {
       try {

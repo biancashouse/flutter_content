@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
-import 'package:flutter_content/src/typedefs.dart';
 
 import 'flutter_content.dart';
 

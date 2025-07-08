@@ -90,7 +90,7 @@ class TargetColourTool extends StatelessWidget {
     );
   }
 
-  static show(
+  static void show(
     CalloutConfigModel cc,
     TargetModel tc,
     Rect wrapperRect, {

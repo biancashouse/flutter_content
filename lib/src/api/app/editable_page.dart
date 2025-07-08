@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart' show StringOrNumberEditor;
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_view.dart';
 import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
@@ -565,7 +564,7 @@ class EditablePageState extends State<EditablePage> {
               originalS: '',
               onTextChangedF: (String s) async {
                 if (kDebugMode && s != " ") return;
-                if (!kDebugMode && fco.editorPasswords.indexOf(s) == -1) {
+                if (!kDebugMode && !fco.editorPasswords.contains(s)) {
                   return;
                 }
                 // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;

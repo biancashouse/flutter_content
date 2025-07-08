@@ -26,14 +26,9 @@ class SnippetBeingEdited {
   }
 
   SnippetRootNode getRootNode() {
-    final root;
-    try {
-      root = treeC.roots.first.rootNodeOfSnippet();
-      if (root == null) {
-        print('oh my');
-      }
-    } catch (e) {
-      rethrow;
+    final root = treeC.roots.first.rootNodeOfSnippet();
+    if (root == null) {
+      throw Exception('No root node found');
     }
     return root;
   }

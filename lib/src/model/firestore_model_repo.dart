@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
@@ -450,14 +449,12 @@ class FireStoreModelRepository implements IModelRepository {
   // }
 
   @override
-  Future<FSFolderNode> createAndPopulateFolderNode({required Reference ref, FSFolderNode? parentNode}) async {
+  Future<FSFolderNode> createAndPopulateFolderTree({required Reference ref, FSFolderNode? parentNode}) async {
     FSFolderNode result = FSFolderNode(ref: ref, children: []);
-    if (parentNode != null) {
-      result.setParent(parentNode);
-    }
+    result.setParent(parentNode);
     ListResult lr = await ref.listAll();
     for (Reference childFolderRef in lr.prefixes) {
-      result.children.add(await createAndPopulateFolderNode(ref: childFolderRef, parentNode: result));
+      result.children.add(await createAndPopulateFolderTree(ref: childFolderRef, parentNode: result));
     }
     return result;
   }

@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' show Reference, FirebaseStorage;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
@@ -16,11 +17,13 @@ import 'package:flutter_content/src/can-edit-content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
+import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
+import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
@@ -29,6 +32,7 @@ import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
+
 // import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'src/api/app/dynamic_page_route.dart';
@@ -68,9 +72,10 @@ export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
 // re-export
 export 'package:url_launcher/url_launcher.dart';
 export 'package:url_launcher/url_launcher_string.dart';
-export 'package:file_picker/src/file_picker.dart';
-export 'package:file_picker/src/file_picker_result.dart';
-export 'package:file_picker/src/platform_file.dart';
+
+// export 'package:file_picker/src/file_picker.dart';
+// export 'package:file_picker/src/file_picker_result.dart';
+// export 'package:file_picker/src/platform_file.dart';
 export 'package:gap/src/widgets/gap.dart';
 export 'package:logger/src/logger.dart';
 export 'package:logger/src/log_filter.dart';
@@ -355,11 +360,11 @@ class FlutterContentMixins
         // editor can ask to create it
         if (authenticated.isTrue) {
           return AlertDialog(
-            title: Text('Page "${matchedLocation}" does not Exist !'),
+            title: Text('Page "$matchedLocation" does not Exist !'),
             content: SingleChildScrollView(child: ListBody(children: const <Widget>[Text('Want to create it now ?')])),
             actions: <Widget>[
               TextButton(
-                child: Text('Yes, Create page ${matchedLocation}'),
+                child: Text('Yes, Create page $matchedLocation'),
                 onPressed: () {
                   final String destUrl = matchedLocation;
                   EditablePage.removeAllNodeWidgetOverlays();
@@ -367,7 +372,9 @@ class FlutterContentMixins
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = destUrl;
                   final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((_) {
+                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((
+                    _,
+                  ) {
                     afterNextBuildDo(() {
                       // SnippetInfoModel.snippetInfoCache;
                       router.push(destUrl);
@@ -512,6 +519,17 @@ class FlutterContentMixins
     bool b = localStorage.read("canEditContent") ?? false;
     authenticated = CanEditContentVN(b);
 
+    if (useFBStorage) {
+      // traverse all nodes starting at root
+      final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(ref: folderPathRef('/'));
+
+      fsTreeC = TreeController<FSFolderNode>(
+        roots: [fsRootFolderNode],
+        childrenProvider: (FSFolderNode node) => node.children,
+        parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
+      )..expand(fsRootFolderNode);
+    }
+
     // FutureBuilder requires this return
     CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
 
@@ -536,7 +554,11 @@ class FlutterContentMixins
   ContainerStyleNameSearchAnchor? containerStyleNameAnchor;
 
   late String _appName;
+
   late bool usingFBStorage;
+  late String currFolderPath;
+  late TreeController<FSFolderNode> fsTreeC;
+
   late List<String> _editorPasswords;
 
   late AppInfoModel _appInfo; // must be instantiated in init()
@@ -604,7 +626,12 @@ class FlutterContentMixins
       SnippetInfoModel.cachedSnippetInfo(contentCId) ??
       await SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
         snippetName: contentCId,
-        templateSnippetRootNode: SnippetRootNode(name: contentCId, child: CenterNode(child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()))),
+        templateSnippetRootNode: SnippetRootNode(
+          name: contentCId,
+          child: CenterNode(
+            child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()),
+          ),
+        ),
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
 
@@ -650,30 +677,28 @@ class FlutterContentMixins
     if (snippetInfo != null) {
       // remove all subsequent versions following the current version
       // before saving new version
-      VersionId? currVerId = snippetInfo.currentVersionId();
-      if (currVerId != null) {
-        List<VersionId> newIdCache = [];
-        List<VersionId> tbd = [];
-        for (VersionId v in snippetInfo.versionIds ?? []) {
-          try {
-            if (int.parse(v.isEmpty ? "0" : v) > int.parse(currVerId)) {
-              tbd.add(v);
-            } else {
-              newIdCache.add(v);
-            }
-          } catch (e) {
-            fco.logger.e('$e');
+      VersionId currVerId = snippetInfo.currentVersionId() ?? '??!';
+      List<VersionId> newIdCache = [];
+      List<VersionId> tbd = [];
+      for (VersionId v in snippetInfo.versionIds ?? []) {
+        try {
+          if (int.parse(v.isEmpty ? "0" : v) > int.parse(currVerId)) {
+            tbd.add(v);
+          } else {
+            newIdCache.add(v);
           }
+        } catch (e) {
+          fco.logger.e('$e');
         }
-        if (tbd.isNotEmpty) {
-          // delete from FB and also from cache
-          for (VersionId vId in tbd) {
-            snippetInfo.versionIds?.remove(vId);
-            snippetInfo.cachedVersions.remove(vId);
-          }
-          fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
-          // SnippetInfoModel.debug();
+      }
+      if (tbd.isNotEmpty) {
+        // delete from FB and also from cache
+        for (VersionId vId in tbd) {
+          snippetInfo.versionIds?.remove(vId);
+          snippetInfo.cachedVersions.remove(vId);
         }
+        fco.modelRepo.deleteSnippetVersions(snippetName, tbd);
+        // SnippetInfoModel.debug();
       }
     }
 
@@ -696,7 +721,7 @@ class FlutterContentMixins
     // update or create SnippetInfo
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
 
-    VersionId? currVersionId = snippetInfo?.currentVersionId();
+    VersionId currVersionId = snippetInfo?.currentVersionId() ?? '?!';
 
     // NEW snippet - initial version
     if (snippetInfo == null) {
@@ -734,13 +759,11 @@ class FlutterContentMixins
       logger.i('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !');
     } else {
       // reset current version to before change
-      if (currVersionId != null) {
-        String? origSnippetJson = FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
-        if (origSnippetJson != null) {
-          SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(origSnippetJson);
-          snippetInfo.cachedVersions[currVersionId] = origSnippet;
-          FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
-        }
+      String? origSnippetJson = FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
+      if (origSnippetJson != null) {
+        SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(origSnippetJson);
+        snippetInfo.cachedVersions[currVersionId] = origSnippet;
+        FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
       }
     }
   }
@@ -801,7 +824,7 @@ class FlutterContentMixins
 
   bool? showingNodeBoundaryOverlays;
 
-  registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
+  void Function(BuildContext p1) registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
 
   void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
 
@@ -849,7 +872,9 @@ class FlutterContentMixins
   // }
 
   /// A FlutterContentPage has a snippet with the same route name
-  void pushPage({required String routeName, required String path}) {}
+  // void pushPage({required String routeName, required String path}) {}
+
+  Reference folderPathRef(String folderPath) => FirebaseStorage.instance.ref('/${fco.appName}$folderPath');
 
   final GksByFeature _calloutGkMap = {};
 
