@@ -22,7 +22,7 @@ class SnippetTreeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var snippetBeingEdited = FlutterContentApp.snippetBeingEdited;
+    var snippetBeingEdited = fco.snippetBeingEdited;
     // fco.logger.i(
     //     "snippetBeingEdited is ${snippetBeingEdited != null ? 'not null' : 'null'}");
     SnippetTreeController? treeC = snippetBeingEdited?.treeC;
@@ -40,15 +40,15 @@ class SnippetTreeView extends StatelessWidget {
       treeController: treeC,
       // filter or all
       nodeBuilder: (BuildContext context, TreeEntry<SNode> entry) {
-        // if (FlutterContentApp.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
+        // if (fco.aNodeIsSelected && treeC!.hasAncestor(entry, bloc.state.selectedNode) && bloc.state.showProperties) return const Offstage();
         // fco.logger.i("rebuilding entry: ${entry.node.runtimeType.toString()} expanded: ${entry.isExpanded}");
         // never show the tree root node
-        // if (FlutterContentApp.snippetBeingEdited?.getRootNode() == entry.node) {
+        // if (fco.snippetBeingEdited?.getRootNode() == entry.node) {
         //   return const Offstage();
         // }
-        // if (entry.node == FlutterContentApp.selectedNode) {
+        // if (entry.node == fco.selectedNode) {
         //   fco.logger.i(
-        //       'SnippetTreeView - selected node: ${FlutterContentApp.selectedNode.toString()}');
+        //       'SnippetTreeView - selected node: ${fco.selectedNode.toString()}');
         // }
         return _treeIndentation(entry, treeC);
       },
@@ -57,15 +57,15 @@ class SnippetTreeView extends StatelessWidget {
 
   TreeIndentation _treeIndentation(TreeEntry<SNode> entry, SnippetTreeController treeC) => TreeIndentation(
     guide: IndentGuide.connectingLines(
-      color: FlutterContentApp.aNodeIsSelected &&
-          entry.node == FlutterContentApp.selectedNode
+      color: fco.aNodeIsSelected &&
+          entry.node == fco.selectedNode
           ? Colors.purpleAccent
           : Colors.white,
       indent: 40.0,
     ),
     entry: entry,
     child: SNodeWidget(
-      snippetName: FlutterContentApp.snippetBeingEdited?.getRootNode().name ?? 'snippet name ?',
+      snippetName: fco.snippetBeingEdited?.getRootNode().name ?? 'snippet name ?',
       treeController: treeC,
       entry: entry,
       // allowButtonCallouts: allowButtonCallouts,

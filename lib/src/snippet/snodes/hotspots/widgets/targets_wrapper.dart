@@ -349,8 +349,8 @@ class TargetsWrapperState extends State<TargetsWrapper> {
         if (foundTc != null && data.$2) {
           foundTc.setBtnStackPosPc(details.offset
               .translate(
-                FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
-                FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               )
               .translate(hScrollOffset, vScrollOffset));
           foundTc.changed_saveRootSnippet();
@@ -363,7 +363,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               .translate(hScrollOffset, vScrollOffset));
           foundTc.changed_saveRootSnippet();
         }
-        // FlutterContentApp.capiBloc
+        // fco.capiBloc
         //     .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
       });
     }
@@ -383,7 +383,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                       // ignore if not in editing mode or if currently showing config toolbar
                       if (!fco.authenticated.isTrue ||
                           fco.anyPresent([CalloutConfigToolbar.CID]) ||
-                          FlutterContentApp.snippetBeingEdited != null) {
+                          fco.snippetBeingEdited != null) {
                         return;
                       }
                       CalloutConfigModel cc = CalloutConfigModel(
@@ -476,9 +476,9 @@ class TargetsWrapperState extends State<TargetsWrapper> {
               if (playingTc == null && tc.hasAHotspot())
                 Positioned(
                   top: tc.btnStackPos().dy -
-                      FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                      fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                   left: tc.btnStackPos().dx -
-                      FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                      fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                   child: TargetPlayBtn(
                     initialTC: tc,
                     index: _targetIndex(tc),
@@ -548,7 +548,7 @@ class IntegerCircleAvatar extends StatelessWidget {
       this.child,
       super.key});
 
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   @override
   Widget build(BuildContext context) {

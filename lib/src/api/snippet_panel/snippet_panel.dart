@@ -168,10 +168,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     return BlocConsumer<CAPIBloC, CAPIState>(
       key: widget.panelName != null ? fco.panelGkMap[widget.panelName!] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]') : null,
       // show pink overlays if state variable set with this snippet's name
-      listenWhen:
-          (context, state) =>
-      state.snippetNameShowingPinkOverlaysFor == snippetName(),
-      //|| (FlutterContentApp.snippetBeingEdited?.aNodeIsSelected ?? false),
+      listenWhen: (context, state) => state.snippetNameShowingPinkOverlaysFor == snippetName(),
+      //|| (fco.snippetBeingEdited?.aNodeIsSelected ?? false),
       listener: (context, state) {
         // NON-null name means show pink overlays, otherwise ignore (editing ended)
         if (state.snippetNameShowingPinkOverlaysFor != null) {
@@ -242,51 +240,51 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
               children: [
                 snippet.toWidget(futureContext, null),
                 if (!widget.justPlaying && !isPublishedVersion && !canEdit)
-                  Align(alignment: Alignment.topLeft, child: Container(color: Colors.deepOrange, height: 6, width: double.infinity)),
-                if (!playing && canEdit && !state.inSelectWidgetMode)
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Container(color: Colors.deepOrange, height: 6, width: double.infinity),
+                  ),
+                if (!playing && canEdit && !state.inSelectWidgetMode && fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
                     child: Tooltip(
-                      message:
-                      (!pageIsEditable && !isCID)
+                      message: (!pageIsEditable && !isCID)
                           ? 'this page is not editable'
                           : isCID
                           ? 'tap here to enter Select Widget Mode'
-                          : FlutterContentApp.snippetBeingEdited == null
+                          : fco.snippetBeingEdited == null
                           ? 'tap here to enter Select Widget Mode'
                           : '',
                       child: InkWell(
-                        onTap: () => _tappedTraingle(isCID),
-                        child: CustomPaint(size: const Size(40, 40), painter: TRTriangle(triangleColor)),
-                      ),
+                              onTap: () => _tappedTraingle(isCID),
+                              child: CustomPaint(size: const Size(40, 40), painter: TRTriangle(triangleColor)),
+                            ),
                     ),
                   ),
-                if (!playing && canEdit && !state.inSelectWidgetMode)
+                if (!playing && canEdit && !state.inSelectWidgetMode && fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
                     child: Tooltip(
-                      message:
-                      (!pageIsEditable && !isCID)
+                      message: (!pageIsEditable && !isCID)
                           ? 'this page is not editable'
                           : isCID
                           ? 'tap here to enter Select Widget Mode'
-                          : FlutterContentApp.snippetBeingEdited == null
+                          : fco.snippetBeingEdited == null
                           ? 'tap here to enter Select Widget Mode'
                           : '',
                       child: Container(
                         width: 20,
                         height: 20,
                         alignment: Alignment.topRight,
-                        child:
-                        pageIsEditable || isCID
+                        child: pageIsEditable || isCID
                             ? IconButton(
-                          onPressed: () => _tappedTraingle(isCID),
-                          iconSize: 16,
-                          padding: EdgeInsets.zero,
-                          icon: const Icon(Icons.edit),
-                          color: Colors.white,
-                        )
-                        // Icon(Icons.select_all, size: 20, color: Colors.white)
+                                onPressed: () => _tappedTraingle(isCID),
+                                iconSize: 16,
+                                padding: EdgeInsets.zero,
+                                icon: const Icon(Icons.edit),
+                                color: Colors.white,
+                              )
+                            // Icon(Icons.select_all, size: 20, color: Colors.white)
                             : const Offstage(),
                       ),
                     ),
@@ -296,12 +294,12 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
             return canEdit && state.inSelectWidgetMode
                 ? Banner(
-              message: isPublishedVersion ? 'published' : 'not published',
-              location: BannerLocation.topEnd,
-              color: isPublishedVersion ? Colors.limeAccent.withValues(alpha: .5) : Colors.pink.shade100,
-              textStyle: TextStyle(color: Colors.black, fontSize: 10),
-              child: !state.inSelectWidgetMode ? snippetWidget : IgnorePointer(child: snippetWidget),
-            )
+                    message: isPublishedVersion ? 'published' : 'not published',
+                    location: BannerLocation.topEnd,
+                    color: isPublishedVersion ? Colors.limeAccent.withValues(alpha: .5) : Colors.pink.shade100,
+                    textStyle: TextStyle(color: Colors.black, fontSize: 10),
+                    child: !state.inSelectWidgetMode ? snippetWidget : IgnorePointer(child: snippetWidget),
+                  )
                 : canEdit && false
                 ? IgnorePointer(child: snippetWidget)
                 : snippetWidget;
@@ -312,19 +310,19 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
   }
 
   void _tappedTraingle(bool isCID) {
-    if ((!pageIsEditable && !isCID) || FlutterContentApp.snippetBeingEdited != null) {
+    if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
       return;
     }
 
-    FlutterContentApp.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
+    fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
   }
 
   static void showSnippetNodeWidgetOverlays(BuildContext context, ScrollControllerName? scName) {
     // no need to de-reigister once set up
     fco.registerKeystrokeHandler('exit-Select-Widget-Mode', (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        if (FlutterContentApp.capiState.inSelectWidgetMode) {
-          FlutterContentApp.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
+        if (fco.capiBloc.state.inSelectWidgetMode) {
+          fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
         }
       }
       return false;
@@ -376,40 +374,40 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 
-// _renderSnippet(context) {
-//   return FutureBuilder<void>(
-//
-//     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
-//     builder: (futureContext, snapshot) {
-//       if (snapshot.connectionState == ConnectionState.done) {
-//         Widget snippetWidget;
-//         try {
-//           // in case did a revert, ignore snapshot data and use the AppInfo instead
-//           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
-//           snippet?.validateTree();
-//           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
-//           snippetWidget =
-//               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
-//         } catch (e) {
-//           fco.logger.i('snippetRootNode.toWidget() failed!');
-//           snippetWidget = Material(
-//             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-//             child: SingleChildScrollView(
-//               scrollDirection: Axis.horizontal,
-//               child: Row(
-//                 children: [
-//                   const Icon(Icons.error, color: Colors.redAccent),
-//                   Gap(10),
-//                   FCO.coloredText(e.toString()),
-//                 ],
-//               ),
-//             ),
-//           );
-//         }
-//         return snippetWidget;
-//       } else {
-//         return const Center(child: CircularProgressIndicator());
-//       }
-//     });
-// }
+  // _renderSnippet(context) {
+  //   return FutureBuilder<void>(
+  //
+  //     future: SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName()),
+  //     builder: (futureContext, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.done) {
+  //         Widget snippetWidget;
+  //         try {
+  //           // in case did a revert, ignore snapshot data and use the AppInfo instead
+  //           SnippetRootNode? snippet = FCO.currentSnippet(snippetName());
+  //           snippet?.validateTree();
+  //           // SnippetRootNode? snippetRoot = cache?[editingVersionId];
+  //           snippetWidget =
+  //               snippet == null ? const Icon(Icons.error, color: Colors.redAccent) : snippet.child?.toWidget(futureContext, snippet) ?? const Placeholder();
+  //         } catch (e) {
+  //           fco.logger.i('snippetRootNode.toWidget() failed!');
+  //           snippetWidget = Material(
+  //             textStyle: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+  //             child: SingleChildScrollView(
+  //               scrollDirection: Axis.horizontal,
+  //               child: Row(
+  //                 children: [
+  //                   const Icon(Icons.error, color: Colors.redAccent),
+  //                   Gap(10),
+  //                   FCO.coloredText(e.toString()),
+  //                 ],
+  //               ),
+  //             ),
+  //           );
+  //         }
+  //         return snippetWidget;
+  //       } else {
+  //         return const Center(child: CircularProgressIndicator());
+  //       }
+  //     });
+  // }
 }

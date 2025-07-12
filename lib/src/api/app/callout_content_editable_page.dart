@@ -21,7 +21,7 @@
 //
 //   static void refreshSelectedNodeWidgetBorderOverlay(scName) {
 //     fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-//     FlutterContentApp.selectedNode
+//     fco.selectedNode
 //         ?.showNodeWidgetOverlay(scName: scName, followScroll: false);
 //   }
 //
@@ -58,9 +58,9 @@
 //   late NamedScrollController? namedSC;
 //
 //   SnippetBeingEdited? get snippetBeingEdited =>
-//       FlutterContentApp.snippetBeingEdited;
+//       fco.snippetBeingEdited;
 //
-//   SNode? get selectedNode => FlutterContentApp.selectedNode;
+//   SNode? get selectedNode => fco.selectedNode;
 //
 //   TargetModel get tc => widget.tcAndFrom.$1;
 //
@@ -127,14 +127,14 @@
 //   Widget _calloutContent() {
 //     return Scaffold(
 //       appBar: AppBar(
-//         leading: FlutterContentApp.snippetBeingEdited == null
+//         leading: fco.snippetBeingEdited == null
 //             ? IconButton(
 //                 onPressed: () {
 //                   context.go('$from');
 //                 },
 //                 icon: Icon(Icons.arrow_back))
 //             : const Offstage(),
-//         title: FlutterContentApp.snippetBeingEdited == null
+//         title: fco.snippetBeingEdited == null
 //             ? const Text('Back to Hotspot Editor')
 //             : const Offstage(),
 //       ),
@@ -221,7 +221,7 @@
 //           },
 //           onDividerDragEnd: (_) {
 //             fco.afterMsDelayDo(500, () {
-//               FlutterContentApp.snippetBeingEdited?.selectedNode
+//               fco.snippetBeingEdited?.selectedNode
 //                   ?.showNodeWidgetOverlay(
 //                       scName: tc.contentCId, followScroll: true);
 //             });
@@ -252,7 +252,7 @@
 //
 //     GlobalKey zoomerGk = GlobalKey();
 //
-//     bool aSnippetIsBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+//     bool aSnippetIsBeingEdited = fco.snippetBeingEdited != null;
 //
 //     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
 //       onNotification: (SizeChangedLayoutNotification notification) {
@@ -353,12 +353,12 @@
 //           SnippetInfoModel.cachedSnippet(snippetName);
 //       if (snippetInfo != null) {
 //         String title =
-//             FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
+//             fco.snippetBeingEdited?.getRootNode().name ??
 //                 'snippet name?';
 //         //snippetBeingEdited?.treeC.rebuild();
 //         return GestureDetector(
 //           onTap: () {
-//             FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection());
+//             fco.capiBloc.add(CAPIEvent.clearNodeSelection());
 //             fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
 //             fco.hide("floating-clipboard");
 //           },
@@ -407,7 +407,7 @@
 //                         IconButton(
 //                           hoverColor: Colors.white30,
 //                           onPressed: () async {
-//                             CAPIState capiState = FlutterContentApp.capiState;
+//                             CAPIState capiState = fco.capiBloc.state;
 //                             if (!snippetInfo.isFirstVersion()) {
 //                               VersionId? prevId =
 //                                   snippetInfo.previousVersionId();
@@ -416,7 +416,7 @@
 //                           },
 //                           icon: Icon(Icons.undo,
 //                               color: !snippetInfo
-//                                       .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
+//                                       .isFirstVersion() //|| fco.capiBloc.canUndo
 //                                   ? Colors.white
 //                                   : Colors.white54),
 //                           tooltip: 'previous version',
@@ -424,7 +424,7 @@
 //                         IconButton(
 //                           hoverColor: Colors.white30,
 //                           onPressed: () {
-//                             CAPIState capiState = FlutterContentApp.capiState;
+//                             CAPIState capiState = fco.capiBloc.state;
 //                             if (!snippetInfo.isLatestVersion()) {
 //                               VersionId? nextId = snippetInfo.nextVersionId();
 //                               revertToVersion(nextId, snippetInfo, capiState);
@@ -432,7 +432,7 @@
 //                           },
 //                           icon: Icon(Icons.redo,
 //                               color: !snippetInfo
-//                                       .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
+//                                       .isLatestVersion() //|| fco.capiBloc.canRedo
 //                                   ? Colors.white
 //                                   : Colors.white54),
 //                           tooltip: 'next version',
@@ -453,7 +453,7 @@
 //                             fco.hideClipboard();
 //                             fco.inEditMode.value = false;
 //                             fco.inEditModeForSnippetName = null;
-//                             FlutterContentApp.capiBloc
+//                             fco.capiBloc
 //                                 .add(const CAPIEvent.popSnippetEditor());
 //                             // fco.afterNextBuildDo(() {
 //                             //   NamedScrollController.restoreOffset(scName);
@@ -481,7 +481,7 @@
 //   }
 //
 //   Widget _propertiesTree() {
-//     bool showingProperties = FlutterContentApp.aNodeIsSelected;
+//     bool showingProperties = fco.aNodeIsSelected;
 //     ScrollController? propertiesPaneSC = selectedNode?.propertiesPaneSC();
 //     PNodeTreeController? pTreeC = selectedNode?.pTreeC(context, {});
 //     pTreeC!.collapseAll();
@@ -650,7 +650,7 @@
 //                 fco.dismiss(cid_EditorPassword);
 //                 fco.setCanEditContent(true);
 //                 // await FC.loadLatestSnippetMap();
-//                 // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+//                 // fco.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
 //                 // fco.afterNextBuildDo(() {
 //                 //   FC()
 //                 //       .capiBloc
@@ -658,7 +658,7 @@
 //                 //   showDevToolsFAB();
 //                 // });
 //                 // fco.dismiss("editor-password");
-//                 FlutterContentApp.capiBloc.add(
+//                 fco.capiBloc.add(
 //                     const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 //               },
 //               onEscapedF: (_) {
@@ -770,7 +770,7 @@
 //   //                   });
 //   //                 });
 //   //               } else {
-//   //                 FlutterContentApp.capiBloc.add(
+//   //                 fco.capiBloc.add(
 //   //                     const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 //   //                 context.replace(pageName);
 //   //               }
@@ -873,7 +873,7 @@
 //   void revertToVersion(
 //       VersionId? versionId, SnippetInfoModel snippetInfo, CAPIState state) {
 //     if (versionId == null) return;
-//     FlutterContentApp.capiBloc.add(
+//     fco.capiBloc.add(
 //       CAPIEvent.revertSnippet(
 //         snippetName: snippetInfo.name,
 //         versionId: fco.removeNonNumeric(versionId),
@@ -889,7 +889,7 @@
 //       fco.dismiss(CalloutConfigToolbar.CID);
 //       fco.hideClipboard();
 //       // exitEditModeF();
-//       // FlutterContentApp.capiBloc
+//       // fco.capiBloc
 //       //     .add(const CAPIEvent.popSnippetEditor());
 //       // fco.dismiss(snippetName, skipOnDismiss: true);
 //       final revertedVersion = snippetInfo.currentVersionFromCache();

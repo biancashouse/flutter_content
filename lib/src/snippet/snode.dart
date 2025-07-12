@@ -464,7 +464,7 @@ abstract class SNode extends Node with SNodeMappable {
       return;
     }
 
-    FlutterContentApp.capiBloc.add(CAPIEvent.pushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode));
+    fco.capiBloc.add(CAPIEvent.pushSnippetEditor(rootNode: rootNode, selectedNode: selectedNode));
     // fco.afterNextBuildDo(() {
     // });
     // return;
@@ -480,9 +480,9 @@ abstract class SNode extends Node with SNodeMappable {
       // bool isMOunted = cc?.mounted ?? false;
       // var cw = nodeGK?.currentWidget;
 
-      if (FlutterContentApp.snippetBeingEdited != null) {
-        // FlutterContentApp.snippetBeingEdited?.treeC.expandAll();
-        // FlutterContentApp.snippetBeingEdited?.treeC.rebuild();
+      if (fco.snippetBeingEdited != null) {
+        // fco.snippetBeingEdited?.treeC.expandAll();
+        // fco.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
         if (!fco.clipboardIsEmpty) {
           fco.showFloatingClipboard(scName: scName);
@@ -493,7 +493,7 @@ abstract class SNode extends Node with SNodeMappable {
   }
 
   void refreshWithUpdate(BuildContext context, VoidCallback assignF, {bool alsoRefreshPropertiesView = false}) {
-    // FlutterContentApp.capiState.snippetBeingEdited?.newVersion();
+    // fco.capiBloc.state.snippetBeingEdited?.newVersion();
 
     assignF.call();
     // if (alsoRefreshPropertiesView) {
@@ -510,9 +510,9 @@ abstract class SNode extends Node with SNodeMappable {
       final rootNode = rootNodeOfSnippet();
       assert(rootNode!.isValid());
       fco.saveNewVersion(snippet: rootNode);
-      Rect? borderRect = FlutterContentApp.selectedNode?.calcBborderRect();
+      Rect? borderRect = fco.selectedNode?.calcBborderRect();
       if (borderRect != null) {
-        FlutterContentApp.selectedNode?.showNodeWidgetOverlay(borderRect, followScroll: true);
+        fco.selectedNode?.showNodeWidgetOverlay(borderRect, followScroll: true);
       } else {
         print('borderRect?');
       }
@@ -894,7 +894,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   // Future<void> possiblyHighlightSelectedNode(ScrollControllerName? scName) async {
   //   return;
-  //   if (FlutterContentApp.snippetBeingEdited?.selectedNode == this) {
+  //   if (fco.snippetBeingEdited?.selectedNode == this) {
   //     unhighlightSelectedNode();
   //     var gk = nodeWidgetGK;
   //     Rect? r = gk?.globalPaintBounds();
@@ -1595,9 +1595,9 @@ abstract class SNode extends Node with SNodeMappable {
   MenuItemButton menuItemButton(final String label, Type childType, NodeAction action, ScrollControllerName? scName) => MenuItemButton(
     onPressed: () {
       if (action == NodeAction.wrapWith) {
-        // var treeC = FlutterContentApp.snippetBeingEdited?.treeC;
+        // var treeC = fco.snippetBeingEdited?.treeC;
         // bool navUp = this == treeC?.roots.firstOrNull;
-        FlutterContentApp.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
+        fco.capiBloc.add(CAPIEvent.wrapSelectionWith(type: childType));
         // in case need to show more of the tree (higher up)
         // fco.afterNextBuildDo(() {
         //   if (navUp) {
@@ -1607,25 +1607,25 @@ abstract class SNode extends Node with SNodeMappable {
         //   EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         // });
       } else if (action == NodeAction.replaceWith) {
-        FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
+        fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         });
       } else if (action == NodeAction.addChild) {
-        FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(type: childType));
+        fco.capiBloc.add(CAPIEvent.appendChild(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         });
       } else if (action == NodeAction.addSiblingBefore) {
-        FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
+        fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
         });
       } else if (action == NodeAction.addSiblingAfter) {
-        FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
+        fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: childType));
         fco.afterNextBuildDo(() {
           fco.dismiss('node-actions');
           EditablePage.refreshSelectedNodeWidgetBorderOverlay(scName);
@@ -1639,28 +1639,28 @@ abstract class SNode extends Node with SNodeMappable {
     if (fco.clipboard != null && action != NodeAction.wrapWith) {
       return MenuItemButton(
         onPressed: () {
-          // CAPIBloC bloc = FlutterContentApp.capiBloc;
+          // CAPIBloC bloc = fco.capiBloc;
           switch (action) {
             case NodeAction.replaceWith:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteReplacement());
+              fco.capiBloc.add(const CAPIEvent.pasteReplacement());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingBefore:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
+              fco.capiBloc.add(const CAPIEvent.pasteSiblingBefore());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               break;
             case NodeAction.addSiblingAfter:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
+              fco.capiBloc.add(const CAPIEvent.pasteSiblingAfter());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               break;
             case NodeAction.addChild:
-              FlutterContentApp.capiBloc.add(const CAPIEvent.pasteChild());
+              fco.capiBloc.add(const CAPIEvent.pasteChild());
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
@@ -1691,24 +1691,24 @@ abstract class SNode extends Node with SNodeMappable {
             // make sure snippet actually present
             await SnippetRootNode.loadSnippetFromCacheOrFromFB(snippetName: snippetName);
             if (action == NodeAction.replaceWith) {
-              FlutterContentApp.capiBloc.add(CAPIEvent.replaceSelectionWith(type: SnippetRootNode, snippetName: snippetName));
+              fco.capiBloc.add(CAPIEvent.replaceSelectionWith(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingBefore) {
-              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingBefore(type: SnippetRootNode, snippetName: snippetName));
+              fco.capiBloc.add(CAPIEvent.addSiblingBefore(type: SnippetRootNode, snippetName: snippetName));
               // removeNodePropertiesCallout();
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
             } else if (action == NodeAction.addSiblingAfter) {
-              FlutterContentApp.capiBloc.add(CAPIEvent.addSiblingAfter(type: SnippetRootNode, snippetName: snippetName));
+              fco.capiBloc.add(CAPIEvent.addSiblingAfter(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });
               // removeNodePropertiesCallout();
             } else if (action == NodeAction.addChild) {
-              FlutterContentApp.capiBloc.add(CAPIEvent.appendChild(type: SnippetRootNode, snippetName: snippetName));
+              fco.capiBloc.add(CAPIEvent.appendChild(type: SnippetRootNode, snippetName: snippetName));
               fco.afterNextBuildDo(() {
                 fco.dismiss('node-actions');
               });

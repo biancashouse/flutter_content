@@ -7,6 +7,7 @@ import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_vi
 import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
 import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
+import 'package:flutter_content/src/snippet/markdown_editor/markdown_editor.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -25,19 +26,19 @@ class EditablePage extends StatefulWidget {
   });
 
   static void refreshSelectedNodeWidgetBorderOverlay(scName) {
-    Rect? borderRect = FlutterContentApp.selectedNode?.calcBborderRect();
-    if (borderRect != null) {
-      FlutterContentApp.selectedNode?.showNodeWidgetOverlay(borderRect, scName: scName, followScroll: false);
-      // fco.afterNextBuildDo(() {
-      //   fco.afterMsDelayDo(500, () {
-      //     fco.bringToTop(PINK_OVERLAY_NON_TAPPABLE);
-      //     // cc?.moveTo(fco.scrW/2, 200);
-      //   });
-      //   // });
-      // });
-    } else {
-      print('borderRect?');
-    }
+    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+    fco.afterMsDelayDo(500, () {
+      Rect? borderRect = fco.selectedNode?.calcBborderRect();
+      if (borderRect != null) {
+        fco.selectedNode?.showNodeWidgetOverlay(
+          borderRect,
+          scName: scName,
+          followScroll: true,
+        );
+      } else {
+        print('borderRect?');
+      }
+    });
   }
 
   static void removeAllNodeWidgetOverlays() {
@@ -50,11 +51,15 @@ class EditablePage extends StatefulWidget {
   }
 
   // allow a page widget to find its parent EditablePage
-  static EditablePageState? of(BuildContext context) => context.mounted ? context.findAncestorStateOfType<EditablePageState>() : null;
+  static EditablePageState? of(BuildContext context) => context.mounted
+      ? context.findAncestorStateOfType<EditablePageState>()
+      : null;
 
-  static NamedScrollController? maybeScrollController(context) => of(context)?.namedSC;
+  static NamedScrollController? maybeScrollController(context) =>
+      of(context)?.namedSC;
 
-  static String? maybeScrollControllerName(context) => of(context)?.namedSC?.name;
+  static String? maybeScrollControllerName(context) =>
+      of(context)?.namedSC?.name;
 
   // static ScrollController? ancestorSc(BuildContext context, Axis? axis) {
   //   ScrollableState? scrollableState = Scrollable.maybeOf(context, axis: axis);
@@ -69,12 +74,12 @@ class EditablePageState extends State<EditablePage> {
   late MultiSplitViewController msvC;
   late NamedScrollController? namedSC;
 
-  SnippetBeingEdited? get snippetBeingEdited => FlutterContentApp.snippetBeingEdited;
+  SnippetBeingEdited? get snippetBeingEdited => fco.snippetBeingEdited;
 
-  SNode? get selectedNode => FlutterContentApp.selectedNode;
+  SNode? get selectedNode => fco.selectedNode;
 
-  // bool isFABVisible = true; // Tracks FAB visibility
-  // Offset? fabPosition;
+  // final GlobalKey<ScaffoldState> _propertiesScaffoldKey =
+  //     GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -117,14 +122,19 @@ class EditablePageState extends State<EditablePage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CAPIBloC, CAPIState>(
-      listenWhen: (context, state) => FlutterContentApp.snippetBeingEdited?.aNodeIsSelected ?? false,
+      listenWhen: (context, state) =>
+          fco.snippetBeingEdited?.aNodeIsSelected ?? false,
       listener: (context, state) {
         if (state.snippetBeingEdited?.aNodeIsSelected ?? false) {
           final selectedNode = state.snippetBeingEdited!.selectedNode;
           Future.delayed(Duration(milliseconds: kDebugMode ? 1000 : 300), () {
             Rect? borderRect = selectedNode!.calcBborderRect();
             if (borderRect != null) {
-              selectedNode.showNodeWidgetOverlay(borderRect, scName: namedSC!.name, followScroll: false);
+              selectedNode.showNodeWidgetOverlay(
+                borderRect,
+                scName: namedSC!.name,
+                followScroll: false,
+              );
             }
           });
         }
@@ -134,69 +144,160 @@ class EditablePageState extends State<EditablePage> {
         // bool selectionChanged = current.snippetBeingEdited?.selectedNode !=
         //     previous.snippetBeingEdited?.selectedNode;
         // return true || nodeChanged || selectionChanged;
-        return !current.onlyTargetsWrappers && current.snippetNameShowingPinkOverlaysFor == null;
+        return !current.onlyTargetsWrappers &&
+            current.snippetNameShowingPinkOverlaysFor == null;
       },
       builder: (context, state) {
-        // fco.logger.i('editable page build() -----------------------------------');
-        bool showNodeTree() => snippetBeingEdited != null;
-        bool showPropertiesTree() => showNodeTree() && selectedNode?.pTreeC != null;
-
-        // set up areas
-        List<Area> areas = [];
-        if (showNodeTree()) {
-          areas.add(Area(builder: (ctx, area) => _snodeTree(), flex: 1));
+        // layout depends on node selection
+        if (fco.selectedNode is MarkdownNode) {
+          return _pageWhenSelectedAMarkdownNode();
+        } else {
+          return _normalPage();
         }
-        areas.add(
-          Area(
-            builder: (ctx, area) {
-              return FlutterContentApp.capiState.inSelectWidgetMode ? IgnorePointer(child: _pageContentArea()) : _pageContentArea();
-            },
-            flex: 2,
-          ),
-        );
+      },
+    );
+  }
 
-        msvC.areas = areas;
-
-        var msvt = MultiSplitViewTheme(
-          data: MultiSplitViewThemeData(
-            dividerThickness: 24,
-            dividerPainter: DividerPainters.grooved1(
-              backgroundColor: Colors.purple,
-              color: Colors.indigo[100]!,
-              highlightedColor: Colors.indigo[900]!,
+  Widget _pageWhenSelectedAMarkdownNode() {
+    MarkdownNode mdNode = fco.selectedNode as MarkdownNode;
+    // set up areas
+    msvC.areas = [
+      Area(
+        builder: (ctx, area) => Material(
+          child: SingleChildScrollView(
+            child: MarkdownEditor(
+              originalMarkdown: mdNode.data,
+              onChangeF: (s) {
+                mdNode.refreshWithUpdate(context, () => mdNode.data = s);
+              },
             ),
           ),
-          child: MultiSplitView(
-            controller: msvC,
-            axis: Axis.horizontal,
-            initialAreas: areas,
-            onDividerDragStart: (_) {
-              EditablePage.removeAllNodeWidgetOverlays();
-            },
-            onDividerDragEnd: (_) {
-              fco.afterMsDelayDo(500, () {
-                Rect? borderRect = FlutterContentApp.selectedNode?.calcBborderRect();
-                if (borderRect != null) {
-                  FlutterContentApp.snippetBeingEdited?.selectedNode?.showNodeWidgetOverlay(borderRect, scName: widget.routePath, followScroll: true);
-                } else {
-                  print('borderRect?');
-                }
-              });
-            },
-          ),
-        );
+        ),
+        flex: 1,
+      ),
+      Area(
+        builder: (ctx, area) => IgnorePointer(child: _pageContentArea()),
+        flex: 1,
+      ),
+    ];
 
-        return Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(child: msvt),
-              if (showPropertiesTree()) Container(width: 330, color: Colors.purpleAccent[100], child: _propertiesTree()),
-            ],
-          ),
-        );
-      },
+    // 2 layouts: 1) property tree on right of content area, 2) hidden snode tree, single property above content area
+    var msvt = MultiSplitViewTheme(
+      data: MultiSplitViewThemeData(
+        dividerThickness: 24,
+        dividerPainter: DividerPainters.grooved1(
+          backgroundColor: Colors.purple,
+          color: Colors.indigo[100]!,
+          highlightedColor: Colors.indigo[900]!,
+        ),
+      ),
+      child: MultiSplitView(
+        controller: msvC,
+        axis: Axis.vertical,
+        initialAreas: msvC.areas,
+        onDividerDragStart: (_) => fco.dismiss(PINK_OVERLAY_NON_TAPPABLE),
+        onDividerDragEnd: (_) =>
+            EditablePage.refreshSelectedNodeWidgetBorderOverlay(namedSC!.name),
+      ),
+    );
+
+    return Center(child: msvt);
+  }
+
+  Widget _normalPage() {
+    bool showSNodeTree() =>
+        snippetBeingEdited != null && fco.selectedNode is! MarkdownNode;
+    bool showPropertiesTree() =>
+        snippetBeingEdited != null &&
+        selectedNode?.pTreeC != null &&
+        fco.selectedNode is! MarkdownNode;
+
+    // set up areas
+    List<Area> areas = [];
+    if (showSNodeTree()) {
+      // double flex = (fco.selectedNode is MarkdownNode) ? 0 : 1;
+      areas.add(Area(builder: (ctx, area) => _snodeTree(), flex: 1));
+    }
+    areas.add(
+      Area(
+        builder: (ctx, area) {
+          return fco.capiBloc.state.inSelectWidgetMode
+              ? IgnorePointer(child: _pageContentArea())
+              : _pageContentArea();
+        },
+        flex: 2,
+      ),
+    );
+
+    msvC.areas = areas;
+
+    // 2 layouts: 1) property tree on right of content area, 2) hidden snode tree, single property above content area
+    var msvt = MultiSplitViewTheme(
+      data: MultiSplitViewThemeData(
+        dividerThickness: 24,
+        dividerPainter: DividerPainters.grooved1(
+          backgroundColor: Colors.purple,
+          color: Colors.indigo[100]!,
+          highlightedColor: Colors.indigo[900]!,
+        ),
+      ),
+      child: MultiSplitView(
+        controller: msvC,
+        axis: Axis.horizontal,
+        initialAreas: areas,
+        onDividerDragStart: (_) {
+          fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+        },
+        onDividerDragEnd: (_) {
+          fco.afterMsDelayDo(500, () {
+            Rect? borderRect = fco.selectedNode?.calcBborderRect();
+            if (borderRect != null) {
+              fco.selectedNode?.showNodeWidgetOverlay(
+                borderRect,
+                scName: widget.routePath,
+                followScroll: true,
+              );
+            } else {
+              print('borderRect?');
+            }
+          });
+        },
+      ),
+    );
+
+    //
+    return Center(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: msvt),
+          if (showPropertiesTree())
+            Container(
+              width: 330,
+              color: Colors.purpleAccent[100],
+              child:
+                  // fco.selectedNode
+                  //     is MarkdownNode // markdown uses the drawer for its editor
+                  // ? Scaffold(
+                  //     key: _propertiesScaffoldKey,
+                  //     endDrawerEnableOpenDragGesture: false,
+                  //     endDrawer: Drawer(
+                  //       width: 600,
+                  //       child: SingleChildScrollView(
+                  //         child: MarkdownEditor(
+                  //           originalMarkdown:
+                  //               (fco.selectedNode as MarkdownNode).data,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     body: _propertiesTree(),
+                  //   )
+                  // :
+                  _propertiesTree(),
+            ),
+        ],
+      ),
     );
   }
 
@@ -205,9 +306,13 @@ class EditablePageState extends State<EditablePage> {
 
     GlobalKey zoomerGk = GlobalKey();
 
-    final aSnippetIsBeingEdited = FlutterContentApp.snippetBeingEdited != null;
-    final possiblyACalloutContentId = FlutterContentApp.snippetBeingEdited?.getRootNode().name;
-    final editingACalloutContentSnippet = possiblyACalloutContentId != null && SnippetRootNode.isHotspotCalloutContent(possiblyACalloutContentId);
+    final aSnippetIsBeingEdited = fco.snippetBeingEdited != null;
+    final possiblyACalloutContentId = fco.snippetBeingEdited
+        ?.getRootNode()
+        .name;
+    final editingACalloutContentSnippet =
+        possiblyACalloutContentId != null &&
+        SnippetRootNode.isHotspotCalloutContent(possiblyACalloutContentId);
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -228,7 +333,7 @@ class EditablePageState extends State<EditablePage> {
         child: GestureDetector(
           onTap: () {
             // exitEditMode();
-            FlutterContentApp.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
+            fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
           },
           child: Material(
             child: Stack(
@@ -268,22 +373,31 @@ class EditablePageState extends State<EditablePage> {
       ),
     );
 
-    return fco.isAndroid ? fco.androidAwareBuild(context, builtWidget) : builtWidget;
+    return fco.isAndroid
+        ? fco.androidAwareBuild(context, builtWidget)
+        : builtWidget;
   }
 
   Widget _snodeTree() {
     SNode? rootNode = snippetBeingEdited?.treeC.roots.first.rootNodeOfSnippet();
     if (rootNode is SnippetRootNode) {
       SnippetName snippetName = rootNode.name;
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
+      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+        snippetName,
+      );
       if (snippetInfo != null) {
         // String title =
-        //     FlutterContentApp.snippetBeingEdited?.getRootNode().name ??
+        //     fco.snippetBeingEdited?.getRootNode().name ??
         //         'snippet name?';
         //snippetBeingEdited?.treeC.rebuild();
         return GestureDetector(
           onTap: () {
-            FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection());
+            // if showing markdown editor callout, just dismiss it, but don't remove node selection
+            if (fco.anyPresent(['md-te'])) {
+              fco.dismiss('md-te');
+              return;
+            }
+            fco.capiBloc.add(CAPIEvent.clearNodeSelection());
             fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
             fco.hide("floating-clipboard");
           },
@@ -332,9 +446,10 @@ class EditablePageState extends State<EditablePage> {
                         IconButton(
                           hoverColor: Colors.white30,
                           onPressed: () async {
-                            CAPIState capiState = FlutterContentApp.capiState;
+                            CAPIState capiState = fco.capiBloc.state;
                             if (!snippetInfo.isFirstVersion()) {
-                              VersionId? prevId = snippetInfo.previousVersionId();
+                              VersionId? prevId = snippetInfo
+                                  .previousVersionId();
                               revertToVersion(prevId, snippetInfo, capiState);
                             }
                           },
@@ -342,16 +457,16 @@ class EditablePageState extends State<EditablePage> {
                             Icons.undo,
                             color:
                                 !snippetInfo
-                                        .isFirstVersion() //|| FlutterContentApp.capiBloc.canUndo
-                                    ? Colors.white
-                                    : Colors.white54,
+                                    .isFirstVersion() //|| fco.capiBloc.canUndo
+                                ? Colors.white
+                                : Colors.white54,
                           ),
                           tooltip: 'previous version',
                         ),
                         IconButton(
                           hoverColor: Colors.white30,
                           onPressed: () {
-                            CAPIState capiState = FlutterContentApp.capiState;
+                            CAPIState capiState = fco.capiBloc.state;
                             if (!snippetInfo.isLatestVersion()) {
                               VersionId? nextId = snippetInfo.nextVersionId();
                               revertToVersion(nextId, snippetInfo, capiState);
@@ -361,9 +476,9 @@ class EditablePageState extends State<EditablePage> {
                             Icons.redo,
                             color:
                                 !snippetInfo
-                                        .isLatestVersion() //|| FlutterContentApp.capiBloc.canRedo
-                                    ? Colors.white
-                                    : Colors.white54,
+                                    .isLatestVersion() //|| fco.capiBloc.canRedo
+                                ? Colors.white
+                                : Colors.white54,
                           ),
                           tooltip: 'next version',
                         ),
@@ -377,16 +492,21 @@ class EditablePageState extends State<EditablePage> {
                           onPressed: () {
                             SNode.unhighlightSelectedNode();
                             // if was editing a callout content snippet, dismiss all callouts
-                            if (SnippetRootNode.isHotspotCalloutContent(snippetName)) {
+                            if (SnippetRootNode.isHotspotCalloutContent(
+                              snippetName,
+                            )) {
                               fco.dismissAll();
                             } else {
-                              var pinkOverlayFeature = PINK_OVERLAY_NON_TAPPABLE;
+                              var pinkOverlayFeature =
+                                  PINK_OVERLAY_NON_TAPPABLE;
                               fco.dismiss(pinkOverlayFeature);
                               // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
                               fco.unhide(CalloutConfigToolbar.CID);
                               fco.hideClipboard();
                             }
-                            FlutterContentApp.capiBloc.add(const CAPIEvent.popSnippetEditor());
+                            fco.capiBloc.add(
+                              const CAPIEvent.popSnippetEditor(),
+                            );
                             // fco.afterNextBuildDo(() {
                             //   NamedScrollController.restoreOffset(scName);
                             // });
@@ -413,42 +533,51 @@ class EditablePageState extends State<EditablePage> {
   }
 
   Widget _propertiesTree() {
-    bool showingProperties = FlutterContentApp.aNodeIsSelected;
+    bool showingProperties = fco.aNodeIsSelected;
     ScrollController? propertiesPaneSC = selectedNode?.propertiesPaneSC();
     PNodeTreeController? pTreeC = selectedNode?.pTreeC(context, {});
     // pTreeC!.collapseAll();
     return !showingProperties || propertiesPaneSC == null
         ? const Offstage()
         : Container(
-          color: Colors.blue[50],
-          child: ListView(
-            controller: selectedNode!.propertiesPaneSC(),
-            shrinkWrap: true,
-            children: [
-              // icon buttons
-              // ExpansionTile(
-              //   title: fco.coloredText('widget actions',
-              //       color: Colors.white54,
-              //       fontSize: 14),
-              //   backgroundColor: Colors.black,
-              //   collapsedBackgroundColor: Colors.black,
-              //   onExpansionChanged: (bool isExpanded) =>
-              //       fco.showingNodeButtons = isExpanded,
-              //   initiallyExpanded:
-              //       fco.showingNodeButtons,
-              //   children: [nodeButtons(context, scName)],
-              // ),
-              // NODE PROPERTIES TREE
-              Material(color: Colors.blue[50], child: PropertiesTreeView(treeC: pTreeC!, sNode: selectedNode!)),
-              if (pTreeC.roots.length < 2)
+            color: Colors.blue[50],
+            child: ListView(
+              controller: selectedNode!.propertiesPaneSC(),
+              shrinkWrap: true,
+              children: [
+                // icon buttons
+                // ExpansionTile(
+                //   title: fco.coloredText('widget actions',
+                //       color: Colors.white54,
+                //       fontSize: 14),
+                //   backgroundColor: Colors.black,
+                //   collapsedBackgroundColor: Colors.black,
+                //   onExpansionChanged: (bool isExpanded) =>
+                //       fco.showingNodeButtons = isExpanded,
+                //   initiallyExpanded:
+                //       fco.showingNodeButtons,
+                //   children: [nodeButtons(context, scName)],
+                // ),
+                // NODE PROPERTIES TREE
                 Material(
-                  // color: Colors.purpleAccent[50],
-                  child: fco.coloredText(' (${selectedNode.toString()} has no properties)', color: Colors.black87),
+                  color: Colors.blue[50],
+                  child: PropertiesTreeView(
+                    treeC: pTreeC!,
+                    sNode: selectedNode!,
+                  ),
                 ),
-              // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
-            ],
-          ),
-        );
+                if (pTreeC.roots.length < 2)
+                  Material(
+                    // color: Colors.purpleAccent[50],
+                    child: fco.coloredText(
+                      ' (${selectedNode.toString()} has no properties)',
+                      color: Colors.black87,
+                    ),
+                  ),
+                // Container(color: Colors.purpleAccent[100], width: double.infinity, height: 1000),
+              ],
+            ),
+          );
   }
 
   // void showCutoutOverlay({
@@ -498,7 +627,10 @@ class EditablePageState extends State<EditablePage> {
           // }
           // fco.logger.i('Rect? r = gk.globalPaintBounds...');
           // measure node
-          Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+          Rect? r = gk.globalPaintBounds(
+            skipWidthConstraintWarning: true,
+            skipHeightConstraintWarning: true,
+          );
           // if (node is PlaceholderNode) {
           //   fco.logger.i('PlaceholderNode');
           // }
@@ -512,7 +644,10 @@ class EditablePageState extends State<EditablePage> {
             // fco.logger.i('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
-            node.showTappableNodeWidgetOverlay(whiteBarrier: overlayWithABarrier, scName: widget.routePath);
+            node.showTappableNodeWidgetOverlay(
+              whiteBarrier: overlayWithABarrier,
+              scName: widget.routePath,
+            );
           }
         }
       }
@@ -571,7 +706,7 @@ class EditablePageState extends State<EditablePage> {
                 fco.dismiss(cid_EditorPassword);
                 fco.setCanEditContent(true);
                 // await FC.loadLatestSnippetMap();
-                // FlutterContentApp.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
+                // fco.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
                 // fco.afterNextBuildDo(() {
                 //   FC()
                 //       .capiBloc
@@ -579,7 +714,9 @@ class EditablePageState extends State<EditablePage> {
                 //   showDevToolsFAB();
                 // });
                 // fco.dismiss("editor-password");
-                FlutterContentApp.capiBloc.add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
+                fco.capiBloc.add(
+                  const CAPIEvent.forceRefresh(onlyTargetsWrappers: true),
+                );
               },
               onEscapedF: (_) {
                 fco.dismiss(cid_EditorPassword);
@@ -638,7 +775,11 @@ class EditablePageState extends State<EditablePage> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          fco.purpleText('Create your own editable Page', fontSize: 24, family: 'Merriweather'),
+          fco.purpleText(
+            'Create your own editable Page',
+            fontSize: 24,
+            family: 'Merriweather',
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             width: 480,
@@ -696,7 +837,7 @@ class EditablePageState extends State<EditablePage> {
                 //     });
                 //   });
                 // } else {
-                //   FlutterContentApp.capiBloc.add(
+                //   fco.capiBloc.add(
                 //       const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
                 //   context.replace(pageName);
                 // }
@@ -797,9 +938,18 @@ class EditablePageState extends State<EditablePage> {
   //       );
   //     });
 
-  void revertToVersion(VersionId? versionId, SnippetInfoModel snippetInfo, CAPIState state) {
+  void revertToVersion(
+    VersionId? versionId,
+    SnippetInfoModel snippetInfo,
+    CAPIState state,
+  ) {
     if (versionId == null) return;
-    FlutterContentApp.capiBloc.add(CAPIEvent.revertSnippet(snippetName: snippetInfo.name, versionId: fco.removeNonNumeric(versionId)));
+    fco.capiBloc.add(
+      CAPIEvent.revertSnippet(
+        snippetName: snippetInfo.name,
+        versionId: fco.removeNonNumeric(versionId),
+      ),
+    );
     fco.afterNextBuildDo(() async {
       // current snippet version will now be changed to prevId
       fco.logger.i('reverted to previous version.');
@@ -810,7 +960,7 @@ class EditablePageState extends State<EditablePage> {
       fco.dismiss(CalloutConfigToolbar.CID);
       fco.hideClipboard();
       // exitEditModeF();
-      // FlutterContentApp.capiBloc
+      // fco.capiBloc
       //     .add(const CAPIEvent.popSnippetEditor());
       // fco.dismiss(snippetName, skipOnDismiss: true);
       final revertedVersion = snippetInfo.currentVersionFromCache();

@@ -25,7 +25,7 @@ class TargetPlayBtn extends StatelessWidget {
     //     hideAllTargetCovers();
     //   }
 
-    var snippetBeingEdited = FlutterContentApp.snippetBeingEdited;
+    var snippetBeingEdited = fco.snippetBeingEdited;
     bool toolbarPresent =
         fco.anyPresent([CalloutConfigToolbar.CID], includeHidden: true);
     bool isVisible = snippetBeingEdited == null && !toolbarPresent;
@@ -51,7 +51,7 @@ class TargetPlayBtn extends StatelessWidget {
               tc,
               num: index + 1,
               bgColor: tc.calloutFillColor!.flutterValue,
-              radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+              radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
               fontSize: 14,
             ),
           )
@@ -65,7 +65,7 @@ class TargetPlayBtn extends StatelessWidget {
                     num: index + 1,
                     bgColor: tc.calloutFillColor!.flutterValue,
                     radius:
-                        FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                        fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                     fontSize: 14,
                   ),
             // onDragUpdate: (DragUpdateDetails details) {
@@ -118,7 +118,7 @@ class TargetPlayBtn extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (tc.targetsWrapperState() == null ||
-                    FlutterContentApp.snippetBeingEdited != null) {
+                    fco.snippetBeingEdited != null) {
                   return;
                 }
 
@@ -138,7 +138,7 @@ class TargetPlayBtn extends StatelessWidget {
               //   bloc.add(CAPIEvent.TargetChanged(newTC: tc));
               // },
               onDoubleTap: () {
-                if (FlutterContentApp.snippetBeingEdited != null) return;
+                if (fco.snippetBeingEdited != null) return;
                 tc.targetsWrapperState()!.setPlayingOrEditingTc(
                     tc,
                     () => TargetsWrapper.configureTarget(
@@ -151,7 +151,7 @@ class TargetPlayBtn extends StatelessWidget {
                 tc,
                 num: index + 1,
                 bgColor: tc.calloutFillColor!.flutterValue,
-                radius: FlutterContentApp.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
+                radius: fco.capiBloc.state.CAPI_TARGET_BTN_RADIUS,
                 fontSize: 14,
               ),
             ),

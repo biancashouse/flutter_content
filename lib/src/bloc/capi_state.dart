@@ -108,7 +108,80 @@ class CAPIState with _$CAPIState {
   //   return numTCs;
   // }
 
+  @override
   final double CAPI_TARGET_BTN_RADIUS = 15.0;
+
+  @override
+  // TODO: implement ONLY_TESTING
+  bool get ONLY_TESTING => throw UnimplementedError();
+
+  @override
+  // TODO: implement directoryTreeCalloutH
+  double? get directoryTreeCalloutH => throw UnimplementedError();
+
+  @override
+  // TODO: implement directoryTreeCalloutInitialPos
+  Offset? get directoryTreeCalloutInitialPos => throw UnimplementedError();
+
+  @override
+  // TODO: implement directoryTreeCalloutW
+  double? get directoryTreeCalloutW => throw UnimplementedError();
+
+  @override
+  // TODO: implement force
+  int get force => throw UnimplementedError();
+
+  @override
+  // TODO: implement hideIframes
+  bool get hideIframes => throw UnimplementedError();
+
+  @override
+  // TODO: implement hideSnippetPencilIcons
+  bool get hideSnippetPencilIcons => throw UnimplementedError();
+
+  @override
+  // TODO: implement newestTarget
+  TargetModel? get newestTarget => throw UnimplementedError();
+
+  @override
+  // TODO: implement onlyTargetsWrappers
+  bool get onlyTargetsWrappers => throw UnimplementedError();
+
+  @override
+  // TODO: implement routeName
+  String? get routeName => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectedPanel
+  String? get selectedPanel => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectedTarget
+  TargetModel? get selectedTarget => throw UnimplementedError();
+
+  @override
+  // TODO: implement showClipboardContent
+  bool get showClipboardContent => throw UnimplementedError();
+
+  @override
+  // TODO: implement snippetBeingEdited
+  SnippetBeingEdited? get snippetBeingEdited => throw UnimplementedError();
+
+  @override
+  // TODO: implement snippetNameShowingPinkOverlaysFor
+  SnippetName? get snippetNameShowingPinkOverlaysFor => throw UnimplementedError();
+
+  @override
+  // TODO: implement snippetTreeCalloutH
+  double? get snippetTreeCalloutH => throw UnimplementedError();
+
+  @override
+  // TODO: implement snippetTreeCalloutW
+  double? get snippetTreeCalloutW => throw UnimplementedError();
+
+  @override
+  // TODO: implement trainerIsSignedn
+  bool get trainerIsSignedn => throw UnimplementedError();
 
   /// total duration is sum(target durations) + transition time for each
 // int totalDurationMs() => (imageTargetListMap..map((t) => t.calloutDurationMs).reduce((a, b) => a + b)) + TRANSITION_DURATION_MS * (targets.length + 1);

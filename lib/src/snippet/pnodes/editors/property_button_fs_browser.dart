@@ -38,11 +38,11 @@ class PropertyButtonFSBrowser extends StatelessWidget {
       calloutContents: (ctx) {
         // cId:
         // fco.afterNextBuildDo((){
-        //   fco.zeroHeight(FlutterContentApp.snippetBeingEdited!.rootNode.name);
+        //   fco.zeroHeight(fco.snippetBeingEdited!.rootNode.name);
         // });
         return FSFoldersAndImagePicker(onSelectedFileF: onChangeF);
       },
-      // onDismissedF: () => fco.restoreHeight(FlutterContentApp.snippetBeingEdited!.rootNode.name),
+      // onDismissedF: () => fco.restoreHeight(fco.snippetBeingEdited!.rootNode.name),
       calloutSize: const Size(500, 400),
       notifier: ValueNotifier<int>(0),
     );

@@ -270,7 +270,7 @@ class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
                     widget.wrapperRect,
                     widget.scName,
                   );
-                  // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+                  // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
                   // fco.afterNextBuildDo(() {
                   //   removeSnippetContentCallout(tc.snippetName);
                   //   showSnippetContentCallout(

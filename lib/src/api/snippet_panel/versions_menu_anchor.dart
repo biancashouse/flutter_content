@@ -36,7 +36,7 @@ class VersionsMenuAnchor extends StatelessWidget {
     //                   color: Colors.red)),
     //         );
     //       } else {
-    //         FlutterContentApp.capiBloc.add(
+    //         fco.capiBloc.add(
     //           CAPIEvent.revertSnippet(
     //             snippetName: widget.snippet.name,
     //             versionId: fco.removeNonNumeric(versionId),
@@ -106,7 +106,7 @@ class VersionsMenuAnchor extends StatelessWidget {
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
           MenuItemButton(
             onPressed: () {
-              FlutterContentApp.capiBloc.add(CAPIEvent.publishSnippet(
+              fco.capiBloc.add(CAPIEvent.publishSnippet(
                   snippetName: snippetInfo.name,
                   versionId: snippetInfo.editingVersionId));
             },
@@ -114,7 +114,7 @@ class VersionsMenuAnchor extends StatelessWidget {
           ),
         MenuItemButton(
           onPressed: () {
-            FlutterContentApp.capiBloc.add(
+            fco.capiBloc.add(
                 CAPIEvent.toggleAutoPublishingOfSnippet(
                     snippetName: snippetInfo.name));
           },
@@ -128,15 +128,15 @@ class VersionsMenuAnchor extends StatelessWidget {
         ),
         MenuItemButton(
           onPressed: () async {
-            FlutterContentApp.capiBloc.add(CAPIEvent.copySnippetJsonToClipboard(
-              rootNode: FlutterContentApp.snippetBeingEdited!.getRootNode(),
+            fco.capiBloc.add(CAPIEvent.copySnippetJsonToClipboard(
+              rootNode: fco.snippetBeingEdited!.getRootNode(),
             ));
           },
           child: const Text('copy snippet JSON to clipboard'),
         ),
         MenuItemButton(
           onPressed: () async {
-            FlutterContentApp.capiBloc
+            fco.capiBloc
                 .add(const CAPIEvent.replaceSnippetFromJson());
           },
           child: const Text('save snippet JSON from clipboard'),

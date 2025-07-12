@@ -75,7 +75,7 @@ Future<void> showSnippetContentCallout({
 
   Widget possiblyEditableContent() => fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
 
-  final snippetBeingEdited = FlutterContentApp.snippetBeingEdited != null;
+  final snippetBeingEdited = fco.snippetBeingEdited != null;
 
   fco.showOverlay(
     targetGkF: () => fco.getTargetGk(tc.uid)!,
@@ -122,14 +122,14 @@ Future<void> showSnippetContentCallout({
         tc
           ..calloutWidth = newSize.width
           ..calloutHeight = newSize.height;
-        // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+        // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
       },
       onDragEndedF: (Offset newPos) {
         if (newPos.dy / fco.scrH != tc.calloutTopPc || newPos.dx / fco.scrW != tc.calloutLeftPc) {
           tc.calloutTopPc = newPos.dy / fco.scrH;
           tc.calloutLeftPc = newPos.dx / fco.scrW;
           tc.changed_saveRootSnippet();
-          // FlutterContentApp.capiBloc.add(
+          // fco.capiBloc.add(
           //     CAPIEvent.TargetChanged(newTC: tc, keepTargetsHidden: true));
           // bloc.add(CAPIEvent.changedCalloutPosition(tc: tc, newPos: newPos));
           // tc.setTextCalloutPos(newPos);
@@ -151,7 +151,7 @@ Future<void> showSnippetContentCallout({
       // }
       onDismissedF: () {
         // FCO.parentTW(twName)?.zoomer?.resetTransform();
-        // FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+        // fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
         fco.dismiss(CalloutConfigToolbar.CID);
       },
       barrier:

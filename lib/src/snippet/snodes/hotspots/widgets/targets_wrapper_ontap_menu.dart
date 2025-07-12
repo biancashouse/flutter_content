@@ -132,7 +132,7 @@ class TargetsWrapperOnTapMenu extends StatelessWidget {
 
     parentNode.targets = [...parentNode.targets, newTC];
     // widget.parentNode.targets.add(newTC);
-    FlutterContentApp.capiBloc
+    fco.capiBloc
         .add(const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
 
     fco.saveNewVersion(snippet: parentNode.rootNodeOfSnippet()!);

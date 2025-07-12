@@ -210,16 +210,16 @@ class FlutterPollState extends State<FlutterPoll> {
     voterId = fco.localStorage.read("vea") ?? 'anon';
     // firestore
     OptionVoteCountMap counts =
-        await FlutterContentApp.capiBloc.modelRepo.getPollOptionVoteCounts(
+        await fco.capiBloc.modelRepo.getPollOptionVoteCounts(
       pollName: widget.poll.name,
     );
     UserVoterRecord? usersVote =
-        await FlutterContentApp.capiBloc.modelRepo.getUsersVote(
+        await fco.capiBloc.modelRepo.getUsersVote(
       pollName: widget.poll.name,
       voterId: voterId,
     );
     pollBloc = PollBloC(
-      modelRepo: FlutterContentApp.capiBloc.modelRepo,
+      modelRepo: fco.capiBloc.modelRepo,
       voterId: voterId,
       pollName: widget.poll.name,
       starts: widget.startDate,

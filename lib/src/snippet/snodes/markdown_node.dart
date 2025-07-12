@@ -2,8 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 part 'markdown_node.mapper.dart';
 
@@ -11,8 +10,8 @@ part 'markdown_node.mapper.dart';
 class MarkdownNode extends CL with MarkdownNodeMappable {
   String data;
 
-  MarkdownNode(
-      {this.data = """
+  MarkdownNode({
+    this.data = """
 # Markdown Example
 Markdown allows you to easily include formatted text, images, and even formatted
 Dart code in your app.
@@ -126,61 +125,56 @@ line 2
 
 
 line 3
-"""});
+""",
+  });
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
-    FlutterDocPNode(
-        buttonLabel: 'Markdown',
-        webLink:
-        'https://pub.dev/packages/flutter_markdown',
-        snode: this,
-        name: 'fyi'),
-    StringPNode(
-          snode: this,
-          name: 'data',
-          nameOnSeparateLine: true,
-          expands: true,
-          numLines: 9999,
-          stringValue: data,
-          onStringChange: (newValue) {
-            refreshWithUpdate(context,() => data = newValue ?? '');
-          },
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 300,
-        ),
-      ];
+    FlutterDocPNode(buttonLabel: 'Markdown', webLink: 'https://pub.dev/packages/flutter_markdown', snode: this, name: 'fyi'),
+    FlutterDocPNode(buttonLabel: 'Markdown Editor Plus', webLink: 'https://pub.dev/packages/markdown_editor_plus', snode: this, name: 'fyi2'),
+    // MarkdownPNode(
+    //   snode: this,
+    //   name: 'data',
+    //   stringValue: data,
+    //   onStringChange: (newValue) {
+    //     refreshWithUpdate(context, () => data = newValue ?? '');
+    //   },
+    //   calloutButtonSize: const Size(280, 32),
+    //   calloutWidth: fco.scrW * .8,
+    //   calloutHeight: fco.scrH * .8,
+    // ),
+  ];
 
   @override
   Widget toWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
-    //ScrollControllerName? scName = EditablePage.name(context);
-    //possiblyHighlightSelectedNode(scName);
+      //ScrollControllerName? scName = EditablePage.name(context);
+      //possiblyHighlightSelectedNode(scName);
       return Markdown(
-            key: createNodeWidgetGK(),
-            data: data,
-            styleSheet: MarkdownStyleSheet(
-              h1: const TextStyle(color: Colors.red),
-              p: const TextStyle(color: Colors.black),
-              a: const TextStyle(color: Colors.blue),
-              codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
-              code: const TextStyle(color: Colors.purple),
-            ),
-            onTapLink: (String text, String? href, String title) async {
-              if (href != null) {
-                try {
-                  Uri url = Uri.parse(href);
-                  if (!await launchUrl(url)) {
-                    throw Exception('Could not launch $href');
-                  }
-                } catch (e) {
-                  fco.logger.d('Following exception ignored:');
-                  fco.logger.e('', error:e);
-                }
+        key: createNodeWidgetGK(),
+        data: data,
+        styleSheet: MarkdownStyleSheet(
+          h1: const TextStyle(color: Colors.red),
+          p: const TextStyle(color: Colors.black),
+          a: const TextStyle(color: Colors.blue),
+          codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
+          code: const TextStyle(color: Colors.purple),
+        ),
+        onTapLink: (String text, String? href, String title) async {
+          if (href != null) {
+            try {
+              Uri url = Uri.parse(href);
+              if (!await launchUrl(url)) {
+                throw Exception('Could not launch $href');
               }
-            },
-          );
+            } catch (e) {
+              fco.logger.d('Following exception ignored:');
+              fco.logger.e('', error: e);
+            }
+          }
+        },
+      );
     } catch (e) {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());
     }

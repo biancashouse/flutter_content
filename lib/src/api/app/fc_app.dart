@@ -2,15 +2,12 @@
 
 import 'dart:async';
 
-// import 'package:context_menus/context_menus.dart';
 import 'package:flutter/foundation.dart';
 
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:go_router/go_router.dart';
 
 // conditional import for webview ------------------
@@ -39,25 +36,13 @@ class FlutterContentApp extends StatefulWidget {
   // --- globally available -----------------------------------------------------
   static CAPIBloC? _singletonBloc;
 
-  static CAPIBloC get capiBloc {
+  static CAPIBloC? get capiBloc {
     assert(
       _singletonBloc != null,
       "FlutterContentApp's CAPIBloc has not been initialized. Ensure FlutterContentApp is at the root of your widget tree and has completed its setup.",
     );
     return _singletonBloc!;
   }
-
-  static CAPIState get capiState => _singletonBloc!.state;
-
-  static SnippetBeingEdited? get snippetBeingEdited => capiState.snippetBeingEdited;
-
-  static bool get inSelectWidgetMode => capiState.inSelectWidgetMode;
-
-  static SNode? get selectedNode => snippetBeingEdited?.selectedNode;
-
-  static bool get showProperties => snippetBeingEdited?.showProperties ?? false;
-
-  static bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
 
   // --- globally available -----------------------------------------------------
 
@@ -96,7 +81,7 @@ class FlutterContentApp extends StatefulWidget {
 
 // Ticker available for use by Callouts; i.e. vsync: MaterialAppWrapper.of(context)
 class FlutterContentAppState extends State<FlutterContentApp> with TickerProviderStateMixin {
-  late Future<CAPIBloC> fInitApp;
+  late Future<CAPIBloC?> fInitApp;
   int tapCount = 0;
   DateTime? lastTapTime;
 
@@ -144,7 +129,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
   }
 
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
-  Future<CAPIBloC> _initApp() async {
+  Future<CAPIBloC?> _initApp() async {
     // If a bloc already exists due to a previous initialization (perhaps after hot restart
     // where the static variable persisted but the widget state re-initialized).
     if (FlutterContentApp._singletonBloc != null) {
@@ -154,7 +139,8 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
       widget.onReadyF?.call();
       return FlutterContentApp._singletonBloc!;
     }
-    CAPIBloC capiBloc = await fco.init(
+
+    FlutterContentApp._singletonBloc = await fco.init(
       appName: widget.appName,
       editorPasswords: widget.editorPasswords,
       fbOptions: widget.fbOptions,
@@ -163,24 +149,19 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
       routingConfig: widget.routingConfig,
       initialRoutePath: widget.initialRoutePath,
     );
-    // fco.logger.d("_initApp() after");
 
-    widget.onReadyF?.call();
+    // must yield a Bloc or abort app
+    if (FlutterContentApp._singletonBloc != null) {
+      // fco.logger.d("_initApp() after");
 
-    SNode.hideAllTargetCovers();
-    // trigger another build
-    // fco.afterNextBuildDo(() {
-    //   fco.afterMsDelayDo(1000, () async {
-    //     fco.logger.i('============================================================================');
-    //     fco.logger.i('================   ${fco.appName}-${await fco.versionAndBuild}  ==========');
-    //     fco.logger.i('============================================================================');
-    //     fco.forceRefresh();
-    //   });
-    // });
+      widget.onReadyF?.call();
 
-    widget.alsoInitF?.call();
+      SNode.hideAllTargetCovers();
 
-    return FlutterContentApp._singletonBloc = capiBloc;
+      widget.alsoInitF?.call();
+    }
+
+    return FlutterContentApp._singletonBloc;
   }
 
   // ytController = YoutubePlayerController.fromVideoId(
@@ -191,17 +172,24 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
 
   @override
   Widget build(context) {
-    return FutureBuilder<CAPIBloC>(
+    return FutureBuilder<CAPIBloC?>(
       future: fInitApp,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           return BlocProvider<CAPIBloC>(
-            create: (BuildContext context) => FlutterContentApp.capiBloc,
+            create: (BuildContext context) => FlutterContentApp.capiBloc!,
             child: MaterialApp.router(
               routerConfig: fco.router,
               theme: widget.materialAppThemeF(),
-              darkTheme: ThemeData.dark(),
-              // themeMode: App.bloc.state.darkMode ? ThemeMode.dark : ThemeMode.light,
+              darkTheme: ThemeData(
+                brightness: Brightness.light,
+                primarySwatch: Colors.purple,
+                // ... other dark theme properties
+                scaffoldBackgroundColor: Colors.black54,
+                // Example
+                textTheme: TextTheme(bodyMedium: TextStyle(color: Colors.black87)),
+                appBarTheme: AppBarTheme(backgroundColor: Colors.grey[850]),
+              ),
               debugShowCheckedModeBanner: false,
               title: widget.title,
               scrollBehavior: const ConstantScrollBehavior(),

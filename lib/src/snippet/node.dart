@@ -106,7 +106,7 @@ abstract class Node extends Object {
   //       ],
   //     );
 
-  CAPIBloC get capiBloc => FlutterContentApp.capiBloc;
+  CAPIBloC get capiBloc => fco.capiBloc;
 
   Node();
 }

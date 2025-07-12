@@ -45,14 +45,14 @@ class TargetCover extends StatelessWidget {
     // fco.logger.i('_draggableTarget');
     double radius = tc.getScale() * tc.radius;
     return Visibility(
-      visible: true, //FlutterContentApp.snippetBeingEdited == null,
+      visible: true, //fco.snippetBeingEdited == null,
       child: SizedBox(
         width: tc.radius * 2,
         height: tc.radius * 2,
         child: GestureDetector(
           onTap: () {
             if (tc.targetsWrapperState() == null ||
-                FlutterContentApp.snippetBeingEdited != null) {
+                fco.snippetBeingEdited != null) {
               return;
             }
 
@@ -78,7 +78,7 @@ class TargetCover extends StatelessWidget {
             }
           },
           onDoubleTap: () async {
-            if (FlutterContentApp.snippetBeingEdited != null) return;
+            if (fco.snippetBeingEdited != null) return;
             tc.targetsWrapperState()!.setPlayingOrEditingTc(
             tc,
               ()=>TargetsWrapper.configureTarget(

@@ -22,7 +22,7 @@ class TargetColourTool extends StatelessWidget {
   });
 
   // late ArrowType _arrowType;
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   @override
   Widget build(BuildContext context) {

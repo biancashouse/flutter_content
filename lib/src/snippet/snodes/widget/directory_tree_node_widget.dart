@@ -45,7 +45,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
     );
   }
 
-  Widget _name(context) {
+  Widget _name(BuildContext context) {
     SnippetPanelState? snippet = SnippetPanel.of(context);
     String snippetName = snippet?.widget.snippetName ?? '???!!!';
     return GestureDetector(
@@ -68,7 +68,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     if (snippet?.mounted ?? false) {
-                      FlutterContentApp.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                      fco.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
                     }
                   },
                   child: _text(),
@@ -77,7 +77,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
             )
           : InkWell(
               onTap: () {
-                FlutterContentApp.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
+                fco.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
               child: (entry.node as FileNode).toWidget(context, entry.node),
             ),

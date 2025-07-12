@@ -19,13 +19,13 @@ class ClipboardNodeWidget extends StatelessWidget {
     this.onClipboard = false,
   });
 
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        bool selected = FlutterContentApp.snippetBeingEdited?.selectedNode == entry.node;
+        bool selected = fco.snippetBeingEdited?.selectedNode == entry.node;
         ThemeData themeData = Theme.of(context);
         // TreeEntry<Node>? parentEntry = entry.parent;
 

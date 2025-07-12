@@ -31,4 +31,28 @@ class PollState with _$PollState {
   bool tooEarly() => startDate != null && DateTime.now().millisecondsSinceEpoch < startDate!;
   bool pollHasEnded() => endDate != null && DateTime.now().millisecondsSinceEpoch > endDate!;
 
+  @override
+  // TODO: implement endDate
+  int? get endDate => throw UnimplementedError();
+
+  @override
+  // TODO: implement locked
+  get locked => throw UnimplementedError();
+
+  @override
+  // TODO: implement optionVoteCounts
+  OptionVoteCountMap get optionVoteCounts => throw UnimplementedError();
+
+  @override
+  // TODO: implement pollName
+  String get pollName => throw UnimplementedError();
+
+  @override
+  // TODO: implement startDate
+  int? get startDate => throw UnimplementedError();
+
+  @override
+  // TODO: implement userVote
+  UserVoterRecord? get userVote => throw UnimplementedError();
+
 }

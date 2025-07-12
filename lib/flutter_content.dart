@@ -6,13 +6,15 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart' show Reference, FirebaseStorage;
+import 'package:firebase_storage/firebase_storage.dart'
+    show Reference, FirebaseStorage;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/button_styles.dart';
 import 'package:flutter_content/container_styles.dart';
 import 'package:flutter_content/google_font_names.dart';
+import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/can-edit-content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
 import 'package:flutter_content/src/pages.dart';
@@ -252,7 +254,8 @@ class FlutterContentMixins
     // logi('FlutterContentMixins._internal() private constructor');
   }
 
-  static final FlutterContentMixins _instance = FlutterContentMixins._internal();
+  static final FlutterContentMixins _instance =
+      FlutterContentMixins._internal();
 
   // called by _initApp() to set the late variables
   Future<CAPIBloC> init({
@@ -267,7 +270,8 @@ class FlutterContentMixins
     Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     required RoutingConfig routingConfig,
     required String initialRoutePath,
-    bool skipAssetPkgName = false, // would only use true when pkg dir is actually inside current project
+    bool skipAssetPkgName =
+        false, // would only use true when pkg dir is actually inside current project
   }) async {
     await initLocalStorage();
 
@@ -305,7 +309,10 @@ class FlutterContentMixins
               title: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(40),
-                child: fco.coloredText('Viewing the Page list:\nYou must be signed in as an editor !', color: Colors.red),
+                child: fco.coloredText(
+                  'Viewing the Page list:\nYou must be signed in as an editor !',
+                  color: Colors.red,
+                ),
               ),
             );
           }
@@ -347,12 +354,21 @@ class FlutterContentMixins
           EditablePage.removeAllNodeWidgetOverlays();
           // fco.dismiss('exit-editMode');
           final snippetName = matchedLocation;
-          final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode);
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            templateSnippetRootNode: rootNode,
+          );
           final dynamicPage = EditablePage(
             key: GlobalKey(), // provides access to state later
             routePath: matchedLocation,
-            child: SnippetPanel.fromSnippet(panelName: "dynamic panel", snippetName: snippetName, scName: null, key: ValueKey<String>(snippetName)),
+            child: SnippetPanel.fromSnippet(
+              panelName: "dynamic panel",
+              snippetName: snippetName,
+              scName: null,
+              key: ValueKey<String>(snippetName),
+            ),
           );
           return dynamicPage;
         }
@@ -361,7 +377,11 @@ class FlutterContentMixins
         if (authenticated.isTrue) {
           return AlertDialog(
             title: Text('Page "$matchedLocation" does not Exist !'),
-            content: SingleChildScrollView(child: ListBody(children: const <Widget>[Text('Want to create it now ?')])),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[Text('Want to create it now ?')],
+              ),
+            ),
             actions: <Widget>[
               TextButton(
                 child: Text('Yes, Create page $matchedLocation'),
@@ -371,10 +391,12 @@ class FlutterContentMixins
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = destUrl;
-                  final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((
-                    _,
-                  ) {
+                  final rootNode = SnippetTemplateEnum.empty.clone()
+                    ..name = snippetName;
+                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                    snippetName: snippetName,
+                    templateSnippetRootNode: rootNode,
+                  ).then((_) {
                     afterNextBuildDo(() {
                       // SnippetInfoModel.snippetInfoCache;
                       router.push(destUrl);
@@ -400,8 +422,12 @@ class FlutterContentMixins
           // fco.dismiss('exit-editMode');
           // bool userCanEdit = canEditContent.isTrue;
           final snippetName = destUrl;
-          final rootNode = SnippetTemplateEnum.empty.clone()..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(snippetName: snippetName, templateSnippetRootNode: rootNode).then((_) {
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            templateSnippetRootNode: rootNode,
+          ).then((_) {
             afterNextBuildDo(() {
               // SnippetInfoModel.snippetInfoCache;
               router.push(destUrl);
@@ -418,7 +444,9 @@ class FlutterContentMixins
                 Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Text('You must be signed in as an editor to create this page.'),
+                    Text(
+                      'You must be signed in as an editor to create this page.',
+                    ),
                     Gap(10),
                     ElevatedButton(
                       onPressed: () {
@@ -475,7 +503,8 @@ class FlutterContentMixins
       // fco.logger.i('init 1. ${fco.stopwatch.elapsedMilliseconds}');
 
       modelRepo = FireStoreModelRepository(fbOptions);
-      await (modelRepo as FireStoreModelRepository).possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
+      await (modelRepo as FireStoreModelRepository)
+          .possiblyInitFireStoreRelatedAPIs(useEmulator: useEmulator);
 
       // fco.logger.i('init 2. ${fco.stopwatch.elapsedMilliseconds}');
 
@@ -503,7 +532,10 @@ class FlutterContentMixins
       // RouteBase home = routingConfig.routes.first;
       for (String snippetName in appInfo.snippetNames) {
         if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
-          addSubRoute(newPath: snippetName, template: SnippetTemplateEnum.empty);
+          addSubRoute(
+            newPath: snippetName,
+            template: SnippetTemplateEnum.empty,
+          );
         }
       }
 
@@ -521,12 +553,15 @@ class FlutterContentMixins
 
     if (useFBStorage) {
       // traverse all nodes starting at root
-      final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(ref: folderPathRef('/'));
+      final fsRootFolderNode = await modelRepo.createAndPopulateFolderTree(
+        ref: folderPathRef('/'),
+      );
 
       fsTreeC = TreeController<FSFolderNode>(
         roots: [fsRootFolderNode],
         childrenProvider: (FSFolderNode node) => node.children,
-        parentProvider: (FSFolderNode node) => node.getParent() as FSFolderNode?,
+        parentProvider: (FSFolderNode node) =>
+            node.getParent() as FSFolderNode?,
       )..expand(fsRootFolderNode);
     }
 
@@ -582,6 +617,19 @@ class FlutterContentMixins
 
   late TapGestureRecognizer webLinkF;
 
+  CAPIBloC get capiBloc => FlutterContentApp
+      .capiBloc!; // won't have got this far unless have a valid instance
+  SnippetBeingEdited? get snippetBeingEdited =>
+      capiBloc.state.snippetBeingEdited;
+
+  bool get inSelectWidgetMode => capiBloc.state.inSelectWidgetMode;
+
+  SNode? get selectedNode => snippetBeingEdited?.selectedNode;
+
+  bool get showProperties => snippetBeingEdited?.showProperties ?? false;
+
+  bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
+
   List<String> get pageList {
     List<RouteBase> allRoutes = [];
 
@@ -606,7 +654,10 @@ class FlutterContentMixins
         .toList();
   }
 
-  void addSubRoute({required String newPath, required SnippetTemplateEnum template}) {
+  void addSubRoute({
+    required String newPath,
+    required SnippetTemplateEnum template,
+  }) {
     List<RouteBase> subRoutes = routingConfigVN.value.routes;
     if (!newPath.endsWith(' missing')) {
       subRoutes.add(DynamicPageRoute(path: newPath, template: template));
@@ -629,7 +680,10 @@ class FlutterContentMixins
         templateSnippetRootNode: SnippetRootNode(
           name: contentCId,
           child: CenterNode(
-            child: TextNode(text: contentCId, tsPropGroup: TextStyleProperties()),
+            child: TextNode(
+              text: contentCId,
+              tsPropGroup: TextStyleProperties(),
+            ),
           ),
         ),
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
@@ -670,10 +724,14 @@ class FlutterContentMixins
       return;
     }
 
-    String? snippetName = snippet!.name.startsWith('/') ? snippet.name.substring(1) : snippet.name;
+    String? snippetName = snippet!.name.startsWith('/')
+        ? snippet.name.substring(1)
+        : snippet.name;
 
     // only does following i.i. a new snippet
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      snippetName,
+    );
     if (snippetInfo != null) {
       // remove all subsequent versions following the current version
       // before saving new version
@@ -703,7 +761,10 @@ class FlutterContentMixins
     }
 
     // write new version to FB
-    await fco._cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippet);
+    await fco._cacheAndSaveANewSnippetVersion(
+      snippetName: snippetName,
+      rootNode: snippet,
+    );
   }
 
   // create new snippet version in cache, then write through to FB
@@ -719,7 +780,9 @@ class FlutterContentMixins
     VersionId newVersionId = DateTime.now().millisecondsSinceEpoch.toString();
 
     // update or create SnippetInfo
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+      snippetName,
+    );
 
     VersionId currVersionId = snippetInfo?.currentVersionId() ?? '?!';
 
@@ -753,17 +816,25 @@ class FlutterContentMixins
     snippetInfo.cachedVersions[newVersionId] = rootNode;
 
     // try to write new version to FB
-    bool fbSuccess = await modelRepo.saveSnippetVersion(snippetName: snippetName, newVersionId: newVersionId, newVersion: rootNode);
+    bool fbSuccess = await modelRepo.saveSnippetVersion(
+      snippetName: snippetName,
+      newVersionId: newVersionId,
+      newVersion: rootNode,
+    );
 
     if (!fbSuccess) {
-      logger.i('cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !');
+      logger.i(
+        'cacheAndSaveANewSnippetVersion($snippetName) -  not fbSuccess !',
+      );
     } else {
       // reset current version to before change
-      String? origSnippetJson = FlutterContentApp.capiState.snippetBeingEdited?.jsonBeforeAnyChange;
+      String? origSnippetJson = snippetBeingEdited?.jsonBeforeAnyChange;
       if (origSnippetJson != null) {
-        SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(origSnippetJson);
+        SnippetRootNode? origSnippet = SnippetRootNodeMapper.fromJson(
+          origSnippetJson,
+        );
         snippetInfo.cachedVersions[currVersionId] = origSnippet;
-        FlutterContentApp.capiState.snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
+        snippetBeingEdited!.jsonBeforeAnyChange = rootNode.toJson();
       }
     }
   }
@@ -806,27 +877,39 @@ class FlutterContentMixins
   // set when user taps a snippet triangle
   // final inEditMode = ValueNotifier<bool>(false);
 
-  void forceRefresh({bool onlyTargetsWrappers = false}) =>
-      FlutterContentApp.capiBloc.add(CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers));
+  void forceRefresh({bool onlyTargetsWrappers = false}) => fco.capiBloc.add(
+    CAPIEvent.forceRefresh(onlyTargetsWrappers: onlyTargetsWrappers),
+  );
 
   Future<void> setCanEditContent(bool b) async {
     authenticated.value = b;
     return await localStorage.write("canEditContent", b);
   }
 
-  Offset calloutConfigToolbarPos() => _calloutConfigToolbarPos ?? Offset(scrW / 2 - 350, calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90);
+  Offset calloutConfigToolbarPos() =>
+      _calloutConfigToolbarPos ??
+      Offset(
+        scrW / 2 - 350,
+        calloutConfigToolbarAtTopOfScreen ? 10 : scrH - 90,
+      );
 
-  void setCalloutConfigToolbarPos(Offset newPos) => _calloutConfigToolbarPos = newPos;
+  void setCalloutConfigToolbarPos(Offset newPos) =>
+      _calloutConfigToolbarPos = newPos;
 
-  Offset devToolsFABPos(context) => _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
+  Offset devToolsFABPos(context) =>
+      _devToolsFABPos ?? Offset(40, MediaQuery.sizeOf(context).height - 100);
 
   void setDevToolsFABPos(Offset newPos) => _devToolsFABPos = newPos;
 
   bool? showingNodeBoundaryOverlays;
 
-  void Function(BuildContext p1) registerHandler(HandlerName name, void Function(BuildContext) f) => _handlers[name] = f;
+  void Function(BuildContext p1) registerHandler(
+    HandlerName name,
+    void Function(BuildContext) f,
+  ) => _handlers[name] = f;
 
-  void Function(BuildContext)? namedHandler(HandlerName name) => _handlers[name];
+  void Function(BuildContext)? namedHandler(HandlerName name) =>
+      _handlers[name];
 
   String? currentEditablePagePath; // gets set by EditablePage initState()
 
@@ -874,7 +957,8 @@ class FlutterContentMixins
   /// A FlutterContentPage has a snippet with the same route name
   // void pushPage({required String routeName, required String path}) {}
 
-  Reference folderPathRef(String folderPath) => FirebaseStorage.instance.ref('/${fco.appName}$folderPath');
+  Reference folderPathRef(String folderPath) =>
+      FirebaseStorage.instance.ref('/${fco.appName}$folderPath');
 
   final GksByFeature _calloutGkMap = {};
 
@@ -982,7 +1066,8 @@ class FlutterContentMixins
 
   ContainerStyleName? findContainerStyleName(ContainerStyleProperties props) {
     for (ContainerStyleName csName in _appInfo.userContainerStyles.keys) {
-      ContainerStyleProperties namedCSProps = _appInfo.userContainerStyles[csName]!;
+      ContainerStyleProperties namedCSProps =
+          _appInfo.userContainerStyles[csName]!;
       if (namedCSProps == props) {
         return csName;
       }
@@ -1132,7 +1217,7 @@ class FlutterContentMixins
   //       if (w != null) return w.abs();
   //
   //       // if (root?.child == null) return 190;
-  //       w = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
+  //       w = min(fco.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
   //       return w > 0 ? w : 500;
   //     }
   //
@@ -1143,7 +1228,7 @@ class FlutterContentMixins
   //       // if (root?.child == null) return 60;
   // // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
   // // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-  //       h = min(FlutterContentApp.capiBloc.state.snippetTreeCalloutH ?? 500,
+  //       h = min(fco.capiBloc.state.snippetTreeCalloutH ?? 500,
   //           fco.scrH - 50);
   //       return h > 0 ? h : 500;
   //     }
@@ -1194,10 +1279,10 @@ class FlutterContentMixins
   //         localStorage.write("snippet-tree-callout-height", newSize.height);
   //       },
   //       onDragStartedF: () {
-  //         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = true;
+  //         fco.selectedNode?.hidePropertiesWhileDragging = true;
   //       },
   //       onDragEndedF: (_) {
-  //         FlutterContentApp.selectedNode?.hidePropertiesWhileDragging = false;
+  //         fco.selectedNode?.hidePropertiesWhileDragging = false;
   //       },
   //       scrollControllerName: scName,
   //     );
@@ -1214,7 +1299,7 @@ class FlutterContentMixins
   //     TargetModel? targetBeingConfigured,
   //   }) async {
   //     SnippetRootNode? rootNode =
-  //         FlutterContentApp.snippetBeingEdited?.getRootNode();
+  //         fco.snippetBeingEdited?.getRootNode();
   //     if (rootNode == null) return;
   //
   //     // dismiss any pink border overlays
@@ -1229,11 +1314,11 @@ class FlutterContentMixins
   //     // to check for any change
   //     // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
   //     // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  //     // String? originalClipboardJson = FlutterContentApp.capiBloc.state.jsonClipboard;
+  //     // String? originalClipboardJson = fco.capiBloc.state.jsonClipboard;
   //     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
   //
   //     // CalloutConfig cc = snippetTreeCalloutConfig(
-  //     //   cId: FlutterContentApp.snippetBeingEdited!.getRootNode().name,
+  //     //   cId: fco.snippetBeingEdited!.getRootNode().name,
   //     //   onDismissedF: onDismissedF,
   //     // );
   //     //
@@ -1250,7 +1335,7 @@ class FlutterContentMixins
   //
   //     // imm select a node
   //     STreeNode sel = selectedNode;
-  //     FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(
+  //     fco.capiBloc.add(CAPIEvent.selectNode(
   //       node: sel,
   //       //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
   // // imageTC: tc,

@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,282 +9,284 @@ part of 'poll_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$PollState {
-  String get pollName => throw _privateConstructorUsedError;
-  int? get startDate => throw _privateConstructorUsedError;
-  int? get endDate => throw _privateConstructorUsedError;
-  Map<String, int> get optionVoteCounts => throw _privateConstructorUsedError;
-  ({String? optionId, int? when})? get userVote =>
-      throw _privateConstructorUsedError;
-  dynamic get locked => throw _privateConstructorUsedError;
 
-  /// Create a copy of PollState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $PollStateCopyWith<PollState> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get pollName; int? get startDate; int? get endDate; OptionVoteCountMap get optionVoteCounts; UserVoterRecord? get userVote; dynamic get locked;
+/// Create a copy of PollState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PollStateCopyWith<PollState> get copyWith => _$PollStateCopyWithImpl<PollState>(this as PollState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollState&&(identical(other.pollName, pollName) || other.pollName == pollName)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&const DeepCollectionEquality().equals(other.optionVoteCounts, optionVoteCounts)&&(identical(other.userVote, userVote) || other.userVote == userVote)&&const DeepCollectionEquality().equals(other.locked, locked));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,pollName,startDate,endDate,const DeepCollectionEquality().hash(optionVoteCounts),userVote,const DeepCollectionEquality().hash(locked));
+
+@override
+String toString() {
+  return 'PollState(pollName: $pollName, startDate: $startDate, endDate: $endDate, optionVoteCounts: $optionVoteCounts, userVote: $userVote, locked: $locked)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $PollStateCopyWith<$Res> {
-  factory $PollStateCopyWith(PollState value, $Res Function(PollState) then) =
-      _$PollStateCopyWithImpl<$Res, PollState>;
-  @useResult
-  $Res call({
-    String pollName,
-    int? startDate,
-    int? endDate,
-    Map<String, int> optionVoteCounts,
-    ({String? optionId, int? when})? userVote,
-    dynamic locked,
-  });
-}
+abstract mixin class $PollStateCopyWith<$Res>  {
+  factory $PollStateCopyWith(PollState value, $Res Function(PollState) _then) = _$PollStateCopyWithImpl;
+@useResult
+$Res call({
+ String pollName, int? startDate, int? endDate, OptionVoteCountMap optionVoteCounts, UserVoterRecord? userVote, dynamic locked
+});
 
+
+
+
+}
 /// @nodoc
-class _$PollStateCopyWithImpl<$Res, $Val extends PollState>
+class _$PollStateCopyWithImpl<$Res>
     implements $PollStateCopyWith<$Res> {
-  _$PollStateCopyWithImpl(this._value, this._then);
+  _$PollStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final PollState _self;
+  final $Res Function(PollState) _then;
 
-  /// Create a copy of PollState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? pollName = null,
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-    Object? optionVoteCounts = null,
-    Object? userVote = freezed,
-    Object? locked = freezed,
-  }) {
-    return _then(
-      _value.copyWith(
-            pollName:
-                null == pollName
-                    ? _value.pollName
-                    : pollName // ignore: cast_nullable_to_non_nullable
-                        as String,
-            startDate:
-                freezed == startDate
-                    ? _value.startDate
-                    : startDate // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            endDate:
-                freezed == endDate
-                    ? _value.endDate
-                    : endDate // ignore: cast_nullable_to_non_nullable
-                        as int?,
-            optionVoteCounts:
-                null == optionVoteCounts
-                    ? _value.optionVoteCounts
-                    : optionVoteCounts // ignore: cast_nullable_to_non_nullable
-                        as Map<String, int>,
-            userVote:
-                freezed == userVote
-                    ? _value.userVote
-                    : userVote // ignore: cast_nullable_to_non_nullable
-                        as ({String? optionId, int? when})?,
-            locked:
-                freezed == locked
-                    ? _value.locked
-                    : locked // ignore: cast_nullable_to_non_nullable
-                        as dynamic,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of PollState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? pollName = null,Object? startDate = freezed,Object? endDate = freezed,Object? optionVoteCounts = null,Object? userVote = freezed,Object? locked = freezed,}) {
+  return _then(_self.copyWith(
+pollName: null == pollName ? _self.pollName : pollName // ignore: cast_nullable_to_non_nullable
+as String,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as int?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as int?,optionVoteCounts: null == optionVoteCounts ? _self.optionVoteCounts : optionVoteCounts // ignore: cast_nullable_to_non_nullable
+as OptionVoteCountMap,userVote: freezed == userVote ? _self.userVote : userVote // ignore: cast_nullable_to_non_nullable
+as UserVoterRecord?,locked: freezed == locked ? _self.locked : locked // ignore: cast_nullable_to_non_nullable
+as dynamic,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PollState].
+extension PollStatePatterns on PollState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PollState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PollState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PollState value)  $default,){
+final _that = this;
+switch (_that) {
+case _PollState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PollState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PollState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String pollName,  int? startDate,  int? endDate,  OptionVoteCountMap optionVoteCounts,  UserVoterRecord? userVote,  dynamic locked)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PollState() when $default != null:
+return $default(_that.pollName,_that.startDate,_that.endDate,_that.optionVoteCounts,_that.userVote,_that.locked);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String pollName,  int? startDate,  int? endDate,  OptionVoteCountMap optionVoteCounts,  UserVoterRecord? userVote,  dynamic locked)  $default,) {final _that = this;
+switch (_that) {
+case _PollState():
+return $default(_that.pollName,_that.startDate,_that.endDate,_that.optionVoteCounts,_that.userVote,_that.locked);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String pollName,  int? startDate,  int? endDate,  OptionVoteCountMap optionVoteCounts,  UserVoterRecord? userVote,  dynamic locked)?  $default,) {final _that = this;
+switch (_that) {
+case _PollState() when $default != null:
+return $default(_that.pollName,_that.startDate,_that.endDate,_that.optionVoteCounts,_that.userVote,_that.locked);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$PollStateImplCopyWith<$Res>
-    implements $PollStateCopyWith<$Res> {
-  factory _$$PollStateImplCopyWith(
-    _$PollStateImpl value,
-    $Res Function(_$PollStateImpl) then,
-  ) = __$$PollStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    String pollName,
-    int? startDate,
-    int? endDate,
-    Map<String, int> optionVoteCounts,
-    ({String? optionId, int? when})? userVote,
-    dynamic locked,
-  });
+
+
+class _PollState extends PollState {
+   _PollState({required this.pollName, this.startDate, this.endDate, required final  OptionVoteCountMap optionVoteCounts, this.userVote, this.locked = false}): _optionVoteCounts = optionVoteCounts,super._();
+  
+
+@override final  String pollName;
+@override final  int? startDate;
+@override final  int? endDate;
+ final  OptionVoteCountMap _optionVoteCounts;
+@override OptionVoteCountMap get optionVoteCounts {
+  if (_optionVoteCounts is EqualUnmodifiableMapView) return _optionVoteCounts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_optionVoteCounts);
+}
+
+@override final  UserVoterRecord? userVote;
+@override@JsonKey() final  dynamic locked;
+
+/// Create a copy of PollState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PollStateCopyWith<_PollState> get copyWith => __$PollStateCopyWithImpl<_PollState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollState&&(identical(other.pollName, pollName) || other.pollName == pollName)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&const DeepCollectionEquality().equals(other._optionVoteCounts, _optionVoteCounts)&&(identical(other.userVote, userVote) || other.userVote == userVote)&&const DeepCollectionEquality().equals(other.locked, locked));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,pollName,startDate,endDate,const DeepCollectionEquality().hash(_optionVoteCounts),userVote,const DeepCollectionEquality().hash(locked));
+
+@override
+String toString() {
+  return 'PollState(pollName: $pollName, startDate: $startDate, endDate: $endDate, optionVoteCounts: $optionVoteCounts, userVote: $userVote, locked: $locked)';
+}
+
+
 }
 
 /// @nodoc
-class __$$PollStateImplCopyWithImpl<$Res>
-    extends _$PollStateCopyWithImpl<$Res, _$PollStateImpl>
-    implements _$$PollStateImplCopyWith<$Res> {
-  __$$PollStateImplCopyWithImpl(
-    _$PollStateImpl _value,
-    $Res Function(_$PollStateImpl) _then,
-  ) : super(_value, _then);
+abstract mixin class _$PollStateCopyWith<$Res> implements $PollStateCopyWith<$Res> {
+  factory _$PollStateCopyWith(_PollState value, $Res Function(_PollState) _then) = __$PollStateCopyWithImpl;
+@override @useResult
+$Res call({
+ String pollName, int? startDate, int? endDate, OptionVoteCountMap optionVoteCounts, UserVoterRecord? userVote, dynamic locked
+});
 
-  /// Create a copy of PollState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? pollName = null,
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-    Object? optionVoteCounts = null,
-    Object? userVote = freezed,
-    Object? locked = freezed,
-  }) {
-    return _then(
-      _$PollStateImpl(
-        pollName:
-            null == pollName
-                ? _value.pollName
-                : pollName // ignore: cast_nullable_to_non_nullable
-                    as String,
-        startDate:
-            freezed == startDate
-                ? _value.startDate
-                : startDate // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        endDate:
-            freezed == endDate
-                ? _value.endDate
-                : endDate // ignore: cast_nullable_to_non_nullable
-                    as int?,
-        optionVoteCounts:
-            null == optionVoteCounts
-                ? _value._optionVoteCounts
-                : optionVoteCounts // ignore: cast_nullable_to_non_nullable
-                    as Map<String, int>,
-        userVote:
-            freezed == userVote
-                ? _value.userVote
-                : userVote // ignore: cast_nullable_to_non_nullable
-                    as ({String? optionId, int? when})?,
-        locked: freezed == locked ? _value.locked! : locked,
-      ),
-    );
-  }
+
+
+
 }
-
 /// @nodoc
+class __$PollStateCopyWithImpl<$Res>
+    implements _$PollStateCopyWith<$Res> {
+  __$PollStateCopyWithImpl(this._self, this._then);
 
-class _$PollStateImpl extends _PollState {
-  _$PollStateImpl({
-    required this.pollName,
-    this.startDate,
-    this.endDate,
-    required final Map<String, int> optionVoteCounts,
-    this.userVote,
-    this.locked = false,
-  }) : _optionVoteCounts = optionVoteCounts,
-       super._();
+  final _PollState _self;
+  final $Res Function(_PollState) _then;
 
-  @override
-  final String pollName;
-  @override
-  final int? startDate;
-  @override
-  final int? endDate;
-  final Map<String, int> _optionVoteCounts;
-  @override
-  Map<String, int> get optionVoteCounts {
-    if (_optionVoteCounts is EqualUnmodifiableMapView) return _optionVoteCounts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_optionVoteCounts);
-  }
-
-  @override
-  final ({String? optionId, int? when})? userVote;
-  @override
-  @JsonKey()
-  final dynamic locked;
-
-  @override
-  String toString() {
-    return 'PollState(pollName: $pollName, startDate: $startDate, endDate: $endDate, optionVoteCounts: $optionVoteCounts, userVote: $userVote, locked: $locked)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PollStateImpl &&
-            (identical(other.pollName, pollName) ||
-                other.pollName == pollName) &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate) &&
-            const DeepCollectionEquality().equals(
-              other._optionVoteCounts,
-              _optionVoteCounts,
-            ) &&
-            (identical(other.userVote, userVote) ||
-                other.userVote == userVote) &&
-            const DeepCollectionEquality().equals(other.locked, locked));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    pollName,
-    startDate,
-    endDate,
-    const DeepCollectionEquality().hash(_optionVoteCounts),
-    userVote,
-    const DeepCollectionEquality().hash(locked),
-  );
-
-  /// Create a copy of PollState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PollStateImplCopyWith<_$PollStateImpl> get copyWith =>
-      __$$PollStateImplCopyWithImpl<_$PollStateImpl>(this, _$identity);
+/// Create a copy of PollState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? pollName = null,Object? startDate = freezed,Object? endDate = freezed,Object? optionVoteCounts = null,Object? userVote = freezed,Object? locked = freezed,}) {
+  return _then(_PollState(
+pollName: null == pollName ? _self.pollName : pollName // ignore: cast_nullable_to_non_nullable
+as String,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
+as int?,endDate: freezed == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as int?,optionVoteCounts: null == optionVoteCounts ? _self._optionVoteCounts : optionVoteCounts // ignore: cast_nullable_to_non_nullable
+as OptionVoteCountMap,userVote: freezed == userVote ? _self.userVote : userVote // ignore: cast_nullable_to_non_nullable
+as UserVoterRecord?,locked: freezed == locked ? _self.locked : locked // ignore: cast_nullable_to_non_nullable
+as dynamic,
+  ));
 }
 
-abstract class _PollState extends PollState {
-  factory _PollState({
-    required final String pollName,
-    final int? startDate,
-    final int? endDate,
-    required final Map<String, int> optionVoteCounts,
-    final ({String? optionId, int? when})? userVote,
-    final dynamic locked,
-  }) = _$PollStateImpl;
-  _PollState._() : super._();
 
-  @override
-  String get pollName;
-  @override
-  int? get startDate;
-  @override
-  int? get endDate;
-  @override
-  Map<String, int> get optionVoteCounts;
-  @override
-  ({String? optionId, int? when})? get userVote;
-  @override
-  dynamic get locked;
-
-  /// Create a copy of PollState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PollStateImplCopyWith<_$PollStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on

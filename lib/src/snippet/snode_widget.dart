@@ -31,7 +31,7 @@ class SNodeWidget extends StatelessWidget {
     // bool selected = FCO.capiBloc.selectedNode == entry.node;
 
     Color boxColor =
-        FlutterContentApp.snippetBeingEdited!.nodeBeingDeleted == entry.node
+        fco.snippetBeingEdited!.nodeBeingDeleted == entry.node
             ? Colors.red
             : entry.node is GenericSingleChildNode
             ? Colors.transparent
@@ -44,9 +44,9 @@ class SNodeWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          // key: FlutterContentApp.aNodeIsSelected &&
-          //         FlutterContentApp.selectedNode == entry.node
-          //     ? FlutterContentApp.snippetBeingEdited!.selectedTreeNodeGK
+          // key: fco.aNodeIsSelected &&
+          //         fco.selectedNode == entry.node
+          //     ? fco.snippetBeingEdited!.selectedTreeNodeGK
           //     : null,
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -147,7 +147,7 @@ class SNodeWidget extends StatelessWidget {
     //   return;
     // };
 
-    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected && entry.node == FlutterContentApp.selectedNode) {
+    if (fco.snippetBeingEdited!.aNodeIsSelected && entry.node == fco.selectedNode) {
       return;
     }
 
@@ -159,13 +159,13 @@ class SNodeWidget extends StatelessWidget {
 
     // fco.dismiss(TREENODE_MENU_CALLOUT);
 
-    bool thisWasAlreadySelected = (entry.node == FlutterContentApp.selectedNode);
+    bool thisWasAlreadySelected = (entry.node == fco.selectedNode);
 
-    if (FlutterContentApp.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
+    if (fco.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
       fco.hide("floating-clipboard");
       fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-      FlutterContentApp.capiBloc.add(CAPIEvent.clearNodeSelection());
-    } else if (!FlutterContentApp.snippetBeingEdited!.aNodeIsSelected || !thisWasAlreadySelected) {
+      fco.capiBloc.add(CAPIEvent.clearNodeSelection());
+    } else if (!fco.snippetBeingEdited!.aNodeIsSelected || !thisWasAlreadySelected) {
       if (fco.clipboard != null) {
         fco.unhide("floating-clipboard");
       }
@@ -173,7 +173,7 @@ class SNodeWidget extends StatelessWidget {
       // Rect? borderRect = entry.node.calcBborderRect();
       fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
 
-      FlutterContentApp.capiBloc.add(
+      fco.capiBloc.add(
         CAPIEvent.selectNode(
           node: entry.node,
           // imageTC: tc,
@@ -199,11 +199,11 @@ class SNodeWidget extends StatelessWidget {
     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
     fco.hide("floating-clipboard");
 
-    FlutterContentApp.capiBloc.add(CAPIEvent.selectNode(node: node));
+    fco.capiBloc.add(CAPIEvent.selectNode(node: node));
     fco.afterNextBuildDo(() {
-      // fco.afterMsDelayDo(100, () {
+      fco.afterMsDelayDo(700, () {
         _showNodeWidgetMenu(context, details, node);
-      // });
+      });
     });
   }
 
@@ -268,7 +268,7 @@ class SNodeWidget extends StatelessWidget {
   // }
 
   Widget _text() {
-    var selectedNode = FlutterContentApp.selectedNode;
+    var selectedNode = fco.selectedNode;
     var node = entry.node;
 
     String displayedNodeName =
@@ -325,7 +325,7 @@ class SNodeWidget extends StatelessWidget {
                         (gc?.propertyName == 'title' || gc?.propertyName == 'content')) {
                       return;
                     }
-                    FlutterContentApp.capiBloc.add(CAPIEvent.cutNode(node: node, scName: scName));
+                    fco.capiBloc.add(CAPIEvent.cutNode(node: node, scName: scName));
                     fco.afterNextBuildDo(() {
                       fco.dismiss('node-actions');
                       if (fco.clipboard != null) {
@@ -338,7 +338,7 @@ class SNodeWidget extends StatelessWidget {
                     Icons.cut,
                     color: Colors.orange.withValues(
                       alpha:
-                          !FlutterContentApp.aNodeIsSelected ||
+                          !fco.aNodeIsSelected ||
                                   node is SnippetRootNode ||
                                   gc is GenericSingleChildNode? &&
                                       gc?.getParent() is StepNode &&
@@ -354,7 +354,7 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     fco.afterNextBuildDo(() {
-                      FlutterContentApp.capiBloc.add(CAPIEvent.copyNode(node: node, scName: scName));
+                      fco.capiBloc.add(CAPIEvent.copyNode(node: node, scName: scName));
                       fco.afterNextBuildDo(() {
                         fco.dismiss('node-actions');
                         if (fco.clipboard != null) {
@@ -366,7 +366,7 @@ class SNodeWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.copy,
-                    color: Colors.green.withValues(alpha: FlutterContentApp.aNodeIsSelected && node is! SnippetRootNode ? 1.0 : .25),
+                    color: Colors.green.withValues(alpha: fco.aNodeIsSelected && node is! SnippetRootNode ? 1.0 : .25),
                   ),
                   tooltip: 'Copy',
                 ),
@@ -379,10 +379,10 @@ class SNodeWidget extends StatelessWidget {
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
                     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
-                    FlutterContentApp.capiBloc.add(const CAPIEvent.deleteNodeTapped());
+                    fco.capiBloc.add(const CAPIEvent.deleteNodeTapped());
                     fco.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
-                      FlutterContentApp.capiBloc.add(const CAPIEvent.completeDeletion());
+                      fco.capiBloc.add(const CAPIEvent.completeDeletion());
                       fco.afterNextBuildDo(() {
                         fco.dismiss('node-actions');
                         // if was tab or tabview, reset the tab Q and controller
@@ -406,7 +406,7 @@ class SNodeWidget extends StatelessWidget {
                     Icons.delete,
                     color: Colors.red.withValues(
                       alpha:
-                          !FlutterContentApp.aNodeIsSelected ||
+                          !fco.aNodeIsSelected ||
                                   !node.canBeDeleted() ||
                                   (node is SnippetRootNode && node.getParent() == null) ||
                                   (gc is GenericSingleChildNode? &&
@@ -426,7 +426,7 @@ class SNodeWidget extends StatelessWidget {
                         selectedNode: node,
                         //targetGKF: () => targetGK,
                         saveModelF: (s) {
-                          FlutterContentApp.capiBloc.add(CAPIEvent.saveNodeAsSnippet(node: node, newSnippetName: s));
+                          fco.capiBloc.add(CAPIEvent.saveNodeAsSnippet(node: node, newSnippetName: s));
                           fco.afterNextBuildDo(() {
                             fco.dismiss("input-snippet-name");
                             fco.dismiss('node-actions');

@@ -45,3 +45,4 @@ app.*.map.json
 /android/app/release
 
 lib/bh-apps.firebase_options.dart
+/macos/

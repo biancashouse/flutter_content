@@ -51,11 +51,11 @@ class MoreCalloutConfigSettings extends StatefulWidget {
           barrier: CalloutBarrierConfig(
             opacity: 0.1,
             // onTappedF: () async {
-            //   // FlutterContentApp.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
+            //   // fco.capiBloc.add(CAPIEvent.TargetModelChanged(newTC: tc));
             //   fco.dismiss("more-cc-settings");
             //   removeSnippetContentCallout(tc.snippetName);
             //   FCO.parentTW(twName)?.zoomer?.resetTransform();
-            //   FlutterContentApp.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
+            //   fco.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
             //   // fco.afterNextBuildDo(() {
             //   //   showSnippetContentCallout(
             //   //     twName: twName,
@@ -79,7 +79,7 @@ class MoreCalloutConfigSettings extends StatefulWidget {
 class _MoreCalloutConfigSettingsState extends State<MoreCalloutConfigSettings> {
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   @override
   void initState() {

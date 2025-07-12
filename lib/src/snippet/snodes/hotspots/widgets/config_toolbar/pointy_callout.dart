@@ -70,7 +70,7 @@ class _PointyToolState extends State<PointyTool> {
 
   TargetModel get tc => widget.tc;
 
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   @override
   void initState() {

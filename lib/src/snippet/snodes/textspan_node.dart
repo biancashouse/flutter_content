@@ -116,7 +116,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       }
       return TextSpan(
         text: text ?? "",
-        recognizer: webLink != null && (FlutterContentApp.snippetBeingEdited == null) ? WebLinkTapGestureRecognizer(webLink!) : null,
+        recognizer: webLink != null && (fco.snippetBeingEdited == null) ? WebLinkTapGestureRecognizer(webLink!) : null,
         style: ts,
         children: children
             ?.map<InlineSpan>(

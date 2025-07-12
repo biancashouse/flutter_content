@@ -47,10 +47,10 @@ class StringOrNumberEditor extends StatefulWidget {
   });
 
   @override
-  FC_TextEditorState createState() => FC_TextEditorState();
+  StringOrNumberEditorState createState() => StringOrNumberEditorState();
 }
 
-class FC_TextEditorState extends State<StringOrNumberEditor> {
+class StringOrNumberEditorState extends State<StringOrNumberEditor> {
   late TextEditingController _txtController;
   bool passwordVisible = false;
   late FocusNode _focusNode;

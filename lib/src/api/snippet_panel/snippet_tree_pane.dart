@@ -10,8 +10,8 @@ class SnippetTreePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var sbe = FlutterContentApp.snippetBeingEdited;
-    var rootNode = sbe?.getRootNode();
+    // var sbe = fco.snippetBeingEdited;
+    // var rootNode = sbe?.getRootNode();
 
     return Material(
       color: Colors.purple.shade200,
@@ -27,72 +27,68 @@ class SnippetTreePane extends StatelessWidget {
           child: SizedBox(
             width: 700,
             height: 1200,
-            child: Builder(builder: (context) {
-              // final STreeNode? selectedNode = selectedNode;
-              // bool canShowNavigateUpBtn = true;
-              // if (FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-              //     .getParent() == null) canShowNavigateUpBtn = false;
-              // if (FlutterContentApp.snippetBeingEdited?.treeC.roots.first.getParent() is SnippetRootNode &&
-              //     FlutterContentApp.snippetBeingEdited?.treeC.roots.first.getParent()?.getParent() ==
-              //         null) {
-              //   canShowNavigateUpBtn = false;
-              // }
-              // if (FlutterContentApp.snippetBeingEdited?.getRootNode() !=
-              //     FlutterContentApp.snippetBeingEdited?.treeC.roots.first &&
-              //     FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-              //     is! ScaffoldNode) {
-              //   return Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     mainAxisAlignment: MainAxisAlignment.start,
-              //     mainAxisSize: MainAxisSize.min,
-              //     children: [
-              //       if (canShowNavigateUpBtn) navigateUpTreeButton(),
-              //       Expanded(
-              //           child: SnippetTreeView(
-              //             scName: scName,
-              //           )),
-              //     ],
-              //   );
-              // }
-              // fco.logger.i('SnippetTreeView...');
-              return SnippetTreeView(
-                scName: scName,
-              );
-            }),
+            child: Builder(
+              builder: (context) {
+                // final STreeNode? selectedNode = selectedNode;
+                // bool canShowNavigateUpBtn = true;
+                // if (fco.snippetBeingEdited?.treeC.roots.first
+                //     .getParent() == null) canShowNavigateUpBtn = false;
+                // if (fco.snippetBeingEdited?.treeC.roots.first.getParent() is SnippetRootNode &&
+                //     fco.snippetBeingEdited?.treeC.roots.first.getParent()?.getParent() ==
+                //         null) {
+                //   canShowNavigateUpBtn = false;
+                // }
+                // if (fco.snippetBeingEdited?.getRootNode() !=
+                //     fco.snippetBeingEdited?.treeC.roots.first &&
+                //     fco.snippetBeingEdited?.treeC.roots.first
+                //     is! ScaffoldNode) {
+                //   return Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     mainAxisAlignment: MainAxisAlignment.start,
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       if (canShowNavigateUpBtn) navigateUpTreeButton(),
+                //       Expanded(
+                //           child: SnippetTreeView(
+                //             scName: scName,
+                //           )),
+                //     ],
+                //   );
+                // }
+                // fco.logger.i('SnippetTreeView...');
+                return SnippetTreeView(scName: scName);
+              },
+            ),
           ),
         ),
       ),
     );
 
     // tbd
-    if (FlutterContentApp.snippetBeingEdited?.getRootNode().child == null) {
-      List<Widget> menuChildren = FlutterContentApp.snippetBeingEdited
-              ?.getRootNode()
-              .menuAnchorWidgets(NodeAction.addChild, scName) ??
-          [];
+    if (fco.snippetBeingEdited?.getRootNode().child == null) {
+      List<Widget> menuChildren = fco.snippetBeingEdited?.getRootNode().menuAnchorWidgets(NodeAction.addChild, scName) ?? [];
       return MenuAnchor(
         alignmentOffset: const Offset(80, 0),
         menuChildren: menuChildren,
-        builder:
-            (BuildContext context, MenuController controller, Widget? child) {
+        builder: (BuildContext context, MenuController controller, Widget? child) {
           return Center(
-              child: TextButton.icon(
-            key: key,
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('add root widget'),
-            style: ButtonStyle(
-              backgroundColor:
-                  WidgetStatePropertyAll(Colors.white.withValues(alpha: .9)),
-              //padding: WidgetStatePropertyAll(EdgeInsets.zero),
+            child: TextButton.icon(
+              key: key,
+              onPressed: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('add root widget'),
+              style: ButtonStyle(
+                backgroundColor: WidgetStatePropertyAll(Colors.white.withValues(alpha: .9)),
+                //padding: WidgetStatePropertyAll(EdgeInsets.zero),
+              ),
             ),
-          ));
+          );
         },
       );
     } else {
@@ -108,45 +104,33 @@ class SnippetTreePane extends StatelessWidget {
             child: SizedBox(
               width: 700,
               height: 1200,
-              child: Builder(builder: (context) {
-                // final STreeNode? selectedNode = selectedNode;
-                bool canShowNavigateUpBtn = true;
-                if (FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-                        .getParent() ==
-                    null) {
-                  canShowNavigateUpBtn = false;
-                }
-                if (FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-                        .getParent() is SnippetRootNode &&
-                    FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-                            .getParent()
-                            ?.getParent() ==
-                        null) {
-                  canShowNavigateUpBtn = false;
-                }
-                if (FlutterContentApp.snippetBeingEdited?.getRootNode() !=
-                        FlutterContentApp
-                            .snippetBeingEdited?.treeC.roots.first &&
-                    FlutterContentApp.snippetBeingEdited?.treeC.roots.first
-                        is! ScaffoldNode) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // if (canShowNavigateUpBtn) navigateUpTreeButton(),
-                      Expanded(
-                          child: SnippetTreeView(
-                        scName: scName,
-                      )),
-                    ],
-                  );
-                }
-                // fco.logger.i('SnippetTreeView...');
-                return SnippetTreeView(
-                  scName: scName,
-                );
-              }),
+              child: Builder(
+                builder: (context) {
+                  // final STreeNode? selectedNode = selectedNode;
+                  bool canShowNavigateUpBtn = true;
+                  if (fco.snippetBeingEdited?.treeC.roots.first.getParent() == null) {
+                    canShowNavigateUpBtn = false;
+                  }
+                  if (fco.snippetBeingEdited?.treeC.roots.first.getParent() is SnippetRootNode &&
+                      fco.snippetBeingEdited?.treeC.roots.first.getParent()?.getParent() == null) {
+                    canShowNavigateUpBtn = false;
+                  }
+                  if (fco.snippetBeingEdited?.getRootNode() != fco.snippetBeingEdited?.treeC.roots.first &&
+                      fco.snippetBeingEdited?.treeC.roots.first is! ScaffoldNode) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // if (canShowNavigateUpBtn) navigateUpTreeButton(),
+                        Expanded(child: SnippetTreeView(scName: scName)),
+                      ],
+                    );
+                  }
+                  // fco.logger.i('SnippetTreeView...');
+                  return SnippetTreeView(scName: scName);
+                },
+              ),
             ),
           ),
         ),
@@ -209,7 +193,7 @@ class SnippetTreePane extends StatelessWidget {
   // static void navigateUpTree(ScrollControllerName? scName) {
   //   // change tree root to parent
   //   SNode treeRootNode =
-  //       FlutterContentApp.snippetBeingEdited!.treeC.roots.first;
+  //       fco.snippetBeingEdited!.treeC.roots.first;
   //   SNode? parent = treeRootNode.getParent() as SNode?;
   //   if (parent is GenericSingleChildNode) {
   //     parent = parent.getParent() as SNode?;

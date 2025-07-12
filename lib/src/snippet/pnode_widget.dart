@@ -28,7 +28,7 @@ class PNodeWidget extends StatefulWidget {
 }
 
 class _PNodeWidgetState extends State<PNodeWidget> {
-  CAPIBloC get bloc => FlutterContentApp.capiBloc;
+  CAPIBloC get bloc => fco.capiBloc;
 
   PNode get propertyNode => widget.entry.node;
 

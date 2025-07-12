@@ -15,7 +15,7 @@ class ClipboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CAPIBloC bloc = FlutterContentApp.capiBloc;
+    CAPIBloC bloc = fco.capiBloc;
     SNode? clipboard = fco.clipboard;
     if (clipboard == null) return const Offstage();
     SnippetTreeController clipboardTreeC = SnippetTreeController(

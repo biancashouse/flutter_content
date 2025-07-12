@@ -350,8 +350,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     state.snippetBeingEdited!.selectedNode = null;
     state.snippetBeingEdited!.showProperties = false;
 
-    // if (event.scName != null) {
-    // double savedOffset = NamedScrollController.scrollOffset(event.scName);
+    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
 
     emit(state.copyWith(force: state.force + 1));
 
