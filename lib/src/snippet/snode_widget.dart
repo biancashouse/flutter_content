@@ -96,7 +96,7 @@ class SNodeWidget extends StatelessWidget {
     final isRootNode = entry.node is SnippetRootNode;
     return Tooltip(
       message: isRootNode && entry.node.getParent() != null ? 'double tap to edit this snippet' : '',
-      child: InkWell(
+      child: GestureDetector(
         // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
         // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
         onDoubleTap: () async {
@@ -122,8 +122,11 @@ class SNodeWidget extends StatelessWidget {
         onTap: () {
           _tappedNode();
         },
-        onSecondaryTapUp: (TapUpDetails details) {
-          _longPressedNode(context, details, entry.node);
+        onSecondaryTapUp: fco.isIOS ? null : (TapUpDetails details) {
+          _longPressedNode(context, details.globalPosition, entry.node);
+        },
+        onLongPressStart: !fco.isIOS ? null : (LongPressStartDetails details){
+          _longPressedNode(context, details.globalPosition, entry.node);
         },
         child:
             entry.node is DirectoryNode
@@ -193,7 +196,7 @@ class SNodeWidget extends StatelessWidget {
     }
   }
 
-  void _longPressedNode(BuildContext context, TapUpDetails details, SNode node) {
+  void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {
     // clear sel
     fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
     fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
@@ -202,12 +205,12 @@ class SNodeWidget extends StatelessWidget {
     fco.capiBloc.add(CAPIEvent.selectNode(node: node));
     fco.afterNextBuildDo(() {
       fco.afterMsDelayDo(700, () {
-        _showNodeWidgetMenu(context, details, node);
+        _showNodeWidgetMenu(context, tapPos, node);
       });
     });
   }
 
-  void _showNodeWidgetMenu(BuildContext context, TapUpDetails details, SNode node) {
+  void _showNodeWidgetMenu(BuildContext context, Offset tapPos, SNode node) {
     fco.showOverlay(
       calloutConfig: CalloutConfigModel(
         cId: 'node-actions',
@@ -216,7 +219,7 @@ class SNodeWidget extends StatelessWidget {
         initialCalloutH: 220,
         initialTargetAlignment: AlignmentEnum.centerRight,
         initialCalloutAlignment: AlignmentEnum.centerLeft,
-        initialCalloutPos: OffsetModel.fromOffset(details.globalPosition),
+        initialCalloutPos: OffsetModel.fromOffset(tapPos),
         finalSeparation: 300,
         arrowType: ArrowTypeEnum.THIN,
         arrowColor: ColorModel.fromColor(Colors.white),
