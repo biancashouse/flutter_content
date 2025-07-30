@@ -620,7 +620,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.4.0"
+    version: "3.5.0"
   flutter_hooks:
     dependency: transitive
     description:

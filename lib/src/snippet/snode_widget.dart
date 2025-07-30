@@ -99,8 +99,15 @@ class SNodeWidget extends StatelessWidget {
       child: GestureDetector(
         // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
         // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
-        onDoubleTap: () async {
-          if (entry.node is! SnippetRootNode || entry.node.getParent() == null) return;
+        onDoubleTapDown: (TapDownDetails details) async {
+          if (entry.node.getParent() == null) {
+            return;
+          }
+
+          if (entry.node is! SnippetRootNode) {
+            _longPressedNode(context, details.globalPosition, entry.node);
+            return;
+          }
 
           fco.dismissAll();
 
@@ -125,9 +132,9 @@ class SNodeWidget extends StatelessWidget {
         onSecondaryTapUp: fco.isIOS ? null : (TapUpDetails details) {
           _longPressedNode(context, details.globalPosition, entry.node);
         },
-        onLongPressStart: !fco.isIOS ? null : (LongPressStartDetails details){
-          _longPressedNode(context, details.globalPosition, entry.node);
-        },
+        // onLongPressStart: !fco.isIOS ? null : (LongPressStartDetails details){
+        //   _longPressedNode(context, details.globalPosition, entry.node);
+        // },
         child:
             entry.node is DirectoryNode
                 ? Row(
