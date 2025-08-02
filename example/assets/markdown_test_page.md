@@ -164,7 +164,7 @@ and even formatted Dart code in your app.
 
 void main() {
   runApp(
-    MaterialApp(
+    FC_MaterialApp(
       title: "Markdown Demo",
       home: Scaffold(
         appBar: AppBar(

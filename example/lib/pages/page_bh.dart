@@ -260,9 +260,10 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
       onTap: () async {
         fco.dismissAll();
         final url = Uri(scheme: 'https', host: 'algorithmcreator.com');
+        final ctx = fco.rootContext;
         if (await canLaunchUrl(url)) {
           await launchUrl(url);
-          ScaffoldMessenger.of(fco.rootContext).hideCurrentSnackBar();
+          ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
         }
       },
     ),

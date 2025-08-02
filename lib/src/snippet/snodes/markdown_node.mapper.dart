@@ -95,7 +95,7 @@ Formatted Dart code looks really pretty too:
 
 ```
 void main() {
-  runApp(MaterialApp(
+  runApp(FC_MaterialApp(
     home: Scaffold(
       body: Markdown(data: markdownData),
     ),

@@ -23,6 +23,10 @@ dev_dependencies:
 
   flutter_lints: any
 
+false_secrets:
+  - /lib/bh-apps.firebase_options.dart
+  - /lib/bh-apps.firebase_options.dart
+
 flutter:
 
   uses-material-design: true
@@ -30,8 +34,6 @@ flutter:
   assets:
     - assets/images/
 
-false_secrets:
-  - /lib/bh-apps.firebase_options.dart
 
 
 

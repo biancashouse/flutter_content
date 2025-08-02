@@ -610,17 +610,17 @@ packages:
     dependency: transitive
     description:
       name: flutter_callouts
-      sha256: f320d1c48d0014526c011abe96716d47f8bb302e748a25b743f25d405c620efb
+      sha256: "960d5f6a037374d51c7493eda198e59d163e9394543f338ea5f13e403a300d78"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "7.0.4"
   flutter_content:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "3.5.0"
+    version: "3.6.1"
   flutter_hooks:
     dependency: transitive
     description:

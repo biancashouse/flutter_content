@@ -33,7 +33,7 @@ class ClipboardNodeWidget extends StatelessWidget {
             ? (entry.node as SnippetRootNode).name
             : (entry.node as SNode).toString();
 
-        Size textSize = calculateTextSize(
+        Size textSize = fco.calculateTextSize(
           text: displayedNodeName,
           numLines: 1,
           style: DefaultTextStyle.of(context).style,

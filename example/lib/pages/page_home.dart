@@ -39,18 +39,18 @@ class _Page_HomeState extends State<Page_Home> {
       );
 
       fco.namedCallbacks['sample-popup'] = (context, gk) => fco.showOverlay(
-            calloutConfig: cc,
-            calloutContent: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('This is a dynamic popup invoked by a named callback.'),
-                ],
-              ),
-            ),
-            targetGkF: () => gk,
-          );
+        calloutConfig: cc,
+        calloutContent: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('This is a dynamic popup invoked by a named callback.'),
+            ],
+          ),
+        ),
+        targetGkF: () => gk,
+      );
     });
 
     super.initState();
@@ -58,7 +58,6 @@ class _Page_HomeState extends State<Page_Home> {
 
   @override
   Widget build(BuildContext context) {
-
     // final vea = fco.localStorage.getString('vea') ?? 'anon';
     final vea = fco.localStorage.read('vea') ?? 'anon';
     final title = vea != 'anon'
@@ -92,11 +91,8 @@ class _Page_HomeState extends State<Page_Home> {
     int counter = 0;
 
     final scaffold = StatefulBuilder(
-      builder: (BuildContext context, st) =>
-      Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
+      builder: (BuildContext context, st) => Scaffold(
+        appBar: AppBar(title: Text(title)),
         body: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
@@ -108,9 +104,7 @@ class _Page_HomeState extends State<Page_Home> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'You have pushed the button this many times:',
-                    ),
+                    const Text('You have pushed the button this many times:'),
                     Text(
                       '$counter',
                       style: Theme.of(context).textTheme.headlineMedium,
@@ -118,15 +112,14 @@ class _Page_HomeState extends State<Page_Home> {
                   ],
                 ),
               ),
-              Flexible(
-                flex: 4,
-                child: sp,
-              ),
+              Flexible(flex: 4, child: sp),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: ()=>st((){-counter++;}),
+          onPressed: () => st(() {
+            -counter++;
+          }),
           // tooltip: 'Increment',
           child: const Icon(Icons.add),
         ), // This trailing comma makes auto-formatting nicer for build methods.

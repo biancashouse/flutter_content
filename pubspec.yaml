@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 3.6.0
+version: 3.7.0
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
@@ -91,7 +91,6 @@ dependencies:
 #  routing_config_provider:
 #    path: ../routing_config_provider_pkg
 
-  flutter_callouts: ^6.2.0
 #    path: ../flutter_callouts
 
   dart_mappable: ^4.2.2
@@ -131,6 +130,8 @@ dependencies:
 #  markdown_toolbar: ^0.5.0
 
   file_picker: ^10.2.0
+  flutter_callouts: ^7.0.4
+#    path: ../flutter_callouts
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

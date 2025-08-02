@@ -121,7 +121,6 @@ export 'src/gotits/gotits_helper_string.dart';
 export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
-export 'src/measuring/text_measuring.dart';
 export 'src/model/app_info_model.dart';
 
 // export 'src/model/branch_model.dart';
@@ -245,7 +244,6 @@ class FlutterContentMixins
         LocalStorageMixin,
         WidgetHelperMixin,
         CanvasMixin,
-        MQMixin,
         GotitsMixin,
         PasswordlessMixin,
         NavMixin {
@@ -290,6 +288,7 @@ class FlutterContentMixins
     // setPathUrlStrategy();
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
+      navigatorKey: fco.globalNavigatorKey,
       debugLogDiagnostics: false,
       initialLocation: initialRoutePath,
       routingConfig: routingConfigVN,

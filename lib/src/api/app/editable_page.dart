@@ -113,13 +113,6 @@ class EditablePageState extends State<EditablePage> {
   }
 
   @override
-  void didChangeDependencies() {
-    /// initialize the Callouts API with the root context
-    fco.initWithContext(context);
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (context, state) =>

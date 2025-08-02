@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 
@@ -178,7 +179,7 @@ class FlutterContentAppState extends State<FlutterContentApp> with TickerProvide
         if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
           return BlocProvider<CAPIBloC>(
             create: (BuildContext context) => FlutterContentApp.capiBloc!,
-            child: MaterialApp.router(
+            child: FC_MaterialApp.router(
               routerConfig: fco.router,
               theme: widget.materialAppThemeF(),
               darkTheme: ThemeData(
