@@ -479,7 +479,6 @@ class EditablePageState extends State<EditablePage> {
                           hoverColor: Colors.white30,
                           onPressed: () async {},
                           icon: VersionsMenuAnchor(snippetInfo: snippetInfo),
-                          tooltip: 'version...',
                         ),
                         IconButton(
                           onPressed: () {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor_with_edit_menu_item.dart';
 
 import 'tr_triangle_painter.dart';
 
@@ -236,6 +237,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // final hideSnippetPanel =
             //     inEditModeValue && snippetName() != snippetInEditMode;
 
+            SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName());
+
             Widget snippetWidget = Stack(
               children: [
                 snippet.toWidget(futureContext, null),
@@ -277,13 +280,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                         height: 20,
                         alignment: Alignment.topRight,
                         child: pageIsEditable || isCID
-                            ? IconButton(
-                                onPressed: () => _tappedTraingle(isCID),
-                                iconSize: 16,
-                                padding: EdgeInsets.zero,
-                                icon: const Icon(Icons.edit),
-                                color: Colors.white,
-                              )
+                            ? SnippetTriangleMenuAnchor(snippetInfo:snippetInfo!)
                             // Icon(Icons.select_all, size: 20, color: Colors.white)
                             : const Offstage(),
                       ),
