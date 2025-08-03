@@ -665,10 +665,9 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      name: flutter_callouts
-      sha256: fbf8715261329658ca4156114edfd17f8c91148fb000009ed97b73e36540f406
-      url: "https://pub.dev"
-    source: hosted
+      path: "../flutter_callouts"
+      relative: true
+    source: path
     version: "7.2.0"
   flutter_hooks:
     dependency: "direct main"

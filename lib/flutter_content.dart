@@ -11,9 +11,6 @@ import 'package:firebase_storage/firebase_storage.dart'
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
-import 'package:flutter_content/button_styles.dart';
-import 'package:flutter_content/container_styles.dart';
-import 'package:flutter_content/google_font_names.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/can-edit-content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
@@ -23,21 +20,25 @@ import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+
+// import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
 import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
-import 'package:flutter_content/text_styles.dart';
+import 'package:flutter_content/x_flutter_content/google_font_names_extn.dart';
+import 'package:flutter_content/x_flutter_content/container_styles_extn.dart';
+import 'package:flutter_content/x_flutter_content/button_styles_extn.dart';
+import 'package:flutter_content/x_flutter_content/text_styles_extn.dart';
+import 'package:flutter_content/x_flutter_content/routes_extn.dart';
 import 'package:gap/gap.dart';
 
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
 // import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'src/api/app/dynamic_page_route.dart';
 import 'src/api/app/editable_page.dart';
 import 'src/api/app/fc_app.dart';
 import 'src/api/snippet_panel/clipboard_view.dart';
@@ -54,6 +55,11 @@ import 'src/snippet/pnode.dart';
 import 'src/snippet/snode.dart';
 import 'src/snippet/snodes/snippet_root_node.dart';
 import 'src/typedefs.dart';
+export 'x_flutter_content/google_font_names_extn.dart';
+export 'x_flutter_content/text_styles_extn.dart';
+export 'x_flutter_content/button_styles_extn.dart';
+export 'x_flutter_content/container_styles_extn.dart';
+export 'x_flutter_content/routes_extn.dart';
 
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
@@ -206,6 +212,7 @@ export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
 export 'package:flutter_content/src/model/model_repo.dart';
 export 'package:flutter_content/src/model/firestore_model_repo.dart';
+export 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
@@ -265,7 +272,7 @@ class FlutterContentMixins
     final IModelRepository? testModelRepo,
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
-    Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
+    // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
     required RoutingConfig routingConfig,
     required String initialRoutePath,
     bool skipAssetPkgName =
@@ -470,28 +477,9 @@ class FlutterContentMixins
       },
       observers: [GoRouterObserver()],
     );
-
-    // extract go routes
-    void parseRouteConfig(List<String> names, List<RouteBase> routes) {
-      for (var route in routes) {
-        if (route is GoRoute && route.name != null) names.add(route.name!);
-        parseRouteConfig(names, route.routes);
-      }
-    }
-
     List<String> routePaths = [];
     // logi('starting parseRouteConfig');
     parseRouteConfig(routePaths, router.configuration.routes);
-
-    // hard-wired route
-    // router.configuration.routes.add(GoRoute(
-    //     path: '/callout-content-editor',
-    //     builder: (BuildContext context, GoRouterState state) =>
-    //         CalloutContentEditablePage(
-    //           tcAndFrom: state.extra as (TargetModel, String),
-    //           key: GlobalKey(),
-    //         )));
-
     // logi('finished parseRouteConfig');
 
     // logi('RoutingConfig Routes------------');
@@ -618,6 +606,7 @@ class FlutterContentMixins
 
   CAPIBloC get capiBloc => FlutterContentApp
       .capiBloc!; // won't have got this far unless have a valid instance
+
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
 
@@ -628,49 +617,6 @@ class FlutterContentMixins
   bool get showProperties => snippetBeingEdited?.showProperties ?? false;
 
   bool get aNodeIsSelected => snippetBeingEdited?.selectedNode != null;
-
-  List<String> get pageList {
-    List<RouteBase> allRoutes = [];
-
-    void routes(List<RouteBase> parentRoutes) {
-      for (RouteBase route in parentRoutes) {
-        allRoutes.add(route);
-        if (route.routes.isNotEmpty) {
-          routes(route.routes);
-        }
-      }
-    }
-
-    routes(routingConfigVN.value.routes);
-
-    return allRoutes
-        .map((route) {
-          String path = (route as GoRoute).path;
-          return path.startsWith('/') ? path : '/$path';
-        })
-        .toList()
-        .where((routePath) => !appInfo.sandboxPageNames.contains(routePath))
-        .toList();
-  }
-
-  void addSubRoute({
-    required String newPath,
-    required SnippetTemplateEnum template,
-  }) {
-    List<RouteBase> subRoutes = routingConfigVN.value.routes;
-    if (!newPath.endsWith(' missing')) {
-      subRoutes.add(DynamicPageRoute(path: newPath, template: template));
-    }
-  }
-
-  void deleteSubRoute({required String path}) {
-    List<RouteBase> subRoutes = routingConfigVN.value.routes;
-    for (RouteBase sr in subRoutes) {
-      if (sr is GoRoute && sr.path == path) {
-        subRoutes.remove(sr);
-      }
-    }
-  }
 
   Future<void> ensureContentSnippetPresent(String contentCId) async =>
       SnippetInfoModel.cachedSnippetInfo(contentCId) ??
@@ -700,12 +646,6 @@ class FlutterContentMixins
   //   }
   //   _appInfo.versionIds = newVersionIds;
   // }
-
-  SNode? get clipboard => _appInfo.clipboard;
-
-  bool get clipboardIsEmpty => _appInfo.clipboard == null;
-
-  void setClipboard(SNode? newClipboard) => _appInfo.clipboard = newClipboard;
 
   // List<SnippetName> snippetsBeingReadFromFB = [];
 
@@ -902,6 +842,8 @@ class FlutterContentMixins
 
   bool? showingNodeBoundaryOverlays;
 
+  final Map<HandlerName, void Function(BuildContext)> _handlers = {};
+
   void Function(BuildContext p1) registerHandler(
     HandlerName name,
     void Function(BuildContext) f,
@@ -909,6 +851,8 @@ class FlutterContentMixins
 
   void Function(BuildContext)? namedHandler(HandlerName name) =>
       _handlers[name];
+
+  List<HandlerName> handlers() => _handlers.keys.toList();
 
   String? currentEditablePagePath; // gets set by EditablePage initState()
 
@@ -920,7 +864,7 @@ class FlutterContentMixins
   // String? currentRoute;
 
   // every node's toWidget() creates a (resusable) GK
-  // knowing a node's GK you can establish it ScrolController? or TabController?
+  // knowing a node's GK you can establish its ScrolController? or TabController?
   final Map<GlobalKey, SNode> nodesByGK = {};
 
   // removed snippet place naming functionality - use tab bar instead
@@ -934,15 +878,12 @@ class FlutterContentMixins
   // }
 
   final Map<PanelName, GlobalKey> panelGkMap = {};
-  final Map<SNode, Set<PNode>> expandedNodes = {};
-  final Map<HandlerName, void Function(BuildContext)> _handlers = {};
+  // final Map<SNode, Set<PNode>> expandedNodes = {};
 
-  List<HandlerName> handlers() => _handlers.keys.toList();
-
-  bool showingNodeButtons = true;
+  // bool showingNodeButtons = true;
 
   // PTreeNodeTreeController? selectedNodePTree;
-  SnippetRootNode? targetSnippetBeingConfigured;
+  // SnippetRootNode? targetSnippetBeingConfigured;
 
   // void updateSnippetBeingEdited(SnippetRootNode rootNode) {
   //   if (_snippetsBeingEdited.isEmpty) {
@@ -968,15 +909,6 @@ class FlutterContentMixins
     return gk;
   }
 
-  // final GKMap _singleTargetGkMap = {};
-
-  // GlobalKey? getSingleTargetGk(feature) => _singleTargetGkMap[feature];
-
-  // GlobalKey setSingleTargetGk(Feature feature, GlobalKey gk) {
-  //   _singleTargetGkMap[feature] = gk;
-  //   return gk;
-  // }
-
   final GksByTargetId _targetGK = {};
 
   GlobalKey? getTargetGk(TargetId targetId) {
@@ -991,412 +923,5 @@ class FlutterContentMixins
     // fco.logger.d('setTargetGk($targetId)');
     _targetGK[targetId] = gk;
     return gk;
-  }
-
-  // TargetsWrapperState? parentTW(String twName) =>
-  //     targetsWrappers[twName]?.currentState as TargetsWrapperState?;
-
-  // final FeatureList _singleTargetBtnFeatures = [];
-
-  // FeatureList get singleTargetBtnFeatures => _singleTargetBtnFeatures;
-
-  // STreeNode? gkToNode(GlobalKey gk) => gkSTreeNodeMap[gk];
-
-  void hideClipboard() => dismiss("floating-clipboard");
-
-  void showFloatingClipboard({ScrollControllerName? scName}) {
-    dismiss("floating-clipboard");
-    fco.showOverlay(
-      calloutContent: const ClipboardView(),
-      calloutConfig: CalloutConfigModel(
-        cId: "floating-clipboard",
-        initialCalloutW: 300,
-        initialCalloutH: 180,
-        initialCalloutPos: OffsetModel(scrW - 400, 0),
-        fillColor: ColorModel.fromColor(Colors.transparent),
-        arrowType: ArrowTypeEnum.NONE,
-        borderRadius: 16,
-        scrollControllerName: scName,
-      ),
-    );
-  }
-
-  /// inspect the named text styles for a match, and return the name of that matching style
-  TextStyleName? findTextStyleName(TextStyleProperties props) {
-    for (TextStyleName tsName in _appInfo.userTextStyles.keys) {
-      TextStyleProperties namedTSProps = appInfo.userTextStyles[tsName]!;
-      if (namedTSProps.color == props.color &&
-          namedTSProps.fontWeight == props.fontWeight &&
-          namedTSProps.fontSize == props.fontSize &&
-          namedTSProps.fontSizeName == props.fontSizeName &&
-          namedTSProps.fontFamily == props.fontFamily &&
-          namedTSProps.fontStyle == props.fontStyle &&
-          namedTSProps.letterSpacing == props.letterSpacing &&
-          namedTSProps.lineHeight == props.lineHeight) {
-        return tsName;
-      }
-    }
-    return null;
-  }
-
-  ButtonStyleName? findButtonStyleName(ButtonStyleProperties props) {
-    for (ButtonStyleName bsName in _appInfo.userButtonStyles.keys) {
-      ButtonStyleProperties namedBSProps = _appInfo.userButtonStyles[bsName]!;
-      if (namedBSProps.bgColor == props.bgColor &&
-          namedBSProps.fgColor == props.fgColor &&
-          namedBSProps.tsPropGroup == props.tsPropGroup &&
-          namedBSProps.elevation == props.elevation &&
-          namedBSProps.padding == props.padding &&
-          namedBSProps.shape == props.shape &&
-          namedBSProps.fixedH == props.fixedH &&
-          namedBSProps.fixedW == props.fixedW &&
-          namedBSProps.maxH == props.maxH &&
-          namedBSProps.maxW == props.maxW &&
-          namedBSProps.minH == props.minW &&
-          namedBSProps.maxH == props.maxW &&
-          namedBSProps.radius == props.radius &&
-          namedBSProps.side?.color == props.side?.color &&
-          namedBSProps.side?.width == props.side?.width) {
-        return bsName;
-      }
-    }
-    return null;
-  }
-
-  ContainerStyleName? findContainerStyleName(ContainerStyleProperties props) {
-    for (ContainerStyleName csName in _appInfo.userContainerStyles.keys) {
-      ContainerStyleProperties namedCSProps =
-          _appInfo.userContainerStyles[csName]!;
-      if (namedCSProps == props) {
-        return csName;
-      }
-
-      if (namedCSProps.outlinedBorderGroup != props.outlinedBorderGroup) {
-        break;
-      }
-
-      if (namedCSProps.badgeWidth != props.badgeWidth) {
-        break;
-      }
-
-      if (namedCSProps.badgeText != props.badgeText) {
-        break;
-      }
-
-      if (namedCSProps.badgeHeight != props.badgeHeight) {
-        break;
-      }
-
-      if (namedCSProps.badgeCorner != props.badgeCorner) {
-        break;
-      }
-
-      if (namedCSProps.dash != props.dash) {
-        break;
-      }
-
-      if (namedCSProps.starPoints != props.starPoints) {
-        break;
-      }
-
-      if (namedCSProps.borderRadius != props.borderRadius) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color1 != props.borderColors?.color1) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color2 != props.borderColors?.color2) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color3 != props.borderColors?.color3) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color4 != props.borderColors?.color4) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color5 != props.borderColors?.color5) {
-        break;
-      }
-
-      if (namedCSProps.borderColors?.color6 != props.borderColors?.color6) {
-        break;
-      }
-
-      if (namedCSProps.borderThickness != props.borderThickness) {
-        break;
-      }
-
-      if (namedCSProps.decoration != props.decoration) {
-        break;
-      }
-
-      if (namedCSProps.height != props.height) {
-        break;
-      }
-
-      if (namedCSProps.width != props.width) {
-        break;
-      }
-
-      if (namedCSProps.alignment != props.alignment) {
-        break;
-      }
-
-      if (namedCSProps.padding != props.padding) {
-        break;
-      }
-
-      if (namedCSProps.margin != props.margin) {
-        break;
-      }
-
-      if (namedCSProps.fillColors != props.fillColors) {
-        break;
-      }
-
-      if (namedCSProps.gap != props.gap) {
-        return csName;
-      }
-    }
-    return null;
-  }
-
-  // // Because snippetNames is a JSArray on web
-  // List<String> get snippetNameList {
-  //   List<String> list = [];
-  //   for (String s in appInfo.snippetNames) {
-  //     list.add(s);
-  //   }
-  //   return list;
-  // }
-
-  //  Map<String, TargetGroupModel> parseTargetGroups(CAPIModel model) {
-  //   Map<String, TargetGroupModel> imageTargetListMap = {};
-  //   if (model.TargetGroupModels.isNotEmpty) {
-  //     try {
-  //       for (String name in model.TargetGroupModels.keys) {
-  //         TargetGroupModel? imageConfig = model.TargetGroupModels[name];
-  //         if (imageConfig != null && imageConfig.targets.isNotEmpty) {
-  //           imageTargetListMap[name] = imageConfig;
-  //         }
-  //       }
-  //     } catch (e) {
-  //       logi("_parseImageTargets(): ${e.toString()}");
-  //       rethrow;
-  //     }
-  //   }
-  //   return imageTargetListMap;
-  // }
-
-  //  Future<void> loadLatestSnippetMap() async {
-  //   var versionToLoad = canEditContent
-  //       ? appInfo.editingVersionId
-  //       : appInfo.publishedVersionId;
-  //   snippets = (versionToLoad == null)
-  //       ? SnippetMapModel({})
-  //       : await FC()
-  //               .fbModelRepo
-  //               .getVersionedSnippetMap(versionId: versionToLoad) ??
-  //           SnippetMapModel({});
-  // }
-
-  // snippet editing
-  //   CalloutConfig snippetTreeCalloutConfig({
-  //     required String cId,
-  //     required VoidCallback onDismissedF,
-  //     ScrollControllerName? scName,
-  //   }) {
-  //     double width() {
-  //       double? w = localStorage.read("snippet-tree-callout-width");
-  //       if (w != null) return w.abs();
-  //
-  //       // if (root?.child == null) return 190;
-  //       w = min(fco.capiBloc.state.snippetTreeCalloutW ?? 500, 600);
-  //       return w > 0 ? w : 500;
-  //     }
-  //
-  //     double height() {
-  //       double? h = localStorage.read("snippet-tree-callout-height");
-  //       if (h != null) return h.abs();
-  //
-  //       // if (root?.child == null) return 60;
-  // // int numNodes = root != null ? bloc.state.snippetTreeC.countNodesInTree(root) : 0;
-  // // double h = numNodes == 0 ? min(bloc.state.snippetTreeCalloutH ?? 400, 600) : numNodes * 60;
-  //       h = min(fco.capiBloc.state.snippetTreeCalloutH ?? 500,
-  //           fco.scrH - 50);
-  //       return h > 0 ? h : 500;
-  //     }
-  //
-  //     return CalloutConfigModel(
-  //       cId: cId,
-  //       // frameTarget: true,
-  //       arrowType: ArrowTypeEnum.NONE,
-  //       barrier: CalloutBarrierConfig(
-  //         opacity: .1,
-  //         // closeOnTapped: false,
-  //         // hideOnTapped: true,
-  //       ),
-  //       onDismissedF: onDismissedF,
-  // // onHiddenF: () {
-  // //   STreeNode.unhighlightSelectedNode();
-  // //   FCO.capiBloc.add(const CAPIEvent.unhideAllTargetGroups());
-  // //   fco.dismiss(TREENODE_MENU_CALLOUT);
-  // //   MaterialAppWrapper.showAllPinkSnippetOverlays();
-  // //   if (snippetBloc.state.canUndo()) {
-  // //     FCO.capiBloc.add(const CAPIEvent.saveModel());
-  // //   }
-  // // },
-  //       initialCalloutW: width(),
-  //       initialCalloutH: height(),
-  // //calloutH ?? 500,
-  // // barrierOpacity: .1,
-  // // arrowType: ArrowTypeEnum.POINTY,
-  // // color: Colors.purpleAccent.shade100,
-  //       borderRadius: 16,
-  // // initialCalloutPos: bloc.state.snippetTreeCalloutInitialPos,
-  //       finalSeparation: 40,
-  // // onBarrierTappedF: () async {
-  // //   // also check whether any snippet change
-  // //   var newSnippetMap = CAPIBloc.getSnippetJsonsFromTree(bloc.state.snippetTreeC);
-  // //   bool changeOccurred = true || !mapEquals(originalSnippetMap, newSnippetMap) || originalClipboardJson != bloc.state.jsonClipboard;
-  // //   bloc.add(CAPIEvent.hideSnippetTree(save: changeOccurred));
-  // //   removeSnippetTreeCallout(snippetName);
-  // //   onClosedF.call();
-  // // },
-  // // draggable: false,
-  //       dragHandleHeight: 40,
-  //       resizeableH: true,
-  //       resizeableV: true,
-  //       onResizeF: (newSize) {
-  //         // keep size in localstorage for future use
-  //         localStorage.write("snippet-tree-callout-width", newSize.width);
-  //         localStorage.write("snippet-tree-callout-height", newSize.height);
-  //       },
-  //       onDragStartedF: () {
-  //         fco.selectedNode?.hidePropertiesWhileDragging = true;
-  //       },
-  //       onDragEndedF: (_) {
-  //         fco.selectedNode?.hidePropertiesWhileDragging = false;
-  //       },
-  //       scrollControllerName: scName,
-  //     );
-  //   }
-
-  //   void showSnippetTreeAndPropertiesCallout({
-  //     required TargetKeyFunc targetGKF,
-  //     ScrollControllerName? scName,
-  //     required VoidCallback onDismissedF,
-  //     required STreeNode startingAtNode,
-  //     required STreeNode selectedNode,
-  //     // required STreeNode tappedNode,
-  //     bool allowButtonCallouts = false,
-  //     TargetModel? targetBeingConfigured,
-  //   }) async {
-  //     SnippetRootNode? rootNode =
-  //         fco.snippetBeingEdited?.getRootNode();
-  //     if (rootNode == null) return;
-  //
-  //     // dismiss any pink border overlays
-  //     fco.dismissAll(exceptFeatures: [
-  //       rootNode.name,
-  //       CalloutConfigToolbar.CID,
-  //       targetBeingConfigured?.contentCId ?? 'n/a',
-  //     ]);
-  //
-  //     // if (rootNode == null) return;
-  //
-  //     // to check for any change
-  //     // String? originalTcS = tc != null ? jsonEncode(initialTC?.toJson()) : null;
-  //     // EncodedSnippetJson originalSnippetJson = rootNode.toJson();
-  //     // String? originalClipboardJson = fco.capiBloc.state.jsonClipboard;
-  //     // tree and properties callouts using snippetName.hashCode, and snippetName.hashCode+1 resp.
-  //
-  //     // CalloutConfig cc = snippetTreeCalloutConfig(
-  //     //   cId: fco.snippetBeingEdited!.getRootNode().name,
-  //     //   onDismissedF: onDismissedF,
-  //     // );
-  //     //
-  //     // Widget content = SnippetTreeAndPropertiesCalloutContents(
-  //     //   scName: scName,
-  //     //   allowButtonCallouts: allowButtonCallouts,
-  //     // );
-  //     //
-  //     // fco.showOverlay(
-  //     //   calloutConfig: cc,
-  //     //   calloutContent: content,
-  //     //   targetGkF: targetGKF,
-  //     // );
-  //
-  //     // imm select a node
-  //     STreeNode sel = selectedNode;
-  //     fco.capiBloc.add(CAPIEvent.selectNode(
-  //       node: sel,
-  //       //selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
-  // // imageTC: tc,
-  //     ));
-  //     fco.afterMsDelayDo(500, () {
-  //       selectedNode.showNodeWidgetOverlay(scName: scName);
-  //     });
-  //   }
-}
-
-//   String encodeAllSnippets() {
-//     List<SnippetRootNode>? rootNodes = snippetsMap.values.toList();
-//     Map<String, String> snippetJsons = {};
-//     for (SnippetRootNode rootNode in rootNodes) {
-//       snippetJsons[rootNode.name] = rootNode.toJson();
-//     }
-//     return snippetJsons;
-//   }
-//
-//    Map<SnippetName, SnippetRootNode> parseSnippetJsons(CAPIModel model) {
-//     Map<SnippetName, SnippetRootNode> snippetMap = {};
-//     late String snippetJson;
-//     try {
-//       for (snippetJson in model.snippetMap.values) {
-//         SnippetRootNode rootNode = SnippetRootNodeMapper.fromJson(snippetJson);
-//         snippetMap[rootNode.name] = rootNode..validateTree();
-//       }
-//     } catch (e) {
-//       logi("parseSnippetJsons(): ${e.toString()}");
-//       logi(snippetJson);
-//       // rethrow;
-//     }
-//     return snippetMap;
-//   }
-// }
-
-class WebLinkTapGestureRecognizer extends TapGestureRecognizer {
-  // one for each webLink
-  static final _recognizers = <String, WebLinkTapGestureRecognizer>{};
-
-  static WebLinkTapGestureRecognizer createWebLinkRecognizer(String webLink) {
-    WebLinkTapGestureRecognizer? recognizer = _recognizers[webLink];
-    if (recognizer == null) {
-      _recognizers[webLink] = recognizer = WebLinkTapGestureRecognizer(webLink);
-    }
-    return recognizer;
-  }
-
-  final String webLink;
-
-  WebLinkTapGestureRecognizer(this.webLink) {
-    onTap = () async {
-      if (await canLaunchUrlString(webLink)) {
-        launchUrlString(webLink);
-      }
-    };
-  }
-
-  static void destroyAll() {
-    for (final recognizer in _recognizers.values) {
-      recognizer.dispose();
-    }
-    _recognizers.clear();
   }
 }

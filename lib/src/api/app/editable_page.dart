@@ -114,6 +114,7 @@ class EditablePageState extends State<EditablePage> {
 
   @override
   Widget build(BuildContext context) {
+    print('EditablePageState ${widget.routePath}');
     return BlocConsumer<CAPIBloC, CAPIState>(
       listenWhen: (context, state) =>
           fco.snippetBeingEdited?.aNodeIsSelected ?? false,
@@ -295,7 +296,6 @@ class EditablePageState extends State<EditablePage> {
   }
 
   Widget _pageContentArea() {
-    // FCO.initWithContext(context);
 
     GlobalKey zoomerGk = GlobalKey();
 
@@ -332,9 +332,9 @@ class EditablePageState extends State<EditablePage> {
             child: Stack(
               children: [
                 if (aSnippetIsBeingEdited)
-                  if (!editingACalloutContentSnippet) widget.child,
-                if (aSnippetIsBeingEdited)
-                  if (editingACalloutContentSnippet) const Offstage(),
+                  if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
+                // if (aSnippetIsBeingEdited)
+                //   if (editingACalloutContentSnippet) const Offstage(),
                 if (!aSnippetIsBeingEdited)
                   Zoomer(
                     key: zoomerGk,
@@ -494,7 +494,7 @@ class EditablePageState extends State<EditablePage> {
                               fco.dismiss(pinkOverlayFeature);
                               // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
                               fco.unhide(CalloutConfigToolbar.CID);
-                              fco.hideClipboard();
+                              fco.appInfo.hideClipboard();
                             }
                             fco.capiBloc.add(
                               const CAPIEvent.popSnippetEditor(),
@@ -950,7 +950,7 @@ class EditablePageState extends State<EditablePage> {
       // currPageState?.unhideFAB();
       fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
       fco.dismiss(CalloutConfigToolbar.CID);
-      fco.hideClipboard();
+      fco.appInfo.hideClipboard();
       // exitEditModeF();
       // fco.capiBloc
       //     .add(const CAPIEvent.popSnippetEditor());

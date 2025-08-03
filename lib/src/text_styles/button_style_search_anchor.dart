@@ -51,7 +51,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findButtonStyleName(widget.buttonStyle);
+    originalStyleName = fco.findButtonStyleName(fco.appInfo, widget.buttonStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 

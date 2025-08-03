@@ -61,7 +61,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(labelTSPropGroup);
+    var textStyleName = fco.findTextStyleName(fco.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(

@@ -196,7 +196,7 @@ class ContainerStylePNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var containerStyleName = fco.findContainerStyleName(containerStyleGroup);
+    var containerStyleName = fco.findContainerStyleName(fco.appInfo, containerStyleGroup);
     return containerStyleName != null ? '$name: $containerStyleName' : name;
   }
 }

@@ -122,7 +122,7 @@ class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var textStyleName = fco.findTextStyleName(textStyleProperties);
+    var textStyleName = fco.findTextStyleName(fco.appInfo, textStyleProperties);
     return textStyleName != null ? '$name: $textStyleName' : name;
   }
 }

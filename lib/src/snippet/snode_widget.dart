@@ -176,7 +176,7 @@ class SNodeWidget extends StatelessWidget {
       fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
       fco.capiBloc.add(CAPIEvent.clearNodeSelection());
     } else if (!fco.snippetBeingEdited!.aNodeIsSelected || !thisWasAlreadySelected) {
-      if (fco.clipboard != null) {
+      if (fco.appInfo.clipboard != null) {
         fco.unhide("floating-clipboard");
       }
 
@@ -338,7 +338,7 @@ class SNodeWidget extends StatelessWidget {
                     fco.capiBloc.add(CAPIEvent.cutNode(node: node, scName: scName));
                     fco.afterNextBuildDo(() {
                       fco.dismiss('node-actions');
-                      if (fco.clipboard != null) {
+                      if (fco.appInfo.clipboard != null) {
                         fco.unhide("floating-clipboard");
                       }
                     });
@@ -367,7 +367,7 @@ class SNodeWidget extends StatelessWidget {
                       fco.capiBloc.add(CAPIEvent.copyNode(node: node, scName: scName));
                       fco.afterNextBuildDo(() {
                         fco.dismiss('node-actions');
-                        if (fco.clipboard != null) {
+                        if (fco.appInfo.clipboard != null) {
                           fco.unhide("floating-clipboard");
                         }
                       });

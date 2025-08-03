@@ -200,7 +200,7 @@ class ButtonStylePNode /*Group*/ extends PNode /*Group*/ {
 
   @override
   String propertyLabel() {
-    var buttonStyleName = fco.findButtonStyleName(buttonStyleGroup);
+    var buttonStyleName = fco.findButtonStyleName(fco.appInfo, buttonStyleGroup);
     return buttonStyleName != null ? '$name: $buttonStyleName' : name;
   }
 }

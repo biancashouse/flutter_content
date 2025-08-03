@@ -239,16 +239,16 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   }
 
   Future<void> _updateClipboard(UpdateClipboard event, emit) async {
-    fco.setClipboard(event.newContent);
+    fco.appInfo.clipboard = event.newContent;
     emit(state.copyWith(force: state.force + 1));
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
     // possibly hide or show clipbaord tab
     if (event.newContent == null) {
-      fco.hideClipboard();
+      fco.appInfo.hideClipboard();
     } else {
-      fco.hideClipboard();
-      fco.showFloatingClipboard(scName: event.scName);
+      fco.appInfo.hideClipboard();
+      fco.appInfo.showFloatingClipboard(scName: event.scName);
     }
   }
 
@@ -535,12 +535,12 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   Future<void> _copyNode(CopyNode event, emit) async {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     var copiedNode = event.node.clone();
-    fco.setClipboard(copiedNode);
+    fco.appInfo.clipboard = copiedNode;
     emit(state.copyWith(force: state.force + 1));
     if (event.skipSave) return;
     fco.modelRepo.saveAppInfo();
-    fco.hideClipboard();
-    fco.showFloatingClipboard(scName: event.scName);
+    fco.appInfo.hideClipboard();
+    fco.appInfo.showFloatingClipboard(scName: event.scName);
   }
 
   SNode _typeAsATreeNode(Type t, SNode? childNode, String notFoundMsg, {SnippetName? snippetName}) {
@@ -970,9 +970,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteReplacement(PasteReplacement event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    if (fco.clipboard != null) {
+    if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.clipboard!;
+      SNode clipboardNode = fco.appInfo.clipboard!;
       //_createSnippetUndo();
       _replaceWithNewNodeOrClipboard(selectedNode, emit, clipboardNode);
     }
@@ -1001,9 +1001,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteChild(PasteChild event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    if (fco.clipboard != null) {
+    if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.clipboard!;
+      SNode clipboardNode = fco.appInfo.clipboard!;
       _addOrPasteChild(selectedNode, emit, clipboardNode);
     }
   }
@@ -1028,9 +1028,9 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
   void _pasteSiblingBefore(PasteSiblingBefore event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
-    if (fco.clipboard != null) {
+    if (fco.appInfo.clipboard != null) {
       SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-      SNode clipboardNode = fco.clipboard!;
+      SNode clipboardNode = fco.appInfo.clipboard!;
       //_createSnippetUndo();
       if (state.snippetBeingEdited?.selectedNode?.getParent() is MC) {
         int i = (state.snippetBeingEdited?.selectedNode?.getParent() as MC).children.indexOf(selectedNode);
@@ -1064,7 +1064,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   void _pasteSiblingAfter(PasteSiblingAfter event, emit) {
     if (!(state.snippetBeingEdited?.aNodeIsSelected ?? false)) return;
     SNode selectedNode = state.snippetBeingEdited!.selectedNode!;
-    SNode clipboardNode = fco.clipboard!;
+    SNode clipboardNode = fco.appInfo.clipboard!;
     //_createSnippetUndo();
     if (state.snippetBeingEdited!.selectedNode?.getParent() is MC) {
       int i = (state.snippetBeingEdited!.selectedNode?.getParent() as MC).children.indexOf(selectedNode);

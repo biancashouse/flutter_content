@@ -51,7 +51,7 @@ class ContainerStyleNameSearchAnchorState extends State<ContainerStyleNameSearch
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findContainerStyleName(widget.buttonStyle);
+    originalStyleName = fco.findContainerStyleName(fco.appInfo, widget.buttonStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 

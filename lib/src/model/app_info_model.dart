@@ -1,5 +1,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/api/snippet_panel/clipboard_view.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
@@ -25,15 +27,27 @@ class AppInfoModel with AppInfoModelMappable {
     this.userContainerStyles = const {},
     this.sandboxPageNames = const [],
   });
+
+  bool get clipboardIsEmpty => clipboard == null;
+
+  void hideClipboard() => fco.dismiss("floating-clipboard");
+
+  void showFloatingClipboard({ScrollControllerName? scName}) {
+    fco.dismiss("floating-clipboard");
+    fco.showOverlay(
+      calloutContent: const ClipboardView(),
+      calloutConfig: CalloutConfigModel(
+        cId: "floating-clipboard",
+        initialCalloutW: 300,
+        initialCalloutH: 180,
+        initialCalloutPos: OffsetModel(fco.scrW - 400, 0),
+        fillColor: ColorModel.fromColor(Colors.transparent),
+        arrowType: ArrowTypeEnum.NONE,
+        borderRadius: 16,
+        scrollControllerName: scName,
+      ),
+    );
+  }
+
 }
 
-/// we don't persist this linked list
-// final class VersionEntryItem extends LinkedListEntry<VersionEntryItem> {
-//   final VersionId versionId;
-//   VersionEntryItem(this.versionId);
-//
-//   @override
-//   String toString() {
-//     return versionId;
-//   }
-// }

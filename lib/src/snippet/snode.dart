@@ -484,8 +484,8 @@ abstract class SNode extends Node with SNodeMappable {
         // fco.snippetBeingEdited?.treeC.expandAll();
         // fco.snippetBeingEdited?.treeC.rebuild();
         // possibly show clipboard
-        if (!fco.clipboardIsEmpty) {
-          fco.showFloatingClipboard(scName: scName);
+        if (!fco.appInfo.clipboardIsEmpty) {
+          fco.appInfo.showFloatingClipboard(scName: scName);
         }
         fco.hide(CalloutConfigToolbar.CID);
       }
@@ -1636,7 +1636,7 @@ abstract class SNode extends Node with SNodeMappable {
   );
 
   MenuItemButton? pasteMI(NodeAction action) {
-    if (fco.clipboard != null && action != NodeAction.wrapWith) {
+    if (fco.appInfo.clipboard != null && action != NodeAction.wrapWith) {
       return MenuItemButton(
         onPressed: () {
           // CAPIBloC bloc = fco.capiBloc;

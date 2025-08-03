@@ -1,3 +1,4 @@
+import 'package:example/pages/page_row_of_2_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
@@ -23,8 +24,12 @@ final webRoutingConfig = RoutingConfig(
             builder: (BuildContext context, GoRouterState state) => const Page_RowOf2Panels(),
         ),
         EditablePageRoute(
-            path: 'row-of-2-panels2',
-            child: const Page_RowOf2Panels(),
+          path: 'row-of-2-containers',
+          child: const Page_RowOf2Containers(),
+        ),
+        EditablePageRoute(
+          path: 'row-of-2-panels2',
+          child: const Page_RowOf2Panels(),
         ),
         // GoRoute(
         //   path: '/callout-content-editor',

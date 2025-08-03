@@ -6,35 +6,49 @@ class FlutterContentMixins {
     appName
     AppInfoModel  appInfo,
     editorPassword
-    title
-    webRoutingConfig
-    mobileRoutingConfig
     fbOptions
+    Map<GlobalKey, SNode> nodesByGK
+    init()
     capiBloc()
-    capiState()
     snippetBeingEdited()
+    inSelectWidgetMode()
+    selectedNode()
     showProperties()
     aSnippetIsSelected()
 }
+
+class GoRouter.routingConfig {
+    navigatorKey,
+    initialRoutePath,
+    routingConfig
+   }
+FlutterContentMixins o--> GoRouter : router
+
+/'
+class RoutingConfig {}
+FlutterContentMixins o--> RoutingConfig : routingConfig
+'/
 
 class AppInfoModel<<MappableClass>> {
     bool autoPublishDefault;
     STreeNode? clipboard;
     List<SnippetName> snippetNames;
+    Map<TextStyleName, TextStyleProperties> userTextStyles;
+    Map<ButtonStyleName, ButtonStyleProperties> userButtonStyles;
+    Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
+    List<String> sandboxPageNames;
 }
+FlutterContentMixins o--> AppInfoModel : appInfo
 
 class SnippetInfoModel {
-    SnippetName name; // snippet name == route name
-    RoutePath? routePath; // route path
+    SnippetName name; // snippet name == route name ?
+    RoutePath? routePath;
     VersionId? editingVersionId;
     VersionId? publishedVersionId;
     bool? autoPublish;
-    List<VersionId> cachedVersionIds = [];
-    Map<VersionId, SnippetRootNode?> cachedVersions = {};
+    List<VersionId> cachedVersionIds;
+    Map<VersionId, SnippetRootNode?> cachedVersions;
 }
-
-
-FlutterContentMixins o--> AppInfoModel : appInfo
 FlutterContentMixins [Snippet\nName] o-r-> SnippetInfoModel : snippetInfoCache
 
 

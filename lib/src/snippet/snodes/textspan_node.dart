@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:dart_mappable/dart_mappable.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
@@ -38,7 +39,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(tsPropGroup);
+    var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
@@ -307,4 +308,35 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
   String toString() => FLUTTER_TYPE;
 
   static const String FLUTTER_TYPE = "TextSpan";
+}
+
+
+class WebLinkTapGestureRecognizer extends TapGestureRecognizer {
+  // one for each webLink
+  static final _recognizers = <String, WebLinkTapGestureRecognizer>{};
+
+  static WebLinkTapGestureRecognizer createWebLinkRecognizer(String webLink) {
+    WebLinkTapGestureRecognizer? recognizer = _recognizers[webLink];
+    if (recognizer == null) {
+      _recognizers[webLink] = recognizer = WebLinkTapGestureRecognizer(webLink);
+    }
+    return recognizer;
+  }
+
+  final String webLink;
+
+  WebLinkTapGestureRecognizer(this.webLink) {
+    onTap = () async {
+      if (await canLaunchUrlString(webLink)) {
+        launchUrlString(webLink);
+      }
+    };
+  }
+
+  static void destroyAll() {
+    for (final recognizer in _recognizers.values) {
+      recognizer.dispose();
+    }
+    _recognizers.clear();
+  }
 }

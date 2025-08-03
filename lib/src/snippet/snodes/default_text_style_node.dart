@@ -35,7 +35,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
 
   @override
   List<PNode> properties(BuildContext context, SNode? parentSNode) {
-    var textStyleName = fco.findTextStyleName(tsPropGroup);
+    var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(

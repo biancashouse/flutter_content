@@ -51,7 +51,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
   void initState() {
     super.initState();
     madeASelection = false;
-    originalStyleName = fco.findTextStyleName(widget.textStyle);
+    originalStyleName = fco.findTextStyleName(fco.appInfo, widget.textStyle);
     searchStringTEC = TextEditingController(text: originalStyleName);
   }
 
