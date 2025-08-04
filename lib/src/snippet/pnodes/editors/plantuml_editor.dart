@@ -36,88 +36,82 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
 
   @override
   Widget build(BuildContext context) {
+    // remove @startuml and @enduml from text
+
     return FutureBuilder<UMLRecord>(
-        future: encodeThenFetchPng(widget.teC.text, widget.onChangeF),
-        builder: (futureContext, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
+      future: encodeThenFetchPng(widget.teC.text, widget.onChangeF),
+      builder: (futureContext, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        void getSize() {
+          final RenderBox? renderBox =
+              gkForSizing.currentContext?.findRenderObject() as RenderBox?;
+          if (renderBox != null) {
+            final size = renderBox.size;
+            widget.onSizedF(size);
+            fco.logger.d('Image size: $size');
           }
+        }
 
-          void getSize() {
-            final RenderBox? renderBox =
-                gkForSizing.currentContext?.findRenderObject() as RenderBox?;
-            if (renderBox != null) {
-              final size = renderBox.size;
-              widget.onSizedF(size);
-              fco.logger.d('Image size: $size');
-            }
-          }
+        fco.afterNextBuildDo(() => getSize());
 
-          fco.afterNextBuildDo(() => getSize());
+        UMLRecord? umlRecord = snapshot.data;
 
-          UMLRecord? umlRecord = snapshot.data;
-
-          List<Area> areas = [
-            Area(builder: (ctx, area) => _textArea()),
-            Area(
-                builder: (ctx, area) => _plantUMLImageArea(
-                      umlRecord?.bytes ??
-                          Uint8List.fromList(missingPng.codeUnits),
-                    )),
-          ];
-
-          return MultiSplitViewTheme(
-            data: MultiSplitViewThemeData(
-              dividerPainter: DividerPainters.grooved1(
-                color: Colors.indigo[100]!,
-                highlightedColor: Colors.indigo[900]!,
-              ),
+        List<Area> areas = [
+          Area(builder: (ctx, area) => _textArea()),
+          Area(
+            builder: (ctx, area) => _plantUMLImageArea(
+              umlRecord?.bytes ?? Uint8List.fromList(missingPng.codeUnits),
             ),
-            child: MultiSplitView(
-              axis: Axis.horizontal,
-              initialAreas: areas,
+          ),
+        ];
+
+        return MultiSplitViewTheme(
+          data: MultiSplitViewThemeData(
+            dividerPainter: DividerPainters.grooved1(
+              color: Colors.indigo[100]!,
+              highlightedColor: Colors.indigo[900]!,
             ),
-          );
-        });
+          ),
+          child: MultiSplitView(axis: Axis.horizontal, initialAreas: areas),
+        );
+      },
+    );
   }
 
   Widget _textArea() => Container(
-        color: Colors.yellowAccent,
-        padding: const EdgeInsets.all(10),
-        child: Column(
+    color: Colors.yellowAccent,
+    padding: const EdgeInsets.all(10),
+    child: Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                fco.coloredText('@startuml', color: Colors.purple),
-                IconButton(
-                  onPressed: () async {
-                    setState(() {});
-                  },
-                  icon: const Icon(
-                    Icons.refresh,
-                    color: Colors.purple,
-                  ),
-                ),
-              ],
-            ),
-            _umlTextField(),
-            Row(
-              children: [
-                fco.coloredText('@enduml', color: Colors.purple),
-                IconButton(
-                  onPressed: () async {
-                    setState(() {});
-                  },
-                  icon: const Icon(
-                    Icons.refresh,
-                    color: Colors.purple,
-                  ),
-                ),
-              ],
+            fco.coloredText('refresh', color: Colors.purple),
+            IconButton(
+              onPressed: () async {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh, color: Colors.purple),
             ),
           ],
         ),
-      );
+        _umlTextField(),
+        Row(
+          children: [
+            fco.coloredText('refresh', color: Colors.purple),
+            IconButton(
+              onPressed: () async {
+                setState(() {});
+              },
+              icon: const Icon(Icons.refresh, color: Colors.purple),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 
   // void refreshImage( ) {
   //   setState(() {
@@ -127,28 +121,31 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
   // }
 
   Widget _plantUMLImageArea(Uint8List pngBytes) => Center(
-        child: SingleChildScrollView(
-          child: Image.memory(
-            key: gkForSizing,
-            pngBytes,
-            errorBuilder: (context, o, stackTrace) {
-              return Error(
-                key: GlobalKey(),
-                "PlantUMLTextEditor Image.memory",
-                color: Colors.red,
-                size: 18,
-                errorMsg: 'Bad pngBytes',
-              );
-            },
-          ),
-        ),
-      );
+    child: SingleChildScrollView(
+      child: Image.memory(
+        key: gkForSizing,
+        pngBytes,
+        errorBuilder: (context, o, stackTrace) {
+          return Error(
+            key: GlobalKey(),
+            "PlantUMLTextEditor Image.memory",
+            color: Colors.red,
+            size: 18,
+            errorMsg: 'Bad pngBytes',
+          );
+        },
+      ),
+    ),
+  );
 
   static Future<UMLRecord> encodeThenFetchPng(
     String umlText,
     ValueChanged<UMLRecord> onchangeF,
   ) async {
-    String? encodedText = await _cloudRunEncodeTextForPlantUML(umlText);
+    String umlTextWithoutStartAndEnd = umlText.replaceAll(RegExp(r'@startuml\n'), '');
+    umlTextWithoutStartAndEnd = umlText.replaceAll(RegExp(r'\n@enduml'), '');
+
+    String? encodedText = await _cloudRunEncodeTextForPlantUML(umlTextWithoutStartAndEnd);
     encodedText ??= missingPng;
     Uint8List? pngBytes = await _fetchPngFromPlantUML(encodedText);
     UMLRecord umlRecord = (
@@ -169,7 +166,8 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
     final body = json.encode(bodyMap);
     final response = await http.Client().post(
       Uri.parse(
-          'https://gcr-plantuml-encoder-js-188627927914.australia-southeast1.run.app'),
+        'https://gcr-plantuml-encoder-js-188627927914.australia-southeast1.run.app',
+      ),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -184,8 +182,9 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
   }
 
   static Future<Uint8List?> _fetchPngFromPlantUML(String encodedUMLText) async {
-    final url =
-        Uri.parse('https://www.plantuml.com/plantuml/png/$encodedUMLText');
+    final url = Uri.parse(
+      'https://www.plantuml.com/plantuml/png/$encodedUMLText',
+    );
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -208,15 +207,14 @@ class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
           children: <Widget>[
             TextField(
               controller: widget.teC,
-              decoration: const InputDecoration(
-                hintText: "PlantUML text",
-              ),
+              decoration: const InputDecoration(hintText: "PlantUML text"),
               focusNode: focusNode,
               style: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'monospace',
-                  letterSpacing: 2,
-                  color: Colors.blue[900]),
+                fontSize: 18,
+                fontFamily: 'monospace',
+                letterSpacing: 2,
+                color: Colors.blue[900],
+              ),
               textAlign: TextAlign.left,
               textAlignVertical: TextAlignVertical.top,
               onTap: () {

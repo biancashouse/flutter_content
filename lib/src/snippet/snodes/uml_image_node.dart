@@ -70,7 +70,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
             width = newSize.width;
             height = newSize.height;
           },
-          calloutButtonSize: const Size(280, 70),
+          calloutButtonSize: const Size(280, 2000),
         ),
       ];
 

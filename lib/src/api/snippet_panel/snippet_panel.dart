@@ -241,7 +241,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
             Widget snippetWidget = Stack(
               children: [
-                snippet.toWidget(futureContext, null),
+                snippet.toWidget(context, null),
                 if (!widget.justPlaying && !isPublishedVersion && !canEdit)
                   Align(
                     alignment: Alignment.topLeft,

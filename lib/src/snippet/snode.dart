@@ -153,7 +153,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   Widget? widgetLogo() => FlutterLogo(size: 20);
 
-  // GlobalKey? gk;
+  GlobalKey? treeNodeGK;
   PNodeTreeController? _pTreeC;
   ScrollController? _propertiesPaneSC;
   List<PNode>? _properties;
@@ -639,7 +639,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   GlobalKey createNodeWidgetGK() {
     // fco.logger.i('--- createNodeGK --- ${toString()}');
-    _nodeWidgetGK ??= GlobalKey(debugLabel: toString());
+    _nodeWidgetGK = GlobalKey(debugLabel: toString());
     // if (fco.nodesByGK.containsKey(nodeWidgetGK)) {
     //   fco.logger.d('Trying to use GlobalKey twice!');
     // }

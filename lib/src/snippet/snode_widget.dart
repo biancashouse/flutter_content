@@ -211,7 +211,7 @@ class SNodeWidget extends StatelessWidget {
 
     fco.capiBloc.add(CAPIEvent.selectNode(node: node));
     fco.afterNextBuildDo(() {
-      fco.afterMsDelayDo(700, () {
+      fco.afterMsDelayDo(1000, () {
         _showNodeWidgetMenu(context, tapPos, node);
       });
     });
@@ -226,7 +226,6 @@ class SNodeWidget extends StatelessWidget {
         initialCalloutH: 220,
         initialTargetAlignment: AlignmentEnum.centerRight,
         initialCalloutAlignment: AlignmentEnum.centerLeft,
-        initialCalloutPos: OffsetModel.fromOffset(tapPos),
         finalSeparation: 300,
         arrowType: ArrowTypeEnum.THIN,
         arrowColor: ColorModel.fromColor(Colors.white),
@@ -240,6 +239,7 @@ class SNodeWidget extends StatelessWidget {
         toDelta: -20,
       ),
       calloutContent: nodeButtons(context, scName, node),
+      targetGkF: ()=> node.treeNodeGK,
     );
   }
 
@@ -304,6 +304,7 @@ class SNodeWidget extends StatelessWidget {
 
     Color textColor = node == selectedNode ? Colors.black : Colors.grey;
     return Text(
+      key: node.treeNodeGK = GlobalKey(),
       displayedNodeName,
       textScaler: TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
       style: TextStyle(

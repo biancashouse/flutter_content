@@ -35,7 +35,10 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
   void initState() {
     umlRecord = widget.originalUMLRecord;
     teC = TextEditingController();
-    teC.text = widget.originalUMLRecord.text ?? '';
+    // make sure start and end are present for viewing, but they don't get sent to the encoder
+    teC.text = !(widget.originalUMLRecord.text??'').contains('@startuml')
+    ? "@startuml\n${widget.originalUMLRecord.text ?? ''}\n@enduml" ?? ''
+    : widget.originalUMLRecord.text ?? '';
     super.initState();
   }
 
@@ -44,11 +47,11 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           String editedText = umlRecord.text ?? '';
-          String textLabel() => editedText.isNotEmpty ? '${widget.label}: $editedText' : '${widget.label}...';
+          String textLabel() => editedText.isNotEmpty ? editedText : '${widget.label}...';
           Widget labelWidget = Text(
             textLabel(),
             style: const TextStyle(color: Colors.white),
-            overflow: TextOverflow.ellipsis,
+            // overflow: TextOverflow.ellipsis,
           );
           return GestureDetector(
             onTap: () {
@@ -88,7 +91,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
               );
             },
             child: Container(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               key: widget.propertyBtnGK,
               width: widget.calloutButtonSize.width,
               height: widget.calloutButtonSize.height,

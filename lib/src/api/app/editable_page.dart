@@ -332,7 +332,16 @@ class EditablePageState extends State<EditablePage> {
             child: Stack(
               children: [
                 if (aSnippetIsBeingEdited)
-                  if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
+                  SnippetPanel.fromNodes(
+                    // panelName: 'demo-buttons',
+                    snippetRootNode: snippetBeingEdited!.getRootNode(),
+                    // snippetRootNode: SnippetRootNode(
+                    //   name: 'we-create-flutter-apps-and-packages',
+                    //   child: PlaceholderNode()
+                    // ),
+                    scName: null, //sC.name, because no scrolling used
+                  ),
+                 //if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
                 // if (aSnippetIsBeingEdited)
                 //   if (editingACalloutContentSnippet) const Offstage(),
                 if (!aSnippetIsBeingEdited)
