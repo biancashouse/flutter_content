@@ -41,7 +41,6 @@ import 'package:go_router/go_router.dart';
 // import 'package:url_launcher/url_launcher.dart';
 import 'src/api/app/editable_page.dart';
 import 'src/api/app/fc_app.dart';
-import 'src/api/snippet_panel/clipboard_view.dart';
 import 'src/api/snippet_panel/snippet_panel.dart';
 import 'src/api/snippet_panel/snippet_templates.dart';
 import 'src/bloc/capi_bloc.dart';

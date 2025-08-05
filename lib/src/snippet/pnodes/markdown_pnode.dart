@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'editors/markdown_property_callout_button.dart';
+import 'editors/property_callout_button_markdown.dart';
 
 class MarkdownPNode extends PNode {
   String? stringValue;
@@ -28,19 +28,12 @@ class MarkdownPNode extends PNode {
   Widget toPropertyNodeContents(BuildContext context) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     // fco.logger.i('toPropertyNodeContents');
-    return MarkdownPropertyButton(
-      // originalText: (stringValue??'').isNotEmpty
-      //     ? nameOnSeparateLine
-      //     ? '$name: \n$stringValue'
-      //     : '$name: $stringValue'
-      //     : '$name...',
+    return PropertyButtonMarkdown(
       originalMarkdown: stringValue ?? '',
       label: super.name,
       // textInputType: const TextInputType.numberWithOptions(decimal: true),
       calloutButtonSize: calloutButtonSize,
-      calloutSize: Size(calloutWidth, calloutHeight),
-      // calloutSize: calloutSize,
-      propertyBtnGK: GlobalKey(debugLabel: ''),
+      propertyBtnGK: GlobalKey(debugLabel: 'markdown'),
       onChangeF: (s) {
         fco.dismiss('te');
         onStringChange(stringValue = s);

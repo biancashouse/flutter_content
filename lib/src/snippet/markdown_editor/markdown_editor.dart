@@ -94,16 +94,23 @@ class _MarkdownEditorState extends State<MarkdownEditor> {
             // linkTooltip: 'Add a link',
           ),
           const Divider(),
-          TextField(
-            controller: _controller,
-            focusNode: _focusNode,
-            minLines: 5,
-            maxLines: null,
-            decoration: const InputDecoration(
-              hintText: 'Placeholder text',
-              labelText: 'Label text',
-              border: OutlineInputBorder(),
-              enabledBorder: OutlineInputBorder(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                minLines: 5,
+                maxLines: null,
+                decoration: const InputDecoration(
+                  hintText: 'raw markdown',
+                  floatingLabelStyle: TextStyle(
+                    fontSize: 18.0, // Make it larger when floating
+                    color: Colors.green,
+                    // You might add a background or other properties here too
+                  ), border: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 12.0),     ),
+              ),
             ),
           ),
         ],

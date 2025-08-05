@@ -109,7 +109,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       TextStyle? ts = tsPropGroup.toTextStyle(context);
       if (ts != null && webLink != null) {
         ts = ts.copyWith(
-          decoration: TextDecoration.underline,
+          //decoration: TextDecoration.underline,
           decorationColor: Colors.blue,
           decorationStyle: TextDecorationStyle.solid,
           decorationThickness: 1,

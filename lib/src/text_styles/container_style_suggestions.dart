@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 
 class ContainerStyleNameSuggestions extends StatelessWidget {
   final BuildContext anchorContext;

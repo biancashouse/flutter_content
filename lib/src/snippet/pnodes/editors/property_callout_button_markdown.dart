@@ -1,44 +1,39 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 
-class PropertyButtonUML extends StatefulWidget {
-  final UMLRecord originalUMLRecord;
+import 'markdown_msv.dart';
+
+class PropertyButtonMarkdown extends StatefulWidget {
+  final String originalMarkdown;
   final String? label;
   final Size calloutButtonSize;
   final GlobalKey propertyBtnGK;
-  final ValueChanged<UMLRecord> onChangeF;
-  final ValueChanged<Size> onSizedF;
+  final ValueChanged<String> onChangeF;
   final ScrollControllerName? scName;
 
-  const PropertyButtonUML({
-    required this.originalUMLRecord,
+  const PropertyButtonMarkdown({
+    required this.originalMarkdown,
     this.label,
     required this.calloutButtonSize,
     required this.onChangeF,
-    required this.onSizedF,
     required this.propertyBtnGK,
     required this.scName,
     super.key,
   });
 
   @override
-  State<PropertyButtonUML> createState() => _PropertyButtonUMLState();
+  State<PropertyButtonMarkdown> createState() => _PropertyButtonMarkdownState();
 }
 
-class _PropertyButtonUMLState extends State<PropertyButtonUML> {
-  late UMLRecord umlRecord;
+class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
   late TextEditingController teC;
 
   @override
   void initState() {
-    umlRecord = widget.originalUMLRecord;
     teC = TextEditingController();
     // make sure start and end are present for viewing, but they don't get sent to the encoder
-    teC.text = !(widget.originalUMLRecord.text??'').contains('@startuml')
-    ? "@startuml\n${widget.originalUMLRecord.text ?? ''}\n@enduml" ?? ''
-    : widget.originalUMLRecord.text ?? '';
+    teC.text = widget.originalMarkdown;
     super.initState();
   }
 
@@ -46,8 +41,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
   Widget build(BuildContext context) {
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-          String editedText = umlRecord.text ?? '';
-          String textLabel() => editedText.isNotEmpty ? editedText : '${widget.label}...';
+          String textLabel() => teC.text.isNotEmpty ? teC.text : '${widget.label}...';
           Widget labelWidget = Text(
             textLabel(),
             style: const TextStyle(color: Colors.white),
@@ -56,13 +50,13 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
           return GestureDetector(
             onTap: () {
               CalloutConfigModel teCC = CalloutConfigModel(
-                cId: 'uml-te',
+                cId: 'markdown-te',
                 scrollControllerName: widget.scName,
                 containsTextField: true,
                 barrier: CalloutBarrierConfig(
                     opacity: .25,
                     onTappedF: () {
-                      fco.dismiss('uml-te');
+                      fco.dismiss('markdown-te');
                     }),
                 fillColor: ColorModel.white(),
                 arrowType: ArrowTypeEnum.NONE,
@@ -70,18 +64,19 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
                 initialCalloutH: fco.scrH * .8,
                 onDismissedF: () {},
                 onAcceptedF: () {},
+                resizeableH: true,
+                resizeableV: true,
                 onResizeF: (Size newSize) {},
                 onDragF: (Offset newOffset) {},
                 draggable: false,
                 notUsingHydratedStorage: true,
               );
 
-              Widget calloutContent = PlantUMLMSV(
+              Widget calloutContent = MarkdownMSV(
                 teC: teC,
-                onChangeF: (UMLRecord newUmlRecord) {
-                  widget.onChangeF.call(umlRecord = newUmlRecord);
+                onChangeF: (String newMarkdown) {
+                  widget.onChangeF.call(teC.text = newMarkdown);
                 },
-                onSizedF: widget.onSizedF,
               );
 
               fco.showOverlay(

@@ -8,7 +8,6 @@ import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';

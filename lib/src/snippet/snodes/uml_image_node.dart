@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_editor.dart';
+import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -82,7 +82,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       // possiblyHighlightSelectedNode(scName);
 
       return FutureBuilder<UMLRecord>(
-          future: PlantUMLTextEditorState.encodeThenFetchPng(umlText ?? '',
+          future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '',
               (UMLRecord newValue) {
             umlText = newValue.text;
             encodedText = newValue.encodedText;

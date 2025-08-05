@@ -193,7 +193,7 @@ class AssetImageNode extends CL with AssetImageNodeMappable {
                 width: w,
                 //height: h,
                 child: Image.asset(
-                  // key: parentNode?.nodeWidgetGK, // use parent key instead for image
+                  key: _gk, // use parent key instead for image
                   name!,
                   // scale: scale,
                   fit: fit?.flutterValue,

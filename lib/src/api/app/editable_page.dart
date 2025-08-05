@@ -143,7 +143,7 @@ class EditablePageState extends State<EditablePage> {
       },
       builder: (context, state) {
         // layout depends on node selection
-        if (fco.selectedNode is MarkdownNode) {
+        if (false && fco.selectedNode is MarkdownNode) {
           return _pageWhenSelectedAMarkdownNode();
         } else {
           return _normalPage();
@@ -200,11 +200,11 @@ class EditablePageState extends State<EditablePage> {
 
   Widget _normalPage() {
     bool showSNodeTree() =>
-        snippetBeingEdited != null && fco.selectedNode is! MarkdownNode;
+        snippetBeingEdited != null;// && fco.selectedNode is! MarkdownNode;
     bool showPropertiesTree() =>
         snippetBeingEdited != null &&
-        selectedNode?.pTreeC != null &&
-        fco.selectedNode is! MarkdownNode;
+        selectedNode?.pTreeC != null
+            ;//&& fco.selectedNode is! MarkdownNode;
 
     // set up areas
     List<Area> areas = [];

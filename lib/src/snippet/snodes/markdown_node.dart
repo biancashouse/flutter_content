@@ -2,6 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
+import 'package:flutter_content/src/snippet/pnodes/markdown_pnode.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 part 'markdown_node.mapper.dart';
@@ -132,17 +133,17 @@ line 3
   List<PNode> properties(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(buttonLabel: 'Markdown', webLink: 'https://pub.dev/packages/flutter_markdown', snode: this, name: 'fyi'),
     FlutterDocPNode(buttonLabel: 'Markdown Editor Plus', webLink: 'https://pub.dev/packages/markdown_editor_plus', snode: this, name: 'fyi2'),
-    // MarkdownPNode(
-    //   snode: this,
-    //   name: 'data',
-    //   stringValue: data,
-    //   onStringChange: (newValue) {
-    //     refreshWithUpdate(context, () => data = newValue ?? '');
-    //   },
-    //   calloutButtonSize: const Size(280, 32),
-    //   calloutWidth: fco.scrW * .8,
-    //   calloutHeight: fco.scrH * .8,
-    // ),
+    MarkdownPNode(
+      snode: this,
+      name: 'data',
+      stringValue: data,
+      onStringChange: (newValue) {
+        refreshWithUpdate(context, () => data = newValue ?? '');
+      },
+      calloutButtonSize: const Size(280, 3000),
+      calloutWidth: fco.scrW * .8,
+      calloutHeight: fco.scrH * .8,
+    ),
   ];
 
   @override

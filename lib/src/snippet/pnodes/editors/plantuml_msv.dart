@@ -6,12 +6,12 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_split_view/multi_split_view.dart';
 
-class PlantUMLTextEditor extends StatefulWidget {
+class PlantUMLMSV extends StatefulWidget {
   final TextEditingController teC;
   final ValueChanged<UMLRecord> onChangeF;
   final ValueChanged<Size> onSizedF;
 
-  const PlantUMLTextEditor({
+  const PlantUMLMSV({
     required this.teC,
     required this.onChangeF,
     required this.onSizedF,
@@ -19,10 +19,10 @@ class PlantUMLTextEditor extends StatefulWidget {
   });
 
   @override
-  State<PlantUMLTextEditor> createState() => PlantUMLTextEditorState();
+  State<PlantUMLMSV> createState() => PlantUMLMSVState();
 }
 
-class PlantUMLTextEditorState extends State<PlantUMLTextEditor> {
+class PlantUMLMSVState extends State<PlantUMLMSV> {
   late FocusNode focusNode;
   late GlobalKey gkForSizing;
   UMLRecord? umlRecord;
