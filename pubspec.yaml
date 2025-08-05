@@ -1,6 +1,6 @@
 name: flutter_content
 description: Point stuff out for your users => Target, Transform, Configure Callouts, Record to JSON in Dev, and Play in Producton
-version: 3.11.0
+version: 3.11.1
 maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
@@ -125,7 +125,8 @@ dependencies:
   file_selector: ^1.0.3
 
 #  markdown: ^7.3.0
-  flutter_markdown: ^0.7.2+1
+#  flutter_markdown: ^0.7.2+1
+  markdown_widget: ^2.3.2+8
 #  flutter_markdown_plus: ^1.0.3
 #  font_awesome_flutter: ^10.8.0
 #  markdown_toolbar: ^0.5.0

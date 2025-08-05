@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
 
 import 'markdown_toolbar_parser.dart';
 
@@ -587,14 +586,14 @@ class MarkdownToolbarState extends State<MarkdownToolbar> {
             tooltip: showTooltips == true ? horizontalRuleTooltip : '',
             onPressed: () => onHorizontalRulePressed(),
           ),
-        _buildToolbarItem(
-          icon: Icons.close,
-          tooltip: 'close',
-          onPressed: () {
-            fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-            widget.onChangeF(_includedController.text);
-          },
-        ),
+        // _buildToolbarItem(
+        //   icon: Icons.close,
+        //   tooltip: 'close',
+        //   onPressed: () {
+        //     fco.capiBloc.add(CAPIEvent.clearNodeSelection());
+        //     widget.onChangeF(_includedController.text);
+        //   },
+        // ),
       ];
     }
   }

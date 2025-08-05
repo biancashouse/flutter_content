@@ -71,47 +71,49 @@ class TabBarNode extends MC with TabBarNodeMappable {
           snode: this,
           name: 'fyi'),
       StringPNode(
-          snode: this,
-          name: 'name',
-          stringValue: name,
-          skipHelperText: true,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(context, () => name = newValue!),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 400,
-          numLines: 1,
-        ),
-        PNode /*Group*/ (
-          snode: this,
-          name: 'colours',
-          children: [
-            ColorPNode(
-              snode: this,
-              name: 'b/g Color',
-              color: bgColor,
-              onColorChange: (newValue) =>
-                  refreshWithUpdate(context, () => bgColor = newValue),
-              calloutButtonSize: const Size(160, 20),
-            ),
-            ColorPNode(
-              snode: this,
-              name: 'selected label Color',
-              color: selectedLabelColor,
-              onColorChange: (newValue) => refreshWithUpdate(
-                  context, () => selectedLabelColor = newValue),
-              calloutButtonSize: const Size(160, 20),
-            ),
-            ColorPNode(
-              snode: this,
-              name: 'unselected label Color',
-              color: unselectedLabelColor,
-              onColorChange: (newValue) => refreshWithUpdate(
-                  context, () => unselectedLabelColor = newValue),
-              calloutButtonSize: const Size(180, 20),
-            ),
-          ],
-        ),
-      TextStyleWithoutColorPNode /*Group*/ (
+        snode: this,
+        name: 'name',
+        stringValue: name,
+        skipHelperText: true,
+        onStringChange: (newValue) =>
+            refreshWithUpdate(context, () => name = newValue!),
+        calloutButtonSize: const Size(280, 70),
+        calloutWidth: 400,
+        numLines: 1,
+      ),
+      PNode /*Group*/(
+        snode: this,
+        name: 'colours',
+        children: [
+          ColorPNode(
+            snode: this,
+            name: 'b/g Color',
+            color: bgColor,
+            onColorChange: (newValue) =>
+                refreshWithUpdate(context, () => bgColor = newValue),
+            calloutButtonSize: const Size(160, 20),
+          ),
+          ColorPNode(
+            snode: this,
+            name: 'selected label Color',
+            color: selectedLabelColor,
+            onColorChange: (newValue) =>
+                refreshWithUpdate(
+                    context, () => selectedLabelColor = newValue),
+            calloutButtonSize: const Size(160, 20),
+          ),
+          ColorPNode(
+            snode: this,
+            name: 'unselected label Color',
+            color: unselectedLabelColor,
+            onColorChange: (newValue) =>
+                refreshWithUpdate(
+                    context, () => unselectedLabelColor = newValue),
+            calloutButtonSize: const Size(180, 20),
+          ),
+        ],
+      ),
+      TextStyleWithoutColorPNode /*Group*/(
         snode: this,
         name: 'labelStyle',
         textStyleProperties: labelTSPropGroup,
@@ -124,46 +126,47 @@ class TabBarNode extends MC with TabBarNodeMappable {
           });
         },
       ),
-        // TextStyleWithoutColorPNode /*Group*/ (
-        //   snode: this,
-        //   name: 'labelStyle',
-        //   textStyleProperties: labelTSPropGroup,
-        //   onGroupChange: (newValue, refreshPTree) {
-        //     if (refreshPTree) {
-        //       forcePropertyTreeRefresh(context);
-        //     }
-        //     refreshWithUpdate(context, () => labelTSPropGroup = newValue);
-        //   },
-        // ),
-        // ColorPNode(
-        //   snode: this,
-        //   name: 'indicatorColor',
-        //   colorValue: indicatorColorValue,
-        //   onColorIntChange: (newValue) =>
-        //       refreshWithUpdate(context,() => indicatorColorValue = newValue),
-        //   calloutButtonSize: const Size(120, 20),
-        // ),
-        DecimalPNode(
-          snode: this,
-          name: 'indicatorWeight',
-          decimalValue: indicatorWeight,
-          onDoubleChange: (newValue) => refreshWithUpdate(context, () {
-            if (newValue != indicatorWeight) indicatorWeight = newValue;
-          }),
-          calloutButtonSize: const Size(130, 20),
-        ),
-      ];
+      // TextStyleWithoutColorPNode /*Group*/ (
+      //   snode: this,
+      //   name: 'labelStyle',
+      //   textStyleProperties: labelTSPropGroup,
+      //   onGroupChange: (newValue, refreshPTree) {
+      //     if (refreshPTree) {
+      //       forcePropertyTreeRefresh(context);
+      //     }
+      //     refreshWithUpdate(context, () => labelTSPropGroup = newValue);
+      //   },
+      // ),
+      // ColorPNode(
+      //   snode: this,
+      //   name: 'indicatorColor',
+      //   colorValue: indicatorColorValue,
+      //   onColorIntChange: (newValue) =>
+      //       refreshWithUpdate(context,() => indicatorColorValue = newValue),
+      //   calloutButtonSize: const Size(120, 20),
+      // ),
+      DecimalPNode(
+        snode: this,
+        name: 'indicatorWeight',
+        decimalValue: indicatorWeight,
+        onDoubleChange: (newValue) =>
+            refreshWithUpdate(context, () {
+              if (newValue != indicatorWeight) indicatorWeight = newValue;
+            }),
+        calloutButtonSize: const Size(130, 20),
+      ),
+    ];
   }
 
   void _tabListenerF() {
     if (!(tabC?.indexIsChanging ?? true)) {
       if (!(backBtnPressed ?? false)) {
         prevTabQ.add(selection ?? 0);
-        selection = tabC!.index;
+        selection = tabC?.index;
         prevTabQSize.value = prevTabQ.length;
         // fco.logger.i("tab pressed: ${tabC!.index}, Q: ${prevTabQ.toString()}");
       } else {
-        selection = tabC!.index;
+        selection = tabC?.index;
         backBtnPressed = false;
       }
     }
@@ -173,7 +176,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     if (!(spState?.mounted ?? false)) return;
     tabC?.dispose();
     tabC = TabController(vsync: spState!, length: numTabs);
-    tabC!.addListener(_tabListenerF);
+    tabC?.addListener(_tabListenerF);
     spState.tabBars[name] = this;
 
     // tabC!.addListener(() {
@@ -191,8 +194,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
-      ) {
+  Widget toWidget(BuildContext context, SNode? parentNode,) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -228,19 +230,13 @@ class TabBarNode extends MC with TabBarNodeMappable {
         ),
       );
       tabC?.index = min(selection ?? 0, children.length - 1);
-      try {
-        return PreferredSize(
-          preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
-          child: Container(
-            color: bgColor?.flutterValue ?? Colors.grey,
-            child: tabBar,
-          ),
-        );
-      } catch (e) {
-        fco.logger.i('TabBarNode.toWidget() failed! ${e.toString()}');
-        return Error(
-            key: createNodeWidgetGK(), FLUTTER_TYPE, errorMsg: e.toString());
-      }
+      return PreferredSize(
+        preferredSize: const Size.fromHeight(100), //tabBar.preferredSize,
+        child: Container(
+          color: bgColor?.flutterValue ?? Colors.grey,
+          child: tabBar,
+        ),
+      );
     } catch (e) {
       return Error(
           key: createNodeWidgetGK(),

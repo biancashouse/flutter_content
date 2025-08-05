@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The message format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.11.1 - 2025-08-05
+### Fixed
+- replace discontinued flutter\_markdown with markdown\_widget
+
 ## 3.11.0 - 2025-08-05
 ### Fixed
 - fix EditablePage s.t. SnippetBeingEdited rendered via a SnippetPanel

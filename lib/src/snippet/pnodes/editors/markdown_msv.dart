@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+// import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/markdown_editor/markdown_editor.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+// import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 class MarkdownMSV extends StatefulWidget {
   final TextEditingController teC;
@@ -31,7 +32,7 @@ class MarkdownMSVState extends State<MarkdownMSV> {
           widget.onChangeF.call(s);
         });
       })),
-      Area(builder: (ctx, area) => _markdownRenderedArea()),
+      Area(builder: (ctx, area) => MarkdownWidget(data:widget.teC.text)),
     ];
 
     return MultiSplitViewTheme(
@@ -45,29 +46,29 @@ class MarkdownMSVState extends State<MarkdownMSV> {
     );
   }
 
-  Widget _markdownRenderedArea() => Markdown(
-    data: widget.teC.text,
-    styleSheet: MarkdownStyleSheet(
-      h1: const TextStyle(color: Colors.red),
-      p: const TextStyle(color: Colors.black),
-      a: const TextStyle(color: Colors.blue),
-      codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
-      code: const TextStyle(color: Colors.purple),
-    ),
-    onTapLink: (String text, String? href, String title) async {
-      if (href != null) {
-        try {
-          Uri url = Uri.parse(href);
-          if (!await launchUrl(url)) {
-            throw Exception('Could not launch $href');
-          }
-        } catch (e) {
-          fco.logger.d('Following exception ignored:');
-          fco.logger.e('', error: e);
-        }
-      }
-    },
-  );
+  // Widget _markdownRenderedArea() => Markdown(
+  //   data: widget.teC.text,
+  //   styleSheet: MarkdownStyleSheet(
+  //     h1: const TextStyle(color: Colors.red),
+  //     p: const TextStyle(color: Colors.black),
+  //     a: const TextStyle(color: Colors.blue),
+  //     codeblockDecoration: BoxDecoration(color: Colors.yellow[100]),
+  //     code: const TextStyle(color: Colors.purple),
+  //   ),
+  //   onTapLink: (String text, String? href, String title) async {
+  //     if (href != null) {
+  //       try {
+  //         Uri url = Uri.parse(href);
+  //         if (!await launchUrl(url)) {
+  //           throw Exception('Could not launch $href');
+  //         }
+  //       } catch (e) {
+  //         fco.logger.d('Following exception ignored:');
+  //         fco.logger.e('', error: e);
+  //       }
+  //     }
+  //   },
+  // );
 
   // Widget _rawTextArea() => Container(
   //   color: Colors.yellowAccent,
