@@ -292,193 +292,11 @@ class FlutterContentMixins
 
     // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
     // setPathUrlStrategy();
-    routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
-    router = GoRouter.routingConfig(
-      navigatorKey: fco.globalNavigatorKey,
-      debugLogDiagnostics: false,
-      initialLocation: initialRoutePath,
-      routingConfig: routingConfigVN,
+    initRouter(routingConfig, initialRoutePath);
 
-      // onException: (_, GoRouterState state, GoRouter router) {
-      //   router.go('/404', extra: state.uri.toString());
-      // },
-      errorBuilder: (context, state) {
-        String matchedLocation = state.matchedLocation;
-        // var param = state.pathParameters;
-
-        if (matchedLocation == '/pages') {
-          if (fco.authenticated.isTrue) {
-            return Pages();
-          } else {
-            return AlertDialog(
-              title: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(40),
-                child: fco.coloredText(
-                  'Viewing the Page list:\nYou must be signed in as an editor !',
-                  color: Colors.red,
-                ),
-              ),
-            );
-          }
-        }
-        // may have already been created (incl content callout snippets)
-
-        final snippetNames = appInfo.snippetNames;
-        bool dynamicPageExists = snippetNames.contains(matchedLocation);
-        // bool contains(list, key) {
-        //   for (String s in list) {
-        //     print('$s, $key');
-        //     if (s == key)
-        //       return true;
-        //   }
-        //   return false;
-        // }
-        // dynamicPageExists = contains(snippetNames,matchedLocation);
-        // may still exists if the matchedLocation is in the form: / + callout content id
-        if (!dynamicPageExists) {
-          // final possiblyACalloutContentId = matchedLocation.substring(1);
-          // final isCID = int.tryParse(possiblyACalloutContentId) != null
-          //     || possiblyACalloutContentId.startsWith('T-');
-          // if (isCID) {
-          //   final cid = possiblyACalloutContentId;
-          //   if (snippetNames.contains(cid)) {
-          //     return CalloutContentEditablePage(
-          //       key: GlobalKey(), // provides access to state later
-          //       cid: cid,
-          //       child: SnippetPanel.fromSnippet(
-          //         panelName: "callout-content-editor-panel",
-          //         snippetName: cid,
-          //         scName: cid,
-          //       ),
-          //     );
-          //   }
-          // }
-        }
-        if (dynamicPageExists) {
-          EditablePage.removeAllNodeWidgetOverlays();
-          // fco.dismiss('exit-editMode');
-          final snippetName = matchedLocation;
-          final rootNode = SnippetTemplateEnum.empty.clone()
-            ..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-            snippetName: snippetName,
-            templateSnippetRootNode: rootNode,
-          );
-          final dynamicPage = EditablePage(
-            key: GlobalKey(), // provides access to state later
-            routePath: matchedLocation,
-            child: SnippetPanel.fromSnippet(
-              panelName: "dynamic panel",
-              snippetName: snippetName,
-              scName: null,
-              key: ValueKey<String>(snippetName),
-            ),
-          );
-          return dynamicPage;
-        }
-        // page doesn't exist yet
-        // editor can ask to create it
-        if (authenticated.isTrue) {
-          return AlertDialog(
-            title: Text('Page "$matchedLocation" does not Exist !'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[Text('Want to create it now ?')],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Yes, Create page $matchedLocation'),
-                onPressed: () {
-                  final String destUrl = matchedLocation;
-                  EditablePage.removeAllNodeWidgetOverlays();
-                  // fco.dismiss('exit-editMode');
-                  // bool userCanEdit = canEditContent.isTrue;
-                  final snippetName = destUrl;
-                  final rootNode = SnippetTemplateEnum.empty.clone()
-                    ..name = snippetName;
-                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                    snippetName: snippetName,
-                    templateSnippetRootNode: rootNode,
-                  ).then((_) {
-                    afterNextBuildDo(() {
-                      // SnippetInfoModel.snippetInfoCache;
-                      router.push(destUrl);
-                      // router.go('/');
-                    });
-                  });
-                },
-              ),
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  context.go('/');
-                },
-              ),
-            ],
-          );
-        }
-
-        // a sandbox page has been created
-        if (fco.appInfo.sandboxPageNames.contains(matchedLocation)) {
-          final String destUrl = matchedLocation;
-          EditablePage.removeAllNodeWidgetOverlays();
-          // fco.dismiss('exit-editMode');
-          // bool userCanEdit = canEditContent.isTrue;
-          final snippetName = destUrl;
-          final rootNode = SnippetTemplateEnum.empty.clone()
-            ..name = snippetName;
-          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-            snippetName: snippetName,
-            templateSnippetRootNode: rootNode,
-          ).then((_) {
-            afterNextBuildDo(() {
-              // SnippetInfoModel.snippetInfoCache;
-              router.push(destUrl);
-              // router.go('/');
-            });
-          });
-        }
-
-        return AlertDialog(
-          title: const Text('Page does not Exist !'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      'You must be signed in as an editor to create this page.',
-                    ),
-                    Gap(10),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go('/');
-                      },
-                      child: const Text('ok'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // actions: <Widget>[
-          //   TextButton(
-          //     child: const Text('ok'),
-          //     onPressed: () {
-          //       context.go('/');
-          //     },
-          //   ),
-          // ],
-        );
-      },
-      observers: [GoRouterObserver()],
-    );
-    List<String> routePaths = [];
+     // List<String> routePaths = [];
     // logi('starting parseRouteConfig');
-    parseRouteConfig(routePaths, router.configuration.routes);
+    // parseRouteConfig(routePaths, router.configuration.routes);
     // logi('finished parseRouteConfig');
 
     // logi('RoutingConfig Routes------------');
@@ -514,16 +332,7 @@ class FlutterContentMixins
 
       // fco.logger.i('init 3. ${fco.stopwatch.elapsedMilliseconds}');
 
-      // add more routes from the snippet names to below the "/" route
-      // RouteBase home = routingConfig.routes.first;
-      for (String snippetName in appInfo.snippetNames) {
-        if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
-          addSubRoute(
-            newPath: snippetName,
-            template: SnippetTemplateEnum.empty,
-          );
-        }
-      }
+      addDynamicPages();
 
       // await loadLatestSnippetMap();
 
@@ -534,8 +343,7 @@ class FlutterContentMixins
     // await initLocalStorage();
     // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    bool b = localStorage.read("canEditContent") ?? false;
-    authenticated = CanEditContentVN(b);
+    authenticated = localStorage.read("canEditContent") ?? false;
 
     if (useFBStorage) {
       // traverse all nodes starting at root
@@ -593,13 +401,21 @@ class FlutterContentMixins
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
-  late CanEditContentVN authenticated;
+  late bool authenticated;
+
+  bool canEditContent() {
+    String? currentPagePath = fco.currentEditablePagePath;
+    bool isGuestPage = fco.appInfo.sandboxPageNames.contains(currentPagePath);
+    return authenticated || isGuestPage;
+  }
 
   GlobalKey authIconGK = GlobalKey();
 
   final snippetTreeTC = TransformationController();
 
   late GoRouter router;
+
+  List<String> pageList = [];
 
   late TapGestureRecognizer webLinkF;
 
@@ -662,9 +478,9 @@ class FlutterContentMixins
       return;
     }
 
-    String? snippetName = snippet!.name.startsWith('/')
-        ? snippet.name.substring(1)
-        : snippet.name;
+    String? snippetName = snippet!.name; //.startsWith('/')
+        // ? snippet.name.substring(1)
+        // : snippet.name;
 
     // only does following i.i. a new snippet
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
@@ -820,7 +636,7 @@ class FlutterContentMixins
   );
 
   Future<void> setCanEditContent(bool b) async {
-    authenticated.value = b;
+    authenticated = b;
     return await localStorage.write("canEditContent", b);
   }
 

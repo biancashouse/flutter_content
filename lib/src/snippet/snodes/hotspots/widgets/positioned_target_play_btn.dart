@@ -38,7 +38,7 @@ class TargetPlayBtn extends StatelessWidget {
 
   Widget _draggableSelectTargetBtn(TargetModel tc) {
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    return !fco.authenticated.isTrue
+    return !fco.canEditContent()
         ? GestureDetector(
             onTap: () {
               if (tc.targetsWrapperState() == null) return;

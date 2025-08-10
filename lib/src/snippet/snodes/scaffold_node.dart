@@ -67,10 +67,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
     );
 
     try {
-      return ValueListenableBuilder<bool>(
-        valueListenable: fco.authenticated,
-        builder: (context, value, child) {
-          bool showPencil = !value;
+          bool showPencil = !fco.canEditContent();
           return Stack(
             children: [
               scaffold,
@@ -86,9 +83,6 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
                   ),
                 ),
             ],
-          );
-        },
-        child: scaffold,
       );
     } catch (e) {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

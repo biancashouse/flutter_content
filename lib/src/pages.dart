@@ -1,82 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:go_router/go_router.dart';
 
-class Pages extends StatefulWidget {
+class Pages extends StatelessWidget {
   const Pages({super.key});
 
-  @override
-  State<Pages> createState() => _PagesState();
-}
-
-class _PagesState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
     fco.logger.d('pages build');
     var pages = fco.pageList;
     final scaffold = Scaffold(
-      appBar: AppBar(
-        title: Text('Available Pages in this web app'),
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(title: Text('Available Pages in this web app')),
       body: ListView.builder(
         padding: EdgeInsets.all(30),
         itemCount: pages.length,
         itemBuilder: (context, index) {
           final label = pages[index];
+          String sandboxIndicator = (fco.appInfo.sandboxPageNames.contains(label)) ? ' *' : "";
           return Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextButton(
-                onPressed: () {
-                  context.replace(label);
-                },
-                child: Text(label),
-              ),
               if (label != '/')
                 IconButton(
                   onPressed: () async {
                     fco.appInfo.snippetNames.remove(label);
+                    fco.appInfo.sandboxPageNames.remove(label);
                     fco.deleteSubRoute(path: label);
                     await fco.modelRepo.saveAppInfo();
                     await fco.modelRepo.deleteSnippet(label);
                     SnippetInfoModel.removeFromCache(label);
-                    setState(() {});
+                    fco.capiBloc.add(CAPIEvent.forceRefresh());
                   },
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ),
-                )
+                  icon: Icon(Icons.delete, color: Colors.red),
+                ),
+              TextButton(
+                onPressed: () {
+                  context.go(label);
+                },
+                child: Text('    $label$sandboxIndicator'),
+              ),
             ],
           );
         },
       ),
     );
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: fco.authenticated,
-      builder: (context, value, child) {
-        bool showPencil = !value;
+    return BlocBuilder<CAPIBloC, CAPIState>(
+      builder: (context, state) {
+        bool showPencil = !fco.canEditContent();
         return Stack(
           children: [
             scaffold,
             if (showPencil)
               Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      // ask user to sign in as editor
-                      setState(() {
-                        EditablePage.of(context)?.editorPasswordDialog();
-                      });
-                    },
-                    icon: Icon(Icons.edit, color: Colors.white),
-                  )),
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  onPressed: () {
+                    // ask user to sign in as editor
+                    EditablePage.of(context)?.editorPasswordDialog();
+                    fco.capiBloc.add(CAPIEvent.forceRefresh());
+                  },
+                  icon: Icon(Icons.edit, color: Colors.white),
+                ),
+              ),
           ],
         );
       },
-      child: scaffold,
     );
   }
 }

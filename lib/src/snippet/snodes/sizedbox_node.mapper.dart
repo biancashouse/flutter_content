@@ -34,6 +34,10 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
   static String _$uid(SizedBoxNode v) => v.uid;
   static const Field<SizedBoxNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SizedBoxNode v) =>
+      v.treeNodeGK;
+  static const Field<SizedBoxNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SizedBoxNode v) => v.isExpanded;
   static const Field<SizedBoxNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -49,6 +53,7 @@ class SizedBoxNodeMapper extends SubClassMapperBase<SizedBoxNode> {
     #height: _f$height,
     #child: _f$child,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

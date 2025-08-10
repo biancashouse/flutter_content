@@ -125,7 +125,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               Widget snippetWidgetStack = Stack(
                 children: [
                   snippetWidget,
-                  if (fco.authenticated.isTrue)
+                  if (fco.canEditContent())
                     Align(
                       alignment: Alignment.topRight,
                       child: SizedBox(width: 40, height: 40, child: CustomPaint(size: const Size(40, 40), painter: TRTriangle(Colors.black))),
@@ -133,7 +133,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
                 ],
               );
 
-              return fco.authenticated.isTrue
+              return fco.canEditContent()
                   ? Banner(
                     message: isPublishedVersion ? 'published' : 'not published',
                     location: BannerLocation.topEnd,
@@ -170,6 +170,8 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
 
     // if not yet in AppInfo, must be a BRAND NEW snippet, so just return it as the template
     if (!fco.appInfo.snippetNames.contains(snippetName) && templateSnippetRootNode != null) {
+      fco.pageList.add(snippetName);
+      fco.capiBloc.add(CAPIEvent.forceRefresh());
       await fco.saveNewVersion(snippet: templateSnippetRootNode);
       // await fco.cacheAndSaveANewSnippetVersion(snippetName: snippetName, rootNode: snippetRootNode);
       return templateSnippetRootNode;

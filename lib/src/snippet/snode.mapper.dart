@@ -29,6 +29,10 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   static String _$uid(SNode v) => v.uid;
   static const Field<SNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SNode v) =>
+      v.treeNodeGK;
+  static const Field<SNode, GlobalKey<State<StatefulWidget>>> _f$treeNodeGK =
+      Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SNode v) => v.isExpanded;
   static const Field<SNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -41,6 +45,7 @@ class SNodeMapper extends ClassMapperBase<SNode> {
   @override
   final MappableFields<SNode> fields = const {
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

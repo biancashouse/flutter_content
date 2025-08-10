@@ -810,7 +810,7 @@
 //   //       return ValueListenableBuilder<bool>(
 //   //         valueListenable: fco.authenticated,
 //   //         builder: (context, value, child) {
-//   //           if (!fco.authenticated.isTrue) {
+//   //           if (!fco.canEditContent()) {
 //   //             final dropdownItems = <DropdownMenuItem<String>>[];
 //   //             dropdownItems.add(DropdownMenuItem<String>(
 //   //               value: 'sign-in as a Content Editor',

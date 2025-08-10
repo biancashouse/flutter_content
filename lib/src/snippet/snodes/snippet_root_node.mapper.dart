@@ -33,6 +33,10 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
   static String _$uid(SnippetRootNode v) => v.uid;
   static const Field<SnippetRootNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(SnippetRootNode v) =>
+      v.treeNodeGK;
+  static const Field<SnippetRootNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(SnippetRootNode v) => v.isExpanded;
   static const Field<SnippetRootNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -48,6 +52,7 @@ class SnippetRootNodeMapper extends SubClassMapperBase<SnippetRootNode> {
     #tags: _f$tags,
     #child: _f$child,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

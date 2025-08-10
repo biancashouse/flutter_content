@@ -705,7 +705,7 @@ class EditablePageState extends State<EditablePage> {
                 }
                 // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
                 fco.dismiss(cid_EditorPassword);
-                fco.setCanEditContent(true);
+                fco.authenticated = true;
                 // await FC.loadLatestSnippetMap();
                 // fco.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
                 // fco.afterNextBuildDo(() {
@@ -879,7 +879,7 @@ class EditablePageState extends State<EditablePage> {
   //       return ValueListenableBuilder<bool>(
   //         valueListenable: fco.authenticated,
   //         builder: (context, value, child) {
-  //           if (!fco.authenticated.isTrue) {
+  //           if (!fco.canEditContent()) {
   //             final dropdownItems = <DropdownMenuItem<String>>[];
   //             dropdownItems.add(DropdownMenuItem<String>(
   //               value: 'sign-in as a Content Editor',

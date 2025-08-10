@@ -152,6 +152,10 @@ class CAPIEvent with _$CAPIEvent {
     required VersionId versionId,
   }) = RevertSnippet;
 
+  // const factory CAPIEvent.PagesChanged({
+  //   required String pathName,
+  // }) = PageAdded;
+
   const factory CAPIEvent.deletePage({
     required String pathName,
   }) = DeletePage;

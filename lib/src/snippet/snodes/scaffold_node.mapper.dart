@@ -41,6 +41,10 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
   static String _$uid(ScaffoldNode v) => v.uid;
   static const Field<ScaffoldNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ScaffoldNode v) =>
+      v.treeNodeGK;
+  static const Field<ScaffoldNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(ScaffoldNode v) => v.isExpanded;
   static const Field<ScaffoldNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -57,6 +61,7 @@ class ScaffoldNodeMapper extends SubClassMapperBase<ScaffoldNode> {
     #body: _f$body,
     #canShowEditorLoginBtn: _f$canShowEditorLoginBtn,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

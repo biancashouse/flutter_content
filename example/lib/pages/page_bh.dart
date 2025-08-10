@@ -191,10 +191,7 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
       ),
     );
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: fco.authenticated,
-      builder: (context, value, child) {
-        return Stack(
+    return Stack(
           children: [
             scaffold,
             Align(
@@ -205,9 +202,6 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
               ),
             ),
           ],
-        );
-      },
-      child: scaffold,
     );
   }
 

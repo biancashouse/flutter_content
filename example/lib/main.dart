@@ -62,7 +62,7 @@ Future<void> main({bool useEmulator = false}) async {
     // }
 
     runApp(FlutterContentApp(
-      appName: 'flutter-content-demo',
+      appName: 'flutter-content-example',
       editorPasswords: ['pigsinspace'],
       // use web, mobile or desktop routingConfig defined in your routes_config.dart
       routingConfig: webRoutingConfig,

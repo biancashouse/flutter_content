@@ -73,7 +73,7 @@ Future<void> showSnippetContentCallout({
     child: content(),
   );
 
-  Widget possiblyEditableContent() => fco.authenticated.isTrue && !justPlaying ? editableContent() : content();
+  Widget possiblyEditableContent() => fco.canEditContent() && !justPlaying ? editableContent() : content();
 
   final snippetBeingEdited = fco.snippetBeingEdited != null;
 

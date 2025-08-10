@@ -141,6 +141,10 @@ line 3
   static String _$uid(MarkdownNode v) => v.uid;
   static const Field<MarkdownNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(MarkdownNode v) =>
+      v.treeNodeGK;
+  static const Field<MarkdownNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(MarkdownNode v) => v.isExpanded;
   static const Field<MarkdownNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -154,6 +158,7 @@ line 3
   final MappableFields<MarkdownNode> fields = const {
     #data: _f$data,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

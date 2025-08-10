@@ -63,7 +63,7 @@ class TargetsWrapper extends StatefulWidget {
     ScrollControllerName? scName, {
     bool quickly = false,
   }) {
-    if (!fco.authenticated.isTrue) return;
+    if (!fco.canEditContent()) return;
 
     if (tc.targetsWrapperState() == null) return;
 
@@ -255,7 +255,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
           if (mounted) {
             measureIWPosAndSize();
             // autoplay callouts when not in editing mode
-            if (!fco.authenticated.isTrue) {
+            if (!fco.canEditContent()) {
               fco.afterNextBuildDo(() {
                 for (TargetModel tc in widget.parentNode.targets) {
                   if (!tc.hasAHotspot()) {
@@ -381,7 +381,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                   child: GestureDetector(
                     onTapDown: (TapDownDetails details) async {
                       // ignore if not in editing mode or if currently showing config toolbar
-                      if (!fco.authenticated.isTrue ||
+                      if (!fco.canEditContent() ||
                           fco.anyPresent([CalloutConfigToolbar.CID]) ||
                           fco.snippetBeingEdited != null) {
                         return;
@@ -459,7 +459,7 @@ class TargetsWrapperState extends State<TargetsWrapper> {
                 child: Visibility.maintain(
                   key: fco.setTargetGk(tc.uid,
                       GlobalKey(debugLabel: 'Target ${tc.uid.toString()}')),
-                  visible: fco.authenticated.isTrue &&
+                  visible: fco.canEditContent() &&
                       (playingTc == null || playingTc == tc),
                   child: TargetCover(
                     tc,

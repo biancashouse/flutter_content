@@ -20,11 +20,12 @@ class SnippetInfoModel with SnippetInfoModelMappable {
   static final Map<SnippetName, SnippetInfoModel> _snippetInfoCache = {};
 
   static SnippetInfoModel? cachedSnippetInfo(String snippetName) {
-    return _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName];
+    return _snippetInfoCache[snippetName];
   }
 
   static void cacheSnippetInfo(String snippetName, SnippetInfoModel sni) {
-    _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName] = sni;
+    // _snippetInfoCache[snippetName.startsWith('/') ? snippetName.substring(1) : snippetName] = sni;
+    _snippetInfoCache[snippetName] = sni;
   }
 
   static List<String> cachedSnippetNames() => _snippetInfoCache.keys.toList();
@@ -58,7 +59,7 @@ class SnippetInfoModel with SnippetInfoModelMappable {
 
   bool get isAPageSnippet => routePath != null;
 
-  VersionId? currentVersionId() => fco.authenticated.isTrue ? editingVersionId : publishedVersionId;
+  VersionId? currentVersionId() => fco.canEditContent() ? editingVersionId : publishedVersionId;
 
   Future<SnippetRootNode?> currentVersionFromCacheOrFB() async {
     SnippetRootNode? rootNode;

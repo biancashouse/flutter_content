@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/src/pages.dart';
+import 'package:flutter_content/src/route_observer.dart';
 import 'package:go_router/go_router.dart';
 
 extension RoutesExtension on FlutterContentMixins {
@@ -17,6 +20,7 @@ extension RoutesExtension on FlutterContentMixins {
     List<RouteBase> subRoutes = routingConfigVN.value.routes;
     if (!newPath.endsWith(' missing')) {
       subRoutes.add(DynamicPageRoute(path: newPath, template: template));
+      pageList.add(newPath);;
     }
   }
 
@@ -27,9 +31,10 @@ extension RoutesExtension on FlutterContentMixins {
         subRoutes.remove(sr);
       }
     }
+    pageList.remove(path);
   }
 
-  List<String> get pageList {
+  void get populatePageList {
     List<RouteBase> allRoutes = [];
 
     void routes(List<RouteBase> parentRoutes) {
@@ -43,13 +48,218 @@ extension RoutesExtension on FlutterContentMixins {
 
     routes(routingConfigVN.value.routes);
 
-    return allRoutes
+    pageList = allRoutes
         .map((route) {
           String path = (route as GoRoute).path;
           return path.startsWith('/') ? path : '/$path';
         })
-        .toList()
-        .where((routePath) => !appInfo.sandboxPageNames.contains(routePath))
+        // .toList()
+        // .where((routePath) => !appInfo.sandboxPageNames.contains(routePath))
         .toList();
+  }
+
+  void addDynamicPages() {
+    // add more routes from the snippet names to below the "/" route
+    // RouteBase home = routingConfig.routes.first;
+    for (String snippetName in appInfo.snippetNames) {
+      if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
+        addSubRoute(
+          newPath: snippetName,
+          template: SnippetTemplateEnum.empty,
+        );
+      }
+    }
+  }
+
+  void initRouter(RoutingConfig routingConfig, String initialRoutePath) {
+    routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
+    router = GoRouter.routingConfig(
+      navigatorKey: fco.globalNavigatorKey,
+      debugLogDiagnostics: false,
+      initialLocation: initialRoutePath,
+      routingConfig: routingConfigVN,
+
+      // onException: (_, GoRouterState state, GoRouter router) {
+      //   router.go('/404', extra: state.uri.toString());
+      // },
+
+      // when page not found by router
+      errorBuilder: (context, state) {
+        String matchedLocation = state.matchedLocation;
+        // var param = state.pathParameters;
+
+        if (matchedLocation == '/pages') {
+          if (fco.canEditContent()) {
+            return Pages();
+          } else {
+            return AlertDialog(
+              title: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(40),
+                child: fco.coloredText(
+                  'Viewing the Page list:\nYou must be signed in as an editor !',
+                  color: Colors.red,
+                ),
+              ),
+            );
+          }
+        }
+        // may have already been created (incl content callout snippets)
+
+        final snippetNames = appInfo.snippetNames;
+        bool dynamicPageExists = snippetNames.contains(matchedLocation);
+
+        // bool contains(list, key) {
+        //   for (String s in list) {
+        //     print('$s, $key');
+        //     if (s == key)
+        //       return true;
+        //   }
+        //   return false;
+        // }
+        // dynamicPageExists = contains(snippetNames,matchedLocation);
+        // may still exists if the matchedLocation is in the form: / + callout content id
+        if (!dynamicPageExists) {
+          // final possiblyACalloutContentId = matchedLocation.substring(1);
+          // final isCID = int.tryParse(possiblyACalloutContentId) != null
+          //     || possiblyACalloutContentId.startsWith('T-');
+          // if (isCID) {
+          //   final cid = possiblyACalloutContentId;
+          //   if (snippetNames.contains(cid)) {
+          //     return CalloutContentEditablePage(
+          //       key: GlobalKey(), // provides access to state later
+          //       cid: cid,
+          //       child: SnippetPanel.fromSnippet(
+          //         panelName: "callout-content-editor-panel",
+          //         snippetName: cid,
+          //         scName: cid,
+          //       ),
+          //     );
+          //   }
+          // }
+        }
+        if (dynamicPageExists) {
+          EditablePage.removeAllNodeWidgetOverlays();
+          // fco.dismiss('exit-editMode');
+          final snippetName = matchedLocation;
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            templateSnippetRootNode: rootNode,
+          );
+          final dynamicPage = EditablePage(
+            key: GlobalKey(), // provides access to state later
+            routePath: matchedLocation,
+            child: SnippetPanel.fromSnippet(
+              panelName: "dynamic panel",
+              snippetName: snippetName,
+              scName: null,
+              key: ValueKey<String>(snippetName),
+            ),
+          );
+          return dynamicPage;
+        }
+
+        // page doesn't exist yet
+        // editor can ask to create it
+        if (canEditContent()) {
+          return AlertDialog(
+            title: Text('Page "$matchedLocation" does not Exist !'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[Text('Want to create it now ?')],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Yes, Create page $matchedLocation'),
+                onPressed: () {
+                  final String destUrl = matchedLocation;
+                  EditablePage.removeAllNodeWidgetOverlays();
+                  // fco.dismiss('exit-editMode');
+                  // bool userCanEdit = canEditContent.isTrue;
+                  final snippetName = destUrl;
+                  final rootNode = SnippetTemplateEnum.empty.clone()
+                    ..name = snippetName;
+                  SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                    snippetName: snippetName,
+                    templateSnippetRootNode: rootNode,
+                  ).then((_) {
+                    afterNextBuildDo(() {
+                      // SnippetInfoModel.snippetInfoCache;
+                      router.push(destUrl);
+                      // router.go('/');
+                    });
+                  });
+                },
+              ),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  context.go('/');
+                },
+              ),
+            ],
+          );
+        }
+
+        // a sandbox page has been created
+        if (fco.appInfo.sandboxPageNames.contains(matchedLocation)) {
+          final String destUrl = matchedLocation;
+          EditablePage.removeAllNodeWidgetOverlays();
+          // fco.dismiss('exit-editMode');
+          // bool userCanEdit = canEditContent.isTrue;
+          final snippetName = destUrl;
+          final rootNode = SnippetTemplateEnum.empty.clone()
+            ..name = snippetName;
+          SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+            snippetName: snippetName,
+            templateSnippetRootNode: rootNode,
+          ).then((_) {
+            afterNextBuildDo(() {
+              // SnippetInfoModel.snippetInfoCache;
+              router.push(destUrl);
+              // router.go('/');
+            });
+          });
+        }
+
+        return AlertDialog(
+          title: const Text('Page does not Exist !'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      'You must be signed in as an editor to create this page.',
+                    ),
+                    Gap(10),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.go('/');
+                      },
+                      child: const Text('ok'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // actions: <Widget>[
+          //   TextButton(
+          //     child: const Text('ok'),
+          //     onPressed: () {
+          //       context.go('/');
+          //     },
+          //   ),
+          // ],
+        );
+      },
+      observers: [GoRouterObserver()],
+    );
+
   }
 }

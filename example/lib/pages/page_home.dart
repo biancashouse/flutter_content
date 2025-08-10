@@ -19,7 +19,6 @@ class Page_Home extends StatefulWidget {
 }
 
 class _Page_HomeState extends State<Page_Home> {
-
   @override
   void initState() {
     fco.afterNextBuildDo(() {
@@ -80,7 +79,7 @@ class _Page_HomeState extends State<Page_Home> {
       // panelName: 'demo-buttons',
       snippetRootNode: SnippetTemplateEnum.scaffold_with_tabs
           .templateSnippet()
-          .clone(cloneName: 'home-scaffold_with_tabs'),
+          .clone(cloneName: 'editable-scaffold_with_tabbar'),
       // snippetRootNode: SnippetRootNode(
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()
@@ -126,23 +125,17 @@ class _Page_HomeState extends State<Page_Home> {
       ),
     );
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: fco.authenticated,
-      builder: (context, value, child) {
-        return Stack(
-          children: [
-            scaffold,
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: fco.NavigationDD(pencilIconColor: Colors.red),
-              ),
-            ),
-          ],
-        );
-      },
-      child: scaffold,
+    return Stack(
+      children: [
+        scaffold,
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: fco.NavigationDD(pencilIconColor: Colors.red),
+          ),
+        ),
+      ],
     );
   }
 }

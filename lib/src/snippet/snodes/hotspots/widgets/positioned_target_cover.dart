@@ -26,7 +26,7 @@ class TargetCover extends StatelessWidget {
     // if (tc != null) {
     // double radius = tc.radius;
     bool preventDrag = fco.anyPresent([CalloutConfigToolbar.CID]);
-    return fco.authenticated.isTrue && !playing
+    return fco.canEditContent() && !playing
         ? Draggable<(TargetId, bool)>(
             data: (tc.uid, false),
             feedback:

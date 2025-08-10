@@ -87,6 +87,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
     on<CopyNode>((event, emit) => _copyNode(event, emit));
     on<CopySnippetJsonToClipboard>((event, emit) => _copySnippetJsonToClipboard(event, emit));
     on<ReplaceSnippetFromJson>((event, emit) => _replaceSnippetFromJson(event, emit));
+    // on<PageAdded>((event, emit) => _pageAdded(event, emit));
     // on<CreateUndo>((event, emit) => _createUndo(event, emit));
     // on<Undo>((event, emit) => _undo(event, emit));
     // on<Redo>((event, emit) => _redo(event, emit));
@@ -161,6 +162,10 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     emit(state.copyWith(force: state.force + 1));
   }
+
+  // Future<void> _pageAdded(PageAdded event, emit) async {
+  //   emit(state.copyWith(force: state.force + 1));
+  // }
 
   Future<void> _deletePage(DeletePage event, emit) async {
     emit(state.copyWith(force: state.force + 1));

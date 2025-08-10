@@ -68,7 +68,8 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   });
 
-  static SnippetPanelState? of(BuildContext context) => context.findAncestorStateOfType<SnippetPanelState>();
+  static SnippetPanelState? of(BuildContext context) =>
+      context.findAncestorStateOfType<SnippetPanelState>();
 
   @override
   State<SnippetPanel> createState() => SnippetPanelState();
@@ -86,7 +87,8 @@ class SnippetPanel extends StatefulWidget {
   }
 }
 
-class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixin {
+class SnippetPanelState extends State<SnippetPanel>
+    with TickerProviderStateMixin {
   Map<String, TabBarNode> tabBars = {};
   late Future<SnippetRootNode?> fEnsureSnippetInCache;
 
@@ -135,7 +137,9 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     // may already be in memory
     var appInfo = fco.appInfo;
     if (appInfo.snippetNames.contains(snippetName())) {
-      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName());
+      SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+        snippetName(),
+      );
       if (snippetInfo != null) {
         return await snippetInfo.currentVersionFromCacheOrFB();
       }
@@ -167,9 +171,16 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
 
     // if a snippet passed in, don't need a futurebuilder
     return BlocConsumer<CAPIBloC, CAPIState>(
-      key: widget.panelName != null ? fco.panelGkMap[widget.panelName!] = GlobalKey(debugLabel: 'Panel[${widget.panelName}]') : null,
+      key: widget.panelName != null
+          ? fco.panelGkMap[widget.panelName!] = GlobalKey(
+              debugLabel: 'Panel[${widget.panelName}]',
+            )
+          : null,
       // show pink overlays if state variable set with this snippet's name
-      listenWhen: (context, state) => state.snippetNameShowingPinkOverlaysFor == snippetName(),
+      listenWhen: (context, state) {
+        var name = snippetName();
+        return state.snippetNameShowingPinkOverlaysFor == name;
+      },
       //|| (fco.snippetBeingEdited?.aNodeIsSelected ?? false),
       listener: (context, state) {
         // NON-null name means show pink overlays, otherwise ignore (editing ended)
@@ -187,7 +198,8 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
       buildWhen: (previous, current) {
         // fco.logger.i(
         //     'BlocBuilder - current.onlyTargetsWrappers: ${current.onlyTargetsWrappers}');
-        return !current.onlyTargetsWrappers && current.snippetNameShowingPinkOverlaysFor == null;
+        return !current.onlyTargetsWrappers &&
+            current.snippetNameShowingPinkOverlaysFor == null;
       },
       builder: (blocContext, state) {
         // fco.logger.d('\nSnippetPanel builder:\n');
@@ -204,7 +216,13 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // SnippetInfoModel.debug();
 
             if (snapshot.data == null) {
-              return Error("SnippetPanel", color: Colors.red, size: 32, errorMsg: "null snippet!", key: GlobalKey());
+              return Error(
+                "SnippetPanel",
+                color: Colors.red,
+                size: 32,
+                errorMsg: "null snippet!",
+                key: GlobalKey(),
+              );
             }
 
             bool isPublishedVersion = fco.isEditingVersionPublished(snippetName());
@@ -215,7 +233,9 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // bool namePresent = fco.appInfo.snippetNames.contains(snippetName());
 
             // cId as a number means it's a hotspot content callout
-            final isCID = SnippetRootNode.isHotspotCalloutContent(snippetName());
+            final isCID = SnippetRootNode.isHotspotCalloutContent(
+              snippetName(),
+            );
 
             Color triangleColor = Colors.purpleAccent; // in edit mode
             if (!isPublishedVersion) triangleColor = Colors.deepOrange;
@@ -225,7 +245,7 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // SnippetRootNode? snippetRoot = cache?[editingVersionId];
 
             bool playing = widget.justPlaying;
-            bool canEdit = fco.authenticated.isTrue;
+            bool canEdit = fco.canEditContent();
 
             // is it part of a CalloutContentEditablePage rather than a normal EditablePage
             // var parent = CalloutContentEditablePage.of(context);
@@ -237,7 +257,9 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
             // final hideSnippetPanel =
             //     inEditModeValue && snippetName() != snippetInEditMode;
 
-            SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName());
+            SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+              snippetName(),
+            );
 
             Widget snippetWidget = Stack(
               children: [
@@ -245,42 +267,41 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                 if (!widget.justPlaying && !isPublishedVersion && !canEdit)
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Container(color: Colors.deepOrange, height: 6, width: double.infinity),
-                  ),
-                if (!playing && canEdit && !state.inSelectWidgetMode && fco.snippetBeingEdited == null)
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Tooltip(
-                      message: (!pageIsEditable && !isCID)
-                          ? 'this page is not editable'
-                          : isCID
-                          ? 'tap here to enter Select Widget Mode'
-                          : fco.snippetBeingEdited == null
-                          ? 'tap here to enter Select Widget Mode'
-                          : '',
-                      child: InkWell(
-                              onTap: () => _tappedTraingle(isCID),
-                              child: CustomPaint(size: const Size(40, 40), painter: TRTriangle(triangleColor)),
-                            ),
+                    child: Container(
+                      color: Colors.deepOrange,
+                      height: 6,
+                      width: double.infinity,
                     ),
                   ),
-                if (!playing && canEdit && !state.inSelectWidgetMode && fco.snippetBeingEdited == null)
+                if (!playing &&
+                    canEdit &&
+                    !state.inSelectWidgetMode &&
+                    fco.snippetBeingEdited == null)
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: SnippetMenuAnchor(
+                      anchorWidget: AnchorWidgetEnum.Triangle,
+                      triangleColor: triangleColor,
+                      snippetInfo: snippetInfo!,
+                    ),
+                  ),
+                if (!playing &&
+                    canEdit &&
+                    !state.inSelectWidgetMode &&
+                    fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
                     child: Tooltip(
-                      message: (!pageIsEditable && !isCID)
-                          ? 'this page is not editable'
-                          : isCID
-                          ? 'tap here to enter Select Widget Mode'
-                          : fco.snippetBeingEdited == null
-                          ? 'tap here to enter Select Widget Mode'
-                          : '',
+                      message: 'show Snippet menu',
                       child: Container(
                         width: 20,
                         height: 20,
                         alignment: Alignment.topRight,
                         child: pageIsEditable || isCID
-                            ? SnippetTriangleMenuAnchor(snippetInfo:snippetInfo!)
+                            ? SnippetMenuAnchor(
+                                anchorWidget: AnchorWidgetEnum.IconButton,
+                                snippetInfo: snippetInfo!,
+                              )
                             // Icon(Icons.select_all, size: 20, color: Colors.white)
                             : const Offstage(),
                       ),
@@ -293,9 +314,13 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
                 ? Banner(
                     message: isPublishedVersion ? 'published' : 'not published',
                     location: BannerLocation.topEnd,
-                    color: isPublishedVersion ? Colors.limeAccent.withValues(alpha: .5) : Colors.pink.shade100,
+                    color: isPublishedVersion
+                        ? Colors.limeAccent.withValues(alpha: .5)
+                        : Colors.pink.shade100,
                     textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                    child: !state.inSelectWidgetMode ? snippetWidget : IgnorePointer(child: snippetWidget),
+                    child: !state.inSelectWidgetMode
+                        ? snippetWidget
+                        : IgnorePointer(child: snippetWidget),
                   )
                 : canEdit && false
                 ? IgnorePointer(child: snippetWidget)
@@ -306,15 +331,18 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
     );
   }
 
-  void _tappedTraingle(bool isCID) {
-    if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
-      return;
-    }
+  // void _tappedTriangle(bool isCID) {
+  //   if ((!pageIsEditable && !isCID) || fco.snippetBeingEdited != null) {
+  //     return;
+  //   }
+  //
+  //   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
+  // }
 
-    fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
-  }
-
-  static void showSnippetNodeWidgetOverlays(BuildContext context, ScrollControllerName? scName) {
+  static void showSnippetNodeWidgetOverlays(
+    BuildContext context,
+    ScrollControllerName? scName,
+  ) {
     // no need to de-reigister once set up
     fco.registerKeystrokeHandler('exit-Select-Widget-Mode', (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
@@ -338,7 +366,10 @@ class SnippetPanelState extends State<SnippetPanel> with TickerProviderStateMixi
           // }
           // fco.logger.i('Rect? r = gk.globalPaintBounds...');
           // measure node
-          Rect? r = gk.globalPaintBounds(skipWidthConstraintWarning: true, skipHeightConstraintWarning: true);
+          Rect? r = gk.globalPaintBounds(
+            skipWidthConstraintWarning: true,
+            skipHeightConstraintWarning: true,
+          );
           // if (node is PlaceholderNode) {
           //   fco.logger.i('PlaceholderNode');
           // }

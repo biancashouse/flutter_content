@@ -33,6 +33,10 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
   static String _$uid(ContainerNode v) => v.uid;
   static const Field<ContainerNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(ContainerNode v) =>
+      v.treeNodeGK;
+  static const Field<ContainerNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(ContainerNode v) => v.isExpanded;
   static const Field<ContainerNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -47,6 +51,7 @@ class ContainerNodeMapper extends SubClassMapperBase<ContainerNode> {
     #csPropGroup: _f$csPropGroup,
     #child: _f$child,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };

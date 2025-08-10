@@ -47,6 +47,10 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
   static String _$uid(TargetsWrapperNode v) => v.uid;
   static const Field<TargetsWrapperNode, String> _f$uid =
       Field('uid', _$uid, mode: FieldMode.member);
+  static GlobalKey<State<StatefulWidget>>? _$treeNodeGK(TargetsWrapperNode v) =>
+      v.treeNodeGK;
+  static const Field<TargetsWrapperNode, GlobalKey<State<StatefulWidget>>>
+      _f$treeNodeGK = Field('treeNodeGK', _$treeNodeGK, mode: FieldMode.member);
   static bool _$isExpanded(TargetsWrapperNode v) => v.isExpanded;
   static const Field<TargetsWrapperNode, bool> _f$isExpanded =
       Field('isExpanded', _$isExpanded, mode: FieldMode.member);
@@ -66,6 +70,7 @@ class TargetsWrapperNodeMapper extends SubClassMapperBase<TargetsWrapperNode> {
     #playList: _f$playList,
     #child: _f$child,
     #uid: _f$uid,
+    #treeNodeGK: _f$treeNodeGK,
     #isExpanded: _f$isExpanded,
     #hidePropertiesWhileDragging: _f$hidePropertiesWhileDragging,
   };
