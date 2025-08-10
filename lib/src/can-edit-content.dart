@@ -7,9 +7,9 @@
 //   // as well as setting value true when signing in as an editor, true is also
 //   // returned if the current route is a sandbox page.
 //   bool get isTrue {
-//     var list = fco.appInfo.sandboxPageNames;
+//     var list = fco.appInfo.userEditablePages;
 //     String? currentPagePath = fco.currentEditablePagePath;
-//     bool isGuestPage = fco.appInfo.sandboxPageNames.contains(currentPagePath);
+//     bool isGuestPage = fco.appInfo.userEditablePages.contains(currentPagePath);
 //     return super.value || isGuestPage;
 //   }
 // }

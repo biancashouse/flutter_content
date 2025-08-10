@@ -200,11 +200,10 @@ class EditablePageState extends State<EditablePage> {
 
   Widget _normalPage() {
     bool showSNodeTree() =>
-        snippetBeingEdited != null;// && fco.selectedNode is! MarkdownNode;
+        snippetBeingEdited != null; // && fco.selectedNode is! MarkdownNode;
     bool showPropertiesTree() =>
         snippetBeingEdited != null &&
-        selectedNode?.pTreeC != null
-            ;//&& fco.selectedNode is! MarkdownNode;
+        selectedNode?.pTreeC != null; //&& fco.selectedNode is! MarkdownNode;
 
     // set up areas
     List<Area> areas = [];
@@ -296,7 +295,6 @@ class EditablePageState extends State<EditablePage> {
   }
 
   Widget _pageContentArea() {
-
     GlobalKey zoomerGk = GlobalKey();
 
     final aSnippetIsBeingEdited = fco.snippetBeingEdited != null;
@@ -341,7 +339,7 @@ class EditablePageState extends State<EditablePage> {
                     // ),
                     scName: null, //sC.name, because no scrolling used
                   ),
-                 //if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
+                //if (!editingACalloutContentSnippet) snippetBeingEdited!.getRootNode().toWidget(context, null),
                 // if (aSnippetIsBeingEdited)
                 //   if (editingACalloutContentSnippet) const Offstage(),
                 if (!aSnippetIsBeingEdited)
@@ -761,12 +759,12 @@ class EditablePageState extends State<EditablePage> {
     );
   }
 
-  static final String cid_UserSandboxPageName = "user-sandbox-page-name";
+  static final String cid_editablePageName = "user-editable-page-name";
 
-  void userSandboxPageNameDialog() {
-    fco.registerKeystrokeHandler(cid_UserSandboxPageName, (KeyEvent event) {
+  void pageNameDialog() {
+    fco.registerKeystrokeHandler(cid_editablePageName, (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        fco.dismiss(cid_UserSandboxPageName);
+        fco.dismiss(cid_editablePageName);
       }
       return false;
     });
@@ -777,7 +775,9 @@ class EditablePageState extends State<EditablePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           fco.purpleText(
-            'Create your own editable Page',
+            fco.canEditContent()
+                ? 'Create an editable Page'
+                : 'Create your own editable Page',
             fontSize: 24,
             family: 'Merriweather',
           ),
@@ -791,71 +791,73 @@ class EditablePageState extends State<EditablePage> {
               originalS: '',
               onTextChangedF: (String s) async {},
               onEscapedF: (_) {
-                fco.dismiss(cid_UserSandboxPageName);
+                fco.dismiss(cid_editablePageName);
               },
               dontAutoFocus: false,
               onEditingCompleteF: (s) async {
                 String pageName = s.replaceAll(' ', '-').toLowerCase();
                 pageName = pageName.startsWith('/') ? pageName : '/$pageName';
                 // add to appInfo
-                if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+                if (!fco.canEditContent() &&
+                    !fco.appInfo.userEditablePages.contains(pageName)) {
                   // jsArray issue
-                  List<String> newList = fco.appInfo.sandboxPageNames.toList();
+                  List<String> newList = fco.appInfo.userEditablePages.toList();
                   newList.add(pageName);
-                  fco.appInfo.sandboxPageNames = newList;
+                  fco.appInfo.userEditablePages = newList;
                   await fco.modelRepo.saveAppInfo();
                   fco.afterNextBuildDo(() {
-                    if (context.mounted) {
-                      context.go(pageName);
-                    }
+                    fco.dismiss(cid_editablePageName);
+                    fco.addSubRoute(
+                      newPath: pageName,
+                      template: SnippetTemplateEnum.empty,
+                    );
+                    fco.router.go(pageName);
                   });
+                } else if (fco.canEditContent() &&
+                    !fco.appInfo.snippetNames.contains(pageName)) {
+                  EditablePage.removeAllNodeWidgetOverlays();
+                  // fco.dismiss('exit-editMode');
+                  // bool userCanEdit = canEditContent.isTrue;
+                  final snippetName = pageName;
+                  // final rootNode = SnippetTemplateEnum.empty.clone()
+                  //   ..name = snippetName;
+                  // SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
+                  //   snippetName: snippetName,
+                  //   templateSnippetRootNode: rootNode,
+                  // ).then((_) {
+                  //   fco.dismiss(cid_editablePageName);
+                  //   fco.addSubRoute(
+                  //     newPath: snippetName,
+                  //     template: rootNode,
+                  //   );
+                  //   fco.router.go(pageName);
+                  // });
+                    fco.dismiss(cid_editablePageName);
+                    fco.addSubRoute(
+                      newPath: snippetName,
+                      template: SnippetTemplateEnum.empty,
+                    );
+                    fco.router.go(pageName);
                 } else {
                   if (context.mounted) {
                     context.go(pageName);
                   }
                 }
                 return;
-                // fco.dismiss(cid_UserSandboxPageName);
-                // if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
-                //   // jsArray issue
-                //   List<String> newList = fco.appInfo.sandboxPageNames.toList();
-                //   newList.add(pageName);
-                //   fco.appInfo.sandboxPageNames = newList;
-                //   await fco.modelRepo.saveAppInfo();
-                //
-                //   final rootNode = SnippetTemplateEnum.empty.clone()
-                //     ..name = pageName;
-                //   SnippetRootNode
-                //       .loadSnippetFromCacheOrFromFBOrCreateFromTemplate(
-                //     snippetName: pageName,
-                //     snippetRootNode: rootNode,
-                //   ).then((_) {
-                //     fco.afterNextBuildDo(() {
-                //       // SnippetInfoModel.snippetInfoCache;
-                //       //fco.router.push(pageName);
-                //       // router.go('/');
-                //       // TODO - tell user to visit /#/ + pageName
-                //     });
-                //   });
-                // } else {
-                //   fco.capiBloc.add(
-                //       const CAPIEvent.forceRefresh(onlyTargetsWrappers: true));
-                //   context.replace(pageName);
-                // }
               },
             ),
           ),
         ],
       ),
       calloutConfig: CalloutConfigModel(
-        cId: cid_UserSandboxPageName,
+        cId: cid_editablePageName,
         // initialTargetAlignment: AlignmentEnum.bottomLeft,
         // initialCalloutAlignment: AlignmentEnum.topRight,
         // finalSeparation: 200,
         barrier: CalloutBarrierConfig(
           opacity: .5,
           onTappedF: () async {
-            fco.dismiss(cid_UserSandboxPageName);
+            fco.dismiss(cid_editablePageName);
           },
         ),
         initialCalloutW: 500,
@@ -865,7 +867,7 @@ class EditablePageState extends State<EditablePage> {
         fillColor: ColorModel.white(),
         scrollControllerName: widget.routePath,
         onDismissedF: () {
-          fco.removeKeystrokeHandler(cid_UserSandboxPageName);
+          fco.removeKeystrokeHandler(cid_editablePageName);
         },
       ),
       // targetGkF: ()=> fco.authIconGK,

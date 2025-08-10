@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'pages/routes_config.dart';
 import 'bh-apps.firebase_options.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 // original main
 // void main() {
@@ -60,6 +61,9 @@ Future<void> main({bool useEmulator = false}) async {
     // } catch (e) {
     //   fco.logger.e('deliberate parse failure!', error: e);
     // }
+
+    // Use PathUrlStrategy for removing # from URLs.
+    setUrlStrategy(PathUrlStrategy()); // <<<< ADD THIS LINE
 
     runApp(FlutterContentApp(
       appName: 'flutter-content-example',

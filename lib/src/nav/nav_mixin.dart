@@ -18,7 +18,7 @@ mixin NavMixin {
                 );
                 dropdownItems.add(
                   DropdownMenuItem<String>(
-                    value: 'create-sandbox-page',
+                    value: 'create-editable-page',
                     child: RichText(
                       text: TextSpan(
                         text: 'create your own ',
@@ -47,7 +47,7 @@ mixin NavMixin {
                         EditablePage.of(context)?.editorPasswordDialog();
                         break;
                       default:
-                        EditablePage.of(context)?.userSandboxPageNameDialog();
+                        EditablePage.of(context)?.pageNameDialog();
                         break;
                     }
                   },
@@ -60,13 +60,31 @@ mixin NavMixin {
                     child: _signOutBtn(),
                   ),
                 );
+                dropdownItems.add(
+                  DropdownMenuItem<String>(
+                    value: 'create-editable-page',
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'create an ',
+                        style: TextStyle(color: Colors.grey),
+                        children: [
+                          TextSpan(
+                            text: 'editable',
+                            style: TextStyle(color: Colors.purpleAccent),
+                          ),
+                          TextSpan(text: ' page'),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
                 for (String pagePath in fco.pageList) {
                   // skip currentPath
                   final String currentPath = GoRouterState.of(
                     context,
                   ).uri.toString();
                   if (pagePath != currentPath) {
-                    String sandboxIndicator = (fco.appInfo.sandboxPageNames.contains(pagePath)) ? ' *' : "";
+                    String sandboxIndicator = (fco.appInfo.userEditablePages.contains(pagePath)) ? ' *' : "";
                     dropdownItems.add(
                       DropdownMenuItem<String>(
                         value: pagePath,
@@ -79,7 +97,16 @@ mixin NavMixin {
                   items: dropdownItems,
                   underline: Offstage(),
                   icon: Icon(Icons.more_vert, color: Colors.red, size: 24),
-                  onChanged: (_) {},
+                  onChanged: (value) {
+                    switch (value) {
+                      case 'create-editable-page':
+                        EditablePage.of(context)?.pageNameDialog();
+                        break;
+                      default:
+                        break;
+                    }
+                  },
+
                 );
                 return dd;
               }
@@ -128,7 +155,7 @@ mixin NavMixin {
             IconButton(
               onPressed: () async {
                 fco.appInfo.snippetNames.remove(pagePath);
-                fco.appInfo.sandboxPageNames.remove(pagePath);
+                fco.appInfo.userEditablePages.remove(pagePath);
                 fco.deleteSubRoute(path: pagePath);
                 context.pop();
                 await fco.modelRepo.saveAppInfo();
@@ -143,27 +170,27 @@ mixin NavMixin {
     ),
   );
 
-  Widget _pageNavBtnOLD(context, String pagePath) => Row(
-    mainAxisSize: MainAxisSize.max,
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      TextButton(
-        onPressed: () {
-          context.replace(pagePath);
-        },
-        child: Text(pagePath),
-      ),
-      if (pagePath != '/')
-        IconButton(
-          onPressed: () async {
-            fco.appInfo.snippetNames.remove(pagePath);
-            fco.deleteSubRoute(path: pagePath);
-            await fco.modelRepo.saveAppInfo();
-            await fco.modelRepo.deleteSnippet(pagePath);
-            SnippetInfoModel.removeFromCache(pagePath);
-          },
-          icon: Icon(Icons.delete, color: Colors.red),
-        ),
-    ],
-  );
+  // Widget _pageNavBtnOLD(context, String pagePath) => Row(
+  //   mainAxisSize: MainAxisSize.max,
+  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //   children: [
+  //     TextButton(
+  //       onPressed: () {
+  //         context.replace(pagePath);
+  //       },
+  //       child: Text(pagePath),
+  //     ),
+  //     if (pagePath != '/')
+  //       IconButton(
+  //         onPressed: () async {
+  //           fco.appInfo.snippetNames.remove(pagePath);
+  //           fco.deleteSubRoute(path: pagePath);
+  //           await fco.modelRepo.saveAppInfo();
+  //           await fco.modelRepo.deleteSnippet(pagePath);
+  //           SnippetInfoModel.removeFromCache(pagePath);
+  //         },
+  //         icon: Icon(Icons.delete, color: Colors.red),
+  //       ),
+  //   ],
+  // );
 }

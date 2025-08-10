@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Fixed
 - fix creation, deletion, and navigating dynamic pages
+- fix dynamic page and navigation
 
 ## 3.11.1 - 2025-08-05
 ### Fixed

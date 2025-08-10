@@ -620,7 +620,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "3.11.1"
+    version: "3.11.2"
   flutter_highlight:
     dependency: transitive
     description:
@@ -672,7 +672,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_web_plugins:
-    dependency: transitive
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"

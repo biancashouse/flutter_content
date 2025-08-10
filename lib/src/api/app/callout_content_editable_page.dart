@@ -702,7 +702,7 @@
 //     );
 //   }
 //
-//   static final String cid_UserSandboxPageName = "user-sandbox-page-name";
+//   static final String cid_UserSandboxPageName = "user-editable-page-name";
 //
 //   // void userSandboxPageNameDialog() {
 //   //   fco.registerKeystrokeHandler(cid_UserSandboxPageName, (KeyEvent event) {
@@ -736,11 +736,11 @@
 //   //               String pageName = s.replaceAll(' ', '-').toLowerCase();
 //   //               pageName = pageName.startsWith('/') ? pageName : '/$pageName';
 //   //               // add to appInfo
-//   //               if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+//   //               if (!fco.appInfo.userEditablePages.contains(pageName)) {
 //   //                 // jsArray issue
-//   //                 List<String> newList = fco.appInfo.sandboxPageNames.toList();
+//   //                 List<String> newList = fco.appInfo.userEditablePages.toList();
 //   //                 newList.add(pageName);
-//   //                 fco.appInfo.sandboxPageNames = newList;
+//   //                 fco.appInfo.userEditablePages = newList;
 //   //                 await fco.modelRepo.saveAppInfo();
 //   //               }
 //   //               if (context.mounted) {
@@ -748,11 +748,11 @@
 //   //               }
 //   //               return;
 //   //               fco.dismiss(cid_UserSandboxPageName);
-//   //               if (!fco.appInfo.sandboxPageNames.contains(pageName)) {
+//   //               if (!fco.appInfo.userEditablePages.contains(pageName)) {
 //   //                 // jsArray issue
-//   //                 List<String> newList = fco.appInfo.sandboxPageNames.toList();
+//   //                 List<String> newList = fco.appInfo.userEditablePages.toList();
 //   //                 newList.add(pageName);
-//   //                 fco.appInfo.sandboxPageNames = newList;
+//   //                 fco.appInfo.userEditablePages = newList;
 //   //                 await fco.modelRepo.saveAppInfo();
 //   //
 //   //                 final rootNode = SnippetTemplateEnum.empty.clone()

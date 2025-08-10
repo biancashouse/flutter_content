@@ -36,7 +36,7 @@ class AppInfoModel<<MappableClass>> {
     Map<TextStyleName, TextStyleProperties> userTextStyles;
     Map<ButtonStyleName, ButtonStyleProperties> userButtonStyles;
     Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
-    List<String> sandboxPageNames;
+    List<String> userEditablePages;
 }
 FlutterContentMixins o--> AppInfoModel : appInfo
 

@@ -202,6 +202,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       fco.addSubRoute(
           newPath: destinationRoutePathSnippetName!,
           template: SnippetTemplateEnum.empty);
+      fco.pageList.add(destinationRoutePathSnippetName!);
       context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
     // } else if (destinationPanelOrPlaceholderName != null &&

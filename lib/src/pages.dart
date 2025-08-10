@@ -18,7 +18,7 @@ class Pages extends StatelessWidget {
         itemCount: pages.length,
         itemBuilder: (context, index) {
           final label = pages[index];
-          String sandboxIndicator = (fco.appInfo.sandboxPageNames.contains(label)) ? ' *' : "";
+          String sandboxIndicator = (fco.appInfo.userEditablePages.contains(label)) ? ' *' : "";
           return Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -27,7 +27,7 @@ class Pages extends StatelessWidget {
                 IconButton(
                   onPressed: () async {
                     fco.appInfo.snippetNames.remove(label);
-                    fco.appInfo.sandboxPageNames.remove(label);
+                    fco.appInfo.userEditablePages.remove(label);
                     fco.deleteSubRoute(path: label);
                     await fco.modelRepo.saveAppInfo();
                     await fco.modelRepo.deleteSnippet(label);

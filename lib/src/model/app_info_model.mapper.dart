@@ -51,9 +51,9 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       _f$userContainerStyles = Field(
           'userContainerStyles', _$userContainerStyles,
           opt: true, def: const {});
-  static List<String> _$sandboxPageNames(AppInfoModel v) => v.sandboxPageNames;
-  static const Field<AppInfoModel, List<String>> _f$sandboxPageNames =
-      Field('sandboxPageNames', _$sandboxPageNames, opt: true, def: const []);
+  static List<String> _$userEditablePages(AppInfoModel v) => v.userEditablePages;
+  static const Field<AppInfoModel, List<String>> _f$userEditablePages =
+      Field('userEditablePages', _$userEditablePages, opt: true, def: const []);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -63,7 +63,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #userTextStyles: _f$userTextStyles,
     #userButtonStyles: _f$userButtonStyles,
     #userContainerStyles: _f$userContainerStyles,
-    #sandboxPageNames: _f$sandboxPageNames,
+    #userEditablePages: _f$userEditablePages,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -74,7 +74,7 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         userTextStyles: data.dec(_f$userTextStyles),
         userButtonStyles: data.dec(_f$userButtonStyles),
         userContainerStyles: data.dec(_f$userContainerStyles),
-        sandboxPageNames: data.dec(_f$sandboxPageNames));
+        userEditablePages: data.dec(_f$userEditablePages));
   }
 
   @override
@@ -151,7 +151,7 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
           ContainerStyleProperties>> get userContainerStyles;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get sandboxPageNames;
+      get userEditablePages;
   $R call(
       {SNode? clipboard,
       bool? autoPublishDefault,
@@ -159,7 +159,7 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       Map<String, TextStyleProperties>? userTextStyles,
       Map<String, ButtonStyleProperties>? userButtonStyles,
       Map<String, ContainerStyleProperties>? userContainerStyles,
-      List<String>? sandboxPageNames});
+      List<String>? userEditablePages});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -212,10 +212,10 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       (v) => call(userContainerStyles: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get sandboxPageNames => ListCopyWith(
-          $value.sandboxPageNames,
+      get userEditablePages => ListCopyWith(
+          $value.userEditablePages,
           (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(sandboxPageNames: v));
+          (v) => call(userEditablePages: v));
   @override
   $R call(
           {Object? clipboard = $none,
@@ -224,7 +224,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           Map<String, TextStyleProperties>? userTextStyles,
           Map<String, ButtonStyleProperties>? userButtonStyles,
           Map<String, ContainerStyleProperties>? userContainerStyles,
-          List<String>? sandboxPageNames}) =>
+          List<String>? userEditablePages}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
@@ -233,7 +233,7 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
         if (userButtonStyles != null) #userButtonStyles: userButtonStyles,
         if (userContainerStyles != null)
           #userContainerStyles: userContainerStyles,
-        if (sandboxPageNames != null) #sandboxPageNames: sandboxPageNames
+        if (userEditablePages != null) #userEditablePages: userEditablePages
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
@@ -246,8 +246,8 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           data.get(#userButtonStyles, or: $value.userButtonStyles),
       userContainerStyles:
           data.get(#userContainerStyles, or: $value.userContainerStyles),
-      sandboxPageNames:
-          data.get(#sandboxPageNames, or: $value.sandboxPageNames));
+      userEditablePages:
+          data.get(#userEditablePages, or: $value.userEditablePages));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

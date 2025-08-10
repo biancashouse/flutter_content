@@ -15,7 +15,7 @@ class AppInfoModel with AppInfoModelMappable {
   Map<TextStyleName, TextStyleProperties> userTextStyles;
   Map<ButtonStyleName, ButtonStyleProperties> userButtonStyles;
   Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
-  List<String> sandboxPageNames;
+  List<String> userEditablePages;
 
   AppInfoModel({
     this.clipboard,
@@ -24,7 +24,7 @@ class AppInfoModel with AppInfoModelMappable {
     this.userTextStyles = const {},
     this.userButtonStyles = const {},
     this.userContainerStyles = const {},
-    this.sandboxPageNames = const [],
+    this.userEditablePages = const [],
   });
 
   bool get clipboardIsEmpty => clipboard == null;

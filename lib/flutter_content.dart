@@ -405,7 +405,7 @@ class FlutterContentMixins
 
   bool canEditContent() {
     String? currentPagePath = fco.currentEditablePagePath;
-    bool isGuestPage = fco.appInfo.sandboxPageNames.contains(currentPagePath);
+    bool isGuestPage = fco.appInfo.userEditablePages.contains(currentPagePath);
     return authenticated || isGuestPage;
   }
 
