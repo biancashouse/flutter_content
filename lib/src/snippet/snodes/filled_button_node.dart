@@ -13,7 +13,7 @@ part 'filled_button_node.mapper.dart';
 class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   FilledButtonNode({
     super.destinationRoutePathSnippetName,
-    super.template,
+    // super.template,
     // super.destinationPanelOrPlaceholderName,
     // super.destinationSnippetName,
     required super.bsPropGroup,
@@ -26,17 +26,17 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => FilledButton.styleFrom();
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'FilledButton',
         webLink: 'https://api.flutter.dev/flutter/material/FilledButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
@@ -60,7 +60,7 @@ class FilledButtonNode extends ButtonNode with FilledButtonNodeMappable {
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: f != null ? () => f.call(context) : null,
               style: btnStyle,
-              child: child?.toWidget(context, this),
+              child: child?.buildFlutterWidget(context, this),
             ),
           );
     } catch (e) {

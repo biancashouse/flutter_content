@@ -13,7 +13,7 @@ part 'text_button_node.mapper.dart';
 class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   TextButtonNode({
     super.destinationRoutePathSnippetName,
-    super.template,
+    // super.template,
     // super.destinationPanelOrPlaceholderName,
     // super.destinationSnippetName,
     required super.bsPropGroup,
@@ -26,17 +26,17 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => TextButton.styleFrom();
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'TextButton',
         webLink: 'https://api.flutter.dev/flutter/material/TextButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle:defaultButtonStyle());
@@ -58,7 +58,7 @@ class TextButtonNode extends ButtonNode with TextButtonNodeMappable {
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: ()=>f?.call(context),
               style: btnStyle,
-              child: child?.toWidget(context, this) ?? const Text('empty'),
+              child: child?.buildFlutterWidget(context, this) ?? const Text('empty'),
             ),
           );
     } catch (e) {

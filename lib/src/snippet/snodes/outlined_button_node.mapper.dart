@@ -14,7 +14,6 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = OutlinedButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
       CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
@@ -31,9 +30,6 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
       _f$destinationRoutePathSnippetName = Field(
           'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
           opt: true);
-  static SnippetTemplateEnum? _$template(OutlinedButtonNode v) => v.template;
-  static const Field<OutlinedButtonNode, SnippetTemplateEnum> _f$template =
-      Field('template', _$template, opt: true);
   static ButtonStyleProperties _$bsPropGroup(OutlinedButtonNode v) =>
       v.bsPropGroup;
   static const Field<OutlinedButtonNode, ButtonStyleProperties> _f$bsPropGroup =
@@ -67,7 +63,6 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
   @override
   final MappableFields<OutlinedButtonNode> fields = const {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
-    #template: _f$template,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfig: _f$calloutConfig,
@@ -89,7 +84,6 @@ class OutlinedButtonNodeMapper extends SubClassMapperBase<OutlinedButtonNode> {
     return OutlinedButtonNode(
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
-        template: data.dec(_f$template),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfig: data.dec(_f$calloutConfig),
@@ -162,7 +156,6 @@ abstract class OutlinedButtonNodeCopyWith<$R, $In extends OutlinedButtonNode,
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
-      SnippetTemplateEnum? template,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigModel? calloutConfig,
@@ -194,7 +187,6 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
   @override
   $R call(
           {Object? destinationRoutePathSnippetName = $none,
-          Object? template = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfig = $none,
@@ -202,7 +194,6 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
       $apply(FieldCopyWithData({
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
-        if (template != $none) #template: template,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfig != $none) #calloutConfig: calloutConfig,
@@ -213,7 +204,6 @@ class _OutlinedButtonNodeCopyWithImpl<$R, $Out>
       destinationRoutePathSnippetName: data.get(
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
-      template: data.get(#template, or: $value.template),
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),

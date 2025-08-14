@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor_with_edit_menu_item.dart';
+import 'package:flutter_content/src/api/content_builder/versions_menu_anchor_with_edit_menu_item.dart';
 
 import 'tr_triangle_painter.dart';
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
-class SnippetPanel extends StatefulWidget {
+class ContentBuilder extends StatefulWidget {
   final String? panelName;
 
   // from canned snippet
@@ -38,7 +38,7 @@ class SnippetPanel extends StatefulWidget {
   final ScrollControllerName? scName;
 
   // effectively from a Template
-  const SnippetPanel.fromNodes({
+  const ContentBuilder.fromNodes({
     this.panelName,
     required this.snippetRootNode,
     this.handlers,
@@ -50,7 +50,7 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   }) : snippetName = null;
 
-  const SnippetPanel.fromSnippet({
+  const ContentBuilder.fromSnippet({
     this.panelName,
     required this.snippetName,
     this.snippetRootNode,
@@ -68,11 +68,11 @@ class SnippetPanel extends StatefulWidget {
     super.key,
   });
 
-  static SnippetPanelState? of(BuildContext context) =>
-      context.findAncestorStateOfType<SnippetPanelState>();
+  static ContentBuilderState? of(BuildContext context) =>
+      context.findAncestorStateOfType<ContentBuilderState>();
 
   @override
-  State<SnippetPanel> createState() => SnippetPanelState();
+  State<ContentBuilder> createState() => ContentBuilderState();
 
   // static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
   //   rootNode.validateTree();
@@ -87,7 +87,7 @@ class SnippetPanel extends StatefulWidget {
   }
 }
 
-class SnippetPanelState extends State<SnippetPanel>
+class ContentBuilderState extends State<ContentBuilder>
     with TickerProviderStateMixin {
   Map<String, TabBarNode> tabBars = {};
   late Future<SnippetRootNode?> fEnsureSnippetInCache;
@@ -263,7 +263,7 @@ class SnippetPanelState extends State<SnippetPanel>
 
             Widget snippetWidget = Stack(
               children: [
-                snippet.toWidget(context, null),
+                snippet.buildFlutterWidget(context, null),
                 if (!widget.justPlaying && !isPublishedVersion && !canEdit)
                   Align(
                     alignment: Alignment.topLeft,

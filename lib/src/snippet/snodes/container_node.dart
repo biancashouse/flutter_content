@@ -75,7 +75,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
       csPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // String paddingLabel = padding == null
     //     ? 'padding'
     //     : 'padding (${padding!.top},${padding!.left},${padding!.bottom},${padding!.right})';
@@ -254,7 +254,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -287,7 +287,7 @@ class ContainerNode extends SC with ContainerNodeMappable {
         width: csPropGroup.width,
         height: csPropGroup.height,
         alignment: csPropGroup.alignment?.flutterValue,
-        child: child?.toWidget(context, this),
+        child: child?.buildFlutterWidget(context, this),
       );
     } catch (e) {
       return Error(

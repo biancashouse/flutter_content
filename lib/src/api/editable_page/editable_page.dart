@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/snippet_properties_tree_view.dart';
-import 'package:flutter_content/src/api/snippet_panel/snippet_tree_pane.dart';
-import 'package:flutter_content/src/api/snippet_panel/versions_menu_anchor.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_properties_tree_view.dart';
+import 'package:flutter_content/src/api/editable_page/versions_menu_anchor.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_tree_pane.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
-import 'package:flutter_content/src/snippet/markdown_editor/markdown_editor.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multi_split_view/multi_split_view.dart';
 
@@ -141,67 +140,14 @@ class EditablePageState extends State<EditablePage> {
         return !current.onlyTargetsWrappers &&
             current.snippetNameShowingPinkOverlaysFor == null;
       },
-      builder: (context, state) {
-        // layout depends on node selection
-        if (false && fco.selectedNode is MarkdownNode) {
-          return _pageWhenSelectedAMarkdownNode();
-        } else {
-          return _normalPage();
-        }
-      },
+      builder: (context, state) => _page(),
     );
   }
 
-  Widget _pageWhenSelectedAMarkdownNode() {
-    MarkdownNode mdNode = fco.selectedNode as MarkdownNode;
-    // set up areas
-    msvC.areas = [
-      Area(
-        builder: (ctx, area) => Material(
-          child: SingleChildScrollView(
-            child: MarkdownEditor(
-              originalMarkdown: mdNode.data,
-              onChangeF: (s) {
-                mdNode.refreshWithUpdate(context, () => mdNode.data = s);
-              },
-            ),
-          ),
-        ),
-        flex: 1,
-      ),
-      Area(
-        builder: (ctx, area) => IgnorePointer(child: _pageContentArea()),
-        flex: 1,
-      ),
-    ];
-
-    // 2 layouts: 1) property tree on right of content area, 2) hidden snode tree, single property above content area
-    var msvt = MultiSplitViewTheme(
-      data: MultiSplitViewThemeData(
-        dividerThickness: 24,
-        dividerPainter: DividerPainters.grooved1(
-          backgroundColor: Colors.purple,
-          color: Colors.indigo[100]!,
-          highlightedColor: Colors.indigo[900]!,
-        ),
-      ),
-      child: MultiSplitView(
-        controller: msvC,
-        axis: Axis.vertical,
-        initialAreas: msvC.areas,
-        onDividerDragStart: (_) => fco.dismiss(PINK_OVERLAY_NON_TAPPABLE),
-        onDividerDragEnd: (_) =>
-            EditablePage.refreshSelectedNodeWidgetBorderOverlay(namedSC!.name),
-      ),
-    );
-
-    return Center(child: msvt);
-  }
-
-  Widget _normalPage() {
+  Widget _page() {
     bool showSNodeTree() =>
         snippetBeingEdited != null; // && fco.selectedNode is! MarkdownNode;
-    bool showPropertiesTree() =>
+    bool showPropertiesPane() =>
         snippetBeingEdited != null &&
         selectedNode?.pTreeC != null; //&& fco.selectedNode is! MarkdownNode;
 
@@ -209,7 +155,7 @@ class EditablePageState extends State<EditablePage> {
     List<Area> areas = [];
     if (showSNodeTree()) {
       // double flex = (fco.selectedNode is MarkdownNode) ? 0 : 1;
-      areas.add(Area(builder: (ctx, area) => _snodeTree(), flex: 1));
+      areas.add(Area(builder: (ctx, area) => _snodeTreeArea(), flex: 1));
     }
     areas.add(
       Area(
@@ -265,29 +211,11 @@ class EditablePageState extends State<EditablePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: msvt),
-          if (showPropertiesTree())
+          if (showPropertiesPane())
             Container(
               width: 330,
               color: Colors.purpleAccent[100],
-              child:
-                  // fco.selectedNode
-                  //     is MarkdownNode // markdown uses the drawer for its editor
-                  // ? Scaffold(
-                  //     key: _propertiesScaffoldKey,
-                  //     endDrawerEnableOpenDragGesture: false,
-                  //     endDrawer: Drawer(
-                  //       width: 600,
-                  //       child: SingleChildScrollView(
-                  //         child: MarkdownEditor(
-                  //           originalMarkdown:
-                  //               (fco.selectedNode as MarkdownNode).data,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     body: _propertiesTree(),
-                  //   )
-                  // :
-                  _propertiesTree(),
+              child: _propertiesPanel(),
             ),
         ],
       ),
@@ -330,7 +258,7 @@ class EditablePageState extends State<EditablePage> {
             child: Stack(
               children: [
                 if (aSnippetIsBeingEdited)
-                  SnippetPanel.fromNodes(
+                  ContentBuilder.fromNodes(
                     // panelName: 'demo-buttons',
                     snippetRootNode: snippetBeingEdited!.getRootNode(),
                     // snippetRootNode: SnippetRootNode(
@@ -378,7 +306,7 @@ class EditablePageState extends State<EditablePage> {
         : builtWidget;
   }
 
-  Widget _snodeTree() {
+  Widget _snodeTreeArea() {
     SNode? rootNode = snippetBeingEdited?.treeC.roots.first.rootNodeOfSnippet();
     if (rootNode is SnippetRootNode) {
       SnippetName snippetName = rootNode.name;
@@ -411,36 +339,6 @@ class EditablePageState extends State<EditablePage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Spacer(),
-                    // Tooltip(
-                    //   message:
-                    //       'snippet: $title, versionId: ${snippetInfo.editingVersionId}'
-                    //       '${snippetInfo.editingVersionId != snippetInfo.publishedVersionId ? "\n\nSnippet name in RED indicates that this "
-                    //           "\nversion is not the PUBLISHED version" : ""}',
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.only(left: 10.0),
-                    //     child: Container(
-                    //       margin: EdgeInsets.zero,
-                    //       padding: const EdgeInsets.symmetric(
-                    //           horizontal: 8, vertical: 4),
-                    //       decoration: BoxDecoration(
-                    //         color: Colors.black,
-                    //         borderRadius: BorderRadius.all(Radius.circular(30)),
-                    //       ),
-                    //       alignment: Alignment.center,
-                    //       child: Material(
-                    //         color: Colors.transparent,
-                    //         child: fco.coloredText(
-                    //           title,
-                    //           fontSize: 14.0,
-                    //           color: snippetInfo.editingVersionId !=
-                    //                   snippetInfo.publishedVersionId
-                    //               ? Colors.red
-                    //               : Colors.grey,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     Row(
                       children: [
                         IconButton(
@@ -531,7 +429,7 @@ class EditablePageState extends State<EditablePage> {
     }
   }
 
-  Widget _propertiesTree() {
+  Widget _propertiesPanel() {
     bool showingProperties = fco.aNodeIsSelected;
     ScrollController? propertiesPaneSC = selectedNode?.propertiesPaneSC();
     PNodeTreeController? pTreeC = selectedNode?.pTreeC(context, {});
@@ -578,33 +476,6 @@ class EditablePageState extends State<EditablePage> {
             ),
           );
   }
-
-  // void showCutoutOverlay({
-  //   ScrollControllerName? scName,
-  // }) {
-  //   fco.dismiss(CUTOUT_OVERLAY_NON_TAPPABLE);
-  //   Rect? r = nodeWidgetGK?.globalPaintBounds(
-  //     skipWidthConstraintWarning: true,
-  //     skipHeightConstraintWarning: true,
-  //   );
-  //   if (r != null) {
-  //     Rect borderRect = r; //_borderRect(r);
-  //     CalloutConfig cc = _cc(
-  //       cId: CUTOUT_OVERLAY_NON_TAPPABLE,
-  //       borderRect: borderRect,
-  //       scName: scName,
-  //     );
-  //     Widget cutout = CustomPaint(foregroundPainter: CutoutPainter(cutoutRect:
-  //     Rect.fromLTWH(0, 0, cc.calloutW!, cc.calloutH!)
-  //     ));
-  //     fco.showOverlay(
-  //       ensureLowestOverlay: true,
-  //       calloutContent: cutout,
-  //       calloutConfig: cc,
-  //       targetGkF: () => nodeWidgetGK,
-  //     );
-  //   }
-  // }
 
   // only called with MaterialAppWrapper context
   void showAllNodeWidgetOverlays() {
@@ -807,11 +678,10 @@ class EditablePageState extends State<EditablePage> {
                   await fco.modelRepo.saveAppInfo();
                   fco.afterNextBuildDo(() {
                     fco.dismiss(cid_editablePageName);
-                    fco.addSubRoute(
-                      newPath: pageName,
-                      template: SnippetTemplateEnum.empty,
-                    );
-                    fco.router.go(pageName);
+                    fco.addSubRoute(newPath: pageName);
+                    fco.afterMsDelayDo(1000, () {
+                      fco.router.go(pageName);
+                    });
                   });
                 } else if (fco.canEditContent() &&
                     !fco.appInfo.snippetNames.contains(pageName)) {
@@ -832,12 +702,11 @@ class EditablePageState extends State<EditablePage> {
                   //   );
                   //   fco.router.go(pageName);
                   // });
-                    fco.dismiss(cid_editablePageName);
-                    fco.addSubRoute(
-                      newPath: snippetName,
-                      template: SnippetTemplateEnum.empty,
-                    );
+                  fco.dismiss(cid_editablePageName);
+                  fco.addSubRoute(newPath: snippetName);
+                  fco.afterMsDelayDo(1000, () {
                     fco.router.go(pageName);
+                  });
                 } else {
                   if (context.mounted) {
                     context.go(pageName);
@@ -873,73 +742,6 @@ class EditablePageState extends State<EditablePage> {
       // targetGkF: ()=> fco.authIconGK,
     );
   }
-
-  // if not signed in, shows a pencil icon leading to a dropdown,
-  // otherwise, shows a list of routes user can navigate to
-  // Widget authDD({Color pencilIconColor = Colors.white}) =>
-  //     StatefulBuilder(builder: (context, StateSetter setState) {
-  //       return ValueListenableBuilder<bool>(
-  //         valueListenable: fco.authenticated,
-  //         builder: (context, value, child) {
-  //           if (!fco.canEditContent()) {
-  //             final dropdownItems = <DropdownMenuItem<String>>[];
-  //             dropdownItems.add(DropdownMenuItem<String>(
-  //               value: 'sign-in as a Content Editor',
-  //               child: TextButton(
-  //                 onPressed: ()=>EditablePage.of(context)?.editorPasswordDialog(),
-  //                 child: Text('sign in as a Content editor',),
-  //             ));
-  //             dropdownItems.add(DropdownMenuItem<String>(
-  //               value: 'create a Sandbox page',
-  //               child: TextButton(
-  //                 onPressed: () {
-  //                 },
-  //                 child: Text('create our own (sandbox) page',),
-  //               ),
-  //             ));
-  //             return DropdownButton<String>(
-  //               items: dropdownItems,
-  //               underline: Offstage(),
-  //               icon: Icon(
-  //                 Icons.edit,
-  //                 color: Colors.black,
-  //                 size: 24,
-  //               ),
-  //               onChanged: (_) {},
-  //             );
-  //           } else {
-  //             var pages = fco.pageList;
-  //             final dropdownItems = <DropdownMenuItem<String>>[];
-  //             dropdownItems.add(DropdownMenuItem<String>(
-  //               value: 'sign-out',
-  //               child: _signOutBtn(),
-  //             ));
-  //             for (String pagePath in pages) {
-  //               // skip currentPath
-  //               final String currentPath =
-  //               GoRouterState.of(context).uri.toString();
-  //               if (pagePath != currentPath) {
-  //                 dropdownItems.add(DropdownMenuItem<String>(
-  //                   value: pagePath,
-  //                   child: _pageNavBtn(context, pagePath, setState),
-  //                 ));
-  //               }
-  //             }
-  //             final dd = DropdownButton<String>(
-  //               items: dropdownItems,
-  //               underline: Offstage(),
-  //               icon: Icon(
-  //                 Icons.more_vert,
-  //                 color: Colors.red,
-  //                 size: 24,
-  //               ),
-  //               onChanged: (_) {},
-  //             );
-  //             return dd;
-  //           }
-  //         },
-  //       );
-  //     });
 
   void revertToVersion(
     VersionId? versionId,

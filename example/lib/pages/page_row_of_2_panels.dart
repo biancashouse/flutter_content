@@ -12,7 +12,7 @@ class Page_RowOf2Panels extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: SnippetPanel.fromNodes(
+            child: ContentBuilder.fromNodes(
               panelName: 'panel1',
               snippetRootNode: SnippetRootNode(
                 name: 'panels-demo1-panel1',
@@ -25,7 +25,7 @@ class Page_RowOf2Panels extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SnippetPanel.fromNodes(
+            child: ContentBuilder.fromNodes(
               panelName: 'panel2',
               snippetRootNode: SnippetRootNode(
                 name: 'panels-demo2-panel2',

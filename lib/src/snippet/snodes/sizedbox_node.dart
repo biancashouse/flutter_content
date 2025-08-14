@@ -18,7 +18,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'SizedBox',
         webLink:
@@ -41,7 +41,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -51,7 +51,7 @@ class SizedBoxNode extends SC with SizedBoxNodeMappable {
       key: createNodeWidgetGK(),
       width: width,
       height: height,
-      child: child?.toWidget(context, this),
+      child: child?.buildFlutterWidget(context, this),
     );
   }
 

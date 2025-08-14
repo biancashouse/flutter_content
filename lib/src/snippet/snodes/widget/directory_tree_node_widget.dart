@@ -46,7 +46,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   }
 
   Widget _name(BuildContext context) {
-    SnippetPanelState? snippet = SnippetPanel.of(context);
+    ContentBuilderState? snippet = ContentBuilder.of(context);
     String snippetName = snippet?.widget.snippetName ?? '???!!!';
     return GestureDetector(
       onTap: () {
@@ -79,7 +79,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
               onTap: () {
                 fco.capiBloc.add(CAPIEvent.selectedDirectoryOrNode(snippetName: snippetName, selectedNode: entry.node));
               },
-              child: (entry.node as FileNode).toWidget(context, entry.node),
+              child: (entry.node as FileNode).buildFlutterWidget(context, entry.node),
             ),
     );
   }

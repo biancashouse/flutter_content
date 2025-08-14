@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/tr_triangle_painter.dart';
+import 'package:flutter_content/src/api/content_builder/tr_triangle_painter.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'snippet_root_node.mapper.dart';
@@ -46,7 +46,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   static bool isHotspotCalloutContent(String sname) => int.tryParse(sname) != null || /*legacy*/ sname.startsWith('T-');
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     StringPNode(
       snode: this,
       name: 'tags',
@@ -96,7 +96,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       // fco.logger.i("SnippetRootNode.toWidget($name)...");
       // if (findDescendant(SnippetRootNode) != null) {}
@@ -117,7 +117,7 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
               Widget snippetWidget =
                   snippet == null
                       ? Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: "null snippet!")
-                      : snippet.child?.toWidget(futureContext, this) ?? const Placeholder();
+                      : snippet.child?.buildFlutterWidget(futureContext, this) ?? const Placeholder();
               snippet?.validateTree();
               if (!(snippet?.isValid()??false)) {
                 return const Offstage();

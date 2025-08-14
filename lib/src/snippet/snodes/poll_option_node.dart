@@ -18,7 +18,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'PollOption',
         webLink:
@@ -37,7 +37,7 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     try {
       setParent(parentNode);

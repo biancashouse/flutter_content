@@ -22,7 +22,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'MultiSplitView',
         webLink:
@@ -73,7 +73,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -93,7 +93,7 @@ class SplitViewNode extends MC with SplitViewNodeMappable {
               .children
               .map(
                 (child) => Area(builder: (ctx, area) {
-                  return child.toWidget(context, this);
+                  return child.buildFlutterWidget(context, this);
                 }),
               )
               .toList();

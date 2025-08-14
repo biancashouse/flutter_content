@@ -15,7 +15,7 @@ class GapNode extends CL with GapNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Gap',
             webLink:
@@ -45,7 +45,7 @@ class GapNode extends CL with GapNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);

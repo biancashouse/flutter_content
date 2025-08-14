@@ -14,10 +14,10 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => const [];
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => const [];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) => fco.coloredText(
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) => fco.coloredText(
       'GenericSingleChildNode - Use toWidgetProperty() instead of toWidget() !',
       fontSize: 36);
 
@@ -28,7 +28,7 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
       //possiblyHighlightSelectedNode(scName);
       if (child == null) return null;
       try {
-        Widget? childWidget = child?.toWidget(context, this);
+        Widget? childWidget = child?.buildFlutterWidget(context, this);
         if (childWidget == null) {
           throw (Exception(
               'Failed to create widget for property: $propertyName'));
@@ -64,7 +64,7 @@ class GenericSingleChildNode extends SC with GenericSingleChildNodeMappable {
         PreferredSizeWidget? childWidget = PreferredSize(
           key: createNodeWidgetGK(),
           preferredSize: Size.fromHeight(preferredH),
-          child: child?.toWidget(context, this) ?? Placeholder(),
+          child: child?.buildFlutterWidget(context, this) ?? Placeholder(),
         );
         return childWidget;
       } catch (e) {

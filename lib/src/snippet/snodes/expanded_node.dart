@@ -16,7 +16,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Expanded',
             webLink:
@@ -34,7 +34,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -43,7 +43,7 @@ class ExpandedNode extends SC with ExpandedNodeMappable {
       return Expanded(
         key: createNodeWidgetGK(),
         flex: flex,
-        child: child?.toWidget(context, this) ??
+        child: child?.buildFlutterWidget(context, this) ??
             const Icon(
               Icons.square,
               color: Colors.red,

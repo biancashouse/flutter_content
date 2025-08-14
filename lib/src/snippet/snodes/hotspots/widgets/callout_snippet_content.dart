@@ -57,7 +57,7 @@ Future<void> showSnippetContentCallout({
   //  by now should definitely have created the target's snippet
   // if (fco.targetSnippetBeingConfigured != null) {
 
-  Widget content() => SnippetPanel.fromSnippet(
+  Widget content() => ContentBuilder.fromSnippet(
     panelName: tc.contentCId,
     // never used
     snippetName: tc.contentCId,

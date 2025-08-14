@@ -51,7 +51,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       _f$userContainerStyles = Field(
           'userContainerStyles', _$userContainerStyles,
           opt: true, def: const {});
-  static List<String> _$userEditablePages(AppInfoModel v) => v.userEditablePages;
+  static List<String> _$userEditablePages(AppInfoModel v) =>
+      v.userEditablePages;
   static const Field<AppInfoModel, List<String>> _f$userEditablePages =
       Field('userEditablePages', _$userEditablePages, opt: true, def: const []);
 

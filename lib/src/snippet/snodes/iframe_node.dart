@@ -27,7 +27,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         // StringPNode(
         //   snode: this,
         //   name: 'name',
@@ -122,7 +122,7 @@ class IFrameNode extends CL with IFrameNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode); // propagating parents down from root

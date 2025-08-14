@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/snippet_tree_view.dart';
+import 'package:flutter_content/src/api/editable_page/snippet_tree_view.dart';
 
 class SnippetTreePane extends StatelessWidget {
   final SnippetInfoModel snippetInfo;

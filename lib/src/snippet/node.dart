@@ -8,16 +8,18 @@ abstract class Node extends Object {
   Node? _parent;
 
   Node? getParent() => _parent;
+
   void setParent(Node? parentNode) => _parent = parentNode;
 
-  static SNode? snippetTreeParentProvider(Node node) => node.getParent() as SNode?;
+  static SNode? snippetTreeParentProvider(Node node) =>
+      node.getParent() as SNode?;
 
   static Iterable<SNode> snippetTreeChildrenProvider(SNode node) {
     node.getParent();
     Iterable<SNode> children = [];
 
     if (node is SnippetRootNode && node.getParent() != null) {
-        children = [];
+      children = [];
     } else if (node is ScaffoldNode) {
       children = [
         if (node.appBar != null) node.appBar!,
@@ -58,7 +60,6 @@ abstract class Node extends Object {
   }
 
   static Iterable<PNode> propertyTreeChildrenProvider(PNode node) {
-
     // // custom logic to hide style props when a named style prop is not null
     // if (node.snode is TextSpanNode) {
     //   TextSpanNode tsNode = node.snode as TextSpanNode;
@@ -66,7 +67,7 @@ abstract class Node extends Object {
     //     return [tsNode.textStyleProperties.];
     // }
 
-    if (node.children != null/*Group*/) {
+    if (node.children != null /*Group*/ ) {
       // named text style hides individual text style properties
       // if (node is TextStylePropertyGroup) {
       //   var namedTextStyleNode = node.children.toList().firstWhere((tsgNode){return tsgNode.name == 'namedTextStyle';});
@@ -86,7 +87,7 @@ abstract class Node extends Object {
 
     return [];
   }
-  
+
   // Node? findNearestAncestorOfType(Type type) {
   //   Node? node = this;
   //   while (node != null && node.runtimeType != type) {
@@ -186,7 +187,7 @@ class SnippetTreeController extends TreeController<SNode> {
     return foundNode;
   }
 
- bool nodeIsADescendantOf(SNode startingNode, SNode nodeToFind) {
+  bool nodeIsADescendantOf(SNode startingNode, SNode nodeToFind) {
     SNode? foundNode;
     foundNode = breadthFirstSearch(
       startingNodes: [startingNode],
@@ -208,13 +209,15 @@ class SnippetTreeController extends TreeController<SNode> {
     if (selectedNode == null) return -1;
     int result = -1;
     int i = 0;
-    depthFirstTraversal(onTraverse: (entry) {
-      if (entry.node == selectedNode) {
-        result = i;
-      } else {
-        i++;
-      }
-    });
+    depthFirstTraversal(
+      onTraverse: (entry) {
+        if (entry.node == selectedNode) {
+          result = i;
+        } else {
+          i++;
+        }
+      },
+    );
     return result;
   }
 
@@ -222,11 +225,13 @@ class SnippetTreeController extends TreeController<SNode> {
     if (selectionIndex == -1) return null;
     SNode? result;
     int i = 0;
-    depthFirstTraversal(onTraverse: (entry) {
-      if (i++ == selectionIndex) {
-        result = entry.node;
-      }
-    });
+    depthFirstTraversal(
+      onTraverse: (entry) {
+        if (i++ == selectionIndex) {
+          result = entry.node;
+        }
+      },
+    );
     return result;
   }
 
@@ -259,13 +264,12 @@ class PNodeTreeController extends TreeController<PNode> {
   });
 
   @override
-  bool getExpansionState(PNode node) => _expandedNodesCache?.contains(node) ?? false;
+  bool getExpansionState(PNode node) =>
+      _expandedNodesCache?.contains(node) ?? false;
 
   @override
   void setExpansionState(PNode node, bool expanded) {
-    expanded
-      ? _expandedNodes.add(node)
-      : _expandedNodes.remove(node);
+    expanded ? _expandedNodes.add(node) : _expandedNodes.remove(node);
   }
 
   List<PNode> getExpandedNodes(PNode startingNode) {
@@ -312,5 +316,4 @@ class PNodeTreeController extends TreeController<PNode> {
     }
     return entry.node;
   }
-
 }

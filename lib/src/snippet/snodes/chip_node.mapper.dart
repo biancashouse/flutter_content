@@ -17,7 +17,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
       TextStylePropertiesMapper.ensureInitialized();
       EdgeInsetsValueMapper.ensureInitialized();
       ColorModelMapper.ensureInitialized();
-      SnippetTemplateEnumMapper.ensureInitialized();
       CalloutConfigModelMapper.ensureInitialized();
     }
     return _instance!;
@@ -64,9 +63,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
       Field(
           'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
           opt: true);
-  static SnippetTemplateEnum? _$template(ChipNode v) => v.template;
-  static const Field<ChipNode, SnippetTemplateEnum> _f$template =
-      Field('template', _$template, opt: true);
   static String? _$onTapHandlerName(ChipNode v) => v.onTapHandlerName;
   static const Field<ChipNode, String> _f$onTapHandlerName =
       Field('onTapHandlerName', _$onTapHandlerName, opt: true);
@@ -101,7 +97,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
     #destinationPanelOrPlaceholderName: _f$destinationPanelOrPlaceholderName,
     #destinationSnippetName: _f$destinationSnippetName,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
-    #template: _f$template,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfig: _f$calloutConfig,
     #uid: _f$uid,
@@ -131,7 +126,6 @@ class ChipNodeMapper extends SubClassMapperBase<ChipNode> {
         destinationSnippetName: data.dec(_f$destinationSnippetName),
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
-        template: data.dec(_f$template),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfig: data.dec(_f$calloutConfig));
   }
@@ -207,7 +201,6 @@ abstract class ChipNodeCopyWith<$R, $In extends ChipNode, $Out>
       String? destinationPanelOrPlaceholderName,
       String? destinationSnippetName,
       String? destinationRoutePathSnippetName,
-      SnippetTemplateEnum? template,
       String? onTapHandlerName,
       CalloutConfigModel? calloutConfig});
   ChipNodeCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -254,7 +247,6 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           Object? destinationPanelOrPlaceholderName = $none,
           Object? destinationSnippetName = $none,
           Object? destinationRoutePathSnippetName = $none,
-          Object? template = $none,
           Object? onTapHandlerName = $none,
           Object? calloutConfig = $none}) =>
       $apply(FieldCopyWithData({
@@ -271,7 +263,6 @@ class _ChipNodeCopyWithImpl<$R, $Out>
           #destinationSnippetName: destinationSnippetName,
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
-        if (template != $none) #template: template,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfig != $none) #calloutConfig: calloutConfig
       }));
@@ -293,7 +284,6 @@ class _ChipNodeCopyWithImpl<$R, $Out>
       destinationRoutePathSnippetName: data.get(
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
-      template: data.get(#template, or: $value.template),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),
       calloutConfig: data.get(#calloutConfig, or: $value.calloutConfig));

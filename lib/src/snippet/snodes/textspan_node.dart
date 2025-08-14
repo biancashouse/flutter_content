@@ -38,7 +38,7 @@ class TextSpanNode extends InlineSpanNode with TextSpanNodeMappable {
       tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [

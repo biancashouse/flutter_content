@@ -86,7 +86,7 @@ class TappableCommentBtn extends StatelessWidget {
   }) {
     final commentSnippetWidget = BlocBuilder<CAPIBloC, CAPIState>(
       builder: (context, state) {
-        return comment.snippet!.child?.toWidget(context, comment.snippet) ??
+        return comment.snippet!.child?.buildFlutterWidget(context, comment.snippet) ??
             const Placeholder();
       },
     );

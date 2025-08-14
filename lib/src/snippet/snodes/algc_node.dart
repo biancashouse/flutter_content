@@ -23,7 +23,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         PNode /*Group*/ (
           snode: this,
           name: 'by user id + flowchart id',
@@ -72,7 +72,7 @@ class AlgCNode extends CL with AlgCNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode); // propagating parents down from root
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);

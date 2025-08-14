@@ -3,7 +3,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/stepper_with_controller.dart';
+import 'package:flutter_content/src/snippet/stepper/stepper_with_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_stepper_type.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
@@ -24,7 +24,7 @@ class StepperNode extends MC with StepperNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Stepper',
             webLink:
@@ -53,7 +53,7 @@ class StepperNode extends MC with StepperNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);

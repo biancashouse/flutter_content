@@ -15,7 +15,7 @@ class CommentM with HasImageInFBStorage, StringEncoderDecoder {
   // initially a 300x200 placeholder
   double? calloutWidth = 300;
   double? calloutHeight = 200;
-  SnippetRootNode? snippet = SnippetTemplateEnum.empty.templateSnippet();
+  SnippetRootNode? snippet = SnippetRootNode(name: 'who-cares', child: PlaceholderNode());
 
   String? _topTxt;
   String? _bottomTxt;
@@ -59,7 +59,7 @@ class CommentM with HasImageInFBStorage, StringEncoderDecoder {
         ..snippet = theBVComment.snippetEncodedJson != null
             ? SnippetRootNodeMapper.fromJson(
                 jsonDecode(theBVComment.snippetEncodedJson!))
-            : SnippetTemplateEnum.empty.templateSnippet()
+            : SnippetRootNode(name: 'who-cares', child: PlaceholderNode())
         ..topTxt = theBVComment.topTxt
         ..bottomTxt = theBVComment.bottomTxt
         // ..fsBottom = theBVComment.fsBottom

@@ -28,7 +28,8 @@ class ChipNode extends CL with ChipNodeMappable {
 
   // when navigating to path, which is also used as the page's snippet name
   String? destinationRoutePathSnippetName;
-  SnippetTemplateEnum? template;
+
+  // SnippetTemplateEnum? template;
 
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
   String? onTapHandlerName;
@@ -45,7 +46,7 @@ class ChipNode extends CL with ChipNodeMappable {
     this.destinationPanelOrPlaceholderName,
     this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
-    this.template,
+    // this.template,
     this.onTapHandlerName,
     this.calloutConfig,
   });
@@ -62,15 +63,16 @@ class ChipNode extends CL with ChipNodeMappable {
       labelTSPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     var textStyleName = fco.findTextStyleName(fco.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
       FlutterDocPNode(
-          buttonLabel: 'Chip',
-          webLink: 'https://api.flutter.dev/flutter/material/Chip-class.html',
-          snode: this,
-          name: 'fyi'),
+        buttonLabel: 'Chip',
+        webLink: 'https://api.flutter.dev/flutter/material/Chip-class.html',
+        snode: this,
+        name: 'fyi',
+      ),
       StringPNode(
         snode: this,
         name: 'label',
@@ -152,7 +154,9 @@ class ChipNode extends CL with ChipNodeMappable {
             stringValue: destinationRoutePathSnippetName,
             onStringChange: (newValue) {
               refreshWithUpdate(
-                  context, () => destinationRoutePathSnippetName = newValue);
+                context,
+                () => destinationRoutePathSnippetName = newValue,
+              );
             },
             options: fco.pageList,
             calloutButtonSize: const Size(280, 70),
@@ -170,7 +174,9 @@ class ChipNode extends CL with ChipNodeMappable {
             stringValue: destinationPanelOrPlaceholderName,
             onStringChange: (newValue) {
               refreshWithUpdate(
-                  context, () => destinationPanelOrPlaceholderName = newValue);
+                context,
+                () => destinationPanelOrPlaceholderName = newValue,
+              );
             },
             calloutButtonSize: const Size(280, 70),
             calloutWidth: 280,
@@ -181,11 +187,13 @@ class ChipNode extends CL with ChipNodeMappable {
             stringValue: destinationSnippetName,
             onStringChange: (newValue) {
               refreshWithUpdate(
-                  context, () => destinationSnippetName = newValue);
+                context,
+                () => destinationSnippetName = newValue,
+              );
             },
             calloutButtonSize: const Size(280, 70),
             calloutWidth: 280,
-          )
+          ),
         ],
       ),
       StringPNode(
@@ -201,9 +209,10 @@ class ChipNode extends CL with ChipNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
-      ) {
-    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
+    ScrollControllerName? scName = EditablePage.maybeScrollControllerName(
+      context,
+    );
     try {
       // possible handler
       // void Function(BuildContext)? f =
@@ -226,11 +235,12 @@ class ChipNode extends CL with ChipNodeMappable {
       );
     } catch (e) {
       return Error(
-          key: createNodeWidgetGK(),
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: createNodeWidgetGK(),
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
@@ -250,7 +260,7 @@ class ChipNode extends CL with ChipNodeMappable {
         const Duration(seconds: 1),
         () => fco.showOverlay(
           targetGkF: () => fco.getCalloutGk(feature),
-          calloutContent: SnippetPanel.fromSnippet(
+          calloutContent: ContentBuilder.fromSnippet(
             panelName: calloutConfig!.cId,
             snippetName: BODY_PLACEHOLDER,
             // allowButtonCallouts: false,
@@ -258,16 +268,17 @@ class ChipNode extends CL with ChipNodeMappable {
           ),
           calloutConfig: CalloutConfigModel(
             cId: feature!,
-            initialTargetAlignment: calloutConfig?.initialTargetAlignment != null
+            initialTargetAlignment:
+                calloutConfig?.initialTargetAlignment != null
                 ? calloutConfig!.initialTargetAlignment
                 : AlignmentEnum.bottomRight,
-            initialCalloutAlignment: calloutConfig?.initialTargetAlignment != null
+            initialCalloutAlignment:
+                calloutConfig?.initialTargetAlignment != null
                 ? (calloutConfig!.initialTargetAlignment!.oppositeEnum)
                 : AlignmentEnum.topLeft,
             initialCalloutW: 200,
             initialCalloutH: 150,
-            arrowType:
-                calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
+            arrowType: calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
             finalSeparation: 100,
             barrier: CalloutBarrierConfig(
               opacity: 0.1,
@@ -281,9 +292,7 @@ class ChipNode extends CL with ChipNodeMappable {
         ),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      fco.addSubRoute(
-          newPath: destinationRoutePathSnippetName!,
-          template: SnippetTemplateEnum.empty);
+      fco.addSubRoute(newPath: destinationRoutePathSnippetName!);
       fco.pageList.add(destinationRoutePathSnippetName!);
       context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
@@ -291,10 +300,12 @@ class ChipNode extends CL with ChipNodeMappable {
         destinationSnippetName != null) {
       destinationSnippetName ??=
           '$destinationPanelOrPlaceholderName:default-snippet';
-      capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-        snippetName: destinationSnippetName!,
-        panelName: destinationPanelOrPlaceholderName!,
-      ));
+      capiBloc.add(
+        CAPIEvent.setPanelOrPlaceholderSnippet(
+          snippetName: destinationSnippetName!,
+          panelName: destinationPanelOrPlaceholderName!,
+        ),
+      );
     }
   }
 

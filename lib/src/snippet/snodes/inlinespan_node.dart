@@ -21,5 +21,5 @@ abstract class InlineSpanNode extends SNode with InlineSpanNodeMappable {
   // });
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) => const Text('InlineSpan is a Node!');
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) => const Text('InlineSpan is a Node!');
 }

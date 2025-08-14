@@ -27,7 +27,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
       FlutterDocPNode(buttonLabel: 'Scaffold', webLink: 'https://api.flutter.dev/flutter/material/Scaffold-class.html', snode: this, name: 'fyi'),
@@ -49,7 +49,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     // if (parentNode == null) throw Exception("parent is null!");
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -61,7 +61,7 @@ class ScaffoldNode extends SNode with ScaffoldNodeMappable {
     Widget scaffold = Scaffold(
       key: createNodeWidgetGK(),
       backgroundColor: bgColor?.flutterValue,
-      appBar: appBar?.toWidget(context, this) as PreferredSizeWidget?,
+      appBar: appBar?.buildFlutterWidget(context, this) as PreferredSizeWidget?,
       // guaranteed the widget is actually an AppBar
       body: bodyWidget(),
     );

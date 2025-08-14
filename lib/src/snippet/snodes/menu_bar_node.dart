@@ -17,7 +17,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) =>  [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) =>  [
     FlutterDocPNode(
         buttonLabel: 'MenuBar',
         webLink:
@@ -33,7 +33,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -45,7 +45,7 @@ class MenuBarNode extends MC with MenuBarNodeMappable {
               MenuBar(
                 key: createNodeWidgetGK(),
                 children: super.children.map((child) =>
-                    child.toWidget(context, this)).toList(),
+                    child.buildFlutterWidget(context, this)).toList(),
               ),
               width ?? fco.scrW,
               height ?? 60,

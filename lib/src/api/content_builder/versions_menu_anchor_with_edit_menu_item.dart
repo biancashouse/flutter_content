@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/tr_triangle_painter.dart';
+import 'package:flutter_content/src/api/content_builder/tr_triangle_painter.dart';
 
 enum AnchorWidgetEnum { Triangle, IconButton }
 

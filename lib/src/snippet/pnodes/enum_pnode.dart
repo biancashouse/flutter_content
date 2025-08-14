@@ -39,16 +39,16 @@ class EnumPNode<T> extends PNode {
     // just show name for null property value
     // if (value == null) return FCO.coloredText(name, color:Colors.white);
     // SnippetTemplate -------------
-    if (_sameType<T, SnippetTemplateEnum?>()) {
-      return SnippetTemplateEnum.propertyNodeContents(
-        snode: snode,
-        label: name,
-        enumValueIndex: valueIndex,
-        onChangedF: (newValueIndex) =>
-            onIndexChange(valueIndex = newValueIndex),
-        scName: scName,
-      );
-    }
+    // if (_sameType<T, SnippetTemplateEnum?>()) {
+    //   return SnippetTemplateEnum.propertyNodeContents(
+    //     snode: snode,
+    //     label: name,
+    //     enumValueIndex: valueIndex,
+    //     onChangedF: (newValueIndex) =>
+    //         onIndexChange(valueIndex = newValueIndex),
+    //     scName: scName,
+    //   );
+    // }
     // BoxFit -------------
     if (_sameType<T, BoxFitEnum?>()) {
       return BoxFitEnum.propertyNodeContents(

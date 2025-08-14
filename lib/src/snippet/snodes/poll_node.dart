@@ -34,7 +34,7 @@ class PollNode extends MC with PollNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Poll',
             webLink:
@@ -104,7 +104,7 @@ class PollNode extends MC with PollNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -118,7 +118,7 @@ class PollNode extends MC with PollNodeMappable {
           for (int i = 0; i < children.length; i++) {
             SNode child = children[i];
             if (child is PollOptionNode) {
-              optionWidgets.add(child.toWidget(context, this));
+              optionWidgets.add(child.buildFlutterWidget(context, this));
             }
           }
           return SizedBox(

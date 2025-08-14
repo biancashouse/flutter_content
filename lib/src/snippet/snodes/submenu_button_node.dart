@@ -22,7 +22,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   }) : super(children: menuChildren);
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'SubMenuItemButton',
         webLink: 'https://api.flutter.dev/flutter/material/SubmenuButton-class.html',
@@ -58,7 +58,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     //Icon(Icons.info, size: 28, color: Colors.red);
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -77,7 +77,7 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
         ),
       ),
       menuChildren:
-          super.children.map((child) => child.toWidget(context, this)).toList(),
+          super.children.map((child) => child.buildFlutterWidget(context, this)).toList(),
       // child: child == null ? Text(itemLabel??'label?') : child?.toWidget(context, this),
       child: Text(itemLabel),
     );

@@ -13,7 +13,7 @@ part 'outlined_button_node.mapper.dart';
 class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   OutlinedButtonNode({
     super.destinationRoutePathSnippetName,
-    super.template,
+    // super.template,
     // super.destinationPanelOrPlaceholderName,
     // super.destinationSnippetName,
     required super.bsPropGroup,
@@ -32,17 +32,17 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => OutlinedButton.styleFrom();
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'OutlinedButton',
         webLink: 'https://api.flutter.dev/flutter/material/OutlinedButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     try {
       ButtonStyle? btnStyle = bsPropGroup.toButtonStyle(context, defaultButtonStyle: defaultButtonStyle());
@@ -63,7 +63,7 @@ class OutlinedButtonNode extends ButtonNode with OutlinedButtonNodeMappable {
               onPressed: ()=>onPressed(context, gk, scName),
               onLongPress: f != null ? () => f.call(context) : null,
               style: btnStyle,
-              child: child?.toWidget(context, this),
+              child: child?.buildFlutterWidget(context, this),
             ),
           );
     } catch (e) {

@@ -20,7 +20,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
           name: 'name',
@@ -36,9 +36,9 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   String toSource(BuildContext context) => "";
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
-      SnippetPanelState? ss = SnippetPanel.of(context);
+      ContentBuilderState? ss = ContentBuilder.of(context);
       if (!(ss?.mounted ?? false)) {
         return Error(
           key: createNodeWidgetGK(),
@@ -122,7 +122,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
                   Text(childNode.name ?? ''),
                 ],
               )
-            : (childNode as FileNode).toWidget(context, this);
+            : (childNode as FileNode).buildFlutterWidget(context, this);
       }).toList(),
     );
   }

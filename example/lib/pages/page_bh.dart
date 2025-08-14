@@ -218,28 +218,22 @@ class Page_BHState extends State<Page_BH> with TickerProviderStateMixin {
     ),
   );
 
-  Widget _whatWeDoSnippet() => SnippetPanel.fromNodes(
-    snippetRootNode: SnippetTemplateEnum.empty.templateSnippet().clone(
-      cloneName: 'we-create',
-    ),
+  Widget _whatWeDoSnippet() => ContentBuilder.fromNodes(
+    snippetRootNode: SnippetRootNode(name: 'we-create', child: PlaceholderNode()),
     scName: namedSC(context)?.name,
   );
 
   Widget _aboutHotspotsSnippet() => Padding(
     padding: const EdgeInsets.all(18.0),
-    child: SnippetPanel.fromNodes(
-      snippetRootNode: SnippetTemplateEnum.empty.templateSnippet().clone(
-        cloneName: 'about-hotspots',
-      ),
+    child: ContentBuilder.fromNodes(
+      snippetRootNode: SnippetRootNode(name: 'about-hotspots', child: PlaceholderNode()),
       scName: namedSC(context)?.name,
     ),
   );
 
-  Widget _aboutAlgCSnippet() => SnippetPanel.fromNodes(
+  Widget _aboutAlgCSnippet() => ContentBuilder.fromNodes(
     // panelName: 'about-algc',
-    snippetRootNode: SnippetTemplateEnum.empty.templateSnippet().clone(
-      cloneName: 'about-algc',
-    ),
+    snippetRootNode: SnippetRootNode(name: 'about-algc', child: PlaceholderNode()),
     scName: namedSC(context)?.name,
   );
 

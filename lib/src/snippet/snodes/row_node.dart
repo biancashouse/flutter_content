@@ -20,13 +20,13 @@ class RowNode extends FlexNode with RowNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'Row',
         webLink: 'https://api.flutter.dev/flutter/widgets/Row-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   // @override

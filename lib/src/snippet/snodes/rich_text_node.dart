@@ -32,7 +32,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'RichText',
         webLink:
@@ -78,7 +78,7 @@ class RichTextNode extends CL with RichTextNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       TextSpan rootTextSpan = (text.toInlineSpan(context)) as TextSpan;
       setParent(parentNode);

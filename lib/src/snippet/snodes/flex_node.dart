@@ -24,7 +24,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Flex',
             webLink:
@@ -69,7 +69,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -89,7 +89,7 @@ abstract class FlexNode extends MC with FlexNodeMappable {
                 crossAxisAlignment?.flutterValue ?? CrossAxisAlignment.center,
             textBaseline: TextBaseline.alphabetic,
             children:
-                children.map((node) => node.toWidget(context, this)).toList(),
+                children.map((node) => node.buildFlutterWidget(context, this)).toList(),
           );
         });
       } catch (e) {

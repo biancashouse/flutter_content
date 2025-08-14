@@ -38,7 +38,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
   // Uint8List? cachedPngBytes;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FSImagePathPNode(
           snode: this,
           name: 'image picker',
@@ -89,7 +89,7 @@ class FSImageNode extends CL with FSImageNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
       //ScrollControllerName? scName = EditablePage.name(context);

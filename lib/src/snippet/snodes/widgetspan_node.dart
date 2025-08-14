@@ -15,7 +15,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'WidgetSpan',
             webLink:
@@ -29,7 +29,7 @@ class WidgetSpanNode extends InlineSpanNode with WidgetSpanNodeMappable {
     try {
       return WidgetSpan(
         child: child != null
-            ? child!.toWidget(context, this)
+            ? child!.buildFlutterWidget(context, this)
             : fco.boxChild(
                 child: const Text("missing child!"), bgColor: Colors.red),
       );

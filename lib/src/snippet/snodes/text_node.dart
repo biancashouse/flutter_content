@@ -50,7 +50,7 @@ class TextNode extends CL with TextNodeMappable {
       tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i('textStyleName is "$textStyleName"');
     return [
       FlutterDocPNode(
@@ -324,7 +324,7 @@ class TextNode extends CL with TextNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);

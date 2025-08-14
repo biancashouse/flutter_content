@@ -25,7 +25,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Placeholder',
             webLink:
@@ -64,7 +64,7 @@ class PlaceholderNode extends CL with PlaceholderNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);

@@ -36,7 +36,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
   bool hasMenuBar() => bottom?.child is MenuBarNode;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     // fco.logger.i("ContainerNode.properties()...");
     return [
       FlutterDocPNode(
@@ -86,7 +86,7 @@ class AppBarNode extends SNode with AppBarNodeMappable {
 
   @override
   // no tabbar nor menubar
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
 

@@ -9,7 +9,6 @@ import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 import 'package:go_router/go_router.dart';
 
-
 part 'button_node.mapper.dart';
 
 @MappableClass(discriminatorKey: 'button', includeSubClasses: buttonSubClasses)
@@ -21,11 +20,13 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
 
   // when navigating to path, which is also used as the page's snippet name
   String? destinationRoutePathSnippetName;
-  SnippetTemplateEnum? template;
+
+  // SnippetTemplateEnum? template;
 
   @MappableField(hook: ButtonStyleHook())
   ButtonStyleProperties bsPropGroup;
   String? onTapHandlerName;
+
   // client supplied onTap (list of handlers supplied to FlutterContentApp)
 
   CalloutConfigModel? calloutConfig;
@@ -34,7 +35,7 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
     // this.destinationPanelOrPlaceholderName,
     // this.destinationSnippetName,
     this.destinationRoutePathSnippetName,
-    this.template,
+    // this.template,
     required this.bsPropGroup,
     this.onTapHandlerName,
     this.calloutConfig,
@@ -62,28 +63,31 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       bsPropGroup.tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
-     return [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
+    return [
       PNode /*Group*/ (
         snode: this,
         name: 'goto Page...',
         children: [
           FYIPNode(
-              label: "about page links...",
-              msg: "tapping the button\nnavigates the user to\nthe page defined by\n'destination Route Path'",
-              snode: this,
-              name: 'page-linking'),
+            label: "about page links...",
+            msg:
+                "tapping the button\nnavigates the user to\nthe page defined by\n'destination Route Path'",
+            snode: this,
+            name: 'page-linking',
+          ),
           StringPNode(
             snode: this,
             name: 'destination Route Path',
             stringValue: destinationRoutePathSnippetName,
             onStringChange: (newValue) {
               refreshWithUpdate(
-                  context,
-                  () => destinationRoutePathSnippetName =
-                      (newValue == null || newValue.startsWith('/')
-                          ? newValue
-                          : "/$newValue"));
+                context,
+                () => destinationRoutePathSnippetName =
+                    (newValue == null || newValue.startsWith('/')
+                    ? newValue
+                    : "/$newValue"),
+              );
             },
             options: fco.pageList,
             calloutButtonSize: const Size(240, 70),
@@ -168,51 +172,50 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
       Future.delayed(
         const Duration(seconds: 1),
         () => fco.showOverlay(
-            targetGkF: () => fco.getCalloutGk(cid),
-            calloutContent: SnippetPanel.fromSnippet(
-              panelName: calloutConfig!.cId,
-              snippetName: BODY_PLACEHOLDER,
-              // allowButtonCallouts: false,
-              scName: scName,
+          targetGkF: () => fco.getCalloutGk(cid),
+          calloutContent: ContentBuilder.fromSnippet(
+            panelName: calloutConfig!.cId,
+            snippetName: BODY_PLACEHOLDER,
+            // allowButtonCallouts: false,
+            scName: scName,
+          ),
+          calloutConfig: CalloutConfigModel(
+            cId: cid!,
+            initialTargetAlignment:
+                calloutConfig!.initialTargetAlignment ??
+                AlignmentEnum.bottomRight,
+            initialCalloutAlignment:
+                calloutConfig!.initialTargetAlignment != null
+                ? calloutConfig!.initialTargetAlignment!.oppositeEnum
+                : AlignmentEnum.topLeft,
+            initialCalloutW: 200,
+            initialCalloutH: 150,
+            arrowType: calloutConfig?.arrowType ?? ArrowTypeEnum.POINTY,
+            finalSeparation: 100,
+            barrier: CalloutBarrierConfig(
+              opacity: 0.1,
+              onTappedF: () async {
+                fco.dismiss(cid!);
+              },
             ),
-            calloutConfig: CalloutConfigModel(
-                cId: cid!,
-                initialTargetAlignment: calloutConfig!.initialTargetAlignment ??
-                    AlignmentEnum.bottomRight,
-                initialCalloutAlignment:
-                    calloutConfig!.initialTargetAlignment != null
-                        ? calloutConfig!
-                            .initialTargetAlignment!.oppositeEnum
-                        : AlignmentEnum.topLeft,
-                initialCalloutW: 200,
-                initialCalloutH: 150,
-                arrowType: calloutConfig?.arrowType ??
-                    ArrowTypeEnum.POINTY,
-                finalSeparation: 100,
-                barrier: CalloutBarrierConfig(
-                  opacity: 0.1,
-                  onTappedF: () async {
-                    fco.dismiss(cid!);
-                  },
-                ),
-                fillColor: calloutConfig?.fillColor,
-                scrollControllerName: scName)),
+            fillColor: calloutConfig?.fillColor,
+            scrollControllerName: scName,
+          ),
+        ),
       );
     } else if (destinationRoutePathSnippetName != null) {
-      fco.addSubRoute(
-          newPath: destinationRoutePathSnippetName!,
-          template: SnippetTemplateEnum.empty);
+      fco.addSubRoute(newPath: destinationRoutePathSnippetName!);
       fco.pageList.add(destinationRoutePathSnippetName!);
       context.replace(destinationRoutePathSnippetName!);
       // create a GoRoute and load or create snippet with pageName
-    // } else if (destinationPanelOrPlaceholderName != null &&
-    //     destinationSnippetName != null) {
-    //   destinationSnippetName ??=
-    //       '$destinationPanelOrPlaceholderName:default-snippet';
-    //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
-    //     snippetName: destinationSnippetName!,
-    //     panelName: destinationPanelOrPlaceholderName!,
-    //   ));
+      // } else if (destinationPanelOrPlaceholderName != null &&
+      //     destinationSnippetName != null) {
+      //   destinationSnippetName ??=
+      //       '$destinationPanelOrPlaceholderName:default-snippet';
+      //   capiBloc.add(CAPIEvent.setPanelOrPlaceholderSnippet(
+      //     snippetName: destinationSnippetName!,
+      //     panelName: destinationPanelOrPlaceholderName!,
+      //   ));
     }
   }
 

@@ -35,7 +35,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   Uint8List? cachedPngBytes;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
           name: 'name',
@@ -75,7 +75,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
       // ScrollControllerName? scName = EditablePage.name(context);

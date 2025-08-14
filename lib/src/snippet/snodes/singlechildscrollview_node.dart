@@ -23,7 +23,7 @@ class SingleChildScrollViewNode extends SC
   ScrollControllerName? _scName;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'SingleChildScrollView',
             webLink:
@@ -66,7 +66,7 @@ class SingleChildScrollViewNode extends SC
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -100,7 +100,7 @@ class SingleChildScrollViewNode extends SC
           controller: NamedScrollController.instance(_scName!),
           // key: targetGK,
           padding: padding?.toEdgeInsets(),
-          child: child?.toWidget(context, this),
+          child: child?.buildFlutterWidget(context, this),
         );
       } else {
         return Error(

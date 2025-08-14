@@ -18,7 +18,7 @@ class AlignNode extends SC with AlignNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Align',
             webLink: 'https://api.flutter.dev/flutter/widgets/Align-class.html',
@@ -64,7 +64,7 @@ class AlignNode extends SC with AlignNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -74,7 +74,7 @@ class AlignNode extends SC with AlignNodeMappable {
       return Align(
         key: createNodeWidgetGK(),
         alignment: alignment.flutterValue,
-        child: child?.toWidget(context, this),
+        child: child?.buildFlutterWidget(context, this),
       );
     } catch (e) {
       return Error(

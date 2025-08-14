@@ -75,11 +75,38 @@ class _Page_HomeState extends State<Page_Home> {
     //   // ),
     // );
 
-    SnippetPanel sp = SnippetPanel.fromNodes(
+    final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
+    ContentBuilder sp = ContentBuilder.fromNodes(
       // panelName: 'demo-buttons',
-      snippetRootNode: SnippetTemplateEnum.scaffold_with_tabs
-          .templateSnippet()
-          .clone(cloneName: 'editable-scaffold_with_tabbar'),
+      snippetRootNode: SnippetRootNode(
+        name: 'home-scaffold-with-tabs',
+        child: ScaffoldNode(
+          appBar: AppBarNode(
+            tabBarName: uniqueTabBarName,
+            bgColor: ColorModel.grey(),
+            title: GenericSingleChildNode(
+              propertyName: 'title',
+              child: TextNode(text: 'my title', tsPropGroup: TextStyleProperties()),
+            ),
+            bottom: GenericSingleChildNode(
+              propertyName: 'bottom',
+              child: TabBarNode(
+                name: uniqueTabBarName,
+                labelTSPropGroup: TextStyleProperties(),
+                children: [
+                  TextNode(text: 'tab 1', tsPropGroup: TextStyleProperties()),
+                  TextNode(text: 'Tab 2', tsPropGroup: TextStyleProperties()),
+                ],
+              ),
+            ),
+          ),
+          body: GenericSingleChildNode(
+            propertyName: 'body',
+            child: TabBarViewNode(tabBarName: uniqueTabBarName, children: [PlaceholderNode(), PlaceholderNode()]),
+          ),
+        ),
+      ),
+
       // snippetRootNode: SnippetRootNode(
       //   name: 'we-create-flutter-apps-and-packages',
       //   child: PlaceholderNode()

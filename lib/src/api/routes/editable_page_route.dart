@@ -4,18 +4,19 @@ import 'package:go_router/go_router.dart';
 
 // same as GoRoute, with onExit to dismiss any callouts
 class EditablePageRoute extends GoRoute {
-  final Widget child;
+  final Widget? child;
   // final bool provideNamedScrollController;
 
   static final Map<String, EditablePage> pages = {};
 
   EditablePageRoute({
     required super.path, // path is also the snippet name
-    required this.child,
+    this.child,
     // this.provideNamedScrollController = false,
     super.routes,
   }) : super(
          onExit: (BuildContext context, GoRouterState state) async {
+           fco.dismissAll();
            return true;
          },
          builder: (BuildContext context, GoRouterState state) {
@@ -28,14 +29,15 @@ class EditablePageRoute extends GoRoute {
                  if (state.path == null) {
                    return const Text('EditablePageRoute - missing route path!');
                  } else {
-                   EditablePage? page = pages[state.path!];
-                   return (page != null)
-                       ? page
-                       : pages[state.path!] = EditablePage(
+                   return pages[state.path!] ??= EditablePage(
                      key: ValueKey<String>(path), // provides access to state later
                      routePath: state.path!,
                      // provideNamedScrollController: provideNamedScrollController,
-                     child: child,
+                     child: child ?? ContentBuilder.fromNodes(
+                       panelName: state.path!,
+                       snippetRootNode: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
+                       scName: state.path!,
+                     ),
                    );
                  }
                }

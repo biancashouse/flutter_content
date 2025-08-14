@@ -15,11 +15,11 @@ extension RoutesExtension on FlutterContentMixins {
 
   void addSubRoute({
     required String newPath,
-    required SnippetTemplateEnum template,
+    // required SnippetTemplateEnum template,
   }) {
     List<RouteBase> subRoutes = routingConfigVN.value.routes;
     if (!newPath.endsWith(' missing')) {
-      subRoutes.add(DynamicPageRoute(path: newPath, template: template));
+      subRoutes.add(EditablePageRoute(path: newPath));
     }
   }
 
@@ -62,7 +62,7 @@ extension RoutesExtension on FlutterContentMixins {
     // RouteBase home = routingConfig.routes.first;
     for (String snippetName in appInfo.snippetNames) {
       if (snippetName.startsWith('/') && !pageList.contains(snippetName)) {
-        addSubRoute(newPath: snippetName, template: SnippetTemplateEnum.empty);
+        addSubRoute(newPath: snippetName);
         pageList.add(snippetName);
       }
     }

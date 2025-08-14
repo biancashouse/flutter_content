@@ -18,7 +18,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'TabBarView',
             webLink:
@@ -39,13 +39,13 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      SnippetPanelState? spState = SnippetPanel.of(context);
+      ContentBuilderState? spState = ContentBuilder.of(context);
       TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
       if (tabBarNode == null) {
         return Placeholder();
@@ -53,7 +53,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       int numTabNodes = tabBarNode.tabC?.length ?? 0;
       List<Widget> childWidgets = children
           // .map((node) => TabBarViewPage(child: node.toWidget(context, this)))
-          .map((node) => node.toWidget(context, this))
+          .map((node) => node.buildFlutterWidget(context, this))
           .toList();
       try {
         if (numTabNodes != children.length) {

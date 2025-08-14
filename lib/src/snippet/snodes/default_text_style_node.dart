@@ -34,7 +34,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
       tsPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     var textStyleName = fco.findTextStyleName(fco.appInfo, tsPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
@@ -78,7 +78,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
   // }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -89,7 +89,7 @@ class DefaultTextStyleNode extends SC with DefaultTextStyleNodeMappable {
               key: createNodeWidgetGK(),
               style: tsPropGroup.toTextStyle(context),
               textAlign: textAlign?.flutterValue,
-              child: child!.toWidget(context, this),
+              child: child!.buildFlutterWidget(context, this),
             )
           : const Offstage();
     } catch (e) {

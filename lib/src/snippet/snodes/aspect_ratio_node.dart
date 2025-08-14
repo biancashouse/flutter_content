@@ -18,7 +18,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'AssetImage',
         webLink: 'https://api.flutter.dev/flutter/painting/AssetImage-class.html',
@@ -34,7 +34,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -43,7 +43,7 @@ class AspectRatioNode extends SC with AspectRatioNodeMappable {
       return AspectRatio(
         key: createNodeWidgetGK(),
         aspectRatio: aspectRatio,
-        child: child?.toWidget(context, this),
+        child: child?.buildFlutterWidget(context, this),
       );
     } catch (e) {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

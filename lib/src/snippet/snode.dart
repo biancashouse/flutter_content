@@ -13,60 +13,6 @@ import 'snodes/fs_image_node.dart';
 
 part 'snode.mapper.dart';
 
-// Map<Type, List<String>> nodeTypeTagMap = {
-//   TextNode: ["sm-text"],
-//   RichTextNode: ["sm-text"],
-//   TextSpanNode: ["sm-text"],
-//   WidgetSpanNode: ["sm-text"],
-//   MenuItemButtonNode: ["sm-menu"],
-//   AssetImageNode: ["sm-image"],
-//   AspectRatioNode: ["sm-image"],
-//   IFrameNode: ["sm-files"],
-//   GoogleDriveIFrameNode: ["sm-files"],
-//   FileNode: ["sm-files"],
-//   TargetWrapperNode: ["mi"],
-//   GapNode: ["sm-flex"],
-//   //
-//   ContainerNode: ["sm-containers"],
-//   SizedBoxNode: ["sm-containers"],
-//   CenterNode: ["sm-containers"],
-//   PaddingNode: ["sm-containers"],
-//   PlaceholderNode: ["sm-containers"],
-//   DefaultTextStyleNode: ["sm-text"],
-//
-//   ExpandedNode: ["sm-flex"],
-//   FlexibleNode: ["sm-flex"],
-//   PositionedNode: ["sm-containers"],
-//   AlignNode: ["mi"],
-//   //SnippetNode: ["mi"],
-//   SnippetRefNode: ["sm-snippets"],
-//   //
-//   ElevatedButtonNode: ["sm-button"],
-//   OutlinedButtonNode: ["sm-button"],
-//   TextButtonNode: ["sm-button"],
-//   FilledButtonNode: ["sm-button"],
-//   IconButtonNode: ["sm-button"],
-//   //
-//   RowNode: ["sm-flex"],
-//   ColumnNode: ["sm-flex"],
-//   StackNode: ["sm-containers"],
-//   DirectoryNode: ["sm-files"],
-//   SplitViewNode: ["mi"],
-//   MenuBarNode: ["sm-menu"],
-//   SubmenuButtonNode: ["sm-menu"],
-//   CarouselNode: ["sm-image"],
-//   //
-//   PollNode: ['multi-child', 'mi'],
-//   PollOptionNode: ['childless', 'mi'],
-// };
-
-// Map<Type, List<Type>> submenuTypes = {
-//   FlexNode: flexSubClasses,
-//   ButtonNode: buttonSubClasses,
-//   MenuBarNode: [MenuBarNode, SubmenuButtonNode, MenuItemButtonNode],
-//   RichTextNode: [RichTextNode, TextSpanNode, WidgetSpanNode],
-// };
-
 const List<Type> childlessSubClasses = [
   AlgCNode,
   AssetImageNode,
@@ -165,7 +111,7 @@ abstract class SNode extends Node with SNodeMappable {
 
   PNodeTreeController pTreeC(BuildContext context, Map<PropertyName, bool> prevExpansions) {
     _pTreeC ??= PNodeTreeController(
-      roots: _properties ??= properties(context, getParent() as SNode?),
+      roots: _properties ??= propertyNodes(context, getParent() as SNode?),
       childrenProvider: Node.propertyTreeChildrenProvider,
     );
     // prevExpansions =
@@ -224,7 +170,7 @@ abstract class SNode extends Node with SNodeMappable {
     }
   }
 
-  List<PNode> properties(BuildContext context, SNode? parentSNode);
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode);
 
   // overidden by SNodes having text style props, such as TextNode, TextSpanNode, TabBarNode, DefaultTextStyleName and ChipNode
   TextStyleProperties? textStyleProperties() => null;
@@ -869,7 +815,7 @@ abstract class SNode extends Node with SNodeMappable {
   // check nodes are identical
   bool isSame(SNode otherNode) => toJson() == otherNode.toJson();
 
-  Widget toWidget(BuildContext context, SNode? parentNode) => const Placeholder();
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) => const Placeholder();
 
   Widget possiblyCheckHeightConstraint(SNode? parentNode, Widget actualWidget) {
     /*

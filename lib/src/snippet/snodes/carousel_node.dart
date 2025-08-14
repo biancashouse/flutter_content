@@ -45,7 +45,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'Carousel',
         webLink: 'https://pub.dev/packages/carousel_slider',
@@ -97,7 +97,7 @@ class CarouselNode extends MC with CarouselNodeMappable {
   ''';
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode);
       List<Widget> images = super.children.isEmpty
@@ -121,9 +121,9 @@ class CarouselNode extends MC with CarouselNodeMappable {
               : super
                   .children
                   .map((SNode node) => node is AssetImageNode
-                      ? node.toWidget(context, this)
+                      ? node.buildFlutterWidget(context, this)
                       : node is FSImageNode
-                          ? node.toWidget(context, this)
+                          ? node.buildFlutterWidget(context, this)
                           : const Placeholder(
                               child: Text('not an asset image!'),
                             ))

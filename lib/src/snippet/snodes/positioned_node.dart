@@ -22,7 +22,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'Positioned',
         webLink:
@@ -63,7 +63,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -75,7 +75,7 @@ class PositionedNode extends SC with PositionedNodeMappable {
       right: right,
       child: Tooltip(
         message: "Positioned(missing child!)",
-        child: child?.toWidget(context, this) ??
+        child: child?.buildFlutterWidget(context, this) ??
             const Icon(
               Icons.warning,
               color: Colors.deepOrange,

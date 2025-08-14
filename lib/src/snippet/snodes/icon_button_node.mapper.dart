@@ -14,7 +14,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = IconButtonNodeMapper._());
       ButtonNodeMapper.ensureInitialized().addSubMapper(_instance!);
-      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
       CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
@@ -46,9 +45,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
       _f$destinationRoutePathSnippetName = Field(
           'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
           opt: true);
-  static SnippetTemplateEnum? _$template(IconButtonNode v) => v.template;
-  static const Field<IconButtonNode, SnippetTemplateEnum> _f$template =
-      Field('template', _$template, opt: true);
   static ButtonStyleProperties _$bsPropGroup(IconButtonNode v) => v.bsPropGroup;
   static const Field<IconButtonNode, ButtonStyleProperties> _f$bsPropGroup =
       Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
@@ -86,7 +82,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
     #iconColor: _f$iconColor,
     #iconSize: _f$iconSize,
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
-    #template: _f$template,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfig: _f$calloutConfig,
@@ -113,7 +108,6 @@ class IconButtonNodeMapper extends SubClassMapperBase<IconButtonNode> {
         iconSize: data.dec(_f$iconSize),
         destinationRoutePathSnippetName:
             data.dec(_f$destinationRoutePathSnippetName),
-        template: data.dec(_f$template),
         bsPropGroup: data.dec(_f$bsPropGroup),
         onTapHandlerName: data.dec(_f$onTapHandlerName),
         calloutConfig: data.dec(_f$calloutConfig),
@@ -190,7 +184,6 @@ abstract class IconButtonNodeCopyWith<$R, $In extends IconButtonNode, $Out>
       int? iconColor,
       double? iconSize,
       String? destinationRoutePathSnippetName,
-      SnippetTemplateEnum? template,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigModel? calloutConfig,
@@ -227,7 +220,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
           Object? iconColor = $none,
           Object? iconSize = $none,
           Object? destinationRoutePathSnippetName = $none,
-          Object? template = $none,
           ButtonStyleProperties? bsPropGroup,
           Object? onTapHandlerName = $none,
           Object? calloutConfig = $none,
@@ -240,7 +232,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
         if (iconSize != $none) #iconSize: iconSize,
         if (destinationRoutePathSnippetName != $none)
           #destinationRoutePathSnippetName: destinationRoutePathSnippetName,
-        if (template != $none) #template: template,
         if (bsPropGroup != null) #bsPropGroup: bsPropGroup,
         if (onTapHandlerName != $none) #onTapHandlerName: onTapHandlerName,
         if (calloutConfig != $none) #calloutConfig: calloutConfig,
@@ -256,7 +247,6 @@ class _IconButtonNodeCopyWithImpl<$R, $Out>
       destinationRoutePathSnippetName: data.get(
           #destinationRoutePathSnippetName,
           or: $value.destinationRoutePathSnippetName),
-      template: data.get(#template, or: $value.template),
       bsPropGroup: data.get(#bsPropGroup, or: $value.bsPropGroup),
       onTapHandlerName:
           data.get(#onTapHandlerName, or: $value.onTapHandlerName),

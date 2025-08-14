@@ -29,7 +29,7 @@ class YTNode extends CL with YTNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'IFrame',
         webLink: 'https://pub.dev/packages/webview_flutter_web',
@@ -79,7 +79,7 @@ class YTNode extends CL with YTNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode); // propagating parents down from root

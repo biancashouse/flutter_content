@@ -24,7 +24,7 @@ class StackNode extends MC with StackNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Stack',
             webLink: 'https://api.flutter.dev/flutter/widgets/Stack-class.html',
@@ -56,7 +56,7 @@ class StackNode extends MC with StackNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -78,7 +78,7 @@ class StackNode extends MC with StackNodeMappable {
                   clipBehavior: clipBehavior.flutterValue,
                   alignment: alignment.flutterValue,
                   children: children
-                      .map((node) => node.toWidget(context, this))
+                      .map((node) => node.buildFlutterWidget(context, this))
                       .toList(),
                 );
         },

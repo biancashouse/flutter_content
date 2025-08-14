@@ -25,7 +25,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
     this.iconColor,
     this.iconSize,
     super.destinationRoutePathSnippetName,
-    super.template,
+    // super.template,
     // super.destinationPanelOrPlaceholderName,
     // super.destinationSnippetName,
     required super.bsPropGroup,
@@ -77,17 +77,17 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => IconButton.styleFrom();
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'IconButton',
         webLink: 'https://api.flutter.dev/flutter/material/IconButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     // ButtonStyle? btnStyle = buttonStyle?.toButtonStyle(context);
     // possible handler
@@ -103,7 +103,7 @@ class IconButtonNode extends ButtonNode with IconButtonNodeMappable {
       key: cid != null ? fco.setCalloutGk(cid!, GlobalKey()) : null,
       onPressed: ()=>onPressed(context, gk, scName),
       style: btnStyle,
-      icon: child?.toWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
+      icon: child?.buildFlutterWidget(context, this) ?? const Icon(Icons.warning, color: Colors.red),
     );
 
     // possiblyHighlightSelectedNode(scName);

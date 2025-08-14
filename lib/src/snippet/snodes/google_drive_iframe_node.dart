@@ -28,7 +28,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         StringPNode(
           snode: this,
           name: 'name',
@@ -139,7 +139,7 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
   Widget? savedWidget;
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
       setParent(parentNode); // propagating parents down from root
     //ScrollControllerName? scName = EditablePage.name(context);

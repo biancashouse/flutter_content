@@ -60,7 +60,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
       labelTSPropGroup = newProps;
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) {
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) {
     var textStyleName = fco.findTextStyleName(fco.appInfo, labelTSPropGroup);
     textStyleName = textStyleName != null ? ': $textStyleName' : '';
     return [
@@ -172,7 +172,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     }
   }
 
-  void _createTabController(SnippetPanelState? spState, int numTabs) {
+  void _createTabController(ContentBuilderState? spState, int numTabs) {
     if (!(spState?.mounted ?? false)) return;
     tabC?.dispose();
     tabC = TabController(vsync: spState!, length: numTabs);
@@ -194,7 +194,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
   }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,) {
     try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -202,7 +202,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
       // find transformable scaffold node then its corr state object
       // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
       // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
-      SnippetPanelState? spState = SnippetPanel.of(context);
+      ContentBuilderState? spState = ContentBuilder.of(context);
       _createTabController(spState, children.length);
       List<Widget> tabs = [];
       for (SNode node in children) {
@@ -211,7 +211,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
           // if just text, simply render a Tab with text, otherwise render a Tab with a child widget
           child: node is TextNode
               ? Tab(text: (node).text)
-              : Tab(child: node.toWidget(context, parentNode)),
+              : Tab(child: node.buildFlutterWidget(context, parentNode)),
         ));
       }
       final tabBar = TabBar(

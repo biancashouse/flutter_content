@@ -18,7 +18,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'EdgeInsets',
             webLink:
@@ -35,7 +35,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
@@ -43,7 +43,7 @@ class PaddingNode extends SC with PaddingNodeMappable {
     return Padding(
       key: createNodeWidgetGK(),
       padding: padding?.toEdgeInsets() ?? const EdgeInsets.all(8),
-      child: child?.toWidget(context, this),
+      child: child?.buildFlutterWidget(context, this),
     );
   }
 

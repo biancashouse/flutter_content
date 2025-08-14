@@ -16,7 +16,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   MenuItemButtonNode({
     // this.itemLabel = '',
     super.destinationRoutePathSnippetName,
-    super.template,
+    // super.template,
     // super.destinationPanelOrPlaceholderName,
     // super.destinationSnippetName,
     required super.bsPropGroup,
@@ -24,8 +24,8 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
     super.calloutConfig,
     super.child,
   }) {
-    assert((destinationRoutePathSnippetName != null) == (template != null),
-        'You must specify a snippet template with the page path property');
+    // assert(destinationRoutePathSnippetName != null,
+    //     'You must specify a snippet template with the page path property');
   }
 
   // @override
@@ -50,17 +50,17 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
   ButtonStyle? defaultButtonStyle() => MenuItemButton.styleFrom();
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'MenuItemButton',
         webLink: 'https://api.flutter.dev/flutter/material/MenuItemButton-class.html',
         snode: this,
         name: 'fyi'),
-    ...super.properties(context, parentSNode),
+    ...super.propertyNodes(context, parentSNode),
   ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     ScrollControllerName? scName = EditablePage.maybeScrollControllerName(context);
     try {
       setParent(parentNode); // propagating parents down from root
@@ -83,7 +83,7 @@ class MenuItemButtonNode extends ButtonNode with MenuItemButtonNodeMappable {
               }
             },
             style: fco.buttonStyle(30),
-            child: child?.toWidget(context, this),
+            child: child?.buildFlutterWidget(context, this),
           );
     } catch (e) {
       return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

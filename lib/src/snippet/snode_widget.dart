@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/snippet_panel/save_as_callout.dart';
+import 'package:flutter_content/src/api/content_builder/save_as_callout.dart';
 
 import 'fancy_tree/tree_controller.dart';
 

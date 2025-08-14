@@ -29,7 +29,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         DecimalPNode(
           snode: this,
           name: 'width',
@@ -78,7 +78,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
   //     ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     EditablePageState? eps = EditablePage.of(context);
     setParent(parentNode);
     return eps != null
@@ -90,7 +90,7 @@ class TargetsWrapperNode extends SC with TargetsWrapperNodeMappable {
           parentNode: this,
           key: createNodeWidgetGK(),
           scName: EditablePage.maybeScrollControllerName(context),
-          child: super.child?.toWidget(context, this) ?? const Placeholder(),
+          child: super.child?.buildFlutterWidget(context, this) ?? const Placeholder(),
         ),
       ),
     )

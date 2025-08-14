@@ -33,7 +33,7 @@ class WrapNode extends MC with WrapNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'Wrap',
         webLink:
@@ -74,7 +74,7 @@ class WrapNode extends MC with WrapNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -86,7 +86,7 @@ class WrapNode extends MC with WrapNodeMappable {
         crossAxisAlignment: crossAxisAlignment?.flutterValue ?? WrapCrossAlignment.center,
         spacing: spacing ?? 0.0,
         runSpacing: runSpacing ?? 0.0,
-        children: children.map((node) => node.toWidget(context, this)).toList(),
+        children: children.map((node) => node.buildFlutterWidget(context, this)).toList(),
     );
   }
 

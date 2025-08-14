@@ -14,7 +14,7 @@ class CenterNode extends SC with CenterNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'Center',
         webLink: 'https://api.flutter.dev/flutter/widgets/Center-class.html',
@@ -35,7 +35,7 @@ class CenterNode extends SC with CenterNodeMappable {
   // }
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     // try {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
@@ -43,7 +43,7 @@ class CenterNode extends SC with CenterNodeMappable {
 
       return Center(
             key: createNodeWidgetGK(),
-            child: child?.toWidget(context, this),
+            child: child?.buildFlutterWidget(context, this),
           );
     // } catch (e) {
     //   return Error(key: createNodeWidgetGK(), FLUTTER_TYPE, color: Colors.red, size: 16, errorMsg: e.toString());

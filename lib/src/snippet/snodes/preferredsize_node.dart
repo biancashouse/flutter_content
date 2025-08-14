@@ -18,7 +18,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
     FlutterDocPNode(
         buttonLabel: 'PreferredSize',
         webLink:
@@ -43,7 +43,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode) {
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     setParent(parentNode);
     //ScrollControllerName? scName = EditablePage.name(context);
     //possiblyHighlightSelectedNode(scName);
@@ -52,7 +52,7 @@ class PreferredSizeNode extends SC with PreferredSizeNodeMappable {
       // key: targetGK,
       key: createNodeWidgetGK(),
       preferredSize: Size(width, height),
-      child: child?.toWidget(context, this) ??
+      child: child?.buildFlutterWidget(context, this) ??
           Error(
               key: createNodeWidgetGK(),
               FLUTTER_TYPE,

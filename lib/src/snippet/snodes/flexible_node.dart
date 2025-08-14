@@ -22,7 +22,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
   });
 
   @override
-  List<PNode> properties(BuildContext context, SNode? parentSNode) => [
+  List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
         FlutterDocPNode(
             buttonLabel: 'Flexible',
             webLink: 'https://api.flutter.dev/flutter/widgets/Flexible-class.html',
@@ -46,7 +46,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
       ];
 
   @override
-  Widget toWidget(BuildContext context, SNode? parentNode,
+  Widget buildFlutterWidget(BuildContext context, SNode? parentNode,
       ) {
     try {
       setParent(parentNode);
@@ -56,7 +56,7 @@ class FlexibleNode extends SC with FlexibleNodeMappable {
         key: createNodeWidgetGK(),
         flex: flex,
         fit: fit.flutterValue,
-        child: child?.toWidget(context, this) ??
+        child: child?.buildFlutterWidget(context, this) ??
             const Icon(
               Icons.square,
               color: Colors.red,

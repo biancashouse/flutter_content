@@ -20,7 +20,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       FilledButtonNodeMapper.ensureInitialized();
       IconButtonNodeMapper.ensureInitialized();
       MenuItemButtonNodeMapper.ensureInitialized();
-      SnippetTemplateEnumMapper.ensureInitialized();
       ButtonStylePropertiesMapper.ensureInitialized();
       CalloutConfigModelMapper.ensureInitialized();
       SNodeMapper.ensureInitialized();
@@ -37,9 +36,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
       Field(
           'destinationRoutePathSnippetName', _$destinationRoutePathSnippetName,
           opt: true);
-  static SnippetTemplateEnum? _$template(ButtonNode v) => v.template;
-  static const Field<ButtonNode, SnippetTemplateEnum> _f$template =
-      Field('template', _$template, opt: true);
   static ButtonStyleProperties _$bsPropGroup(ButtonNode v) => v.bsPropGroup;
   static const Field<ButtonNode, ButtonStyleProperties> _f$bsPropGroup =
       Field('bsPropGroup', _$bsPropGroup, hook: ButtonStyleHook());
@@ -71,7 +67,6 @@ class ButtonNodeMapper extends SubClassMapperBase<ButtonNode> {
   @override
   final MappableFields<ButtonNode> fields = const {
     #destinationRoutePathSnippetName: _f$destinationRoutePathSnippetName,
-    #template: _f$template,
     #bsPropGroup: _f$bsPropGroup,
     #onTapHandlerName: _f$onTapHandlerName,
     #calloutConfig: _f$calloutConfig,
@@ -123,7 +118,6 @@ abstract class ButtonNodeCopyWith<$R, $In extends ButtonNode, $Out>
   @override
   $R call(
       {String? destinationRoutePathSnippetName,
-      SnippetTemplateEnum? template,
       ButtonStyleProperties? bsPropGroup,
       String? onTapHandlerName,
       CalloutConfigModel? calloutConfig,

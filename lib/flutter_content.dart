@@ -12,15 +12,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
-import 'package:flutter_content/src/can-edit-content.dart';
 import 'package:flutter_content/src/model/firestore_model_repo.dart';
-import 'package:flutter_content/src/pages.dart';
-import 'package:flutter_content/src/route_observer.dart';
 import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
-
 // import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
@@ -28,21 +24,15 @@ import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:flutter_content/src/text_styles/button_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/container_style_search_anchor.dart';
 import 'package:flutter_content/src/text_styles/text_style_search_anchor.dart';
-import 'package:flutter_content/x_flutter_content/google_font_names_extn.dart';
-import 'package:flutter_content/x_flutter_content/container_styles_extn.dart';
 import 'package:flutter_content/x_flutter_content/button_styles_extn.dart';
-import 'package:flutter_content/x_flutter_content/text_styles_extn.dart';
+import 'package:flutter_content/x_flutter_content/container_styles_extn.dart';
+import 'package:flutter_content/x_flutter_content/google_font_names_extn.dart';
 import 'package:flutter_content/x_flutter_content/routes_extn.dart';
-import 'package:gap/gap.dart';
-
+import 'package:flutter_content/x_flutter_content/text_styles_extn.dart';
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
-// import 'package:url_launcher/url_launcher.dart';
-import 'src/api/app/editable_page.dart';
 import 'src/api/app/fc_app.dart';
-import 'src/api/snippet_panel/snippet_panel.dart';
-import 'src/api/snippet_panel/snippet_templates.dart';
 import 'src/bloc/capi_bloc.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
@@ -54,12 +44,9 @@ import 'src/snippet/pnode.dart';
 import 'src/snippet/snode.dart';
 import 'src/snippet/snodes/snippet_root_node.dart';
 import 'src/typedefs.dart';
-export 'x_flutter_content/google_font_names_extn.dart';
-export 'x_flutter_content/text_styles_extn.dart';
-export 'x_flutter_content/button_styles_extn.dart';
-export 'x_flutter_content/container_styles_extn.dart';
-export 'x_flutter_content/routes_extn.dart';
 
+export 'package:cloud_firestore/cloud_firestore.dart';
+export 'package:firebase_core/firebase_core.dart';
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
@@ -75,21 +62,6 @@ export 'package:flutter_callouts/src/api/callouts/named_sc.dart';
 // import 'src/nav/nav_mixin.dart';
 
 export 'package:flutter_callouts/src/canvas/canvas_mixin.dart';
-
-// re-export
-export 'package:url_launcher/url_launcher.dart';
-export 'package:url_launcher/url_launcher_string.dart';
-
-// export 'package:file_picker/src/file_picker.dart';
-// export 'package:file_picker/src/file_picker_result.dart';
-// export 'package:file_picker/src/platform_file.dart';
-export 'package:gap/src/widgets/gap.dart';
-export 'package:logger/src/logger.dart';
-export 'package:logger/src/log_filter.dart';
-export 'package:logger/src/log_event.dart';
-export 'package:cloud_firestore/cloud_firestore.dart';
-export 'package:logger/src/printers/pretty_printer.dart';
-export 'package:firebase_core/firebase_core.dart';
 export 'package:flutter_callouts/src/debouncer/debouncer.dart';
 export 'package:flutter_callouts/src/feature_discovery/discovery_controller.dart';
 export 'package:flutter_callouts/src/feature_discovery/featured_widget.dart';
@@ -102,24 +74,32 @@ export 'package:flutter_callouts/src/widget/blink.dart';
 export 'package:flutter_callouts/src/widget/constant_scroll_behavior.dart';
 export 'package:flutter_callouts/src/widget/error.dart';
 export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
+export 'package:flutter_content/src/model/firestore_model_repo.dart';
+export 'package:flutter_content/src/model/model_repo.dart';
+export 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
+// export 'package:file_picker/src/file_picker.dart';
+// export 'package:file_picker/src/file_picker_result.dart';
+// export 'package:file_picker/src/platform_file.dart';
+export 'package:gap/src/widgets/gap.dart';
+export 'package:logger/src/log_event.dart';
+export 'package:logger/src/log_filter.dart';
+export 'package:logger/src/logger.dart';
+export 'package:logger/src/printers/pretty_printer.dart';
+// re-export
+export 'package:url_launcher/url_launcher.dart';
+export 'package:url_launcher/url_launcher_string.dart';
 
-export 'src/snippet/pnodes/editors/string_or_number_editor.dart';
-export 'src/snippet/pnodes/editors/text_editor_with_autocomplete.dart';
-export 'src/api/app/callout_content_editable_page.dart';
-export 'src/api/app/callout_content_editable_page_route.dart';
-export 'src/api/app/dynamic_page_route.dart';
-export 'src/api/app/editable_page.dart';
-export 'src/api/app/editable_page_route.dart';
+// export 'src/api/routes/dynamic_page_route.dart';
+export 'src/api/routes/editable_page_route.dart';
 export 'src/api/app/fc_app.dart';
-export 'src/api/app/zoomer.dart';
-export 'src/api/snippet_panel/snippet_panel.dart';
-export 'src/api/snippet_panel/snippet_templates.dart';
-
+export 'src/api/editable_page/zoomer.dart';
+export 'src/api/content_builder/content_builder.dart';
+// export 'src/api/content_builder/snippet_templates.dart';
+export 'src/api/editable_page/editable_page.dart';
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
-
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -127,7 +107,6 @@ export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/model/app_info_model.dart';
-
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -136,6 +115,8 @@ export 'src/nav/nav_mixin.dart';
 export 'src/passwordless/passwordless_mixin.dart';
 export 'src/snippet/node.dart';
 export 'src/snippet/pnode.dart';
+export 'src/snippet/pnodes/editors/string_or_number_editor.dart';
+export 'src/snippet/pnodes/editors/text_editor_with_autocomplete.dart';
 export 'src/snippet/pnodes/enums/enum_axis.dart';
 export 'src/snippet/pnodes/enums/enum_material3_text_size.dart';
 export 'src/snippet/snode.dart';
@@ -160,7 +141,6 @@ export 'src/snippet/snodes/filled_button_node.dart';
 export 'src/snippet/snodes/firebase_storage_image_node.dart';
 export 'src/snippet/snodes/flex_node.dart';
 export 'src/snippet/snodes/flexible_node.dart';
-
 // export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
 export 'src/snippet/snodes/generic_multi_child_node.dart';
@@ -209,10 +189,6 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
-export 'package:flutter_content/src/model/model_repo.dart';
-export 'package:flutter_content/src/model/firestore_model_repo.dart';
-export 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
-
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -229,6 +205,12 @@ export 'package:flutter_content/src/snippet/pnodes/groups/container_style_proper
 // const String getIt_textFields = "snippets:textFields";
 
 export 'src/typedefs.dart';
+export 'x_flutter_content/button_styles_extn.dart';
+export 'x_flutter_content/container_styles_extn.dart';
+export 'x_flutter_content/google_font_names_extn.dart';
+export 'x_flutter_content/routes_extn.dart';
+export 'x_flutter_content/text_styles_extn.dart';
+export 'src/snippet/pnodes/groups/text_style_properties.dart';
 
 // global instance singleton
 FlutterContentMixins fco = FlutterContentMixins._instance;
