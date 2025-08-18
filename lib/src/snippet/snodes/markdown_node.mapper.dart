@@ -95,7 +95,7 @@ Formatted Dart code looks really pretty too:
 
 ```
 void main() {
-  runApp(FC_MaterialApp(
+  runApp(FlutterCalloutsApp(
     home: Scaffold(
       body: Markdown(data: markdownData),
     ),
@@ -107,7 +107,7 @@ void main() {
 
 ###### ※ ※ ※
 
-_* How to implement it see main.dart#L129 in example._
+_* How to implement it see main.dart#L129 in example_using_go_router._
 
 ## Custom Syntax
 
@@ -117,7 +117,7 @@ C_4H_10 = C_2H_6 + C_2H_4
 
 ## Markdown widget
 
-This is an example of how to create your own Markdown widget:
+This is an example_using_go_router of how to create your own Markdown widget:
 
     Markdown(data: 'Hello _world_!');
 
@@ -127,7 +127,7 @@ Enjoy!
 
 ## Line Breaks
 
-This is an example of how to create line breaks (tab or two whitespaces):
+This is an example_using_go_router of how to create line breaks (tab or two whitespaces):
 
 line 1
 

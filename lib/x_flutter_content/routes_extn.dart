@@ -3,6 +3,7 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 extension RoutesExtension on FlutterContentMixins {
   // extract go routes
@@ -69,6 +70,9 @@ extension RoutesExtension on FlutterContentMixins {
   }
 
   void initRouter(RoutingConfig routingConfig, String initialRoutePath) {
+    // Use PathUrlStrategy for removing # from URLs.
+    setUrlStrategy(PathUrlStrategy()); // <<<< ADD THIS LINE
+
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(
       navigatorKey: fco.globalNavigatorKey,
@@ -104,8 +108,8 @@ extension RoutesExtension on FlutterContentMixins {
         }
         // may have already been created (incl content callout snippets)
 
-        final snippetNames = appInfo.snippetNames;
-        bool dynamicPageExists = snippetNames.contains(matchedLocation);
+        // final snippetNames = appInfo.snippetNames;
+        // bool dynamicPageExists = snippetNames.contains(matchedLocation);
 
         // if (dynamicPageExists) {
         //   EditablePage.removeAllNodeWidgetOverlays();

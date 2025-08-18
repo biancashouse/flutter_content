@@ -63,7 +63,7 @@ import 'package:webview_flutter_platform_interface/webview_flutter_platform_inte
 const String iframeHTML = '''
     <html>
       <body>
-        <iframe src="https://www.example.com" width="100%" height="100%"></iframe>
+        <iframe src="https://www.example_using_go_router.com" width="100%" height="100%"></iframe>
       </body>
     </html>
   ''';
@@ -77,7 +77,7 @@ class IFrame extends StatelessWidget {
 
   const IFrame({
     // required this.name,
-    this.src = 'http://example.com',
+    this.src = 'http://example_using_go_router.com',
     required this.iframeW,
     required this.iframeH,
     this.forceRefresh = false,

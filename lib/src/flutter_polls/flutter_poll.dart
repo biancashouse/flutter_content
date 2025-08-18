@@ -35,7 +35,7 @@ class FlutterPoll extends StatefulWidget {
   /// The list can have any number of elements.
   ///
   /// Poll options are displayed in the order they are in the list.
-  /// example:
+  /// example_using_go_router:
   ///
   /// pollOptions = [
   ///
@@ -70,7 +70,7 @@ class FlutterPoll extends StatefulWidget {
   /// [metaWidget] is displayed at the bottom of the poll.
   /// It can be any widget with an unbounded size.
   /// If not specified, no meta widget is displayed.
-  /// example:
+  /// example_using_go_router:
   /// metaWidget = Text('Created by: $createdBy')
   final Widget? metaWidget;
 

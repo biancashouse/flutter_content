@@ -169,7 +169,9 @@ class SnippetRootNode extends SC with SnippetRootNodeMappable {
     //     "SnippetRootNode.loadSnippetFromCacheOrFromFBOrCreateFromTemplate");
 
     // if not yet in AppInfo, must be a BRAND NEW snippet, so just return it as the template
-    if (!fco.appInfo.snippetNames.contains(snippetName) && templateSnippetRootNode != null) {
+    var appInfo = fco.appInfo;
+    var snippetNames = appInfo.snippetNames;
+    if (!snippetNames.contains(snippetName) && templateSnippetRootNode != null) {
       fco.pageList.add(snippetName);
       fco.capiBloc.add(CAPIEvent.forceRefresh());
       await fco.saveNewVersion(snippet: templateSnippetRootNode);

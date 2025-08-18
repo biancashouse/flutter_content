@@ -566,7 +566,7 @@ void formatTextLink({
   String selectionText =
   controller.text.substring(selection.start, selection.end);
   String placeholder = 'My Link text';
-  String placeholderEnd = 'https://example.com';
+  String placeholderEnd = 'https://example_using_go_router.com';
 
   if (controller.text.isNotEmpty && selectionText.isNotEmpty) {
     var newText = selectionText;

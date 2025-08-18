@@ -154,23 +154,23 @@ class MarkdownToolbar extends StatefulWidget {
   final WrapAlignment alignment;
 
   /// If you want to use an alternative bold character (Default: `**`),
-  /// assign a custom [String] to [boldCharacter]. For example `__`
+  /// assign a custom [String] to [boldCharacter]. For example_using_go_router `__`
   final String boldCharacter;
 
   /// If you want to use an alternative italic character (Default: `*`),
-  /// assign a custom [String] to [italicCharacter]. For example `_`
+  /// assign a custom [String] to [italicCharacter]. For example_using_go_router `_`
   final String italicCharacter;
 
   /// If you want to use an alternative code character (Default: `` ``` ``),
-  /// assign a custom [String] to [codeCharacter]. For example ``` ` ```
+  /// assign a custom [String] to [codeCharacter]. For example_using_go_router ``` ` ```
   final String codeCharacter;
 
   /// If you want to use an alternative bulleted list character (Default: `-`),
-  /// assign a custom [String] to [bulletedListCharacter]. For example `*`
+  /// assign a custom [String] to [bulletedListCharacter]. For example_using_go_router `*`
   final String bulletedListCharacter;
 
   /// If you want to use an alternative horizontal rule character (Default: `---`),
-  /// assign a custom [String] to [horizontalRuleCharacter]. For example `***`
+  /// assign a custom [String] to [horizontalRuleCharacter]. For example_using_go_router `***`
   final String horizontalRuleCharacter;
 
   /// Hide the heading button by setting [hideHeading] to `true`.

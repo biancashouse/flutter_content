@@ -1,0 +1,204 @@
+{
+  "flowcharts": {
+    "f1629700770083": {
+      "id": "f1629700770083",
+      "createdMs": 1629700770083,
+      "ownerEa": "algc.samples@biancashouse.com",
+      "lastModifiedMs": 1668827666137,
+      "deleted": false,
+      "title": "Elevator (lift)Algorithm",
+      "version": "0",
+      "pageSize": "a4",
+      "beginTxt": "",
+      "flowchartComment": {
+        "calloutWidth": 300,
+        "calloutHeight": 200,
+        "snippetEncodedJson": "\"{\\\"name\\\":\\\"empty\\\",\\\"tags\\\":\\\"\\\",\\\"child\\\":{\\\"name\\\":null,\\\"width\\\":null,\\\"height\\\":null,\\\"snode\\\":\\\"CL\\\",\\\"cl\\\":\\\"PlaceholderNode\\\"},\\\"snode\\\":\\\"SC\\\",\\\"sc\\\":\\\"SnippetRootNode\\\"}\"",
+        "topTxt": "A 2-storey building has a single lift. \n\nThe button outside the lift on the Ground floor is labelled `1`, and one outside the lift on the 1st. floor is labelled `G`.\n\nInside the lift are 2 buttons also labelled: G and 1.\n\nNo other functions are supported by the lift, such as emergency stop, open, close door, etc.",
+        "imageSize": 25918
+      },
+      "stepsMap": {
+        "0": [
+          {
+            "id": 15469936,
+            "txt": "do forever",
+            "iconIndex": 0,
+            "txtW": 67,
+            "txtH": 17,
+            "shape": "loop",
+            "flowchartLinkVersion": 0,
+            "parentListType": "funcSteps",
+            "childStepLists": {
+              "loopSteps": [
+                {
+                  "id": 86070064,
+                  "txt": "door not closed ?",
+                  "iconIndex": 0,
+                  "txtW": 113,
+                  "txtH": 17,
+                  "shape": "decision",
+                  "flowchartLinkVersion": 0,
+                  "parentListType": "loopSteps",
+                  "childStepLists": {
+                    "trueSteps": [
+                      {
+                        "id": 12450967,
+                        "txt": "safelyCloseDoor()",
+                        "iconIndex": 0,
+                        "txtW": 116,
+                        "txtH": 17,
+                        "comment": {
+                          "calloutWidth": 300,
+                          "calloutHeight": 200,
+                          "snippetEncodedJson": "\"{\\\"name\\\":\\\"empty\\\",\\\"tags\\\":\\\"\\\",\\\"child\\\":{\\\"name\\\":null,\\\"width\\\":null,\\\"height\\\":null,\\\"snode\\\":\\\"CL\\\",\\\"cl\\\":\\\"PlaceholderNode\\\"},\\\"snode\\\":\\\"SC\\\",\\\"sc\\\":\\\"SnippetRootNode\\\"}\"",
+                          "topTxt": "a set of instructions to close the door safely. It will check to see if there is an obstruction (people, luggage, etc) before closing, in which case it will remain open."
+                        },
+                        "shape": "function call",
+                        "parentListType": "trueSteps",
+                        "childStepLists": {
+                          "funcCallSteps": []
+                        },
+                        "caseNameWidths": {},
+                        "changeType": "txtOrCommentChange"
+                      }
+                    ],
+                    "xfalseSteps": []
+                  },
+                  "caseNameWidths": {},
+                  "changeType": "txtOrCommentChange"
+                },
+                {
+                  "id": 38798464,
+                  "txt": "Ground floor calling, or\n`G` pressed inside lift ?",
+                  "iconIndex": 0,
+                  "txtW": 150,
+                  "txtH": 34,
+                  "shape": "decision",
+                  "flowchartLinkVersion": 0,
+                  "parentListType": "loopSteps",
+                  "childStepLists": {
+                    "trueSteps": [
+                      {
+                        "id": 80383633,
+                        "txt": "currently on Ground floor ?",
+                        "iconIndex": 0,
+                        "txtW": 174,
+                        "txtH": 17,
+                        "shape": "decision",
+                        "flowchartLinkVersion": 0,
+                        "parentListType": "trueSteps",
+                        "childStepLists": {
+                          "trueSteps": [
+                            {
+                              "id": 92074778,
+                              "txt": "motor OFF\nopen door\nwait 5 secs.",
+                              "iconIndex": 0,
+                              "txtW": 79,
+                              "txtH": 51,
+                              "shape": "action",
+                              "parentListType": "trueSteps",
+                              "childStepLists": {},
+                              "caseNameWidths": {},
+                              "changeType": "txtOrCommentChange"
+                            }
+                          ],
+                          "xfalseSteps": [
+                            {
+                              "id": 28293272,
+                              "txt": "set direction to DOWN\nmotor ON",
+                              "iconIndex": 0,
+                              "txtW": 146,
+                              "txtH": 34,
+                              "shape": "action",
+                              "parentListType": "xfalseSteps",
+                              "childStepLists": {},
+                              "caseNameWidths": {},
+                              "changeType": "txtOrCommentChange"
+                            }
+                          ]
+                        },
+                        "caseNameWidths": {},
+                        "changeType": "txtOrCommentChange"
+                      }
+                    ],
+                    "xfalseSteps": []
+                  },
+                  "caseNameWidths": {},
+                  "changeType": "txtOrCommentChange"
+                },
+                {
+                  "id": 52361352,
+                  "txt": "1st. floor calling or\n`1` pressed inside the lift ?",
+                  "iconIndex": 0,
+                  "txtW": 173,
+                  "txtH": 34,
+                  "shape": "decision",
+                  "flowchartLinkVersion": 0,
+                  "parentListType": "loopSteps",
+                  "childStepLists": {
+                    "trueSteps": [
+                      {
+                        "id": 72837927,
+                        "txt": "currently on 1st. floor ?",
+                        "iconIndex": 0,
+                        "txtW": 151,
+                        "txtH": 17,
+                        "shape": "decision",
+                        "flowchartLinkVersion": 0,
+                        "parentListType": "trueSteps",
+                        "childStepLists": {
+                          "trueSteps": [
+                            {
+                              "id": 13427217,
+                              "txt": "motor OFF\nopen door\nwait 5 secs",
+                              "iconIndex": 0,
+                              "txtW": 75,
+                              "txtH": 51,
+                              "shape": "action",
+                              "parentListType": "trueSteps",
+                              "childStepLists": {},
+                              "caseNameWidths": {},
+                              "changeType": "txtOrCommentChange"
+                            }
+                          ],
+                          "xfalseSteps": [
+                            {
+                              "id": 89645748,
+                              "txt": "set direction to UP\nmotor ON",
+                              "iconIndex": 0,
+                              "txtW": 122,
+                              "txtH": 34,
+                              "shape": "action",
+                              "parentListType": "xfalseSteps",
+                              "childStepLists": {},
+                              "caseNameWidths": {},
+                              "changeType": "txtOrCommentChange"
+                            }
+                          ]
+                        },
+                        "caseNameWidths": {},
+                        "changeType": "txtOrCommentChange"
+                      }
+                    ],
+                    "xfalseSteps": []
+                  },
+                  "caseNameWidths": {},
+                  "changeType": "txtOrCommentChange"
+                }
+              ]
+            },
+            "caseNameWidths": {},
+            "changeType": "txtOrCommentChange"
+          }
+        ]
+      },
+      "previousVersionMap": {
+        "0": "-1"
+      },
+      "endTxt": "",
+      "colorValue": 4292927712,
+      "showColouredTrueAndFalse": false
+    }
+  },
+  "images": {}
+}

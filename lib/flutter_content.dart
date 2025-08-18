@@ -17,6 +17,7 @@ import 'package:flutter_content/src/snippet/fancy_tree/tree_controller.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
+
 // import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/center_node.dart';
 import 'package:flutter_content/src/snippet/snodes/text_node.dart';
@@ -29,10 +30,10 @@ import 'package:flutter_content/x_flutter_content/container_styles_extn.dart';
 import 'package:flutter_content/x_flutter_content/google_font_names_extn.dart';
 import 'package:flutter_content/x_flutter_content/routes_extn.dart';
 import 'package:flutter_content/x_flutter_content/text_styles_extn.dart';
+
 // import 'package:flutter_content/src/snippet/snodes/widget/fs_folder_node.dart';
 import 'package:go_router/go_router.dart';
 
-import 'src/api/app/fc_app.dart';
 import 'src/bloc/capi_bloc.dart';
 import 'src/bloc/capi_event.dart';
 import 'src/model/app_info_model.dart';
@@ -47,6 +48,7 @@ import 'src/typedefs.dart';
 
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:firebase_core/firebase_core.dart';
+
 // re-export callout callout related s.t. apps using this package don't need to include the callouts pkg in pubspec
 export 'package:flutter_callouts/src/api/callouts/callout_config.dart';
 export 'package:flutter_callouts/src/api/callouts/callout_using_overlayportal.dart';
@@ -77,6 +79,7 @@ export 'package:flutter_callouts/src/widget/widget_helper_mixin.dart';
 export 'package:flutter_content/src/model/firestore_model_repo.dart';
 export 'package:flutter_content/src/model/model_repo.dart';
 export 'package:flutter_content/src/snippet/pnodes/groups/container_style_properties.dart';
+
 // export 'package:file_picker/src/file_picker.dart';
 // export 'package:file_picker/src/file_picker_result.dart';
 // export 'package:file_picker/src/platform_file.dart';
@@ -85,21 +88,25 @@ export 'package:logger/src/log_event.dart';
 export 'package:logger/src/log_filter.dart';
 export 'package:logger/src/logger.dart';
 export 'package:logger/src/printers/pretty_printer.dart';
+
 // re-export
 export 'package:url_launcher/url_launcher.dart';
 export 'package:url_launcher/url_launcher_string.dart';
 
 // export 'src/api/routes/dynamic_page_route.dart';
 export 'src/api/routes/editable_page_route.dart';
-export 'src/api/app/fc_app.dart';
+export 'src/api/app/fco_app.dart';
 export 'src/api/editable_page/zoomer.dart';
 export 'src/api/content_builder/content_builder.dart';
+
 // export 'src/api/content_builder/snippet_templates.dart';
 export 'src/api/editable_page/editable_page.dart';
+
 // callouts
 export 'src/bloc/capi_bloc.dart';
 export 'src/bloc/capi_event.dart';
 export 'src/bloc/capi_state.dart';
+
 // export 'src/feature_discovery/discovery_controller.dart';
 // export 'src/feature_discovery/featured_widget.dart';
 export 'src/gotits/gotits_helper_string.dart';
@@ -107,6 +114,7 @@ export 'src/gsi/sign_in_button.dart';
 export 'src/measuring/find_global_rect.dart';
 export 'src/measuring/measure_sizebox.dart';
 export 'src/model/app_info_model.dart';
+
 // export 'src/model/branch_model.dart';
 export 'src/model/snippet_info_model.dart';
 export 'src/model/target_group_model.dart';
@@ -141,6 +149,7 @@ export 'src/snippet/snodes/filled_button_node.dart';
 export 'src/snippet/snodes/firebase_storage_image_node.dart';
 export 'src/snippet/snodes/flex_node.dart';
 export 'src/snippet/snodes/flexible_node.dart';
+
 // export 'src/snippet/snodes/fs_folder_node.dart';
 export 'src/snippet/snodes/gap_node.dart';
 export 'src/snippet/snodes/generic_multi_child_node.dart';
@@ -189,6 +198,7 @@ export 'src/snippet/snodes/uml_image_node.dart';
 export 'src/snippet/snodes/widgetspan_node.dart';
 export 'src/snippet/snodes/wrap_node.dart';
 export 'src/snippet/snodes/yt_node.dart';
+
 // export 'src/snippet/snodes/fs_bucket_node.dart';
 // export 'src/snippet/snodes/fs_directory_node.dart';
 // export 'src/snippet/snodes/fs_file_node.dart';
@@ -254,8 +264,8 @@ class FlutterContentMixins
     // created in tests by a when(mockRepository.getCAPIModel(modelName: modelName...
     final Widget? testWidget,
     // Map<String, void Function(GlobalKey? gk)> namedCallbacks = const {},
-    required RoutingConfig routingConfig,
-    required String initialRoutePath,
+    RoutingConfig? routingConfig,
+    String? initialRoutePath,
     bool skipAssetPkgName =
         false, // would only use true when pkg dir is actually inside current project
   }) async {
@@ -272,11 +282,12 @@ class FlutterContentMixins
 
     usingFBStorage = useFBStorage;
 
-    // Dynamic RoutingConfig - https://pub.dev/documentation/go_router/latest/topics/Configuration-topic.html
-    // setPathUrlStrategy();
-    initRouter(routingConfig, initialRoutePath);
+    // go_router not necc.
+    if (routingConfig != null && initialRoutePath != null) {
+      initRouter(routingConfig, initialRoutePath);
+    }
 
-     // List<String> routePaths = [];
+    // List<String> routePaths = [];
     // logi('starting parseRouteConfig');
     // parseRouteConfig(routePaths, router.configuration.routes);
     // logi('finished parseRouteConfig');
@@ -325,7 +336,7 @@ class FlutterContentMixins
     // await initLocalStorage();
     // fco.logger.i('init 6. ${fco.stopwatch.elapsedMilliseconds}');
 
-    authenticated = localStorage.read("canEditContent") ?? false;
+    _authenticated = localStorage.read("canEditContent") ?? false;
 
     if (useFBStorage) {
       // traverse all nodes starting at root
@@ -341,11 +352,10 @@ class FlutterContentMixins
       )..expand(fsRootFolderNode);
     }
 
-    // FutureBuilder requires this return
-    CAPIBloC capiBloc = CAPIBloC(modelRepo: modelRepo);
-
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
-    return capiBloc;
+
+    // FutureBuilder requires this return
+    return _capiBloc = CAPIBloC(modelRepo: modelRepo);
   }
 
   late bool logging;
@@ -383,26 +393,32 @@ class FlutterContentMixins
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
-  late bool authenticated;
+  late bool _authenticated;
 
   bool canEditContent() {
     String? currentPagePath = fco.currentEditablePagePath;
     bool isGuestPage = fco.appInfo.userEditablePages.contains(currentPagePath);
-    return authenticated || isGuestPage;
+    return _authenticated || isGuestPage;
   }
 
   GlobalKey authIconGK = GlobalKey();
 
   final snippetTreeTC = TransformationController();
 
-  late GoRouter router;
+  GoRouter? router;
 
   List<String> pageList = [];
 
   late TapGestureRecognizer webLinkF;
 
-  CAPIBloC get capiBloc => FlutterContentApp
-      .capiBloc!; // won't have got this far unless have a valid instance
+  CAPIBloC? _capiBloc;
+
+  CAPIBloC get capiBloc {
+    if (_capiBloc == null) {
+      throw Exception('capiBloc does not exists yet...');
+    }
+    return _capiBloc!;
+  }
 
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
@@ -461,8 +477,8 @@ class FlutterContentMixins
     }
 
     String? snippetName = snippet!.name; //.startsWith('/')
-        // ? snippet.name.substring(1)
-        // : snippet.name;
+    // ? snippet.name.substring(1)
+    // : snippet.name;
 
     // only does following i.i. a new snippet
     SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
@@ -524,6 +540,11 @@ class FlutterContentMixins
 
     // NEW snippet - initial version
     if (snippetInfo == null) {
+      // update FB appInfo
+      // jsArray issue
+      // List<String> newList = appInfo.snippetNames;
+      appInfo.snippetNames = [...appInfo.snippetNames, snippetName];
+      await modelRepo.saveAppInfo();
       snippetInfo = SnippetInfoModel(
         snippetName,
         editingVersionId: newVersionId,
@@ -533,14 +554,6 @@ class FlutterContentMixins
         versionIds: [],
       );
       SnippetInfoModel.cacheSnippetInfo(snippetName, snippetInfo);
-      // update FB appInfo
-      if (!appInfo.snippetNames.contains(snippetName)) {
-        // jsArray issue
-        List<String> newList = appInfo.snippetNames;
-        newList.add(snippetName);
-        appInfo.snippetNames = newList;
-        await modelRepo.saveAppInfo();
-      }
     } else {
       snippetInfo.editingVersionId = newVersionId;
       if (snippetInfo.autoPublish ?? appInfo.autoPublishDefault) {
@@ -618,8 +631,8 @@ class FlutterContentMixins
   );
 
   Future<void> setCanEditContent(bool b) async {
-    authenticated = b;
-    return await localStorage.write("canEditContent", b);
+    ;
+    return await localStorage.write("canEditContent", _authenticated = b);
   }
 
   Offset calloutConfigToolbarPos() =>
@@ -675,6 +688,7 @@ class FlutterContentMixins
   // }
 
   final Map<PanelName, GlobalKey> panelGkMap = {};
+
   // final Map<SNode, Set<PNode>> expandedNodes = {};
 
   // bool showingNodeButtons = true;

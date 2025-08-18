@@ -166,7 +166,7 @@ class Step {
 /// provides.
 ///
 /// {@tool dartpad}
-/// An example the shows how to use the [FCStepper], and the [FCStepper] UI
+/// An example_using_go_router the shows how to use the [FCStepper], and the [FCStepper] UI
 /// appearance.
 ///
 /// ** See code in examples/api/lib/material/stepper/stepper.0.dart **
@@ -207,7 +207,7 @@ class FCStepper extends StatefulWidget {
 
   /// How the stepper's scroll view should respond to user input.
   ///
-  /// For example, determines how the scroll view continues to
+  /// For example_using_go_router, determines how the scroll view continues to
   /// animate after the user stops dragging the scroll view.
   ///
   /// If the stepper is contained within another scrollable it
@@ -250,7 +250,7 @@ class FCStepper extends StatefulWidget {
   ///
   /// This callback which takes in a context and a [ControlsDetails] object, which
   /// contains step information and two functions: [onStepContinue] and [onStepCancel].
-  /// These can be used to control the stepper. For example, reading the
+  /// These can be used to control the stepper. For example_using_go_router, reading the
   /// [ControlsDetails.currentStep] value within the callback can change the text
   /// of the continue or cancel button depending on which step users are at.
   ///

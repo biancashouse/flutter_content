@@ -226,12 +226,12 @@ class EditablePageState extends State<EditablePage> {
     GlobalKey zoomerGk = GlobalKey();
 
     final aSnippetIsBeingEdited = fco.snippetBeingEdited != null;
-    final possiblyACalloutContentId = fco.snippetBeingEdited
-        ?.getRootNode()
-        .name;
-    final editingACalloutContentSnippet =
-        possiblyACalloutContentId != null &&
-        SnippetRootNode.isHotspotCalloutContent(possiblyACalloutContentId);
+    // final possiblyACalloutContentId = fco.snippetBeingEdited
+    //     ?.getRootNode()
+    //     .name;
+    // final editingACalloutContentSnippet =
+    //     possiblyACalloutContentId != null &&
+    //     SnippetRootNode.isHotspotCalloutContent(possiblyACalloutContentId);
 
     Widget builtWidget = NotificationListener<SizeChangedLayoutNotification>(
       onNotification: (SizeChangedLayoutNotification notification) {
@@ -574,7 +574,7 @@ class EditablePageState extends State<EditablePage> {
                 }
                 // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
                 fco.dismiss(cid_EditorPassword);
-                fco.authenticated = true;
+                fco.setCanEditContent(true);
                 // await FC.loadLatestSnippetMap();
                 // fco.capiBloc.add(const CAPIEvent.hideAllTargetGroupsAndBtns());
                 // fco.afterNextBuildDo(() {
@@ -680,7 +680,7 @@ class EditablePageState extends State<EditablePage> {
                     fco.dismiss(cid_editablePageName);
                     fco.addSubRoute(newPath: pageName);
                     fco.afterMsDelayDo(1000, () {
-                      fco.router.go(pageName);
+                      fco.router?.go(pageName);
                     });
                   });
                 } else if (fco.canEditContent() &&
@@ -705,7 +705,7 @@ class EditablePageState extends State<EditablePage> {
                   fco.dismiss(cid_editablePageName);
                   fco.addSubRoute(newPath: snippetName);
                   fco.afterMsDelayDo(1000, () {
-                    fco.router.go(pageName);
+                    fco.router?.go(pageName);
                   });
                 } else {
                   if (context.mounted) {

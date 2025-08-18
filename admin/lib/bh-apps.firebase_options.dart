@@ -63,7 +63,7 @@
 // //   messagingSenderId: '188627927914',
 // //   projectId: 'bh-apps',
 // //   storageBucket: 'bh-apps.appspot.com',
-// //   iosBundleId: 'com.example.mysample',
+// //   iosBundleId: 'com.example_using_go_router.mysample',
 // // );
 // //
 // // static const FirebaseOptions macos = FirebaseOptions(
@@ -72,7 +72,7 @@
 // //   messagingSenderId: '188627927914',
 // //   projectId: 'bh-apps',
 // //   storageBucket: 'bh-apps.appspot.com',
-// //   iosBundleId: 'com.example.mysample',
+// //   iosBundleId: 'com.example_using_go_router.mysample',
 // // );
 // //
 // // static const FirebaseOptions windows = FirebaseOptions(

@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "flutter-content-demo",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "emulators": {
+    "singleProjectMode": true,
+    "firestore": {
+      "port": 8080
+    }
+  }
+}
