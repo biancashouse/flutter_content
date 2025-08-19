@@ -12,6 +12,8 @@ part 'uml_image_node.mapper.dart';
 const missingPng =
     'RSqn3i8m343HFQSmKoS6a3W0pGqG8ujfh10biQaT3zmU0IET_vE-rS9FLEmmocWqYoRIYpYdACgaS3W5spBNHraganaSjq6K9WfAwI_ZKhF-5XzoNXtt4HEDkJc5y4MWj3hPW5xC2kSRJzxR17T9Bq3Di0jl';
 
+const plantUMLRef = 'https://pdf.plantuml.net/PlantUML_Language_Reference_Guide_en.pdf';
+
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
   String? name;
@@ -36,6 +38,13 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
+
+    FlutterDocPNode(
+        buttonLabel: 'PlantUML Reference',
+        webLink: plantUMLRef,
+        snode: this,
+        name: 'fyi'),
+
         StringPNode(
           snode: this,
           name: 'name',
