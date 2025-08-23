@@ -34,7 +34,8 @@ extension RoutesExtension on FlutterContentMixins {
     pageList.remove(path);
   }
 
-  void get populatePageList {
+
+  void populatePageList() {
     List<RouteBase> allRoutes = [];
 
     void routes(List<RouteBase> parentRoutes) {
@@ -210,5 +211,11 @@ extension RoutesExtension on FlutterContentMixins {
       },
       observers: [GoRouterObserver()],
     );
+
+    if (router != null) {
+      List<String> routePaths = [];
+      parseRouteConfig(routePaths, router!.configuration.routes);
+      populatePageList();
+    }
   }
 }
