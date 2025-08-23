@@ -8,7 +8,6 @@ import 'package:flutter_content/src/bloc/snippet_being_edited.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_main_axis_size.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/snodes/algc_node.dart';
 import 'package:flutter_content/src/snippet/snodes/fs_image_node.dart';
 import 'package:flutter_content/src/snippet/snodes/upto6colors.dart';
@@ -115,8 +114,8 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
 
     await modelRepo.updateSnippetInfo(
       snippetName: event.snippetName,
-      editingVersionId: event.versionId,
-      publishingVersionId: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault ? event.versionId : snippetInfo.publishedVersionId,
+      newEditingVersionId: event.versionId,
+      newPublishingVersionId: snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault ? event.versionId : snippetInfo.publishedVersionId,
     );
 
     if (stopwatch.elapsedMilliseconds < 2000) {
@@ -167,16 +166,18 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
   //   emit(state.copyWith(force: state.force + 1));
   // }
 
-  Future<void> _deletePage(DeletePage event, emit) async {
-    emit(state.copyWith(force: state.force + 1));
-  }
+  // Future<void> _deletePage(DeletePage event, emit) async {
+  //   emit(state.copyWith(force: state.force + 1));
+  // }
 
   Future<void> _toggleAutoPublishingOfSnippet(ToggleAutoPublishingOfSnippet event, emit) async {
-    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(snippetName);
+    SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(event.snippetName);
     if (snippetInfo == null) return;
 
     bool autoPublish = snippetInfo.autoPublish ?? fco.appInfo.autoPublishDefault;
     snippetInfo.autoPublish = !autoPublish;
+
+    await modelRepo.updateSnippetInfo(snippetName: event.snippetName, newAutoPublish: snippetInfo.autoPublish);
 
     emit(state.copyWith(force: state.force + 1));
   }
@@ -195,7 +196,7 @@ class CAPIBloC extends Bloc<CAPIEvent, CAPIState> {
       calloutContent: Padding(padding: const EdgeInsets.all(10), child: fco.coloredText('publishing version...', color: Colors.blueAccent)),
     );
 
-    await modelRepo.updateSnippetInfo(snippetName: event.snippetName, publishingVersionId: event.versionId);
+    await modelRepo.updateSnippetInfo(snippetName: event.snippetName, newPublishingVersionId: event.versionId);
 
     if (stopwatch.elapsedMilliseconds < 2000) {
       await Future.delayed(Duration(milliseconds: 2000 - stopwatch.elapsedMilliseconds));

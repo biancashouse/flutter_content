@@ -71,7 +71,7 @@ extension RoutesExtension on FlutterContentMixins {
 
   void initRouter(RoutingConfig routingConfig, String initialRoutePath) {
     // Use PathUrlStrategy for removing # from URLs.
-    setUrlStrategy(PathUrlStrategy()); // <<<< ADD THIS LINE
+    // setUrlStrategy(PathUrlStrategy()); // <<<< ADD THIS LINE
 
     routingConfigVN = ValueNotifier<RoutingConfig>(routingConfig);
     router = GoRouter.routingConfig(

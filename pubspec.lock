@@ -673,11 +673,10 @@ packages:
   flutter_callouts:
     dependency: "direct main"
     description:
-      name: flutter_callouts
-      sha256: "21b3a3527174371672e8936ee3b538fbad080c650f9b4f79a3b2ced2fd13fe97"
-      url: "https://pub.dev"
-    source: hosted
-    version: "7.3.0"
+      path: "../flutter_callouts"
+      relative: true
+    source: path
+    version: "7.4.1"
   flutter_highlight:
     dependency: transitive
     description:

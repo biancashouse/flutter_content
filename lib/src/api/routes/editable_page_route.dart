@@ -33,8 +33,8 @@ class EditablePageRoute extends GoRoute {
                      key: ValueKey<String>(path), // provides access to state later
                      routePath: state.path!,
                      // provideNamedScrollController: provideNamedScrollController,
-                     child: child ?? ContentBuilder.fromNodes(
-                       panelName: state.path!,
+                     child: child ?? SnippetBuilder.fromNodes(
+                       // panelName: state.path!,
                        snippetRootNode: SnippetRootNode(name: state.path!, child: PlaceholderNode()),
                        scName: state.path!,
                      ),

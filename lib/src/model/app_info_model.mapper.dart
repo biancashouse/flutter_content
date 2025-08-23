@@ -51,10 +51,15 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
       _f$userContainerStyles = Field(
           'userContainerStyles', _$userContainerStyles,
           opt: true, def: const {});
-  static List<String> _$userEditablePages(AppInfoModel v) =>
-      v.userEditablePages;
-  static const Field<AppInfoModel, List<String>> _f$userEditablePages =
-      Field('userEditablePages', _$userEditablePages, opt: true, def: const []);
+  static List<String> _$anonymousUserEditablePages(AppInfoModel v) =>
+      v.anonymousUserEditablePages;
+  static const Field<AppInfoModel, List<String>> _f$anonymousUserEditablePages =
+      Field('anonymousUserEditablePages', _$anonymousUserEditablePages,
+          key: r'anonymous-user-pages', opt: true, def: const []);
+  static List<String> _$editorPasswords(AppInfoModel v) => v.editorPasswords;
+  static const Field<AppInfoModel, List<String>> _f$editorPasswords = Field(
+      'editorPasswords', _$editorPasswords,
+      key: r'editor-passwords', opt: true, def: const ['password123']);
 
   @override
   final MappableFields<AppInfoModel> fields = const {
@@ -64,7 +69,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
     #userTextStyles: _f$userTextStyles,
     #userButtonStyles: _f$userButtonStyles,
     #userContainerStyles: _f$userContainerStyles,
-    #userEditablePages: _f$userEditablePages,
+    #anonymousUserEditablePages: _f$anonymousUserEditablePages,
+    #editorPasswords: _f$editorPasswords,
   };
 
   static AppInfoModel _instantiate(DecodingData data) {
@@ -75,7 +81,8 @@ class AppInfoModelMapper extends ClassMapperBase<AppInfoModel> {
         userTextStyles: data.dec(_f$userTextStyles),
         userButtonStyles: data.dec(_f$userButtonStyles),
         userContainerStyles: data.dec(_f$userContainerStyles),
-        userEditablePages: data.dec(_f$userEditablePages));
+        anonymousUserEditablePages: data.dec(_f$anonymousUserEditablePages),
+        editorPasswords: data.dec(_f$editorPasswords));
   }
 
   @override
@@ -152,7 +159,9 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       ContainerStylePropertiesCopyWith<$R, ContainerStyleProperties,
           ContainerStyleProperties>> get userContainerStyles;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get userEditablePages;
+      get anonymousUserEditablePages;
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get editorPasswords;
   $R call(
       {SNode? clipboard,
       bool? autoPublishDefault,
@@ -160,7 +169,8 @@ abstract class AppInfoModelCopyWith<$R, $In extends AppInfoModel, $Out>
       Map<String, TextStyleProperties>? userTextStyles,
       Map<String, ButtonStyleProperties>? userButtonStyles,
       Map<String, ContainerStyleProperties>? userContainerStyles,
-      List<String>? userEditablePages});
+      List<String>? anonymousUserEditablePages,
+      List<String>? editorPasswords});
   AppInfoModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -213,10 +223,16 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
       (v) => call(userContainerStyles: v));
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
-      get userEditablePages => ListCopyWith(
-          $value.userEditablePages,
+      get anonymousUserEditablePages => ListCopyWith(
+          $value.anonymousUserEditablePages,
           (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(userEditablePages: v));
+          (v) => call(anonymousUserEditablePages: v));
+  @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+      get editorPasswords => ListCopyWith(
+          $value.editorPasswords,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(editorPasswords: v));
   @override
   $R call(
           {Object? clipboard = $none,
@@ -225,7 +241,8 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           Map<String, TextStyleProperties>? userTextStyles,
           Map<String, ButtonStyleProperties>? userButtonStyles,
           Map<String, ContainerStyleProperties>? userContainerStyles,
-          List<String>? userEditablePages}) =>
+          List<String>? anonymousUserEditablePages,
+          List<String>? editorPasswords}) =>
       $apply(FieldCopyWithData({
         if (clipboard != $none) #clipboard: clipboard,
         if (autoPublishDefault != null) #autoPublishDefault: autoPublishDefault,
@@ -234,7 +251,9 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
         if (userButtonStyles != null) #userButtonStyles: userButtonStyles,
         if (userContainerStyles != null)
           #userContainerStyles: userContainerStyles,
-        if (userEditablePages != null) #userEditablePages: userEditablePages
+        if (anonymousUserEditablePages != null)
+          #anonymousUserEditablePages: anonymousUserEditablePages,
+        if (editorPasswords != null) #editorPasswords: editorPasswords
       }));
   @override
   AppInfoModel $make(CopyWithData data) => AppInfoModel(
@@ -247,8 +266,9 @@ class _AppInfoModelCopyWithImpl<$R, $Out>
           data.get(#userButtonStyles, or: $value.userButtonStyles),
       userContainerStyles:
           data.get(#userContainerStyles, or: $value.userContainerStyles),
-      userEditablePages:
-          data.get(#userEditablePages, or: $value.userEditablePages));
+      anonymousUserEditablePages: data.get(#anonymousUserEditablePages,
+          or: $value.anonymousUserEditablePages),
+      editorPasswords: data.get(#editorPasswords, or: $value.editorPasswords));
 
   @override
   AppInfoModelCopyWith<$R2, AppInfoModel, $Out2> $chain<$R2, $Out2>(

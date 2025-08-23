@@ -258,7 +258,7 @@ class EditablePageState extends State<EditablePage> {
             child: Stack(
               children: [
                 if (aSnippetIsBeingEdited)
-                  ContentBuilder.fromNodes(
+                  SnippetBuilder.fromNodes(
                     // panelName: 'demo-buttons',
                     snippetRootNode: snippetBeingEdited!.getRootNode(),
                     // snippetRootNode: SnippetRootNode(
@@ -568,8 +568,7 @@ class EditablePageState extends State<EditablePage> {
               prompt: () => 'password',
               originalS: '',
               onTextChangedF: (String s) async {
-                if (kDebugMode && s != " ") return;
-                if (!kDebugMode && !fco.editorPasswords.contains(s)) {
+                if (!fco.appInfo.editorPasswords.contains(s)) {
                   return;
                 }
                 // if (!kDebugMode && !(fco.editorPasswords.contains(s))) return;
@@ -670,11 +669,11 @@ class EditablePageState extends State<EditablePage> {
                 pageName = pageName.startsWith('/') ? pageName : '/$pageName';
                 // add to appInfo
                 if (!fco.canEditContent() &&
-                    !fco.appInfo.userEditablePages.contains(pageName)) {
+                    !fco.appInfo.anonymousUserEditablePages.contains(pageName)) {
                   // jsArray issue
-                  List<String> newList = fco.appInfo.userEditablePages.toList();
+                  List<String> newList = fco.appInfo.anonymousUserEditablePages.toList();
                   newList.add(pageName);
-                  fco.appInfo.userEditablePages = newList;
+                  fco.appInfo.anonymousUserEditablePages = newList;
                   await fco.modelRepo.saveAppInfo();
                   fco.afterNextBuildDo(() {
                     fco.dismiss(cid_editablePageName);

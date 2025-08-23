@@ -4,7 +4,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/snodes/button_style_hook.dart';
 import 'package:go_router/go_router.dart';
@@ -173,8 +172,8 @@ abstract class ButtonNode extends SC with ButtonNodeMappable {
         const Duration(seconds: 1),
         () => fco.showOverlay(
           targetGkF: () => fco.getCalloutGk(cid),
-          calloutContent: ContentBuilder.fromSnippet(
-            panelName: calloutConfig!.cId,
+          calloutContent: SnippetBuilder.fromSnippet(
+            // panelName: calloutConfig!.cId,
             snippetName: BODY_PLACEHOLDER,
             // allowButtonCallouts: false,
             scName: scName,

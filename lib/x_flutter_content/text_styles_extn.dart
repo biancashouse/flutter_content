@@ -1,5 +1,4 @@
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 extension TextStylesExtension on FlutterContentMixins {
   Map<TextStyleName, TextStyleProperties> cannedTextStyles() => {

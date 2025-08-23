@@ -76,7 +76,7 @@
 //       padding: const EdgeInsets.all(8.0),
 //       child: WrappedCallout(
 //         calloutConfig: config,
-//         calloutBoxContentBuilderF: (ctx) => calloutContents(ctx),
+//         calloutBoxSnippetBuilderF: (ctx) => calloutContents(ctx),
 //         targetChangedNotifier: ValueNotifier<int>(0),
 //         targetBuilderF: (ctx) => GestureDetector(
 //           onTap: (){

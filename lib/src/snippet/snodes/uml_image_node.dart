@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/editors/plantuml_msv.dart';
+import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart'
+    show FlutterDocPNode;
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/uml_string_pnode.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,7 +14,8 @@ part 'uml_image_node.mapper.dart';
 const missingPng =
     'RSqn3i8m343HFQSmKoS6a3W0pGqG8ujfh10biQaT3zmU0IET_vE-rS9FLEmmocWqYoRIYpYdACgaS3W5spBNHraganaSjq6K9WfAwI_ZKhF-5XzoNXtt4HEDkJc5y4MWj3hPW5xC2kSRJzxR17T9Bq3Di0jl';
 
-const plantUMLRef = 'https://pdf.plantuml.net/PlantUML_Language_Reference_Guide_en.pdf';
+const plantUMLRef =
+    'https://pdf.plantuml.net/PlantUML_Language_Reference_Guide_en.pdf';
 
 @MappableClass()
 class UMLImageNode extends CL with UMLImageNodeMappable {
@@ -38,50 +41,50 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
 
   @override
   List<PNode> propertyNodes(BuildContext context, SNode? parentSNode) => [
-
     FlutterDocPNode(
-        buttonLabel: 'PlantUML Reference',
-        webLink: plantUMLRef,
-        snode: this,
-        name: 'fyi'),
+      buttonLabel: 'PlantUML Reference',
+      webLink: plantUMLRef,
+      snode: this,
+      name: 'fyi',
+    ),
 
-        StringPNode(
-          snode: this,
-          name: 'name',
-          stringValue: name,
-          skipHelperText: true,
-          onStringChange: (newValue) =>
-              refreshWithUpdate(context,() => name = newValue),
-          calloutButtonSize: const Size(280, 70),
-          calloutWidth: 400,
-          numLines: 1,
-        ),
-        UMLStringPNode(
-          snode: this,
-          name: 'uml',
-          umlRecord: (
-            text: umlText,
-            encodedText: encodedText,
-            bytes: cachedPngBytes,
-            width: width,
-            height: height,
-          ),
-          onUmlChange: (newValue) {
-            refreshWithUpdate(context,() {
-              umlText = newValue.text;
-              encodedText = newValue.encodedText;
-              cachedPngBytes = newValue.bytes;
-              width = newValue.width;
-              height = newValue.height;
-            });
-          },
-          onSized: (newSize) {
-            width = newSize.width;
-            height = newSize.height;
-          },
-          calloutButtonSize: const Size(280, 2000),
-        ),
-      ];
+    StringPNode(
+      snode: this,
+      name: 'name',
+      stringValue: name,
+      skipHelperText: true,
+      onStringChange: (newValue) =>
+          refreshWithUpdate(context, () => name = newValue),
+      calloutButtonSize: const Size(280, 70),
+      calloutWidth: 400,
+      numLines: 1,
+    ),
+    UMLStringPNode(
+      snode: this,
+      name: 'uml',
+      umlRecord: (
+        text: umlText,
+        encodedText: encodedText,
+        bytes: cachedPngBytes,
+        width: width,
+        height: height,
+      ),
+      onUmlChange: (newValue) {
+        refreshWithUpdate(context, () {
+          umlText = newValue.text;
+          encodedText = newValue.encodedText;
+          cachedPngBytes = newValue.bytes;
+          width = newValue.width;
+          height = newValue.height;
+        });
+      },
+      onSized: (newSize) {
+        width = newSize.width;
+        height = newSize.height;
+      },
+      calloutButtonSize: const Size(280, 2000),
+    ),
+  ];
 
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
@@ -91,48 +94,51 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
       // possiblyHighlightSelectedNode(scName);
 
       return FutureBuilder<UMLRecord>(
-          future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '',
-              (UMLRecord newValue) {
-            umlText = newValue.text;
-            encodedText = newValue.encodedText;
-            cachedPngBytes = newValue.bytes;
-          }),
-          builder: (futureContext, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
+        future: PlantUMLMSVState.encodeThenFetchPng(umlText ?? '', (
+          UMLRecord newValue,
+        ) {
+          umlText = newValue.text;
+          encodedText = newValue.encodedText;
+          cachedPngBytes = newValue.bytes;
+        }),
+        builder: (futureContext, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (_gk == null) {
-              _gk = createNodeWidgetGK();
-              fco.afterMsDelayDo(100, () => fco.forceRefresh());
-            }
+          if (_gk == null) {
+            _gk = createNodeWidgetGK();
+            fco.afterMsDelayDo(100, () => fco.forceRefresh());
+          }
 
-            // UMLRecord? umlRecord = snapshot.data;
-            return GestureDetector(
-              child: Image.memory(
-                // key: _gk,
-                // scale: 3.0,
-                cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
-                fit: BoxFit.fill,
-                errorBuilder: (context, o, stackTrace) {
-                  return Error(
-                    key: GlobalKey(),
-                    "PlantUMLTextEditor Image.memory",
-                    color: Colors.red,
-                    size: 18,
-                    errorMsg: 'Bad pngBytes',
-                  );
-                },
-              ),
-            );
-          });
+          // UMLRecord? umlRecord = snapshot.data;
+          return GestureDetector(
+            child: Image.memory(
+              // key: _gk,
+              // scale: 3.0,
+              cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
+              fit: BoxFit.fill,
+              errorBuilder: (context, o, stackTrace) {
+                return Error(
+                  key: GlobalKey(),
+                  "PlantUMLTextEditor Image.memory",
+                  color: Colors.red,
+                  size: 18,
+                  errorMsg: 'Bad pngBytes',
+                );
+              },
+            ),
+          );
+        },
+      );
     } catch (e) {
       return Error(
-          key: _gk,
-          FLUTTER_TYPE,
-          color: Colors.red,
-          size: 16,
-          errorMsg: e.toString());
+        key: _gk,
+        FLUTTER_TYPE,
+        color: Colors.red,
+        size: 16,
+        errorMsg: e.toString(),
+      );
     }
   }
 
@@ -180,10 +186,8 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
   // }
 
   @override
-  Widget? widgetLogo() => Image.asset(
-    fco.asset('lib/assets/images/pub.dev.png'),
-    width: 16,
-  );
+  Widget? widgetLogo() =>
+      Image.asset(fco.asset('lib/assets/images/pub.dev.png'), width: 16);
 
   @override
   List<Type> wrapWithRecommendations() => [CarouselNode];

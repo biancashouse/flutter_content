@@ -45,7 +45,7 @@ class TabBarViewNode extends MC with TabBarViewNodeMappable {
       setParent(parentNode);
       //ScrollControllerName? scName = EditablePage.name(context);
       //possiblyHighlightSelectedNode(scName);
-      ContentBuilderState? spState = ContentBuilder.of(context);
+      SnippetBuilderState? spState = SnippetBuilder.of(context);
       TabBarNode? tabBarNode = spState?.tabBars[tabBarName];
       if (tabBarNode == null) {
         return Placeholder();

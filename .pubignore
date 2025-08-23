@@ -1,2 +1,3 @@
 admin/lib/bh-apps.firebase_options.dart
-example/lib/bh-apps.firebase_options.dart
+example_using_go_router/lib/bh-apps.firebase_options.dart
+example_without_go_router/lib/bh-apps.firebase_options.dart

@@ -38,7 +38,7 @@ class DirectoryNode extends MC with DirectoryNodeMappable {
   @override
   Widget buildFlutterWidget(BuildContext context, SNode? parentNode) {
     try {
-      ContentBuilderState? ss = ContentBuilder.of(context);
+      SnippetBuilderState? ss = SnippetBuilder.of(context);
       if (!(ss?.mounted ?? false)) {
         return Error(
           key: createNodeWidgetGK(),

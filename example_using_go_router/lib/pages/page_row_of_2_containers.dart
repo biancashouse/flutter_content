@@ -12,8 +12,8 @@ class Page_RowOf2Containers extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            child: ContentBuilder.fromNodes(
-              panelName: 'panel1',
+            child: SnippetBuilder.fromNodes(
+              // panelName: 'panel1',
               snippetRootNode: SnippetRootNode(
                 name: 'container-5',
                 child: PaddingNode(
@@ -30,8 +30,8 @@ class Page_RowOf2Containers extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: ContentBuilder.fromNodes(
-              panelName: 'panel2',
+            child: SnippetBuilder.fromNodes(
+              // panelName: 'panel2',
               snippetRootNode: SnippetRootNode(
                 name: 'container-6',
                 child: CenterNode(),

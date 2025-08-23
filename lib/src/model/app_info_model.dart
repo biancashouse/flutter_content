@@ -3,7 +3,6 @@ import 'package:flutter/material.dart' show Colors;
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/api/clipboard/clipboard_view.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 part 'app_info_model.mapper.dart';
 
@@ -15,7 +14,10 @@ class AppInfoModel with AppInfoModelMappable {
   Map<TextStyleName, TextStyleProperties> userTextStyles;
   Map<ButtonStyleName, ButtonStyleProperties> userButtonStyles;
   Map<ContainerStyleName, ContainerStyleProperties> userContainerStyles;
-  List<String> userEditablePages;
+  @MappableField(key: 'anonymous-user-pages')
+  List<String> anonymousUserEditablePages;
+  @MappableField(key: 'editor-passwords')
+  List<String> editorPasswords;
 
   AppInfoModel({
     this.clipboard,
@@ -24,7 +26,9 @@ class AppInfoModel with AppInfoModelMappable {
     this.userTextStyles = const {},
     this.userButtonStyles = const {},
     this.userContainerStyles = const {},
-    this.userEditablePages = const [],
+    this.anonymousUserEditablePages = const [],
+    // managed manually in firestore console
+    this.editorPasswords = const ['password123'],
   });
 
   bool get clipboardIsEmpty => clipboard == null;

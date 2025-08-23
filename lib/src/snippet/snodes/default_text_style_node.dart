@@ -8,7 +8,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_text_align.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 
-import '../pnodes/groups/text_style_properties.dart';
 
 part 'default_text_style_node.mapper.dart';
 

@@ -8,7 +8,6 @@ import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_style.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_font_weight.dart';
 import 'package:flutter_content/src/snippet/pnodes/font_family_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/text_styles/style_name_editor.dart';
 
 class TextStyleWithoutColorPNode /*Group*/ extends PNode /*Group*/ {

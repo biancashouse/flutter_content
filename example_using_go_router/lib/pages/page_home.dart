@@ -76,7 +76,7 @@ class _Page_HomeState extends State<Page_Home> {
     // );
 
     final uniqueTabBarName = DateTime.now().millisecondsSinceEpoch.toString();
-    ContentBuilder sp = ContentBuilder.fromNodes(
+    SnippetBuilder sp = SnippetBuilder.fromNodes(
       // panelName: 'demo-buttons',
       snippetRootNode: SnippetRootNode(
         name: 'home-scaffold-with-tabs',

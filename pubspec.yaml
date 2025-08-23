@@ -5,7 +5,7 @@ maintainer: Ian White
 homepage: https://github.com/biancashouse/flutter_content
 issue_tracker: https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+flutter_adaptive_scaffold%22
 repository: https://github.com/biancashouse/flutter-content
-#publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
   sdk: ^3.9.0
@@ -132,8 +132,8 @@ dependencies:
 #  markdown_toolbar: ^0.5.0
 
   file_picker: ^10.2.0
-  flutter_callouts: ^7.3.0
-#    path: ../flutter_callouts
+  flutter_callouts: #^7.4.1
+    path: ../flutter_callouts
 
 #dependency_overrides:
 #  web: ^0.5.0 # latest version as of now

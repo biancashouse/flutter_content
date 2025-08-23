@@ -7,7 +7,6 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_button_searc
 import 'package:flutter_content/src/snippet/pnodes/enum_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/enum_outlined_border.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:flutter_content/src/text_styles/style_name_editor.dart';
 

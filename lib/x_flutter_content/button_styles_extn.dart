@@ -1,6 +1,5 @@
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 
 extension ButtonStylesExtension on FlutterContentMixins {
   Map<ButtonStyleName, ButtonStyleProperties> cannedButtonStyles() => {

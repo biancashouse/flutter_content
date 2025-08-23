@@ -25,9 +25,10 @@ abstract class IModelRepository {
 
   Future<void> updateSnippetInfo({
     required SnippetName snippetName,
-    VersionId? editingVersionId,
-    VersionId? publishingVersionId,
-    bool? autoPublish,
+    VersionId? newEditingVersionId,
+    VersionId? newPublishingVersionId,
+    bool? newAutoPublish,
+    List<VersionId>? newVersionIds,
   });
 
   Future<bool> saveSnippetVersion({

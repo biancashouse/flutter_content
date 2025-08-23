@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_content/flutter_content.dart' show fco, FlutterContentApp;
 import 'bh-apps.firebase_options.dart';
 import 'page_home.dart';
 
@@ -36,7 +36,7 @@ void disableOverflowErrors() {
 // main when using the flutter_content package
 Future<void> main({bool useEmulator = false}) async {
   runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    // WidgetsFlutterBinding.ensureInitialized();
 
     // SemanticsBinding.instance.ensureSemantics();
 
@@ -63,7 +63,6 @@ Future<void> main({bool useEmulator = false}) async {
 
     runApp(FlutterContentApp(
       appName: 'flutter-content-example-without-go-router',
-      editorPasswords: ['pigsinspace'],
       home: Page_Home(),
       materialAppThemeF: () => ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

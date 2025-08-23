@@ -4,7 +4,6 @@ import 'package:flutter_content/src/snippet/pnodes/button_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/container_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
 import 'package:flutter_content/src/snippet/pnodes/groups/button_style_properties.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 
 import 'fancy_tree/tree_controller.dart';

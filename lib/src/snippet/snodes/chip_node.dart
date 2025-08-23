@@ -5,7 +5,6 @@ import 'package:flutter_content/src/snippet/pnodes/bool_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/edge_insets_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:go_router/go_router.dart';
@@ -260,8 +259,8 @@ class ChipNode extends CL with ChipNodeMappable {
         const Duration(seconds: 1),
         () => fco.showOverlay(
           targetGkF: () => fco.getCalloutGk(feature),
-          calloutContent: ContentBuilder.fromSnippet(
-            panelName: calloutConfig!.cId,
+          calloutContent: SnippetBuilder.fromSnippet(
+            // panelName: calloutConfig!.cId,
             snippetName: BODY_PLACEHOLDER,
             // allowButtonCallouts: false,
             scName: scName,

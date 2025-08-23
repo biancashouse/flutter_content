@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/text_styles/style_name_editor.dart';
 import 'package:flutter_content/src/text_styles/text_style_suggestions.dart';
 

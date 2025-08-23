@@ -46,7 +46,7 @@ class DirectoryTreeNodeWidget extends StatelessWidget {
   }
 
   Widget _name(BuildContext context) {
-    ContentBuilderState? snippet = ContentBuilder.of(context);
+    SnippetBuilderState? snippet = SnippetBuilder.of(context);
     String snippetName = snippet?.widget.snippetName ?? '???!!!';
     return GestureDetector(
       onTap: () {

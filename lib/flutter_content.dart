@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:logger/src/log_event.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart'
@@ -97,9 +98,9 @@ export 'package:url_launcher/url_launcher_string.dart';
 export 'src/api/routes/editable_page_route.dart';
 export 'src/api/app/fco_app.dart';
 export 'src/api/editable_page/zoomer.dart';
-export 'src/api/content_builder/content_builder.dart';
+export 'src/api/snippet_builder/snippet_builder.dart';
 
-// export 'src/api/content_builder/snippet_templates.dart';
+// export 'src/api/snippet_builder/snippet_templates.dart';
 export 'src/api/editable_page/editable_page.dart';
 
 // callouts
@@ -223,7 +224,17 @@ export 'x_flutter_content/text_styles_extn.dart';
 export 'src/snippet/pnodes/groups/text_style_properties.dart';
 
 // global instance singleton
-FlutterContentMixins fco = FlutterContentMixins._instance;
+FlutterContentMixins fco = FlutterContentMixins._();
+
+late Logger _logger;
+late Logger _loggerNs;
+
+class MyLogFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    return true;
+  }
+}
 
 const String PINK_OVERLAY_NON_TAPPABLE = 'pink-border-overlay-non-tappable';
 const String CUTOUT_OVERLAY_NON_TAPPABLE = 'cutout-overlay-non-tappable';
@@ -245,18 +256,23 @@ class FlutterContentMixins
         GotitsMixin,
         PasswordlessMixin,
         NavMixin {
-  FlutterContentMixins._internal() {
-    // Private constructor
-    // logi('FlutterContentMixins._internal() private constructor');
+  FlutterContentMixins._() {
+    _logger = Logger(
+      filter: MyLogFilter(),
+      printer: PrettyPrinter(colors: true, printEmojis: false),
+    );
+    _loggerNs = Logger(
+      filter: MyLogFilter(),
+      printer: PrettyPrinter(methodCount: 6),
+    );
   }
 
-  static final FlutterContentMixins _instance =
-      FlutterContentMixins._internal();
+  Logger get logger => _logger;
+  Logger get loggerNs => _loggerNs;
 
   // called by _initApp() to set the late variables
-  Future<CAPIBloC> init({
+  Future<CAPIBloC> createCAPIBloC({
     required String appName,
-    required List<String> editorPasswords,
     FirebaseOptions? fbOptions,
     bool useEmulator = false,
     bool useFBStorage = false,
@@ -275,8 +291,7 @@ class FlutterContentMixins
 
     loadGoogleFontNames(googleFontNames);
 
-    _appName = appName;
-    _editorPasswords = editorPasswords;
+    this.appName = appName;
 
     // Bloc.observer = MyGlobalObserver();
 
@@ -307,16 +322,16 @@ class FlutterContentMixins
 
       // fetch model
       AppInfoModel? fbAppInfo = await modelRepo.getAppInfo();
-      _appInfo = fbAppInfo ?? AppInfoModel();
+      appInfo = fbAppInfo ?? AppInfoModel();
 
       // text, button, and container styles get saved in the AppInfo. Combine with the canned (source-coded) ones
       try {
         namedTextStyles.addAll(cannedTextStyles());
-        namedTextStyles.addAll(_appInfo.userTextStyles);
+        namedTextStyles.addAll(appInfo.userTextStyles);
         namedButtonStyles.addAll(cannedButtonStyles());
-        namedButtonStyles.addAll(_appInfo.userButtonStyles);
+        namedButtonStyles.addAll(appInfo.userButtonStyles);
         namedContainerStyles.addAll(cannedContainerStyles());
-        namedContainerStyles.addAll(_appInfo.userContainerStyles);
+        namedContainerStyles.addAll(appInfo.userContainerStyles);
       } catch (e) {
         logger.e(e);
       }
@@ -355,7 +370,7 @@ class FlutterContentMixins
     // fco.logger.i('init 7. ${fco.stopwatch.elapsedMilliseconds}');
 
     // FutureBuilder requires this return
-    return _capiBloc = CAPIBloC(modelRepo: modelRepo);
+    return CAPIBloC(modelRepo: modelRepo);
   }
 
   late bool logging;
@@ -364,32 +379,23 @@ class FlutterContentMixins
 
   late IModelRepository modelRepo;
 
-  // set by .init()
-  String get appName => _appName;
-
-  List<String> get editorPasswords => _editorPasswords;
-
   // reusable across all PNodes
   TextStyleNameSearchAnchor? textStyleNameAnchor;
   ButtonStyleNameSearchAnchor? buttonStyleNameAnchor;
   ContainerStyleNameSearchAnchor? containerStyleNameAnchor;
 
-  late String _appName;
+  late String appName;
 
   late bool usingFBStorage;
   late String currFolderPath;
   late TreeController<FSFolderNode> fsTreeC;
 
-  late List<String> _editorPasswords;
-
-  late AppInfoModel _appInfo; // must be instantiated in init()
+  late AppInfoModel appInfo; // must be instantiated in init()
   late String? _gcrServerUrl;
-
-  AppInfoModel get appInfo => _appInfo;
 
   String? get gcrServerUrl => _gcrServerUrl;
 
-  JsonMap get appInfoAsMap => _appInfo.toMap();
+  JsonMap get appInfoAsMap => appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
 
@@ -397,7 +403,9 @@ class FlutterContentMixins
 
   bool canEditContent() {
     String? currentPagePath = fco.currentEditablePagePath;
-    bool isGuestPage = fco.appInfo.userEditablePages.contains(currentPagePath);
+    bool isGuestPage = fco.appInfo.anonymousUserEditablePages.contains(
+      currentPagePath,
+    );
     return _authenticated || isGuestPage;
   }
 
@@ -411,14 +419,7 @@ class FlutterContentMixins
 
   late TapGestureRecognizer webLinkF;
 
-  CAPIBloC? _capiBloc;
-
-  CAPIBloC get capiBloc {
-    if (_capiBloc == null) {
-      throw Exception('capiBloc does not exists yet...');
-    }
-    return _capiBloc!;
-  }
+  late CAPIBloC capiBloc;
 
   SnippetBeingEdited? get snippetBeingEdited =>
       capiBloc.state.snippetBeingEdited;
@@ -447,7 +448,7 @@ class FlutterContentMixins
         // snippetRootNode: SnippetTemplateEnum.empty.templateSnippet(),
       );
 
-  void setAppInfo(AppInfoModel newModel) => _appInfo = newModel;
+  void setAppInfo(AppInfoModel newModel) => appInfo = newModel;
 
   // void addVersionId(SnippetName snippetName, VersionId versionId) {
   //   final newVersionIds = Map<SnippetName, List<VersionId>>.of(versionIds);
@@ -631,7 +632,6 @@ class FlutterContentMixins
   );
 
   Future<void> setCanEditContent(bool b) async {
-    ;
     return await localStorage.write("canEditContent", _authenticated = b);
   }
 
@@ -687,7 +687,7 @@ class FlutterContentMixins
   //       : null;
   // }
 
-  final Map<PanelName, GlobalKey> panelGkMap = {};
+  // final Map<PanelName, GlobalKey> panelGkMap = {};
 
   // final Map<SNode, Set<PNode>> expandedNodes = {};
 

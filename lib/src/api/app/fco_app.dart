@@ -7,8 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_callouts/flutter_callouts.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart' show PathUrlStrategy, setUrlStrategy;
 import 'package:go_router/go_router.dart';
 
 // conditional import for webview ------------------
@@ -20,7 +20,6 @@ import 'register_ios_or_android_webview.dart'
 /// the app's overlay and not in your widget tree as you might have expected.
 class FlutterContentApp extends StatefulWidget {
   final String appName;
-  final List<String> editorPasswords;
   final String title;
 
   // final SnippetName pageSnippetName;
@@ -56,10 +55,9 @@ class FlutterContentApp extends StatefulWidget {
 
   // final bool localTestingFilePaths;
 
-  FlutterContentApp.router({
+  const FlutterContentApp.router({
     super.key,
     required this.appName,
-    required this.editorPasswords,
     this.title = '',
     required this.routingConfig,
     required this.initialRoutePath,
@@ -76,10 +74,9 @@ class FlutterContentApp extends StatefulWidget {
     this.namedVoidCallbacks,
   });
 
-  FlutterContentApp({
+  const FlutterContentApp({
     super.key,
     required this.appName,
-    required this.editorPasswords,
     this.title = '',
     this.routingConfig,
     this.initialRoutePath,
@@ -127,6 +124,11 @@ class FlutterContentAppState extends State<FlutterContentApp>
     //       '${record.loggerName}: ${record.message}');
     // });
 
+    BrowserContextMenu.disableContextMenu();
+
+    // Use PathUrlStrategy for removing # from URLs.
+    setUrlStrategy(PathUrlStrategy());
+
     if (widget.hideStatusBar) {
       // fco.logger.i('hiding status bar');
       // https://medium.com/@mustafatahirhussein/these-quick-tips-will-surely-help-you-to-build-a-better-flutter-app-6db93c1095b6
@@ -159,14 +161,8 @@ class FlutterContentAppState extends State<FlutterContentApp>
 
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC?> _initApp() async {
-    // If a bloc already exists due to a previous initialization (perhaps after hot restart
-    // where the static variable persisted but the widget state re-initialized).
-    try {
-      return fco.capiBloc;
-    } catch (e) {
-      var capiBloc = await fco.init(
+      fco.capiBloc = await fco.createCAPIBloC(
         appName: widget.appName,
-        editorPasswords: widget.editorPasswords,
         fbOptions: widget.fbOptions,
         useEmulator: widget.useEmulator,
         useFBStorage: widget.useFBStorage,
@@ -176,8 +172,7 @@ class FlutterContentAppState extends State<FlutterContentApp>
       widget.onReadyF?.call();
       SNode.hideAllTargetCovers();
       widget.alsoInitF?.call();
-      return capiBloc;
-    }
+      return fco.capiBloc;
   }
 
   // ytController = YoutubePlayerController.fromVideoId(

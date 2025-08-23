@@ -8,7 +8,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/color_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/decimal_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/fyi_pnodes.dart';
-import 'package:flutter_content/src/snippet/pnodes/groups/text_style_properties.dart';
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -172,7 +171,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
     }
   }
 
-  void _createTabController(ContentBuilderState? spState, int numTabs) {
+  void _createTabController(SnippetBuilderState? spState, int numTabs) {
     if (!(spState?.mounted ?? false)) return;
     tabC?.dispose();
     tabC = TabController(vsync: spState!, length: numTabs);
@@ -202,7 +201,7 @@ class TabBarNode extends MC with TabBarNodeMappable {
       // find transformable scaffold node then its corr state object
       // TransformableScaffoldNode? tsNode = findNearestAncestorOfType(TransformableScaffoldNode) as TransformableScaffoldNode?;
       // TransformableScaffoldState? tState = tsNode?.nodeWidgetGK?.currentState as TransformableScaffoldState?;
-      ContentBuilderState? spState = ContentBuilder.of(context);
+      SnippetBuilderState? spState = SnippetBuilder.of(context);
       _createTabController(spState, children.length);
       List<Widget> tabs = [];
       for (SNode node in children) {

@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/content_builder/versions_menu_anchor_with_edit_menu_item.dart';
-
-import 'tr_triangle_painter.dart';
+import 'versions_menu_anchor_with_edit_menu_item.dart' show SnippetMenuAnchor, AnchorWidgetEnum;
 
 const BODY_PLACEHOLDER = 'body-placeholder';
 
-class ContentBuilder extends StatefulWidget {
-  final String? panelName;
+class SnippetBuilder extends StatefulWidget {
+  // final String? panelName;
 
   // from canned snippet
   final String? snippetName;
@@ -38,8 +36,9 @@ class ContentBuilder extends StatefulWidget {
   final ScrollControllerName? scName;
 
   // effectively from a Template
-  const ContentBuilder.fromNodes({
-    this.panelName,
+  const SnippetBuilder.fromNodes({
+    // this.panelName,
+    this.snippetName,
     required this.snippetRootNode,
     this.handlers,
     // this.allowButtonCallouts = true,
@@ -48,10 +47,10 @@ class ContentBuilder extends StatefulWidget {
     this.justPlaying = false,
     this.tc,
     super.key,
-  }) : snippetName = null;
+  });
 
-  const ContentBuilder.fromSnippet({
-    this.panelName,
+  const SnippetBuilder.fromSnippet({
+    // this.panelName,
     required this.snippetName,
     this.snippetRootNode,
     this.handlers,
@@ -68,11 +67,11 @@ class ContentBuilder extends StatefulWidget {
     super.key,
   });
 
-  static ContentBuilderState? of(BuildContext context) =>
-      context.findAncestorStateOfType<ContentBuilderState>();
+  static SnippetBuilderState? of(BuildContext context) =>
+      context.findAncestorStateOfType<SnippetBuilderState>();
 
   @override
-  State<ContentBuilder> createState() => ContentBuilderState();
+  State<SnippetBuilder> createState() => SnippetBuilderState();
 
   // static SnippetRootNode createSnippetFromTemplateNodes(SnippetRootNode rootNode, String snippetName) {
   //   rootNode.validateTree();
@@ -87,12 +86,12 @@ class ContentBuilder extends StatefulWidget {
   }
 }
 
-class ContentBuilderState extends State<ContentBuilder>
+class SnippetBuilderState extends State<SnippetBuilder>
     with TickerProviderStateMixin {
   Map<String, TabBarNode> tabBars = {};
   late Future<SnippetRootNode?> fEnsureSnippetInCache;
 
-  // will be snippetName or rootNode name
+  // will be supplied snippetName or supplied snippet's rootNode name
   String snippetName() => widget.snippetName ?? widget.snippetRootNode!.name;
 
   // ZoomerState? get parentTSState => Zoomer.of(context);
@@ -171,11 +170,11 @@ class ContentBuilderState extends State<ContentBuilder>
 
     // if a snippet passed in, don't need a futurebuilder
     return BlocConsumer<CAPIBloC, CAPIState>(
-      key: widget.panelName != null
-          ? fco.panelGkMap[widget.panelName!] = GlobalKey(
-              debugLabel: 'Panel[${widget.panelName}]',
-            )
-          : null,
+      // key: widget.panelName != null
+      //     ? fco.panelGkMap[widget.panelName!] = GlobalKey(
+      //         debugLabel: 'Panel[${widget.panelName}]',
+      //       )
+      //     : null,
       // show pink overlays if state variable set with this snippet's name
       listenWhen: (context, state) {
         var name = snippetName();
@@ -346,7 +345,7 @@ class ContentBuilderState extends State<ContentBuilder>
     // no need to de-reigister once set up
     fco.registerKeystrokeHandler('exit-Select-Widget-Mode', (KeyEvent event) {
       if (event.logicalKey == LogicalKeyboardKey.escape) {
-        if (fco.capiBloc.state.inSelectWidgetMode) {
+        if (fco.capiBloc.state.inSelectWidgetMode??false) {
           fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
         }
       }

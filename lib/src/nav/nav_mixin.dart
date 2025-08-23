@@ -87,7 +87,7 @@ mixin NavMixin {
           final String currentPath = GoRouterState.of(context).uri.toString();
           if (pagePath != currentPath) {
             String sandboxIndicator =
-                (fco.appInfo.userEditablePages.contains(pagePath)) ? ' *' : "";
+                (fco.appInfo.anonymousUserEditablePages.contains(pagePath)) ? ' *' : "";
             dropdownItems.add(
               DropdownMenuItem<String>(
                 value: pagePath,
@@ -163,7 +163,11 @@ mixin NavMixin {
             IconButton(
               onPressed: () async {
                 fco.appInfo.snippetNames.remove(pagePath);
-                fco.appInfo.userEditablePages.remove(pagePath);
+                // because dart_mappable creates jsarrays
+                var potentiallyUnmodifiablePages = fco.appInfo.anonymousUserEditablePages;
+                List<String> modifiablePages = List.from(potentiallyUnmodifiablePages);
+                modifiablePages.remove(pagePath);
+                fco.appInfo = fco.appInfo.copyWith(anonymousUserEditablePages: modifiablePages);
                 fco.deleteSubRoute(path: pagePath);
                 context.pop();
                 await fco.modelRepo.saveAppInfo();

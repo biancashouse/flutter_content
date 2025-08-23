@@ -2,7 +2,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_content/src/api/content_builder/tr_triangle_painter.dart';
+import 'package:flutter_content/src/api/snippet_builder/tr_triangle_painter.dart' show TRTriangle;
 import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 
 part 'snippet_root_node.mapper.dart';

@@ -36,7 +36,7 @@ void disableOverflowErrors() {
 // main when using the flutter_content package
 Future<void> main({bool useEmulator = false}) async {
   runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
+    // WidgetsFlutterBinding.ensureInitialized();
 
     // SemanticsBinding.instance.ensureSemantics();
 
@@ -63,7 +63,6 @@ Future<void> main({bool useEmulator = false}) async {
 
     runApp(FlutterContentApp.router(
       appName: 'flutter-content-example',
-      editorPasswords: ['pigsinspace'],
       // use web, mobile or desktop routingConfig defined in your routes_config.dart
       routingConfig: webRoutingConfig,
       initialRoutePath: '/',

@@ -10,7 +10,6 @@ import 'package:flutter_content/src/snippet/pnodes/string_pnode.dart';
 import 'package:flutter_content/src/snippet/pnodes/text_style_pnodes.dart';
 import 'package:flutter_content/src/snippet/snodes/text_style_hook.dart';
 
-import '../pnodes/groups/text_style_properties.dart';
 
 part 'text_node.mapper.dart';
 

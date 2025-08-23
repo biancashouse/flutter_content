@@ -55,7 +55,9 @@ class SnippetInfoModel with SnippetInfoModelMappable {
     this.autoPublish,
     this.routePath,
     this.versionIds = const [],
-  });
+  }) {
+    autoPublish ??= fco.appInfo.autoPublishDefault;
+  }
 
   bool get isAPageSnippet => routePath != null;
 

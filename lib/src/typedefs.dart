@@ -90,7 +90,7 @@ typedef TextStylePropertiesChangeCallback = void Function(TextStyleProperties ne
 typedef ButtonStylePropertiesChangeCallback = void Function(ButtonStyleProperties newBSProps, bool refreshPTree);
 typedef ContainerStylePropertiesChangeCallback = void Function(ContainerStyleProperties newCSProps, bool refreshPTree);
 
-// typedef FeaturedWidgetHelpContentBuilder = Widget Function(
+// typedef FeaturedWidgetHelpSnippetBuilder = Widget Function(
 //     BuildContext context, FeaturedWidget? parent);
 // typedef FeaturedWidgetActionF = void Function(
 //     BuildContext, DiscoveryController);
