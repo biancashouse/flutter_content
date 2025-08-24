@@ -50,7 +50,6 @@ Future<void> showTargetDurationCallout(
           },
         ),
         arrowType: ArrowTypeEnum.POINTY,
-        modal: true,
         initialCalloutW: 400,
         initialCalloutH: 450,
         draggable: true,

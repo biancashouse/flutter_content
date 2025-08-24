@@ -83,7 +83,6 @@ class PropertyButton<T> extends StatelessWidget {
               animate: true,
               initialCalloutAlignment: AlignmentEnum.centerRight,
               initialTargetAlignment: AlignmentEnum.centerLeft,
-              modal: false,
               initialCalloutW: calloutSize.width,
               initialCalloutH: calloutSize.height,
               resizeableH: maxLines > 1,

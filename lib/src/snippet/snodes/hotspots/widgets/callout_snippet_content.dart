@@ -109,7 +109,6 @@ Future<void> showSnippetContentCallout({
       ),
       // initialCalloutAlignment: AlignmentEnum.bottomCenter,
       // initialTargetAlignment: AlignmentEnum.topCenter,
-      modal: false,
       initialCalloutW: tc.calloutWidth,
       initialCalloutH: tc.calloutHeight,
       minHeight: minHeight + 4,
