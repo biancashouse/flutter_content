@@ -85,7 +85,7 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
         return anchor;
       },
       calloutSize: const Size(320, 40),
-      notifier: ValueNotifier<int>(0),
+      // notifier: ValueNotifier<int>(0),
     );
   }
 }

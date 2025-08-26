@@ -30,7 +30,7 @@ class PropertyButtonEnum extends StatelessWidget {
     return PropertyCalloutButton(
       cId: label,
       scName: scName,
-      notifier: ValueNotifier<int>(0),
+      // notifier: ValueNotifier<int>(0),
       labelWidget: label.isNotEmpty
           ? Row(
               mainAxisAlignment: MainAxisAlignment.start,

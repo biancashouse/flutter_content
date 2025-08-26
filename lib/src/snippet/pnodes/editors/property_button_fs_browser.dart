@@ -44,7 +44,7 @@ class PropertyButtonFSBrowser extends StatelessWidget {
       },
       // onDismissedF: () => fco.restoreHeight(fco.snippetBeingEdited!.rootNode.name),
       calloutSize: const Size(500, 400),
-      notifier: ValueNotifier<int>(0),
+      // notifier: ValueNotifier<int>(0),
     );
   }
 }

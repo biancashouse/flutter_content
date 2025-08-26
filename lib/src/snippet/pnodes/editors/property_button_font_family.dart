@@ -43,7 +43,7 @@ class _PropertyButtonFontFamilyState extends State<PropertyButtonFontFamily> {
     return PropertyCalloutButton(
       cId: 'font-family',
       scName: widget.scName,
-      notifier: ValueNotifier<int>(0),
+      // notifier: ValueNotifier<int>(0),
       labelWidget: fontFamilyLabel,
       calloutButtonSize: const Size(200, 40),
       menuBgColor: widget.menuBgColor,

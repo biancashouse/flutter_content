@@ -17,7 +17,7 @@ class PropertyCalloutButton extends StatelessWidget {
   final Color calloutButtonColor;
   final Size calloutSize;
   final VoidCallback? onDismissedF;
-  final ValueNotifier<int> notifier;
+  // final ValueNotifier<int> notifier;
   final ScrollControllerName? scName;
 
   const PropertyCalloutButton({
@@ -35,13 +35,16 @@ class PropertyCalloutButton extends StatelessWidget {
     this.menuBgColor = Colors.purpleAccent,
     this.draggable,
     this.onDismissedF,
-    required this.notifier,
+    // required this.notifier,
     required this.scName,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+
+    final notifier = ValueNotifier<int>(0);
+
     CalloutConfigModel config = CalloutConfigModel(
       cId: cId,
       initialCalloutW: calloutSize.width,

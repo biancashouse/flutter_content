@@ -5,11 +5,11 @@ import 'package:flutter_content/src/snippet/pnodes/editors/property_callout_butt
 class StringPNode extends PNode {
   String? stringValue;
   final ValueChanged<String?> onStringChange;
-  final List<String>? options;
+  final List<String> options;
   final bool expands;
   final bool skipLabelText;
   final bool skipHelperText;
-  final nameOnSeparateLine;
+  final bool nameOnSeparateLine;
   final Size calloutButtonSize;
   final double calloutWidth;
   final int numLines;
@@ -17,7 +17,7 @@ class StringPNode extends PNode {
   StringPNode({
     required this.stringValue,
     required this.onStringChange,
-    this.options,
+    this.options = const [],
     this.expands = false,
     this.skipLabelText = false,
     this.skipHelperText = false,

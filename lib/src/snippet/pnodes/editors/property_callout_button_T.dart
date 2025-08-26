@@ -5,13 +5,13 @@ import 'package:flutter_content/flutter_content.dart';
 
 class PropertyButton<T> extends StatelessWidget {
   final String originalText;
-  final List<String>? options;
+  final List<String> options;
   final String? label;
   final int maxLines;
   final bool expands;
   final Size calloutButtonSize;
   final Size calloutSize;
-  final ValueNotifier<int>? notifier;
+  // final ValueNotifier<int>? notifier;
   final bool skipLabelText;
   final bool skipHelperText;
   final GlobalKey propertyBtnGK;
@@ -20,13 +20,13 @@ class PropertyButton<T> extends StatelessWidget {
 
   const PropertyButton({
     required this.originalText,
-    this.options,
+    this.options = const [],
     this.label,
     this.maxLines = 1,
     this.expands = false,
     required this.calloutButtonSize,
     required this.calloutSize,
-    this.notifier,
+    // this.notifier,
     this.skipLabelText = false,
     this.skipHelperText = false,
     required this.onChangeF,
@@ -107,10 +107,10 @@ class PropertyButton<T> extends StatelessWidget {
                 editedText = s;
                 fco.dismiss('matches');
                 // possibly show matching options
-                if ((options?.isNotEmpty ?? false) &&
+                if ((options.isNotEmpty) &&
                     _matches(options, editedText).isNotEmpty) {
                   _showOptionMatches(
-                    options!,
+                    options,
                     editedText,
                     (s) {
                       editedText = s;
@@ -146,10 +146,10 @@ class PropertyButton<T> extends StatelessWidget {
               targetGkF: () => propertyBtnGK,
             );
             // show options, if any
-            if ((options?.isNotEmpty ?? false) &&
+            if ((options.isNotEmpty) &&
                 _matches(options, editedText).isNotEmpty) {
               _showOptionMatches(
-                options!,
+                options,
                 editedText,
                 (s) {
                   editedText = s;
@@ -200,7 +200,7 @@ class PropertyButton<T> extends StatelessWidget {
       initialTargetAlignment: AlignmentEnum.topRight,
       initialCalloutAlignment: AlignmentEnum.topLeft,
       draggable: false,
-      movedOrResizedNotifier: notifier,
+      // movedOrResizedNotifier: notifier,
     );
     List<String> matches = _matches(options, editedText);
     Widget matchesMenuBoxContent(matches) {
@@ -235,7 +235,7 @@ class PropertyButton<T> extends StatelessWidget {
     );
   }
 
-  List<String> _matches(options, editedText) => options.where((String option) {
+  List<String> _matches(List<String> options, String editedText) => options.where((String option) {
         return option.contains(editedText.toLowerCase());
       }).toList();
 }

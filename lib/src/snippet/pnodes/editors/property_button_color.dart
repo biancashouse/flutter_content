@@ -98,7 +98,7 @@ class PropertyButtonColor extends StatelessWidget {
         );
       },
       calloutSize: const Size(320, 380),
-      notifier: ValueNotifier<int>(0),
+      // notifier: ValueNotifier<int>(0),
     );
   }
 }
