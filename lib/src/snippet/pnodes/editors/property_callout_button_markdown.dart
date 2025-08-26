@@ -52,7 +52,7 @@ class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
               CalloutConfigModel teCC = CalloutConfigModel(
                 cId: 'markdown-te',
                 scrollControllerName: widget.scName,
-                containsTextField: true,
+                // containsTextField: true,
                 barrier: CalloutBarrierConfig(
                     opacity: .25,
                     onTappedF: () {

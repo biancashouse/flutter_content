@@ -398,6 +398,7 @@ class FlutterContentMixins
   JsonMap get appInfoAsMap => appInfo.toMap();
 
   late ValueNotifier<RoutingConfig> routingConfigVN;
+  var themeModeNotifier = ValueNotifier<ThemeMode>(ThemeMode.light);
 
   late bool _authenticated;
 

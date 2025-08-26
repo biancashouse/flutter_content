@@ -58,7 +58,7 @@ class _PropertyButtonUMLState extends State<PropertyButtonUML> {
               CalloutConfigModel teCC = CalloutConfigModel(
                 cId: 'uml-te',
                 scrollControllerName: widget.scName,
-                containsTextField: true,
+                // containsTextField: true,
                 barrier: CalloutBarrierConfig(
                     opacity: .25,
                     onTappedF: () {

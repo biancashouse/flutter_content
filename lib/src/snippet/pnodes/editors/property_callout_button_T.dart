@@ -67,7 +67,7 @@ class PropertyButton<T> extends StatelessWidget {
             CalloutConfigModel teCC = CalloutConfigModel(
               cId: 'te',
               scrollControllerName: scName,
-              containsTextField: true,
+              // containsTextField: true,
               barrier: CalloutBarrierConfig(
                   opacity: .25,
                   onTappedF: () {

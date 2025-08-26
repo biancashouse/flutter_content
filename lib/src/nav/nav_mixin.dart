@@ -37,6 +37,8 @@ mixin NavMixin {
             ),
           );
         }
+        addBrightnessItem(dropdownItems);
+
         return DropdownButton<String>(
           // key: fco.authIconGK,
           items: dropdownItems,
@@ -96,6 +98,7 @@ mixin NavMixin {
             );
           }
         }
+        addBrightnessItem(dropdownItems);
         final dd = DropdownButton<String>(
           items: dropdownItems,
           underline: Offstage(),
@@ -116,6 +119,48 @@ mixin NavMixin {
       }
     },
   );
+
+  void addBrightnessItem(dropdownItems) {
+    dropdownItems.add(
+      DropdownMenuItem<String>(
+        value: 'brightness',
+        child: ValueListenableBuilder<ThemeMode>(
+          valueListenable: fco.themeModeNotifier,
+          builder: (context, currentMode, child) {
+            String buttonText;
+            ThemeMode nextMode;
+            IconData buttonIcon;
+
+            switch (currentMode) {
+              case ThemeMode.light:
+                buttonText = 'Switch to Dark Mode';
+                nextMode = ThemeMode.dark;
+                buttonIcon = Icons.brightness_3; // Moon icon
+                break;
+              case ThemeMode.dark:
+                buttonText = 'Switch to System Theme';
+                nextMode = ThemeMode.system;
+                buttonIcon = Icons.brightness_auto; // Auto icon
+                break;
+              case ThemeMode.system:
+              default: // Treat system as default, cycle to light
+                buttonText = 'Switch to Light Mode';
+                nextMode = ThemeMode.light;
+                buttonIcon = Icons.brightness_7; // Sun icon
+                break;
+            }
+            return MenuItemButton(
+              onPressed: () {
+                fco.themeModeNotifier.value = nextMode;
+              },
+              leadingIcon: Icon(buttonIcon),
+              child: Text(buttonText),
+            );
+          },
+        ),
+      ),
+    );
+  }
 
   Widget _signOutBtn() => TextButton(
     onPressed: () {

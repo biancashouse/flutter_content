@@ -67,7 +67,7 @@ class PropertyCalloutButton extends StatelessWidget {
           fco.dismiss(cId);
         },
       ),
-      containsTextField: true,
+      // containsTextField: true,
       resizeableH: false,
       resizeableV: false,
       borderRadius: 16,

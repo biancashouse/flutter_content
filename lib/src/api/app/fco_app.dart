@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart' show PathUrlStrategy, setUrlStrategy;
+import 'package:flutter_web_plugins/flutter_web_plugins.dart'
+    show PathUrlStrategy, setUrlStrategy;
 import 'package:go_router/go_router.dart';
 
 // conditional import for webview ------------------
@@ -161,18 +162,18 @@ class FlutterContentAppState extends State<FlutterContentApp>
 
   // init FlutterContent, which keeps a single CAPIBloC and multiple SnippetBloCs
   Future<CAPIBloC?> _initApp() async {
-      fco.capiBloc = await fco.createCAPIBloC(
-        appName: widget.appName,
-        fbOptions: widget.fbOptions,
-        useEmulator: widget.useEmulator,
-        useFBStorage: widget.useFBStorage,
-        routingConfig: widget.routingConfig,
-        initialRoutePath: widget.initialRoutePath,
-      );
-      widget.onReadyF?.call();
-      SNode.hideAllTargetCovers();
-      widget.alsoInitF?.call();
-      return fco.capiBloc;
+    fco.capiBloc = await fco.createCAPIBloC(
+      appName: widget.appName,
+      fbOptions: widget.fbOptions,
+      useEmulator: widget.useEmulator,
+      useFBStorage: widget.useFBStorage,
+      routingConfig: widget.routingConfig,
+      initialRoutePath: widget.initialRoutePath,
+    );
+    widget.onReadyF?.call();
+    SNode.hideAllTargetCovers();
+    widget.alsoInitF?.call();
+    return fco.capiBloc;
   }
 
   // ytController = YoutubePlayerController.fromVideoId(
@@ -190,51 +191,57 @@ class FlutterContentAppState extends State<FlutterContentApp>
             snapshot.hasData) {
           return BlocProvider<CAPIBloC>(
             create: (BuildContext context) => snapshot.data!,
-            child: widget.routingConfig != null
-                ? MaterialApp.router(
-                    // following line not valid for router;
-                    // instead pass navigatorKey: fco.globalNavigatorKey
-                    // to GoRouter.routingConfig()
-                    routerConfig: fco.router,
-                    theme: widget.materialAppThemeF(),
-                    darkTheme: ThemeData(
-                      brightness: Brightness.light,
-                      primarySwatch: Colors.purple,
-                      // ... other dark theme properties
-                      scaffoldBackgroundColor: Colors.black54,
-                      // Example
-                      textTheme: TextTheme(
-                        bodyMedium: TextStyle(color: Colors.black87),
+            child: ValueListenableBuilder<ThemeMode>(
+              valueListenable: fco.themeModeNotifier,
+              builder: (context, currentMode, child) =>
+                  widget.routingConfig != null
+                  ? MaterialApp.router(
+                      // following line not valid for router;
+                      // instead pass navigatorKey: fco.globalNavigatorKey
+                      // to GoRouter.routingConfig()
+                      routerConfig: fco.router,
+                      themeMode: currentMode,
+                      theme: widget.materialAppThemeF(),
+                      darkTheme: ThemeData(
+                        brightness: Brightness.light,
+                        primarySwatch: Colors.purple,
+                        // ... other dark theme properties
+                        scaffoldBackgroundColor: Colors.black54,
+                        // Example
+                        textTheme: TextTheme(
+                          bodyMedium: TextStyle(color: Colors.black87),
+                        ),
+                        appBarTheme: AppBarTheme(
+                          backgroundColor: Colors.grey[850],
+                        ),
                       ),
-                      appBarTheme: AppBarTheme(
-                        backgroundColor: Colors.grey[850],
+                      debugShowCheckedModeBanner: false,
+                      title: widget.title,
+                      scrollBehavior: const ConstantScrollBehavior(),
+                    )
+                  : MaterialApp(
+                      navigatorKey: fco.globalNavigatorKey,
+                      home: widget.home,
+                      themeMode: currentMode,
+                      theme: widget.materialAppThemeF(),
+                      darkTheme: ThemeData(
+                        brightness: Brightness.light,
+                        primarySwatch: Colors.purple,
+                        // ... other dark theme properties
+                        scaffoldBackgroundColor: Colors.black54,
+                        // Example
+                        textTheme: TextTheme(
+                          bodyMedium: TextStyle(color: Colors.black87),
+                        ),
+                        appBarTheme: AppBarTheme(
+                          backgroundColor: Colors.grey[850],
+                        ),
                       ),
+                      debugShowCheckedModeBanner: false,
+                      title: widget.title,
+                      scrollBehavior: const ConstantScrollBehavior(),
                     ),
-                    debugShowCheckedModeBanner: false,
-                    title: widget.title,
-                    scrollBehavior: const ConstantScrollBehavior(),
-                  )
-                : MaterialApp(
-                    navigatorKey: fco.globalNavigatorKey,
-                    home: widget.home,
-                    theme: widget.materialAppThemeF(),
-                    darkTheme: ThemeData(
-                      brightness: Brightness.light,
-                      primarySwatch: Colors.purple,
-                      // ... other dark theme properties
-                      scaffoldBackgroundColor: Colors.black54,
-                      // Example
-                      textTheme: TextTheme(
-                        bodyMedium: TextStyle(color: Colors.black87),
-                      ),
-                      appBarTheme: AppBarTheme(
-                        backgroundColor: Colors.grey[850],
-                      ),
-                    ),
-                    debugShowCheckedModeBanner: false,
-                    title: widget.title,
-                    scrollBehavior: const ConstantScrollBehavior(),
-                  ),
+            ),
           );
         } else {
           return const Offstage();
