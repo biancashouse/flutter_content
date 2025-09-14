@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:window_manager/window_manager.dart';
 import 'pages/routes_config.dart';
 import 'bh-apps.firebase_options.dart';
 
@@ -26,6 +27,28 @@ void main({bool useEmulator = false}) {
   runZonedGuarded<Future<void>>(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      if (fco.isMac || fco.isWindows) {
+        await windowManager.ensureInitialized();
+
+        // Define the window options
+        WindowOptions windowOptions = const WindowOptions(
+          size: Size(1280, 1190),
+          // Set your desired width and height
+          center: true,
+          // Center the window on the screen
+          backgroundColor: Colors.transparent,
+          skipTaskbar: false,
+          titleBarStyle: TitleBarStyle.normal,
+          title: "My Awesome Flutter App", // Optional: Set a window title
+        );
+
+        // Wait until the window is ready to show, then apply options and show
+        windowManager.waitUntilReadyToShow(windowOptions, () async {
+          await windowManager.show();
+          await windowManager.focus();
+        });
+      }
 
       debugProfileBuildsEnabledUserWidgets = true;
 

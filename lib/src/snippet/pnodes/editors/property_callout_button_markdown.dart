@@ -47,7 +47,7 @@ class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
             style: const TextStyle(color: Colors.white),
             // overflow: TextOverflow.ellipsis,
           );
-          return GestureDetector(
+          return InkWell(
             onTap: () {
               CalloutConfigModel teCC = CalloutConfigModel(
                 cId: 'markdown-te',
@@ -85,13 +85,14 @@ class _PropertyButtonMarkdownState extends State<PropertyButtonMarkdown> {
                 targetGkF: () => widget.propertyBtnGK,
               );
             },
-            child: Container(
-              alignment: Alignment.topLeft,
-              key: widget.propertyBtnGK,
-              width: widget.calloutButtonSize.width,
-              height: widget.calloutButtonSize.height,
-              child: labelWidget,
-            ),
+            child: fco.coloredText('tap here to edit the markdown', color: Colors.white),
+            // child: Container(
+            //   alignment: Alignment.topLeft,
+            //   key: widget.propertyBtnGK,
+            //   width: widget.calloutButtonSize.width,
+            //   height: widget.calloutButtonSize.height,
+            //   child: labelWidget,
+            // ),
           );
         });
   }

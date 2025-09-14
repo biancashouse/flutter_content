@@ -13,7 +13,8 @@ class SNodeWidget extends StatelessWidget {
   // final bool allowButtonCallouts;
   final ScrollControllerName? scName;
 
-  const SNodeWidget({super.key, 
+  const SNodeWidget({
+    super.key,
     required this.snippetName,
     required this.treeController,
     required this.entry,
@@ -30,14 +31,13 @@ class SNodeWidget extends StatelessWidget {
 
     // bool selected = FCO.capiBloc.selectedNode == entry.node;
 
-    Color boxColor =
-        fco.snippetBeingEdited!.nodeBeingDeleted == entry.node
-            ? Colors.red
-            : entry.node is GenericSingleChildNode
-            ? Colors.transparent
-            : entry.node is SnippetRootNode
-            ? Colors.black
-            : Colors.white;
+    Color boxColor = fco.snippetBeingEdited!.nodeBeingDeleted == entry.node
+        ? Colors.red
+        : entry.node is GenericSingleChildNode
+        ? Colors.transparent
+        : entry.node is SnippetRootNode
+        ? Colors.black
+        : Colors.white;
 
     // fco.logger.d('SNodeWidget build (${entry.node.toString()}, ${entry.node.uid}, ${entry.node.nodeWidgetGK.toString()})');
     return Row(
@@ -50,18 +50,22 @@ class SNodeWidget extends StatelessWidget {
           //     : null,
           margin: EdgeInsets.zero,
           padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-          decoration:
-              entry.node is DirectoryNode || entry.node is FileNode
-                  ? null
-                  : BoxDecoration(
-                    color: boxColor,
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(entry.node is GenericSingleChildNode ? 4 : 30)),
+          decoration: entry.node is DirectoryNode || entry.node is FileNode
+              ? null
+              : BoxDecoration(
+                  color: boxColor,
+                  border: Border.all(color: Colors.grey, width: 1),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(
+                      entry.node is GenericSingleChildNode ? 4 : 30,
+                    ),
                   ),
+                ),
           alignment: Alignment.center,
           child: Row(
             children: [
-              if (entry.node is! GenericSingleChildNode && entry.node is! SnippetRootNode)
+              if (entry.node is! GenericSingleChildNode &&
+                  entry.node is! SnippetRootNode)
                 entry.node.widgetLogo() ?? Icon(Icons.error, color: Colors.red),
               Gap(8),
               // if (entry.node.logoSrc() != null) SizedBox(width: entry.node.logoSrc()!.contains('pub.dev') ? 6 : 0),
@@ -95,7 +99,9 @@ class SNodeWidget extends StatelessWidget {
   Widget _name(context) {
     final isRootNode = entry.node is SnippetRootNode;
     return Tooltip(
-      message: isRootNode && entry.node.getParent() != null ? 'double tap to edit this snippet' : '',
+      message: isRootNode && entry.node.getParent() != null
+          ? 'double tap to edit this snippet'
+          : '',
       child: GestureDetector(
         // key: entry.node == snippetBloc.state.selectedNode ? STreeNode.selectionGK : null,
         // onLongPress: () => _longPressedOrDoubleTapped(snippetBloc),
@@ -114,8 +120,11 @@ class SNodeWidget extends StatelessWidget {
           // instead of using the embedded snippet node, which has no child,
           // use the actual (STANDALONE) snippet itself
           // Assumption: actual snippet will be in versionCache
-          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo((entry.node as SnippetRootNode).name);
-          SnippetRootNode? snippet = await snippetInfo?.currentVersionFromCacheOrFB();
+          SnippetInfoModel? snippetInfo = SnippetInfoModel.cachedSnippetInfo(
+            (entry.node as SnippetRootNode).name,
+          );
+          SnippetRootNode? snippet = await snippetInfo
+              ?.currentVersionFromCacheOrFB();
 
           if (snippet != null) {
             SNode.pushThenShowNamedSnippetWithNodeSelected(
@@ -127,37 +136,43 @@ class SNodeWidget extends StatelessWidget {
           }
         },
         onTap: () {
-          _tappedNode();
+          _tappedNode(context);
         },
-        onSecondaryTapUp: fco.isIOS ? null : (TapUpDetails details) {
-          _longPressedNode(context, details.globalPosition, entry.node);
-        },
+        onSecondaryTapUp: fco.isIOS
+            ? null
+            : (TapUpDetails details) {
+                _longPressedNode(context, details.globalPosition, entry.node);
+              },
         // onLongPressStart: !fco.isIOS ? null : (LongPressStartDetails details){
         //   _longPressedNode(context, details.globalPosition, entry.node);
         // },
-        child:
-            entry.node is DirectoryNode
-                ? Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [const Icon(Icons.folder, size: 30, color: Colors.amber), const Gap(6), _text()],
-                )
-                // : entry.node is FileNode
-                // ? (entry.node as FileNode).toWidget(snippetBloc, context)
-                : _text(),
+        child: entry.node is DirectoryNode
+            ? Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.folder, size: 30, color: Colors.amber),
+                  const Gap(6),
+                  _text(),
+                ],
+              )
+            // : entry.node is FileNode
+            // ? (entry.node as FileNode).toWidget(snippetBloc, context)
+            : _text(),
       ),
     );
   }
 
-  void _tappedNode() {
+  void _tappedNode(BuildContext context) {
     if (onClipboard /* || entry.node is GenericSingleChildNode*/ ) return;
     // if (entry.node is TextSpanNode) {
     //   fco.logger.i('TextSpan cannot be selected (has no key property!)');
     //   return;
     // };
 
-    if (fco.snippetBeingEdited!.aNodeIsSelected && entry.node == fco.selectedNode) {
+    if (fco.snippetBeingEdited!.aNodeIsSelected &&
+        entry.node == fco.selectedNode) {
       return;
     }
 
@@ -173,15 +188,17 @@ class SNodeWidget extends StatelessWidget {
 
     if (fco.snippetBeingEdited!.aNodeIsSelected && thisWasAlreadySelected) {
       fco.hide("floating-clipboard");
-      fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+      // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
       fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-    } else if (!fco.snippetBeingEdited!.aNodeIsSelected || !thisWasAlreadySelected) {
+    } else if (!fco.snippetBeingEdited!.aNodeIsSelected ||
+        !thisWasAlreadySelected) {
       if (fco.appInfo.clipboard != null) {
         fco.unhide("floating-clipboard");
       }
 
       // Rect? borderRect = entry.node.calcBborderRect();
-      fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+      EditablePageState? eps = EditablePage.of(context);
+      eps?.removeAllNodeWidgetOverlays();
 
       fco.capiBloc.add(
         CAPIEvent.selectNode(
@@ -191,22 +208,25 @@ class SNodeWidget extends StatelessWidget {
           // selectedTreeNodeGK: GlobalKey(debugLabel: 'selectedTreeNodeGK'),
         ),
       );
-
-      // if (borderRect != null) {
-      //   fco.afterNextBuildDo(() {
-      //     entry.node.showNodeWidgetOverlay(borderRect, scName: scName, followScroll: false);
-      //     // fco.bringToTop(PINK_OVERLAY_NON_TAPPABLE);
-      //   });
-      // } else {
-      //   print('borderRect?');
-      // }
     }
+
+    fco.afterNextBuildDo(() {
+      fco.afterMsDelayDo(1000, () {
+        SnippetRootNode? rootNode = entry.node.rootNodeOfSnippet();
+        var ctx = rootNode?.child?.nodeWidgetGK?.currentContext;
+        if (ctx != null) {
+          EditablePageState? eps = EditablePage.of(ctx);
+          eps?.showNodeWidgetOverlaysNeedingInterception();
+        }
+      });
+    });
   }
 
   void _longPressedNode(BuildContext context, Offset tapPos, SNode node) {
     // clear sel
-    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-    fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+    EditablePageState? eps = EditablePage.of(context);
+    eps?.removeAllNodeWidgetOverlays();
+    // fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
     fco.hide("floating-clipboard");
 
     fco.capiBloc.add(CAPIEvent.selectNode(node: node));
@@ -239,7 +259,7 @@ class SNodeWidget extends StatelessWidget {
         toDelta: -20,
       ),
       calloutContent: nodeButtons(context, scName, node),
-      targetGkF: ()=> node.treeNodeGK,
+      targetGkF: () => node.treeNodeGK,
     );
   }
 
@@ -281,20 +301,19 @@ class SNodeWidget extends StatelessWidget {
     var selectedNode = fco.selectedNode;
     var node = entry.node;
 
-    String displayedNodeName =
-        node is SnippetRootNode && node.name.isNotEmpty
-            ? node.name
-            : node is DirectoryNode && node.name!.isNotEmpty
-            ? node.name!
-            : node is DirectoryNode && node.name!.isEmpty
-            ? 'name ?'
-            : node is FileNode && node.name.isEmpty
-            ? 'filename ?'
-            : node is FileNode && node.src.isEmpty
-            ? 'src ?'
-            : node is FileNode
-            ? node.name
-            : node.toString();
+    String displayedNodeName = node is SnippetRootNode && node.name.isNotEmpty
+        ? node.name
+        : node is DirectoryNode && node.name!.isNotEmpty
+        ? node.name!
+        : node is DirectoryNode && node.name!.isEmpty
+        ? 'name ?'
+        : node is FileNode && node.name.isEmpty
+        ? 'filename ?'
+        : node is FileNode && node.src.isEmpty
+        ? 'src ?'
+        : node is FileNode
+        ? node.name
+        : node.toString();
 
     // bool badParent = selectedNode.sensibleParents().isNotEmpty && !selectedNode.sensibleParents().contains(selectNodeParent?.toString());
     // if (badParent) {
@@ -306,11 +325,17 @@ class SNodeWidget extends StatelessWidget {
     return Text(
       key: node.treeNodeGK = GlobalKey(),
       displayedNodeName,
-      textScaler: TextScaler.linear(entry.node is GenericSingleChildNode ? .9 : 1.0),
+      textScaler: TextScaler.linear(
+        entry.node is GenericSingleChildNode ? .9 : 1.0,
+      ),
       style: TextStyle(
-        color: node is SnippetRootNode || node is GenericSingleChildNode ? Colors.white : textColor,
+        color: node is SnippetRootNode || node is GenericSingleChildNode
+            ? Colors.white
+            : textColor,
         fontSize: 12.0,
-        fontStyle: node is MC && !node.children.isNotEmpty ? FontStyle.italic : FontStyle.normal,
+        fontStyle: node is MC && !node.children.isNotEmpty
+            ? FontStyle.italic
+            : FontStyle.normal,
         fontWeight: node == selectedNode ? FontWeight.bold : FontWeight.normal,
       ),
     );
@@ -333,10 +358,13 @@ class SNodeWidget extends StatelessWidget {
                     // some properties cannot be deleted
                     if (gc is GenericSingleChildNode? &&
                         gc?.getParent() is StepNode &&
-                        (gc?.propertyName == 'title' || gc?.propertyName == 'content')) {
+                        (gc?.propertyName == 'title' ||
+                            gc?.propertyName == 'content')) {
                       return;
                     }
-                    fco.capiBloc.add(CAPIEvent.cutNode(node: node, scName: scName));
+                    fco.capiBloc.add(
+                      CAPIEvent.cutNode(node: node, scName: scName),
+                    );
                     fco.afterNextBuildDo(() {
                       fco.dismiss('node-actions');
                       if (fco.appInfo.clipboard != null) {
@@ -350,12 +378,13 @@ class SNodeWidget extends StatelessWidget {
                     color: Colors.orange.withValues(
                       alpha:
                           !fco.aNodeIsSelected ||
-                                  node is SnippetRootNode ||
-                                  gc is GenericSingleChildNode? &&
-                                      gc?.getParent() is StepNode &&
-                                      (gc?.propertyName == 'title' || gc?.propertyName == 'content')
-                              ? .5
-                              : 1.0,
+                              node is SnippetRootNode ||
+                              gc is GenericSingleChildNode? &&
+                                  gc?.getParent() is StepNode &&
+                                  (gc?.propertyName == 'title' ||
+                                      gc?.propertyName == 'content')
+                          ? .5
+                          : 1.0,
                     ),
                   ),
                   tooltip: 'Cut',
@@ -365,7 +394,9 @@ class SNodeWidget extends StatelessWidget {
                   hoverColor: Colors.white30,
                   onPressed: () {
                     fco.afterNextBuildDo(() {
-                      fco.capiBloc.add(CAPIEvent.copyNode(node: node, scName: scName));
+                      fco.capiBloc.add(
+                        CAPIEvent.copyNode(node: node, scName: scName),
+                      );
                       fco.afterNextBuildDo(() {
                         fco.dismiss('node-actions');
                         if (fco.appInfo.clipboard != null) {
@@ -377,7 +408,11 @@ class SNodeWidget extends StatelessWidget {
                   },
                   icon: Icon(
                     Icons.copy,
-                    color: Colors.green.withValues(alpha: fco.aNodeIsSelected && node is! SnippetRootNode ? 1.0 : .25),
+                    color: Colors.green.withValues(
+                      alpha: fco.aNodeIsSelected && node is! SnippetRootNode
+                          ? 1.0
+                          : .25,
+                    ),
                   ),
                   tooltip: 'Copy',
                 ),
@@ -389,7 +424,8 @@ class SNodeWidget extends StatelessWidget {
                     if (!node.canBeDeleted()) return;
                     // bool wasShowingAsRoot = selectedNode == snippetBloc.treeC.roots.first;
                     // STreeNode? parentNode = selectedNode.getParent() as STreeNode?;
-                    fco.dismiss(SELECTED_NODE_BORDER_CALLOUT);
+                    EditablePageState? eps = EditablePage.of(context);
+                    eps?.removeAllNodeWidgetOverlays();
                     fco.capiBloc.add(const CAPIEvent.deleteNodeTapped());
                     fco.afterNextBuildDo(() async {
                       await Future.delayed(const Duration(milliseconds: 1000));
@@ -418,13 +454,15 @@ class SNodeWidget extends StatelessWidget {
                     color: Colors.red.withValues(
                       alpha:
                           !fco.aNodeIsSelected ||
-                                  !node.canBeDeleted() ||
-                                  (node is SnippetRootNode && node.getParent() == null) ||
-                                  (gc is GenericSingleChildNode? &&
-                                      gc?.getParent() is StepNode &&
-                                      (gc?.propertyName == 'title' || gc?.propertyName == 'content'))
-                              ? .5
-                              : 1.0,
+                              !node.canBeDeleted() ||
+                              (node is SnippetRootNode &&
+                                  node.getParent() == null) ||
+                              (gc is GenericSingleChildNode? &&
+                                  gc?.getParent() is StepNode &&
+                                  (gc?.propertyName == 'title' ||
+                                      gc?.propertyName == 'content'))
+                          ? .5
+                          : 1.0,
                     ),
                   ),
                   tooltip: 'Remove',
@@ -437,7 +475,12 @@ class SNodeWidget extends StatelessWidget {
                         selectedNode: node,
                         //targetGKF: () => targetGK,
                         saveModelF: (s) {
-                          fco.capiBloc.add(CAPIEvent.saveNodeAsSnippet(node: node, newSnippetName: s));
+                          fco.capiBloc.add(
+                            CAPIEvent.saveNodeAsSnippet(
+                              node: node,
+                              newSnippetName: s,
+                            ),
+                          );
                           fco.afterNextBuildDo(() {
                             fco.dismiss("input-snippet-name");
                             fco.dismiss('node-actions');
@@ -488,9 +531,14 @@ class SNodeWidget extends StatelessWidget {
           if (node is! GenericSingleChildNode && _canReplace(node))
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: node.insertItemMenuAnchor(action: NodeAction.replaceWith, label: 'Replace with...', bgColor: Colors.lightBlueAccent),
+              child: node.insertItemMenuAnchor(
+                context,
+                action: NodeAction.replaceWith,
+                label: 'Replace with...',
+                bgColor: Colors.lightBlueAccent,
+              ),
             ),
-          _editTreeStructureIconButtons(node),
+          _editTreeStructureIconButtons(context, node),
           const Gap(10),
         ],
       ),
@@ -499,16 +547,19 @@ class SNodeWidget extends StatelessWidget {
 
   bool _canReplace(SNode? selectNode) => selectNode?.getParent() != null;
 
-  bool _canAddSiblng(SNode? selectNodeParent) => (selectNodeParent is MC || selectNodeParent is TextSpanNode || selectNodeParent is WidgetSpanNode);
+  bool _canAddSiblng(SNode? selectNodeParent) =>
+      (selectNodeParent is MC ||
+      selectNodeParent is TextSpanNode ||
+      selectNodeParent is WidgetSpanNode);
 
   bool _canWrap(SNode selectedNode) =>
       (selectedNode is! GenericSingleChildNode &&
-          selectedNode is! GenericMultiChildNode &&
-          selectedNode is! InlineSpanNode &&
-          (selectedNode is! SnippetRootNode || selectedNode.getParent() != null) &&
-          selectedNode is! FileNode &&
-          selectedNode is! PollOptionNode &&
-          selectedNode is! StepNode);
+      selectedNode is! GenericMultiChildNode &&
+      selectedNode is! InlineSpanNode &&
+      (selectedNode is! SnippetRootNode || selectedNode.getParent() != null) &&
+      selectedNode is! FileNode &&
+      selectedNode is! PollOptionNode &&
+      selectedNode is! StepNode);
 
   bool _canAddChld(SNode selectedNode) =>
       selectedNode is ScaffoldNode && selectedNode.appBar == null ||
@@ -516,9 +567,14 @@ class SNodeWidget extends StatelessWidget {
           // || (selectedNode is! ChildlessNode && !entry.hasChildren))
           // (selectedNode is RichTextNode && selectedNode.text == null) ||
           (selectedNode is SC && selectedNode.child == null) ||
-          (selectedNode is MC || selectedNode is TextSpanNode || selectedNode is WidgetSpanNode));
+          (selectedNode is MC ||
+              selectedNode is TextSpanNode ||
+              selectedNode is WidgetSpanNode));
 
-  Widget _editTreeStructureIconButtons(SNode selectedNode) {
+  Widget _editTreeStructureIconButtons(
+    BuildContext context,
+    SNode selectedNode,
+  ) {
     return Center(
       child: Stack(
         children: [
@@ -536,18 +592,22 @@ class SNodeWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(color: Colors.grey, width: 2),
-                        borderRadius: const BorderRadius.all(Radius.circular(30)),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(30),
+                        ),
                       ),
                       alignment: Alignment.center,
                       child: Text(selectedNode.toString()),
                     ),
                   ),
-                  if (selectedNode is! RowNode && _canAddSiblng(selectedNode.getParent() as SNode?))
+                  if (selectedNode is! RowNode &&
+                      _canAddSiblng(selectedNode.getParent() as SNode?))
                     Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           selectedNode.insertItemMenuAnchor(
+                            context,
                             action: NodeAction.addSiblingBefore,
                             tooltip: 'Insert sibling before...',
                             bgColor: Colors.blue,
@@ -557,6 +617,7 @@ class SNodeWidget extends StatelessWidget {
                           //     ? const VerticalDivider(thickness: 6, indent: 30, endIndent: 30)
                           //     : const Divider(thickness: 6, indent: 30, endIndent: 30),
                           selectedNode.insertItemMenuAnchor(
+                            context,
                             action: NodeAction.addSiblingAfter,
                             tooltip: 'Insert sibling after...',
                             bgColor: Colors.blue,
@@ -568,19 +629,30 @@ class SNodeWidget extends StatelessWidget {
                     Positioned(
                       top: 10,
                       left: 10,
-                      child: selectedNode.insertItemMenuAnchor(action: NodeAction.wrapWith, tooltip: 'Wrap with...', bgColor: Colors.blue),
+                      child: selectedNode.insertItemMenuAnchor(
+                        context,
+                        action: NodeAction.wrapWith,
+                        tooltip: 'Wrap with...',
+                        bgColor: Colors.blue,
+                      ),
                     ),
                   if (_canAddChld(selectedNode))
                     Positioned(
                       bottom: 10,
                       right: 10,
-                      child: selectedNode.insertItemMenuAnchor(action: NodeAction.addChild, tooltip: 'Add child...', bgColor: Colors.blue),
+                      child: selectedNode.insertItemMenuAnchor(
+                        context,
+                        action: NodeAction.addChild,
+                        tooltip: 'Add child...',
+                        bgColor: Colors.blue,
+                      ),
                     ),
                 ],
               ),
             ),
           ),
-          if (selectedNode is RowNode && _canAddSiblng(selectedNode.getParent() as SNode?))
+          if (selectedNode is RowNode &&
+              _canAddSiblng(selectedNode.getParent() as SNode?))
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -591,8 +663,18 @@ class SNodeWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    selectedNode.insertItemMenuAnchor(action: NodeAction.addSiblingBefore, tooltip: 'Insert sibling before...', bgColor: Colors.blue),
-                    selectedNode.insertItemMenuAnchor(action: NodeAction.addSiblingAfter, tooltip: 'Insert sibling after...', bgColor: Colors.blue),
+                    selectedNode.insertItemMenuAnchor(
+                      context,
+                      action: NodeAction.addSiblingBefore,
+                      tooltip: 'Insert sibling before...',
+                      bgColor: Colors.blue,
+                    ),
+                    selectedNode.insertItemMenuAnchor(
+                      context,
+                      action: NodeAction.addSiblingAfter,
+                      tooltip: 'Insert sibling after...',
+                      bgColor: Colors.blue,
+                    ),
                   ],
                 ),
               ),

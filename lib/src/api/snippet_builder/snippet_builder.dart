@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'versions_menu_anchor_with_edit_menu_item.dart' show SnippetMenuAnchor, AnchorWidgetEnum;
 
 const BODY_PLACEHOLDER = 'body-placeholder';
@@ -184,7 +185,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
       listener: (context, state) {
         // NON-null name means show pink overlays, otherwise ignore (editing ended)
         if (state.snippetNameShowingPinkOverlaysFor != null) {
-          showSnippetNodeWidgetOverlays(context, widget.scName);
+          showSnippetNodeWidgetTappableOverlays(context, widget.scName);
         }
         // if (state.snippetBeingEdited?.aNodeIsSelected ?? false) {
         //   final selectedNode = state.snippetBeingEdited!.selectedNode;
@@ -278,10 +279,12 @@ class SnippetBuilderState extends State<SnippetBuilder>
                     fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
-                    child: SnippetMenuAnchor(
-                      anchorWidget: AnchorWidgetEnum.Triangle,
-                      triangleColor: triangleColor,
-                      snippetInfo: snippetInfo!,
+                    child: PointerInterceptor(
+                      child: SnippetMenuAnchor(
+                        anchorWidget: AnchorWidgetEnum.Triangle,
+                        triangleColor: triangleColor,
+                        snippetInfo: snippetInfo!,
+                      ),
                     ),
                   ),
                 if (!playing &&
@@ -290,19 +293,21 @@ class SnippetBuilderState extends State<SnippetBuilder>
                     fco.snippetBeingEdited == null)
                   Align(
                     alignment: Alignment.topRight,
-                    child: Tooltip(
-                      message: 'show Snippet menu',
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        alignment: Alignment.topRight,
-                        child: pageIsEditable || isCID
-                            ? SnippetMenuAnchor(
-                                anchorWidget: AnchorWidgetEnum.IconButton,
-                                snippetInfo: snippetInfo!,
-                              )
-                            // Icon(Icons.select_all, size: 20, color: Colors.white)
-                            : const Offstage(),
+                    child: PointerInterceptor(
+                      child: Tooltip(
+                        message: 'show Snippet menu',
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          alignment: Alignment.topRight,
+                          child: pageIsEditable || isCID
+                              ? SnippetMenuAnchor(
+                                  anchorWidget: AnchorWidgetEnum.IconButton,
+                                  snippetInfo: snippetInfo!,
+                                )
+                              // Icon(Icons.select_all, size: 20, color: Colors.white)
+                              : const Offstage(),
+                        ),
                       ),
                     ),
                   ),
@@ -317,11 +322,9 @@ class SnippetBuilderState extends State<SnippetBuilder>
                         ? Colors.limeAccent.withValues(alpha: .5)
                         : Colors.pink.shade100,
                     textStyle: TextStyle(color: Colors.black, fontSize: 10),
-                    child: !state.inSelectWidgetMode
-                        ? snippetWidget
-                        : IgnorePointer(child: snippetWidget),
+                    child: IgnorePointer(child: snippetWidget),
                   )
-                : canEdit && false
+                : canEdit && fco.snippetBeingEdited != null
                 ? IgnorePointer(child: snippetWidget)
                 : snippetWidget;
           },
@@ -338,7 +341,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
   //   fco.capiBloc.add(CAPIEvent.enterSelectWidgetMode(snippetName: widget.snippetName ?? widget.snippetRootNode!.name));
   // }
 
-  static void showSnippetNodeWidgetOverlays(
+  static void showSnippetNodeWidgetTappableOverlays(
     BuildContext context,
     ScrollControllerName? scName,
   ) {
@@ -382,7 +385,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
             // fco.logger.i('_showNodeWidgetOverlay...');
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
-            node.showTappableNodeWidgetOverlay(
+            node.showTappableNodeWidgetOverlay(context,
               //whiteBarrier: !barrierApplied,
               scName: scName,
             );
@@ -397,7 +400,7 @@ class SnippetBuilderState extends State<SnippetBuilder>
 
     var pageContext = context;
     traverseAndMeasure(pageContext); // root node overlay must have barrier
-    fco.showingNodeBoundaryOverlays = true;
+    // fco.showingNodeBoundaryOverlays = true;
     // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 

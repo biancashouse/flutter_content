@@ -96,7 +96,7 @@ class YTNode extends CL with YTNodeMappable {
       if (startAtSecs != null) embedUrl += "&amp;start=$startAtSecs";
       if (endAtSecs != null) embedUrl += "&amp;end=$endAtSecs";
       embedUrl += '&amp;rel=0';
-      return SizedBox(
+       return SizedBox(
         width: iframeWidth,
         height: iframeHeight,
         child: AspectRatio(
@@ -106,7 +106,6 @@ class YTNode extends CL with YTNodeMappable {
             src: embedUrl,
             iframeW: iframeWidth,
             iframeH: iframeHeight,
-            forceRefresh: true,
           ),
         ),
       );

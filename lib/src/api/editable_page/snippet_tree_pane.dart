@@ -65,78 +65,78 @@ class SnippetTreePane extends StatelessWidget {
     );
 
     // tbd
-    if (fco.snippetBeingEdited?.getRootNode().child == null) {
-      List<Widget> menuChildren = fco.snippetBeingEdited?.getRootNode().menuAnchorWidgets(NodeAction.addChild, scName) ?? [];
-      return MenuAnchor(
-        alignmentOffset: const Offset(80, 0),
-        menuChildren: menuChildren,
-        builder: (BuildContext context, MenuController controller, Widget? child) {
-          return Center(
-            child: TextButton.icon(
-              key: key,
-              onPressed: () {
-                if (controller.isOpen) {
-                  controller.close();
-                } else {
-                  controller.open();
-                }
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('add root widget'),
-              style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(Colors.white.withValues(alpha: .9)),
-                //padding: WidgetStatePropertyAll(EdgeInsets.zero),
-              ),
-            ),
-          );
-        },
-      );
-    } else {
-      return Material(
-        color: Colors.purple.shade200,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: InteractiveViewer(
-            alignment: Alignment.topLeft,
-            constrained: false,
-            // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-            // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
-            child: SizedBox(
-              width: 700,
-              height: 1200,
-              child: Builder(
-                builder: (context) {
-                  // final STreeNode? selectedNode = selectedNode;
-                  bool canShowNavigateUpBtn = true;
-                  if (fco.snippetBeingEdited?.treeC.roots.first.getParent() == null) {
-                    canShowNavigateUpBtn = false;
-                  }
-                  if (fco.snippetBeingEdited?.treeC.roots.first.getParent() is SnippetRootNode &&
-                      fco.snippetBeingEdited?.treeC.roots.first.getParent()?.getParent() == null) {
-                    canShowNavigateUpBtn = false;
-                  }
-                  if (fco.snippetBeingEdited?.getRootNode() != fco.snippetBeingEdited?.treeC.roots.first &&
-                      fco.snippetBeingEdited?.treeC.roots.first is! ScaffoldNode) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // if (canShowNavigateUpBtn) navigateUpTreeButton(),
-                        Expanded(child: SnippetTreeView(scName: scName)),
-                      ],
-                    );
-                  }
-                  // fco.logger.i('SnippetTreeView...');
-                  return SnippetTreeView(scName: scName);
-                },
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-  }
+  //   if (fco.snippetBeingEdited?.getRootNode().child == null) {
+  //     List<Widget> menuChildren = fco.snippetBeingEdited?.getRootNode().menuAnchorWidgets(NodeAction.addChild, scName) ?? [];
+  //     return MenuAnchor(
+  //       alignmentOffset: const Offset(80, 0),
+  //       menuChildren: menuChildren,
+  //       builder: (BuildContext context, MenuController controller, Widget? child) {
+  //         return Center(
+  //           child: TextButton.icon(
+  //             key: key,
+  //             onPressed: () {
+  //               if (controller.isOpen) {
+  //                 controller.close();
+  //               } else {
+  //                 controller.open();
+  //               }
+  //             },
+  //             icon: const Icon(Icons.add),
+  //             label: const Text('add root widget'),
+  //             style: ButtonStyle(
+  //               backgroundColor: WidgetStatePropertyAll(Colors.white.withValues(alpha: .9)),
+  //               //padding: WidgetStatePropertyAll(EdgeInsets.zero),
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   } else {
+  //     return Material(
+  //       color: Colors.purple.shade200,
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(10),
+  //         child: InteractiveViewer(
+  //           alignment: Alignment.topLeft,
+  //           constrained: false,
+  //           // onInteractionStart: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+  //           // onInteractionEnd: (_) => snippetBloc.add(const CAPIEvent.clearNodeSelection()),
+  //           child: SizedBox(
+  //             width: 700,
+  //             height: 1200,
+  //             child: Builder(
+  //               builder: (context) {
+  //                 // final STreeNode? selectedNode = selectedNode;
+  //                 bool canShowNavigateUpBtn = true;
+  //                 if (fco.snippetBeingEdited?.treeC.roots.first.getParent() == null) {
+  //                   canShowNavigateUpBtn = false;
+  //                 }
+  //                 if (fco.snippetBeingEdited?.treeC.roots.first.getParent() is SnippetRootNode &&
+  //                     fco.snippetBeingEdited?.treeC.roots.first.getParent()?.getParent() == null) {
+  //                   canShowNavigateUpBtn = false;
+  //                 }
+  //                 if (fco.snippetBeingEdited?.getRootNode() != fco.snippetBeingEdited?.treeC.roots.first &&
+  //                     fco.snippetBeingEdited?.treeC.roots.first is! ScaffoldNode) {
+  //                   return Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     mainAxisAlignment: MainAxisAlignment.start,
+  //                     mainAxisSize: MainAxisSize.min,
+  //                     children: [
+  //                       // if (canShowNavigateUpBtn) navigateUpTreeButton(),
+  //                       Expanded(child: SnippetTreeView(scName: scName)),
+  //                     ],
+  //                   );
+  //                 }
+  //                 // fco.logger.i('SnippetTreeView...');
+  //                 return SnippetTreeView(scName: scName);
+  //               },
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 
   // Widget navigateUpTreeButton() => FilledButton(
   //       onPressed: () {
@@ -210,5 +210,5 @@ class SnippetTreePane extends StatelessWidget {
   //       scName: scName,
   //     );
   //   }
-  // }
+  }
 }

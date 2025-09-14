@@ -9,7 +9,7 @@ class ButtonStyleNameSearchAnchor extends StatefulWidget {
   final ButtonStyleProperties buttonStyle;
   final StyleNameChangeCallback onHoveredF;
   final StyleNameChangeCallback onSelectionF;
-  final DebounceTimer debounceTimer;
+  final Debouncer debouncer;
   final String tooltipMsg;
 
   const ButtonStyleNameSearchAnchor({
@@ -17,7 +17,7 @@ class ButtonStyleNameSearchAnchor extends StatefulWidget {
     required this.buttonStyle,
     required this.onHoveredF,
     required this.onSelectionF,
-    required this.debounceTimer,
+    required this.debouncer,
     required this.tooltipMsg,
     super.key,
   });
@@ -114,7 +114,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
               suggestions: fco.namedButtonStyles.keys.toList(),
               onHoverF: (hoveredButtonStyleName) {
                 if (widget.buttonStyle.lastHoveredSuggestion != hoveredButtonStyleName) {
-                  widget.debounceTimer.run(() {
+                  widget.debouncer.run(() {
                     if (widget.parentCId == null || fco.anyPresent([
                       widget.parentCId!
                     ])) {
@@ -132,7 +132,7 @@ class ButtonStyleNameSearchAnchorState extends State<ButtonStyleNameSearchAnchor
               onSelectionF: (selectedButtonStyleName) {
                 setState(() {
                   madeASelection = true;
-                  widget.debounceTimer.cancel();
+                  widget.debouncer.cancel();
                   // widget.searchStringTEC.text = suggestedTextStyleName;
                   widget.onSelectionF(selectedButtonStyleName);
                   dismissSuggestionsOverlay();

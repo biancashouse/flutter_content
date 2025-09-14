@@ -114,7 +114,7 @@ class UMLImageNode extends CL with UMLImageNodeMappable {
           // UMLRecord? umlRecord = snapshot.data;
           return GestureDetector(
             child: Image.memory(
-              // key: _gk,
+              key: _gk,
               // scale: 3.0,
               cachedPngBytes ?? Uint8List.fromList(missingPng.codeUnits),
               fit: BoxFit.fill,

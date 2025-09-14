@@ -58,12 +58,13 @@ class TargetCover extends StatelessWidget {
 
             if (tc.hasAHotspot() &&
                 !fco.anyPresent([CalloutConfigToolbar.CID])) {
-              fco.showToastPurpleOnLightWhite(
-                cId: 'hotspot-advice',
+              fco.showToast(
+                textColor: Colors.purple,
+                bgColor: Colors.lightGreenAccent,
                 msg:
                     "\nTap this target's hotspot instead\n(or double-tap to configure it's callout)\n",
                 removeAfterMs: 5000,
-                widthPC: 40,
+                width: fco.scrW*.4,
               );
               return;
             }

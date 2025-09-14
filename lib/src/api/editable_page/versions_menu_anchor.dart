@@ -89,6 +89,7 @@ class VersionsMenuAnchor extends StatelessWidget {
               : Colors.deepOrange,
           child: Column(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               fco.coloredText(
                   snippetInfo.editingVersionId != snippetInfo.publishedVersionId
@@ -129,7 +130,7 @@ class VersionsMenuAnchor extends StatelessWidget {
         MenuItemButton(
           onPressed: () async {
             fco.capiBloc.add(CAPIEvent.copySnippetJsonToClipboard(
-              rootNode: fco.snippetBeingEdited!.getRootNode(),
+              rootNode: snippetInfo.currentVersionFromCache()!,
             ));
           },
           child: const Text('copy snippet JSON to clipboard'),

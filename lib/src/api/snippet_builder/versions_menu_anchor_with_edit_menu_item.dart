@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 import 'tr_triangle_painter.dart' show TRTriangle;
 
@@ -63,6 +64,7 @@ class SnippetMenuAnchor extends StatelessWidget {
               : Colors.deepOrange,
           child: Column(
             mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               fco.coloredText(
                 snippetInfo.editingVersionId != snippetInfo.publishedVersionId
@@ -79,7 +81,7 @@ class SnippetMenuAnchor extends StatelessWidget {
             ],
           ),
         ),
-        MenuItemButton(
+        _menuItemButtonWithPI(
           onPressed: () {
             fco.capiBloc.add(
               CAPIEvent.enterSelectWidgetMode(snippetName: snippetInfo.name),
@@ -97,7 +99,7 @@ class SnippetMenuAnchor extends StatelessWidget {
           ),
         ),
         if (snippetInfo.editingVersionId != snippetInfo.publishedVersionId)
-          MenuItemButton(
+          _menuItemButtonWithPI(
             onPressed: () {
               fco.capiBloc.add(
                 CAPIEvent.publishSnippet(
@@ -108,7 +110,7 @@ class SnippetMenuAnchor extends StatelessWidget {
             },
             child: const Text('publish this version'),
           ),
-        MenuItemButton(
+        _menuItemButtonWithPI(
           onPressed: () {
             fco.capiBloc.add(
               CAPIEvent.toggleAutoPublishingOfSnippet(
@@ -126,17 +128,17 @@ class SnippetMenuAnchor extends StatelessWidget {
                   child: Text('auto-publish future changes to this snippet'),
                 ),
         ),
-        MenuItemButton(
+        _menuItemButtonWithPI(
           onPressed: () async {
             fco.capiBloc.add(
               CAPIEvent.copySnippetJsonToClipboard(
-                rootNode: fco.snippetBeingEdited!.getRootNode(),
+                rootNode: snippetInfo.currentVersionFromCache()!,
               ),
             );
           },
           child: const Text('copy snippet JSON to clipboard'),
         ),
-        MenuItemButton(
+        _menuItemButtonWithPI(
           onPressed: () async {
             fco.capiBloc.add(const CAPIEvent.replaceSnippetFromJson());
           },
@@ -145,4 +147,12 @@ class SnippetMenuAnchor extends StatelessWidget {
       ],
     );
   }
+
+  MenuItemButton _menuItemButtonWithPI({
+    required Widget child,
+    required VoidCallback onPressed,
+  }) => MenuItemButton(
+    onPressed: onPressed,
+    child: Align(alignment: Alignment.centerLeft, child:PointerInterceptor(child: child)),
+  );
 }

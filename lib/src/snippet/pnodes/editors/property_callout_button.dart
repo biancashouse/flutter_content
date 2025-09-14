@@ -62,7 +62,6 @@ class PropertyCalloutButton extends StatelessWidget {
       onDragEndedF: (_) {
         // FCO.capiBloc.selectedNode?.hidePropertiesWhileDragging = false;
       },
-      movedOrResizedNotifier: notifier,
       barrier: CalloutBarrierConfig(
         opacity: .1,
         onTappedF: () async {

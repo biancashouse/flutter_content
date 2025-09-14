@@ -24,31 +24,6 @@ class EditablePage extends StatefulWidget {
     required super.key, // provides access to state later - see initState and fco.pageGKs
   });
 
-  static void refreshSelectedNodeWidgetBorderOverlay(scName) {
-    fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
-    fco.afterMsDelayDo(500, () {
-      Rect? borderRect = fco.selectedNode?.calcBborderRect();
-      if (borderRect != null) {
-        fco.selectedNode?.showNodeWidgetOverlay(
-          borderRect,
-          scName: scName,
-          followScroll: true,
-        );
-      } else {
-        print('borderRect?');
-      }
-    });
-  }
-
-  static void removeAllNodeWidgetOverlays() {
-    // fco.logger.i('removeAllNodeWidgetOverlays - start');
-    for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
-      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
-    }
-    // fco.logger.i('removeAllNodeWidgetOverlays - ended');
-    fco.showingNodeBoundaryOverlays = false;
-  }
-
   // allow a page widget to find its parent EditablePage
   static EditablePageState? of(BuildContext context) => context.mounted
       ? context.findAncestorStateOfType<EditablePageState>()
@@ -111,6 +86,33 @@ class EditablePageState extends State<EditablePage> {
     super.dispose();
   }
 
+  void refreshSelectedNodeWidgetBorderOverlay(String? scName) {
+    if (fco.selectedNode != null) {
+      fco.dismiss('${fco.selectedNode!.nodeWidgetGK.hashCode}-pink-overlay');
+      fco.afterMsDelayDo(500, () {
+        Rect? borderRect = fco.selectedNode!.calcBborderRect();
+        if (borderRect != null) {
+          fco.selectedNode!.showNonTappableNodeWidgetOverlay(
+            selected: true,
+            borderRect: borderRect,
+            scName: scName,
+          );
+        } else {
+          print('borderRect?');
+        }
+      });
+    }
+  }
+
+  void removeAllNodeWidgetOverlays() {
+    // fco.logger.i('removeAllTappableNodeWidgetOverlays - start');
+    for (GlobalKey nodeWidgetGK in fco.nodesByGK.keys) {
+      fco.dismiss('${nodeWidgetGK.hashCode}-pink-overlay');
+    }
+    // fco.logger.i('removeAllTappableNodeWidgetOverlays - ended');
+    // fco.showingNodeBoundaryOverlays = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     print('EditablePageState ${widget.routePath}');
@@ -123,10 +125,10 @@ class EditablePageState extends State<EditablePage> {
           Future.delayed(Duration(milliseconds: kDebugMode ? 1000 : 300), () {
             Rect? borderRect = selectedNode!.calcBborderRect();
             if (borderRect != null) {
-              selectedNode.showNodeWidgetOverlay(
-                borderRect,
+              selectedNode.showNonTappableNodeWidgetOverlay(
+                selected: true,
+                borderRect: borderRect,
                 scName: namedSC!.name,
-                followScroll: false,
               );
             }
           });
@@ -159,11 +161,12 @@ class EditablePageState extends State<EditablePage> {
     }
     areas.add(
       Area(
-        builder: (ctx, area) {
-          return fco.capiBloc.state.inSelectWidgetMode
-              ? IgnorePointer(child: _pageContentArea())
-              : _pageContentArea();
-        },
+        builder: (ctx, area) => _pageContentArea(),
+        // {
+        //   return fco.snippetBeingEdited == null
+        //       ? _pageContentArea()
+        //       : PointerInterceptor(child: _pageContentArea());
+        // },
         flex: 2,
       ),
     );
@@ -185,21 +188,16 @@ class EditablePageState extends State<EditablePage> {
         axis: Axis.horizontal,
         initialAreas: areas,
         onDividerDragStart: (_) {
-          fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+          removeAllNodeWidgetOverlays();
         },
         onDividerDragEnd: (_) {
-          fco.afterMsDelayDo(500, () {
-            Rect? borderRect = fco.selectedNode?.calcBborderRect();
-            if (borderRect != null) {
-              fco.selectedNode?.showNodeWidgetOverlay(
-                borderRect,
-                scName: widget.routePath,
-                followScroll: true,
-              );
-            } else {
-              print('borderRect?');
-            }
-          });
+          final rootNode = fco.selectedNode?.rootNodeOfSnippet();
+          if (rootNode != null) {
+            assert(rootNode.isValid());
+            fco.saveNewVersion(snippet: rootNode);
+            refreshSelectedNodeWidgetBorderOverlay(rootNode.name);
+            showNodeWidgetOverlaysNeedingInterception();
+          }
         },
       ),
     );
@@ -211,12 +209,21 @@ class EditablePageState extends State<EditablePage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: msvt),
-          if (showPropertiesPane())
-            Container(
-              width: 330,
-              color: Colors.purpleAccent[100],
-              child: _propertiesPanel(),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            width: showPropertiesPane() ? 330.0 : 0.0,
+            color: showPropertiesPane()
+                ? Colors.purpleAccent[100]
+                : Colors.transparent,
+            child: ClipRect(
+              child: SizedBox(
+                width: 330.0, // Ensures the child is laid out for the full width
+                child: _propertiesPanel(),
+              ),
             ),
+          )
+
         ],
       ),
     );
@@ -237,12 +244,16 @@ class EditablePageState extends State<EditablePage> {
       onNotification: (SizeChangedLayoutNotification notification) {
         // fco.logger.i("FlutterContentApp SizeChangedLayoutNotification}");
         // fco.dismissAll(exceptFeatures: ["FAB"]);
+        // refresh tappables
         fco.afterMsDelayDo(300, () {
           // FCO.refreshMQ(context);
-          if (fco.showingNodeBoundaryOverlays ?? false) {
-            EditablePage.removeAllNodeWidgetOverlays();
+          if (fco.inSelectWidgetMode) {
+            // EditablePage.removeAllTappableNodeWidgetOverlays();
+            fco.dismissAll();
             // show a barrier for any parts of page not being edited
-            showAllNodeWidgetOverlays();
+            showTappableNodeWidgetOverlays();
+            // protect iFrames and PlatformViews with an overlay having PointerInterceptor
+            showNodeWidgetOverlaysNeedingInterception();
             // fco.afterNextBuildDo(() {});
           }
         });
@@ -253,6 +264,11 @@ class EditablePageState extends State<EditablePage> {
           onTap: () {
             // exitEditMode();
             fco.capiBloc.add(CAPIEvent.exitSelectWidgetMode());
+            fco.afterNextBuildDo(() {
+              fco.afterMsDelayDo(1000, () {
+                showNodeWidgetOverlaysNeedingInterception();
+              });
+            });
           },
           child: Material(
             child: Stack(
@@ -279,6 +295,14 @@ class EditablePageState extends State<EditablePage> {
                     //   return widget.child;
                     // }),
                   ),
+                if (!aSnippetIsBeingEdited)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding:  EdgeInsets.only(right:fco.canEditContent() ?  68: 8.0),
+                    child: fco.NavigationDD(pencilIconColor: Colors.red),
+                  ),
+                ),
                 // Builder(
                 //   builder: (context) {
                 //     Widget? cutout;
@@ -326,7 +350,10 @@ class EditablePageState extends State<EditablePage> {
               return;
             }
             fco.capiBloc.add(CAPIEvent.clearNodeSelection());
-            fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+            removeAllNodeWidgetOverlays();
+            fco.afterMsDelayDo(1000, () {
+              showNodeWidgetOverlaysNeedingInterception();
+            });
             fco.hide("floating-clipboard");
           },
           child: Column(
@@ -387,16 +414,14 @@ class EditablePageState extends State<EditablePage> {
                         ),
                         IconButton(
                           onPressed: () {
-                            SNode.unhighlightSelectedNode();
+                            // SNode.unhighlightSelectedNode();
                             // if was editing a callout content snippet, dismiss all callouts
                             if (SnippetRootNode.isHotspotCalloutContent(
                               snippetName,
                             )) {
                               fco.dismissAll();
                             } else {
-                              var pinkOverlayFeature =
-                                  PINK_OVERLAY_NON_TAPPABLE;
-                              fco.dismiss(pinkOverlayFeature);
+                              removeAllNodeWidgetOverlays();
                               // fco.dismissAll(exceptFeatures: [CalloutConfigToolbar.CID]);
                               fco.unhide(CalloutConfigToolbar.CID);
                               fco.appInfo.hideClipboard();
@@ -478,7 +503,7 @@ class EditablePageState extends State<EditablePage> {
   }
 
   // only called with MaterialAppWrapper context
-  void showAllNodeWidgetOverlays() {
+  void showTappableNodeWidgetOverlays() {
     // fco.logger.i('showAllNodeWidgetOverlays...');
     // if currently configuring a target, only show for the current target's snippet
     // bool configuringATarget = fco.anyPresent([CalloutConfigToolbar.CALLOUT_CONFIG_TOOLBAR]);
@@ -515,6 +540,7 @@ class EditablePageState extends State<EditablePage> {
             // removeAllNodeWidgetOverlays();
             // pass possible ancestor scrollcontroller to overlay
             node.showTappableNodeWidgetOverlay(
+              context,
               whiteBarrier: overlayWithABarrier,
               scName: widget.routePath,
             );
@@ -528,7 +554,39 @@ class EditablePageState extends State<EditablePage> {
 
     var pageContext = context;
     traverseAndMeasure(pageContext, true);
-    fco.showingNodeBoundaryOverlays = true;
+    // fco.showingNodeBoundaryOverlays = true;
+    // fco.logger.i('traverseAndMeasure(context) finished.');
+  }
+
+  // only called with MaterialAppWrapper context
+  void showNodeWidgetOverlaysNeedingInterception() {
+    void traverseAndMeasure(BuildContext el, bool overlayWithABarrier) {
+      if ((fco.nodesByGK.containsKey(el.widget.key))) {
+        GlobalKey gk = el.widget.key as GlobalKey;
+        SNode? node = fco.nodesByGK[gk];
+        if (node != null && node.isHtmlElementViewOrPlatformView()) {
+          Rect? r = gk.globalPaintBounds(
+            skipWidthConstraintWarning: true,
+            skipHeightConstraintWarning: true,
+          );
+          if (r != null) {
+            r = fco.restrictRectToScreen(r);
+            node.showNonTappableNodeWidgetOverlay(
+              selected: false,
+              borderRect: r,
+              scName: widget.routePath,
+            );
+          }
+        }
+      }
+      el.visitChildElements((innerEl) {
+        traverseAndMeasure(innerEl, false);
+      });
+    }
+
+    var pageContext = context;
+    traverseAndMeasure(pageContext, true);
+    // fco.showingNodeBoundaryOverlays = true;
     // fco.logger.i('traverseAndMeasure(context) finished.');
   }
 
@@ -626,6 +684,7 @@ class EditablePageState extends State<EditablePage> {
         },
       ),
       // targetGkF: ()=> fco.authIconGK,
+      wrapInPointerInterceptor: true,
     );
   }
 
@@ -669,9 +728,12 @@ class EditablePageState extends State<EditablePage> {
                 pageName = pageName.startsWith('/') ? pageName : '/$pageName';
                 // add to appInfo
                 if (!fco.canEditContent() &&
-                    !fco.appInfo.anonymousUserEditablePages.contains(pageName)) {
+                    !fco.appInfo.anonymousUserEditablePages.contains(
+                      pageName,
+                    )) {
                   // jsArray issue
-                  List<String> newList = fco.appInfo.anonymousUserEditablePages.toList();
+                  List<String> newList = fco.appInfo.anonymousUserEditablePages
+                      .toList();
                   newList.add(pageName);
                   fco.appInfo.anonymousUserEditablePages = newList;
                   await fco.modelRepo.saveAppInfo();
@@ -684,7 +746,7 @@ class EditablePageState extends State<EditablePage> {
                   });
                 } else if (fco.canEditContent() &&
                     !fco.appInfo.snippetNames.contains(pageName)) {
-                  EditablePage.removeAllNodeWidgetOverlays();
+                  removeAllNodeWidgetOverlays();
                   // fco.dismiss('exit-editMode');
                   // bool userCanEdit = canEditContent.isTrue;
                   final snippetName = pageName;
@@ -757,10 +819,10 @@ class EditablePageState extends State<EditablePage> {
     fco.afterNextBuildDo(() async {
       // current snippet version will now be changed to prevId
       fco.logger.i('reverted to previous version.');
-      SNode.unhighlightSelectedNode();
+      // SNode.unhighlightSelectedNode();
       // var currPageState = fco.currentPageState;
       // currPageState?.unhideFAB();
-      fco.dismiss(PINK_OVERLAY_NON_TAPPABLE);
+      removeAllNodeWidgetOverlays();
       fco.dismiss(CalloutConfigToolbar.CID);
       fco.appInfo.hideClipboard();
       // exitEditModeF();

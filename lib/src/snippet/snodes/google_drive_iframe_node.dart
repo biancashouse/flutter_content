@@ -158,7 +158,6 @@ class GoogleDriveIFrameNode extends CL with GoogleDriveIFrameNodeMappable {
                   '<iframe src="https://docs.google.com/document/d/e/2PACX-1vQs8513mgRcxNUcf2TcIv5EY_nCCjUrdWt7_OooiVLdTslDSnQYY31IEWKROTCaki0MwdHDWFunu6ix/pub?embedded=true"></iframe>',
               iframeW: iframeWidth ?? double.infinity,
               iframeH: iframeHeight ?? double.infinity,
-              forceRefresh: true,
             ),
           );
     } catch (e) {

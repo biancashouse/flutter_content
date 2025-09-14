@@ -90,19 +90,19 @@ class PollOptionNode extends CL with PollOptionNodeMappable {
   String toSource(BuildContext context) => '';
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
+  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
     ScrollControllerName? scName,
   ) {
     return [
       if (getParent() is! PollNode)
-        ...super.menuAnchorWidgets_Heading(
+        ...super.menuAnchorWidgets_Heading(context,
           action,
           scName,
         ),
       if (getParent() is! PollNode)
-        menuItemButton("Poll", PollNode, action, scName),
+        menuItemButton(context, "Poll", PollNode, action, scName),
     ];
   }
 

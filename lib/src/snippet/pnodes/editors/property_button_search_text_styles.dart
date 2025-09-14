@@ -79,7 +79,7 @@ class PropertyButtonTextStyleNameSearch extends StatelessWidget {
                 //   snode.refreshPTreeC(context);
                 // });
               },
-              debounceTimer: DebounceTimer(delayMs: 200),
+              debouncer: Debouncer(delayMs: 200),
               tooltipMsg: 'find a saved TextStyle',
             );
         return anchor;

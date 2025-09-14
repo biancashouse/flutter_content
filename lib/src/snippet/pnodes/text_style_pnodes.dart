@@ -218,8 +218,9 @@ class TextStyleSavePNode extends PNode {
             if (tsGroup != null) {
               fco.namedTextStyles[tsName] = tsGroup.clone();
               await fco.modelRepo.saveAppInfo();
-              fco.showToastBlueOnYellow(
-                cId: 'saved-text-style',
+              fco.showToast(
+                textColor: Colors.blue,
+                bgColor: Colors.yellow,
                 msg: "Text Style '$tsName' saved",
                 removeAfterMs: 3500,
               );

@@ -273,8 +273,9 @@ class ContainerStyleSavePNode extends PNode {
             if (csGroup != null) {
               fco.namedContainerStyles[csName] = csGroup.clone();
               await fco.modelRepo.saveAppInfo();
-              fco.showToastBlueOnYellow(
-                cId: 'saved-container-style',
+              fco.showToast(
+                textColor: Colors.blue,
+                bgColor: Colors.yellow,
                 msg: "Container Style '$csName' saved",
                 removeAfterMs: 3500,
               );

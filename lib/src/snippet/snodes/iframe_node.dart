@@ -144,7 +144,6 @@ class IFrameNode extends CL with IFrameNodeMappable {
           src: iframeSrc,
           iframeW: iframeWidth,
           iframeH: iframeHeight,
-          forceRefresh: true,
         ),
       );
     } catch (e) {

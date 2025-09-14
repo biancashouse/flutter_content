@@ -177,7 +177,7 @@ class _PNodeWidgetState extends State<PNodeWidget> {
         //                     widget.sNode.setTextStyleProperties(tsProps?.clone() ?? TextStyleProperties());
         //                   });
         //                 },
-        //                 debounceTimer: DebounceTimer(delayMs: 300),
+        //                 Debouncer: Debouncer(delayMs: 300),
         //               ),
         //             ),
         //           ),

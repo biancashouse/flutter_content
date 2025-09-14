@@ -77,7 +77,7 @@ class CalloutConfigToolbar extends StatefulWidget {
 
 class CalloutConfigToolbarState extends State<CalloutConfigToolbar> {
   // BuildContext? updatedContext;
-  final dbT = DebounceTimer(delayMs: 100);
+  final dbT = Debouncer(delayMs: 100);
 
   // @override
   @override

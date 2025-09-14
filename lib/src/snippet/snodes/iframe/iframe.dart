@@ -73,14 +73,12 @@ class IFrame extends StatelessWidget {
   final String src;
   final double iframeW;
   final double iframeH;
-  final bool forceRefresh;
 
   const IFrame({
     // required this.name,
     this.src = 'http://example_using_go_router.com',
     required this.iframeW,
     required this.iframeH,
-    this.forceRefresh = false,
     super.key,
   });
 

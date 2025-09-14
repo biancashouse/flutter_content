@@ -3,7 +3,6 @@ import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/pages.dart';
 import 'package:flutter_content/src/route_observer.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 extension RoutesExtension on FlutterContentMixins {
   // extract go routes

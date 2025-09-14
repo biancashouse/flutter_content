@@ -8,7 +8,7 @@ class TextStyleNameSearchAnchor extends StatefulWidget {
   final TextStyleProperties textStyle;
   final StyleNameChangeCallback onHoveredF;
   final StyleNameChangeCallback onSelectionF;
-  final DebounceTimer debounceTimer;
+  final Debouncer debouncer;
   final String tooltipMsg;
 
   const TextStyleNameSearchAnchor({
@@ -16,7 +16,7 @@ class TextStyleNameSearchAnchor extends StatefulWidget {
     required this.textStyle,
     required this.onHoveredF,
     required this.onSelectionF,
-    required this.debounceTimer,
+    required this.debouncer,
     required this.tooltipMsg,
     super.key,
   });
@@ -113,7 +113,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
               suggestions: fco.namedTextStyles.keys.toList(),
               onHoverF: (hoveredTextStyleName) {
                 if (widget.textStyle.lastHoveredSuggestion != hoveredTextStyleName) {
-                  widget.debounceTimer.run(() {
+                  widget.debouncer.run(() {
                     if (widget.parentCId == null || fco.anyPresent([
                       widget.parentCId!
                     ])) {
@@ -132,7 +132,7 @@ class TextStyleNameSearchAnchorState extends State<TextStyleNameSearchAnchor> {
                 setState(() {
                   fco.logger.d('onSelectionF - suggestedTextStyleName = $selectedTextStyleName');
                   madeASelection = true;
-                  widget.debounceTimer.cancel();
+                  widget.debouncer.cancel();
                   // widget.searchStringTEC.text = suggestedTextStyleName;
                   widget.onSelectionF(selectedTextStyleName);
                   dismissSuggestionsOverlay();

@@ -35,7 +35,7 @@ Future<void> main({bool useEmulator = false}) async {
   QuerySnapshot snippets = await sourceDocRef.collection('snippets').get();
   for (QueryDocumentSnapshot snippetDoc in snippets.docs) {
 
-    print('${snippetDoc.id}');
+    print(snippetDoc.id);
 
     QuerySnapshot versions = await sourceDocRef.collection('snippets/${snippetDoc.id}/versions').get();
 

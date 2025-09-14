@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:example_without_go_router/page_iframe_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_content/flutter_content.dart'
     show fco, FlutterContentApp;
+import 'package:window_manager/window_manager.dart';
 import 'bh-apps.firebase_options.dart';
-import 'page_home.dart';
+// import 'page_home.dart';
 
 void disableOverflowErrors() {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -28,6 +30,28 @@ void main({bool useEmulator = false}) {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      if (fco.isMac || fco.isWindows) {
+        await windowManager.ensureInitialized();
+
+        // Define the window options
+        WindowOptions windowOptions = const WindowOptions(
+          size: Size(1280, 1190),
+          // Set your desired width and height
+          center: true,
+          // Center the window on the screen
+          backgroundColor: Colors.transparent,
+          skipTaskbar: false,
+          titleBarStyle: TitleBarStyle.normal,
+          title: "My Awesome Flutter App", // Optional: Set a window title
+        );
+
+        // Wait until the window is ready to show, then apply options and show
+        windowManager.waitUntilReadyToShow(windowOptions, () async {
+          await windowManager.show();
+          await windowManager.focus();
+        });
+      }
+
       debugProfileBuildsEnabledUserWidgets = true;
 
       disableOverflowErrors();
@@ -35,7 +59,7 @@ void main({bool useEmulator = false}) {
       runApp(
         FlutterContentApp(
           appName: 'flutter-content-example-without-go-router',
-          home: Page_Home(),
+          home: Page_IframeTest(),
           materialAppThemeF: () => ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             primaryColor: fco.FUCHSIA_X,

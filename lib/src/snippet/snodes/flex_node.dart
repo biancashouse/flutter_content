@@ -55,16 +55,16 @@ abstract class FlexNode extends MC with FlexNodeMappable {
       ];
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
+  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
     ScrollControllerName? scName,
   ) {
     return [
-      ...super.menuAnchorWidgets_Heading(action, scName),
-      menuItemButton("Expanded", ExpandedNode, action, scName),
-      menuItemButton("Flexible", FlexibleNode, action, scName),
-      ...super.menuAnchorWidgets_WrapWith(action, true, scName),
+      ...super.menuAnchorWidgets_Heading(context, action, scName),
+      menuItemButton(context, "Expanded", ExpandedNode, action, scName),
+      menuItemButton(context, "Flexible", FlexibleNode, action, scName),
+      ...super.menuAnchorWidgets_WrapWith(context, action, true, scName),
     ];
   }
 

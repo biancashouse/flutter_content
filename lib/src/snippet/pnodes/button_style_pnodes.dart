@@ -274,9 +274,10 @@ class ButtonStyleSavePNode extends PNode {
             if (bsGroup != null) {
               fco.namedButtonStyles[bsName] = bsGroup.clone();
               await fco.modelRepo.saveAppInfo();
-              fco.showToastBlueOnYellow(
-                cId: 'saved-button-style',
+              fco.showToast(
                 msg: "Button Style '$bsName' saved",
+                textColor: Colors.yellow,
+                bgColor: Colors.blue,
                 removeAfterMs: 3500,
               );
               onGroupChange.call(bsGroup, false);

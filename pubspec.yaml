@@ -43,7 +43,6 @@ dependencies:
   path_provider: ^2.1.5
   google_fonts: ^6.2.1
   watcher: ^1.1.0
-  pointer_interceptor: ^0.10.1+2
   multi_split_view: ^3.5.0
   # compals
   intl: ^0.20.2
@@ -131,6 +130,7 @@ dependencies:
 #  font_awesome_flutter: ^10.8.0
 #  markdown_toolbar: ^0.5.0
 
+  pointer_interceptor: ^0.10.1+2
   file_picker: ^10.2.0
   flutter_callouts: #^8.3.1
     path: ../flutter_callouts

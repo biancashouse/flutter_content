@@ -146,16 +146,16 @@ class AppBarNode extends SNode with AppBarNodeMappable {
       (leading == null && title == null && bottom == null && actions == null);
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
+  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
     ScrollControllerName? scName,
   ) {
     return [
       if (getParent() is! ScaffoldNode)
-        ...super.menuAnchorWidgets_Heading(action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action, scName),
       if (getParent() is! ScaffoldNode)
-        menuItemButton("Scaffold", ScaffoldNode, action, scName),
+        menuItemButton(context, "Scaffold", ScaffoldNode, action, scName),
     ];
   }
 

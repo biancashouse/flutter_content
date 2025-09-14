@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:logger/src/log_event.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart'
@@ -236,9 +235,9 @@ class MyLogFilter extends LogFilter {
   }
 }
 
-const String PINK_OVERLAY_NON_TAPPABLE = 'pink-border-overlay-non-tappable';
+// const String SELECTED_OVERLAY_NON_TAPPABLE = 'selected-overlay-non-tappable';
 const String CUTOUT_OVERLAY_NON_TAPPABLE = 'cutout-overlay-non-tappable';
-const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
+// const String SELECTED_NODE_BORDER_CALLOUT = "selected-node-border-callout";
 // const String TREENODE_MENU_CALLOUT = "TreeNodeMenu-callout";
 // const String NODE_PROPERTY_CALLOUT_BUTTON = "NodePropertyCalloutButton";
 

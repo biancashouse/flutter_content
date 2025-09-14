@@ -87,18 +87,18 @@ class SubmenuButtonNode extends MC with SubmenuButtonNodeMappable {
   bool canBeDeleted() => children.isEmpty;
 
   @override
-  List<Widget> menuAnchorWidgets_WrapWith(
+  List<Widget> menuAnchorWidgets_WrapWith(BuildContext context,
     NodeAction action,
     bool? skipHeading,
     ScrollControllerName? scName,
   ) {
     return [
       if (getParent() is! MenuBarNode)
-        ...super.menuAnchorWidgets_Heading(action, scName),
+        ...super.menuAnchorWidgets_Heading(context, action, scName),
       if (findNearestAncestor<MenuBarNode>() == null &&
           findNearestAncestor<SubmenuButtonNode>() == null)
-        menuItemButton("MenuBar", MenuBarNode, action, scName),
-      menuItemButton("SubMenu", SubmenuButtonNode, action, scName),
+        menuItemButton(context, "MenuBar", MenuBarNode, action, scName),
+      menuItemButton(context, "SubMenu", SubmenuButtonNode, action, scName),
     ];
   }
 

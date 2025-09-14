@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "express": "^4.19.2",
-    "firebase": "^8.6.8"
-  }
-}

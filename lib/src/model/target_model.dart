@@ -318,13 +318,12 @@ class TargetModel with TargetModelMappable {
       fco.showToast(
         removeAfterMs: 1000,
         msg: 'saving changes...',
-        cId: "saving-model",
         gravity: AlignmentEnum.topCenter,
         bgColor: Colors.yellow,
         textColor: Colors.black,
       );
       fco.saveNewVersion(snippet: rootNode);
-      fco.dismiss("saving-model");
+      fco.dismissToast(AlignmentEnum.topCenter);
     }
 
     // emit(state.copyWith(

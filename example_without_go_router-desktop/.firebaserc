@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "default": "bh-apps"
+  },
+  "targets": {
+    "bh-apps": {
+      "hosting": {
+        "flutter-content-demo": [
+          "flutter-content-demo"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

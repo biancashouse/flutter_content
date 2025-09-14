@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_content/flutter_content.dart';
 import 'package:flutter_content/src/snippet/pnodes/enums/mappable_enum_decoration.dart';
-import 'package:pointer_interceptor/pointer_interceptor.dart';
 
 bool isShowingSnippetCallout(TargetModel tc) => fco.anyPresent([tc.contentCId]);
 
@@ -79,14 +78,12 @@ Future<void> showSnippetContentCallout({
 
   fco.showOverlay(
     targetGkF: () => fco.getTargetGk(tc.uid)!,
-    calloutContent: PointerInterceptor(
-      child: BlocBuilder<CAPIBloC, CAPIState>(
-        builder: (context, state) {
-          // return const CircularProgressIndicator();
-          var contentWidget = possiblyEditableContent();
-          return contentWidget;
-        },
-      ),
+    calloutContent: BlocBuilder<CAPIBloC, CAPIState>(
+      builder: (context, state) {
+        // return const CircularProgressIndicator();
+        var contentWidget = possiblyEditableContent();
+        return contentWidget;
+      },
     ),
     calloutConfig: CalloutConfigModel(
       cId: tc.contentCId,
